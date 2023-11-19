@@ -1,3 +1,4 @@
+import { UpdatePriceListDTO } from "@medusajs/types"
 import {
   Context,
   DAL,
@@ -84,7 +85,7 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdatePriceSetDTO[],
+    data: Omit<UpdatePriceListDTO, "rules">[],
     context: Context = {}
   ): Promise<PriceSet[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)

@@ -38,7 +38,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PaymentStatus](enums/PaymentStatus.mdx)
 - [PaymentStatus](enums/PaymentStatus-1.mdx)
 - [PriceListStatus](enums/PriceListStatus.mdx)
+- [PriceListStatus](enums/PriceListStatus-1.mdx)
+- [PriceListStatus](enums/PriceListStatus-2.mdx)
 - [PriceListType](enums/PriceListType.mdx)
+- [PriceListType](enums/PriceListType-1.mdx)
+- [PriceListType](enums/PriceListType-2.mdx)
 - [ProductStatus](enums/ProductStatus.mdx)
 - [RequirementType](enums/RequirementType.mdx)
 - [ReturnStatus](enums/ReturnStatus.mdx)
@@ -218,6 +222,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Interfaces
 
+- [AddPriceListPricesDTO](interfaces/AddPriceListPricesDTO.mdx)
 - [AddPricesDTO](interfaces/AddPricesDTO.mdx)
 - [AddRulesDTO](interfaces/AddRulesDTO.mdx)
 - [ArrayLike](interfaces/ArrayLike.mdx)
@@ -225,25 +230,38 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [Boolean](interfaces/Boolean.mdx)
 - [Buffer](interfaces/Buffer.mdx)
 - [BufferConstructor](interfaces/BufferConstructor.mdx)
+- [BulkUpdateInventoryLevelInput](interfaces/BulkUpdateInventoryLevelInput.mdx)
 - [CalculatedPriceSetDTO](interfaces/CalculatedPriceSetDTO.mdx)
 - [Context](interfaces/Context.mdx)
 - [CreateCurrencyDTO](interfaces/CreateCurrencyDTO.mdx)
+- [CreateInventoryItemInput](interfaces/CreateInventoryItemInput.mdx)
+- [CreateInventoryLevelInput](interfaces/CreateInventoryLevelInput.mdx)
 - [CreateMoneyAmountDTO](interfaces/CreateMoneyAmountDTO.mdx)
 - [CreateNoteInput](interfaces/CreateNoteInput.mdx)
+- [CreatePriceListDTO](interfaces/CreatePriceListDTO.mdx)
+- [CreatePriceListRuleDTO](interfaces/CreatePriceListRuleDTO.mdx)
+- [CreatePriceListRules](interfaces/CreatePriceListRules.mdx)
 - [CreatePriceRuleDTO](interfaces/CreatePriceRuleDTO.mdx)
 - [CreatePriceSetDTO](interfaces/CreatePriceSetDTO.mdx)
 - [CreatePriceSetMoneyAmountRulesDTO](interfaces/CreatePriceSetMoneyAmountRulesDTO.mdx)
 - [CreatePricesDTO](interfaces/CreatePricesDTO.mdx)
+- [CreateReservationItemInput](interfaces/CreateReservationItemInput.mdx)
 - [CreateRuleTypeDTO](interfaces/CreateRuleTypeDTO.mdx)
 - [CreateUserInput](interfaces/CreateUserInput.mdx)
 - [CurrencyDTO](interfaces/CurrencyDTO.mdx)
 - [FilterableCurrencyProps](interfaces/FilterableCurrencyProps.mdx)
+- [FilterableInventoryItemProps](interfaces/FilterableInventoryItemProps.mdx)
+- [FilterableInventoryLevelProps](interfaces/FilterableInventoryLevelProps.mdx)
 - [FilterableMoneyAmountProps](interfaces/FilterableMoneyAmountProps.mdx)
+- [FilterablePriceListProps](interfaces/FilterablePriceListProps-1.mdx)
+- [FilterablePriceListRuleProps](interfaces/FilterablePriceListRuleProps.mdx)
 - [FilterablePriceRuleProps](interfaces/FilterablePriceRuleProps.mdx)
 - [FilterablePriceSetMoneyAmountProps](interfaces/FilterablePriceSetMoneyAmountProps.mdx)
 - [FilterablePriceSetMoneyAmountRulesProps](interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx)
 - [FilterablePriceSetProps](interfaces/FilterablePriceSetProps.mdx)
+- [FilterableReservationItemProps](interfaces/FilterableReservationItemProps.mdx)
 - [FilterableRuleTypeProps](interfaces/FilterableRuleTypeProps.mdx)
+- [FilterableStockLocationProps](interfaces/FilterableStockLocationProps.mdx)
 - [FindConfig](interfaces/FindConfig.mdx)
 - [FindConfig](interfaces/FindConfig-1.mdx)
 - [IBatchJobStrategy](interfaces/IBatchJobStrategy.mdx)
@@ -273,6 +291,10 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [NumericalComparisonOperator](interfaces/NumericalComparisonOperator-1.mdx)
 - [PaymentProcessor](interfaces/PaymentProcessor.mdx)
 - [PaymentProcessorError](interfaces/PaymentProcessorError.mdx)
+- [PriceListDTO](interfaces/PriceListDTO.mdx)
+- [PriceListPriceDTO](interfaces/PriceListPriceDTO.mdx)
+- [PriceListRuleDTO](interfaces/PriceListRuleDTO.mdx)
+- [PriceListRuleValueDTO](interfaces/PriceListRuleValueDTO.mdx)
 - [PriceRuleDTO](interfaces/PriceRuleDTO.mdx)
 - [PriceSetDTO](interfaces/PriceSetDTO.mdx)
 - [PriceSetMoneyAmountDTO](interfaces/PriceSetMoneyAmountDTO.mdx)
@@ -280,16 +302,23 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PricingContext](interfaces/PricingContext.mdx)
 - [PricingFilters](interfaces/PricingFilters.mdx)
 - [RemoteJoinerQuery](interfaces/RemoteJoinerQuery.mdx)
+- [RemovePriceListRulesDTO](interfaces/RemovePriceListRulesDTO.mdx)
 - [RemovePriceSetRulesDTO](interfaces/RemovePriceSetRulesDTO.mdx)
 - [RuleTypeDTO](interfaces/RuleTypeDTO.mdx)
+- [SetPriceListRulesDTO](interfaces/SetPriceListRulesDTO.mdx)
 - [SharedArrayBuffer](interfaces/SharedArrayBuffer.mdx)
 - [SharedArrayBufferConstructor](interfaces/SharedArrayBufferConstructor.mdx)
+- [SharedContext](interfaces/SharedContext.mdx)
 - [StringComparisonOperator](interfaces/StringComparisonOperator-1.mdx)
 - [UpdateCurrencyDTO](interfaces/UpdateCurrencyDTO.mdx)
+- [UpdateInventoryLevelInput](interfaces/UpdateInventoryLevelInput.mdx)
 - [UpdateMoneyAmountDTO](interfaces/UpdateMoneyAmountDTO.mdx)
+- [UpdatePriceListDTO](interfaces/UpdatePriceListDTO.mdx)
+- [UpdatePriceListRuleDTO](interfaces/UpdatePriceListRuleDTO.mdx)
 - [UpdatePriceRuleDTO](interfaces/UpdatePriceRuleDTO.mdx)
 - [UpdatePriceSetDTO](interfaces/UpdatePriceSetDTO.mdx)
 - [UpdatePriceSetMoneyAmountRulesDTO](interfaces/UpdatePriceSetMoneyAmountRulesDTO.mdx)
+- [UpdateReservationItemInput](interfaces/UpdateReservationItemInput.mdx)
 - [UpdateRuleTypeDTO](interfaces/UpdateRuleTypeDTO.mdx)
 - [UpdateUserInput](interfaces/UpdateUserInput.mdx)
 
@@ -331,8 +360,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [CreateGiftCardInput](types/CreateGiftCardInput.mdx)
 - [CreateGiftCardTransactionInput](types/CreateGiftCardTransactionInput.mdx)
 - [CreateIdempotencyKeyInput](types/CreateIdempotencyKeyInput.mdx)
-- [CreateInventoryItemInput](types/CreateInventoryItemInput.mdx)
-- [CreateInventoryLevelInput](types/CreateInventoryLevelInput.mdx)
 - [CreateOauthInput](types/CreateOauthInput.mdx)
 - [CreateOrderEditInput](types/CreateOrderEditInput.mdx)
 - [CreateOrderEditItemChangeInput](types/CreateOrderEditItemChangeInput.mdx)
@@ -351,7 +378,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [CreateProductProductVariantPriceInput](types/CreateProductProductVariantPriceInput.mdx)
 - [CreateProductVariantInput](types/CreateProductVariantInput.mdx)
 - [CreateRegionInput](types/CreateRegionInput.mdx)
-- [CreateReservationItemInput](types/CreateReservationItemInput.mdx)
 - [CreateReturnInput](types/CreateReturnInput.mdx)
 - [CreateReturnReason](types/CreateReturnReason.mdx)
 - [CreateReturnType](types/CreateReturnType.mdx)
@@ -378,10 +404,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [ExtendedFindConfig](types/ExtendedFindConfig-1.mdx)
 - [ExternalModuleDeclaration](types/ExternalModuleDeclaration.mdx)
 - [FeatureFlagsResponse](types/FeatureFlagsResponse.mdx)
-- [FilterableInventoryItemProps](types/FilterableInventoryItemProps.mdx)
-- [FilterableInventoryLevelProps](types/FilterableInventoryLevelProps.mdx)
-- [FilterableReservationItemProps](types/FilterableReservationItemProps.mdx)
-- [FilterableStockLocationProps](types/FilterableStockLocationProps.mdx)
 - [FilterableTaxRateProps](types/FilterableTaxRateProps.mdx)
 - [FilterableUserProps](types/FilterableUserProps.mdx)
 - [FindProductConfig](types/FindProductConfig.mdx)
@@ -517,7 +539,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [ReturnedData](types/ReturnedData.mdx)
 - [Selector](types/Selector.mdx)
 - [SessionOptions](types/SessionOptions.mdx)
-- [SharedContext](types/SharedContext.mdx)
 - [ShippingMethod](types/ShippingMethod-1.mdx)
 - [ShippingMethodTotals](types/ShippingMethodTotals.mdx)
 - [ShippingMethodTotals](types/ShippingMethodTotals-1.mdx)
@@ -555,7 +576,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [UpdateDiscountInput](types/UpdateDiscountInput.mdx)
 - [UpdateDiscountRuleInput](types/UpdateDiscountRuleInput.mdx)
 - [UpdateGiftCardInput](types/UpdateGiftCardInput.mdx)
-- [UpdateInventoryLevelInput](types/UpdateInventoryLevelInput.mdx)
 - [UpdateOauthInput](types/UpdateOauthInput.mdx)
 - [UpdateOrderInput](types/UpdateOrderInput.mdx)
 - [UpdatePriceListInput](types/UpdatePriceListInput.mdx)
@@ -566,7 +586,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [UpdateProductVariantData](types/UpdateProductVariantData.mdx)
 - [UpdateProductVariantInput](types/UpdateProductVariantInput.mdx)
 - [UpdateRegionInput](types/UpdateRegionInput.mdx)
-- [UpdateReservationItemInput](types/UpdateReservationItemInput.mdx)
 - [UpdateReturnInput](types/UpdateReturnInput.mdx)
 - [UpdateReturnReason](types/UpdateReturnReason.mdx)
 - [UpdateShippingOptionInput](types/UpdateShippingOptionInput.mdx)
@@ -639,7 +658,7 @@ ___
 
 ### CartRepository
 
- `Const` **CartRepository**: Repository&#60;[Cart](classes/Cart.mdx)&#62; & &#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;
+ `Const` **CartRepository**: Repository&#60;[Cart](classes/Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``
 
 ___
 
@@ -669,19 +688,19 @@ ___
 
 ### CustomerGroupRepository
 
- `Const` **CustomerGroupRepository**: Repository&#60;[CustomerGroup](classes/CustomerGroup.mdx)&#62; & &#123; addCustomers: Method addCustomers ; findWithRelationsAndCount: Method findWithRelationsAndCount ; removeCustomers: Method removeCustomers  &#125;
+ `Const` **CustomerGroupRepository**: Repository&#60;[CustomerGroup](classes/CustomerGroup.mdx)&#62; & ``{ addCustomers: Method addCustomers ; findWithRelationsAndCount: Method findWithRelationsAndCount ; removeCustomers: Method removeCustomers  }``
 
 ___
 
 ### CustomerRepository
 
- `Const` **CustomerRepository**: Repository&#60;[Customer](classes/Customer.mdx)&#62; & &#123; listAndCount: Method listAndCount  &#125;
+ `Const` **CustomerRepository**: Repository&#60;[Customer](classes/Customer.mdx)&#62; & ``{ listAndCount: Method listAndCount  }``
 
 ___
 
 ### DiscountConditionRepository
 
- `Const` **DiscountConditionRepository**: Repository&#60;[DiscountCondition](classes/DiscountCondition.mdx)&#62; & &#123; addConditionResources: Method addConditionResources ; canApplyForCustomer: Method canApplyForCustomer ; findOneWithDiscount: Method findOneWithDiscount ; getJoinTableResourceIdentifiers: Method getJoinTableResourceIdentifiers ; isValidForProduct: Method isValidForProduct ; queryConditionTable: Method queryConditionTable ; removeConditionResources: Method removeConditionResources  &#125;
+ `Const` **DiscountConditionRepository**: Repository&#60;[DiscountCondition](classes/DiscountCondition.mdx)&#62; & ``{ addConditionResources: Method addConditionResources ; canApplyForCustomer: Method canApplyForCustomer ; findOneWithDiscount: Method findOneWithDiscount ; getJoinTableResourceIdentifiers: Method getJoinTableResourceIdentifiers ; isValidForProduct: Method isValidForProduct ; queryConditionTable: Method queryConditionTable ; removeConditionResources: Method removeConditionResources  }``
 
 ___
 
@@ -705,7 +724,7 @@ ___
 
 ### GiftCardRepository
 
- `Const` **GiftCardRepository**: Repository&#60;[GiftCard](classes/GiftCard.mdx)&#62; & &#123; listGiftCardsAndCount: Method listGiftCardsAndCount  &#125;
+ `Const` **GiftCardRepository**: Repository&#60;[GiftCard](classes/GiftCard.mdx)&#62; & ``{ listGiftCardsAndCount: Method listGiftCardsAndCount  }``
 
 ___
 
@@ -723,7 +742,7 @@ ___
 
 ### ImageRepository
 
- `Const` **ImageRepository**: Repository&#60;[Image](classes/Image.mdx)&#62; & &#123; insertBulk: Method insertBulk ; upsertImages: Method upsertImages  &#125;
+ `Const` **ImageRepository**: Repository&#60;[Image](classes/Image.mdx)&#62; & ``{ insertBulk: Method insertBulk ; upsertImages: Method upsertImages  }``
 
 ___
 
@@ -735,19 +754,19 @@ ___
 
 ### LineItemRepository
 
- `Const` **LineItemRepository**: Repository&#60;[LineItem](classes/LineItem.mdx)&#62; & &#123; findByReturn: Method findByReturn  &#125;
+ `Const` **LineItemRepository**: Repository&#60;[LineItem](classes/LineItem.mdx)&#62; & ``{ findByReturn: Method findByReturn  }``
 
 ___
 
 ### LineItemTaxLineRepository
 
- `Const` **LineItemTaxLineRepository**: Repository&#60;[LineItemTaxLine](classes/LineItemTaxLine.mdx)&#62; & &#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  &#125;
+ `Const` **LineItemTaxLineRepository**: Repository&#60;[LineItemTaxLine](classes/LineItemTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``
 
 ___
 
 ### MoneyAmountRepository
 
- `Const` **MoneyAmountRepository**: Repository&#60;[MoneyAmount](classes/MoneyAmount.mdx)&#62; & &#123; addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  &#125;
+ `Const` **MoneyAmountRepository**: Repository&#60;[MoneyAmount](classes/MoneyAmount.mdx)&#62; & ``{ addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  }``
 
 ___
 
@@ -789,13 +808,13 @@ ___
 
 ### OrderRepository
 
- `Const` **OrderRepository**: Repository&#60;[Order](classes/Order.mdx)&#62; & &#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;
+ `Const` **OrderRepository**: Repository&#60;[Order](classes/Order.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``
 
 ___
 
 ### PaymentCollectionRepository
 
- `Const` **PaymentCollectionRepository**: Repository&#60;[PaymentCollection](classes/PaymentCollection.mdx)&#62; & &#123; getPaymentCollectionIdByPaymentId: Method getPaymentCollectionIdByPaymentId ; getPaymentCollectionIdBySessionId: Method getPaymentCollectionIdBySessionId  &#125;
+ `Const` **PaymentCollectionRepository**: Repository&#60;[PaymentCollection](classes/PaymentCollection.mdx)&#62; & ``{ getPaymentCollectionIdByPaymentId: Method getPaymentCollectionIdByPaymentId ; getPaymentCollectionIdBySessionId: Method getPaymentCollectionIdBySessionId  }``
 
 ___
 
@@ -819,7 +838,7 @@ ___
 
 ### PriceListRepository
 
- `Const` **PriceListRepository**: Repository&#60;[PriceList](classes/PriceList.mdx)&#62; & &#123; listAndCount: Method listAndCount ; listPriceListsVariantIdsMap: Method listPriceListsVariantIdsMap  &#125;
+ `Const` **PriceListRepository**: Repository&#60;[PriceList](classes/PriceList.mdx)&#62; & ``{ listAndCount: Method listAndCount ; listPriceListsVariantIdsMap: Method listPriceListsVariantIdsMap  }``
 
 ___
 
@@ -841,7 +860,7 @@ ___
   },
   {
     "name": "OVERRIDE",
-    "type": "[OVERRIDE](enums/PriceListType.mdx#override)",
+    "type": "[OVERRIDE](enums/PriceListType-1.mdx#override)",
     "description": "",
     "optional": false,
     "defaultValue": "\"override\"",
@@ -850,7 +869,7 @@ ___
   },
   {
     "name": "SALE",
-    "type": "[SALE](enums/PriceListType.mdx#sale)",
+    "type": "[SALE](enums/PriceListType-1.mdx#sale)",
     "description": "",
     "optional": false,
     "defaultValue": "\"sale\"",
@@ -863,13 +882,13 @@ ___
 
 ### ProductCategoryRepository
 
- `Const` **ProductCategoryRepository**: TreeRepository&#60;[ProductCategory](classes/ProductCategory.mdx)&#62; & &#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;
+ `Const` **ProductCategoryRepository**: TreeRepository&#60;[ProductCategory](classes/ProductCategory.mdx)&#62; & ``{ addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  }``
 
 ___
 
 ### ProductCollectionRepository
 
- `Const` **ProductCollectionRepository**: Repository&#60;[ProductCollection](classes/ProductCollection.mdx)&#62; & &#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId  &#125;
+ `Const` **ProductCollectionRepository**: Repository&#60;[ProductCollection](classes/ProductCollection.mdx)&#62; & ``{ findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId  }``
 
 ___
 
@@ -881,19 +900,19 @@ ___
 
 ### ProductRepository
 
- `Const` **ProductRepository**: Repository&#60;[Product](classes/Product.mdx)&#62; & &#123; _applyCategoriesQuery: Method \_applyCategoriesQuery ; _findWithRelations: Method \_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;
+ `Const` **ProductRepository**: Repository&#60;[Product](classes/Product.mdx)&#62; & ``{ _applyCategoriesQuery: Method _applyCategoriesQuery ; _findWithRelations: Method _findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  }``
 
 ___
 
 ### ProductTagRepository
 
- `Const` **ProductTagRepository**: Repository&#60;[ProductTag](classes/ProductTag.mdx)&#62; & &#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; insertBulk: Method insertBulk ; listTagsByUsage: Method listTagsByUsage ; upsertTags: Method upsertTags  &#125;
+ `Const` **ProductTagRepository**: Repository&#60;[ProductTag](classes/ProductTag.mdx)&#62; & ``{ findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; insertBulk: Method insertBulk ; listTagsByUsage: Method listTagsByUsage ; upsertTags: Method upsertTags  }``
 
 ___
 
 ### ProductTypeRepository
 
- `Const` **ProductTypeRepository**: Repository&#60;[ProductType](classes/ProductType.mdx)&#62; & &#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; upsertType: Method upsertType  &#125;
+ `Const` **ProductTypeRepository**: Repository&#60;[ProductType](classes/ProductType.mdx)&#62; & ``{ findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; upsertType: Method upsertType  }``
 
 ___
 
@@ -935,7 +954,7 @@ ___
 
 ### SalesChannelRepository
 
- `Const` **SalesChannelRepository**: Repository&#60;[SalesChannel](classes/SalesChannel.mdx)&#62; & &#123; addProducts: Method addProducts ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; listProductIdsBySalesChannelIds: Method listProductIdsBySalesChannelIds ; removeProducts: Method removeProducts  &#125;
+ `Const` **SalesChannelRepository**: Repository&#60;[SalesChannel](classes/SalesChannel.mdx)&#62; & ``{ addProducts: Method addProducts ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; listProductIdsBySalesChannelIds: Method listProductIdsBySalesChannelIds ; removeProducts: Method removeProducts  }``
 
 ___
 
@@ -953,7 +972,7 @@ ___
 
 ### ShippingOptionRepository
 
- `Const` **ShippingOptionRepository**: Repository&#60;[ShippingOption](classes/ShippingOption.mdx)&#62; & &#123; upsertShippingProfile: Method upsertShippingProfile  &#125;
+ `Const` **ShippingOptionRepository**: Repository&#60;[ShippingOption](classes/ShippingOption.mdx)&#62; & ``{ upsertShippingProfile: Method upsertShippingProfile  }``
 
 ___
 
@@ -965,13 +984,13 @@ ___
 
 ### ShippingProfileRepository
 
- `Const` **ShippingProfileRepository**: Repository&#60;[ShippingProfile](classes/ShippingProfile.mdx)&#62; & &#123; findByProducts: Method findByProducts  &#125;
+ `Const` **ShippingProfileRepository**: Repository&#60;[ShippingProfile](classes/ShippingProfile.mdx)&#62; & ``{ findByProducts: Method findByProducts  }``
 
 ___
 
 ### StagedJobRepository
 
- `Const` **StagedJobRepository**: Repository&#60;[StagedJob](classes/StagedJob.mdx)&#62; & &#123; insertBulk: Method insertBulk  &#125;
+ `Const` **StagedJobRepository**: Repository&#60;[StagedJob](classes/StagedJob.mdx)&#62; & ``{ insertBulk: Method insertBulk  }``
 
 ___
 

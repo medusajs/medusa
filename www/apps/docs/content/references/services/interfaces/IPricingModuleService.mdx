@@ -8,6 +8,76 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
+### addPriceListPrices
+
+`**addPriceListPrices**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;`
+
+This method is used to add prices to price lists.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function addPriceListPrices (items: {
+  priceListId: string,
+  prices: {
+    currency_code: string,
+    amount: number,
+    price_set_id: string
+  }[]
+}[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceLists = await pricingService.addPriceListPrices(items)
+
+  // do something with the price lists or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[AddPriceListPricesDTO](AddPriceListPricesDTO.mdx)[]",
+    "description": "The prices to add for each price list.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The updated price lists.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
 ### addPrices
 
 `**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
@@ -873,6 +943,140 @@ Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
 ___
 
+### createPriceListRules
+
+`**createPriceListRules**(data, sharedContext?): Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;`
+
+This method is used to create price list rules.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function createPriceListRules (items: {
+  rule_type_id: string
+  price_list_id: string
+}[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceListRules = await pricingService.createPriceListRules(items)
+
+  // do something with the price list rule or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[CreatePriceListRuleDTO](CreatePriceListRuleDTO.mdx)[]",
+    "description": "The price list rules to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The created price list rules.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createPriceLists
+
+`**createPriceLists**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;`
+
+This method is used to create price lists.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function createPriceList (items: {
+  title: string
+  description: string
+  starts_at?: string
+  ends_at?: string
+}[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceList = await pricingService.createPriceLists(items)
+
+  // do something with the price lists or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[CreatePriceListDTO](CreatePriceListDTO.mdx)[]",
+    "description": "The details of each price list to be created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The created price lists.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
 ### createPriceRules
 
 `**createPriceRules**(data, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;`
@@ -1264,6 +1468,128 @@ Promise&#60;void&#62;
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the money amounts are successfully deleted.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deletePriceListRules
+
+`**deletePriceListRules**(priceListRuleIds, sharedContext?): Promise&#60;void&#62;`
+
+This method is used to delete price list rules.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function deletePriceListRules (priceListRuleIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  await pricingService.deletePriceListRules(priceListRuleIds)
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListRuleIds",
+    "type": "`string`[]",
+    "description": "The IDs of the price list rules to delete.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;void&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves successfully when the price list rules are deleted.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deletePriceLists
+
+`**deletePriceLists**(priceListIds, sharedContext?): Promise&#60;void&#62;`
+
+This method is used to delete price lists.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function deletePriceLists (ids: string[]) {
+  const pricingService = await initializePricingModule()
+
+  await pricingService.deletePriceLists(ids)
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListIds",
+    "type": "`string`[]",
+    "description": "The IDs of the price lists to delete.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;void&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves when the price lists are deleted successfully.",
     "expandable": false,
     "children": []
   }
@@ -2053,6 +2379,322 @@ Promise&#60;[[MoneyAmountDTO](MoneyAmountDTO.mdx)[], number]&#62;
     "optional": false,
     "defaultValue": "",
     "description": "The list of money amounts along with their total count.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCountPriceListRules
+
+`**listAndCountPriceListRules**(filters?, config?, sharedContext?): Promise&#60;[[PriceListRuleDTO](PriceListRuleDTO.mdx)[], number]&#62;`
+
+This method is used to retrieve a paginated list of price list ruless along with the total count of available price list ruless satisfying the provided filters.
+
+#### Example
+
+To retrieve a list of price list vs using their IDs:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listAndCountPriceListRules (priceListRuleIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(
+    {
+      id: priceListRuleIds
+    },
+  )
+
+  // do something with the price list rules or return them
+}
+```
+
+To specify relations that should be retrieved within the price list rules:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listAndCountPriceListRules (priceListRuleIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(
+    {
+      id: priceListRuleIds
+    },
+    {
+      relations: ["price_list_rule_values"]
+    }
+  )
+
+  // do something with the price list rules or return them
+}
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listAndCountPriceListRules (priceListRuleIds: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(
+    {
+      id: priceListRuleIds
+    },
+    {
+      relations: ["price_list_rule_values"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price list rules or return them
+}
+```
+
+You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeIDs: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const [priceListRules, count] = await pricingService.listAndCountPriceListRules(
+    {
+      $and: [
+        {
+          id: priceListRuleIds
+        },
+        {
+          rule_types: ruleTypeIDs
+        }
+      ]
+    },
+    {
+      relations: ["price_list_rule_values"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price list rules or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "filters",
+    "type": "[FilterablePriceListRuleProps](FilterablePriceListRuleProps.mdx)",
+    "description": "The filters to apply on the retrieved price list rules.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;",
+    "description": "The configurations determining how the price list rules are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price list rule.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[[PriceListRuleDTO](PriceListRuleDTO.mdx)[], number]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[[PriceListRuleDTO](PriceListRuleDTO.mdx)[], number]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of price list rules along with their total count.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCountPriceLists
+
+`**listAndCountPriceLists**(filters?, config?, sharedContext?): Promise&#60;[[PriceListDTO](PriceListDTO.mdx)[], number]&#62;`
+
+This method is used to retrieve a paginated list of price lists along with the total count of available price lists satisfying the provided filters.
+
+#### Example
+
+To retrieve a list of price lists using their IDs:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceLists (priceListIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const [priceLists, count] = await pricingService.listPriceLists(
+    {
+      id: priceListIds
+    },
+  )
+
+  // do something with the price lists or return them
+}
+```
+
+To specify relations that should be retrieved within the price lists:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceLists (priceListIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const [priceLists, count] = await pricingService.listPriceLists(
+    {
+      id: priceListIds
+    },
+    {
+      relations: ["price_set_money_amounts"]
+    }
+  )
+
+  // do something with the price lists or return them
+}
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceLists (priceListIds: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const [priceLists, count] = await pricingService.listPriceLists(
+    {
+      id: priceListIds
+    },
+    {
+      relations: ["price_set_money_amounts"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price lists or return them
+}
+```
+
+You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceLists (priceListIds: string[], titles: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const [priceLists, count] = await pricingService.listPriceLists(
+    {
+      $and: [
+        {
+          id: priceListIds
+        },
+        {
+          title: titles
+        }
+      ]
+    },
+    {
+      relations: ["price_set_money_amounts"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price lists or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "filters",
+    "type": "[FilterablePriceListProps](FilterablePriceListProps-1.mdx)",
+    "description": "The filters to apply on the retrieved price lists.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceListDTO](PriceListDTO.mdx)&#62;",
+    "description": "The configurations determining how the price lists are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price list.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[[PriceListDTO](PriceListDTO.mdx)[], number]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[[PriceListDTO](PriceListDTO.mdx)[], number]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of price lists along with their total count.",
     "expandable": false,
     "children": []
   }
@@ -2940,6 +3582,322 @@ Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
 ___
 
+### listPriceListRules
+
+`**listPriceListRules**(filters?, config?, sharedContext?): Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;`
+
+This method is used to retrieve a paginated list of price list rules based on optional filters and configuration.
+
+#### Example
+
+To retrieve a list of price list vs using their IDs:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listPriceListRules (priceListRuleIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceListRules = await pricingService.listPriceListRules(
+    {
+      id: priceListRuleIds
+    },
+  )
+
+  // do something with the price list rules or return them
+}
+```
+
+To specify relations that should be retrieved within the price list rules:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listPriceListRules (priceListRuleIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceListRules = await pricingService.listPriceListRules(
+    {
+      id: priceListRuleIds
+    },
+    {
+      relations: ["price_list_rule_values"]
+    }
+  )
+
+  // do something with the price list rules or return them
+}
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listPriceListRules (priceListRuleIds: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const priceListRules = await pricingService.listPriceListRules(
+    {
+      id: priceListRuleIds
+    },
+    {
+      relations: ["price_list_rule_values"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price list rules or return them
+}
+```
+
+You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listPriceListRules (priceListRuleIds: string[], ruleTypeIDs: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const priceListRules = await pricingService.listPriceListRules(
+    {
+      $and: [
+        {
+          id: priceListRuleIds
+        },
+        {
+          rule_types: ruleTypeIDs
+        }
+      ]
+    },
+    {
+      relations: ["price_list_rule_values"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price list rules or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "filters",
+    "type": "[FilterablePriceListRuleProps](FilterablePriceListRuleProps.mdx)",
+    "description": "The filters to apply on the retrieved price list rules.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;",
+    "description": "The configurations determining how the price list rules are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price list rule.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of price list rules.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listPriceLists
+
+`**listPriceLists**(filters?, config?, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;`
+
+This method is used to retrieve a paginated list of price lists based on optional filters and configuration.
+
+#### Example
+
+To retrieve a list of price lists using their IDs:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listPriceLists (priceListIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceLists = await pricingService.listPriceLists(
+    {
+      id: priceListIds
+    },
+  )
+
+  // do something with the price lists or return them
+}
+```
+
+To specify relations that should be retrieved within the price lists:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listPriceLists (priceListIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceLists = await pricingService.listPriceLists(
+    {
+      id: priceListIds
+    },
+    {
+      relations: ["price_set_money_amounts"]
+    }
+  )
+
+  // do something with the price lists or return them
+}
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listPriceLists (priceListIds: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const priceLists = await pricingService.listPriceLists(
+    {
+      id: priceListIds
+    },
+    {
+      relations: ["price_set_money_amounts"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price lists or return them
+}
+```
+
+You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function listPriceLists (priceListIds: string[], titles: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const priceLists = await pricingService.listPriceLists(
+    {
+      $and: [
+        {
+          id: priceListIds
+        },
+        {
+          title: titles
+        }
+      ]
+    },
+    {
+      relations: ["price_set_money_amounts"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price lists or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "filters",
+    "type": "[FilterablePriceListProps](FilterablePriceListProps-1.mdx)",
+    "description": "The filters to apply on the retrieved price lists.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceListDTO](PriceListDTO.mdx)&#62;",
+    "description": "The configurations determining how the price lists are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price list.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of price lists.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
 ### listPriceRules
 
 `**listPriceRules**(filters?, config?, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;`
@@ -3534,6 +4492,72 @@ Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 
 ___
 
+### removePriceListRules
+
+`**removePriceListRules**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;`
+
+This method is used to remove rules from a price list.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function setPriceListRules (priceListId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceList = await pricingService.removePriceListRules({
+    priceListId,
+    rules: ["region_id"]
+  })
+
+  // do something with the price list or return it
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[RemovePriceListRulesDTO](RemovePriceListRulesDTO.mdx)",
+    "description": "The rules to remove from a price list.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The updated price lists.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
 ### removeRules
 
 `**removeRules**(data, sharedContext?): Promise&#60;void&#62;`
@@ -3604,7 +4628,7 @@ ___
 
 `**retrieve**(id, config?, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
-This method is used to retrieves a price set by its ID.
+This method is used to retrieve a price set by its ID.
 
 #### Example
 
@@ -3891,6 +4915,200 @@ Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;
 
 ___
 
+### retrievePriceList
+
+`**retrievePriceList**(id, config?, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;`
+
+This method is used to retrieve a price list by its ID.
+
+#### Example
+
+A simple example that retrieves a price list by its ID:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceList (priceListId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceList = await pricingService.retrievePriceList(
+    priceListId
+  )
+
+  // do something with the price list or return it
+}
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceList (priceListId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceList = await pricingService.retrievePriceList(
+    priceListId,
+    {
+      relations: ["price_set_money_amounts"]
+    }
+  )
+
+  // do something with the price list or return it
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the price list to retrieve.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceListDTO](PriceListDTO.mdx)&#62;",
+    "description": "The configurations determining how the price list is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price list.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The retrieved price list.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrievePriceListRule
+
+`**retrievePriceListRule**(id, config?, sharedContext?): Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;`
+
+This method is used to retrieve a price list rule by its ID.
+
+#### Example
+
+A simple example that retrieves a price list rule by its ID:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceListRule (priceListRuleId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceListRule = await pricingService.retrievePriceListRule(
+    priceListRuleId
+  )
+
+  // do something with the price list rule or return it
+}
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceListRule (priceListRuleId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceListRule = await pricingService.retrievePriceListRule(
+    priceListRuleId,
+    {
+      relations: ["price_list"]
+    }
+  )
+
+  // do something with the price list rule or return it
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the price list rule to retrieve.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;",
+    "description": "The configurations determining how the price list rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price list rule.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The retrieved price list rule.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
 ### retrievePriceRule
 
 `**retrievePriceRule**(id, config?, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;`
@@ -4167,6 +5385,74 @@ Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;
 
 ___
 
+### setPriceListRules
+
+`**setPriceListRules**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;`
+
+This method is used to set the rules of a price list.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function setPriceListRules (priceListId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceList = await pricingService.setPriceListRules({
+    priceListId,
+    rules: {
+      region_id: "US"
+    }
+  })
+
+  // do something with the price list or return it
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[SetPriceListRulesDTO](SetPriceListRulesDTO.mdx)",
+    "description": "The rules to set for a price list.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The updated price lists.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
 ### updateCurrencies
 
 `**updateCurrencies**(data, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;`
@@ -4294,6 +5580,142 @@ Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated money amounts.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updatePriceListRules
+
+`**updatePriceListRules**(data, sharedContext?): Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;`
+
+This method is used to update price list rules.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function updatePriceListRules (items: {
+  id: string
+  rule_type_id?: string
+  price_list_id?: string
+}[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceListRules = await pricingService.updatePriceListRules(items)
+
+  // do something with the price list rule or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[UpdatePriceListRuleDTO](UpdatePriceListRuleDTO.mdx)[]",
+    "description": "The attributes to update for each price list rule.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The updated price list rules.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updatePriceLists
+
+`**updatePriceLists**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;`
+
+This method is used to update price lists.
+
+#### Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function updatePriceLists (items: {
+  id: string
+  title: string
+  description: string
+  starts_at?: string
+  ends_at?: string
+}[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceList = await pricingService.updatePriceLists(items)
+
+  // do something with the price lists or return them
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[UpdatePriceListDTO](UpdatePriceListDTO.mdx)[]",
+    "description": "The attributes to update in each price list.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The updated price lists.",
     "expandable": false,
     "children": []
   }
