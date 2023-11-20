@@ -193,12 +193,12 @@ describe("ProductModuleService products", function () {
         ],
       })
 
-      const selectedVariant = product.variants.find(
+      const createdVariant = product.variants.find(
         (v) => v.title === variantTitle
       )
 
       expect(product.images).toHaveLength(1)
-      expect(selectedVariant?.options).toHaveLength(1)
+      expect(createdVariant?.options).toHaveLength(1)
       expect(product.tags).toHaveLength(1)
       expect(product.variants).toHaveLength(2)
       expect(product).toEqual(
