@@ -367,19 +367,16 @@ class CartService extends TransactionBaseService {
           context: data.context ?? {},
         }
 
-        // if (
-        //   this.featureFlagRouter_.isFeatureEnabled(
-        //     SalesChannelFeatureFlag.key
-        //   ) &&
-        //   !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
-        // ) {
-        //   rawCart.sales_channels = [
-        //     {
-        //       id: (await this.getValidatedSalesChannel(data.sales_channel_id))
-        //         .id,
-        //     },
-        //   ]
-        // }
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            SalesChannelFeatureFlag.key
+          ) &&
+          !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
+        ) {
+          rawCart.sales_channel_id = (
+            await this.getValidatedSalesChannel(data.sales_channel_id)
+          ).id
+        }
 
         if (data.customer_id) {
           const customer = await this.customerService_
@@ -491,8 +488,10 @@ class CartService extends TransactionBaseService {
         const cart = await cartRepo.save(createdCart)
 
         if (
-          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
-          // && this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
+          this.featureFlagRouter_.isFeatureEnabled(
+            SalesChannelFeatureFlag.key
+          ) &&
+          this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
         ) {
           await this.remoteLink_.create({
             cartService: {
@@ -697,16 +696,21 @@ class CartService extends TransactionBaseService {
     lineItem: LineItem,
     config = { validateSalesChannels: true }
   ): Promise<void> {
+    const fields: (keyof Cart)[] = ["id"]
     const relations: (keyof Cart)[] = ["shipping_methods"]
 
     if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
-      relations.push("sales_channels")
+      if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
+        relations.push("sales_channels")
+      } else {
+        fields.push("sales_channel_id")
+      }
     }
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         let cart = await this.retrieve(cartId, {
-          select: ["id"],
+          select: fields,
           relations,
         })
 
@@ -839,16 +843,21 @@ class CartService extends TransactionBaseService {
   ): Promise<void> {
     const items: LineItem[] = Array.isArray(lineItems) ? lineItems : [lineItems]
 
+    const fields: (keyof Cart)[] = ["id", "customer_id", "region_id"]
     const relations: (keyof Cart)[] = ["shipping_methods"]
 
     if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
-      relations.push("sales_channels")
+      if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
+        relations.push("sales_channels")
+      } else {
+        fields.push("sales_channel_id")
+      }
     }
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         let cart = await this.retrieve(cartId, {
-          select: ["id", "customer_id", "region_id"],
+          select: fields,
           relations,
         })
 
@@ -1272,14 +1281,16 @@ class CartService extends TransactionBaseService {
           await this.onSalesChannelChange(cart, data.sales_channel_id)
 
           if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
-            await this.remoteLink_.dismiss({
-              cartService: {
-                cart_id: cart.id,
-              },
-              salesChannelService: {
-                sales_channel_id: cart.sales_channel_id,
-              },
-            })
+            if (cart.sales_channel_id) {
+              await this.remoteLink_.dismiss({
+                cartService: {
+                  cart_id: cart.id,
+                },
+                salesChannelService: {
+                  sales_channel_id: cart.sales_channel_id,
+                },
+              })
+            }
 
             await this.remoteLink_.create({
               cartService: {
