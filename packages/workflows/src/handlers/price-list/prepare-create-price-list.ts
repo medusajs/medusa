@@ -85,12 +85,6 @@ export async function prepareCreatePriceLists({
         }
       }) ?? []
 
-    if (customer_groups.length) {
-      priceList.rules["customer_group_id"] = customer_groups.map(
-        (group) => group.id
-      )
-    }
-
     return { priceList, tag: _associationTag }
   })
 }

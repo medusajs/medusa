@@ -1,4 +1,4 @@
-import { WorkflowTypes } from "@medusajs/types"
+import { PricingTypes, WorkflowTypes } from "@medusajs/types"
 import {
   FlagRouter,
   MedusaV2Flag,
@@ -125,9 +125,22 @@ export default async (req: Request, res) => {
 
   if (isMedusaV2FlagEnabled) {
     const createPriceListWorkflow = createPriceLists(req.scope)
+    const validatedInput = req.validatedBody as CreatePriceListInput
+    const rules: PricingTypes.CreatePriceListRules = {}
+    const customerGroups = validatedInput?.customer_groups || []
+    delete validatedInput.customer_groups
+
+    if (customerGroups.length) {
+      rules["customer_group_id"] = customerGroups.map((cg) => cg.id)
+    }
 
     const input = {
-      price_lists: [req.validatedBody],
+      price_lists: [
+        {
+          ...validatedInput,
+          rules,
+        },
+      ],
     } as WorkflowTypes.PriceListWorkflow.CreatePriceListWorkflowInputDTO
 
     const { result } = await createPriceListWorkflow.run({
@@ -136,8 +149,8 @@ export default async (req: Request, res) => {
         manager,
       },
     })
-    priceList = result[0]?.priceList
 
+    priceList = result[0]?.priceList
     req.params.id = priceList?.id
 
     const [priceLists] = await listAndCountPriceListPricingModule({

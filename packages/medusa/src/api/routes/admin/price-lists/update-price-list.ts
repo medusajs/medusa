@@ -1,4 +1,4 @@
-import { WorkflowTypes } from "@medusajs/types"
+import { PricingTypes, WorkflowTypes } from "@medusajs/types"
 import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
 import { updatePriceLists } from "@medusajs/workflows"
 import { Type } from "class-transformer"
@@ -98,12 +98,20 @@ export default async (req, res) => {
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const updateVariantsWorkflow = updatePriceLists(req.scope)
+    const rules: PricingTypes.CreatePriceListRules = {}
+    const customerGroups = validated.customer_groups || []
+    delete validated.customer_groups
+
+    if (customerGroups.length) {
+      rules["customer_group_id"] = customerGroups.map((group) => group.id)
+    }
 
     const input = {
       price_lists: [
         {
           id,
           ...validated,
+          rules,
         },
       ],
     } as WorkflowTypes.PriceListWorkflow.UpdatePriceListWorkflowInputDTO
