@@ -41,9 +41,8 @@ export async function listAndCountPriceListPricingModule({
         .map((rule) =>
           rule.price_list_rule_values.map((rule_value) => rule_value.value)
         )
-        .flat()
     )
-    .flat()
+    .flat(2)
 
   const priceListCustomerGroups = await customerGroupService.list(
     { id: customerGroupIds },
