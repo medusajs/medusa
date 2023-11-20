@@ -85,6 +85,7 @@ export const simpleCartFactory = async (
     customer_id: customerId,
     shipping_address_id: address.id,
     sales_channel_id: sales_channel?.id ?? data.sales_channel_id ?? null,
+    sales_channels: [sales_channel],
   })
 
   const cart = await manager.save(toSave)
