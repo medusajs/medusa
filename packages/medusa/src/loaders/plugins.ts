@@ -641,9 +641,7 @@ function registerRepositories(
  */
 async function registerWorkflows(pluginDetails: PluginDetails): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/workflows/*.js`, {})
-  await Promise.all(
-    files.map(async (file) => await import(file))
-  )
+  await Promise.all(files.map(async (file) => await import(file)))
 }
 
 /**
