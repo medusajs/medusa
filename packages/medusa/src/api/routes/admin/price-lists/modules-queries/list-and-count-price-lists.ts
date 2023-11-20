@@ -83,7 +83,7 @@ export async function listAndCountPriceListPricingModule({
 
     if (
       customerGroupPriceListRule &&
-      customerGroupPriceListRule?.price_list_rule_values?.length
+      customerGroupPriceListRule?.price_list_rule_values
     ) {
       priceList.customer_groups =
         customerGroupPriceListRule?.price_list_rule_values
