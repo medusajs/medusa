@@ -49,7 +49,9 @@ const migrate = async function ({ directory }) {
 migrate({ directory: process.cwd() })
   .then(() => {
     console.log("Created default rule types")
+    process.exit()
   })
   .catch(() => {
     console.log("Failed to create rule types")
+    process.exit(1)
   })
