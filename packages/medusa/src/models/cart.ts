@@ -412,7 +412,7 @@ export class Cart extends SoftDeletableEntity {
       },
     }),
   ])
-  sales_channels: SalesChannel[]
+  sales_channels?: SalesChannel[]
 
   shipping_total?: number
   discount_total?: number
@@ -461,7 +461,10 @@ export class Cart extends SoftDeletableEntity {
     if (this.payment_sessions) {
       this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
     }
-    this.sales_channel = this.sales_channels?.[0]
-    this.sales_channel_id = this.sales_channel?.id
+    if (this.sales_channels) {
+      this.sales_channel = this.sales_channels?.[0]
+      this.sales_channel_id = this.sales_channel?.id
+      delete this.sales_channels
+    }
   }
 }

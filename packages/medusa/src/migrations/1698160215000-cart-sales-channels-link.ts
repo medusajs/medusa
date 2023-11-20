@@ -25,14 +25,11 @@ export class CartSalesChannelsLink1698160215000 implements MigrationInterface {
             (select 'cartsc_' || substr(md5(random()::text), 0, 27), id, sales_channel_id from "cart" WHERE sales_channel_id IS NOT NULL);
 
         ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_a2bd3c26f42e754b9249ba78fd6";
---         ALTER TABLE "cart" DROP COLUMN IF EXISTS "sales_channel_id"; -- cannot drop column
     `)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
---         ALTER TABLE "cart" ADD COLUMN IF NOT EXISTS "sales_channel_id" CHARACTER VARYING;
-
         UPDATE "cart" SET "sales_channel_id" = "cart_sales_channel"."sales_channel_id"
             FROM "cart_sales_channel"
         WHERE "cart"."id" = "cart_sales_channel"."cart_id";
