@@ -687,7 +687,9 @@ describe("Workflow composer", function () {
     expect(mockStep3Fn.mock.calls[0][0]).toEqual({ variant: "variant_2" })
   })
 
-  it("should compose a new workflow exposing hooks", async () => {
+  it("should compose a new workflow exposing hooks and log warns if multiple handlers are registered for the same hook", async () => {
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {})
+
     const mockStep1Fn = jest.fn().mockImplementation(({ input }) => {
       return { id: input, product: "product_1", variant: "variant_2" }
     })
@@ -746,6 +748,7 @@ describe("Workflow composer", function () {
       input: workflowInput,
     })
 
+    expect(warn).toHaveBeenCalledTimes(1)
     expect(final).toEqual({
       id: "id_123",
       prod: "product_1**",
@@ -759,7 +762,7 @@ describe("Workflow composer", function () {
           b: "c",
         },
       },
-      moreProperties: "2nd hook update",
+      moreProperties: "more properties",
     })
   })
 })

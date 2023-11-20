@@ -167,7 +167,7 @@ export function createWorkflow<
     mainFlow[hook] = (fn) => {
       context.hooksCallback_[hook] ??= []
 
-      if (shouldRegisterHookHandler) {
+      if (!shouldRegisterHookHandler) {
         console.warn(
           `A hook handler has already been registered for the ${hook} hook. The current handler registration will be skipped.`
         )
