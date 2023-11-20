@@ -13,12 +13,12 @@ import {
   PriceListStatus,
   PriceListType,
 } from "@medusajs/types"
+import { AxiosInstance } from "axios"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { AxiosInstance } from "axios"
 
 jest.setTimeout(50000)
 
@@ -110,7 +110,7 @@ describe("GET /store/price-lists", () => {
     await db.teardown()
   })
 
-  it("should list product and prices from price-list created in the api", async () => {
+  it("should get product and its prices from price-list created in the api", async () => {
     const api = useApi()! as AxiosInstance
 
     const priceListResponse = await api.post(

@@ -81,7 +81,7 @@ describe("DELETE /admin/price-lists/:id/variants/:variantId/prices", () => {
     await db.teardown()
   })
 
-  it("should delete prices based on product ids", async () => {
+  it("should delete all prices based on product variant ids", async () => {
     const priceSet = await createVariantPriceSet({
       container: appContainer,
       variantId: variant.id,

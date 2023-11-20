@@ -81,7 +81,7 @@ describe("DELETE /admin/price-lists/:id", () => {
     await db.teardown()
   })
 
-  it("should delete price list and money amounts", async () => {
+  it("should delete price list prices by money amount ids", async () => {
     const priceSet = await createVariantPriceSet({
       container: appContainer,
       variantId: variant.id,
@@ -115,12 +115,11 @@ describe("DELETE /admin/price-lists/:id", () => {
       ],
     }
 
-    const result = await api.post(`admin/price-lists`, data, adminHeaders)
-    const priceListId = result.data.price_list.id
+    await api.post(`admin/price-lists`, data, adminHeaders)
 
     let psmas = await pricingModuleService.listPriceSetMoneyAmounts(
       {
-        price_list_id: [priceListId],
+        price_list_id: [priceSet.id],
       },
       { relations: ["money_amount"] }
     )
@@ -129,7 +128,7 @@ describe("DELETE /admin/price-lists/:id", () => {
 
     const deletePrice = psmas[0].money_amount
     const deleteRes = await api.delete(
-      `/admin/price-lists/${priceListId}/prices/batch`,
+      `/admin/price-lists/${priceSet.id}/prices/batch`,
       {
         data: {
           price_ids: [deletePrice?.id],
@@ -140,7 +139,7 @@ describe("DELETE /admin/price-lists/:id", () => {
     expect(deleteRes.status).toEqual(200)
 
     psmas = await pricingModuleService.listPriceSetMoneyAmounts({
-      price_list_id: [priceListId],
+      price_list_id: [priceSet.id],
     })
     expect(psmas.length).toEqual(1)
   })
