@@ -138,16 +138,6 @@ function applyStep<
   }
 }
 
-/*export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
-  name: string,
-  invokeFn: InvokeFn<TInvokeInput, TInvokeResult>,
-  compensateFn?: CompensateFn<
-    TInvokeResult extends { compensateInput: infer CompensateInput }
-      ? TInvokeResult["compensateInput"]
-      : TInvokeResult
-  >
-): StepFunction<TInvokeInput, TInvokeResult> {*/
-
 /**
  * Function which will create a StepFunction to be used inside a createWorkflow composer function.
  * This function will return a function which can be used to bind the step to a workflow.
