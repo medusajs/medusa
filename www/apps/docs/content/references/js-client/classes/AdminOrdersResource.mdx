@@ -900,7 +900,7 @@ medusa.admin.orders
       },
       {
         "name": "type",
-        "type": "``\"refund\"`` \\| ``\"replace\"``",
+        "type": "`\"refund\"` \\| `\"replace\"`",
         "description": "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.",
         "optional": false,
         "defaultValue": "",
@@ -2040,7 +2040,7 @@ medusa.admin.orders
     "children": [
       {
         "name": "AdminOrdersListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; orders: [Order](../internal/classes/internal.Order.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ orders: [Order](../internal/classes/internal.Order.mdx)[]  }``",
         "description": "The list of orders with pagination fields.",
         "optional": false,
         "defaultValue": "",

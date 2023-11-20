@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](internal.LineItem.mdx)&#62; & `&#123; findByReturn: Method findByReturn  &#125;`",
+    "type": "Repository&#60;[LineItem](internal.LineItem.mdx)&#62; & ``{ findByReturn: Method findByReturn  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -530,7 +530,7 @@ ___
   },
   {
     "name": "trackingLinks",
-    "type": "`&#123; tracking_number: string  &#125;`[]",
+    "type": "``{ tracking_number: string  }``[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -753,7 +753,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -233,7 +233,7 @@ medusa.admin.productTags
     "children": [
       {
         "name": "AdminProductTagsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; product_tags: [ProductTag](../internal/classes/internal.ProductTag.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ product_tags: [ProductTag](../internal/classes/internal.ProductTag.mdx)[]  }``",
         "description": "The list of product tags with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -285,7 +285,7 @@ medusa.admin.productTags
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",

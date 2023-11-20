@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](Cart.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
+    "type": "Repository&#60;[Cart](Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "moneyAmountRepository_",
-    "type": "Repository&#60;[MoneyAmount](MoneyAmount.mdx)&#62; & `&#123; addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  &#125;`",
+    "type": "Repository&#60;[MoneyAmount](MoneyAmount.mdx)&#62; & ``{ addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productRepository_",
-    "type": "Repository&#60;[Product](Product.mdx)&#62; & `&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;`",
+    "type": "Repository&#60;[Product](Product.mdx)&#62; & ``{ _applyCategoriesQuery: Method _applyCategoriesQuery ; _findWithRelations: Method _findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -562,7 +562,7 @@ ___
 
 ### getRegionPrice
 
-`**getRegionPrice**(variantId, context): Promise&#60;`null` \| number&#62;`
+`**getRegionPrice**(variantId, context): Promise&#60;null \| number&#62;`
 
 Gets the price specific to a region. If no region specific money amount
 exists the function will try to use a currency price. If no default
@@ -593,12 +593,12 @@ currency price exists the function will throw an error.
 
 #### Returns
 
-Promise&#60;`null` \| number&#62;
+Promise&#60;null \| number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;`null` \\| number&#62;",
+    "type": "Promise&#60;null \\| number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the price specific to the region",
@@ -949,7 +949,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -987,7 +987,7 @@ Updates a collection of variant.
 <ParameterTypes parameters={[
   {
     "name": "variantData",
-    "type": "`&#123; updateData: [UpdateProductVariantInput](../types/UpdateProductVariantInput.mdx) ; variant: [ProductVariant](ProductVariant.mdx)  &#125;`[]",
+    "type": "``{ updateData: [UpdateProductVariantInput](../types/UpdateProductVariantInput.mdx) ; variant: [ProductVariant](ProductVariant.mdx)  }``[]",
     "description": "a collection of variant and the data to update.",
     "optional": false,
     "defaultValue": "",
@@ -1321,7 +1321,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`&#123; price: [WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[ProductVariantPrice](../types/ProductVariantPrice.mdx), `\"currency_code\"`&#62; ; variantId: string  &#125;`[]",
+    "type": "``{ price: [WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[ProductVariantPrice](../types/ProductVariantPrice.mdx), \"currency_code\"&#62; ; variantId: string  }``[]",
     "description": "",
     "optional": false,
     "defaultValue": "",

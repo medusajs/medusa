@@ -156,7 +156,7 @@ medusa.productCategories
       },
       {
         "name": "parent_category_id",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "Filter product categories by the ID of their associated parent category.",
         "optional": true,
         "defaultValue": "",
@@ -198,7 +198,7 @@ medusa.productCategories
     "children": [
       {
         "name": "StoreGetProductCategoriesRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; product_categories: [ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ product_categories: [ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]  }``",
         "description": "The list of product categories with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -313,7 +313,7 @@ medusa.productCategories
               },
               {
                 "name": "parent_category",
-                "type": "``null`` \\| [ProductCategory](../internal/classes/internal.ProductCategory.mdx)",
+                "type": "`null` \\| [ProductCategory](../internal/classes/internal.ProductCategory.mdx)",
                 "description": "The details of the parent of this category.",
                 "optional": false,
                 "defaultValue": "",
@@ -322,7 +322,7 @@ medusa.productCategories
               },
               {
                 "name": "parent_category_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the parent category.",
                 "optional": false,
                 "defaultValue": "null",
@@ -552,7 +552,7 @@ medusa.productCategories
               },
               {
                 "name": "parent_category",
-                "type": "``null`` \\| [ProductCategory](../internal/classes/internal.ProductCategory.mdx)",
+                "type": "`null` \\| [ProductCategory](../internal/classes/internal.ProductCategory.mdx)",
                 "description": "The details of the parent of this category.",
                 "optional": false,
                 "defaultValue": "",
@@ -561,7 +561,7 @@ medusa.productCategories
               },
               {
                 "name": "parent_category_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the parent category.",
                 "optional": false,
                 "defaultValue": "null",

@@ -58,7 +58,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
   },
   {
     "name": "created_by",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "The unique identifier of the user that created the batch job.",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "deleted_at",
-        "type": "``null`` \\| `Date`",
+        "type": "`null` \\| `Date`",
         "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
@@ -176,7 +176,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
   },
   {
     "name": "deleted_at",
-    "type": "``null`` \\| `Date`",
+    "type": "`null` \\| `Date`",
     "description": "The date with timezone at which the resource was deleted.",
     "optional": false,
     "defaultValue": "",
@@ -230,7 +230,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
   },
   {
     "name": "result",
-    "type": "`&#123; advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../types/BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../types/BatchJobResultStatDescriptor.mdx)[]  &#125;` & `Record<string, unknown>`",
+    "type": "``{ advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../types/BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../types/BatchJobResultStatDescriptor.mdx)[]  }`` & `Record<string, unknown>`",
     "description": "The result of the batch job.",
     "optional": false,
     "defaultValue": "",
@@ -311,7 +311,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
     "children": [
       {
         "name": "CANCELED",
-        "type": "``\"canceled\"``",
+        "type": "`\"canceled\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -320,7 +320,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "COMPLETED",
-        "type": "``\"completed\"``",
+        "type": "`\"completed\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -329,7 +329,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "CONFIRMED",
-        "type": "``\"confirmed\"``",
+        "type": "`\"confirmed\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -338,7 +338,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "CREATED",
-        "type": "``\"created\"``",
+        "type": "`\"created\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -347,7 +347,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "FAILED",
-        "type": "``\"failed\"``",
+        "type": "`\"failed\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -356,7 +356,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "PRE_PROCESSED",
-        "type": "``\"pre_processed\"``",
+        "type": "`\"pre_processed\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -365,7 +365,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "PROCESSING",
-        "type": "``\"processing\"``",
+        "type": "`\"processing\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",

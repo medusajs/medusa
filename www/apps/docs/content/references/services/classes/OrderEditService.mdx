@@ -822,7 +822,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)&#60;[OrderEdit](OrderEdit.mdx)&#62; & `&#123; q?: string  &#125;`",
+    "type": "[Selector](../types/Selector.mdx)&#60;[OrderEdit](OrderEdit.mdx)&#62; & ``{ q?: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1058,7 +1058,7 @@ ___
 
 ### retrieveActive
 
-`Protected **retrieveActive**(orderId, config?): Promise&#60;undefined \| `null` \| [OrderEdit](OrderEdit.mdx)&#62;`
+`Protected **retrieveActive**(orderId, config?): Promise&#60;undefined \| null \| [OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -1085,12 +1085,12 @@ ___
 
 #### Returns
 
-Promise&#60;undefined \| `null` \| [OrderEdit](OrderEdit.mdx)&#62;
+Promise&#60;undefined \| null \| [OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| `null` \\| [OrderEdit](OrderEdit.mdx)&#62;",
+    "type": "Promise&#60;undefined \\| null \\| [OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1110,7 +1110,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",

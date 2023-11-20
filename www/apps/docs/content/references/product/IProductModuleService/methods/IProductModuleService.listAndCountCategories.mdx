@@ -191,7 +191,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
       },
       {
         "name": "parent_category_id",
-        "type": "``null`` \\| `string` \\| `string`[]",
+        "type": "`null` \\| `string` \\| `string`[]",
         "description": "Filter product categories by their parent category's ID.",
         "optional": true,
         "defaultValue": "",
@@ -285,7 +285,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -312,7 +312,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,

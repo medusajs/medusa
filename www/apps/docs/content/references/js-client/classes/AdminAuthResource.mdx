@@ -99,7 +99,7 @@ medusa.admin.AdminAuthResource.createSession({
         "children": [
           {
             "name": "user",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), `\"password_hash\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), \"password_hash\"&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -125,7 +125,7 @@ medusa.admin.AdminAuthResource.createSession({
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -299,7 +299,7 @@ medusa.admin.auth.getSession().then(({ user }) => {
         "children": [
           {
             "name": "user",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), `\"password_hash\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), \"password_hash\"&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -325,7 +325,7 @@ medusa.admin.auth.getSession().then(({ user }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",

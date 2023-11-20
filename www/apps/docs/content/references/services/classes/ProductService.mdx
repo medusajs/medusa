@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "imageRepository_",
-    "type": "Repository&#60;[Image](Image.mdx)&#62; & `&#123; insertBulk: Method insertBulk ; upsertImages: Method upsertImages  &#125;`",
+    "type": "Repository&#60;[Image](Image.mdx)&#62; & ``{ insertBulk: Method insertBulk ; upsertImages: Method upsertImages  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productCategoryRepository_",
-    "type": "TreeRepository&#60;[ProductCategory](ProductCategory.mdx)&#62; & `&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;`",
+    "type": "TreeRepository&#60;[ProductCategory](ProductCategory.mdx)&#62; & ``{ addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productRepository_",
-    "type": "Repository&#60;[Product](Product.mdx)&#62; & `&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;`",
+    "type": "Repository&#60;[Product](Product.mdx)&#62; & ``{ _applyCategoriesQuery: Method _applyCategoriesQuery ; _findWithRelations: Method _findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productTagRepository_",
-    "type": "Repository&#60;[ProductTag](ProductTag.mdx)&#62; & `&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; insertBulk: Method insertBulk ; listTagsByUsage: Method listTagsByUsage ; upsertTags: Method upsertTags  &#125;`",
+    "type": "Repository&#60;[ProductTag](ProductTag.mdx)&#62; & ``{ findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; insertBulk: Method insertBulk ; listTagsByUsage: Method listTagsByUsage ; upsertTags: Method upsertTags  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productTypeRepository_",
-    "type": "Repository&#60;[ProductType](ProductType.mdx)&#62; & `&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; upsertType: Method upsertType  &#125;`",
+    "type": "Repository&#60;[ProductType](ProductType.mdx)&#62; & ``{ findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; upsertType: Method upsertType  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -211,7 +211,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "IndexName",
-    "type": "``\"products\"``",
+    "type": "`\"products\"`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1056,7 +1056,7 @@ ___
 
 ### retrieveOptionByTitle
 
-`**retrieveOptionByTitle**(title, productId): Promise&#60;`null` \| [ProductOption](ProductOption.mdx)&#62;`
+`**retrieveOptionByTitle**(title, productId): Promise&#60;null \| [ProductOption](ProductOption.mdx)&#62;`
 
 Retrieve product's option by title.
 
@@ -1085,12 +1085,12 @@ Retrieve product's option by title.
 
 #### Returns
 
-Promise&#60;`null` \| [ProductOption](ProductOption.mdx)&#62;
+Promise&#60;null \| [ProductOption](ProductOption.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;`null` \\| [ProductOption](ProductOption.mdx)&#62;",
+    "type": "Promise&#60;null \\| [ProductOption](ProductOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "product option",
@@ -1205,7 +1205,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1358,7 +1358,7 @@ Assign a product to a profile, if a profile id null is provided then detach the 
   },
   {
     "name": "profileId",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "Shipping profile ID to update the shipping options with",
     "optional": false,
     "defaultValue": "",
