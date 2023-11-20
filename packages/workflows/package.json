@@ -36,7 +36,6 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest --runInBand --bail --forceExit",
-    "test:composer": "../../node_modules/.bin/ts-node src/utils/composer/test-workflow-compose.ts"
+    "test": "jest --runInBand --bail --forceExit"
   }
 }
