@@ -30,7 +30,7 @@ export async function detachCartFromSalesChannel({
   const cart = data[Aliases.Cart]
   const salesChannel = data[Aliases.SalesChannel]
 
-  await remoteLink.remove({
+  await remoteLink.dismiss({
     cartService: {
       cart_id: cart.id,
     },
