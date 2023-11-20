@@ -142,12 +142,21 @@ export type RequestQueryFields = {
  * @interface
  *
  * Pagination fields returned in the response of an API route.
- *
- * @prop limit - The maximum number of items that can be returned in the list.
- * @prop offset - The number of items skipped before the returned items in the list.
- * @prop count - The total number of items available.
  */
-export type PaginatedResponse = { limit: number; offset: number; count: number }
+export type PaginatedResponse = {
+  /**
+   * The maximum number of items that can be returned in the list.
+   */
+  limit: number
+  /**
+   * The number of items skipped before the returned items in the list.
+   */
+  offset: number
+  /**
+   * The total number of items available.
+   */
+  count: number
+}
 
 /**
  * @interface

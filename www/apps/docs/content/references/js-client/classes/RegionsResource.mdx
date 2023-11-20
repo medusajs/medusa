@@ -58,7 +58,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
     "children": [
       {
         "name": "StoreRegionsListRes",
-        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & `&#123; regions: [Region](../internal/classes/internal.Region.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & ``{ regions: [Region](../internal/classes/internal.Region.mdx)[]  }``",
         "description": "The list of regions with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -146,7 +146,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -237,7 +237,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "tax_provider_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the tax provider used in this region",
                 "optional": false,
                 "defaultValue": "",
@@ -255,7 +255,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "``null`` \\| [TaxRate](../internal/classes/internal.TaxRate.mdx)[]",
+                "type": "`null` \\| [TaxRate](../internal/classes/internal.TaxRate.mdx)[]",
                 "description": "The details of the tax rates used in the region, aside from the default rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -392,7 +392,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -483,7 +483,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "tax_provider_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the tax provider used in this region",
                 "optional": false,
                 "defaultValue": "",
@@ -501,7 +501,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "``null`` \\| [TaxRate](../internal/classes/internal.TaxRate.mdx)[]",
+                "type": "`null` \\| [TaxRate](../internal/classes/internal.TaxRate.mdx)[]",
                 "description": "The details of the tax rates used in the region, aside from the default rate.",
                 "optional": false,
                 "defaultValue": "",

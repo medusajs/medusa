@@ -185,7 +185,7 @@ medusa.admin.notifications
     "children": [
       {
         "name": "AdminNotificationsListRes",
-        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & `&#123; notifications: [Notification](../internal/classes/internal.Notification.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & ``{ notifications: [Notification](../internal/classes/internal.Notification.mdx)[]  }``",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -246,7 +246,7 @@ medusa.admin.notifications
               },
               {
                 "name": "customer_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the customer that this notification was sent to.",
                 "optional": false,
                 "defaultValue": "",
@@ -475,7 +475,7 @@ medusa.admin.notifications.resend(notificationId).then(({ notification }) => {
               },
               {
                 "name": "customer_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the customer that this notification was sent to.",
                 "optional": false,
                 "defaultValue": "",

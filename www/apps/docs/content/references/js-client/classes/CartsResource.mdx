@@ -121,7 +121,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -192,7 +192,7 @@ medusa.carts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -273,7 +273,7 @@ medusa.carts
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -327,7 +327,7 @@ medusa.carts
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -381,7 +381,7 @@ medusa.carts
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -390,7 +390,7 @@ medusa.carts
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -417,7 +417,7 @@ medusa.carts
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -444,7 +444,7 @@ medusa.carts
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -542,7 +542,7 @@ medusa.carts.complete(cartId).then(({ cart }) => {
     "children": [
       {
         "name": "StoreCompleteCartRes",
-        "type": "`&#123; data: [Cart](../internal/classes/internal.Cart.mdx) ; type: `\"cart\"`  &#125;` \\| `&#123; data: [Order](../internal/classes/internal.Order.mdx) ; type: `\"order\"`  &#125;` \\| `&#123; data: [Swap](../internal/classes/internal.Swap.mdx) ; type: `\"swap\"`  &#125;`",
+        "type": "``{ data: [Cart](../internal/classes/internal.Cart.mdx) ; type: \"cart\"  }`` \\| ``{ data: [Order](../internal/classes/internal.Order.mdx) ; type: \"order\"  }`` \\| ``{ data: [Swap](../internal/classes/internal.Swap.mdx) ; type: \"swap\"  }``",
         "description": "If the cart is completed successfully, this will have the created order or the swap's details, based on the cart's type. Otherwise, it'll be the cart's details.",
         "optional": false,
         "defaultValue": "",
@@ -680,7 +680,7 @@ medusa.carts.create().then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -751,7 +751,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -832,7 +832,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -886,7 +886,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -940,7 +940,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -949,7 +949,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -976,7 +976,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -1003,7 +1003,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -1106,7 +1106,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -1177,7 +1177,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1258,7 +1258,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -1312,7 +1312,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1366,7 +1366,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -1375,7 +1375,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1402,7 +1402,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -1429,7 +1429,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -1541,7 +1541,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -1612,7 +1612,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1693,7 +1693,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -1747,7 +1747,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1801,7 +1801,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -1810,7 +1810,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1837,7 +1837,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -1864,7 +1864,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -1975,7 +1975,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -2046,7 +2046,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2127,7 +2127,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -2181,7 +2181,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2235,7 +2235,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -2244,7 +2244,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2271,7 +2271,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -2298,7 +2298,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -2409,7 +2409,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -2480,7 +2480,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2561,7 +2561,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -2615,7 +2615,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2669,7 +2669,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -2678,7 +2678,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2705,7 +2705,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -2732,7 +2732,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -2834,7 +2834,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -2905,7 +2905,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2986,7 +2986,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -3040,7 +3040,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3094,7 +3094,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -3103,7 +3103,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3130,7 +3130,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -3157,7 +3157,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -3283,7 +3283,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -3354,7 +3354,7 @@ medusa.carts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -3435,7 +3435,7 @@ medusa.carts
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -3489,7 +3489,7 @@ medusa.carts
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3543,7 +3543,7 @@ medusa.carts
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -3552,7 +3552,7 @@ medusa.carts
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3579,7 +3579,7 @@ medusa.carts
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -3606,7 +3606,7 @@ medusa.carts
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -3832,7 +3832,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -3903,7 +3903,7 @@ medusa.carts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -3984,7 +3984,7 @@ medusa.carts
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -4038,7 +4038,7 @@ medusa.carts
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4092,7 +4092,7 @@ medusa.carts
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -4101,7 +4101,7 @@ medusa.carts
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4128,7 +4128,7 @@ medusa.carts
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -4155,7 +4155,7 @@ medusa.carts
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",
@@ -4291,7 +4291,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -4362,7 +4362,7 @@ medusa.carts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -4443,7 +4443,7 @@ medusa.carts
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of items with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -4497,7 +4497,7 @@ medusa.carts
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "`null` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4551,7 +4551,7 @@ medusa.carts
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The sales channel ID the cart is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -4560,7 +4560,7 @@ medusa.carts
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
+                "type": "`null` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4587,7 +4587,7 @@ medusa.carts
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of shipping with taxes",
                 "optional": true,
                 "defaultValue": "",
@@ -4614,7 +4614,7 @@ medusa.carts
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": true,
                 "defaultValue": "",

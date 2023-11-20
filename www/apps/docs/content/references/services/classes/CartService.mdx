@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](Cart.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
+    "type": "Repository&#60;[Cart](Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -139,7 +139,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](LineItem.mdx)&#62; & `&#123; findByReturn: Method findByReturn  &#125;`",
+    "type": "Repository&#60;[LineItem](LineItem.mdx)&#62; & ``{ findByReturn: Method findByReturn  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -872,7 +872,7 @@ set the payment on the cart.
   },
   {
     "name": "context",
-    "type": "`Record<string, unknown>` & `&#123; cart_id: string  &#125;`",
+    "type": "`Record<string, unknown>` & ``{ cart_id: string  }``",
     "description": "object containing whatever is relevant for authorizing the payment with the payment provider. As an example, this could be IP address or similar for fraud handling.",
     "optional": false,
     "defaultValue": "",
@@ -1013,7 +1013,7 @@ ___
 
 ### decorateTotals
 
-`**decorateTotals**(cart, totalsConfig?): Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `"total"`&#62;&#62;`
+`**decorateTotals**(cart, totalsConfig?): Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), "total"&#62;&#62;`
 
 #### Parameters
 
@@ -1040,12 +1040,12 @@ ___
 
 #### Returns
 
-Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `"total"`&#62;&#62;
+Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), "total"&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `\"total\"`&#62;&#62;",
+    "type": "Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), \"total\"&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1738,7 +1738,7 @@ ___
 
 ### retrieveWithTotals
 
-`**retrieveWithTotals**(cartId, options?, totalsConfig?): Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `"total"`&#62;&#62;`
+`**retrieveWithTotals**(cartId, options?, totalsConfig?): Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), "total"&#62;&#62;`
 
 #### Parameters
 
@@ -1774,12 +1774,12 @@ ___
 
 #### Returns
 
-Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `"total"`&#62;&#62;
+Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), "total"&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `\"total\"`&#62;&#62;",
+    "type": "Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), \"total\"&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1966,7 +1966,7 @@ Set's the region of a cart.
   },
   {
     "name": "countryCode",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "the country code to set the country to",
     "optional": false,
     "defaultValue": "",
@@ -2002,7 +2002,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2049,12 +2049,12 @@ ___
 
 #### Returns
 
-[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & `&#123; totalsToSelect: [TotalField](../types/TotalField.mdx)[]  &#125;`
+[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & ``{ totalsToSelect: [TotalField](../types/TotalField.mdx)[]  }``
 
 <ParameterTypes parameters={[
   {
     "name": "FindConfig&#60;Cart&#62; & &#123; totalsToSelect: TotalField[]  &#125;",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & `&#123; totalsToSelect: [TotalField](../types/TotalField.mdx)[]  &#125;`",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & ``{ totalsToSelect: [TotalField](../types/TotalField.mdx)[]  }``",
     "optional": true,
     "defaultValue": "",
     "description": "",
@@ -2446,7 +2446,7 @@ Check if line item's variant belongs to the cart's sales channel.
   },
   {
     "name": "sales_channel_id.sales_channel_id",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "",
     "optional": false,
     "defaultValue": "",

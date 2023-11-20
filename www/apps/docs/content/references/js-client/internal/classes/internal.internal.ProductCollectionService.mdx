@@ -58,7 +58,7 @@ Provides layer to manipulate product collections.
   },
   {
     "name": "productCollectionRepository_",
-    "type": "Repository&#60;[ProductCollection](internal.ProductCollection.mdx)&#62; & `&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId  &#125;`",
+    "type": "Repository&#60;[ProductCollection](internal.ProductCollection.mdx)&#62; & ``{ findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ Provides layer to manipulate product collections.
   },
   {
     "name": "productRepository_",
-    "type": "Repository&#60;[Product](internal.Product.mdx)&#62; & `&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;`",
+    "type": "Repository&#60;[Product](internal.Product.mdx)&#62; & ``{ _applyCategoriesQuery: Method _applyCategoriesQuery ; _findWithRelations: Method _findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -331,7 +331,7 @@ Lists product collections
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ProductCollection](internal.ProductCollection.mdx)&#62; & `&#123; discount_condition_id?: string ; q?: string  &#125;`",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ProductCollection](internal.ProductCollection.mdx)&#62; & ``{ discount_condition_id?: string ; q?: string  }``",
     "description": "the query object for find",
     "optional": true,
     "defaultValue": "",
@@ -560,7 +560,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
