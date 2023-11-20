@@ -67,7 +67,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "optionRepository_",
-    "type": "Repository&#60;[ShippingOption](internal.ShippingOption.mdx)&#62; & `&#123; upsertShippingProfile: Method upsertShippingProfile  &#125;`",
+    "type": "Repository&#60;[ShippingOption](internal.ShippingOption.mdx)&#62; & ``{ upsertShippingProfile: Method upsertShippingProfile  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -616,7 +616,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -805,7 +805,7 @@ match, or when the shipping option requirements are not satisfied.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;`null` \\| [ShippingOption](internal.ShippingOption.mdx)&#62;",
+    "type": "Promise&#60;null \\| [ShippingOption](internal.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the validated shipping option",

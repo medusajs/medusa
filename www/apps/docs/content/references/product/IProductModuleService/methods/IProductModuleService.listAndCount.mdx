@@ -146,7 +146,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           {
             "name": "id",
             "type": "`string` \\| `string`[] \\| [OperatorMap](../../types/OperatorMap.mdx)&#60;string&#62;",
-            "description": "",
+            "description": "IDs to filter categories by.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -155,7 +155,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           {
             "name": "is_active",
             "type": "`boolean`",
-            "description": "",
+            "description": "Filter categories by whether they're active.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -164,7 +164,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           {
             "name": "is_internal",
             "type": "`boolean`",
-            "description": "",
+            "description": "Filter categories by whether they're internal",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -175,7 +175,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
       {
         "name": "category_id",
         "type": "`string` \\| `string`[] \\| [OperatorMap](../../types/OperatorMap.mdx)&#60;string&#62;",
-        "description": "",
+        "description": "Filter a product by the IDs of their associated categories.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -184,7 +184,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
       {
         "name": "collection_id",
         "type": "`string` \\| `string`[] \\| [OperatorMap](../../types/OperatorMap.mdx)&#60;string&#62;",
-        "description": "Filters a product by its associated collections.",
+        "description": "Filters a product by the IDs of their associated collections.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -228,7 +228,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           {
             "name": "value",
             "type": "`string`[]",
-            "description": "",
+            "description": "Values to filter product tags by.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -323,7 +323,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -350,7 +350,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,

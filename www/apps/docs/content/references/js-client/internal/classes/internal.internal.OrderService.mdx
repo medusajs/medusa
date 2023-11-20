@@ -173,7 +173,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderRepository_",
-    "type": "Repository&#60;[Order](internal.Order.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
+    "type": "Repository&#60;[Order](internal.Order.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1620,7 +1620,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1872,8 +1872,8 @@ quantity from the quantity that was originally purchased.
 
 <ParameterTypes parameters={[
   {
-    "name": "`null` \\| LineItem",
-    "type": "``null`` \\| [LineItem](internal.LineItem.mdx)",
+    "name": "null \\| LineItem",
+    "type": "`null` \\| [LineItem](internal.LineItem.mdx)",
     "optional": true,
     "defaultValue": "",
     "description": "a line item that has the requested fulfillment quantity\n  set.",
