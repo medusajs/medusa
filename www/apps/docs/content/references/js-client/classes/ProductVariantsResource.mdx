@@ -239,7 +239,7 @@ medusa.product.variants
               },
               {
                 "name": "barcode",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A generic field for a GTIN number that can be used to identify the Product Variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -257,7 +257,7 @@ medusa.product.variants
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -266,7 +266,7 @@ medusa.product.variants
               },
               {
                 "name": "ean",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An EAN barcode number that can be used to identify the Product Variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -275,7 +275,7 @@ medusa.product.variants
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -284,7 +284,7 @@ medusa.product.variants
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -320,7 +320,7 @@ medusa.product.variants
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -338,7 +338,7 @@ medusa.product.variants
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -347,7 +347,7 @@ medusa.product.variants
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -356,7 +356,7 @@ medusa.product.variants
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -374,7 +374,7 @@ medusa.product.variants
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -419,7 +419,7 @@ medusa.product.variants
               },
               {
                 "name": "sku",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems.",
                 "optional": false,
                 "defaultValue": "",
@@ -437,7 +437,7 @@ medusa.product.variants
               },
               {
                 "name": "upc",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A UPC barcode number that can be used to identify the Product Variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -455,7 +455,7 @@ medusa.product.variants
               },
               {
                 "name": "variant_rank",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The ranking of this variant",
                 "optional": false,
                 "defaultValue": "0",
@@ -464,7 +464,7 @@ medusa.product.variants
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -473,7 +473,7 @@ medusa.product.variants
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -482,7 +482,7 @@ medusa.product.variants
               },
               {
                 "name": "calculated_price",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The lowest price among the retrieved prices.",
                 "optional": false,
                 "defaultValue": "",
@@ -491,7 +491,7 @@ medusa.product.variants
               },
               {
                 "name": "calculated_price_includes_tax",
-                "type": "`boolean` \\| ``null``",
+                "type": "`boolean` \\| `null`",
                 "description": "Whether the `calculated_price` field includes taxes.",
                 "optional": true,
                 "defaultValue": "",
@@ -501,7 +501,7 @@ medusa.product.variants
               },
               {
                 "name": "calculated_price_type",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "Either `default` if the `calculated_price` is the original price, or the type of the price list applied, if any.",
                 "optional": true,
                 "defaultValue": "",
@@ -510,7 +510,7 @@ medusa.product.variants
               },
               {
                 "name": "original_price",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The original price of the variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -519,7 +519,7 @@ medusa.product.variants
               },
               {
                 "name": "original_price_includes_tax",
-                "type": "`boolean` \\| ``null``",
+                "type": "`boolean` \\| `null`",
                 "description": "Whether the `original_price` field includes taxes.",
                 "optional": true,
                 "defaultValue": "",
@@ -538,7 +538,7 @@ medusa.product.variants
               },
               {
                 "name": "calculated_price_incl_tax",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The price after applying the tax amount on the calculated price.",
                 "optional": false,
                 "defaultValue": "",
@@ -547,7 +547,7 @@ medusa.product.variants
               },
               {
                 "name": "calculated_tax",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The tax amount applied to the calculated price.",
                 "optional": false,
                 "defaultValue": "",
@@ -556,7 +556,7 @@ medusa.product.variants
               },
               {
                 "name": "original_price_incl_tax",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The price after applying the tax amount on the original price.",
                 "optional": false,
                 "defaultValue": "",
@@ -565,7 +565,7 @@ medusa.product.variants
               },
               {
                 "name": "original_tax",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The tax amount applied to the original price.",
                 "optional": false,
                 "defaultValue": "",
@@ -574,7 +574,7 @@ medusa.product.variants
               },
               {
                 "name": "tax_rates",
-                "type": "[TaxServiceRate](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
+                "type": "[TaxServiceRate](../internal/types/internal.TaxServiceRate.mdx)[] \\| `null`",
                 "description": "The list of tax rates.",
                 "optional": false,
                 "defaultValue": "",
@@ -671,7 +671,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "barcode",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A generic field for a GTIN number that can be used to identify the Product Variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -689,7 +689,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -698,7 +698,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "ean",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An EAN barcode number that can be used to identify the Product Variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -707,7 +707,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -716,7 +716,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -752,7 +752,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -770,7 +770,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -779,7 +779,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -788,7 +788,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -806,7 +806,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -851,7 +851,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "sku",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems.",
                 "optional": false,
                 "defaultValue": "",
@@ -869,7 +869,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "upc",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A UPC barcode number that can be used to identify the Product Variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -887,7 +887,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "variant_rank",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The ranking of this variant",
                 "optional": false,
                 "defaultValue": "0",
@@ -896,7 +896,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -905,7 +905,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -914,7 +914,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "calculated_price",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The lowest price among the retrieved prices.",
                 "optional": false,
                 "defaultValue": "",
@@ -923,7 +923,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "calculated_price_includes_tax",
-                "type": "`boolean` \\| ``null``",
+                "type": "`boolean` \\| `null`",
                 "description": "Whether the `calculated_price` field includes taxes.",
                 "optional": true,
                 "defaultValue": "",
@@ -933,7 +933,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "calculated_price_type",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "Either `default` if the `calculated_price` is the original price, or the type of the price list applied, if any.",
                 "optional": true,
                 "defaultValue": "",
@@ -942,7 +942,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "original_price",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The original price of the variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -951,7 +951,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "original_price_includes_tax",
-                "type": "`boolean` \\| ``null``",
+                "type": "`boolean` \\| `null`",
                 "description": "Whether the `original_price` field includes taxes.",
                 "optional": true,
                 "defaultValue": "",
@@ -970,7 +970,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "calculated_price_incl_tax",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The price after applying the tax amount on the calculated price.",
                 "optional": false,
                 "defaultValue": "",
@@ -979,7 +979,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "calculated_tax",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The tax amount applied to the calculated price.",
                 "optional": false,
                 "defaultValue": "",
@@ -988,7 +988,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "original_price_incl_tax",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The price after applying the tax amount on the original price.",
                 "optional": false,
                 "defaultValue": "",
@@ -997,7 +997,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "original_tax",
-                "type": "`number` \\| ``null``",
+                "type": "`number` \\| `null`",
                 "description": "The tax amount applied to the original price.",
                 "optional": false,
                 "defaultValue": "",
@@ -1006,7 +1006,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "[TaxServiceRate](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
+                "type": "[TaxServiceRate](../internal/types/internal.TaxServiceRate.mdx)[] \\| `null`",
                 "description": "The list of tax rates.",
                 "optional": false,
                 "defaultValue": "",

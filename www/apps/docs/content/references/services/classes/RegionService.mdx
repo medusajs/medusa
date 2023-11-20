@@ -911,7 +911,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1099,7 +1099,7 @@ the id can be passed to check that country updates are allowed.
 <ParameterTypes parameters={[
   {
     "name": "regionData",
-    "type": "[Omit](../types/Omit.mdx)&#60;T, `\"metadata\"` \\| `\"currency_code\"`&#62;",
+    "type": "[Omit](../types/Omit.mdx)&#60;T, \"metadata\" \\| \"currency_code\"&#62;",
     "description": "the region data to validate",
     "optional": false,
     "defaultValue": "",

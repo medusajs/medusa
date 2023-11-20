@@ -87,7 +87,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "optionRepository_",
-    "type": "Repository&#60;[ShippingOption](ShippingOption.mdx)&#62; & `&#123; upsertShippingProfile: Method upsertShippingProfile  &#125;`",
+    "type": "Repository&#60;[ShippingOption](ShippingOption.mdx)&#62; & ``{ upsertShippingProfile: Method upsertShippingProfile  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -698,7 +698,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -869,7 +869,7 @@ ___
 
 ### validateAndMutatePrice
 
-`Private **validateAndMutatePrice**(option, priceInput): Promise&#60;[CreateShippingOptionInput](../types/CreateShippingOptionInput.mdx) \| [Omit](../types/Omit.mdx)&#60;[ShippingOption](ShippingOption.mdx), `"beforeInsert"`&#62;&#62;`
+`Private **validateAndMutatePrice**(option, priceInput): Promise&#60;[CreateShippingOptionInput](../types/CreateShippingOptionInput.mdx) \| [Omit](../types/Omit.mdx)&#60;[ShippingOption](ShippingOption.mdx), "beforeInsert"&#62;&#62;`
 
 #### Parameters
 
@@ -896,12 +896,12 @@ ___
 
 #### Returns
 
-Promise&#60;[CreateShippingOptionInput](../types/CreateShippingOptionInput.mdx) \| [Omit](../types/Omit.mdx)&#60;[ShippingOption](ShippingOption.mdx), `"beforeInsert"`&#62;&#62;
+Promise&#60;[CreateShippingOptionInput](../types/CreateShippingOptionInput.mdx) \| [Omit](../types/Omit.mdx)&#60;[ShippingOption](ShippingOption.mdx), "beforeInsert"&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[CreateShippingOptionInput](../types/CreateShippingOptionInput.mdx) \\| [Omit](../types/Omit.mdx)&#60;[ShippingOption](ShippingOption.mdx), `\"beforeInsert\"`&#62;&#62;",
+    "type": "Promise&#60;[CreateShippingOptionInput](../types/CreateShippingOptionInput.mdx) \\| [Omit](../types/Omit.mdx)&#60;[ShippingOption](ShippingOption.mdx), \"beforeInsert\"&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -914,7 +914,7 @@ ___
 
 ### validateCartOption
 
-`**validateCartOption**(option, cart): Promise&#60;`null` \| [ShippingOption](ShippingOption.mdx)&#62;`
+`**validateCartOption**(option, cart): Promise&#60;null \| [ShippingOption](ShippingOption.mdx)&#62;`
 
 Checks if a given option id is a valid option for a cart. If it is the
 option is returned with the correct price. Throws when region\_ids do not
@@ -945,12 +945,12 @@ match, or when the shipping option requirements are not satisfied.
 
 #### Returns
 
-Promise&#60;`null` \| [ShippingOption](ShippingOption.mdx)&#62;
+Promise&#60;null \| [ShippingOption](ShippingOption.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;`null` \\| [ShippingOption](ShippingOption.mdx)&#62;",
+    "type": "Promise&#60;null \\| [ShippingOption](ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the validated shipping option",

@@ -8,31 +8,29 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-### \_\_joinerConfig
-
-`**__joinerConfig**(): [ModuleJoinerConfig](../types/ModuleJoinerConfig.mdx)`
-
-#### Returns
-
-[ModuleJoinerConfig](../types/ModuleJoinerConfig.mdx)
-
-<ParameterTypes parameters={[
-  {
-    "name": "ModuleJoinerConfig",
-    "type": "[Omit](../types/Omit.mdx)&#60;[JoinerServiceConfig](JoinerServiceConfig.mdx), `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`&#62; & `&#123; databaseConfig?: &#123; extraFields?: Record&#60;string, &#123; defaultValue?: string ; nullable?: boolean ; options?: Record&#60;string, unknown&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  &#125;&#62; ; idPrefix?: string ; tableName?: string  &#125; ; extends?: &#123; fieldAlias?: Record&#60;string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;&#62; ; relationship: [ModuleJoinerRelationship](../types/ModuleJoinerRelationship.mdx) ; serviceName: string  &#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record&#60;string, string&#62; ; primaryKeys?: string[] ; relationships?: [ModuleJoinerRelationship](../types/ModuleJoinerRelationship.mdx)[] ; schema?: string ; serviceName?: string  &#125;`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-___
-
 ### create
 
 `**create**(input, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
+
+This method is used to create a stock location.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function createStockLocation (name: string) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const stockLocation = await stockLocationModule.create({
+    name
+  })
+
+  // do something with the stock location or return it
+}
+```
 
 #### Parameters
 
@@ -40,7 +38,7 @@ ___
   {
     "name": "input",
     "type": "[CreateStockLocationInput](../types/CreateStockLocationInput.mdx)",
-    "description": "",
+    "description": "The details of the stock location to create.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -48,8 +46,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../types/SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -67,7 +65,7 @@ Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
     "type": "Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The created stock location's details.",
     "expandable": false,
     "children": []
   }
@@ -79,13 +77,29 @@ ___
 
 `**delete**(id, context?): Promise&#60;void&#62;`
 
+This method is used to delete a stock location.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function deleteStockLocation (id:string) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  await stockLocationModule.delete(id)
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the stock location.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -93,8 +107,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../types/SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -112,7 +126,7 @@ Promise&#60;void&#62;
     "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Resolves when the stock location is successfully deleted.",
     "expandable": false,
     "children": []
   }
@@ -124,13 +138,77 @@ ___
 
 `**list**(selector, config?, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;`
 
+This method is used to retrieve a paginated list of stock locations based on optional filters and configuration.
+
+#### Example
+
+To retrieve a list of stock locations using their IDs:
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function listStockLocations (ids: string[]) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const stockLocations = await stockLocationModule.list({
+    id: ids
+  })
+
+  // do something with the stock locations or return them
+}
+```
+
+To specify relations that should be retrieved within the stock locations:
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function listStockLocations (ids: string[]) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const stockLocations = await stockLocationModule.list({
+    id: ids
+  }, {
+    relations: ["address"]
+  })
+
+  // do something with the stock locations or return them
+}
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function listStockLocations (ids: string[], skip: number, take: number) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const stockLocations = await stockLocationModule.list({
+    id: ids
+  }, {
+    relations: ["address"],
+    skip,
+    take
+  })
+
+  // do something with the stock locations or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx)",
-    "description": "",
+    "type": "[FilterableStockLocationProps](FilterableStockLocationProps.mdx)",
+    "description": "The filters to apply on the retrieved stock locations.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -139,7 +217,7 @@ ___
   {
     "name": "config",
     "type": "[FindConfig](FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
-    "description": "",
+    "description": "The configurations determining how the stock locations are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -147,8 +225,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../types/SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -166,7 +244,7 @@ Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;
     "type": "Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The list of stock locations.",
     "expandable": false,
     "children": []
   }
@@ -178,13 +256,77 @@ ___
 
 `**listAndCount**(selector, config?, context?): Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;`
 
+This method is used to retrieve a paginated list of stock locations along with the total count of available stock locations satisfying the provided filters.
+
+#### Example
+
+To retrieve a list of stock locations using their IDs:
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function listStockLocations (ids: string[]) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const [stockLocations, count] = await stockLocationModule.listAndCount({
+    id: ids
+  })
+
+  // do something with the stock locations or return them
+}
+```
+
+To specify relations that should be retrieved within the stock locations:
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function listStockLocations (ids: string[]) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const [stockLocations, count] = await stockLocationModule.listAndCount({
+    id: ids
+  }, {
+    relations: ["address"]
+  })
+
+  // do something with the stock locations or return them
+}
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function listStockLocations (ids: string[], skip: number, take: number) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const [stockLocations, count] = await stockLocationModule.listAndCount({
+    id: ids
+  }, {
+    relations: ["address"],
+    skip,
+    take
+  })
+
+  // do something with the stock locations or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx)",
-    "description": "",
+    "type": "[FilterableStockLocationProps](FilterableStockLocationProps.mdx)",
+    "description": "The filters to apply on the retrieved stock locations.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -193,7 +335,7 @@ ___
   {
     "name": "config",
     "type": "[FindConfig](FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
-    "description": "",
+    "description": "The configurations determining how the stock locations are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -201,8 +343,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../types/SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -220,7 +362,7 @@ Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;
     "type": "Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The list of stock locations along with the total count.",
     "expandable": false,
     "children": []
   }
@@ -232,13 +374,51 @@ ___
 
 `**retrieve**(id, config?, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
 
+This method is used to retrieve a stock location by its ID
+
+#### Example
+
+A simple example that retrieves a inventory item by its ID:
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function retrieveStockLocation (id: string) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const stockLocation = await stockLocationModule.retrieve(id)
+
+  // do something with the stock location or return it
+}
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function retrieveStockLocation (id: string) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const stockLocation = await stockLocationModule.retrieve(id, {
+    relations: ["address"]
+  })
+
+  // do something with the stock location or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the stock location",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -247,7 +427,7 @@ ___
   {
     "name": "config",
     "type": "[FindConfig](FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
-    "description": "",
+    "description": "The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -255,8 +435,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../types/SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -274,7 +454,7 @@ Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
     "type": "Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The stock location's details.",
     "expandable": false,
     "children": []
   }
@@ -286,13 +466,33 @@ ___
 
 `**update**(id, input, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
 
+This method is used to update a stock location.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function updateStockLocation (id:string, name: string) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  const stockLocation = await stockLocationModule.update(id, {
+    name
+  })
+
+  // do something with the stock location or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the stock location.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -301,7 +501,7 @@ ___
   {
     "name": "input",
     "type": "[UpdateStockLocationInput](../types/UpdateStockLocationInput.mdx)",
-    "description": "",
+    "description": "The attributes to update in the stock location.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -309,8 +509,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../types/SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -328,7 +528,7 @@ Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
     "type": "Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The stock location's details.",
     "expandable": false,
     "children": []
   }

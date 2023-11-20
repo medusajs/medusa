@@ -13,7 +13,7 @@ The data to update in a product. The `id` is used to identify which product to u
 <ParameterTypes parameters={[
   {
     "name": "categories",
-    "type": "`&#123; id: string  &#125;`[]",
+    "type": "``{ id: string  }``[]",
     "description": "The product categories to associate with the product.",
     "optional": true,
     "defaultValue": "",
@@ -32,7 +32,7 @@ The data to update in a product. The `id` is used to identify which product to u
   },
   {
     "name": "collection_id",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "The product collection to be associated with the product.",
     "optional": true,
     "defaultValue": "",
@@ -95,7 +95,7 @@ The data to update in a product. The `id` is used to identify which product to u
   },
   {
     "name": "images",
-    "type": "`string`[] \\| `&#123; id?: string ; url: string  &#125;`[]",
+    "type": "`string`[] \\| ``{ id?: string ; url: string  }``[]",
     "description": "The product's images. If an array of strings is supplied, each string will be a URL and a `ProductImage` will be created and associated with the product. If an array of objects is supplied, you can pass along the ID of an existing `ProductImage`.",
     "optional": true,
     "defaultValue": "",
@@ -187,14 +187,14 @@ The data to update in a product. The `id` is used to identify which product to u
   {
     "name": "status",
     "type": "[ProductStatus](../enums/ProductStatus.mdx)",
-    "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
+    "description": "The status of the product.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
     "children": [
       {
         "name": "DRAFT",
-        "type": "``\"draft\"``",
+        "type": "`\"draft\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -203,7 +203,7 @@ The data to update in a product. The `id` is used to identify which product to u
       },
       {
         "name": "PROPOSED",
-        "type": "``\"proposed\"``",
+        "type": "`\"proposed\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -212,7 +212,7 @@ The data to update in a product. The `id` is used to identify which product to u
       },
       {
         "name": "PUBLISHED",
-        "type": "``\"published\"``",
+        "type": "`\"published\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -221,7 +221,7 @@ The data to update in a product. The `id` is used to identify which product to u
       },
       {
         "name": "REJECTED",
-        "type": "``\"rejected\"``",
+        "type": "`\"rejected\"`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -315,7 +315,7 @@ The data to update in a product. The `id` is used to identify which product to u
   },
   {
     "name": "type_id",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "The product type to be associated with the product.",
     "optional": true,
     "defaultValue": "",

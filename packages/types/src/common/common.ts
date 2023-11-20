@@ -45,23 +45,33 @@ export type Writable<T> = {
  * 
  * An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an `Entity` class, 
  * which provides correct typing of field names in its properties.
- * 
- * @prop select - An array of strings, each being attribute names of the entity to retrieve in the result.
- * @prop skip - A number indicating the number of records to skip before retrieving the results.
- * @prop take - A number indicating the number of records to return in the result.
- * @prop relations - An array of strings, each being relation names of the entity to retrieve in the result.
- * @prop order - 
- * An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` 
- * to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
- * @prop withDeleted - A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the
- * `SoftDeletableEntity` class.
  */
 export interface FindConfig<Entity> {
+  /**
+   * An array of strings, each being attribute names of the entity to retrieve in the result.
+   */
   select?: (keyof Entity | string)[]
+  /**
+   * A number indicating the number of records to skip before retrieving the results.
+   */
   skip?: number
+  /**
+   * A number indicating the number of records to return in the result.
+   */
   take?: number
+  /**
+   * An array of strings, each being relation names of the entity to retrieve in the result.
+   */
   relations?: string[]
+  /**
+   * An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` 
+   * to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+   */
   order?: { [K: string]: "ASC" | "DESC" }
+  /**
+   * A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the
+   * `SoftDeletableEntity` class.
+   */
   withDeleted?: boolean
 }
 

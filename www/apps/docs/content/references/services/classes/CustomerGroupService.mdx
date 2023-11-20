@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "customerGroupRepository_",
-    "type": "Repository&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & `&#123; addCustomers: Method addCustomers ; findWithRelationsAndCount: Method findWithRelationsAndCount ; removeCustomers: Method removeCustomers  &#125;`",
+    "type": "Repository&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & ``{ addCustomers: Method addCustomers ; findWithRelationsAndCount: Method findWithRelationsAndCount ; removeCustomers: Method removeCustomers  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -385,7 +385,7 @@ List customer groups.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & `&#123; discount_condition_id?: string ; q?: string  &#125;`",
+    "type": "[Selector](../types/Selector.mdx)&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & ``{ discount_condition_id?: string ; q?: string  }``",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -432,7 +432,7 @@ Retrieve a list of customer groups and total count of records that match the que
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & `&#123; discount_condition_id?: string ; q?: string  &#125;`",
+    "type": "[Selector](../types/Selector.mdx)&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & ``{ discount_condition_id?: string ; q?: string  }``",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -569,7 +569,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -243,7 +243,7 @@ medusa.admin.productTypes
     "children": [
       {
         "name": "AdminProductTypesListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; product_types: [ProductType](../internal/classes/internal.ProductType.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ product_types: [ProductType](../internal/classes/internal.ProductType.mdx)[]  }``",
         "description": "The list of product types with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -295,7 +295,7 @@ medusa.admin.productTypes
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",

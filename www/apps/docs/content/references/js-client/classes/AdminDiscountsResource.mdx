@@ -94,7 +94,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "resources",
-        "type": "`&#123; id: string  &#125;`[]",
+        "type": "``{ id: string  }``[]",
         "description": "The resources to be added to the discount condition",
         "optional": false,
         "defaultValue": "",
@@ -199,7 +199,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -208,7 +208,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -325,7 +325,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -334,7 +334,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -445,7 +445,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -454,7 +454,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -571,7 +571,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -580,7 +580,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -708,7 +708,7 @@ medusa.admin.discounts
             "children": [
               {
                 "name": "ITEM",
-                "type": "``\"item\"``",
+                "type": "`\"item\"`",
                 "description": "The discount should be applied to applicable items in the cart.",
                 "optional": true,
                 "defaultValue": "",
@@ -717,7 +717,7 @@ medusa.admin.discounts
               },
               {
                 "name": "TOTAL",
-                "type": "``\"total\"``",
+                "type": "`\"total\"`",
                 "description": "The discount should be applied to the checkout total.",
                 "optional": true,
                 "defaultValue": "",
@@ -809,7 +809,7 @@ medusa.admin.discounts
             "children": [
               {
                 "name": "FIXED",
-                "type": "``\"fixed\"``",
+                "type": "`\"fixed\"`",
                 "description": "Discounts that reduce the price by a fixed amount.",
                 "optional": true,
                 "defaultValue": "",
@@ -818,7 +818,7 @@ medusa.admin.discounts
               },
               {
                 "name": "FREE_SHIPPING",
-                "type": "``\"free_shipping\"``",
+                "type": "`\"free_shipping\"`",
                 "description": "Discounts that sets the shipping price to `0`.",
                 "optional": true,
                 "defaultValue": "",
@@ -827,7 +827,7 @@ medusa.admin.discounts
               },
               {
                 "name": "PERCENTAGE",
-                "type": "``\"percentage\"``",
+                "type": "`\"percentage\"`",
                 "description": "Discounts that reduce the price by a percentage reduction.",
                 "optional": true,
                 "defaultValue": "",
@@ -934,7 +934,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -943,7 +943,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1060,7 +1060,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1069,7 +1069,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -1172,7 +1172,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "IN",
-            "type": "``\"in\"``",
+            "type": "`\"in\"`",
             "description": "The discountable resources are within the specified resources.",
             "optional": true,
             "defaultValue": "",
@@ -1181,7 +1181,7 @@ medusa.admin.discounts
           },
           {
             "name": "NOT_IN",
-            "type": "``\"not_in\"``",
+            "type": "`\"not_in\"`",
             "description": "The discountable resources are everything but the specified resources.",
             "optional": true,
             "defaultValue": "",
@@ -1314,7 +1314,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1323,7 +1323,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1440,7 +1440,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1449,7 +1449,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -1593,7 +1593,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1602,7 +1602,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1719,7 +1719,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1728,7 +1728,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -1970,7 +1970,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "resources",
-        "type": "`&#123; id: string  &#125;`[]",
+        "type": "``{ id: string  }``[]",
         "description": "The resources to be removed from the discount condition",
         "optional": false,
         "defaultValue": "",
@@ -2047,7 +2047,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2056,7 +2056,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -2173,7 +2173,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -2182,7 +2182,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -2295,7 +2295,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2304,7 +2304,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -2421,7 +2421,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -2430,7 +2430,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -2588,7 +2588,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2845,7 +2845,7 @@ medusa.admin.discounts
             "children": [
               {
                 "name": "ITEM",
-                "type": "``\"item\"``",
+                "type": "`\"item\"`",
                 "description": "The discount should be applied to applicable items in the cart.",
                 "optional": true,
                 "defaultValue": "",
@@ -2854,7 +2854,7 @@ medusa.admin.discounts
               },
               {
                 "name": "TOTAL",
-                "type": "``\"total\"``",
+                "type": "`\"total\"`",
                 "description": "The discount should be applied to the checkout total.",
                 "optional": true,
                 "defaultValue": "",
@@ -2873,7 +2873,7 @@ medusa.admin.discounts
             "children": [
               {
                 "name": "FIXED",
-                "type": "``\"fixed\"``",
+                "type": "`\"fixed\"`",
                 "description": "Discounts that reduce the price by a fixed amount.",
                 "optional": true,
                 "defaultValue": "",
@@ -2882,7 +2882,7 @@ medusa.admin.discounts
               },
               {
                 "name": "FREE_SHIPPING",
-                "type": "``\"free_shipping\"``",
+                "type": "`\"free_shipping\"`",
                 "description": "Discounts that sets the shipping price to `0`.",
                 "optional": true,
                 "defaultValue": "",
@@ -2891,7 +2891,7 @@ medusa.admin.discounts
               },
               {
                 "name": "PERCENTAGE",
-                "type": "``\"percentage\"``",
+                "type": "`\"percentage\"`",
                 "description": "Discounts that reduce the price by a percentage reduction.",
                 "optional": true,
                 "defaultValue": "",
@@ -2928,7 +2928,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "AdminDiscountsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; discounts: [Discount](../internal/classes/internal.Discount-1.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ discounts: [Discount](../internal/classes/internal.Discount-1.mdx)[]  }``",
         "description": "The list of discounts with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -2989,7 +2989,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2998,7 +2998,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3115,7 +3115,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3124,7 +3124,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -3237,7 +3237,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -3246,7 +3246,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3363,7 +3363,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3372,7 +3372,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -3474,7 +3474,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -3483,7 +3483,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3600,7 +3600,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3609,7 +3609,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -3711,7 +3711,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -3720,7 +3720,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3837,7 +3837,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3846,7 +3846,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -3913,7 +3913,7 @@ medusa.admin.discounts
       },
       {
         "name": "ends_at",
-        "type": "``null`` \\| `Date`",
+        "type": "`null` \\| `Date`",
         "description": "The date and time at which the discount should no longer be available.",
         "optional": true,
         "defaultValue": "",
@@ -3965,7 +3965,7 @@ medusa.admin.discounts
             "children": [
               {
                 "name": "ITEM",
-                "type": "``\"item\"``",
+                "type": "`\"item\"`",
                 "description": "The discount should be applied to applicable items in the cart.",
                 "optional": true,
                 "defaultValue": "",
@@ -3974,7 +3974,7 @@ medusa.admin.discounts
               },
               {
                 "name": "TOTAL",
-                "type": "``\"total\"``",
+                "type": "`\"total\"`",
                 "description": "The discount should be applied to the checkout total.",
                 "optional": true,
                 "defaultValue": "",
@@ -4096,7 +4096,7 @@ medusa.admin.discounts
       },
       {
         "name": "usage_limit",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "Maximum number of times the discount can be used",
         "optional": true,
         "defaultValue": "",
@@ -4105,7 +4105,7 @@ medusa.admin.discounts
       },
       {
         "name": "valid_duration",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The duration the discount runs between",
         "optional": true,
         "defaultValue": "",
@@ -4172,7 +4172,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -4181,7 +4181,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -4298,7 +4298,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -4307,7 +4307,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",
@@ -4530,7 +4530,7 @@ medusa.admin.discounts
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -4539,7 +4539,7 @@ medusa.admin.discounts
               },
               {
                 "name": "ends_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The time at which the discount can no longer be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -4656,7 +4656,7 @@ medusa.admin.discounts
               },
               {
                 "name": "usage_limit",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The maximum number of times that a discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -4665,7 +4665,7 @@ medusa.admin.discounts
               },
               {
                 "name": "valid_duration",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "Duration the discount runs between",
                 "optional": false,
                 "defaultValue": "",

@@ -69,7 +69,7 @@ Provides layer to manipulate gift cards.
   },
   {
     "name": "giftCardRepository_",
-    "type": "Repository&#60;[GiftCard](GiftCard.mdx)&#62; & `&#123; listGiftCardsAndCount: Method listGiftCardsAndCount  &#125;`",
+    "type": "Repository&#60;[GiftCard](GiftCard.mdx)&#62; & ``{ listGiftCardsAndCount: Method listGiftCardsAndCount  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -583,7 +583,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -719,7 +719,7 @@ ___
 
 ### resolveTaxRate
 
-`Static Protected **resolveTaxRate**(giftCardTaxRate, region): `null` \| number`
+`Static Protected **resolveTaxRate**(giftCardTaxRate, region): null \| number`
 
 The tax\_rate of the giftcard can depend on whether regions tax gift cards, an input
 provided by the user or the tax rate. Based on these conditions, tax\_rate changes.
@@ -729,7 +729,7 @@ provided by the user or the tax rate. Based on these conditions, tax\_rate chang
 <ParameterTypes parameters={[
   {
     "name": "giftCardTaxRate",
-    "type": "``null`` \\| `number`",
+    "type": "`null` \\| `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -749,12 +749,12 @@ provided by the user or the tax rate. Based on these conditions, tax\_rate chang
 
 #### Returns
 
-``null`` \| `number`
+`null` \| `number`
 
 <ParameterTypes parameters={[
   {
-    "name": "`null` \\| number",
-    "type": "``null`` \\| `number`",
+    "name": "null \\| number",
+    "type": "`null` \\| `number`",
     "optional": true,
     "defaultValue": "",
     "description": "the tax rate for the gift card",
