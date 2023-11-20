@@ -529,7 +529,6 @@ class CartService extends TransactionBaseService {
           },
         }
         ;[salesChannel] = await this.remoteQuery_(query)
-        console.log("VALIDATE RQ SC: ", salesChannel)
       } else {
         salesChannel = await this.salesChannelService_
           .withTransaction(this.activeManager_)

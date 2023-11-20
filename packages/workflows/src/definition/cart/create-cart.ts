@@ -63,13 +63,14 @@ const workflowSteps: TransactionStepsDefinition = {
         noCompensation: true,
         next: {
           action: CreateCartActions.createCart,
-          next: [
-            {
-              action: CreateCartActions.attachLineItems,
-              noCompensation: true,
-            },
-            { action: CreateCartActions.attachToSalesChannel },
-          ],
+          // TODO: enable this when this when we won't need remote link in the cart service anymore
+          // next: [
+          //   {
+          //     action: CreateCartActions.attachLineItems,
+          //     noCompensation: true,
+          //   },
+          //   { action: CreateCartActions.attachToSalesChannel },
+          // ],
         },
       },
     },
