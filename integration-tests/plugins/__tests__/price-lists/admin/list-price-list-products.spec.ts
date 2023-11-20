@@ -32,7 +32,6 @@ describe("GET /admin/price-lists/:id/products", () => {
   let product
   let product2
   let variant
-  let variant2
   let pricingModuleService: IPricingModuleService
 
   beforeAll(async () => {
@@ -85,8 +84,6 @@ describe("GET /admin/price-lists/:id/products", () => {
         },
       ],
     })
-
-    variant2 = product2.variants[0]
   })
 
   afterEach(async () => {
@@ -94,7 +91,7 @@ describe("GET /admin/price-lists/:id/products", () => {
     await db.teardown()
   })
 
-  it("should get all products under a price list", async () => {
+  it("should list all products in a price list", async () => {
     const priceSet = await createVariantPriceSet({
       container: appContainer,
       variantId: variant.id,
@@ -205,7 +202,7 @@ describe("GET /admin/price-lists/:id/products", () => {
     ])
   })
 
-  it("should get all products with a search under a price list", async () => {
+  it("should list all products constrained by search query in a price list", async () => {
     const priceSet = await createVariantPriceSet({
       container: appContainer,
       variantId: variant.id,
