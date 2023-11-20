@@ -221,7 +221,6 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  console.log("CREATED", cart.id, cart.sales_channel)
   await productVariantInventoryService.setVariantAvailability(
     cart.items.map((i) => i.variant),
     cart.sales_channel_id!

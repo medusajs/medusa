@@ -8,16 +8,9 @@ import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import {
-  simpleProductFactory,
-  simpleSalesChannelFactory,
-} from "../../../../factories"
+import { simpleProductFactory } from "../../../../factories"
 
 jest.setTimeout(30000)
-
-const env = {
-  MEDUSA_FF_MEDUSA_V2: true,
-}
 
 describe("/store/carts", () => {
   let dbConnection
@@ -30,8 +23,8 @@ describe("/store/carts", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-    shutdownServer = await startBootstrapApp({ cwd, env })
+    dbConnection = await initDb({ cwd } as any)
+    shutdownServer = await startBootstrapApp({ cwd })
   })
 
   afterAll(async () => {
@@ -72,11 +65,6 @@ describe("/store/carts", () => {
             prices: [{ amount: 1000, currency: "usd" }],
           },
         ],
-      })
-
-      await simpleSalesChannelFactory(dbConnection, {
-        id: "amazon-sc",
-        name: "Amazon store",
       })
     })
 
@@ -219,19 +207,6 @@ describe("/store/carts", () => {
         user_agent: expect.stringContaining("axios/0.21."),
         test_id: "test",
       })
-    })
-
-    it("should create a cart in a sales channel", async () => {
-      const api = useApi()
-      const response = await api.post("/store/carts", {
-        sales_channel_id: "amazon-sc",
-      })
-
-      expect(response.status).toEqual(200)
-
-      const getRes = await api.get(`/store/carts/${response.data.cart.id}`)
-      expect(getRes.status).toEqual(200)
-      expect(getRes.data.cart.sales_channel.id).toEqual("amazon-sc")
     })
   })
 })

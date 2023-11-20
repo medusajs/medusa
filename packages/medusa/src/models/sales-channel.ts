@@ -1,11 +1,15 @@
 import { BeforeInsert, Column, JoinTable, ManyToMany, OneToMany } from "typeorm"
 
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
+import {
+  FeatureFlagDecorators,
+  FeatureFlagEntity,
+} from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { DbAwareColumn, generateEntityId } from "../utils"
 import { SalesChannelLocation } from "./sales-channel-location"
 import { Product } from "./product"
 import { Cart } from "./cart"
+import { MedusaV2Flag } from "@medusajs/utils"
 
 @FeatureFlagEntity("sales_channels")
 export class SalesChannel extends SoftDeletableEntity {
@@ -35,18 +39,23 @@ export class SalesChannel extends SoftDeletableEntity {
   })
   products: Product[]
 
-  @ManyToMany(() => Cart)
-  @JoinTable({
-    name: "cart_sales_channel",
-    joinColumn: {
-      name: "sales_channel_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "cart_id",
-      referencedColumnName: "id",
-    },
-  })
+  @FeatureFlagDecorators(
+    [MedusaV2Flag.key, "sales_channels"],
+    [
+      ManyToMany(() => Cart),
+      JoinTable({
+        name: "cart_sales_channel",
+        joinColumn: {
+          name: "sales_channel_id",
+          referencedColumnName: "id",
+        },
+        inverseJoinColumn: {
+          name: "cart_id",
+          referencedColumnName: "id",
+        },
+      }),
+    ]
+  )
   carts: SalesChannel[]
 
   @OneToMany(

@@ -398,20 +398,23 @@ export class Cart extends SoftDeletableEntity {
   ])
   sales_channel: SalesChannel
 
-  @FeatureFlagDecorators(MedusaV2Flag.key, [
-    ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
-    JoinTable({
-      name: "cart_sales_channel",
-      joinColumn: {
-        name: "cart_id",
-        referencedColumnName: "id",
-      },
-      inverseJoinColumn: {
-        name: "sales_channel_id",
-        referencedColumnName: "id",
-      },
-    }),
-  ])
+  @FeatureFlagDecorators(
+    [MedusaV2Flag.key, "sales_channels"],
+    [
+      ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
+      JoinTable({
+        name: "cart_sales_channel",
+        joinColumn: {
+          name: "cart_id",
+          referencedColumnName: "id",
+        },
+        inverseJoinColumn: {
+          name: "sales_channel_id",
+          referencedColumnName: "id",
+        },
+      }),
+    ]
+  )
   sales_channels?: SalesChannel[]
 
   shipping_total?: number
