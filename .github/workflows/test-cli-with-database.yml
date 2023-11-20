@@ -49,13 +49,15 @@ jobs:
       - name: Install Medusa cli
         run: npm i -g @medusajs/medusa-cli
 
-      - name: Set Yarn version
-        run: yarn set version 3.6.4
 
       - name: Create Medusa project
         run: |
           medusa new cli-test --skip-db
         working-directory: ..
+
+      - name: Set Yarn version
+        run: yarn set version 3.6.4
+        working-directory: ../cli-test
 
       - name: run medusa dev
         run: medusa-dev --force-install
