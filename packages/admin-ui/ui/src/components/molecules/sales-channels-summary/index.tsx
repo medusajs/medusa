@@ -1,7 +1,7 @@
 import { sortBy } from "lodash"
 
 import { SalesChannel } from "@medusajs/medusa"
-
+import { useTranslation } from "react-i18next"
 /**
  * Customers Associated Groups props
  */
@@ -14,6 +14,7 @@ interface P {
  * Render a summary of groups to which the customer belongs
  */
 function SalesChannelsSummary(props: P) {
+  const { t } = useTranslation()
   const channels = sortBy(props.channels, "name")
   if (!channels.length) {
     return null
@@ -31,7 +32,12 @@ function SalesChannelsSummary(props: P) {
   return (
     <div title={allGroups} className="text-small">
       <span>{leadName}</span>
-      {left > 0 && <span className="text-grey-50"> + {left} more</span>}
+      {left > 0 && (
+        <span className="text-grey-50">
+          {" "}
+          + {left} {t("more")}
+        </span>
+      )}
     </div>
   )
 }

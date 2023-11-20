@@ -104,7 +104,7 @@ const renderCard = ({
   const card = (
     <SettingsCard
       heading={t(heading)}
-      description={description}
+      description={t(description)}
       icon={<Icon />}
       to={to}
     />
@@ -138,9 +138,9 @@ const SettingsIndex = () => {
       {extensionCards.length > 0 && (
         <div className="gap-y-large flex flex-col">
           <div className="gap-y-2xsmall flex flex-col">
-            <h2 className="inter-xlarge-semibold">Extensions</h2>
+            <h2 className="inter-xlarge-semibold">{t("Extensions")}</h2>
             <p className="inter-base-regular text-grey-50">
-             {t(" Manage the settings for your store's extensions")}
+              {t(" Manage the settings for your store's extensions")}
             </p>
           </div>
           <div className="medium:grid-cols-2 gap-y-xsmall grid grid-cols-1 gap-x-4">

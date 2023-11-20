@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 import clsx from "clsx"
-import { useEffect, useState } from "react"
+import { Key, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import FilterDropdownContainer from "../../../components/molecules/filter-dropdown/container"
 import FilterDropdownItem from "../../../components/molecules/filter-dropdown/item"
@@ -58,7 +59,7 @@ const OrderFilters = ({
   const [tempState, setTempState] = useState(filters)
   const [name, setName] = useState("")
 
-  const handleRemoveTab = (val) => {
+  const handleRemoveTab = (val: any) => {
     if (onRemoveTab) {
       onRemoveTab(val)
     }
@@ -88,8 +89,8 @@ const OrderFilters = ({
     clearFilters()
   }
 
-  const setSingleFilter = (filterKey, filterVal) => {
-    setTempState((prevState) => ({
+  const setSingleFilter = (filterKey: string, filterVal: any) => {
+    setTempState((prevState: any) => ({
       ...prevState,
       [filterKey]: filterVal,
     }))
@@ -135,28 +136,48 @@ const OrderFilters = ({
           options={statusFilters}
           filters={tempState.status.filter}
           open={tempState.status.open}
-          setFilter={(val) => setSingleFilter("status", val)}
+          setFilter={(val: any) => setSingleFilter("status", val)}
+          isLoading={undefined}
+          hasMore={undefined}
+          hasPrev={undefined}
+          onShowNext={undefined}
+          onShowPrev={undefined}
         />
         <FilterDropdownItem
           filterTitle={t("Payment Status")}
           options={paymentFilters}
           filters={tempState.payment.filter}
           open={tempState.payment.open}
-          setFilter={(val) => setSingleFilter("payment", val)}
+          setFilter={(val: any) => setSingleFilter("payment", val)}
+          isLoading={undefined}
+          hasMore={undefined}
+          hasPrev={undefined}
+          onShowNext={undefined}
+          onShowPrev={undefined}
         />
         <FilterDropdownItem
           filterTitle={t("Fulfillment Status")}
           options={fulfillmentFilters}
           filters={tempState.fulfillment.filter}
           open={tempState.fulfillment.open}
-          setFilter={(val) => setSingleFilter("fulfillment", val)}
+          setFilter={(val: any) => setSingleFilter("fulfillment", val)}
+          isLoading={undefined}
+          hasMore={undefined}
+          hasPrev={undefined}
+          onShowNext={undefined}
+          onShowPrev={undefined}
         />
         <FilterDropdownItem
           filterTitle={t("Date")}
           options={dateFilters(t)}
           filters={tempState.date.filter}
           open={tempState.date.open}
-          setFilter={(val) => setSingleFilter("date", val)}
+          setFilter={(val: any) => setSingleFilter("date", val)}
+          isLoading={undefined}
+          hasMore={undefined}
+          hasPrev={undefined}
+          onShowNext={undefined}
+          onShowPrev={undefined}
         />
         <SaveFilterItem
           saveFilter={handleSaveTab}
@@ -165,16 +186,22 @@ const OrderFilters = ({
         />
       </FilterDropdownContainer>
       {tabs &&
-        tabs.map((t) => (
-          <TabFilter
-            key={t.value}
-            onClick={() => handleTabClick(t.value)}
-            label={t.label}
-            isActive={activeTab === t.value}
-            removable={!!t.removable}
-            onRemove={() => handleRemoveTab(t.value)}
-          />
-        ))}
+        tabs.map(
+          (t: {
+            value: Key | null | undefined
+            label: string | undefined
+            removable: any
+          }) => (
+            <TabFilter
+              key={t.value}
+              onClick={() => handleTabClick(t.value)}
+              label={t.label}
+              isActive={activeTab === t.value}
+              removable={!!t.removable}
+              onRemove={() => handleRemoveTab(t.value)}
+            />
+          )
+        )}
     </div>
   )
 }

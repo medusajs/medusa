@@ -6,7 +6,7 @@ import LayeredModal, {
 } from "../../../molecules/modal/layered-modal"
 import AvailableScreen from "./available-screen"
 import { SalesChannelsModalContext } from "./use-sales-channels-modal"
-
+import { useTranslation } from "react-i18next"
 type Props = {
   open: boolean
   source?: SalesChannel[]
@@ -19,7 +19,7 @@ type Props = {
  */
 const SalesChannelsModal = ({ open, source = [], onClose, onSave }: Props) => {
   const context = useLayeredModal()
-
+  const { t } = useTranslation()
   return (
     <SalesChannelsModalContext.Provider
       value={{
@@ -31,7 +31,9 @@ const SalesChannelsModal = ({ open, source = [], onClose, onSave }: Props) => {
       <LayeredModal open={open} handleClose={onClose} context={context}>
         <Modal.Body>
           <Modal.Header handleClose={onClose}>
-            <h1 className="inter-xlarge-semibold">Current Sales Channels</h1>
+            <h1 className="inter-xlarge-semibold">
+              {t("Current Sales Channels")}
+            </h1>
           </Modal.Header>
           <AvailableScreen />
           <Modal.Footer>
@@ -42,7 +44,7 @@ const SalesChannelsModal = ({ open, source = [], onClose, onSave }: Props) => {
                 type="button"
                 onClick={onClose}
               >
-                Close
+                {t("Close")}
               </Button>
             </div>
           </Modal.Footer>

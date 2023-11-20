@@ -2,6 +2,7 @@ import React, { useCallback } from "react"
 import Collapsible from "react-collapsible"
 import { NavLink } from "react-router-dom"
 import Badge from "../../fundamentals/badge"
+import { useTranslation } from "react-i18next"
 
 type SidebarMenuSubitemProps = {
   pageLink: string
@@ -34,7 +35,7 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> & {
     ({ isActive }) => (isActive ? `${styles} ${activeStyles}` : styles),
     []
   )
-
+  const {t} = useTranslation()
   return (
     <Collapsible
       transitionTime={150}
@@ -46,7 +47,7 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> & {
           <span className="group-[.is-active]:text-grey-90 ml-3">{text}</span>
           {isNew && (
             <Badge variant={"new-feature"} className="ml-auto">
-              New
+              {t("New")}
             </Badge>
           )}
         </NavLink>

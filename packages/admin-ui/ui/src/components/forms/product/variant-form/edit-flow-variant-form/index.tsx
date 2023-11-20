@@ -14,6 +14,7 @@ import Accordion from "../../../../organisms/accordion"
 import MetadataForm, { MetadataFormType } from "../../../general/metadata-form"
 import { PricesFormType } from "../../../general/prices-form"
 import VariantPricesForm from "../variant-prices-form"
+import { useTranslation } from "react-i18next"
 
 export type EditFlowVariantFormType = {
   /**
@@ -65,7 +66,7 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
   })
 
   const showStockAndInventory = !isEdit || !isFeatureEnabled("inventoryService")
-
+  const { t } = useTranslation()
   return (
     <Accordion type="multiple" defaultValue={["general"]}>
       <Accordion.Item title="General" value="general" required>
@@ -107,21 +108,22 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
       )}
       <Accordion.Item title="Shipping" value="shipping">
         <p className="inter-base-regular text-grey-50">
-          Shipping information can be required depending on your shipping
-          provider, and whether or not you are shipping internationally.
+          {t(
+            "Shipping information can be required depending on your shipping provider, and whether or not you are shipping internationally."
+          )}
         </p>
         <div className="mt-large">
-          <h3 className="inter-base-semibold mb-2xsmall">Dimensions</h3>
+          <h3 className="inter-base-semibold mb-2xsmall">{t("Dimension")}</h3>
           <p className="inter-base-regular text-grey-50 mb-large">
-            Configure to calculate the most accurate shipping rates.
+            {t("Configure to calculate the most accurate shipping rates.")}
           </p>
           <DimensionsForm form={nestedForm(form, "dimensions")} />
         </div>
         {showStockAndInventory && (
           <div className="mt-xlarge">
-            <h3 className="inter-base-semibold mb-2xsmall">Customs</h3>
+            <h3 className="inter-base-semibold mb-2xsmall">{t("Customs")}</h3>
             <p className="inter-base-regular text-grey-50 mb-large">
-              Configure if you are shipping internationally.
+              {t("Configure if you are shipping internationally.")}
             </p>
             <CustomsForm form={nestedForm(form, "customs")} />
           </div>
@@ -129,8 +131,9 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
       </Accordion.Item>
       <Accordion.Item title="Metadata" value="metadata">
         <p className="inter-base-regular text-grey-50 mb-base">
-          Metadata can be used to store additional information about the
-          variant.
+          {t(
+            "Metadata can be used to store additional information about the variant."
+          )}
         </p>
         <MetadataForm form={nestedForm(form, "metadata")} />
       </Accordion.Item>

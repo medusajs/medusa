@@ -6,6 +6,7 @@ import { formatAmountWithSymbol } from "../../../../utils/prices"
 import Button from "../../../fundamentals/button"
 import AlertIcon from "../../../fundamentals/icons/alert-icon"
 import EventContainer, { EventIconColor } from "../event-container"
+import { useTranslation } from "react-i18next"
 
 type RequestedProps = {
   event: PaymentRequiredEvent
@@ -37,7 +38,7 @@ const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
   const onMarkAsPaidClicked = () => {
     console.log("TODO")
   }
-
+  const {t} = useTranslation()
   return (
     <EventContainer
       title={"Customer payment required"}
@@ -60,7 +61,7 @@ const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
         variant="ghost"
         onClick={onCopyPaymentLinkClicked}
       >
-        Copy Payment Link
+        {t("Copy Payment Link")}
       </Button>
       <Button
         size="small"
@@ -68,7 +69,7 @@ const PaymentRequired: React.FC<RequestedProps> = ({ event }) => {
         variant="ghost"
         onClick={onMarkAsPaidClicked}
       >
-        Mark as Paid
+        {t("Mark as Paid")}
       </Button>
     </EventContainer>
   )

@@ -3,6 +3,7 @@ import { NestedForm } from "../../../../utils/nested-form"
 import DatePicker from "../../../atoms/date-picker/date-picker"
 import TimePicker from "../../../atoms/date-picker/time-picker"
 import SwitchableItem from "../../../molecules/switchable-item"
+import { useTranslation } from "react-i18next"
 
 export type GiftCardEndsAtFormType = {
   ends_at: Date | null
@@ -14,7 +15,7 @@ type GiftCardEndsAtFormProps = {
 
 const GiftCardEndsAtForm = ({ form }: GiftCardEndsAtFormProps) => {
   const { control, path } = form
-
+  const { t } = useTranslation()
   return (
     <Controller
       name={path("ends_at")}
@@ -32,17 +33,19 @@ const GiftCardEndsAtForm = ({ form }: GiftCardEndsAtFormProps) => {
                 )
               }
             }}
-            title="Gift Card has an expiry date?"
-            description="Schedule the Gift Card to deactivate in the future."
+            title={t("Gift Card has an expiry date?")}
+            description={t(
+              "Schedule the Gift Card to deactivate in the future."
+            )}
           >
             <div className="gap-x-xsmall flex items-center">
               <DatePicker
                 date={value!}
-                label="Expiry date"
+                label={t("Expiry date")}
                 onSubmitDate={onChange}
               />
               <TimePicker
-                label="Expiry time"
+                label={t("Expiry time")}
                 date={value!}
                 onSubmitDate={onChange}
               />

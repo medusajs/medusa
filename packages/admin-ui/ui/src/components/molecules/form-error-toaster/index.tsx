@@ -3,6 +3,7 @@ import { toast as Controller, Toast } from "react-hot-toast"
 import ToasterContainer from "../../atoms/toaster-container"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
+import { useTranslation } from "react-i18next"
 
 type FormErrorToasterProps = {
   toast: Toast
@@ -18,7 +19,7 @@ const FormErrorToaster: React.FC<FormErrorToasterProps> = ({
   const onDismiss = () => {
     Controller.dismiss(toast.id)
   }
-
+  const { t } = useTranslation()
   return (
     <ToasterContainer visible={toast.visible}>
       <div>
@@ -32,7 +33,7 @@ const FormErrorToaster: React.FC<FormErrorToasterProps> = ({
         <button onClick={onDismiss}>
           <CrossIcon size={20} className="text-grey-40" />
         </button>
-        <span className="sr-only">Close</span>
+        <span className="sr-only">{t("Close")}</span>
       </div>
     </ToasterContainer>
   )

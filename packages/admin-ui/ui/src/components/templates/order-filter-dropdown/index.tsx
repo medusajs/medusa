@@ -8,6 +8,7 @@ import SaveFilterItem from "../../../components/molecules/filter-dropdown/save-f
 import TabFilter from "../../../components/molecules/filter-tab"
 import PlusIcon from "../../fundamentals/icons/plus-icon"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { TFunction } from "i18next"
 
 const REGION_PAGE_SIZE = 10
 const CHANNEL_PAGE_SIZE = 10
@@ -40,12 +41,12 @@ const fulfillmentFilters = [
   "canceled",
 ]
 
-const dateFilters = [
-  "is in the last",
-  "is older than",
-  "is after",
-  "is before",
-  "is equal to",
+const dateFilters = (t: TFunction) => [
+  t("is in the last"),
+  t("is older than"),
+  t("is after"),
+  t("is before"),
+  t("is equal to"),
 ]
 
 const OrderFilters = ({

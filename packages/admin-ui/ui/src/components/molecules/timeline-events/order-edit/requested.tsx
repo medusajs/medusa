@@ -6,6 +6,7 @@ import MailIcon from "../../../fundamentals/icons/mail-icon"
 import EventContainer from "../event-container"
 import Button from "../../../fundamentals/button"
 import ResendModal from "../notification/resend-modal"
+import { useTranslation } from "react-i18next"
 
 type RequestedProps = {
   event: OrderEditRequestedEvent
@@ -25,7 +26,7 @@ const EditRequested: React.FC<RequestedProps> = ({ event }) => {
   if (!notification) {
     return null
   }
-
+  const { t } = useTranslation()
   return (
     <>
       <EventContainer
@@ -45,7 +46,7 @@ const EditRequested: React.FC<RequestedProps> = ({ event }) => {
           variant="ghost"
           onClick={() => setShowResend(true)}
         >
-          Resend Confirmation-Request
+          {t("Resend Confirmation-Request")}
         </Button>
       </EventContainer>
       {showResend && (

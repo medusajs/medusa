@@ -50,7 +50,6 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
     })
   }
   return (
-
     <div className="gap-y-large flex flex-col">
       {getWidgets("login.before").map((w, i) => {
         return (
@@ -62,44 +61,44 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
           />
         )
       })}
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col items-center">
-        <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
-          {t("Log in to Medusa")}
-        </h1>
-        <div>
-          <SigninInput
-            placeholder={t("Email")}
-            {...register("email", { required: true })}
-            autoComplete="email"
-            className="mb-small"
-          />
-          <SigninInput
-            placeholder={t("Password")}
-            type={"password"}
-            {...register("password", { required: true })}
-            autoComplete="current-password"
-            className="mb-xsmall"
-          />
-          <InputError errors={errors} name="password" />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col items-center">
+          <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
+            {t("Log in to Medusa")}
+          </h1>
+          <div>
+            <SigninInput
+              placeholder={t("Email")}
+              {...register("email", { required: true })}
+              autoComplete="email"
+              className="mb-small"
+            />
+            <SigninInput
+              placeholder={t("Password")}
+              type={"password"}
+              {...register("password", { required: true })}
+              autoComplete="current-password"
+              className="mb-xsmall"
+            />
+            <InputError errors={errors} name="password" />
+          </div>
+          <Button
+            className="rounded-rounded inter-base-regular mt-4 w-[280px]"
+            variant="secondary"
+            size="medium"
+            type="submit"
+            loading={isLoading}
+          >
+            {t("Continue")}
+          </Button>
+          <span
+            className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
+            onClick={toResetPassword}
+          >
+            {t("Forgot your password?")}
+          </span>
         </div>
-        <Button
-          className="rounded-rounded inter-base-regular mt-4 w-[280px]"
-          variant="secondary"
-          size="medium"
-          type="submit"
-          loading={isLoading}
-        >
-          {t("Continue")}
-        </Button>
-        <span
-          className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
-          onClick={toResetPassword}
-        >
-          {t("Forgot your password?")}
-        </span>
-      </div>
-    </form>
+      </form>
       {getWidgets("login.after").map((w, i) => {
         return (
           <WidgetContainer

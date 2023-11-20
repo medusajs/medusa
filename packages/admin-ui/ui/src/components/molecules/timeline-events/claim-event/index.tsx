@@ -27,6 +27,7 @@ import EventContainer, {
   EventIconColor,
 } from "../event-container"
 import EventItemContainer from "../event-item-container"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   event: ClaimEvent
@@ -91,7 +92,7 @@ const Claim = ({ event }: Props) => {
   }
 
   const Actions = renderClaimActions(event, onCancelClaim, onCancelReturn)
-
+  const { t } = useTranslation()
   const eventContainerArgs: EventContainerProps = {
     icon: event.canceledAt ? <CancelIcon size={20} /> : <AlertIcon size={20} />,
     iconColor: event.canceledAt
@@ -115,7 +116,7 @@ const Claim = ({ event }: Props) => {
                   size="small"
                   onClick={openReceiveMenu}
                 >
-                  Receive Return
+                  {t("Receive Return")}
                 </Button>
               )}
               {event.claim?.additional_items?.length > 0 &&
@@ -125,7 +126,7 @@ const Claim = ({ event }: Props) => {
                     size="small"
                     onClick={openFulfillMenu}
                   >
-                    Fulfill Replacement
+                    {t("Fulfill Replacement")}
                   </Button>
                 )}
             </div>

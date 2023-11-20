@@ -1,5 +1,6 @@
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
+import { useTranslation } from "react-i18next"
 
 export type SeoFormType = {
   seo_title: string | null
@@ -12,6 +13,8 @@ type Props = {
 }
 
 const SeoForm = ({ form }: Props) => {
+  const { t } = useTranslation()
+
   const {
     register,
     path,
@@ -22,23 +25,23 @@ const SeoForm = ({ form }: Props) => {
     <div>
       <div className="mb-large">
         <InputField
-          label="Title"
+          label={t("Title")}
           {...register(path("seo_title"))}
           errors={errors}
         />
       </div>
       <div className="mb-large">
         <InputField
-          label="Description"
-          placeholder="This is SEO description"
+          label={t("Description")}
+          placeholder={t("This is SEO description")}
           {...register(path("seo_description"))}
           errors={errors}
         />
       </div>
       <div className="mb-large">
         <InputField
-          label="URL"
-          placeholder="This is SEO URL"
+          label={t("URL")}
+          placeholder={t("This is SEO URL")}
           {...register(path("seo_url"))}
           errors={errors}
         />

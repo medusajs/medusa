@@ -5,6 +5,7 @@ import TimePicker from "../../../atoms/date-picker/time-picker"
 import AvailabilityDuration from "../../../molecules/availability-duration"
 import InputField from "../../../molecules/input"
 import SwitchableItem from "../../../molecules/switchable-item"
+import { useTranslation } from "react-i18next"
 
 export type DiscountConfigurationFormType = {
   starts_at: Date
@@ -22,6 +23,7 @@ const DiscountConfigurationForm = ({
   form,
   isDynamic,
 }: DiscountConfigurationFormProps) => {
+  const { t } = useTranslation()
   const { control, path } = form
 
   return (
@@ -41,17 +43,17 @@ const DiscountConfigurationForm = ({
                     onChange(new Date())
                   }
                 }}
-                title="Discount has a start date?"
-                description="Schedule the discount to activate in the future."
+                title={t("Discount has a start date")}
+                description={t("Schedule the discount to activate in the future.")}
               >
                 <div className="gap-x-xsmall flex items-center">
                   <DatePicker
                     date={value!}
-                    label="Start date"
+                    label={t("Start date")}
                     onSubmitDate={onChange}
                   />
                   <TimePicker
-                    label="Start time"
+                    label={t("Start time")}
                     date={value!}
                     onSubmitDate={onChange}
                   />
@@ -76,17 +78,17 @@ const DiscountConfigurationForm = ({
                     )
                   }
                 }}
-                title="Discount has an expiry date?"
-                description="Schedule the discount to deactivate in the future."
+                title={t("Discount has an expiry date?")}
+                description={t("Schedule the discount to deactivate in the future.")}
               >
                 <div className="gap-x-xsmall flex items-center">
                   <DatePicker
                     date={value!}
-                    label="Expiry date"
+                    label={t("Expiry date")}
                     onSubmitDate={onChange}
                   />
                   <TimePicker
-                    label="Expiry time"
+                    label={t("Expiry time")}
                     date={value!}
                     onSubmitDate={onChange}
                   />
@@ -109,11 +111,11 @@ const DiscountConfigurationForm = ({
                     onChange(10)
                   }
                 }}
-                title="Limit the number of redemtions?"
-                description="Limit applies across all customers, not per customer."
+                title={t("Limit the number of redemtions?")}
+                description={t("Limit applies across all customers, not per customer.")}
               >
                 <InputField
-                  label="Number of redemptions"
+                  label={t("Number of redemptions")}
                   type="number"
                   placeholder="5"
                   min={1}
@@ -139,8 +141,8 @@ const DiscountConfigurationForm = ({
                       onChange("P0Y0M0DT00H00M")
                     }
                   }}
-                  title="Availability duration?"
-                  description="Set the duration of the discount."
+                  title={t("Availability duration?")}
+                  description={t("Set the duration of the discount.")}
                 >
                   <AvailabilityDuration
                     value={value ?? undefined}

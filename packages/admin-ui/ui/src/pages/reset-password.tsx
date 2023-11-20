@@ -11,6 +11,7 @@ import PublicLayout from "../components/templates/login-layout"
 import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
+import { useTranslation } from "react-i18next"
 
 type formValues = {
   password: string
@@ -46,14 +47,14 @@ const ResetPasswordPage = () => {
   })
   const reset = useAdminResetPassword()
   const notification = useNotification()
-
+  const { t } = useTranslation()
   const onSubmit = handleSubmit((data: formValues) => {
     if (data.password !== data.repeat_password) {
       setError(
         "repeat_password",
         {
           type: "manual",
-          message: "Passwords do not match",
+          message: t("Passwords do not match"),
         },
         {
           shouldFocus: true,
@@ -86,43 +87,45 @@ const ResetPasswordPage = () => {
         {token ? (
           <form onSubmit={onSubmit}>
             <div className="gap-y-large flex flex-col items-center">
-              <h1 className="inter-xlarge-semibold">Reset your password</h1>
+              <h1 className="inter-xlarge-semibold">
+                {t("Reset your password")}
+              </h1>
               <div className="gap-y-small flex flex-col items-center">
                 <SigninInput
-                  placeholder="Email"
+                  placeholder={t("Email")}
                   disabled
                   readOnly
                   value={email}
                 />
                 <div>
                   <SigninInput
-                    placeholder="Password (8+ characters)"
+                    placeholder={t("Password (8+ characters)")}
                     type="password"
                     {...register("password", {
-                      required: FormValidator.required("Password"),
+                      required: FormValidator.required(t("Password")),
                     })}
                   />
                   <InputError errors={errors} name="password" />
                 </div>
                 <div>
                   <SigninInput
-                    placeholder="Confirm password"
+                    placeholder={t("Confirm password")}
                     type="password"
                     {...register("repeat_password", {
-                      required: "You must confirm your password",
+                      required: t("You must confirm your password"),
                     })}
                   />
                   <InputError errors={errors} name="repeat_password" />
                 </div>
               </div>
               <Button variant="secondary" size="medium" className="w-[280px]">
-                Reset password
+                {t("Reset password")}
               </Button>
               <a
                 href="/login"
                 className="inter-small-regular text-grey-40 mt-xsmall"
               >
-                Go back to sign in
+                {t("Go back to sign in")}
               </a>
             </div>
           </form>
@@ -130,15 +133,15 @@ const ResetPasswordPage = () => {
           <div className="gap-y-large flex flex-col items-center">
             <div className="gap-y-xsmall flex flex-col text-center">
               <h1 className="inter-xlarge-semibold text-[20px]">
-                Your reset link is invalid
+                {t("Your reset link is invalid")}
               </h1>
               <p className="text-grey-50 inter-base-regular">
-                Try resetting your password again.
+                {t("Try resetting your password again.")}
               </p>
             </div>
             <a href="/login?reset-password=true">
               <Button variant="secondary" size="medium" className="w-[280px]">
-                Go to reset password
+                {t("Go to reset password")}
               </Button>
             </a>
           </div>

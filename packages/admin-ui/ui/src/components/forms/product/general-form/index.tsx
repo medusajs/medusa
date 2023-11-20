@@ -5,22 +5,23 @@ import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputHeader from "../../../fundamentals/input-header"
 import InputField from "../../../molecules/input"
+import { useTranslation } from "react-i18next"
 
 const modules = {
   toolbar: [
-    [{ header: '1' }, { header: '2' }, { font: [] }],
+    [{ header: "1" }, { header: "2" }, { font: [] }],
     [{ size: [] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    ["bold", "italic", "underline", "strike", "blockquote"],
     [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
     ],
-    ['link', 'image', 'video'],
+    ["link", "image", "video"],
     [{ color: [] }, { background: [] }], // Add color and background color buttons to toolbar
-    [{ direction: 'rtl' }, { direction: 'ltr' }], // Add direction changer to toolbar
-    ['clean'],
+    [{ direction: "rtl" }, { direction: "ltr" }], // Add direction changer to toolbar
+    ["clean"],
   ],
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:
@@ -28,25 +29,22 @@ const modules = {
   },
 }
 const formats = [
-  'header',
-  'font',
-  'size',
-  'color',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'link',
-  'image',
-  'video',
+  "header",
+  "font",
+  "size",
+  "color",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "video",
 ]
-
-
-
 
 export type GeneralFormType = {
   title: string
@@ -73,26 +71,28 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
     formState: { errors },
   } = form
 
+  const { t } = useTranslation()
+
   return (
     <div>
       <div className="gap-x-large mb-small medium:grid medium:grid-cols-2 flex flex-col">
         <InputField
-          label="Title"
-          placeholder={isGiftCard ? "Gift Card" : "Winter Jacket"}
+          label={t("Title")}
+          placeholder={isGiftCard ? t("Gift Card") : t("Winter Jacket")}
           required
           {...register(path("title"), {
-            required: "Title is required",
+            required: t("Title is required"),
             minLength: {
               value: 1,
-              message: "Title must be at least 1 character",
+              message: t("Title must be at least 1 character"),
             },
             pattern: FormValidator.whiteSpaceRule("Title"),
           })}
           errors={errors}
         />
         <InputField
-          label="Subtitle"
-          placeholder="Warm and cozy..."
+          label={t("Subtitle")}
+          placeholder={t("Warm and cozy")}
           {...register(path("subtitle"), {
             pattern: FormValidator.whiteSpaceRule("Subtitle"),
           })}
@@ -100,21 +100,22 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         />
       </div>
       <p className="inter-base-regular text-grey-50 mb-large">
-        Give your {isGiftCard ? "gift card" : "product"} a short and clear
-        title.
+        {isGiftCard
+          ? t("Give your gift card a short and clear title")
+          : t("Give your product card a short and clear title")}
         <br />
-        50-60 characters is the recommended length for search engines.
+        {t("50-60 characters is the recommended length for search engines")}
       </p>
       <div className="gap-x-large mb-smallflex medium:grid medium:grid-cols-2 flex-col">
         <InputField
-          label="العنوان"
-          placeholder={isGiftCard ? "كرت هدية" : "سترة الشتاء"}
+          label={t("Title")}
+          placeholder={isGiftCard ? t("Gift Card") : t("Winter Jacket")}
           required
           {...register(path("title_ar"), {
-            required: "Title ar is required",
+            required: t("Title ar is required"),
             minLength: {
               value: 1,
-              message: "Title must be at least 1 character",
+              message: t("Title must be at least 1 character"),
             },
             pattern: FormValidator.whiteSpaceRule("Title"),
           })}
@@ -122,7 +123,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         />
         <InputField
           label="العنوان الفرعي"
-          placeholder="دافئة ومريحة"
+          placeholder={t("Warm and cozy")}
           {...register(path("subtitle_ar"), {
             pattern: FormValidator.whiteSpaceRule("Subtitle"),
           })}
@@ -131,15 +132,15 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
       </div>
       <div className="gap-x-large mb-largeflex medium:grid medium:grid-cols-2 flex-col">
         <InputField
-          label="Handle"
+          label={t("Handle")}
           tooltipContent={
             !requireHandle
               ? `The handle is the part of the URL that identifies the ${
-                  isGiftCard ? "gift card" : "product"
+                  isGiftCard ? t("gift card") : "product"
                 }. If not specified, it will be generated from the title.`
               : undefined
           }
-          placeholder={isGiftCard ? "gift-card" : "winter-jacket"}
+          placeholder={isGiftCard ? t("Gift Card") : t("Winter Jacket")}
           required={requireHandle}
           {...register(path("handle"), {
             required: requireHandle ? "Handle is required" : undefined,
@@ -150,7 +151,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           errors={errors}
         />
         <InputField
-          label="Material"
+          label={t("Material")}
           placeholder={isGiftCard ? "Paper" : "100% Cotton"}
           {...register(path("material"), {
             minLength: FormValidator.minOneCharRule("Material"),
@@ -161,7 +162,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
       </div>
       <div className="gap-x-large mb-largeflex medium:grid medium:grid-cols-2 flex-col">
         <InputField
-          label="handle arabic"
+          label={t("Handle Arabic")}
           {...register(path("handle_ar"), {
             required: requireHandle ? "Handle is required" : undefined,
             minLength: FormValidator.minOneCharRule("Handle"),
@@ -171,7 +172,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         />
       </div>
       {/* <TextArea
-        label="Description"
+        label={t("Description")}
         placeholder={
           isGiftCard ? "The gift card is..." : "A warm and cozy jacket..."
         }
@@ -181,7 +182,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         errors={errors}
       />
       <TextArea
-        label="Description in arabic"
+        label={t("Description in arabic")}
         placeholder={
           isGiftCard ? "The gift card is..." : "A warm and cozy jacket..."
         }
@@ -191,14 +192,14 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         errors={errors}
       /> */}
       <div className="mb-large">
-        <InputHeader label="Description" className="mb-xsmall" />
+        <InputHeader label={t("Description")} className="mb-xsmall" />
         <Controller
           name={path("description")}
           control={form.control}
           defaultValue=""
           render={({ field }) => (
             <ReactQuill
-              modules={modules} 
+              modules={modules}
               theme="snow"
               value={form.getValues(path("description"))}
               onChange={(value) => {
@@ -209,7 +210,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         />
       </div>
       <div>
-        <InputHeader label="Description in arabic" className="mb-xsmall" />
+        <InputHeader label={t("Description in arabic")} className="mb-xsmall" />
         <Controller
           name={path("description_ar")}
           control={form.control}
@@ -228,10 +229,11 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
       </div>
 
       <p className="inter-base-regular text-grey-50">
-        Give your {isGiftCard ? "gift card" : "product"} a short and clear
-        description.
+        {isGiftCard
+          ? t("Give your gift card a short and clear description")
+          : t("Give your product card a short and clear description")}
         <br />
-        120-160 characters is the recommended length for search engines.
+        {t("120-160 characters is the recommended length for search engines")}
       </p>
     </div>
   )

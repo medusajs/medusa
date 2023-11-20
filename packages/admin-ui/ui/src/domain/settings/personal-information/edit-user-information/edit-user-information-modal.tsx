@@ -53,7 +53,7 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
           refetch()
           onClose()
         },
-        onError: () => {},
+        onError: () => { },
       }
     )
   })
@@ -70,12 +70,12 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
               <InputField
                 {...register("first_name")}
                 errors={errors}
-                label="First name"
+                label={t("First name")}
               />
               <InputField
                 {...register("last_name")}
                 errors={errors}
-                label="Last name"
+                label={t("Last name")}
               />
             </div>
           </div>

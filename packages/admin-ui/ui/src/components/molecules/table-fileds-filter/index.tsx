@@ -6,6 +6,7 @@ import PlusIcon from "../../fundamentals/icons/plus-icon"
 import Button from "../../fundamentals/button"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 import Checkbox from "../../atoms/checkbox"
+import { useTranslation } from "react-i18next"
 
 /** ****************** TYPES ********************/
 
@@ -125,7 +126,7 @@ function FieldsMenu(props: FieldsMenuProps) {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [contentRef])
-
+  const { t } = useTranslation()
   return (
     <DropdownMenu.Root open={open}>
       <DropdownMenu.Trigger>
@@ -177,11 +178,11 @@ function TableFieldsFilters(props: TableFieldsFilterProps) {
   _selected.sort((a, b) => a.localeCompare(b))
 
   const visibleFields = _selected.map((id) => fields.find((f) => f.id === id))
-
+  const { t } = useTranslation()
   return (
     <div className="flex flex-wrap items-center gap-y-2">
       <span className="text-small mr-2 whitespace-nowrap font-semibold text-gray-500">
-        Currently editing these fields:
+        {t("Currently editing these fields:")}
       </span>
 
       {visibleFields.map((f) => (

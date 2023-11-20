@@ -6,6 +6,7 @@ import Input from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
+import { useTranslation } from "react-i18next"
 
 type ResendModalProps = {
   notificationId: string
@@ -44,13 +45,15 @@ const ResendModal: React.FC<ResendModalProps> = ({
       }
     )
   }
-
+  const { t } = useTranslation()
   return (
     <Modal handleClose={handleCancel}>
       <form onSubmit={handleSubmit(handleResend)}>
         <Modal.Body>
           <Modal.Header handleClose={handleCancel}>
-            <span className="inter-xlarge-semibold">Resend notification</span>
+            <span className="inter-xlarge-semibold">
+              {t("Resend notification")}
+            </span>
           </Modal.Header>
           <Modal.Content>
             <div className="flex flex-col">
@@ -75,7 +78,7 @@ const ResendModal: React.FC<ResendModalProps> = ({
                   size="large"
                   onClick={handleCancel}
                 >
-                  Cancel
+                  {t("Cancel")}
                 </Button>
                 <Button
                   size="large"
@@ -85,7 +88,7 @@ const ResendModal: React.FC<ResendModalProps> = ({
                   disabled={isLoading}
                   loading={isLoading}
                 >
-                  Send
+                  {t("Send")}
                 </Button>
               </div>
             </div>

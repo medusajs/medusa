@@ -6,6 +6,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import Button from "../../../fundamentals/button"
 import AdjustmentsIcon from "../../../fundamentals/icons/adjustments-icon"
 import CheckIcon from "../../../fundamentals/icons/check-icon"
+import { useTranslation } from "react-i18next"
 
 type EditPricesActionsProps = {
   selectedCurrencies: string[]
@@ -34,7 +35,7 @@ function EditPricesActions(props: EditPricesActionsProps) {
   const regions = useMemo(() => {
     return (_regions || []).sort((r1, r2) => r1.name.localeCompare(r2.name))
   }, [_regions])
-
+  const { t } = useTranslation()
   return (
     <div
       style={{ fontSize: 13 }}
@@ -43,7 +44,7 @@ function EditPricesActions(props: EditPricesActionsProps) {
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <Button variant="secondary" size="small" className="text-gray-700">
-            View
+            {t("View")}
             <AdjustmentsIcon size={20} />
           </Button>
         </DropdownMenu.Trigger>
@@ -54,7 +55,7 @@ function EditPricesActions(props: EditPricesActionsProps) {
           className="bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown z-30 max-h-[500px] min-w-[272px] overflow-y-scroll border"
         >
           <DropdownMenu.Label className="text-small px-[12px] py-2 font-medium text-gray-400">
-            Currencies
+            {t("Currencies")}
           </DropdownMenu.Label>
           {currencies?.map((c) => (
             <DropdownMenu.Item

@@ -20,6 +20,7 @@ import { User } from "@medusajs/medusa"
 import clsx from "clsx"
 import moment from "moment"
 import { removeNullish } from "../../../../../utils/remove-nullish"
+import { useTranslation } from "react-i18next"
 
 type PasswordlessUser = Omit<User, "password_hash">
 
@@ -43,6 +44,8 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
     tempState({ ...tempState, additionalFilters: {} })
   }
 
+  const { t } = useTranslation()
+
   return (
     <div className="flex space-x-1">
       <FilterDropdownContainer
@@ -57,7 +60,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
       >
         <div className="w-[320px]">
           <SearchableFilterInventoryItem
-            title="Inventory item"
+            title={t("Inventory item")}
             value={tempState.additionalFilters.inventory_item_id}
             setFilter={(val) => {
               setTempState(({ additionalFilters, ...state }) => {
@@ -72,7 +75,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
             }}
           />
           <TextFilterItem
-            title="Description"
+            title={t("Description")}
             value={tempState.additionalFilters.description}
             options={[
               { label: "Equals", value: "equals" },
@@ -90,7 +93,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
             }}
           />
           <DateFilterItem
-            title="Creation date"
+            title={t("Creation date")}
             value={tempState.additionalFilters.created_at}
             setFilter={(val) => {
               setTempState(({ additionalFilters, ...state }) => {
@@ -102,7 +105,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
             }}
           />
           <NumberFilterItem
-            title="Quantity"
+            title={t("Quantity")}
             value={tempState.additionalFilters.quantity}
             options={[
               { label: "Over", value: "gt" },
@@ -119,7 +122,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
             }}
           />
           <CreatedByFilterItem
-            title="Created by"
+            title={t("Created by")}
             value={tempState.additionalFilters.created_by}
             setFilter={(val) => {
               setTempState(({ additionalFilters, ...state }) => {

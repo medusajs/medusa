@@ -14,6 +14,8 @@ import Switch from "../../../../atoms/switch"
 import { useAdminStockLocations } from "medusa-react"
 import { useLayeredModal } from "../../../../molecules/modal/layered-modal"
 import { InventoryLevelDTO, StockLocationDTO } from "@medusajs/types"
+import { useTranslation } from "react-i18next"
+import { t } from "i18next"
 
 export type VariantStockFormType = {
   manage_inventory?: boolean
@@ -88,6 +90,8 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
     })
   }
 
+  const { t } = useTranslation()
+
   return (
     <Accordion type="multiple" defaultValue={["general"]}>
       <Accordion.Item title="General" value="general">
@@ -95,22 +99,22 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
           <div className="flex flex-col gap-y-4">
             <div className="gap-large grid grid-cols-2">
               <InputField
-                label="Stock keeping unit (SKU)"
-                placeholder="SUN-G, JK1234..."
+                label={t("Stock keeping unit (SKU)")}
+                placeholder={t("SUN-G, JK1234...")}
                 {...register("sku")}
               />
               <InputField
-                label="EAN (Barcode)"
+                label={t("EAN (Barcode)")}
                 placeholder="123456789102..."
                 {...register("ean")}
               />
               <InputField
-                label="UPC (Barcode)"
+                label={t("UPC (Barcode)")}
                 placeholder="023456789104..."
                 {...register("upc")}
               />
               <InputField
-                label="Barcode"
+                label={t("Barcode")}
                 placeholder="123456789104..."
                 {...register("barcode")}
               />
@@ -123,7 +127,7 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
           <div className="gap-y-2xsmall flex flex-col">
             <div className="flex items-center justify-between">
               <h3 className="inter-base-semibold mb-2xsmall">
-                Manage inventory
+                {t("Manage inventory")}
               </h3>
               <Controller
                 control={control}
@@ -134,8 +138,9 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
               />
             </div>
             <p className="inter-base-regular text-grey-50">
-              When checked Medusa will regulate the inventory when orders and
-              returns are made.
+              {t(
+                "When checked Medusa will regulate the inventory when orders and returns are made."
+              )}
             </p>
           </div>
           {manageInventory && (
@@ -143,7 +148,7 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
               <div className="gap-y-2xsmall flex flex-col">
                 <div className="flex items-center justify-between">
                   <h3 className="inter-base-semibold mb-2xsmall">
-                    Allow backorders
+                    {t("Allow backorders")}
                   </h3>
                   <Controller
                     control={control}
@@ -156,17 +161,20 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                   />
                 </div>
                 <p className="inter-base-regular text-grey-50">
-                  When checked the product will be available for purchase
-                  despite the product being sold out
+                  {t(
+                    "When checked the product will be available for purchase despite the product being sold out"
+                  )}
                 </p>
               </div>
               <div className="flex w-full flex-col text-base">
-                <h3 className="inter-base-semibold mb-2xsmall">Quantity</h3>
+                <h3 className="inter-base-semibold mb-2xsmall">
+                  {t("Quantity")}
+                </h3>
                 {!isLoading && locations && (
                   <div className="flex w-full flex-col">
                     <div className="inter-base-regular text-grey-50 flex justify-between py-3">
-                      <div className="">Location</div>
-                      <div className="">In Stock</div>
+                      <div className="">{t("Location")}</div>
+                      <div className="">{t("In Stock")}</div>
                     </div>
                     {selectedLocations.map((level, i) => {
                       const locationDetails = locationsMap.get(
@@ -187,10 +195,9 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                               <span className="whitespace-nowrap text-right">
                                 {`${locationLevel!.reserved_quantity} reserved`}
                               </span>
-                              <span className="whitespace-nowrap text-right">{`${
-                                locationLevel!.stocked_quantity! -
+                              <span className="whitespace-nowrap text-right">{`${locationLevel!.stocked_quantity! -
                                 locationLevel!.reserved_quantity!
-                              } available`}</span>
+                                } available`}</span>
                             </div>
                             <InputField
                               placeholder={"0"}
@@ -226,7 +233,7 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
                     )
                   }}
                 >
-                  Manage locations
+                  {t("Manage locations")}
                 </Button>
               </div>
             </>
@@ -235,20 +242,21 @@ const VariantStockForm = ({ form, locationLevels }: Props) => {
       </Accordion.Item>
       <Accordion.Item title="Shipping" value="shipping">
         <p className="inter-base-regular text-grey-50">
-          Shipping information can be required depending on your shipping
-          provider, and whether or not you are shipping internationally.
+          {t(
+            "Shipping information can be required depending on your shipping provider, and whether or not you are shipping internationally."
+          )}
         </p>
         <div className="mt-large">
-          <h3 className="inter-base-semibold mb-2xsmall">Dimensions</h3>
+          <h3 className="inter-base-semibold mb-2xsmall">{t("Dimensions")}</h3>
           <p className="inter-base-regular text-grey-50 mb-large">
-            Configure to calculate the most accurate shipping rates.
+            {t("Configure to calculate the most accurate shipping rates.")}
           </p>
           <DimensionsForm form={nestedForm(form, "dimensions")} />
         </div>
         <div className="mt-xlarge">
-          <h3 className="inter-base-semibold mb-2xsmall">Customs</h3>
+          <h3 className="inter-base-semibold mb-2xsmall">{t("Customs")}</h3>
           <p className="inter-base-regular text-grey-50 mb-large">
-            Configure if you are shipping internationally.
+            {t("Configure if you are shipping internationally.")}
           </p>
           <CustomsForm form={nestedForm(form, "customs")} />
         </div>
@@ -305,7 +313,7 @@ const ManageLocationsForm = ({
     )
     setIsDirty(
       !selectedIsExisting ||
-        selectedLocations.length !== existingLocations.length
+      selectedLocations.length !== existingLocations.length
     )
   }, [existingLocations, selectedLocations])
 
@@ -372,7 +380,7 @@ const ManageLocationsForm = ({
                   className="border"
                   onClick={handleSelectAll}
                 >
-                  Select all
+                  {t("Select all")}
                 </Button>
               )}
             </div>
@@ -408,7 +416,7 @@ const ManageLocationsForm = ({
               onClick={() => pop()}
               type="button"
             >
-              Back
+              {t("Back")}
             </Button>
             <Button
               variant="primary"
@@ -417,7 +425,7 @@ const ManageLocationsForm = ({
               type="submit"
               disabled={!isDirty}
             >
-              Save and go back
+              {t("Save and go back")}
             </Button>
           </div>
         </Modal.Footer>

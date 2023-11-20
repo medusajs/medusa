@@ -11,6 +11,7 @@ import EllipsisVerticalIcon from "../../../fundamentals/icons/ellipsis-vertical-
 import TrashIcon from "../../../fundamentals/icons/trash-icon"
 import WarningCircleIcon from "../../../fundamentals/icons/warning-circle"
 import XCircleIcon from "../../../fundamentals/icons/x-circle-icon"
+import { useTranslation } from "react-i18next"
 
 export type MetadataField = {
   key: string
@@ -112,7 +113,7 @@ const MetadataForm = ({ form }: MetadataProps) => {
 
   const rowClasses =
     "divide-grey-20 grid grid-cols-[165px_1fr] divide-x divide-solid [&>div]:px-base [&>div]:py-xsmall"
-
+  const { t } = useTranslation()
   return (
     <>
       <div className="rounded-rounded border-grey-20 divide-grey-20 inter-base-regular divide-y border">
@@ -123,10 +124,10 @@ const MetadataForm = ({ form }: MetadataProps) => {
           )}
         >
           <div>
-            <p>Key</p>
+            <p>{t("Key")}</p>
           </div>
           <div className="">
-            <p>Value</p>
+            <p>{t("Value")}</p>
           </div>
         </div>
         <div className="divide-grey-20 divide-y">
@@ -142,13 +143,13 @@ const MetadataForm = ({ form }: MetadataProps) => {
               <div>
                 <MetadataInput
                   {...register(path(`entries.${0}.key`))}
-                  placeholder="Key"
+                  placeholder={t("Key")}
                 />
               </div>
               <div>
                 <MetadataInput
                   {...register(path(`entries.${0}.value`))}
-                  placeholder="Value"
+                  placeholder={t("Value")}
                 />
               </div>
             </MetadataRow>
@@ -167,13 +168,13 @@ const MetadataForm = ({ form }: MetadataProps) => {
                   <div>
                     <MetadataInput
                       {...register(path(`entries.${index}.key`))}
-                      placeholder="Key"
+                      placeholder={t("Key")}
                     />
                   </div>
                   <div>
                     <MetadataInput
                       {...register(path(`entries.${index}.value`))}
-                      placeholder="Value"
+                      placeholder={t("Value")}
                     />
                   </div>
                 </MetadataRow>
@@ -243,6 +244,7 @@ const MetadataRow = ({
   isDisabled = false,
   children,
 }: MetadataRowProps) => {
+  const { t } = useTranslation()
   const itemClasses =
     "px-base py-[6px] outline-none flex items-center gap-x-xsmall hover:bg-grey-5 focus:bg-grey-10 transition-colors cursor-pointer"
 
@@ -267,22 +269,22 @@ const MetadataRow = ({
           <div className="bg-grey-0 shadow-dropdown border-grey-20 rounded-rounded z-50 overflow-hidden border">
             <DropdownMenu.Item onClick={onInsertAbove} className={itemClasses}>
               <ArrowUpIcon size={20} />
-              <span>Insert above</span>
+              <span>{t("Insert above")}</span>
             </DropdownMenu.Item>
             <DropdownMenu.Item onClick={onInsertBelow} className={itemClasses}>
               <ArrowDownIcon size={20} />
-              <span>Insert below</span>
+              <span>{t("Insert below")}</span>
             </DropdownMenu.Item>
             <DropdownMenu.Item onClick={onDuplicate} className={itemClasses}>
               <DuplicateIcon size={20} />
-              <span>Duplicate</span>
+              <span>{t("Duplicate")}</span>
             </DropdownMenu.Item>
             <DropdownMenu.Item
               onClick={onClearContents}
               className={itemClasses}
             >
               <XCircleIcon size={20} />
-              <span>Clear contents</span>
+              <span>{t("Clear contents")}</span>
             </DropdownMenu.Item>
             <DropdownMenu.DropdownMenuSeparator className="bg-grey-20 h-px w-full" />
             <DropdownMenu.Item
@@ -298,7 +300,7 @@ const MetadataRow = ({
               )}
             >
               <TrashIcon size={20} />
-              <span>Delete</span>
+              <span>{t("Delete")}</span>
             </DropdownMenu.Item>
           </div>
         </DropdownMenu.Content>

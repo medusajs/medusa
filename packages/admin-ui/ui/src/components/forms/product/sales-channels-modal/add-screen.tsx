@@ -7,10 +7,11 @@ import Modal from "../../../molecules/modal"
 import { useLayeredModal } from "../../../molecules/modal/layered-modal"
 import SalesChannelTable, { useSalesChannelsTableColumns } from "./table"
 import { useSalesChannelsModal } from "./use-sales-channels-modal"
-
+import { useTranslation } from "react-i18next"
 const LIMIT = 15
 
 const AddScreen = () => {
+  const { t } = useTranslation()
   const [columns] = useSalesChannelsTableColumns()
   const [query, setQuery] = useState<string | undefined>(undefined)
   const [offset, setOffset] = useState(0)
@@ -103,7 +104,7 @@ const AddScreen = () => {
             onClick={saveAndGoBack}
             disabled={disableSave}
           >
-            Save and go back
+            {t("Save and go back")}
           </Button>
           <Button
             variant="primary"
@@ -111,7 +112,7 @@ const AddScreen = () => {
             onClick={saveAndClose}
             disabled={disableSave}
           >
-            Save and close
+            {t("Save and close")}
           </Button>
         </div>
       </Modal.Footer>

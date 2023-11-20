@@ -4,6 +4,7 @@ import clsx from "clsx"
 import Button from "../../../fundamentals/button"
 import Modal from "../../../molecules/modal"
 import RadioGroup from "../../radio-group"
+import { useTranslation } from "react-i18next"
 
 type ConfirmationPromptProps = {
   handleClose: () => void
@@ -30,7 +31,7 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
   const [saveSelection, setSaveSelection] = useState<SaveMode>(
     SaveMode.SAVE_VISIBLE_ONLY
   )
-
+  const { t } = useTranslation()
   return (
     <Modal isLargeModal={false} handleClose={handleClose}>
       <Modal.Body>
@@ -40,8 +41,8 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
             <span className="inter-base-regular text-grey-50 mt-1 mb-4 w-[420px]">
               {hasHiddenColumns
                 ? `You have edited prices in hidden columns: (${hiddenEditedColumns.join(
-                    ", "
-                  )}). Do you wish to save these too?`
+                  ", "
+                )}). Do you wish to save these too?`
                 : "Save edited variant prices"}
             </span>
           </div>
@@ -75,7 +76,7 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
               size="small"
               onClick={handleClose}
             >
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button
               size="small"
@@ -93,13 +94,13 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
                 const callback = !hasHiddenColumns
                   ? onSaveOnlyVisible
                   : saveSelection === SaveMode.SAVE_ALL
-                  ? onSaveAll
-                  : onSaveOnlyVisible
+                    ? onSaveAll
+                    : onSaveOnlyVisible
 
                 callback()
               }}
             >
-              Save changes
+              {t("Save changes")}
             </Button>
           </div>
         </Modal.Footer>

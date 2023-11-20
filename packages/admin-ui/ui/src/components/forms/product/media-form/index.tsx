@@ -1,4 +1,6 @@
 import clsx from "clsx"
+import { useTranslation } from "react-i18next"
+
 import { useMemo } from "react"
 import {
   Controller,
@@ -24,7 +26,10 @@ type Props = {
   form: NestedForm<MediaFormType>
 }
 
+
+
 const MediaForm = ({ form }: Props) => {
+  const { t } = useTranslation()
   const { control, path, setValue } = form
 
   const { fields, append, remove } = useFieldArray({
@@ -80,7 +85,7 @@ const MediaForm = ({ form }: Props) => {
         <div>
           <FileUploadField
             onFileChosen={handleFilesChosen}
-            placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
+            placeholder={t("1200 x 1600 (3:4) recommended, up to 10MB each")}
             multiple
             filetypes={["image/gif", "image/jpeg", "image/png", "image/webp"]}
             className="py-large"
@@ -90,7 +95,7 @@ const MediaForm = ({ form }: Props) => {
       {fields.length > 0 && (
         <div className="mt-large">
           <div className="mb-small flex items-center justify-between">
-            <h2 className="inter-large-semibold">Uploads</h2>
+            <h2 className="inter-large-semibold">{t("Uploads")}</h2>
             <ModalActions
               number={selected.length}
               onDeselect={handleDeselect}
@@ -194,6 +199,8 @@ type ModalActionsProps = {
 }
 
 const ModalActions = ({ number, onRemove, onDeselect }: ModalActionsProps) => {
+  const { t } = useTranslation()
+
   return (
     <div className="flex h-10 items-center overflow-y-hidden pr-1">
       <div
@@ -214,7 +221,7 @@ const ModalActions = ({ number, onRemove, onDeselect }: ModalActionsProps) => {
             type="button"
             onClick={onDeselect}
           >
-            Deselect
+            {t("Deselect")}
           </Button>
           <Button
             variant="danger"
@@ -222,7 +229,7 @@ const ModalActions = ({ number, onRemove, onDeselect }: ModalActionsProps) => {
             type="button"
             onClick={onRemove}
           >
-            Delete
+            {t("Delete")}
           </Button>
         </div>
       </div>

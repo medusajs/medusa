@@ -4,6 +4,7 @@ import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
 import { NextSelect } from "../../../molecules/select/next-select"
+import { useTranslation } from "react-i18next"
 
 export type AddressLocationFormType = {
   address_1: string
@@ -35,52 +36,53 @@ const AddressLocationForm = ({
     formState: { errors },
     control,
   } = form
+  const { t } = useTranslation()
 
   return (
     <div className="gap-large grid grid-cols-2">
       <InputField
         {...register(path("address_1"), {
           required: requireFields?.address_1
-            ? FormValidator.required("Address 1")
+            ? FormValidator.required(t("Address 1"))
             : false,
           pattern: FormValidator.whiteSpaceRule("Address 1"),
         })}
-        placeholder="Address 1"
-        label="Address 1"
+        placeholder={t("Address 1")}
+        label={t("Address 1")}
         required={requireFields?.address_1}
         errors={errors}
       />
       <InputField
         {...register(path("address_2"), {
-          pattern: FormValidator.whiteSpaceRule("Address 2"),
+          pattern: FormValidator.whiteSpaceRule(t("Address 2")),
           required: requireFields?.address_2
             ? FormValidator.required("Address 2")
             : false,
         })}
-        placeholder="Address 2"
+        placeholder={t("Address 2")}
         required={requireFields?.address_2}
-        label="Address 2"
+        label={t("Address 2")}
         errors={errors}
       />
       <InputField
         {...register(path("postal_code"), {
           required: requireFields?.postal_code
-            ? FormValidator.required("Postal code")
+            ? FormValidator.required(t("Postal code"))
             : false,
           pattern: FormValidator.whiteSpaceRule("Postal code"),
         })}
-        placeholder="Postal code"
-        label="Postal code"
+        placeholder={t("Postal code")}
+        label={t("Postal code")}
         required={requireFields?.postal_code}
         autoComplete="off"
         errors={errors}
       />
       <InputField
-        placeholder="City"
-        label="City"
+        placeholder={t("City")}
+        label={t("City")}
         {...register(path("city"), {
           required: requireFields?.city
-            ? FormValidator.required("City")
+            ? FormValidator.required(t("City"))
             : false,
           pattern: FormValidator.whiteSpaceRule("City"),
         })}
@@ -91,11 +93,11 @@ const AddressLocationForm = ({
         {...register(path("province"), {
           pattern: FormValidator.whiteSpaceRule("Province"),
           required: requireFields?.province
-            ? FormValidator.required("Province")
+            ? FormValidator.required(t("Province"))
             : false,
         })}
-        placeholder="Province"
-        label="Province"
+        placeholder={t("Province")}
+        label={t("Province")}
         required={requireFields?.province}
         errors={errors}
       />
@@ -104,13 +106,13 @@ const AddressLocationForm = ({
         name={path("country_code")}
         rules={{
           required: requireFields?.country_code
-            ? FormValidator.required("Country")
+            ? FormValidator.required(t("Country"))
             : false,
         }}
         render={({ field: { value, onChange } }) => {
           return (
             <NextSelect
-              label="Country"
+              label={t("Country")}
               required={requireFields?.country_code}
               value={value}
               options={countryOptions}

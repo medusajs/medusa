@@ -3,9 +3,11 @@ import { FormImage } from "../../../../types/shared"
 import { NestedForm } from "../../../../utils/nested-form"
 import FileUploadField from "../../../atoms/file-upload-field"
 import TrashIcon from "../../../fundamentals/icons/trash-icon"
+import { useTranslation } from "react-i18next"
 import Actionables, {
   ActionType
 } from "../../../molecules/actionables"
+import { t } from "i18next"
 
 export type ThumbnailFormType = {
   images: FormImage[]
@@ -16,6 +18,7 @@ type Props = {
 }
 
 const ThumbnailForm = ({ form }: Props) => {
+  const { t } = useTranslation()
   const { control, path } = form
 
   const { fields, remove, replace, append } = useFieldArray({
@@ -45,7 +48,7 @@ const ThumbnailForm = ({ form }: Props) => {
         <div className="mt-large">
           <FileUploadField
             onFileChosen={handleFilesChosen}
-            placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
+            placeholder={t("1200 x 1600 (3:4) recommended, up to 10MB each")}
             filetypes={["image/gif", "image/jpeg", "image/png", "image/webp"]}
             className="py-large"
           />
@@ -53,7 +56,7 @@ const ThumbnailForm = ({ form }: Props) => {
       </div>
       {fields.length > 0 && (
         <div className="mt-large">
-          <h2 className="inter-large-semibold mb-small">Upload</h2>
+          <h2 className="inter-large-semibold mb-small">{t("Upload")}</h2>
 
           <div className="gap-y-2xsmall flex flex-col">
             {fields.map((field, index) => {
@@ -82,7 +85,7 @@ type ThumbnailProps = {
 const Image = ({ image, index, remove }: ThumbnailProps) => {
   const actions: ActionType[] = [
     {
-      label: "Delete",
+      label: t("Delete"),
       onClick: () => remove(index),
       icon: <TrashIcon size={20} />,
       variant: "danger",

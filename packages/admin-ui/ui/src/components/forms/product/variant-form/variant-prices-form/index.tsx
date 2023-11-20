@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { NestedForm } from "../../../../../utils/nested-form"
 import PricesForm, { PricesFormType } from "../../../general/prices-form"
 
@@ -6,10 +7,11 @@ type Props = {
 }
 
 const VariantPricesForm = ({ form }: Props) => {
+  const { t } = useTranslation()
   return (
     <div>
       <p className="inter-base-regular text-grey-50">
-        Configure the pricing for this variant.
+        {t("Configure the pricing for this variant.")}
       </p>
       <div className="pt-large">
         <PricesForm form={form} />

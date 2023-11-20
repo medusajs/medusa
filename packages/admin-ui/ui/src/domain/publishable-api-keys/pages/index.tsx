@@ -180,7 +180,7 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
             {t("Create API Key")}
           </h1>
           <h5 className="inter-base-semibold text-grey-90 pb-1">
-            General Information
+            {t("General Information")}
           </h5>
           <p className="text-grey-50 pb-8">
             {t(
@@ -188,7 +188,7 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
             )}
           </p>
           <InputField
-            label="Title"
+            label={t("Title")}
             type="string"
             name="name"
             value={name}

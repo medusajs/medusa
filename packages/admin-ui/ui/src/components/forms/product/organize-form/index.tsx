@@ -25,7 +25,11 @@ type Props = {
   form: NestedForm<OrganizeFormType>
 }
 
+import { useTranslation } from "react-i18next"
+
+
 const OrganizeForm = ({ form }: Props) => {
+  const { t } = useTranslation();
   const { control, path, setValue } = form
   const {
     productTypeOptions,
@@ -57,11 +61,11 @@ const OrganizeForm = ({ form }: Props) => {
           render={({ field: { value, onChange } }) => {
             return (
               <NextCreateableSelect
-                label="Type"
+                label={t("Type")}
                 onChange={onChange}
                 options={productTypeOptions}
                 value={value || null}
-                placeholder="Choose a type"
+                placeholder={t("Choose types")}
                 onCreateOption={onCreateOption}
                 isClearable
               />
@@ -74,11 +78,11 @@ const OrganizeForm = ({ form }: Props) => {
           render={({ field: { value, onChange } }) => {
             return (
               <NextSelect
-                label="Collection"
+                label={t("Collection")}
                 onChange={onChange}
                 options={collectionOptions}
                 value={value}
-                placeholder="Choose a collection"
+                placeholder={t("Choose collections")}
                 isClearable
               />
             )
@@ -88,7 +92,7 @@ const OrganizeForm = ({ form }: Props) => {
 
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) ? (
         <>
-          <InputHeader label="Categories" className="mb-2" />
+          <InputHeader label={t("Categories")} className="mb-2" />
           <Controller
             name={path("categories")}
             control={control}
@@ -102,8 +106,8 @@ const OrganizeForm = ({ form }: Props) => {
                 <NestedMultiselect
                   placeholder={
                     !!categoriesOptions?.length
-                      ? "Choose categories"
-                      : "No categories available"
+                      ? t("Choose categories")
+                      : t("No categories available")
                   }
                   onSelect={onChange}
                   options={categoriesOptions}
@@ -121,7 +125,7 @@ const OrganizeForm = ({ form }: Props) => {
         control={control}
         name={path("tags")}
         render={({ field: { value, onChange } }) => {
-          return <TagInput onChange={onChange} values={value || []} />
+          return <TagInput onChange={onChange} values={value || []} label={t("tags")} />
         }}
       />
     </div>

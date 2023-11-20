@@ -1,6 +1,7 @@
 import { parse } from "iso8601-duration"
 import React, { useEffect, useState } from "react"
 import InputField from "../input"
+import { useTranslation } from "react-i18next"
 
 type AvailabilityDurationProps = {
   onChange: React.Dispatch<React.SetStateAction<string | undefined>>
@@ -22,9 +23,8 @@ const AvailabilityDuration: React.FC<AvailabilityDurationProps> = ({
   const [durationMinutes, setDurationMinutes] = useState(duration.minutes || 0)
 
   useEffect(() => {
-    const isoString = `P${durationYears || 0}Y${durationMonths || 0}M${
-      durationDays || 0
-    }DT${durationHours || 0}H${durationMinutes || 0}M`
+    const isoString = `P${durationYears || 0}Y${durationMonths || 0}M${durationDays || 0
+      }DT${durationHours || 0}H${durationMinutes || 0}M`
 
     onChange(isoString)
   }, [
@@ -34,12 +34,12 @@ const AvailabilityDuration: React.FC<AvailabilityDurationProps> = ({
     durationHours,
     durationMinutes,
   ])
-
+  const { t } = useTranslation()
   return (
     <div>
       <div className="gap-x-xsmall gap-y-base mt-xlarge grid grid-cols-3 grid-rows-2">
         <InputField
-          label="Years"
+          label={t("Years")}
           type="number"
           placeholder="0"
           value={durationYears}
@@ -47,7 +47,7 @@ const AvailabilityDuration: React.FC<AvailabilityDurationProps> = ({
           min={0}
         />
         <InputField
-          label="Months"
+          label={t("Months")}
           type="number"
           placeholder="0"
           value={durationMonths}
@@ -55,7 +55,7 @@ const AvailabilityDuration: React.FC<AvailabilityDurationProps> = ({
           min={0}
         />
         <InputField
-          label="Days"
+          label={t("Days")}
           type="number"
           placeholder="0"
           value={durationDays}
@@ -63,7 +63,7 @@ const AvailabilityDuration: React.FC<AvailabilityDurationProps> = ({
           min={0}
         />
         <InputField
-          label="Hours"
+          label={t("Hours")}
           type="number"
           placeholder="0"
           value={durationHours}
@@ -71,7 +71,7 @@ const AvailabilityDuration: React.FC<AvailabilityDurationProps> = ({
           min={0}
         />
         <InputField
-          label="Minutes"
+          label={t("Minutes")}
           type="number"
           placeholder="0"
           value={durationMinutes}

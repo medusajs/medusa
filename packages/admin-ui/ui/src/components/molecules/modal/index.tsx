@@ -57,7 +57,8 @@ const Content: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <Dialog.Content
       style={style}
-      className="medium:min-w-modal rounded-rounded bg-grey-0 w-full overflow-x-hidden"
+      // make modal max width equal 36rem
+      className="medium:min-w-modal rounded-rounded bg-grey-0 w-full max-w-xl overflow-x-hidden"
     >
       {children}
     </Dialog.Content>

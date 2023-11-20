@@ -15,6 +15,7 @@ import VariantSelectOptionsForm, {
   VariantSelectOptionsFormType,
 } from "../variant-select-options-form"
 import VariantStockForm, { VariantStockFormType } from "../variant-stock-form"
+import { useTranslation } from "react-i18next"
 
 export type CreateFlowVariantFormType = {
   /**
@@ -55,6 +56,7 @@ type Props = {
  * }
  */
 const CreateFlowVariantForm = ({ form, options, onCreateOption }: Props) => {
+  const { t } = useTranslation()
   return (
     <Accordion type="multiple" defaultValue={["general"]}>
       <Accordion.Item title="General" value="general" required>
@@ -62,10 +64,12 @@ const CreateFlowVariantForm = ({ form, options, onCreateOption }: Props) => {
           <VariantGeneralForm form={nestedForm(form, "general")} />
           <div className="mt-xlarge">
             <div className="gap-x-2xsmall mb-base flex items-center">
-              <h3 className="inter-base-semibold">Options</h3>
+              <h3 className="inter-base-semibold">{t("Options")}</h3>
               <IconTooltip
                 type="info"
-                content="Options are used to define the color, size, etc. of the variant."
+                content={t(
+                  "Options are used to define the color, size, etc. of the variant."
+                )}
               />
             </div>
             <VariantSelectOptionsForm
@@ -85,20 +89,21 @@ const CreateFlowVariantForm = ({ form, options, onCreateOption }: Props) => {
       </Accordion.Item>
       <Accordion.Item title="Shipping" value="shipping">
         <p className="inter-base-regular text-grey-50">
-          Shipping information can be required depending on your shipping
-          provider, and whether or not you are shipping internationally.
+          {t(
+            "Shipping information can be required depending on your shipping provider, and whether or not you are shipping internationally."
+          )}
         </p>
         <div className="mt-large">
-          <h3 className="inter-base-semibold mb-2xsmall">Dimensions</h3>
+          <h3 className="inter-base-semibold mb-2xsmall">{t("Dimensions")}</h3>
           <p className="inter-base-regular text-grey-50 mb-large">
-            Configure to calculate the most accurate shipping rates.
+            {t("Configure to calculate the most accurate shipping rates.")}
           </p>
           <DimensionsForm form={nestedForm(form, "dimensions")} />
         </div>
         <div className="mt-xlarge">
-          <h3 className="inter-base-semibold mb-2xsmall">Customs</h3>
+          <h3 className="inter-base-semibold mb-2xsmall">{t("Customs")}</h3>
           <p className="inter-base-regular text-grey-50 mb-large">
-            Configure if you are shipping internationally.
+            {t("Configure if you are shipping internationally.")}
           </p>
           <CustomsForm form={nestedForm(form, "customs")} />
         </div>

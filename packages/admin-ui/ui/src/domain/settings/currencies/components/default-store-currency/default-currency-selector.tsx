@@ -68,7 +68,7 @@ const DefaultCurrencySelector = ({ store }: Props) => {
         render={({ field: { value, onChange, onBlur } }) => {
           return (
             <NextSelect
-              placeholder="Choose default currency"
+              placeholder={t("Choose default currency")}
               options={currencyOptions}
               value={value}
               onChange={(e) => {

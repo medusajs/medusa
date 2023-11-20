@@ -1,7 +1,7 @@
 import { Controller } from "react-hook-form"
 import { NestedForm } from "../../../../utils/nested-form"
 import Switch from "../../../atoms/switch"
-
+import { useTranslation } from "react-i18next"
 export type DiscountableFormType = {
   value: boolean
 }
@@ -12,6 +12,7 @@ type Props = {
 }
 
 const DiscountableForm = ({ form, isGiftCard }: Props) => {
+  const { t } = useTranslation()
   const { control, path } = form
   return (
     <div>
@@ -26,8 +27,10 @@ const DiscountableForm = ({ form, isGiftCard }: Props) => {
         />
       </div>
       <p className="inter-base-regular text-grey-50">
-        When unchecked discounts will not be applied to this{" "}
-        {isGiftCard ? "gift card" : "product"}.
+        {isGiftCard
+          ? t("When unchecked discounts will not be applied to this product")
+          : t("When unchecked discounts will not be applied to this gift card")}
+        .
       </p>
     </div>
   )

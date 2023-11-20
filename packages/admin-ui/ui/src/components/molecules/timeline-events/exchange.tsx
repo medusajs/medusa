@@ -27,6 +27,8 @@ import { FulfillmentStatus, PaymentStatus, ReturnStatus } from "../order-status"
 import EventActionables from "./event-actionables"
 import EventContainer, { EventIconColor } from "./event-container"
 import EventItemContainer from "./event-item-container"
+import { useTranslation } from "react-i18next"
+import { t } from "i18next"
 
 type ExchangeProps = {
   event: ExchangeEvent
@@ -39,21 +41,21 @@ type ExchangeStatusProps = {
 
 const ExchangeStatus: React.FC<ExchangeStatusProps> = ({ event }) => {
   const divider = <div className="bg-grey-20 h-11 w-px" />
-
+  const { t } = useTranslation()
   return (
     <div className="inter-small-regular gap-x-base flex items-center">
       <div className="gap-y-2xsmall flex flex-col">
-        <span className="text-grey-50">Payment:</span>
+        <span className="text-grey-50">{t("Payment")}:</span>
         <PaymentStatus paymentStatus={event.paymentStatus} />
       </div>
       {divider}
       <div className="gap-y-2xsmall flex flex-col">
-        <span className="text-grey-50">Return:</span>
+        <span className="text-grey-50">{t("Return")}:</span>
         <ReturnStatus returnStatus={event.returnStatus} />
       </div>
       {divider}
       <div className="gap-y-2xsmall flex flex-col">
-        <span className="text-grey-50">Fulfillment:</span>
+        <span className="text-grey-50">{t("Fulfillment")}:</span>
         <FulfillmentStatus fulfillmentStatus={event.fulfillmentStatus} />
       </div>
     </div>
@@ -179,7 +181,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
       variant: "danger",
     })
   }
-
+  const { t } = useTranslation()
   const args = {
     title: event.canceledAt ? "Exchange Cancelled" : "Exchange Requested",
     icon: event.canceledAt ? (
@@ -198,7 +200,9 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
       <div className="gap-y-base flex flex-col" key={event.id}>
         {event.canceledAt && (
           <div>
-            <span className="inter-small-semibold mr-2">Requested on:</span>
+            <span className="inter-small-semibold mr-2">
+              {t("Requested on")}:
+            </span>
             <span className="text-grey-50">
               {new Date(event.time).toUTCString()}
             </span>
@@ -215,7 +219,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
               size="small"
               onClick={() => setShowReceiveReturn(true)}
             >
-              Receive Return
+              {t("Receive Return")}
             </Button>
           )}
           {event.fulfillmentStatus === "not_fulfilled" && (
@@ -224,7 +228,7 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
               size="small"
               onClick={() => setShowCreateFulfillment(true)}
             >
-              Fulfill Exchange
+              {t("Fulfill Exchange")}
             </Button>
           )}
         </div>
@@ -238,20 +242,20 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
         <DeletePrompt
           handleClose={() => setShowCancel(!showCancel)}
           onDelete={handleCancelExchange}
-          confirmText="Yes, cancel"
-          heading="Cancel exchange"
-          text="Are you sure you want to cancel this exchange?"
-          successText="Exchange cancelled"
+          confirmText={t("Yes, cancel")}
+          heading={t("Cancel exchange")}
+          text={t("Are you sure you want to cancel this exchange?")}
+          successText={t("Exchange cancelled")}
         />
       )}
       {showCancelReturn && (
         <DeletePrompt
           handleClose={() => setShowCancelReturn(!showCancelReturn)}
           onDelete={handleCancelReturn}
-          confirmText="Yes, cancel"
-          heading="Cancel return"
-          text="Are you sure you want to cancel this return?"
-          successText="Return cancelled"
+          confirmText={t("Yes, cancel")}
+          heading={t("Cancel return")}
+          text={t("Are you sure you want to cancel this return?")}
+          successText={t("Return cancelled")}
         />
       )}
       {showReceiveReturn && order && (
@@ -273,9 +277,10 @@ const Exchange: React.FC<ExchangeProps> = ({ event, refetch }) => {
 }
 
 function getNewItems(event: ExchangeEvent) {
+  const { t } = useTranslation()
   return (
     <div className="gap-y-small flex flex-col">
-      <span className="inter-small-regular text-grey-50">New Items</span>
+      <span className="inter-small-regular text-grey-50">{t("New Items")}</span>
       <div>
         {event.newItems.map((i, index) => (
           <EventItemContainer key={index} item={i} />
@@ -295,7 +300,7 @@ function getPaymentLink(
     <div className="inter-small-regular gap-y-xsmall text-grey-50 flex flex-col">
       <div className="gap-x-xsmall flex items-center">
         {paymentFormatWarning && <IconTooltip content={paymentFormatWarning} />}
-        <span>Payment link:</span>
+        <span>{t("Payment link")}:</span>
       </div>
       {differenceCardId && (
         <CopyToClipboard
@@ -310,7 +315,9 @@ function getPaymentLink(
 function getReturnItems(event: ExchangeEvent) {
   return (
     <div className="gap-y-small flex flex-col">
-      <span className="inter-small-regular text-grey-50">Return Items</span>
+      <span className="inter-small-regular text-grey-50">
+        {t("Return Items")}
+      </span>
       <div>
         {event.returnItems
           .filter((i) => !!i)

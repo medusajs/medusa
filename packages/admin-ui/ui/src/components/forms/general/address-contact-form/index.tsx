@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
@@ -27,31 +28,31 @@ const AddressContactForm = ({
     register,
     formState: { errors },
   } = form
-
+  const { t } = useTranslation()
   return (
     <div>
       <div className="gap-large grid grid-cols-2">
         <InputField
           {...register(path("first_name"), {
             required: requireFields?.first_name
-              ? FormValidator.required("First name")
+              ? FormValidator.required(t("First name"))
               : false,
             pattern: FormValidator.whiteSpaceRule("First name"),
           })}
-          placeholder="First Name"
-          label="First Name"
+          placeholder={t("First Name")}
+          label={t("First Name")}
           required={requireFields?.first_name}
           errors={errors}
         />
         <InputField
           {...form.register(path("last_name"), {
             required: requireFields?.last_name
-              ? FormValidator.required("Last name")
+              ? FormValidator.required(t("Last name"))
               : false,
             pattern: FormValidator.whiteSpaceRule("Last name"),
           })}
-          placeholder="Last Name"
-          label="Last Name"
+          placeholder={t("Last Name")}
+          label={t("Last Name")}
           required={requireFields?.last_name}
           errors={errors}
         />
@@ -59,24 +60,24 @@ const AddressContactForm = ({
           {...form.register(path("company"), {
             pattern: FormValidator.whiteSpaceRule("Company"),
             required: requireFields?.company
-              ? FormValidator.required("Company")
+              ? FormValidator.required(t("Company"))
               : false,
           })}
-          placeholder="Company"
+          placeholder={t("Company")}
           required={requireFields?.company}
-          label="Company"
+          label={t("Company")}
           errors={errors}
         />
         <InputField
           {...form.register(path("phone"), {
             pattern: FormValidator.whiteSpaceRule("Phone"),
             required: requireFields?.phone
-              ? FormValidator.required("Phone")
+              ? FormValidator.required(t("Phone"))
               : false,
           })}
           required={requireFields?.phone}
-          placeholder="Phone"
-          label="Phone"
+          placeholder={t("Phone")}
+          label={t("Phone")}
           errors={errors}
         />
       </div>

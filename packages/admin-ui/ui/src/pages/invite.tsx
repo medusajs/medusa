@@ -17,6 +17,7 @@ import AnalyticsConfigForm, {
   AnalyticsConfigFormType,
 } from "../components/organisms/analytics-config-form"
 import { nestedForm } from "../utils/nested-form"
+import { useTranslation } from "react-i18next"
 
 type FormValues = {
   password: string
@@ -80,6 +81,7 @@ const InvitePage = () => {
 
   const navigate = useNavigate()
   const notification = useNotification()
+  const { t } = useTranslation()
 
   const handleAcceptInvite = handleSubmit(async (data: FormValues) => {
     if (data.password !== data.repeat_password) {
@@ -87,7 +89,7 @@ const InvitePage = () => {
         "repeat_password",
         {
           type: "manual",
-          message: "Passwords do not match",
+          message: t("Passwords do not match"),
         },
         {
           shouldFocus: true,
@@ -134,14 +136,15 @@ const InvitePage = () => {
         <SEO title="Create Account" />
         <div className="gap-y-xsmall flex flex-col items-center">
           <h1 className="inter-xlarge-semibold mb- text-[20px]">
-            Invalid invite
+            {t("Invalid invite")}
           </h1>
           <p className="inter-base-regular text-grey-50 w-[280px] text-center">
-            The invite link you have used is invalid. Please contact your
-            administrator.
+            {t(
+              "The invite link you have used is invalid. Please contact your administrator."
+            )}
           </p>
           <p className="inter-small-regular text-grey-40 mt-xlarge">
-            Already have an account? <a href="/login">Log in</a>
+            {t("Already have an account?")} <a href="/login">{t("Log in")}</a>
           </p>
         </div>
       </PublicLayout>
@@ -155,7 +158,7 @@ const InvitePage = () => {
         <form onSubmit={handleAcceptInvite}>
           <div className="flex w-[300px] flex-col items-center">
             <h1 className="inter-xlarge-semibold mb-large text-[20px]">
-              Create your Medusa account
+              {t("Create your Medusa account")}
             </h1>
             <div className="gap-y-small flex flex-col">
               <div>
@@ -195,10 +198,10 @@ const InvitePage = () => {
               className="mt-large w-[300px]"
               loading={isLoading}
             >
-              Create account
+              {t("Create account")}
             </Button>
             <p className="inter-small-regular text-grey-50 mt-xlarge">
-              Already signed up? <a href="/login">Log in</a>
+              {t("Already signed up?")} <a href="/login">{t("Log in")}</a>
             </p>
           </div>
         </form>
@@ -206,18 +209,19 @@ const InvitePage = () => {
         <div className="flex flex-col items-center text-center">
           <h1 className="inter-xlarge-semibold text-[20px]">
             {first_run
-              ? `Let's get you started!`
-              : `You have been invited to join the team`}
+              ? t(`Let's get you started!`)
+              : t(`You have been invited to join the team`)}
           </h1>
           {first_run ? (
             <p className="inter-base-regular text-grey-50 mt-xsmall">
-              Create an admin account to access your <br /> Medusa dashboard.
+              {t("Create an admin account to access your")} <br />{" "}
+              {t("Medusa dashboard.")}
             </p>
           ) : (
             <p className="inter-base-regular text-grey-50 mt-xsmall">
-              You can now join the team. Sign up below and get started
+              {t("You can now join the team. Sign up below and get started")}{" "}
               <br />
-              with your Medusa account right away.
+              {t("with your Medusa account right away.")}
             </p>
           )}
           <Button
@@ -226,7 +230,7 @@ const InvitePage = () => {
             className="mt-xlarge w-[300px]"
             onClick={() => setSignUp(true)}
           >
-            Sign up
+            {t("Sign up")}
           </Button>
         </div>
       )}

@@ -5,6 +5,7 @@ import { Option } from "../../../../types/shared"
 import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import { NextSelect } from "../../../molecules/select/next-select"
+import { useTranslation } from "react-i18next"
 
 type RegionOption = Option & {
   currency_code: string
@@ -19,6 +20,7 @@ type GiftCardRegionFormProps = {
 }
 
 const GiftCardRegionForm = ({ form }: GiftCardRegionFormProps) => {
+  const { t } = useTranslation()
   const {
     control,
     path,
@@ -57,13 +59,13 @@ const GiftCardRegionForm = ({ form }: GiftCardRegionFormProps) => {
     <Controller
       name={path("region_id")}
       rules={{
-        required: FormValidator.required("Region"),
+        required: FormValidator.required(t("Region")),
       }}
       control={control}
       render={({ field }) => {
         return (
           <NextSelect
-            label="Region"
+            label={t("Region")}
             required
             {...field}
             errors={errors}

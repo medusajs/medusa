@@ -14,6 +14,7 @@ import { ActionType } from "../actionables"
 import EventActionables from "./event-actionables"
 import EventContainer from "./event-container"
 import EventItemContainer from "./event-item-container"
+import { useTranslation } from "react-i18next"
 
 type ReturnRequestedProps = {
   event: ReturnEvent
@@ -47,7 +48,7 @@ const Return: React.FC<ReturnRequestedProps> = ({ event, refetch }) => {
   if (event.raw?.claim_order_id) {
     return null
   }
-
+  const { t } = useTranslation()
   return (
     <>
       <EventContainer {...eventContainerArgs} />
@@ -55,10 +56,10 @@ const Return: React.FC<ReturnRequestedProps> = ({ event, refetch }) => {
         <DeletePrompt
           handleClose={() => setShowCancel(false)}
           onDelete={async () => handleCancel()}
-          heading="Cancel return"
-          confirmText="Yes, cancel"
-          successText="Canceled return"
-          text="Are you sure you want to cancel this return?"
+          heading={t("Cancel return")}
+          confirmText={t("Yes, cancel")}
+          successText={t("Canceled return")}
+          text={t("Are you sure you want to cancel this return?")}
         />
       )}
       {showReceiveReturnMenu && (
@@ -130,13 +131,13 @@ function buildReturn(
     children:
       event.status === "requested"
         ? [
-            event.items.map((i, index) => {
-              return <EventItemContainer key={index} item={i} />
-            }),
-            React.createElement(React.Fragment, { key: "button" }, button),
-          ]
+          event.items.map((i, index) => {
+            return <EventItemContainer key={index} item={i} />
+          }),
+          React.createElement(React.Fragment, { key: "button" }, button),
+        ]
         : event.status === "received"
-        ? [
+          ? [
             event.items.map((i, index) => (
               <EventItemContainer
                 key={index}
@@ -144,7 +145,7 @@ function buildReturn(
               />
             )),
           ]
-        : null,
+          : null,
   }
 }
 

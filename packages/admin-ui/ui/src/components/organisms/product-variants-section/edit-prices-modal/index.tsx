@@ -22,6 +22,7 @@ import EditPricesActions from "./edit-prices-actions"
 import useNotification from "../../../../hooks/use-notification"
 import DeletePrompt from "../../delete-prompt"
 import SavePrompt from "./save-prompt"
+import { useTranslation } from "react-i18next"
 
 type EditPricesModalProps = {
   close: () => void
@@ -288,7 +289,7 @@ function EditPricesModal(props: EditPricesModalProps) {
     document.addEventListener("keydown", onEsc)
     return () => document.removeEventListener("keydown", onEsc)
   }, [])
-
+  const { t } = useTranslation()
   return (
     <Fade isFullScreen isVisible>
       <Modal.Body className="border bg-gray-200 p-2">
@@ -304,7 +305,7 @@ function EditPricesModal(props: EditPricesModalProps) {
                 <CrossIcon size={20} />
               </Button>
               <span className="text-small rounded-lg border border-2 border-gray-300 bg-gray-100 px-2 font-medium text-gray-500">
-                esc
+                {t("esc")}
               </span>
             </div>
             <div className="flex items-center gap-3">
@@ -314,7 +315,7 @@ function EditPricesModal(props: EditPricesModalProps) {
                 onClick={props.close}
                 className="text-black-800  cursor-pointer border p-1.5 font-medium"
               >
-                Discard
+                {t("Discard")}
               </Button>
               <Button
                 variant="ghost"
@@ -322,7 +323,7 @@ function EditPricesModal(props: EditPricesModalProps) {
                 onClick={onSave}
                 className="cursor-pointer border bg-black p-1.5 font-medium text-white hover:bg-black"
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </div>

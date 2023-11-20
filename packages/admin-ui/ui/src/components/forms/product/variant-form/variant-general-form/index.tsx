@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import FormValidator from "../../../../../utils/form-validator"
 import { NestedForm } from "../../../../../utils/nested-form"
 import InputField from "../../../../molecules/input"
@@ -18,10 +19,12 @@ const VariantGeneralForm = ({ form }: Props) => {
     formState: { errors },
   } = form
 
+  const { t } = useTranslation()
+
   return (
     <div>
       <p className="inter-base-regular text-grey-50">
-        Configure the general information for this variant.
+        {t("Configure the general information for this variant.")}
       </p>
       <div className="pt-large">
         <div className="gap-x-large grid grid-cols-2">

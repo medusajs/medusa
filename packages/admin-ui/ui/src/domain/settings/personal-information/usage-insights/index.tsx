@@ -20,7 +20,7 @@ const UsageInsights = ({ user }: Props) => {
       <div className="flex items-center justify-between">
         <div className="gap-y-2xsmall flex flex-col">
           <div className="gap-x-xsmall flex items-center">
-            <h2 className="inter-base-semibold">Usage insights</h2>
+            <h2 className="inter-base-semibold">{t("Usage insights")}</h2>
             {isLoading ? (
               <div className="badge bg-grey-10 h-large w-16 animate-pulse" />
             ) : !analytics_config || analytics_config?.opt_out ? (

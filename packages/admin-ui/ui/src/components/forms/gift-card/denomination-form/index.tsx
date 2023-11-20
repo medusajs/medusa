@@ -8,6 +8,7 @@ import CoinsIcon from "../../../fundamentals/icons/coins-icon"
 import IconTooltip from "../../../molecules/icon-tooltip"
 import MetadataForm, { MetadataFormType } from "../../general/metadata-form"
 import PriceFormInput from "../../general/prices-form/price-form-input"
+import { useTranslation } from "react-i18next"
 
 type DenominationType = {
   amount: number
@@ -48,15 +49,15 @@ const DenominationForm = ({ form }: Props) => {
     control,
     name: path("useSameValue"),
   })
-
+  const { t } = useTranslation()
   return (
     <div className="gap-y-xlarge flex flex-col">
       <div>
         <div className="gap-x-2xsmall flex items-center">
-          <h2 className="inter-base-semibold">Default currency</h2>
+          <h2 className="inter-base-semibold">{t("Default currency")}</h2>
           <IconTooltip
             type="info"
-            content="The denomination in your store's default currency"
+            content={t("The denomination in your store's default currency")}
           />
         </div>
         <div className="pt-small gap-x-base rounded-rounded relative grid grid-cols-[1fr_223px] justify-between transition-colors">
@@ -78,8 +79,9 @@ const DenominationForm = ({ form }: Props) => {
             name={path(`defaultDenomination.amount`)}
             control={control}
             rules={{
-              required:
-                "An amount for your store's default currency is required",
+              required: t(
+                "An amount for your store's default currency is required"
+              ),
             }}
             render={({ field: { value, onChange, name } }) => {
               return (
@@ -101,11 +103,12 @@ const DenominationForm = ({ form }: Props) => {
         <div className="flex items-start justify-between">
           <div className="gap-y-2xsmall flex flex-col">
             <h2 className="inter-base-semibold">
-              Use value for all currencies?
+              {t("Use value for all currencies?")}
             </h2>
             <p className="inter-small-regular text-grey-50 max-w-[60%]">
-              If enabled the value used for the store&apos;s default currency
-              code will also be applied to all other currencies in your store.
+              {t(
+                "If enabled the value used for the store&apos;s default currency code will also be applied to all other currencies in your store."
+              )}
             </p>
           </div>
           <Controller
@@ -122,10 +125,10 @@ const DenominationForm = ({ form }: Props) => {
       {!useSameValue && (
         <div>
           <div className="gap-x-2xsmall flex items-center">
-            <h2 className="inter-base-semibold">Other currencies</h2>
+            <h2 className="inter-base-semibold">{t("Other currencies")}</h2>
             <IconTooltip
               type="info"
-              content="The denomination in your store's other currencies"
+              content={t("The denomination in your store's other currencies")}
             />
           </div>
           <div className="gap-y-xsmall pt-small flex flex-col">
@@ -173,7 +176,7 @@ const DenominationForm = ({ form }: Props) => {
         </div>
       )}
       <div>
-        <h2 className="inter-base-semibold mb-base">Metadata</h2>
+        <h2 className="inter-base-semibold mb-base">{t("Metadata")}</h2>
         <MetadataForm form={nestedForm(form, "metadata")} />
       </div>
     </div>

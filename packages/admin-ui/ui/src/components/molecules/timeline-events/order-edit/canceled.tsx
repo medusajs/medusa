@@ -4,6 +4,7 @@ import { ByLine } from "."
 import { OrderEditEvent } from "../../../../hooks/use-build-timeline"
 import XCircleIcon from "../../../fundamentals/icons/x-circle-icon"
 import EventContainer from "../event-container"
+import { useTranslation } from "react-i18next"
 
 type EditCanceledProps = {
   event: OrderEditEvent
@@ -11,10 +12,10 @@ type EditCanceledProps = {
 
 const EditCanceled: React.FC<EditCanceledProps> = ({ event }) => {
   const { user } = useAdminUser(event.edit.canceled_by as string)
-
+  const {t} = useTranslation()
   return (
     <EventContainer
-      title={"Order Edit canceled"}
+      title={t("Order Edit canceled")}
       icon={<XCircleIcon size={20} />}
       time={event.time}
       isFirst={event.first}

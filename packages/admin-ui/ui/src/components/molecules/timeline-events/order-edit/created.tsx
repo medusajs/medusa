@@ -19,6 +19,7 @@ import EventContainer from "../event-container"
 import { OrderEditContext } from "../../../../domain/orders/edit/context"
 import CopyToClipboard from "../../../atoms/copy-to-clipboard"
 import { ByLine } from "."
+import { useTranslation } from "react-i18next"
 
 type EditCreatedProps = {
   event: OrderEditEvent
@@ -122,7 +123,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
   if (isModalVisible && orderEdit?.status === "created") {
     return null
   }
-
+  const { t } = useTranslation()
   return (
     <>
       <EventContainer
@@ -157,7 +158,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
                   onDelete={onDeleteOrderEditClicked}
                   className="border-grey-20 w-full border"
                 >
-                  Delete the order edit
+                  {t("Delete the order edit")}
                 </TwoStepDelete>
               </>
             ) : (
@@ -168,7 +169,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
                   variant="ghost"
                   onClick={onCopyConfirmationLinkClicked}
                 >
-                  Copy Confirmation-Request Link
+                  {t("Copy Confirmation-Request Link")}
                 </Button>
                 <Button
                   className="border-grey-20 w-full border"
@@ -176,14 +177,14 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
                   variant="ghost"
                   onClick={onConfirmEditClicked}
                 >
-                  Force Confirm
+                  {t("Force Confirm")}
                 </Button>
 
                 <TwoStepDelete
                   onDelete={onCancelOrderEditClicked}
                   className="border-grey-20 w-full border"
                 >
-                  Cancel Order Edit
+                  {t("Cancel Order Edit")}
                 </TwoStepDelete>
               </>
             )}
@@ -215,12 +216,12 @@ const OrderEditChanges = ({ orderEdit }) => {
         oec.original_line_item &&
         oec.original_line_item.quantity > oec.line_item.quantity)
   )
-
+  const { t } = useTranslation()
   return (
     <div className="gap-y-base flex flex-col">
       {added.length > 0 && (
         <div>
-          <span className="inter-small-regular text-grey-50">Added</span>
+          <span className="inter-small-regular text-grey-50">{t("Added")}</span>
           {added.map((change) => (
             <OrderEditChangeItem change={change} key={change.id} />
           ))}
@@ -228,7 +229,9 @@ const OrderEditChanges = ({ orderEdit }) => {
       )}
       {removed.length > 0 && (
         <div>
-          <span className="inter-small-regular text-grey-50">Removed</span>
+          <span className="inter-small-regular text-grey-50">
+            {t("Removed")}
+          </span>
           {removed.map((change) => (
             <OrderEditChangeItem change={change} key={change.id} />
           ))}

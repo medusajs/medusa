@@ -5303,7 +5303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-ui@*, @medusajs/admin-ui@workspace:packages/admin-ui":
+"@medusajs/admin-ui@1.5.0, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
@@ -5411,7 +5411,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
-    "@medusajs/admin-ui": "*"
+    "@medusajs/admin-ui": 1.5.0
     "@medusajs/medusa": "*"
     "@medusajs/ui": 0.0.0-snapshot-20230816100247
     "@medusajs/ui-preset": 0.0.0-snapshot-20230816100247

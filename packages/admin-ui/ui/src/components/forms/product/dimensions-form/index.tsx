@@ -12,6 +12,7 @@ export type DimensionsFormType = {
 type DimensionsFormProps = {
   form: NestedForm<DimensionsFormType>
 }
+import { useTranslation } from "react-i18next"
 
 /**
  * Re-usable nested form used to submit dimensions information for products and their variants.
@@ -19,6 +20,7 @@ type DimensionsFormProps = {
  * <DimensionsForm form={nestedForm(form, "dimensions")} />
  */
 const DimensionsForm = ({ form }: DimensionsFormProps) => {
+  const { t } = useTranslation()
   const {
     register,
     path,
@@ -28,7 +30,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
   return (
     <div className="gap-x-large medium:grid-cols-4 grid grid-cols-2">
       <InputField
-        label="Width"
+        label={t("Width")}
         placeholder="100..."
         type="number"
         {...register(path("width"), {
@@ -38,7 +40,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
         errors={errors}
       />
       <InputField
-        label="Length"
+        label={t("Length")}
         placeholder="100..."
         type="number"
         {...register(path("length"), {
@@ -48,7 +50,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
         errors={errors}
       />
       <InputField
-        label="Height"
+        label={t("Height")}
         placeholder="100..."
         type="number"
         {...register(path("height"), {
@@ -58,7 +60,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
         errors={errors}
       />
       <InputField
-        label="Weight"
+        label={t("Weight")}
         placeholder="100..."
         type="number"
         {...register(path("weight"), {

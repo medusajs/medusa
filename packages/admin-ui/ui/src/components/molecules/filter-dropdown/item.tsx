@@ -13,6 +13,7 @@ import InputField from "../input"
 import Spinner from "../../atoms/spinner"
 import clsx from "clsx"
 import moment from "moment"
+import { useTranslation } from "react-i18next"
 
 const DAY_IN_SECONDS = 86400
 
@@ -83,7 +84,7 @@ const FilterDropdownItem = ({
 
     setFilter({ open: open, filter: newFilter })
   }
-
+  const { t } = useTranslation()
   return (
     <div
       className={clsx("w-full cursor-pointer py-2 px-4 ", {
@@ -107,9 +108,8 @@ const FilterDropdownItem = ({
         >
           <div className="flex items-center">
             <div
-              className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${
-                open && "bg-violet-60"
-              }`}
+              className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${open && "bg-violet-60"
+                }`}
             >
               <span className="self-center">
                 {open && <CheckIcon size={16} />}
@@ -137,7 +137,7 @@ const FilterDropdownItem = ({
                 onClick={handlePrev}
                 className="hover:text-violet-60 text-grey-90 font-semibold"
               >
-                Back
+                {t("Back")}
               </button>
             </div>
           )}
@@ -179,9 +179,8 @@ const FilterDropdownItem = ({
                   onClick={() => onCheck(value)}
                 >
                   <div
-                    className={`text-grey-0 border-grey-30 rounded-base mr-2 flex h-5 w-5 justify-center border ${
-                      checked[value] === true && "bg-violet-60"
-                    }`}
+                    className={`text-grey-0 border-grey-30 rounded-base mr-2 flex h-5 w-5 justify-center border ${checked[value] === true && "bg-violet-60"
+                      }`}
                   >
                     <span className="self-center">
                       {checked[value] === true && <CheckIcon size={16} />}
@@ -208,7 +207,7 @@ const FilterDropdownItem = ({
                 onClick={handleNext}
                 className="hover:text-violet-60 text-grey-90 font-semibold"
               >
-                Show more
+                {t("Show more")}
               </button>
             </div>
           )}

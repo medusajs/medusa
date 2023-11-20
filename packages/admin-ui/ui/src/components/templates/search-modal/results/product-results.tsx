@@ -1,9 +1,11 @@
+/* eslint-disable react/jsx-key */
 import clsx from "clsx"
 import SectionCollapsible from "../section-collapsible"
 import { useAdminProducts } from "medusa-react"
 import useKeyboardNavigationList from "../use-keyboard-navigation-list"
 import { Link } from "react-router-dom"
 import i18n from "i18next";
+import { useTranslation } from "react-i18next"
 type ProductResultsProps = {
   products: ReturnType<typeof useAdminProducts>["products"]
   getLIProps: ReturnType<typeof useKeyboardNavigationList>["getLIProps"]
@@ -17,6 +19,8 @@ const ProductResults = ({
   offset,
   selected,
 }: ProductResultsProps) => {
+  const { t } = useTranslation()
+
   return products.length > 0 ? (
     <SectionCollapsible title={"Products"} length={products.length || 0}>
       <div className="mt-large">
@@ -54,7 +58,7 @@ const ProductResults = ({
                     }
                   )}
                 >
-                  Jump to...
+                  {t("Jump to...")}
                 </span>
               </Link>
             </li>

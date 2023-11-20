@@ -2,6 +2,7 @@ import { SalesChannel } from "@medusajs/medusa"
 import Tooltip from "../../atoms/tooltip"
 import IconBadge from "../../fundamentals/icon-badge"
 import ChannelsIcon from "../../fundamentals/icons/channels-icon"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   salesChannels: SalesChannel[]
@@ -9,6 +10,7 @@ type Props = {
 }
 
 const SalesChannelsList = ({ salesChannels, showMax = 3 }: Props) => {
+  const { t } = useTranslation()
   const truncateSalesChannels = salesChannels.length > showMax
   return (
     <div className="flex items-center py-1">
@@ -35,7 +37,7 @@ const SalesChannelsList = ({ salesChannels, showMax = 3 }: Props) => {
           side="top"
         >
           <span className="text-grey-50 ml-1">
-            + {salesChannels.length - showMax} more
+            + {salesChannels.length - showMax} {t("more")}
           </span>
         </Tooltip>
       )}

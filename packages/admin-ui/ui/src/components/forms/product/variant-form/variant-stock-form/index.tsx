@@ -15,6 +15,7 @@ import clsx from "clsx"
 import { sum } from "lodash"
 import { useAdminStockLocations } from "medusa-react"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { useTranslation } from "react-i18next"
 
 export type VariantStockFormType = {
   manage_inventory?: boolean
@@ -94,21 +95,23 @@ const VariantStockForm = ({ form }: Props) => {
     })
   }
 
+  const { t } = useTranslation()
+
   return (
     <div>
       <p className="inter-base-regular text-grey-50">
-        Configure the inventory and stock for this variant.
+        {t("Configure the inventory and stock for this variant.")}
       </p>
       <div className="gap-y-xlarge pt-large flex flex-col">
         <div className="gap-large grid grid-cols-2">
           <InputField
-            label="Stock keeping unit (SKU)"
-            placeholder="SUN-G, JK1234..."
+            label={t("Stock keeping unit (SKU)")}
+            placeholder={t("SUN-G, JK1234...")}
             {...register(path("sku"))}
           />
           {!stockLocationEnabled && (
             <InputField
-              label="Quantity in stock"
+              label={t("Quantity in stock")}
               type="number"
               placeholder="100..."
               errors={errors}
@@ -118,24 +121,26 @@ const VariantStockForm = ({ form }: Props) => {
             />
           )}
           <InputField
-            label="EAN (Barcode)"
+            label={t("EAN (Barcode)")}
             placeholder="123456789102..."
             {...register(path("ean"))}
           />
           <InputField
-            label="UPC (Barcode)"
+            label={t("UPC (Barcode)")}
             placeholder="023456789104..."
             {...register(path("upc"))}
           />
           <InputField
-            label="Barcode"
+            label={t("Barcode")}
             placeholder="123456789104..."
             {...register(path("barcode"))}
           />
         </div>
         <div className="gap-y-2xsmall flex flex-col">
           <div className="flex items-center justify-between">
-            <h3 className="inter-base-semibold mb-2xsmall">Manage inventory</h3>
+            <h3 className="inter-base-semibold mb-2xsmall">
+              {t("Manage inventory")}
+            </h3>
             <Controller
               control={control}
               name={path("manage_inventory")}
@@ -145,13 +150,16 @@ const VariantStockForm = ({ form }: Props) => {
             />
           </div>
           <p className="inter-base-regular text-grey-50">
-            When checked Medusa will regulate the inventory when orders and
-            returns are made.
+            {t(
+              "When checked Medusa will regulate the inventory when orders and returns are made."
+            )}
           </p>
         </div>
         <div className="gap-y-2xsmall flex flex-col">
           <div className="flex items-center justify-between">
-            <h3 className="inter-base-semibold mb-2xsmall">Allow backorders</h3>
+            <h3 className="inter-base-semibold mb-2xsmall">
+              {t("Allow backorders")}
+            </h3>
             <Controller
               control={control}
               name={path("allow_backorder")}
@@ -161,8 +169,9 @@ const VariantStockForm = ({ form }: Props) => {
             />
           </div>
           <p className="inter-base-regular text-grey-50">
-            When checked the product will be available for purchase despite the
-            product being sold out
+            {t(
+              "When checked the product will be available for purchase despite the product being sold out"
+            )}
           </p>
         </div>
         <FeatureToggle featureFlag="inventoryService">
@@ -174,10 +183,16 @@ const VariantStockForm = ({ form }: Props) => {
           >
             <div className="flex flex-col">
               <div className="gap-y-2xsmall mb-4 flex flex-col">
-                <h3 className="inter-base-semibold mb-2xsmall">Quantity</h3>
+                <h3 className="inter-base-semibold mb-2xsmall">
+                  {t("Quantity")}
+                </h3>
                 <div className="flex items-center justify-between">
-                  <p className="inter-base-regular text-grey-50">Location</p>
-                  <p className="inter-base-regular text-grey-50">In Stock</p>
+                  <p className="inter-base-regular text-grey-50">
+                    {t("Location")}
+                  </p>
+                  <p className="inter-base-regular text-grey-50">
+                    {t("In Stock")}
+                  </p>
                 </div>
               </div>
               <div className="gap-y-base flex flex-col pb-6">
@@ -207,7 +222,7 @@ const VariantStockForm = ({ form }: Props) => {
 
               {!!selectedLocations.length && (
                 <div className="text-grey-50 mb-6 flex items-center justify-between border-t border-dashed pt-6">
-                  <p>Total inventory at all locations</p>
+                  <p>{t("Total inventory at all locations")}</p>
                   <p>{`${totalStockedQuantity} available`}</p>
                 </div>
               )}
@@ -228,7 +243,7 @@ const VariantStockForm = ({ form }: Props) => {
                   )
                 }}
               >
-                Manage locations
+                {t("Manage locations")}
               </Button>
             </div>
           </div>

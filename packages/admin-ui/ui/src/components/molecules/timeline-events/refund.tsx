@@ -3,15 +3,17 @@ import { RefundEvent } from "../../../hooks/use-build-timeline"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import RefundIcon from "../../fundamentals/icons/refund"
 import EventContainer from "./event-container"
+import { useTranslation } from "react-i18next"
 
 type RefundEventProps = {
   event: RefundEvent
 }
 
 const Refund: React.FC<RefundEventProps> = ({ event }) => {
+  const { t } = useTranslation()
   const args = {
     icon: <RefundIcon size={20} />,
-    title: "Refund",
+    title: t("Refund"),
     time: event.time,
     midNode: (
       <span className="inter-small-regular text-grey-50">
@@ -30,7 +32,7 @@ const Refund: React.FC<RefundEventProps> = ({ event }) => {
         )}
         {event.note && (
           <div className="bg-grey-5 px-base py-base rounded-2xl">
-            Note: {event.note}
+            {t("Note")}: {event.note}
           </div>
         )}
       </div>

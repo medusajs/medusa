@@ -1,5 +1,6 @@
 import React from "react"
 import Badge from "../../fundamentals/badge"
+import { useTranslation } from "react-i18next"
 
 enum RequirementType {
   MAX_SUBTOTAL = "max_subtotal",
@@ -31,6 +32,7 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
   currency_code,
   onEdit,
 }) => {
+  const { t } = useTranslation()
   return (
     <div className="p-base rounded-base border-grey-20 flex items-baseline justify-between border">
       <div className="truncate">
@@ -38,7 +40,9 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
           <p className="inter-small-semibold mr-xsmall truncate">
             {option.name} {option.data.name && `(${option.data.name})`}{" "}
           </p>
-          {option.admin_only && <Badge variant="primary">Not on website</Badge>}
+          {option.admin_only && (
+            <Badge variant="primary">{t("Not on website")}</Badge>
+          )}
         </div>
         <p className="inter-small-regular text-grey-50 truncate">
           {option.price_type === "flat_rate" ? "Flat Rate" : "Calculated"}:{" "}
@@ -46,12 +50,11 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
             `${option.amount / 100} ${currency_code.toUpperCase()}`}
           {option.requirements.length
             ? option.requirements.map((r) => {
-                const type =
-                  r.type === "max_subtotal" ? "Max. subtotal" : "Min. subtotal"
-                return ` - ${type}: ${
-                  r.amount / 100
+              const type =
+                r.type === "max_subtotal" ? "Max. subtotal" : "Min. subtotal"
+              return ` - ${type}: ${r.amount / 100
                 } ${currency_code.toUpperCase()}`
-              })
+            })
             : null}
         </p>
       </div>
@@ -60,7 +63,7 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
           onClick={onEdit}
           className="inter-small-semibold text-violet-60"
         >
-          Edit
+          {t("Edit")}
         </button>
       </div>
     </div>

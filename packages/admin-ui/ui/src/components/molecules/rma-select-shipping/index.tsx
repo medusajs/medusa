@@ -2,6 +2,7 @@ import React from "react"
 import Button from "../../fundamentals/button"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
 import { AmountInput } from "../amount-input"
+import { useTranslation } from "react-i18next"
 
 type RMAShippingPriceProps = {
   inclTax: boolean
@@ -20,6 +21,7 @@ const RMAShippingPrice: React.FC<RMAShippingPriceProps> = ({
   updateShippingPrice,
   setUseCustomShippingPrice,
 }) => {
+  const { t } = useTranslation()
   return useCustomShippingPrice ? (
     <div className="gap-x-base mt-4 flex w-full items-end">
       <AmountInput
@@ -45,7 +47,7 @@ const RMAShippingPrice: React.FC<RMAShippingPriceProps> = ({
         className="border-grey-20 border"
         size="small"
       >
-        Add custom price
+        {t("Add custom price")}
       </Button>
     </div>
   )

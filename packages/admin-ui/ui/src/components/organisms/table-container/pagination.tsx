@@ -49,7 +49,7 @@ export const TablePagination = ({
         </Skeleton>
         <div className="flex space-x-4">
           <Skeleton>
-            <div dir="auto" >
+            <div dir="auto">
               {t("{currentPage} of {soothedPageCount}", {
                 currentPage,
                 soothedPageCount,
@@ -57,20 +57,32 @@ export const TablePagination = ({
             </div>
           </Skeleton>
           <div className="flex items-center space-x-4">
-          <button
-            className={`disabled:text-grey-30 cursor-pointer disabled:cursor-default`}
-            disabled={i18n.language === "ar" ? (!hasNext || isLoading) : (!hasPrev || isLoading)}
-            onClick={i18n.language === "ar" ? (() => nextPage()) : (() => prevPage())}
-          >
-            <ArrowLeftIcon />
-          </button>
-          <button
-            className={`disabled:text-grey-30 cursor-pointer disabled:cursor-default`}
-            disabled={i18n.language === "ar" ? (!hasPrev || isLoading) : (!hasNext || isLoading)}
-            onClick={i18n.language === "ar" ? (() => prevPage()) : (() => nextPage())} 
-          >
-            <ArrowRightIcon />
-          </button>
+            <button
+              className={`disabled:text-grey-30 cursor-pointer disabled:cursor-default`}
+              disabled={
+                i18n.language === "ar"
+                  ? !hasNext || isLoading
+                  : !hasPrev || isLoading
+              }
+              onClick={
+                i18n.language === "ar" ? () => nextPage() : () => prevPage()
+              }
+            >
+              <ArrowLeftIcon />
+            </button>
+            <button
+              className={`disabled:text-grey-30 cursor-pointer disabled:cursor-default`}
+              disabled={
+                i18n.language === "ar"
+                  ? !hasPrev || isLoading
+                  : !hasNext || isLoading
+              }
+              onClick={
+                i18n.language === "ar" ? () => prevPage() : () => nextPage()
+              }
+            >
+              <ArrowRightIcon />
+            </button>
           </div>
         </div>
       </div>

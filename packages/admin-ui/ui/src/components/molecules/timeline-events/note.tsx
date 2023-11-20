@@ -8,6 +8,7 @@ import TrashIcon from "../../fundamentals/icons/trash-icon"
 import DeletePrompt from "../../organisms/delete-prompt"
 import EventActionables from "./event-actionables"
 import EventContainer from "./event-container"
+import { useTranslation } from "react-i18next"
 
 type NoteProps = {
   event: NoteEvent
@@ -27,7 +28,7 @@ const Note: React.FC<NoteProps> = ({ event }) => {
     user.first_name && user.last_name
       ? `${user.first_name} ${user.last_name}`
       : user.email
-
+  const {t} = useTranslation()
   return (
     <>
       <EventContainer
@@ -38,7 +39,7 @@ const Note: React.FC<NoteProps> = ({ event }) => {
           <EventActionables
             actions={[
               {
-                label: "Delete",
+                label: t("Delete"),
                 icon: <TrashIcon size={20} />,
                 onClick: () => setShowDelete(!showDelete),
                 variant: "danger",
@@ -61,9 +62,9 @@ const Note: React.FC<NoteProps> = ({ event }) => {
         <DeletePrompt
           handleClose={() => setShowDelete(!showDelete)}
           onDelete={async () => deleteNote.mutate(undefined)}
-          confirmText="Yes, delete"
-          heading="Delete note"
-          successText="Deleted note"
+          confirmText={t("Yes, delete")}
+          heading={t("Delete note")}
+          successText={t("Deleted note")}
         />
       )}
     </>

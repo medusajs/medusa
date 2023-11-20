@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
@@ -13,6 +14,7 @@ type GiftCardReceiverFormProps = {
 }
 
 const GiftCardReceiverForm = ({ form }: GiftCardReceiverFormProps) => {
+  const { t } = useTranslation()
   const {
     register,
     path,
@@ -22,17 +24,17 @@ const GiftCardReceiverForm = ({ form }: GiftCardReceiverFormProps) => {
   return (
     <div className="gap-y-large flex flex-col">
       <InputField
-        label="Email"
+        label={t("Email")}
         {...register(path("email"), {
-          required: FormValidator.required("Email"),
-          pattern: FormValidator.email("Email"),
+          required: FormValidator.required(t("Email")),
+          pattern: FormValidator.email(t("Email")),
         })}
         required
         errors={errors}
       />
       <TextArea
-        label="Personal Message"
-        placeholder="Write a personal message here"
+        label={t("Personal Message")}
+        placeholder={t("Write a personal message here")}
         rows={7}
         {...register(path("message"))}
       />

@@ -3,6 +3,7 @@ import Button from "../../fundamentals/button"
 import RefreshIcon from "../../fundamentals/icons/refresh-icon"
 import WarningCircleIcon from "../../fundamentals/icons/warning-circle"
 import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   children: React.ReactNode
@@ -80,6 +81,7 @@ const FallbackWidget = ({
   reset: () => void
   hide: () => void
 }) => {
+  const { t } = useTranslation()
   return (
     <div className="rounded-rounded p-base bg-rose-10 border-rose-40 gap-x-small flex justify-start border">
       <div>
@@ -90,17 +92,19 @@ const FallbackWidget = ({
         />
       </div>
       <div className="text-rose-40 inter-small-regular w-full pr-[20px]">
-        <h1 className="inter-base-semibold mb-2xsmall">Uncaught error</h1>
+        <h1 className="inter-base-semibold mb-2xsmall">
+          {t("Uncaught error")}
+        </h1>
         <p className="mb-small">
           A widget from <strong>{origin}</strong> crashed. See the console for
           more info.
         </p>
         <p className="mb-large">
-          <strong>What should I do?</strong>
+          <strong>{t("What should I do?")}</strong>
           <br />
-          If you are the developer of this widget, you should fix the error and
-          reload the page. If you are not the developer, you should contact the
-          maintainer and report the error.
+          {t(
+            "If you are the developer of this page, you should fix the error and reload the page.If you are not the developer, you should contact the maintainer and report the error."
+          )}
         </p>
         <div className="gap-x-base flex items-center">
           <Button
@@ -112,7 +116,7 @@ const FallbackWidget = ({
           >
             <div className="flex items-center">
               <XCircleIcon size="20" />
-              <span className="ml-xsmall">Hide</span>
+              <span className="ml-xsmall">{t("Hide")}</span>
             </div>
           </Button>
           <Button
@@ -124,7 +128,7 @@ const FallbackWidget = ({
           >
             <div className="flex items-center">
               <RefreshIcon size="20" />
-              <span className="ml-xsmall">Reload</span>
+              <span className="ml-xsmall">{t("Reload")}</span>
             </div>
           </Button>
         </div>

@@ -1,5 +1,6 @@
 import React from "react"
 import Tooltip from "../../atoms/tooltip"
+import { useTranslation } from "react-i18next"
 
 type DelimitedListProps = {
   list: string[]
@@ -16,6 +17,7 @@ const DelimitedList: React.FC<DelimitedListProps> = ({ list, delimit = 1 }) => {
   const extraItemsInToolTipCount = list.length - delimit
 
   const ToolTipContent = () => {
+    const { t } = useTranslation()
     return (
       <div className="flex flex-col">
         {list.slice(delimit).map((listItem) => (
@@ -24,7 +26,7 @@ const DelimitedList: React.FC<DelimitedListProps> = ({ list, delimit = 1 }) => {
       </div>
     )
   }
-
+  const { t } = useTranslation
   return (
     <span className="inter-base-regular text-grey-50">
       {itemsToDisplay}
@@ -33,7 +35,7 @@ const DelimitedList: React.FC<DelimitedListProps> = ({ list, delimit = 1 }) => {
         <Tooltip content={<ToolTipContent />}>
           <span className="text-grey-40">
             {" "}
-            + {extraItemsInToolTipCount} more
+            + {extraItemsInToolTipCount} {t("more")}
           </span>
         </Tooltip>
       )}

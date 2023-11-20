@@ -3,6 +3,7 @@ import { useAdminSalesChannels } from "medusa-react"
 import React from "react"
 import Tooltip from "../../atoms/tooltip"
 import Badge from "../../fundamentals/badge"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   channels?: SalesChannel[]
@@ -11,7 +12,7 @@ type Props = {
 const SalesChannelsDisplay = ({ channels = [] }: Props) => {
   const { count } = useAdminSalesChannels()
   const remainder = Math.max(channels.length - 3, 0)
-
+  const { t } = useTranslation()
   return (
     <div className="gap-y-small flex flex-col">
       {channels.length > 0 && (
@@ -33,7 +34,7 @@ const SalesChannelsDisplay = ({ channels = [] }: Props) => {
             >
               <Badge variant="ghost" className="px-3 py-1.5">
                 <div className="inter-small-regular text-grey-50 flex h-full items-center">
-                  + {remainder} more
+                  + {remainder} {t("more")}
                 </div>
               </Badge>
             </Tooltip>
@@ -41,13 +42,13 @@ const SalesChannelsDisplay = ({ channels = [] }: Props) => {
         </div>
       )}
       <p className="inter-base-regular text-grey-50">
-        Available in{" "}
+        {t("Available in")}{" "}
         <span className="inter-base-semibold text-grey-90">
           {channels.length ? channels.length : 0}
         </span>{" "}
-        out of{" "}
+        {t("out of")}{" "}
         <span className="inter-base-semibold text-grey-90">{count || 0}</span>{" "}
-        Sales Channels
+        {t("Sales Channels")}
       </p>
     </div>
   )

@@ -1,9 +1,11 @@
+/* eslint-disable react/jsx-key */
 import clsx from "clsx"
 import SectionCollapsible from "../section-collapsible"
 import { useAdminCustomers } from "medusa-react"
 import useKeyboardNavigationList from "../use-keyboard-navigation-list"
 import Avatar from "../../../atoms/avatar"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 type CustomerResultsProps = {
   customers: ReturnType<typeof useAdminCustomers>["customers"]
@@ -18,6 +20,7 @@ const CustomerResults = ({
   offset,
   selected,
 }: CustomerResultsProps) => {
+  const { t } = useTranslation()
   return customers.length > 0 ? (
     <SectionCollapsible title={"Customers"} length={customers?.length || 0}>
       <div className="mt-large">
@@ -54,7 +57,7 @@ const CustomerResults = ({
                     }
                   )}
                 >
-                  Jump to...
+                  {t("Jump to...")}
                 </span>
               </Link>
             </li>

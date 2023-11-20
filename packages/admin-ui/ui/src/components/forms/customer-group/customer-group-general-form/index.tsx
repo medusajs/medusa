@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
@@ -13,6 +14,8 @@ type CustomerGroupGeneralFormProps = {
 export const CustomerGroupGeneralForm = ({
   form,
 }: CustomerGroupGeneralFormProps) => {
+  const { t } = useTranslation()
+
   const {
     register,
     path,
@@ -22,10 +25,10 @@ export const CustomerGroupGeneralForm = ({
   return (
     <div>
       <InputField
-        label="Name"
+        label={t("Name")}
         required
         {...register(path("name"), {
-          required: FormValidator.required("Name"),
+          required: FormValidator.required(t("Name")),
         })}
         errors={errors}
       />

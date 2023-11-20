@@ -12,6 +12,7 @@ import InputField from "../../../molecules/input"
 import { NextSelect } from "../../../molecules/select/next-select"
 import TextArea from "../../../molecules/textarea"
 import PriceFormInput from "../../general/prices-form/price-form-input"
+import { useTranslation } from "react-i18next"
 
 type DiscountRegionOption = Option & {
   currency_code: string
@@ -48,6 +49,7 @@ const DiscountGeneralForm = ({
     control,
     formState: { errors },
   } = form
+  const { t } = useTranslation()
 
   const { regions } = useAdminRegions()
 
@@ -84,7 +86,7 @@ const DiscountGeneralForm = ({
               onChange={(value) => {
                 onChange(type === DiscountRuleType.FIXED ? [value] : value)
               }}
-              label="Choose valid regions"
+              label={t("Choose valid regions")}
               isMulti={type !== DiscountRuleType.FIXED}
               selectAll={type !== DiscountRuleType.FIXED}
               isSearchable
@@ -105,24 +107,24 @@ const DiscountGeneralForm = ({
           })}
         >
           <InputField
-            label="Code"
+            label={t("Code")}
             required
             errors={errors}
             {...register(path("code"), {
-              required: FormValidator.required("Code"),
+              required: FormValidator.required(t("Code")),
             })}
           />
           {type === DiscountRuleType.FIXED ? (
             <Controller
               name={path("value")}
               rules={{
-                required: FormValidator.required("Amount"),
+                required: FormValidator.required(t("Amount")),
                 shouldUnregister: true,
               }}
               render={({ field: { value, onChange } }) => {
                 return (
                   <PriceFormInput
-                    label="Amount"
+                    label={t("Amount")}
                     amount={value}
                     onChange={onChange}
                     currencyCode={selectedRegionCurrency}
@@ -133,27 +135,28 @@ const DiscountGeneralForm = ({
             />
           ) : type === DiscountRuleType.PERCENTAGE ? (
             <InputField
-              label="Percentage"
-              placeholder="Percentage"
+              label={t("Percentage")}
+              placeholder={t("Percentage")}
               errors={errors}
               prefix="%"
               required
               {...register(path("value"), {
                 valueAsNumber: true,
-                required: FormValidator.required("Percentage"),
+                required: FormValidator.required(t("Percentage")),
                 shouldUnregister: true,
               })}
             />
           ) : null}
         </div>
         <p className="inter-small-regular text-grey-50 mt-small max-w-[60%]">
-          The code your customers will enter during checkout. This will appear
-          on your customer&apos;s invoice. Uppercase letters and numbers only.
+          {t(
+            "The code your customers will enter during checkout. This will appear on your customer’s invoice."
+          )}
         </p>
       </div>
       <div>
         <TextArea
-          label="Description"
+          label={t("Description")}
           errors={errors}
           required
           {...register(path("description"), {
@@ -175,8 +178,14 @@ const DiscountGeneralForm = ({
                       onChange={onChange}
                       ref={ref}
                     />
-                    <p className="ml-small mr-xsmall">Template discount</p>
-                    <IconTooltip content="Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same." />
+                    <p className="ml-small mr-xsmall">
+                      {t("Template discount")}
+                    </p>
+                    <IconTooltip
+                      content={t(
+                        "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same."
+                      )}
+                    />
                   </div>
                   <InputError errors={errors} name={path("is_dynamic")} />
                 </div>

@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from "react"
 import SendIcon from "../../fundamentals/icons/send-icon"
 import EmojiPicker from "../emoji-picker"
+import { useTranslation } from "react-i18next"
 
 type NoteInputProps = {
   onSubmit: (note: string | undefined) => void
@@ -40,7 +41,7 @@ const NoteInput: React.FC<NoteInputProps> = ({ onSubmit }) => {
     },
     [note, setNote, onSubmit]
   )
-
+  const { t } = useTranslation()
   return (
     <form>
       <div
@@ -51,7 +52,7 @@ const NoteInput: React.FC<NoteInputProps> = ({ onSubmit }) => {
           <EmojiPicker onEmojiClick={handleAddEmoji} />
           <input
             type="text"
-            placeholder="Write a note..."
+            placeholder={t("Add a note...")}
             value={note}
             onChange={(e) => setNote(e.target.value)}
             className="inter-base-regular placeholder:text-grey-40 flex-grow bg-transparent focus:outline-none"

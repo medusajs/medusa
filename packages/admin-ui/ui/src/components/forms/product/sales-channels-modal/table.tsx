@@ -9,7 +9,7 @@ import { useLayeredModal } from "../../../molecules/modal/layered-modal"
 import Table from "../../../molecules/table"
 import TableContainer from "../../../organisms/table-container"
 import { useAddChannelsModalScreen } from "./add-screen"
-
+import { useTranslation } from "react-i18next"
 type SalesChannelsTableProps = {
   count: number
   limit: number
@@ -29,6 +29,7 @@ type SalesChannelTableActionProps = {
 }
 
 export const useSalesChannelsTableColumns = () => {
+  const { t } = useTranslation()
   const columns = useMemo(
     () => [
       {
@@ -51,12 +52,12 @@ export const useSalesChannelsTableColumns = () => {
         },
       },
       {
-        Header: "Title",
-        accessor: "name",
+        Header: t("Title"),
+        accessor: t("name"),
       },
       {
-        Header: "Description",
-        accessor: "description",
+        Header: t("Description"),
+        accessor: t("description"),
       },
     ],
     []
@@ -182,13 +183,14 @@ export const SalesChannelTableActions = ({
   }
 
   const { push } = useLayeredModal()
+  const { t } = useTranslation()
 
   return (
     <div className="space-x-xsmall flex h-[34px] overflow-hidden">
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="mb-2 flex h-[34px] items-center divide-x">
           <span className="inter-small-regular text-grey-50 mr-3">
-            {numberOfSelectedRows} selected
+            {numberOfSelectedRows} {t("Selected")}
           </span>
           <div className="space-x-xsmall flex pl-3">
             <Button
@@ -197,7 +199,7 @@ export const SalesChannelTableActions = ({
               variant="ghost"
               className="border-grey-20 border"
             >
-              Deselect
+              {t("Deselect")}
             </Button>
             <Button
               onClick={onRemove}
@@ -205,7 +207,7 @@ export const SalesChannelTableActions = ({
               variant="ghost"
               className="border-grey-20 border text-rose-50"
             >
-              Remove
+              {t("Remove")}
             </Button>
           </div>
         </div>
@@ -216,7 +218,7 @@ export const SalesChannelTableActions = ({
             className="border-grey-20 border"
             onClick={() => push(addChannelModalScreen)}
           >
-            <PlusIcon size={20} /> Add Channels
+            <PlusIcon size={20} /> {t("Add Channels")}
           </Button>
         </div>
       </div>
