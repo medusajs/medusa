@@ -9,7 +9,7 @@ In this document, you’ll learn how to create a [Subscriber](./subscribers.mdx)
 
 :::tip
 
-v1.17.5 of `@medusajs/medusa` introduced a new approach to create a subscriber. If you're looking for the old guide, you can find it [here](./create-subscriber-deprecated.md). However, it's highly recommended you follow this new approach, as the old one is deprecated.
+v1.18 of `@medusajs/medusa` introduced a new approach to create a subscriber. If you're looking for the old guide, you can find it [here](./create-subscriber-deprecated.md). However, it's highly recommended you follow this new approach, as the old one is deprecated.
 
 :::
 
