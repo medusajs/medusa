@@ -258,6 +258,8 @@ import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
+import { MedusaV2Flag } from "@medusajs/utils"
 
 export enum CartType {
   DEFAULT = "default",
@@ -388,18 +390,20 @@ export class Cart extends SoftDeletableEntity {
 
   sales_channel: SalesChannel
 
-  @ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] })
-  @JoinTable({
-    name: "cart_sales_channel",
-    joinColumn: {
-      name: "cart_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "sales_channel_id",
-      referencedColumnName: "id",
-    },
-  })
+  @FeatureFlagDecorators("sales_channels", [
+    ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
+    JoinTable({
+      name: "cart_sales_channel",
+      joinColumn: {
+        name: "cart_id",
+        referencedColumnName: "id",
+      },
+      inverseJoinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
   sales_channels: SalesChannel[]
 
   shipping_total?: number

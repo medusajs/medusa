@@ -69,6 +69,7 @@ import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { PaymentSessionInput } from "../types/payment"
 import { validateEmail } from "../utils/is-email"
 import { RemoteQueryFunction } from "@medusajs/types"
+import { RemoteLink } from "@medusajs/modules-sdk"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -100,6 +101,7 @@ type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
   pricingService: PricingService
   remoteQuery: RemoteQueryFunction
+  remoteLink: RemoteLink
 }
 
 type TotalsConfig = {
@@ -142,6 +144,7 @@ class CartService extends TransactionBaseService {
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly featureFlagRouter_: FlagRouter
   protected remoteQuery_: RemoteQueryFunction
+  protected remoteLink_: RemoteLink
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly pricingService_: PricingService
@@ -173,6 +176,7 @@ class CartService extends TransactionBaseService {
     featureFlagRouter,
     storeService,
     remoteQuery,
+    remoteLink,
     productVariantInventoryService,
     pricingService,
   }: InjectedDependencies) {
@@ -207,6 +211,7 @@ class CartService extends TransactionBaseService {
     this.productVariantInventoryService_ = productVariantInventoryService
     this.pricingService_ = pricingService
     this.remoteQuery_ = remoteQuery
+    this.remoteLink_ = remoteLink
   }
 
   /**
@@ -362,16 +367,19 @@ class CartService extends TransactionBaseService {
           context: data.context ?? {},
         }
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
-        ) {
-          rawCart.sales_channels = [
-            {
-              id: (await this.getValidatedSalesChannel(data.sales_channel_id))
-                .id,
-            },
-          ]
-        }
+        // if (
+        //   this.featureFlagRouter_.isFeatureEnabled(
+        //     SalesChannelFeatureFlag.key
+        //   ) &&
+        //   !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
+        // ) {
+        //   rawCart.sales_channels = [
+        //     {
+        //       id: (await this.getValidatedSalesChannel(data.sales_channel_id))
+        //         .id,
+        //     },
+        //   ]
+        // }
 
         if (data.customer_id) {
           const customer = await this.customerService_
@@ -481,6 +489,22 @@ class CartService extends TransactionBaseService {
 
         const createdCart = cartRepo.create(rawCart)
         const cart = await cartRepo.save(createdCart)
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+          // && this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
+        ) {
+          await this.remoteLink_.create({
+            cartService: {
+              cart_id: cart.id,
+            },
+            salesChannelService: {
+              sales_channel_id: (
+                await this.getValidatedSalesChannel(data.sales_channel_id)
+              ).id,
+            },
+          })
+        }
 
         await this.eventBus_
           .withTransaction(transactionManager)
@@ -1247,7 +1271,29 @@ class CartService extends TransactionBaseService {
 
           await this.onSalesChannelChange(cart, data.sales_channel_id)
 
-          cart.sales_channels = [{ id: salesChannel.id }] as SalesChannel[]
+          if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
+            await this.remoteLink_.dismiss({
+              cartService: {
+                cart_id: cart.id,
+              },
+              salesChannelService: {
+                sales_channel_id: cart.sales_channel_id,
+              },
+            })
+
+            await this.remoteLink_.create({
+              cartService: {
+                cart_id: cart.id,
+              },
+              salesChannelService: {
+                sales_channel_id: (
+                  await this.getValidatedSalesChannel(data.sales_channel_id)
+                ).id,
+              },
+            })
+          } else {
+            cart.sales_channel_id = salesChannel.id
+          }
         }
 
         if (isDefined(data.discounts) && data.discounts.length) {

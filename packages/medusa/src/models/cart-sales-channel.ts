@@ -17,9 +17,9 @@ export class CartSalesChannel extends SoftDeletableEntity {
   /**
    * @apiIgnore
    */
+  // NOTE: not working
   @BeforeInsert()
   private beforeInsert(): void {
-    console.log("!!!!! CALLING BEFORE INSERT")
     this.id = generateEntityId(this.id, "cartsc")
   }
 }
