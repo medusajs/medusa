@@ -30,6 +30,7 @@ export type CartFactoryData = {
   shipping_methods?: ShippingMethodFactoryData[]
   sales_channel?: SalesChannelFactoryData
   sales_channel_id?: string
+  isMedusaV2Enabled?: boolean
 }
 
 export const simpleCartFactory = async (
@@ -37,6 +38,9 @@ export const simpleCartFactory = async (
   data: CartFactoryData = {},
   seed?: number
 ): Promise<Cart> => {
+  data.isMedusaV2Enabled =
+    data.isMedusaV2Enabled ?? process.env.MEDUSA_FF_MEDUSA_V2 == "true"
+
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
@@ -77,7 +81,7 @@ export const simpleCartFactory = async (
   }
 
   const id = data.id || `simple-cart-${Math.random() * 1000}`
-  const toSave = manager.create(Cart, {
+  let toSave = {
     id,
     email:
       typeof data.email !== "undefined" ? data.email : faker.internet.email(),
@@ -85,8 +89,13 @@ export const simpleCartFactory = async (
     customer_id: customerId,
     shipping_address_id: address.id,
     sales_channel_id: sales_channel?.id ?? data.sales_channel_id ?? null,
-    sales_channels: [sales_channel],
-  })
+  }
+
+  if (data.isMedusaV2Enabled) {
+    toSave["sales_channels"] = [sales_channel]
+  }
+
+  toSave = manager.create(Cart, toSave)
 
   const cart = await manager.save(toSave)
 
