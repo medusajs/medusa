@@ -18,9 +18,6 @@ runs:
       with:
         access_token: ${{ github.token }}
 
-    - name: Corepack
-      run: corepack enable
-
     - name: Setup Node.js environment
       uses: actions/setup-node@v3
       with:
