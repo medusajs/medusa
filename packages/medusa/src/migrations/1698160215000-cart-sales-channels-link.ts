@@ -2,8 +2,7 @@ import { MigrationInterface, QueryRunner } from "typeorm"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { MedusaV2Flag } from "@medusajs/utils"
 
-// export const featureFlag = SalesChannelFeatureFlag.key
-export const featureFlag = MedusaV2Flag.key
+export const featureFlag = [SalesChannelFeatureFlag.key, MedusaV2Flag.key]
 
 export class CartSalesChannelsLink1698160215000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

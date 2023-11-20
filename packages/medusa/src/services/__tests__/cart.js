@@ -32,6 +32,11 @@ const eventBusService = {
   },
 }
 
+const remoteLinkMock = {
+  create: jest.fn(),
+  dismiss: jest.fn(),
+}
+
 describe("CartService", () => {
   const totalsService = {
     withTransaction: function () {
