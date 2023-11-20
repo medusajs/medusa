@@ -62,22 +62,21 @@ export async function listAndCountPriceListPricingModule({
     delete priceList.price_set_money_amounts
     delete priceList.price_list_rules
 
-    const priceListPrices: MoneyAmount[] = []
+    const priceListPrices: MoneyAmount[] = priceSetMoneyAmounts.map(
+      (priceSetMoneyAmount) => {
+        const productVariant =
+          priceSetMoneyAmount.price_set.variant_link.variant
 
-    for (const priceSetMoneyAmount of priceSetMoneyAmounts) {
-      const productVariant = priceSetMoneyAmount.price_set.variant_link.variant
+        const price = priceSetMoneyAmount as MoneyAmount
 
-      const price = {
-        ...(priceSetMoneyAmount.money_amount as MoneyAmount),
-        price_list_id: priceList.id,
+        price.price_list_id = priceList.id
+        price.variant_id = productVariant?.id ?? null
+        price.variant = productVariant ?? null
+        price.region_id = null
+
+        return price
       }
-
-      price.variant_id = productVariant?.id ?? null
-      price.variant = productVariant ?? null
-      price.region_id = null
-
-      priceListPrices.push(price as MoneyAmount)
-    }
+    )
 
     priceList.prices = priceListPrices
     priceList.name = priceList.title
