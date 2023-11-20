@@ -62,47 +62,41 @@ export async function listAndCountPriceListPricingModule({
     delete priceList.price_set_money_amounts
     delete priceList.price_list_rules
 
-    const priceListPrices: MoneyAmount[] = priceSetMoneyAmounts.map(
-      (priceSetMoneyAmount) => {
-        const productVariant =
-          priceSetMoneyAmount.price_set.variant_link.variant
+    priceList.prices = priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
+      const productVariant = priceSetMoneyAmount.price_set.variant_link.variant
 
-        const price = priceSetMoneyAmount as MoneyAmount
-
-        price.price_list_id = priceList.id
-        price.variant_id = productVariant?.id ?? null
-        price.variant = productVariant ?? null
-        price.region_id = null
-
-        return price
+      return {
+        ...(priceSetMoneyAmount.money_amount as MoneyAmount),
+        price_list_id: priceList.id,
+        variant_id: productVariant?.id ?? null,
+        variant: productVariant ?? null,
+        region_id: null,
       }
-    )
+    })
 
-    priceList.prices = priceListPrices
     priceList.name = priceList.title
     delete priceList.title
-
-    priceList.customer_groups = []
 
     const customerGroupPriceListRule = priceListRulesData.find(
       (plr) => plr.rule_type.rule_attribute === "customer_group_id"
     )
 
-    if (customerGroupPriceListRule) {
-      const customerGroupIds: string[] =
-        customerGroupPriceListRule?.price_list_rule_values?.map(
-          (plrv) => plrv.value
-        ) || []
-
-      priceList.customer_groups = customerGroupIds
-        .map((customerGroupId: string) =>
-          customerGroupIdCustomerGroupMap.get(customerGroupId)
-        )
-        .filter(
-          (
-            customerGroup: CustomerGroup | undefined
-          ): customerGroup is CustomerGroup => !!customerGroup
-        )
+    if (
+      customerGroupPriceListRule &&
+      customerGroupPriceListRule?.price_list_rule_values?.length
+    ) {
+      priceList.customer_groups =
+        customerGroupPriceListRule?.price_list_rule_values
+          .map((customerGroupRule) =>
+            customerGroupIdCustomerGroupMap.get(customerGroupRule.value)
+          )
+          .filter(
+            (
+              customerGroup: CustomerGroup | undefined
+            ): customerGroup is CustomerGroup => !!customerGroup
+          )
+    } else {
+      priceList.customer_groups = []
     }
   }
 
