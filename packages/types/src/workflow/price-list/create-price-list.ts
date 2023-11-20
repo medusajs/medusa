@@ -59,11 +59,7 @@ export interface CreatePriceListWorkflowDTO {
   title?: string
   name: string
   description: string
-  customer_groups?: {
-    id: string
-  }[]
   type?: string
-  includes_tax?: boolean
   starts_at?: string
   ends_at?: string
   status?: PriceListStatus

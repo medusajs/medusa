@@ -60,14 +60,7 @@ export async function prepareCreatePriceLists({
 
   return price_lists.map((priceListDTO) => {
     priceListDTO.title ??= priceListDTO.name
-    const {
-      _associationTag,
-      customer_groups = [],
-      includes_tax,
-      name,
-      prices,
-      ...rest
-    } = priceListDTO
+    const { _associationTag, name, prices, ...rest } = priceListDTO
 
     const priceList = rest as CreatePriceListDTO
 
