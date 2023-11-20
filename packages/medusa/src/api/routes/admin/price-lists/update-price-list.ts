@@ -1,7 +1,3 @@
-import { PricingTypes, WorkflowTypes } from "@medusajs/types"
-import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
-import { updatePriceLists } from "@medusajs/workflows"
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -10,15 +6,20 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { EntityManager } from "typeorm"
+import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
+import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-import { PriceList } from "../../../.."
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import PriceListService from "../../../../services/price-list"
+
 import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
+import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { PriceList } from "../../../.."
+import PriceListService from "../../../../services/price-list"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { Type } from "class-transformer"
+import { getPriceListPricingModule } from "./modules-queries"
+import { updatePriceLists } from "@medusajs/workflows"
 import { validator } from "../../../../utils/validator"
-import { listAndCountPriceListPricingModule } from "./get-price-list"
 
 /**
  * @oas [post] /admin/price-lists/{id}
@@ -123,12 +124,9 @@ export default async (req, res) => {
       },
     })
 
-    const [priceLists, _] = await listAndCountPriceListPricingModule({
-      req,
-      list: false,
+    priceList = await getPriceListPricingModule(id, {
+      container: req.scope as MedusaContainer,
     })
-
-    priceList = priceLists[0]
   } else {
     await manager.transaction(async (transactionManager) => {
       return await priceListService

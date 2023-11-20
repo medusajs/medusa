@@ -8,7 +8,8 @@ import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
-import { listAndCountPriceListPricingModule } from "./get-price-list"
+import { MedusaContainer } from "@medusajs/types"
+import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [post] /admin/price-lists/{id}/prices/batch
@@ -114,12 +115,9 @@ export default async (req, res) => {
       },
     })
 
-    const [priceLists] = await listAndCountPriceListPricingModule({
-      req,
-      list: false,
+    priceList = await getPriceListPricingModule(id, {
+      container: req.scope as MedusaContainer,
     })
-
-    priceList = priceLists[0]
   } else {
     await manager.transaction(async (transactionManager) => {
       await priceListService

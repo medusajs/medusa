@@ -4,7 +4,8 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request } from "express"
 import PriceListService from "../../../../services/price-list"
 import { FilterablePriceListProps } from "../../../../types/price-list"
-import { listAndCountPriceListPricingModule } from "./get-price-list"
+import { MedusaContainer } from "@medusajs/types"
+import { listAndCountPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [get] /admin/price-lists
@@ -170,8 +171,9 @@ export default async (req: Request, res) => {
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     ;[priceLists, count] = await listAndCountPriceListPricingModule({
-      req,
-      list: true,
+      filters: req.filterableFields,
+      listConfig: req.listConfig,
+      container: req.scope as MedusaContainer,
     })
   } else {
     const priceListService: PriceListService =

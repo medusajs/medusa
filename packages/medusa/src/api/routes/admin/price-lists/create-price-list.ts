@@ -1,4 +1,4 @@
-import { PricingTypes, WorkflowTypes } from "@medusajs/types"
+import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
 import {
   FlagRouter,
   MedusaV2Flag,
@@ -25,11 +25,8 @@ import {
   CreatePriceListInput,
 } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { listAndCountPriceListPricingModule } from "./get-price-list"
-import {
-  defaultAdminPriceListFields,
-  defaultAdminPriceListRelations,
-} from "./index"
+import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [post] /admin/price-lists
@@ -151,14 +148,10 @@ export default async (req: Request, res) => {
     })
 
     priceList = result[0]?.priceList
-    req.params.id = priceList?.id
 
-    const [priceLists] = await listAndCountPriceListPricingModule({
-      req,
-      list: false,
+    priceList = await getPriceListPricingModule(priceList!.id, {
+      container: req.scope as MedusaContainer,
     })
-
-    priceList = priceLists[0]
   } else {
     priceList = await manager.transaction(async (transactionManager) => {
       return await priceListService

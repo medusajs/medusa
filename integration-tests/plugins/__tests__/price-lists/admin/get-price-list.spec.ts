@@ -105,6 +105,24 @@ describe("GET /admin/price-lists/:id", () => {
       },
     ])
 
+    await pricingModuleService.createPriceLists([
+      {
+        title: "test price list 1",
+        description: "test 1",
+        ends_at: new Date(),
+        starts_at: new Date(),
+        status: PriceListStatus.ACTIVE,
+        type: PriceListType.OVERRIDE,
+        prices: [
+          {
+            amount: 5000,
+            currency_code: "usd",
+            price_set_id: priceSet.id,
+          },
+        ],
+      },
+    ])
+
     const api = useApi() as any
 
     const response = await api.get(
@@ -138,33 +156,6 @@ describe("GET /admin/price-lists/:id", () => {
             max_quantity: null,
             price_list_id: expect.any(String),
             region_id: null,
-            variants: [
-              expect.objectContaining({
-                id: expect.any(String),
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                deleted_at: null,
-                title: expect.any(String),
-                product_id: expect.any(String),
-                sku: null,
-                barcode: null,
-                ean: null,
-                upc: null,
-                variant_rank: 0,
-                inventory_quantity: 10,
-                allow_backorder: false,
-                manage_inventory: true,
-                hs_code: null,
-                origin_country: null,
-                mid_code: null,
-                material: null,
-                weight: null,
-                length: null,
-                height: null,
-                width: null,
-                metadata: null,
-              }),
-            ],
             variant: expect.objectContaining({
               id: expect.any(String),
               created_at: expect.any(String),
