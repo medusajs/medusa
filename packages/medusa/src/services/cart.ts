@@ -3005,63 +3005,6 @@ class CartService extends TransactionBaseService {
 
     return Array.from(relationSet.values())
   }
-
-  // /**
-  //  * Temporary method to join sales channels of a product using RemoteQuery while
-  //  * MedusaV2 FF is on.
-  //  *
-  //  * @param carts
-  //  * @private
-  //  */
-  // private async decorateCartsWithSalesChannel(carts: Cart[]) {
-  //   const cartIdSalesChannelMapMap = await this.getSalesChannelModuleChannels(
-  //     carts.map((p) => p.id)
-  //   )
-  //
-  //   carts.forEach(
-  //     (cart) => (cart.sales_channel = cartIdSalesChannelMapMap[cart.id])
-  //   )
-  //
-  //   return carts
-  // }
-  //
-  // /**
-  //  * Temporary method to fetch sales channels of a carts using RemoteQuery while
-  //  * MedusaV2 FF is on.
-  //  *
-  //  * @param cartIds
-  //  * @private
-  //  */
-  // private async getSalesChannelModuleChannels(
-  //   cartIds: string[]
-  // ): Promise<Record<string, SalesChannel>> {
-  //   const query = {
-  //     cart: {
-  //       __args: { filters: { id: cartIds } },
-  //       fields: ["id"],
-  //       sales_channel: {
-  //         fields: [
-  //           "id",
-  //           "name",
-  //           "description",
-  //           "is_disabled",
-  //           "created_at",
-  //           "updated_at",
-  //           "deleted_at",
-  //         ],
-  //       },
-  //     },
-  //   }
-  //
-  //   const ret = {}
-  //   const data = (await this.remoteQuery_(query)) as {
-  //     id: string
-  //     sales_channel: SalesChannel
-  //   }[]
-  //   data.forEach((record) => (ret[record.id] = record.sales_channel))
-  //
-  //   return ret
-  // }
 }
 
 export default CartService

@@ -32,11 +32,6 @@ const eventBusService = {
   },
 }
 
-const remoteLinkMock = {
-  create: jest.fn(),
-  dismiss: jest.fn(),
-}
-
 describe("CartService", () => {
   const totalsService = {
     withTransaction: function () {
@@ -2664,6 +2659,7 @@ describe("CartService", () => {
       .register("newTotalsService", asClass(NewTotalsService))
       .register("cartService", asClass(CartService))
       .register("remoteQuery", asValue(null))
+      .register("remoteLink", asValue(null))
       .register("pricingModuleService", asValue(undefined))
       .register("pricingService", asClass(PricingService))
 

@@ -19,6 +19,7 @@ import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
+import { generateEntityId } from "@medusajs/utils"
 
 export type CartFactoryData = {
   id?: string
@@ -92,7 +93,12 @@ export const simpleCartFactory = async (
   }
 
   if (data.isMedusaV2Enabled) {
-    toSave["sales_channels"] = [sales_channel]
+    await manager.query(
+      `INSERT INTO "cart_sales_channel" (id, cart_id, sales_channel_id) 
+        VALUES ('${generateEntityId(undefined, "cartsc")}', '${toSave.id}', '${
+        sales_channel?.id ?? data.sales_channel_id
+      }');`
+    )
   }
 
   toSave = manager.create(Cart, toSave)
