@@ -1,12 +1,12 @@
-import { WorkflowTypes } from "@medusajs/types"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
+import { WorkflowTypes } from "@medusajs/types"
 import { exportWorkflow, pipe } from "../../helper"
 
-import { PriceListHandlers } from "../../handlers"
 import { Workflows } from "../../definitions"
+import { PriceListHandlers } from "../../handlers"
 
 export enum RemoveProductPricesActions {
   prepare = "prepare",
@@ -68,6 +68,5 @@ export const removePriceListProductPrices = exportWorkflow<
   string[]
 >(
   Workflows.RemovePriceListProductPrices,
-  RemoveProductPricesActions.removePriceListPriceSetPrices,
-  async (data) => data
+  RemoveProductPricesActions.removePriceListPriceSetPrices
 )

@@ -32,7 +32,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("GET /store/price-lists", () => {
+describe("GET /store/products/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -110,7 +110,7 @@ describe("GET /store/price-lists", () => {
     await db.teardown()
   })
 
-  it("should get product and its prices from price-list created in the api", async () => {
+  it("should get product and its prices from price-list created through the price list workflow", async () => {
     const api = useApi()! as AxiosInstance
 
     const priceListResponse = await api.post(

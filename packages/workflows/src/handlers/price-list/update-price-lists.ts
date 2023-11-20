@@ -31,14 +31,18 @@ export async function updatePriceLists({
   const updateMoneyAmounts: UpdateMoneyAmountDTO[] = []
 
   for (const [priceListId, prices] of priceListPricesMap.entries()) {
-    addPriceListPricesData.push({
-      priceListId,
-      prices: prices.filter((price) => !price.id),
-    })
+    for (const price of prices) {
+      if (price.id) {
+        addPriceListPricesData.push({
+          priceListId,
+          prices: prices.filter((price) => !price.id),
+        })
 
-    updateMoneyAmounts.push(
-      ...(prices.filter((price) => !!price.id) as UpdateMoneyAmountDTO[])
-    )
+        continue
+      }
+
+      updateMoneyAmounts.push(price as UpdateMoneyAmountDTO)
+    }
   }
 
   if (addPriceListPricesData.length) {

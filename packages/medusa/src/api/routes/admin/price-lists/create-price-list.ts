@@ -17,6 +17,7 @@ import {
 } from "class-validator"
 import { Request } from "express"
 import { EntityManager } from "typeorm"
+import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { PriceList } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
@@ -25,7 +26,6 @@ import {
   CreatePriceListInput,
 } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { getPriceListPricingModule } from "./modules-queries"
 
 /**
@@ -147,9 +147,9 @@ export default async (req: Request, res) => {
       },
     })
 
-    priceList = result[0]?.priceList
+    priceList = result[0]!.priceList
 
-    priceList = await getPriceListPricingModule(priceList!.id, {
+    priceList = await getPriceListPricingModule(priceList.id, {
       container: req.scope as MedusaContainer,
     })
   } else {

@@ -1,3 +1,5 @@
+import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
+import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
 import {
   IsArray,
   IsBoolean,
@@ -6,20 +8,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
-import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 
-import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { PriceList } from "../../../.."
-import PriceListService from "../../../../services/price-list"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import { Type } from "class-transformer"
-import { getPriceListPricingModule } from "./modules-queries"
 import { updatePriceLists } from "@medusajs/workflows"
+import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
+import { PriceList } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import PriceListService from "../../../../services/price-list"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
+import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [post] /admin/price-lists/{id}

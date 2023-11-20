@@ -24,10 +24,6 @@ export async function createProductVariantsPrepareData({
   data,
 }: WorkflowArguments<WorkflowTypes.ProductWorkflow.CreateProductVariantsWorkflowInputDTO>): Promise<CreateProductVariantsPreparedData> {
   const featureFlagRouter = container.resolve("featureFlagRouter")
-  const isPricingDomainEnabled = featureFlagRouter.isFeatureEnabled(
-    "isolate_pricing_domain"
-  )
-
   const productVariants: ProductWorkflow.CreateProductVariantsInputDTO[] =
     data.productVariants || []
 
@@ -44,9 +40,7 @@ export async function createProductVariantsPrepareData({
 
     variantIndexPricesMap.set(index, productVariantData.prices || [])
 
-    if (isPricingDomainEnabled) {
-      delete productVariantData.prices
-    }
+    delete productVariantData.prices
 
     const productVariants = productVariantsMap.get(
       productVariantData.product_id

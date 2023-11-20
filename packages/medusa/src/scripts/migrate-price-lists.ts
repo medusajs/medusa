@@ -47,10 +47,10 @@ export const migratePriceLists = async (container: AwilixContainer) => {
     )
 
     if (priceLists.length === 0) {
-      arePriceListsAvailable = false
-    } else {
-      offset += BATCH_SIZE
+      break
     }
+
+    offset += BATCH_SIZE
 
     await pricingModuleService.update(
       priceLists.map((priceList) => {
@@ -85,10 +85,10 @@ export const migratePriceLists = async (container: AwilixContainer) => {
           )
 
         if (variantsCount === 0) {
-          areVariantsAvailable = false
-        } else {
-          productsOffset += BATCH_SIZE
+          break
         }
+
+        productsOffset += BATCH_SIZE
 
         const query = {
           product_variant_price_set: {

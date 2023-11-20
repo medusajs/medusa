@@ -62,8 +62,4 @@ WorkflowManager.register(Workflows.UpdatePriceLists, workflowSteps, handlers)
 export const updatePriceLists = exportWorkflow<
   WorkflowTypes.PriceListWorkflow.UpdatePriceListWorkflowInputDTO,
   { priceList: WorkflowTypes.PriceListWorkflow.UpdatePriceListWorkflowDTO }[]
->(
-  Workflows.UpdatePriceLists,
-  UpdatePriceListActions.updatePriceList,
-  async (data) => data
-)
+>(Workflows.UpdatePriceLists, UpdatePriceListActions.updatePriceList)

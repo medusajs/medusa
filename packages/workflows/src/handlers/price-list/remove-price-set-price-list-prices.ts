@@ -3,25 +3,21 @@ import { IPricingModuleService } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 import { prepareCreatePriceLists } from "./prepare-create-price-list"
 
-type Result = {
-  deleted: string[]
-}
-
 export async function removePriceListPriceSetPrices({
   container,
   data,
 }: WorkflowArguments<{
-  priceSets: string[]
+  priceSetIds: string[]
   priceListId: string
-}>): Promise<Result> {
-  const { priceSets, priceListId } = data
+}>): Promise<string[]> {
+  const { priceSetIds, priceListId } = data
   const pricingService: IPricingModuleService = container.resolve(
     ModuleRegistrationName.PRICING
   )
 
   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts(
     {
-      price_set_id: priceSets,
+      price_set_id: priceSetIds,
       price_list_id: [priceListId],
     },
     {
@@ -35,9 +31,7 @@ export async function removePriceListPriceSetPrices({
 
   await pricingService.deleteMoneyAmounts(moneyAmountIDs)
 
-  return {
-    deleted: moneyAmountIDs,
-  }
+  return moneyAmountIDs
 }
 
 prepareCreatePriceLists.aliases = {

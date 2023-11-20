@@ -14,12 +14,12 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
-  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
+  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -157,7 +157,7 @@ export default class PricingModuleService<
         const prices = pricesSetPricesMap.get(priceSetId) || []
         const priceListPrice = prices.find((p) => p.price_list_id)
 
-        const defaultPrice = prices?.find((p) => !!!p.price_list_id)
+        const defaultPrice = prices?.find((p) => !p.price_list_id)
 
         let calculatedPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
         let originalPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice

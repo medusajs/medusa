@@ -23,7 +23,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products/:id", () => {
+describe("POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -109,6 +109,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
     )
 
     expect(response.status).toEqual(200)
+    expect(response.data.product.variants).toHaveLength(2)
     expect(response.data.product).toEqual(
       expect.objectContaining({
         id: expect.any(String),

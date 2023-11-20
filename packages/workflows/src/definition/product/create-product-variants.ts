@@ -67,7 +67,6 @@ const handlers = new Map([
             },
             {
               from: CreateProductVariantsActions.createProductVariants,
-              alias: "bro",
             },
           ],
         },

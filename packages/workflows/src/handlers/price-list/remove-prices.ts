@@ -3,7 +3,7 @@ import { IPricingModuleService } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type Result = {
-  deleted: string[]
+  deletedPriceIds: string[]
 }
 
 export async function removePrices({
@@ -20,7 +20,7 @@ export async function removePrices({
   await pricingService.deleteMoneyAmounts(moneyAmountIds)
 
   return {
-    deleted: moneyAmountIds,
+    deletedPriceIds: moneyAmountIds,
   }
 }
 

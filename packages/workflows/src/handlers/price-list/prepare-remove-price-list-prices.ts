@@ -1,6 +1,6 @@
-import { WorkflowArguments } from "../../helper"
-import { IPricingModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPricingModuleService } from "@medusajs/types"
+import { WorkflowArguments } from "../../helper"
 
 type Result = {
   moneyAmountIds: string[]
@@ -36,8 +36,7 @@ export async function prepareRemovePriceListPrices({
   const moneyAmountIds = moneyAmounts
     .filter(
       (moneyAmount) =>
-        !!moneyAmount.price_set_money_amount?.price_list &&
-        moneyAmount.price_set_money_amount!.price_list.id === priceListId
+        moneyAmount?.price_set_money_amount?.price_list?.id === priceListId
     )
     .map((ma) => ma.id)
 

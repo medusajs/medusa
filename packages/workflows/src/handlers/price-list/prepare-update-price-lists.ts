@@ -23,7 +23,7 @@ export async function prepareUpdatePriceLists({
   const priceListPricesMap = new Map<string, PriceListPriceDTO[]>()
 
   const variantIds = priceListsData
-    .map((pld) => pld.prices?.map((p) => p.variant_id))
+    .map((priceListData) => priceListData.prices?.map((p) => p.variant_id))
     .flat()
 
   const variables = {
@@ -43,10 +43,10 @@ export async function prepareUpdatePriceLists({
     variantPriceSetMap.set(variant_id, price_set_id)
   }
 
-  const priceLists = priceListsData.map((pld) => {
+  const priceLists = priceListsData.map((priceListData) => {
     const priceListPrices: PriceListPriceDTO[] = []
 
-    pld.prices?.forEach((price) => {
+    priceListData.prices?.forEach((price) => {
       const { variant_id, ...priceData } = price
       if (!variant_id) {
         return
@@ -64,16 +64,16 @@ export async function prepareUpdatePriceLists({
       return
     })
 
-    priceListPricesMap.set(pld.id, priceListPrices)
+    priceListPricesMap.set(priceListData.id, priceListPrices)
 
-    delete pld?.prices
+    delete priceListData?.prices
 
     const priceListDataClone: UpdatePriceListDTO = {
-      ...pld,
+      ...priceListData,
     }
 
-    if (pld.name) {
-      priceListDataClone.title = pld.name
+    if (priceListData.name) {
+      priceListDataClone.title = priceListData.name
     }
 
     return priceListDataClone

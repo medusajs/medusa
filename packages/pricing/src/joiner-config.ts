@@ -29,7 +29,7 @@ export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRICING,
-  primaryKeys: ["id", "currency_code", "price_list"],
+  primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
   alias: [
     {

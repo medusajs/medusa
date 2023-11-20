@@ -1,12 +1,12 @@
-import { PricingTypes, WorkflowTypes } from "@medusajs/types"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
+import { PricingTypes, WorkflowTypes } from "@medusajs/types"
 import { exportWorkflow, pipe } from "../../helper"
 
-import { PriceListHandlers } from "../../handlers"
 import { Workflows } from "../../definitions"
+import { PriceListHandlers } from "../../handlers"
 
 export enum CreatePriceListActions {
   prepare = "prepare",
@@ -71,8 +71,4 @@ export const createPriceLists = exportWorkflow<
   {
     priceList: PricingTypes.CreatePriceListDTO
   }[]
->(
-  Workflows.CreatePriceList,
-  CreatePriceListActions.createPriceList,
-  async (data) => data
-)
+>(Workflows.CreatePriceList, CreatePriceListActions.createPriceList)

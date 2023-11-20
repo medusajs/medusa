@@ -2,7 +2,7 @@ import { WorkflowArguments } from "../../helper"
 import { prepareCreatePriceLists } from "./prepare-create-price-list"
 
 type Result = {
-  priceSets: string[]
+  priceSetIds: string[]
   priceListId: string
 }
 
@@ -30,11 +30,11 @@ export async function prepareRemoveVariantPrices({
 
   const productsWithVariantPriceSets: QueryResult[] = await remoteQuery(query)
 
-  const priceSets = productsWithVariantPriceSets.map(
+  const priceSetIds = productsWithVariantPriceSets.map(
     (variantPriceSet) => variantPriceSet.price_set_id
   )
 
-  return { priceSets, priceListId: price_list_id }
+  return { priceSetIds, priceListId: price_list_id }
 }
 
 prepareCreatePriceLists.aliases = {
