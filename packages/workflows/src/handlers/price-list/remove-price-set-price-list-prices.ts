@@ -1,7 +1,7 @@
-import { WorkflowArguments } from "../../helper"
-import { prepareCreatePriceLists } from "./prepare-create-price-list"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
+import { WorkflowArguments } from "../../helper"
+import { prepareCreatePriceLists } from "./prepare-create-price-list"
 
 type Result = {
   deleted: string[]
@@ -13,19 +13,11 @@ export async function removePriceListPriceSetPrices({
 }: WorkflowArguments<{
   priceSets: string[]
   priceListId: string
-}>): Promise<Result | void> {
+}>): Promise<Result> {
   const { priceSets, priceListId } = data
   const pricingService: IPricingModuleService = container.resolve(
     ModuleRegistrationName.PRICING
   )
-
-  if (!pricingService) {
-    const logger = container.resolve("logger")
-    logger.warn(
-      `Pricing service not found. You should install the @medusajs/pricing package to use pricing. The 'removePriceListPriceSetPrices' step will be skipped.`
-    )
-    return
-  }
 
   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts(
     {

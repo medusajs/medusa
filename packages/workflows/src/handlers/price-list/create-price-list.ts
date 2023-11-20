@@ -21,18 +21,10 @@ export async function createPriceLists({
   data,
 }: WorkflowArguments<{
   priceLists: Input
-}>): Promise<Result | void> {
+}>): Promise<Result> {
   const pricingService: IPricingModuleService = container.resolve(
     ModuleRegistrationName.PRICING
   )
-
-  if (!pricingService) {
-    const logger = container.resolve("logger")
-    logger.warn(
-      `Pricing service not found. You should install the @medusajs/pricing package to use pricing. The 'createPriceList' step will be skipped.`
-    )
-    return
-  }
 
   return await Promise.all(
     data.priceLists.map(async (item) => {
