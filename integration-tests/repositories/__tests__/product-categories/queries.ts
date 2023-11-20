@@ -10,7 +10,7 @@ describe("Product Categories", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd, verbose: true })
+    dbConnection = await initDb({ cwd })
   })
 
   afterAll(async () => {
