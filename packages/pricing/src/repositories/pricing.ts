@@ -71,6 +71,9 @@ export class PricingRepository
         price_list_id: "psma1.price_list_id",
         pl_number_rules: "pl.number_rules",
         pl_type: "pl.type",
+        has_price_list: knex.raw(
+          "case when psma1.price_list_id IS NULL then False else True end"
+        ),
       })
       .leftJoin("price_set_money_amount as psma1", "psma1.id", "psma1.id")
       .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma1.id")
@@ -154,15 +157,23 @@ export class PricingRepository
       .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .whereIn("ps.id", pricingFilters.id)
       .andWhere("ma.currency_code", "=", currencyCode)
+
       .orderBy([
-        { column: "price_list_id", order: "asc" },
+        { column: "psma.has_price_list", order: "asc" },
         { column: "number_rules", order: "desc" },
         { column: "default_priority", order: "desc" },
+        { column: "amount", order: "asc" },
       ])
 
     if (quantity) {
       priceSetQueryKnex.where("ma.min_quantity", "<=", quantity)
       priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
+    } else {
+      priceSetQueryKnex.andWhere(function () {
+        this.andWhere("ma.min_quantity", "<=", "1").orWhereNull(
+          "ma.min_quantity"
+        )
+      })
     }
 
     return await priceSetQueryKnex

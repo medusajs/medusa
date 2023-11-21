@@ -23,11 +23,9 @@ type HandlerInput = {
 
 export async function upsertVariantPrices({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInput>) {
   const { variantPricesMap } = data
-
   const featureFlagRouter = container.resolve("featureFlagRouter")
 
   if (!featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
@@ -129,16 +127,16 @@ export async function upsertVariantPrices({
       priceSetId = createdPriceSet?.id
 
       createdPriceSets.push(createdPriceSet)
-    }
 
-    linksToCreate.push({
-      productService: {
-        variant_id: variantId,
-      },
-      pricingService: {
-        price_set_id: priceSetId,
-      },
-    })
+      linksToCreate.push({
+        productService: {
+          variant_id: variantId,
+        },
+        pricingService: {
+          price_set_id: priceSetId,
+        },
+      })
+    }
   }
 
   const createdLinks = await remoteLink.create(linksToCreate)
