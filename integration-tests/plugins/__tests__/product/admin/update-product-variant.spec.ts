@@ -370,4 +370,78 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
       })
     )
   })
+
+  it("Should update several options in the same call", async () => {
+    const api = useApi()! as AxiosInstance
+
+    product = await simpleProductFactory(dbConnection, {
+      id: "test-product-with-multiple-options",
+      variants: [
+        {
+          options: [
+            { option_id: "test-product-multi-option-1", value: "test" },
+            { option_id: "test-product-multi-option-2", value: "test value" },
+          ],
+        },
+      ],
+      options: [
+        {
+          id: "test-product-multi-option-1",
+          title: "Test option 1",
+        },
+        {
+          id: "test-product-multi-option-2",
+          title: "Test option 2",
+        },
+      ],
+    })
+
+    variant = product.variants[0]
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-multi-option-1",
+          value: "updated",
+        },
+        {
+          option_id: "test-product-multi-option-2",
+          value: "updated 2",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: [
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-multi-option-1",
+                value: "updated",
+              }),
+              expect.objectContaining({
+                option_id: "test-product-multi-option-2",
+                value: "updated 2",
+              }),
+            ],
+          }),
+        ],
+      })
+    )
+  })
 })
