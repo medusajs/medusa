@@ -315,11 +315,9 @@ export default class ProductModuleService<
         }
       }
 
-      if (Object.keys(rest).length) {
-        for (const [key, value] of Object.entries(rest)) {
-          if (variant[key] !== value) {
-            toUpdate[key] = value
-          }
+      for (const [key, value] of Object.entries(rest)) {
+        if (variant[key] !== value) {
+          toUpdate[key] = value
         }
       }
 
