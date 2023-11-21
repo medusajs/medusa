@@ -28,29 +28,31 @@ export async function updatePriceLists({
 
   const priceLists = await pricingService.updatePriceLists(priceListsData)
   const addPriceListPricesData: AddPriceListPricesDTO[] = []
-  const updateMoneyAmounts: UpdateMoneyAmountDTO[] = []
+  const moneyAmountsToUpdate: UpdateMoneyAmountDTO[] = []
 
   for (const [priceListId, prices] of priceListPricesMap.entries()) {
+    const moneyAmountsToCreate: PriceListPriceDTO[] = []
+
     for (const price of prices) {
       if (price.id) {
-        addPriceListPricesData.push({
-          priceListId,
-          prices: prices.filter((price) => !price.id),
-        })
-
-        continue
+        moneyAmountsToUpdate.push(price as UpdateMoneyAmountDTO)
+      } else {
+        moneyAmountsToCreate.push(price)
       }
-
-      updateMoneyAmounts.push(price as UpdateMoneyAmountDTO)
     }
+
+    addPriceListPricesData.push({
+      priceListId,
+      prices: moneyAmountsToCreate,
+    })
   }
 
   if (addPriceListPricesData.length) {
     await pricingService.addPriceListPrices(addPriceListPricesData)
   }
 
-  if (updateMoneyAmounts.length) {
-    await pricingService.updateMoneyAmounts(updateMoneyAmounts)
+  if (moneyAmountsToUpdate.length) {
+    await pricingService.updateMoneyAmounts(moneyAmountsToUpdate)
   }
 
   return { priceLists }
