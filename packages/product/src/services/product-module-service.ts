@@ -275,52 +275,50 @@ export default class ProductModuleService<
     )[] = []
     const optionsToDelete: string[] = []
 
-    const toUpdate = await Promise.all(
-      data.map(async ({ id, options, ...rest }) => {
-        const variant = variantsMap.get(id)!
+    const toUpdate = data.map(({ id, options, ...rest }) => {
+      const variant = variantsMap.get(id)!
 
-        const toUpdate: UpdateProductVariantDTO & { product_id: string } = {
-          id,
-          product_id: variant.product_id,
-        }
+      const toUpdate: UpdateProductVariantDTO & { product_id: string } = {
+        id,
+        product_id: variant.product_id,
+      }
 
-        if (options?.length) {
-          const optionIdToUpdateValueMap = new Map(
-            options.map(({ option, option_id, value }) => {
-              const computedOptionId = option_id ?? option.id ?? option
-              return [computedOptionId, value]
+      if (options?.length) {
+        const optionIdToUpdateValueMap = new Map(
+          options.map(({ option, option_id, value }) => {
+            const computedOptionId = option_id ?? option.id ?? option
+            return [computedOptionId, value]
+          })
+        )
+
+        for (const existingOption of variant.options) {
+          if (!optionIdToUpdateValueMap.has(existingOption.option)) {
+            optionsToDelete.push(existingOption.id)
+          } else {
+            optionsToUpsert.push({
+              id: existingOption.id,
+              option: existingOption.option as unknown as string,
+              value: optionIdToUpdateValueMap.get(existingOption.option)!,
             })
-          )
-
-          for (const existingOption of variant.options) {
-            if (!optionIdToUpdateValueMap.has(existingOption.option)) {
-              optionsToDelete.push(existingOption.id)
-            } else {
-              optionsToUpsert.push({
-                id: existingOption.id,
-                option: existingOption.option as unknown as string,
-                value: optionIdToUpdateValueMap.get(existingOption.option)!,
-              })
-              optionIdToUpdateValueMap.delete(existingOption.option)
-            }
-          }
-
-          for (const [option, value] of optionIdToUpdateValueMap.entries()) {
-            optionsToUpsert.push({ option, value, variant: id })
+            optionIdToUpdateValueMap.delete(existingOption.option)
           }
         }
 
-        if (Object.keys(rest).length) {
-          for (const [key, value] of Object.entries(rest)) {
-            if (variant[key] !== value) {
-              toUpdate[key] = value
-            }
+        for (const [option, value] of optionIdToUpdateValueMap.entries()) {
+          optionsToUpsert.push({ option, value, variant: id })
+        }
+      }
+
+      if (Object.keys(rest).length) {
+        for (const [key, value] of Object.entries(rest)) {
+          if (variant[key] !== value) {
+            toUpdate[key] = value
           }
         }
+      }
 
-        return toUpdate
-      })
-    )
+      return toUpdate
+    })
 
     const groups = groupBy(toUpdate, "product_id")
 
