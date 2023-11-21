@@ -75,11 +75,11 @@ export class ProductOptionValueRepository extends DALUtils.MikroOrmBaseRepositor
     optionValues.forEach((optionValue) => {
       if (optionValue.id && existingOptionValuesMap.has(optionValue.id)) {
         const existingOptionValue = existingOptionValuesMap.get(optionValue.id)!
-        const updatedType = manager.assign(
+        const updatedOptionValue = manager.assign(
           existingOptionValue,
           optionValue as UpdateProductOptionValueDTO
         )
-        optionValuesToUpdate.push(updatedType)
+        optionValuesToUpdate.push(updatedOptionValue)
       } else {
         const newOptionValue = manager.create(
           ProductOptionValue,
