@@ -244,6 +244,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(variants)), count]
   }
 
+  @InjectTransactionManager("baseRepository_")
   async updateVariants(
     data: ProductTypes.UpdateProductVariantOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
