@@ -55,6 +55,7 @@ import {
 } from "../types/services/product"
 
 import {
+  arrayDifference,
   groupBy,
   InjectManager,
   InjectTransactionManager,
@@ -265,8 +266,9 @@ export default class ProductModuleService<
     data: ProductTypes.UpdateProductVariantOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProductVariant[]> {
+    const variantIdsToUpdate = data.map(({ id }) => id)
     const variants = await this.listVariants(
-      { id: data.map(({ id }) => id) },
+      { id: variantIdsToUpdate },
       { relations: ["options", "options.option"] },
       sharedContext
     )
@@ -277,11 +279,10 @@ export default class ProductModuleService<
     if (variants.length !== data.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Cannot update non-existing variants with ids: " +
-          data
-            .filter(({ id }) => !variantsMap.has(id))
-            .map(({ id }) => id)
-            .join(", ")
+        `Cannot update non-existing variants with ids: ${arrayDifference(
+          variantIdsToUpdate,
+          [...variantsMap.keys()]
+        ).join(", ")}`
       )
     }
 
