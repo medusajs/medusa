@@ -21,11 +21,11 @@ import {
   ProductService, 
   ConfigModule, 
   Logger,
+  MedusaContainer,
 } from "@medusajs/medusa"
-import { AwilixContainer } from "awilix"
 
 export default async (
-  container: AwilixContainer,
+  container: MedusaContainer,
   config: ConfigModule
 ): Promise<void> => {
   const logger = container.resolve<Logger>("logger")
@@ -90,11 +90,11 @@ import {
   ProductService, 
   ConfigModule, 
   Logger,
+  MedusaContainer,
 } from "@medusajs/medusa"
-import { AwilixContainer } from "awilix"
 
 export default async (
-  container: AwilixContainer,
+  container: MedusaContainer,
   config: ConfigModule
 ): Promise<void> => {
   const logger = container.resolve<Logger>("logger")

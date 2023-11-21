@@ -127,7 +127,7 @@ medusa.admin.products
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -145,7 +145,7 @@ medusa.admin.products
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -154,7 +154,7 @@ medusa.admin.products
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -172,7 +172,7 @@ medusa.admin.products
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -181,7 +181,7 @@ medusa.admin.products
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -190,7 +190,7 @@ medusa.admin.products
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -199,7 +199,7 @@ medusa.admin.products
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -235,7 +235,7 @@ medusa.admin.products
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -244,7 +244,7 @@ medusa.admin.products
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -253,7 +253,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -262,7 +262,7 @@ medusa.admin.products
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -280,7 +280,7 @@ medusa.admin.products
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -334,7 +334,7 @@ medusa.admin.products
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -352,7 +352,7 @@ medusa.admin.products
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -379,7 +379,7 @@ medusa.admin.products
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -406,7 +406,7 @@ medusa.admin.products
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -415,7 +415,7 @@ medusa.admin.products
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -649,7 +649,7 @@ medusa.admin.products
         "children": [
           {
             "name": "DRAFT",
-            "type": "``\"draft\"``",
+            "type": "`\"draft\"`",
             "description": "The product is a draft. It's not viewable by customers.",
             "optional": true,
             "defaultValue": "",
@@ -658,7 +658,7 @@ medusa.admin.products
           },
           {
             "name": "PROPOSED",
-            "type": "``\"proposed\"``",
+            "type": "`\"proposed\"`",
             "description": "The product is proposed, but not yet published.",
             "optional": true,
             "defaultValue": "",
@@ -667,7 +667,7 @@ medusa.admin.products
           },
           {
             "name": "PUBLISHED",
-            "type": "``\"published\"``",
+            "type": "`\"published\"`",
             "description": "The product is published.",
             "optional": true,
             "defaultValue": "",
@@ -676,7 +676,7 @@ medusa.admin.products
           },
           {
             "name": "REJECTED",
-            "type": "``\"rejected\"``",
+            "type": "`\"rejected\"`",
             "description": "The product is rejected. It's not viewable by customers.",
             "optional": true,
             "defaultValue": "",
@@ -1084,7 +1084,7 @@ medusa.admin.products
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1102,7 +1102,7 @@ medusa.admin.products
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1111,7 +1111,7 @@ medusa.admin.products
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1129,7 +1129,7 @@ medusa.admin.products
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -1138,7 +1138,7 @@ medusa.admin.products
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -1147,7 +1147,7 @@ medusa.admin.products
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -1156,7 +1156,7 @@ medusa.admin.products
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -1192,7 +1192,7 @@ medusa.admin.products
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -1201,7 +1201,7 @@ medusa.admin.products
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -1210,7 +1210,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1219,7 +1219,7 @@ medusa.admin.products
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -1237,7 +1237,7 @@ medusa.admin.products
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -1291,7 +1291,7 @@ medusa.admin.products
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1309,7 +1309,7 @@ medusa.admin.products
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1336,7 +1336,7 @@ medusa.admin.products
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1363,7 +1363,7 @@ medusa.admin.products
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -1372,7 +1372,7 @@ medusa.admin.products
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -1738,7 +1738,7 @@ medusa.admin.products
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1756,7 +1756,7 @@ medusa.admin.products
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1765,7 +1765,7 @@ medusa.admin.products
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1783,7 +1783,7 @@ medusa.admin.products
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -1792,7 +1792,7 @@ medusa.admin.products
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -1801,7 +1801,7 @@ medusa.admin.products
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -1810,7 +1810,7 @@ medusa.admin.products
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -1846,7 +1846,7 @@ medusa.admin.products
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -1855,7 +1855,7 @@ medusa.admin.products
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -1864,7 +1864,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1873,7 +1873,7 @@ medusa.admin.products
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -1891,7 +1891,7 @@ medusa.admin.products
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -1945,7 +1945,7 @@ medusa.admin.products
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1963,7 +1963,7 @@ medusa.admin.products
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1990,7 +1990,7 @@ medusa.admin.products
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2017,7 +2017,7 @@ medusa.admin.products
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2026,7 +2026,7 @@ medusa.admin.products
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2120,7 +2120,7 @@ medusa.admin.products.delete(productId).then(({ id, object, deleted }) => {
           },
           {
             "name": "object",
-            "type": "``\"product\"``",
+            "type": "`\"product\"`",
             "description": "The type of the object that was deleted.",
             "optional": false,
             "defaultValue": "product",
@@ -2201,7 +2201,7 @@ Delete a product option. If there are product variants that use this product opt
           },
           {
             "name": "object",
-            "type": "``\"option\"``",
+            "type": "`\"option\"`",
             "description": "The type of the object that was deleted.",
             "optional": false,
             "defaultValue": "option",
@@ -2246,7 +2246,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2264,7 +2264,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2273,7 +2273,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2291,7 +2291,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -2300,7 +2300,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -2309,7 +2309,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2318,7 +2318,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -2354,7 +2354,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2363,7 +2363,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -2372,7 +2372,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2381,7 +2381,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -2399,7 +2399,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -2453,7 +2453,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2471,7 +2471,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2498,7 +2498,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2525,7 +2525,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2534,7 +2534,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2630,7 +2630,7 @@ medusa.admin.products
           },
           {
             "name": "object",
-            "type": "``\"product-variant\"``",
+            "type": "`\"product-variant\"`",
             "description": "The type of the object that was deleted.",
             "optional": false,
             "defaultValue": "product-variant",
@@ -2666,7 +2666,7 @@ medusa.admin.products
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2684,7 +2684,7 @@ medusa.admin.products
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2693,7 +2693,7 @@ medusa.admin.products
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2711,7 +2711,7 @@ medusa.admin.products
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -2720,7 +2720,7 @@ medusa.admin.products
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -2729,7 +2729,7 @@ medusa.admin.products
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2738,7 +2738,7 @@ medusa.admin.products
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -2774,7 +2774,7 @@ medusa.admin.products
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2783,7 +2783,7 @@ medusa.admin.products
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -2792,7 +2792,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2801,7 +2801,7 @@ medusa.admin.products
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -2819,7 +2819,7 @@ medusa.admin.products
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -2873,7 +2873,7 @@ medusa.admin.products
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2891,7 +2891,7 @@ medusa.admin.products
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2918,7 +2918,7 @@ medusa.admin.products
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2945,7 +2945,7 @@ medusa.admin.products
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -2954,7 +2954,7 @@ medusa.admin.products
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -3287,7 +3287,7 @@ medusa.admin.products
         "children": [
           {
             "name": "DRAFT",
-            "type": "``\"draft\"``",
+            "type": "`\"draft\"`",
             "description": "The product is a draft. It's not viewable by customers.",
             "optional": true,
             "defaultValue": "",
@@ -3296,7 +3296,7 @@ medusa.admin.products
           },
           {
             "name": "PROPOSED",
-            "type": "``\"proposed\"``",
+            "type": "`\"proposed\"`",
             "description": "The product is proposed, but not yet published.",
             "optional": true,
             "defaultValue": "",
@@ -3305,7 +3305,7 @@ medusa.admin.products
           },
           {
             "name": "PUBLISHED",
-            "type": "``\"published\"``",
+            "type": "`\"published\"`",
             "description": "The product is published.",
             "optional": true,
             "defaultValue": "",
@@ -3314,7 +3314,7 @@ medusa.admin.products
           },
           {
             "name": "REJECTED",
-            "type": "``\"rejected\"``",
+            "type": "`\"rejected\"`",
             "description": "The product is rejected. It's not viewable by customers.",
             "optional": true,
             "defaultValue": "",
@@ -3422,7 +3422,7 @@ medusa.admin.products
     "children": [
       {
         "name": "AdminProductsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; products: ([PricedProduct](../internal/types/internal.PricedProduct.mdx) \\| [Product](../internal/classes/internal.Product.mdx))[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ products: ([PricedProduct](../internal/types/internal.PricedProduct.mdx) \\| [Product](../internal/classes/internal.Product.mdx))[]  }``",
         "description": "The list of products with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -3522,7 +3522,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
         "children": [
           {
             "name": "tags",
-            "type": "[Pick](../internal/types/internal.Pick.mdx)&#60;[ProductTag](../internal/classes/internal.ProductTag.mdx), `\"id\"` \\| `\"value\"`&#62; & `&#123; usage_count: number  &#125;`[]",
+            "type": "[Pick](../internal/types/internal.Pick.mdx)&#60;[ProductTag](../internal/classes/internal.ProductTag.mdx), \"id\" \\| \"value\"&#62; & ``{ usage_count: number  }``[]",
             "description": "An array of product tags details.",
             "optional": false,
             "defaultValue": "",
@@ -3539,7 +3539,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -3687,7 +3687,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -3705,7 +3705,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -3714,7 +3714,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -3732,7 +3732,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -3741,7 +3741,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -3750,7 +3750,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -3759,7 +3759,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -3795,7 +3795,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -3804,7 +3804,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -3813,7 +3813,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3822,7 +3822,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -3840,7 +3840,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -3894,7 +3894,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -3912,7 +3912,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -3939,7 +3939,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -3966,7 +3966,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -3975,7 +3975,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -4112,7 +4112,7 @@ medusa.admin.products
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -4130,7 +4130,7 @@ medusa.admin.products
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -4139,7 +4139,7 @@ medusa.admin.products
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -4157,7 +4157,7 @@ medusa.admin.products
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -4166,7 +4166,7 @@ medusa.admin.products
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -4175,7 +4175,7 @@ medusa.admin.products
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -4184,7 +4184,7 @@ medusa.admin.products
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -4220,7 +4220,7 @@ medusa.admin.products
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -4229,7 +4229,7 @@ medusa.admin.products
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -4238,7 +4238,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -4247,7 +4247,7 @@ medusa.admin.products
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -4265,7 +4265,7 @@ medusa.admin.products
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -4319,7 +4319,7 @@ medusa.admin.products
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -4337,7 +4337,7 @@ medusa.admin.products
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -4364,7 +4364,7 @@ medusa.admin.products
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -4391,7 +4391,7 @@ medusa.admin.products
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -4400,7 +4400,7 @@ medusa.admin.products
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -4586,7 +4586,7 @@ medusa.admin.products
       },
       {
         "name": "sales_channels",
-        "type": "``null`` \\| [ProductSalesChannelReq](../internal/classes/internal.ProductSalesChannelReq.mdx)[]",
+        "type": "`null` \\| [ProductSalesChannelReq](../internal/classes/internal.ProductSalesChannelReq.mdx)[]",
         "description": "Sales channels to associate the Product with.",
         "optional": true,
         "defaultValue": "",
@@ -4603,7 +4603,7 @@ medusa.admin.products
         "children": [
           {
             "name": "DRAFT",
-            "type": "``\"draft\"``",
+            "type": "`\"draft\"`",
             "description": "The product is a draft. It's not viewable by customers.",
             "optional": true,
             "defaultValue": "",
@@ -4612,7 +4612,7 @@ medusa.admin.products
           },
           {
             "name": "PROPOSED",
-            "type": "``\"proposed\"``",
+            "type": "`\"proposed\"`",
             "description": "The product is proposed, but not yet published.",
             "optional": true,
             "defaultValue": "",
@@ -4621,7 +4621,7 @@ medusa.admin.products
           },
           {
             "name": "PUBLISHED",
-            "type": "``\"published\"``",
+            "type": "`\"published\"`",
             "description": "The product is published.",
             "optional": true,
             "defaultValue": "",
@@ -4630,7 +4630,7 @@ medusa.admin.products
           },
           {
             "name": "REJECTED",
-            "type": "``\"rejected\"``",
+            "type": "`\"rejected\"`",
             "description": "The product is rejected. It's not viewable by customers.",
             "optional": true,
             "defaultValue": "",
@@ -5065,7 +5065,7 @@ medusa.admin.products
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5083,7 +5083,7 @@ medusa.admin.products
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -5092,7 +5092,7 @@ medusa.admin.products
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5110,7 +5110,7 @@ medusa.admin.products
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -5119,7 +5119,7 @@ medusa.admin.products
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -5128,7 +5128,7 @@ medusa.admin.products
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -5137,7 +5137,7 @@ medusa.admin.products
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -5173,7 +5173,7 @@ medusa.admin.products
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -5182,7 +5182,7 @@ medusa.admin.products
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -5191,7 +5191,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -5200,7 +5200,7 @@ medusa.admin.products
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -5218,7 +5218,7 @@ medusa.admin.products
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -5272,7 +5272,7 @@ medusa.admin.products
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5290,7 +5290,7 @@ medusa.admin.products
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5317,7 +5317,7 @@ medusa.admin.products
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5344,7 +5344,7 @@ medusa.admin.products
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -5353,7 +5353,7 @@ medusa.admin.products
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -5488,7 +5488,7 @@ medusa.admin.products
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5506,7 +5506,7 @@ medusa.admin.products
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -5515,7 +5515,7 @@ medusa.admin.products
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5533,7 +5533,7 @@ medusa.admin.products
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -5542,7 +5542,7 @@ medusa.admin.products
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -5551,7 +5551,7 @@ medusa.admin.products
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -5560,7 +5560,7 @@ medusa.admin.products
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -5596,7 +5596,7 @@ medusa.admin.products
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -5605,7 +5605,7 @@ medusa.admin.products
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -5614,7 +5614,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -5623,7 +5623,7 @@ medusa.admin.products
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -5641,7 +5641,7 @@ medusa.admin.products
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -5695,7 +5695,7 @@ medusa.admin.products
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5713,7 +5713,7 @@ medusa.admin.products
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5740,7 +5740,7 @@ medusa.admin.products
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5767,7 +5767,7 @@ medusa.admin.products
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -5776,7 +5776,7 @@ medusa.admin.products
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -6160,7 +6160,7 @@ medusa.admin.products
               },
               {
                 "name": "collection_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -6178,7 +6178,7 @@ medusa.admin.products
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -6187,7 +6187,7 @@ medusa.admin.products
               },
               {
                 "name": "description",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A short description of the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -6205,7 +6205,7 @@ medusa.admin.products
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The external ID of the product",
                 "optional": false,
                 "defaultValue": "",
@@ -6214,7 +6214,7 @@ medusa.admin.products
               },
               {
                 "name": "handle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A unique identifier for the Product (e.g. for slug structure).",
                 "optional": false,
                 "defaultValue": "",
@@ -6223,7 +6223,7 @@ medusa.admin.products
               },
               {
                 "name": "height",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The height of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -6232,7 +6232,7 @@ medusa.admin.products
               },
               {
                 "name": "hs_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -6268,7 +6268,7 @@ medusa.admin.products
               },
               {
                 "name": "length",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The length of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -6277,7 +6277,7 @@ medusa.admin.products
               },
               {
                 "name": "material",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -6286,7 +6286,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| `Record<string, unknown>`",
+                "type": "`null` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -6295,7 +6295,7 @@ medusa.admin.products
               },
               {
                 "name": "mid_code",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -6313,7 +6313,7 @@ medusa.admin.products
               },
               {
                 "name": "origin_country",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
                 "optional": false,
                 "defaultValue": "",
@@ -6367,7 +6367,7 @@ medusa.admin.products
               },
               {
                 "name": "subtitle",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "An optional subtitle that can be used to further specify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -6385,7 +6385,7 @@ medusa.admin.products
               },
               {
                 "name": "thumbnail",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "A URL to an image file that can be used to identify the Product.",
                 "optional": false,
                 "defaultValue": "",
@@ -6412,7 +6412,7 @@ medusa.admin.products
               },
               {
                 "name": "type_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -6439,7 +6439,7 @@ medusa.admin.products
               },
               {
                 "name": "weight",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",
@@ -6448,7 +6448,7 @@ medusa.admin.products
               },
               {
                 "name": "width",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The width of the Product Variant. May be used in shipping rate calculations.",
                 "optional": false,
                 "defaultValue": "",

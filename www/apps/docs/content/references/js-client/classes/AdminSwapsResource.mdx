@@ -107,7 +107,7 @@ medusa.admin.swaps
     "children": [
       {
         "name": "AdminSwapsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; swaps: [Swap](../internal/classes/internal.Swap.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ swaps: [Swap](../internal/classes/internal.Swap.mdx)[]  }``",
         "description": "The list of swaps with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -213,7 +213,7 @@ medusa.admin.swaps
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -504,7 +504,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",

@@ -77,7 +77,7 @@ Notification Provider Services must have a static property `identifier`.
 
 The `NotificationProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the Service class is used when the Notification Provider is created in the database.
 
-The value of this property is also used later when you want to subscribe the Notification Provider to events in a Subscriber.
+The value of this property is also used later when you want to subscribe the Notification Provider to events in a Loader.
 
 For example, in the class you created in the previous code snippet you can add the following property:
 
@@ -257,39 +257,33 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 ---
 
-## Create a Subscriber
+## Subscribe with Loaders
 
-After creating your Notification Provider Service, you must create a Subscriber that registers this Service as a notification handler of events.
+After creating your Notification Provider Service, you must create a [Loader](../loaders/overview.mdx) that registers this Service as a notification handler of events.
 
-:::note
+Following the previous example, to make sure the `email-sender` Notification Provider handles the `order.placed` event, create the file `src/loaders/notification.ts` with the following content:
 
-This section will not cover the basics of Subscribers. You can read the [Subscribers](../events/create-subscriber.md) documentation to learn more about them and how to create them.
+```ts title=src/loaders/notification.ts
+import { 
+  MedusaContainer, 
+  NotificationService,
+} from "@medusajs/medusa"
 
-:::
+export default async (
+  container: MedusaContainer
+): Promise<void> => {
+  const notificationService = container.resolve<
+    NotificationService
+  >("notificationService")
 
-Following the previous example, to make sure the `email-sender` Notification Provider handles the `order.placed` event, create the file `src/subscribers/notification.js` with the following content:
-
-```ts title=src/subscribers/notification.js
-class NotificationSubscriber {
-  constructor({ notificationService }) {
-    notificationService.subscribe(
-      "order.placed", 
-      "email-sender"
-    )
-  }
-  // ...
+  notificationService.subscribe(
+    "order.placed", 
+    "email-sender"
+  )
 }
-
-export default NotificationSubscriber
 ```
 
-This subscriber accesses the `notificationService` using dependency injection. The `notificationService` contains a `subscribe` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that is subscribing to that event.
-
-:::tip
-
-Notice that the value of the `identifier` static property defined in the `EmailSenderService` is used to register the Notification Provider to handle the `order.placed` event.
-
-:::
+This loader accesses the `notificationService` through the [MedusaContainer](../fundamentals/dependency-injection.md). The `notificationService` has a `subscribe` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that's subscribing to that event.
 
 ---
 

@@ -22,7 +22,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "amount",
-    "type": "``null`` \\| `number`",
+    "type": "`null` \\| `number`",
     "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "deleted_at",
-    "type": "``null`` \\| `Date`",
+    "type": "`null` \\| `Date`",
     "description": "The date with timezone at which the resource was deleted.",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
     "children": [
       {
         "name": "CALCULATED",
-        "type": "``\"calculated\"``",
+        "type": "`\"calculated\"`",
         "description": "The shipping option's price is calculated. In this case, the `amount` field is typically `null`.",
         "optional": true,
         "defaultValue": "",
@@ -121,7 +121,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "FLAT_RATE",
-        "type": "``\"flat_rate\"``",
+        "type": "`\"flat_rate\"`",
         "description": "The shipping option's price is a flat rate.",
         "optional": true,
         "defaultValue": "",
@@ -149,7 +149,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "deleted_at",
-        "type": "``null`` \\| `Date`",
+        "type": "`null` \\| `Date`",
         "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
@@ -322,7 +322,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "deleted_at",
-        "type": "``null`` \\| `Date`",
+        "type": "`null` \\| `Date`",
         "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
@@ -413,7 +413,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "tax_provider_id",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The ID of the tax provider used in this region",
         "optional": false,
         "defaultValue": "",
@@ -431,7 +431,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "tax_rates",
-        "type": "``null`` \\| [TaxRate](TaxRate.mdx)[]",
+        "type": "`null` \\| [TaxRate](TaxRate.mdx)[]",
         "description": "The details of the tax rates used in the region, aside from the default rate.",
         "optional": false,
         "defaultValue": "",

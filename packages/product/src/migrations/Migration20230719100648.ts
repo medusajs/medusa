@@ -2,14 +2,6 @@ import { Migration } from "@mikro-orm/migrations"
 
 export class Migration20230719100648 extends Migration {
   async up(): Promise<void> {
-    try {
-      // Prevent from crashing if for some reason the migration is re run (example, typeorm and mikro orm does not have the same migration table)
-      await this.execute('SELECT 1 FROM "product" LIMIT 1;')
-      return
-    } catch {
-      // noop
-    }
-
     this.addSql(
       'create table IF NOT EXISTS "product_category" ("id" text not null, "name" text not null, "description" text not null default \'\', "handle" text not null, "mpath" text not null, "is_active" boolean not null default false, "is_internal" boolean not null default false, "rank" numeric not null default 0, "parent_category_id" text null, "created_at" timestamptz not null, "updated_at" timestamptz not null, constraint "product_category_pkey" primary key ("id"));'
     )

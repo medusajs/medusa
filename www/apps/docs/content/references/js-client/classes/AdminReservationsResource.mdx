@@ -158,7 +158,7 @@ medusa.admin.reservations
               },
               {
                 "name": "created_by",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "UserId of user who created the reservation item",
                 "optional": true,
                 "defaultValue": "",
@@ -167,7 +167,7 @@ medusa.admin.reservations
               },
               {
                 "name": "deleted_at",
-                "type": "`string` \\| `Date` \\| ``null``",
+                "type": "`string` \\| `Date` \\| `null`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -176,7 +176,7 @@ medusa.admin.reservations
               },
               {
                 "name": "description",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "Description of the reservation item",
                 "optional": true,
                 "defaultValue": "",
@@ -203,7 +203,7 @@ medusa.admin.reservations
               },
               {
                 "name": "line_item_id",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "",
                 "optional": true,
                 "defaultValue": "",
@@ -221,7 +221,7 @@ medusa.admin.reservations
               },
               {
                 "name": "metadata",
-                "type": "`Record<string, unknown>` \\| ``null``",
+                "type": "`Record<string, unknown>` \\| `null`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -601,7 +601,7 @@ medusa.admin.reservations
     "children": [
       {
         "name": "AdminReservationsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; reservations: [ReservationItemDTO](../internal/types/internal.ReservationItemDTO.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ reservations: [ReservationItemDTO](../internal/types/internal.ReservationItemDTO.mdx)[]  }``",
         "description": "The list of reservations with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -653,7 +653,7 @@ medusa.admin.reservations
               },
               {
                 "name": "created_by",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "UserId of user who created the reservation item",
                 "optional": true,
                 "defaultValue": "",
@@ -662,7 +662,7 @@ medusa.admin.reservations
               },
               {
                 "name": "deleted_at",
-                "type": "`string` \\| `Date` \\| ``null``",
+                "type": "`string` \\| `Date` \\| `null`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -671,7 +671,7 @@ medusa.admin.reservations
               },
               {
                 "name": "description",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "Description of the reservation item",
                 "optional": true,
                 "defaultValue": "",
@@ -698,7 +698,7 @@ medusa.admin.reservations
               },
               {
                 "name": "line_item_id",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "",
                 "optional": true,
                 "defaultValue": "",
@@ -716,7 +716,7 @@ medusa.admin.reservations
               },
               {
                 "name": "metadata",
-                "type": "`Record<string, unknown>` \\| ``null``",
+                "type": "`Record<string, unknown>` \\| `null`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -827,7 +827,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
               },
               {
                 "name": "created_by",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "UserId of user who created the reservation item",
                 "optional": true,
                 "defaultValue": "",
@@ -836,7 +836,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "`string` \\| `Date` \\| ``null``",
+                "type": "`string` \\| `Date` \\| `null`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -845,7 +845,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
               },
               {
                 "name": "description",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "Description of the reservation item",
                 "optional": true,
                 "defaultValue": "",
@@ -872,7 +872,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
               },
               {
                 "name": "line_item_id",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "",
                 "optional": true,
                 "defaultValue": "",
@@ -890,7 +890,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
               },
               {
                 "name": "metadata",
-                "type": "`Record<string, unknown>` \\| ``null``",
+                "type": "`Record<string, unknown>` \\| `null`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1051,7 +1051,7 @@ medusa.admin.reservations
               },
               {
                 "name": "created_by",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "UserId of user who created the reservation item",
                 "optional": true,
                 "defaultValue": "",
@@ -1060,7 +1060,7 @@ medusa.admin.reservations
               },
               {
                 "name": "deleted_at",
-                "type": "`string` \\| `Date` \\| ``null``",
+                "type": "`string` \\| `Date` \\| `null`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1069,7 +1069,7 @@ medusa.admin.reservations
               },
               {
                 "name": "description",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "Description of the reservation item",
                 "optional": true,
                 "defaultValue": "",
@@ -1096,7 +1096,7 @@ medusa.admin.reservations
               },
               {
                 "name": "line_item_id",
-                "type": "`string` \\| ``null``",
+                "type": "`string` \\| `null`",
                 "description": "",
                 "optional": true,
                 "defaultValue": "",
@@ -1114,7 +1114,7 @@ medusa.admin.reservations
               },
               {
                 "name": "metadata",
-                "type": "`Record<string, unknown>` \\| ``null``",
+                "type": "`Record<string, unknown>` \\| `null`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
