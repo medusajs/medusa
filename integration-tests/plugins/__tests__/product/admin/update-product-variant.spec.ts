@@ -277,8 +277,6 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
       adminHeaders
     )
 
-    const variant2 = product.variants[1]
-
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(
       expect.objectContaining({
@@ -294,7 +292,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
             ],
           }),
           expect.objectContaining({
-            id: variant2.id,
+            id: product.variants[1].id,
             options: [
               expect.objectContaining({
                 option_id: "test-product-option-1",
@@ -314,10 +312,10 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
       id: "test-product-with-multiple-options",
       variants: [
         {
-          options: [{ option_id: "test-product-option-1", value: "test" }],
-        },
-        {
-          options: [{ option_id: "test-product-option-1", value: "test 2" }],
+          options: [
+            { option_id: "test-product-multi-option-1", value: "test" },
+            { option_id: "test-product-multi-option-2", value: "test value" },
+          ],
         },
       ],
       options: [
@@ -358,7 +356,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
     expect(response.data.product).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        variants: expect.arrayContaining([
+        variants: [
           expect.objectContaining({
             id: variant.id,
             options: [
@@ -368,7 +366,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
               }),
             ],
           }),
-        ]),
+        ],
       })
     )
   })
