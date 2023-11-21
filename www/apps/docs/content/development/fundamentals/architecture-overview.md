@@ -20,7 +20,7 @@ The backend doesn't have any tightly-coupled frontend. Instead, it exposes [API 
 
 Medusa also uses an [Events Architecture](../events/index.mdx) to trigger and handle events. Events are triggered when a specific action occurs, such as when an order is placed. To manage this events system, Medusa connects to a service that implements a pub/sub model, such as [Redis](https://redis.io/).
 
-Events can be handled using [Subscribers](../events/subscribers.mdx). Subscribers are TypeScript or JavaScript classes that add their methods as handlers for specific events. These handler methods are only executed when an event is triggered.
+Events can be handled using [Subscribers](../events/subscribers.mdx). Subscribers are TypeScript or JavaScript files that export a handler function that's executed asynchronously when an event is triggered, and a configuration object defining what events the subscriber listens to.
 
 You can create any of the resources in the backend’s architecture, such as entities, API Routes, services, and more, as part of your custom development without directly modifying the backend itself. The Medusa backend uses [loaders](../loaders/overview.mdx) to load the backend’s resources, as well as your custom resources and resources in [Plugins](../plugins/overview.mdx).
 

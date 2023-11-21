@@ -287,7 +287,7 @@ If the request has been processed successfully, it returns a `204` status code i
 
 :::note
 
-If the customer doesn’t receive an email after this request, make sure that you’ve set up a Notification provider like [SendGrid](../../../plugins/notifications/sendgrid.mdx) successfully. You also need to add a subscriber that handles the [customer.password_reset](../../../development/events/events-list.md#customer-events) event and sends the email.
+If the customer doesn’t receive an email after this request, make sure that you’ve set up a Notification provider like [SendGrid](../../../plugins/notifications/sendgrid.mdx) successfully. You also need to add a [subscriber](../../../development/events/create-subscriber.md) that handles the [customer.password_reset](../../../development/events/events-list.md#customer-events) event and sends the email.
 
 :::
 

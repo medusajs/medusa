@@ -704,14 +704,42 @@ To resolve resources, such as services, in API Routes, use the `MedusaRequest` o
 For example:
 
 ```ts
-const logger = req.scope.resolve("logger")
+const productService: ProductService = req.scope.resolve(
+  "productService"
+)
 ```
 
 Please note that in API Routes some resources, such as repositories, aren't available. Refer to the [repositories](../entities/repositories.md#api-routes) documentation to learn how you can load them.
 
+### In Subscribers
+
+To resolve resources, such as services, in subscriber handler functions, use the `container` property of the handler function's parameter. The `container` has a method `resolve` which accepts the registration name of a resource as a parameter.
+
+For example:
+
+```ts
+import { 
+  ProductService,
+  type SubscriberConfig, 
+  type SubscriberArgs,
+} from "@medusajs/medusa"
+
+export default async function productUpdateHandler({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const productService: ProductService = container.resolve(
+    "productService"
+  )
+
+  // ...
+}
+
+// ...
+```
+
 ### In Classes
 
-In classes such as services, strategies, or subscribers, you can load resources in the constructor function using dependency injection. The constructor receives an object of dependencies as a first parameter. Each dependency in the object should use the registration name of the resource that should be injected to the class.
+In classes such as services or strategies, you can load resources in the constructor function using dependency injection. The constructor receives an object of dependencies as a first parameter. Each dependency in the object should use the registration name of the resource that should be injected to the class.
 
 For example:
 
