@@ -103,7 +103,7 @@ function applyStep<
             const invokeResult =
               transactionContext.invoke[stepName].output?.compensateInput
 
-            const args = [executionContext, invokeResult]
+            const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
             return {
               output,
