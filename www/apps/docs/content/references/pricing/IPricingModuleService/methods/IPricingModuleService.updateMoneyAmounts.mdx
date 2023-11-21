@@ -18,7 +18,7 @@ This method updates existing money amounts.
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -27,7 +27,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 
   const moneyAmounts = await pricingService.updateMoneyAmounts([
     {
-      id: moneyAmountId, 
+      id: moneyAmountId,
       amount
     }
   ])
@@ -105,7 +105,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -132,7 +132,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -182,10 +182,10 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
           {
             "name": "currency",
             "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
-            "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
+            "description": "The money amount's currency.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -222,6 +222,15 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
             "optional": true,
             "defaultValue": "",
             "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_set_money_amount",
+            "type": "[PriceSetMoneyAmountDTO](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
+            "description": "The details of the relation between the money amount and its associated price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
             "children": []
           }
         ]

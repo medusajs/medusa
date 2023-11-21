@@ -20,7 +20,7 @@ This method is used to retrieve a paginated list of price sets based on optional
 To retrieve a list of price sets using their IDs:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -40,7 +40,7 @@ async function retrievePriceSets (priceSetIds: string[]) {
 To specify relations that should be retrieved within the price sets:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -63,7 +63,7 @@ async function retrievePriceSets (priceSetIds: string[]) {
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -88,10 +88,10 @@ async function retrievePriceSets (priceSetIds: string[], skip: number, take: num
 You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
-  
+
 async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[], skip: number, take: number) {
   const pricingService = await initializePricingModule()
 
@@ -290,7 +290,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -317,7 +317,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
