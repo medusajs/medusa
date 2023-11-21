@@ -140,8 +140,13 @@ function applyStep<
             const stepOutput = transactionContext.invoke[stepName].output
             const invokeResult =
               stepOutput?.__type === SymbolWorkflowStepResponse
-                ? stepOutput.compensateInput
-                : undefined
+                ? (stepOutput.compensateInput || stepOutput.output) &&
+                  JSON.parse(
+                    JSON.stringify(
+                      stepOutput.compensateInput ?? stepOutput.output
+                    )
+                  )
+                : stepOutput && JSON.parse(JSON.stringify(stepOutput))
 
             const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
@@ -170,10 +175,13 @@ function applyStep<
 
         return transform(target[prop], (input, context) => {
           const { invoke } = context as WorkflowTransactionContext
-          const output = invoke?.[ret.__step__]?.output
-          return output?.__type === SymbolWorkflowStepResponse
-            ? output.output?.[prop]
-            : output?.[prop]
+          let output = invoke?.[ret.__step__]?.output
+          output =
+            output?.__type === SymbolWorkflowStepResponse
+              ? output.output?.[prop]
+              : output?.[prop]
+
+          return output && JSON.parse(JSON.stringify(output))
         })
       },
     })

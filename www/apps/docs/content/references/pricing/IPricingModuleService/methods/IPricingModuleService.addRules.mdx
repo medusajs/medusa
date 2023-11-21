@@ -20,7 +20,7 @@ This method adds rules to a price set.
 ### Example
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -60,8 +60,8 @@ async function addRulesToPriceSet (priceSetId: string) {
       },
       {
         "name": "rules",
-        "type": "`&#123; attribute: string  &#125;`[]",
-        "description": "The rules to add to a price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
+        "type": "``{ attribute: string  }``[]",
+        "description": "The rules to add to a price set.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -69,7 +69,7 @@ async function addRulesToPriceSet (priceSetId: string) {
           {
             "name": "attribute",
             "type": "`string`",
-            "description": "",
+            "description": "The value of the rule's `rule_attribute` attribute.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -90,7 +90,7 @@ async function addRulesToPriceSet (priceSetId: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -117,7 +117,7 @@ async function addRulesToPriceSet (priceSetId: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -176,10 +176,10 @@ async function addRulesToPriceSet (priceSetId: string) {
           {
             "name": "currency",
             "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
-            "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
+            "description": "The money amount's currency.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -216,6 +216,15 @@ async function addRulesToPriceSet (priceSetId: string) {
             "optional": true,
             "defaultValue": "",
             "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_set_money_amount",
+            "type": "[PriceSetMoneyAmountDTO](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
+            "description": "The details of the relation between the money amount and its associated price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
             "children": []
           }
         ]
@@ -277,7 +286,7 @@ This method adds rules to multiple price sets.
 ### Example
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -317,8 +326,8 @@ async function addRulesToPriceSet (priceSetId: string) {
       },
       {
         "name": "rules",
-        "type": "`&#123; attribute: string  &#125;`[]",
-        "description": "The rules to add to a price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
+        "type": "``{ attribute: string  }``[]",
+        "description": "The rules to add to a price set.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -326,7 +335,7 @@ async function addRulesToPriceSet (priceSetId: string) {
           {
             "name": "attribute",
             "type": "`string`",
-            "description": "",
+            "description": "The value of the rule's `rule_attribute` attribute.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -347,7 +356,7 @@ async function addRulesToPriceSet (priceSetId: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -374,7 +383,7 @@ async function addRulesToPriceSet (priceSetId: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,

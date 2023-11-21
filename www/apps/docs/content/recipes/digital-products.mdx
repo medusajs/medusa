@@ -921,7 +921,7 @@ To add an interface that allows the admin user to upload digital products, you c
 
 When a customer purchases a digital product, they should receive a link to download it.
 
-To implement that, you first need to listen to the `order.placed` event using a Subscriber. Then, in the handler method of the subscriber, you check for the digital products in the order and obtain the download URLs using the file service's `getPresignedDownloadUrl` method.
+To implement that, you first need to listen to the `order.placed` event using a Subscriber. Then, in the subscriber handler function, you check for the digital products in the order and obtain the download URLs using the file service's `getPresignedDownloadUrl` method.
 
 :::note
 
@@ -954,88 +954,74 @@ Finally, you can send a notification, such as an email, to the customer using th
       
   ```ts title=src/subscribers/handle-order.ts
   import { 
-    AbstractFileService, 
-    EventBusService, 
+    type SubscriberConfig, 
+    type SubscriberArgs,
     OrderService,
+    AbstractFileService,
   } from "@medusajs/medusa"
 
-  type InjectedDependencies = {
-    eventBusService: EventBusService
-    orderService: OrderService
-    sendgridService: any
-    fileService: AbstractFileService
-  }
+  export default async function handleOrderPlaced({ 
+    data, eventName, container, pluginOptions, 
+  }: SubscriberArgs<Record<string, string>>) {
+    const orderService: OrderService = container.resolve(
+      "orderService"
+    )
+    const fileService: AbstractFileService = container.resolve(
+      "fileService"
+    )
+    const sendgridService = container.resolve("sendgridService")
 
-  class HandleOrderSubscribers {
-    protected readonly orderService_: OrderService
-    protected readonly sendgridService_: any
-    protected readonly fileService_: AbstractFileService
+    const order = await orderService.retrieve(data.id, {
+      relations: [
+        "items", 
+        "items.variant", 
+        "items.variant.product_medias",
+      ],
+    })
 
-    constructor({ 
-      eventBusService, 
-      orderService, 
-      sendgridService,
-      fileService,
-    }: InjectedDependencies) {
-      this.orderService_ = orderService
-      this.sendgridService_ = sendgridService
-      this.fileService_ = fileService
-      eventBusService.subscribe(
-        "order.placed", 
-        this.handleOrderPlaced
-      )
-    }
-
-    handleOrderPlaced = async (
-      data: Record<string, any>
-    ) => {
-      const order = await this.orderService_.retrieve(data.id, {
-        relations: [
-          "items", 
-          "items.variant", 
-          "items.variant.product_medias",
-        ],
-      })
-
-      // find product medias in the order
-      const urls = []
-      for (const item of order.items) {
-        if (!item.variant.product_medias.length) {
-          return
-        }
-
-        await Promise.all([
-          item.variant.product_medias.forEach(
-            async (productMedia) => {
-            // get the download URL from the file service
-            const downloadUrl = await 
-              this.fileService_.getPresignedDownloadUrl({
-                fileKey: productMedia.file_key,
-                isPrivate: true,
-              })
-
-            urls.push(downloadUrl)
-          }),
-        ])
-      }
-      
-      if (!urls.length) {
+    // find product medias in the order
+    const urls = []
+    for (const item of order.items) {
+      if (!item.variant.product_medias.length) {
         return
       }
 
-      this.sendgridService_.sendEmail({
-        templateId: "digital-download",
-        from: "hello@medusajs.com",
-        to: order.email,
-        dynamic_template_data: {
-          // any data necessary for your template...
-          digital_download_urls: urls,
-        },
-      })
+      await Promise.all([
+        item.variant.product_medias.forEach(
+          async (productMedia) => {
+          // get the download URL from the file service
+          const downloadUrl = await 
+            fileService.getPresignedDownloadUrl({
+              fileKey: productMedia.file_key,
+              isPrivate: true,
+            })
+
+          urls.push(downloadUrl)
+        }),
+      ])
     }
+    
+    if (!urls.length) {
+      return
+    }
+
+    sendgridService.sendEmail({
+      templateId: "digital-download",
+      from: "hello@medusajs.com",
+      to: order.email,
+      dynamic_template_data: {
+        // any data necessary for your template...
+        digital_download_urls: urls,
+      },
+    })
   }
 
-  export default HandleOrderSubscribers
+  export const config: SubscriberConfig = {
+    event: OrderService.Events.PLACED,
+    context: {
+      subscriberId: "order-placed-handler",
+    },
+  }
   ```
 
   Notice that regardless of what file service you have installed, you can access it using dependency injection under the name `fileService`.

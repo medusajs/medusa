@@ -73,5 +73,5 @@ export async function resolveValue(input, transactionContext) {
     ? await resolveProperty(input, transactionContext)
     : await unwrapInput(input, {})
 
-  return result
+  return result && JSON.parse(JSON.stringify(result))
 }

@@ -201,6 +201,7 @@ describe("ProductModuleService products", function () {
       expect(createdVariant?.options).toHaveLength(1)
       expect(product.tags).toHaveLength(1)
       expect(product.variants).toHaveLength(2)
+
       expect(product).toEqual(
         expect.objectContaining({
           id: expect.any(String),
