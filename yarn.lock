@@ -7555,7 +7555,7 @@ __metadata:
   resolution: "@medusajs/link-modules@workspace:packages/link-modules"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.3
-    "@medusajs/types": ^1.11.6
+    "@medusajs/types": ^1.11.7
     "@medusajs/utils": ^1.10.5
     "@mikro-orm/core": 5.7.12
     "@mikro-orm/postgresql": 5.7.12
@@ -7747,7 +7747,7 @@ __metadata:
     "@graphql-tools/merge": ^9.0.0
     "@graphql-tools/schema": ^10.0.0
     "@medusajs/orchestration": ^0.4.4
-    "@medusajs/types": ^1.11.6
+    "@medusajs/types": ^1.11.7
     "@medusajs/utils": ^1.10.5
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -7811,7 +7811,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/orchestration@workspace:packages/orchestration"
   dependencies:
-    "@medusajs/types": ^1.11.6
+    "@medusajs/types": ^1.11.7
     "@medusajs/utils": ^1.10.5
     awilix: ^8.0.0
     cross-env: ^5.2.1
