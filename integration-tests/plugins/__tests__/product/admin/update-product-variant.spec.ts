@@ -278,6 +278,8 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
     )
 
     expect(response.status).toEqual(200)
+    expect(response.data.product.variants[0].options).toHaveLength(1)
+    expect(response.data.product.variants[1].options).toHaveLength(1)
     expect(response.data.product).toEqual(
       expect.objectContaining({
         id: expect.any(String),
