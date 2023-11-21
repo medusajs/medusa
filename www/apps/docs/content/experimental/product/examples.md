@@ -25,20 +25,20 @@ export async function POST(request: Request) {
       title: "Medusa Shirt",
       options: [
         {
-          title: "Color"
-        }
-      ]
+          title: "Color",
+        },
+      ],
       variants: [
         {
           title: "Black Shirt",
           options: [
             {
-              value: "Black"
-            }
-          ]
-        }
-      ]
-    }
+              value: "Black",
+            },
+          ],
+        },
+      ],
+    },
   ])
 
   return NextResponse.json({ products })

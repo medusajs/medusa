@@ -50,7 +50,7 @@ const priceSet = await pricingService.addPrices({
       amount: 500,
       currency_code: "EUR",
       rules: {
-        region_id: "PL"
+        region_id: "PL",
       },
     },
   ],
@@ -68,7 +68,7 @@ const priceList = await pricingService.createPriceLists({
   starts_at: Date.parse("01/10/2023"),
   ends_at: Date.parse("31/10/2023"),
   rules: {
-    region_id: ['DE', 'DK']
+    region_id: ["DE", "DK"],
   },
   prices: [
     {
@@ -90,8 +90,8 @@ const price = await pricingService.calculatePrices(
   {
     context: {
       currency_code: "EUR",
-      region_id: "PL"
-    }
+      region_id: "PL",
+    },
   }
 )
 ```

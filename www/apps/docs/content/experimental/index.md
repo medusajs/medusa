@@ -1,13 +1,10 @@
 # Experimental Features
 
-This section of the documentation includes features that are currently experimental. As Medusa moves towards modularization, more documentation pages will be added to this section.
+This section of the documentation includes features that are currently experimental.
 
-This includes:
+As Medusa moves towards modularization, commerce concepts such as Products or Pricing will be moved to isolated commerce modules shipped as NPM packages. This significantly changes Medusa's architecture, making it more flexible for custom digital commerce applications.
 
-- Orchestration tools, shipped as NPM packages, that facilitate building custom digital commerce spanning multiple systems. For example, Workflows.
-- Commerce Modules that ship isolated commerce functionalities as NPM packages.
-
-## Experimental Features in the Medusa Backend
+## Enabling Experimental Features
 
 Experimental Features are guarded in the Medusa backend by a feature flag.
 

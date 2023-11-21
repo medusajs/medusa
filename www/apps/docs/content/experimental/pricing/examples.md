@@ -125,7 +125,7 @@ export async function POST(request: Request) {
         amount: 500,
         currency_code: "USD",
         rules: {
-          region_id: body.region_id
+          region_id: body.region_id,
         },
       },
     ],
@@ -195,7 +195,7 @@ export async function POST(request: Request) {
     starts_at: Date.parse("01/10/2023"),
     ends_at: Date.parse("31/10/2023"),
     rules: {
-      region_id: ['DE', 'DK']
+      region_id: ["DE", "DK"],
     },
     prices: [
       {

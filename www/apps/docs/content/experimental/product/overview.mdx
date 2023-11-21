@@ -17,20 +17,20 @@ const products = await productService.create([
     title: "Medusa Shirt",
     options: [
       {
-        title: "Color"
-      }
-    ]
+        title: "Color",
+      },
+    ],
     variants: [
       {
         title: "Black Shirt",
         options: [
           {
-            value: "Black"
-          }
-        ]
-      }
-    ]
-  }
+            value: "Black",
+          },
+        ],
+      },
+    ],
+  },
 ])
 ```
 
@@ -40,7 +40,7 @@ The Product module provides different entities that can be used to organize prod
 
 ```ts
 const category = await productService.createCategory({
-  name: "Shirts"
+  name: "Shirts",
 })
 
 const products = await productService.update([
@@ -48,10 +48,10 @@ const products = await productService.update([
     id: product.id,
     categories: [
       {
-        id: category.id
-      }
-    ]
-  }
+        id: category.id,
+      },
+    ],
+  },
 ])
 ```
 
