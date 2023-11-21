@@ -1,3 +1,4 @@
+/*
 import { createStep } from "./create-step"
 import { createWorkflow } from "./create-workflow"
 import { hook } from "./hook"
@@ -37,3 +38,46 @@ const workflow = createWorkflow(
     const hookRes = hook("myHook", res)
   }
 )
+*/
+
+import { createStep, StepResponse } from "@medusajs/workflows"
+import { createWorkflow } from "./create-workflow"
+import { StepReturn } from "./type"
+
+type WorkflowInput = {
+  name: string
+}
+
+type WorkflowOutput = {
+  message: StepReturn<string>
+}
+
+const step1 = createStep("step-1", async (input: {}, context) => {
+  return new StepResponse("Hello, ")
+})
+
+const step2 = createStep("step-2", async ({ name }: WorkflowInput) => {
+  return new StepResponse(`${name}!`)
+})
+
+const myWorkflow = createWorkflow(
+  "hello-world",
+  function (input: StepReturn<WorkflowInput>): WorkflowOutput {
+    const str1 = step1({})
+    const str2 = step2(input)
+
+    return {
+      message: str1,
+    }
+  }
+)
+
+myWorkflow()
+  .run({
+    input: {
+      name: "John",
+    },
+  })
+  .then(({ result }) => {
+    console.log(result.message)
+  })

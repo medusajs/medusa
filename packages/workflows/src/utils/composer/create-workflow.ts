@@ -5,7 +5,11 @@ import {
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
-import { CreateWorkflowComposerContext, StepReturn } from "./type"
+import {
+  CreateWorkflowComposerContext,
+  StepReturn,
+  StepReturnProperties,
+} from "./type"
 import {
   resolveValue,
   SymbolInputReference,
@@ -66,12 +70,14 @@ export function createWorkflow<
   THooks extends Record<string, Function>
 >(
   name: string,
-  composer: (
-    input: StepReturn<TData>
-  ) =>
+  composer: (input: StepReturn<TData>) =>
     | void
     | StepReturn<TResult>
-    | { [K in keyof TResult]: StepReturn<TResult[K]> }
+    | {
+        [K in keyof TResult]:
+          | StepReturn<TResult[K]>
+          | StepReturnProperties<TResult[K]>
+      }
 ): ReturnWorkflow<TData, TResult, THooks> {
   const handlers: WorkflowHandler = new Map()
 
@@ -145,7 +151,7 @@ export function createWorkflow<
       >
 
       workflowResult.result = await resolveValue(
-        workflowResult.result,
+        workflowResult.result || returnedStep,
         workflowResult.transaction.getContext()
       )
 
