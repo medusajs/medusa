@@ -20,7 +20,7 @@ This method is used to retrieve a paginated list of price rules based on optiona
 To retrieve a list of price rules using their IDs:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -38,7 +38,7 @@ async function retrievePriceRules (id: string) {
 To specify relations that should be retrieved within the price rules:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -58,7 +58,7 @@ async function retrievePriceRules (id: string) {
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -80,7 +80,7 @@ async function retrievePriceRules (id: string, skip: number, take: number) {
 You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -258,7 +258,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -285,7 +285,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -344,10 +344,10 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
           {
             "name": "price_set",
             "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)",
-            "description": "The associated price set. It may only be available if the relation `price_set` is expanded.",
+            "description": "The associated price set.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -380,10 +380,10 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
           {
             "name": "rule_type",
             "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)",
-            "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
+            "description": "The associated rule type.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {

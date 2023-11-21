@@ -20,7 +20,7 @@ This method retrieves a money amount by its ID.
 To retrieve a money amount by its ID:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -38,7 +38,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
 To retrieve relations along with the money amount:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -153,7 +153,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -180,7 +180,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -222,10 +222,10 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
       {
         "name": "currency",
         "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
-        "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
+        "description": "The money amount's currency.",
         "optional": true,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "code",
@@ -300,6 +300,79 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "defaultValue": "",
         "expandable": false,
         "children": []
+      },
+      {
+        "name": "price_set_money_amount",
+        "type": "[PriceSetMoneyAmountDTO](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
+        "description": "The details of the relation between the money amount and its associated price set.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": true,
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of a price set money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "money_amount",
+            "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)",
+            "description": "The money amount associated with the price set money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
+            "children": []
+          },
+          {
+            "name": "price_list",
+            "type": "[PriceListDTO](../../interfaces/PriceListDTO.mdx)",
+            "description": "The price list associated with the price set money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
+            "children": []
+          },
+          {
+            "name": "price_rules",
+            "type": "[PriceRuleDTO](../../interfaces/PriceRuleDTO.mdx)[]",
+            "description": "The price rules associated with the price set money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
+            "children": []
+          },
+          {
+            "name": "price_set",
+            "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)",
+            "description": "The price set associated with the price set money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
+            "children": []
+          },
+          {
+            "name": "price_set_id",
+            "type": "`string`",
+            "description": "The ID of the associated price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The title of the price set money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }
