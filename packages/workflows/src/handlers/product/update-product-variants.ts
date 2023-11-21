@@ -18,14 +18,14 @@ export async function updateProductVariants({
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
-  for (const [product_id, variantsData = []] of productVariantsMap) {
+  for (const [product_id, variantsUpdateData = []] of productVariantsMap) {
     updateVariantsData.push(
-      ...(variantsData as unknown as UpdateProductVariantOnlyDTO[]).map(
+      ...(variantsUpdateData as unknown as UpdateProductVariantOnlyDTO[]).map(
         (update) => ({ ...update, product_id })
       )
     )
 
-    productsVariants.push(...variantsData)
+    productsVariants.push(...variantsUpdateData)
   }
 
   if (updateVariantsData.length) {

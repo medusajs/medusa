@@ -244,11 +244,27 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(variants)), count]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async updateVariants(
     data: ProductTypes.UpdateProductVariantOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductVariantDTO[]> {
+    const productVariants = await this.updateVariants_(data, sharedContext)
+
+    const updatedVariants = await this.baseRepository_.serialize<
+      ProductTypes.ProductVariantDTO[]
+    >(productVariants, {
+      populate: true,
+    })
+
+    return updatedVariants
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateVariants_(
+    data: ProductTypes.UpdateProductVariantOnlyDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProductVariant[]> {
     const variants = await this.listVariants(
       { id: data.map(({ id }) => id) },
       { relations: ["options", "options.option"] },
@@ -294,16 +310,16 @@ export default class ProductModuleService<
         for (const existingOptionValue of variant.options) {
           if (!optionIdToUpdateValueMap.has(existingOptionValue.option.id)) {
             optionsValuesToDelete.push(existingOptionValue.id)
-          } else {
-            optionValuesToUpsert.push({
-              id: existingOptionValue.id,
-              option_id: existingOptionValue.option.id,
-              value: optionIdToUpdateValueMap.get(
-                existingOptionValue.option.id
-              )!,
-            })
-            optionIdToUpdateValueMap.delete(existingOptionValue.option.id)
+
+            continue
           }
+
+          optionValuesToUpsert.push({
+            id: existingOptionValue.id,
+            option_id: existingOptionValue.option.id,
+            value: optionIdToUpdateValueMap.get(existingOptionValue.option.id)!,
+          })
+          optionIdToUpdateValueMap.delete(existingOptionValue.option.id)
         }
 
         for (const [option_id, value] of optionIdToUpdateValueMap.entries()) {
@@ -350,11 +366,7 @@ export default class ProductModuleService<
       ),
     ])
 
-    return await this.baseRepository_.serialize<
-      ProductTypes.ProductVariantDTO[]
-    >(productVariants.flat(), {
-      populate: true,
-    })
+    return productVariants.flat()
   }
 
   @InjectManager("baseRepository_")
@@ -1148,7 +1160,11 @@ export default class ProductModuleService<
     if (!productData.thumbnail && productData.images?.length) {
       productData.thumbnail = isString(productData.images[0])
         ? (productData.images[0] as string)
-        : (productData.images[0] as { url: string }).url
+        : (
+            productData.images[0] as {
+              url: string
+            }
+          ).url
     }
 
     if (productData.images?.length) {

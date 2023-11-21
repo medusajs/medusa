@@ -254,7 +254,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
     )
   })
 
-  it("Should update variant option value", async () => {
+  it("should update variant option value", async () => {
     const api = useApi()! as AxiosInstance
 
     const data = {
@@ -305,7 +305,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
     )
   })
 
-  it("Should remove options not present in update", async () => {
+  it("should remove options not present in update", async () => {
     const api = useApi()! as AxiosInstance
 
     product = await simpleProductFactory(dbConnection, {
@@ -371,7 +371,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
     )
   })
 
-  it("Should update several options in the same api call", async () => {
+  it("should update several options in the same api call", async () => {
     const api = useApi()! as AxiosInstance
 
     product = await simpleProductFactory(dbConnection, {

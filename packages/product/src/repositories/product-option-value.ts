@@ -6,7 +6,6 @@ import {
   CreateProductOptionValueDTO,
   UpdateProductOptionValueDTO,
 } from "../types/services/product-option-value"
-import { LoadStrategy } from "@mikro-orm/core"
 import { FilterQuery as MikroFilterQuery } from "@mikro-orm/core/typings"
 import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 
@@ -28,7 +27,6 @@ export class ProductOptionValueRepository extends DALUtils.MikroOrmBaseRepositor
     const findOptions_ = { ...findOptions }
 
     findOptions_.options ??= {}
-
 
     return await manager.find(
       ProductOptionValue,
@@ -70,21 +68,25 @@ export class ProductOptionValueRepository extends DALUtils.MikroOrmBaseRepositor
     const optionValuesToUpdate: ProductOptionValue[] = []
 
     optionValues.forEach(({ option_id, ...optionValue }) => {
-      if (optionValue.id && existingOptionValuesMap.has(optionValue.id)) {
-        const existingOptionValue = existingOptionValuesMap.get(optionValue.id)!
+      const existingOptionValue = optionValue.id
+        ? existingOptionValuesMap.get(optionValue.id)
+        : undefined
+
+      if (optionValue.id && existingOptionValue) {
         const updatedOptionValue = manager.assign(existingOptionValue, {
           option: option_id,
           ...optionValue,
         })
         optionValuesToUpdate.push(updatedOptionValue)
-      } else {
-        const newOptionValue = manager.create(ProductOptionValue, {
-          option: option_id,
-          variant: (optionValue as CreateProductOptionValueDTO).variant_id,
-          ...optionValue,
-        })
-        optionValuesToCreate.push(newOptionValue)
+        return
       }
+
+      const newOptionValue = manager.create(ProductOptionValue, {
+        option: option_id,
+        variant: (optionValue as CreateProductOptionValueDTO).variant_id,
+        ...optionValue,
+      })
+      optionValuesToCreate.push(newOptionValue)
     })
 
     if (optionValuesToCreate.length) {
