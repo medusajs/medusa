@@ -371,7 +371,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
     )
   })
 
-  it("Should update several options in the same call", async () => {
+  it("Should update several options in the same api call", async () => {
     const api = useApi()! as AxiosInstance
 
     product = await simpleProductFactory(dbConnection, {
