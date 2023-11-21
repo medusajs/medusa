@@ -305,6 +305,42 @@ describe("POST /admin/products/:id/variants/:id", () => {
     )
   })
 
+  it.only("should update variant metadata", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const data = {
+      metadata: {
+        test: "string",
+      },
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: variant.id,
+            metadata: {
+              test: "string",
+            },
+          }),
+        ]),
+      })
+    )
+  })
+
   it("should remove options not present in update", async () => {
     const api = useApi()! as AxiosInstance
 
