@@ -4,7 +4,7 @@ import { RuleTypeDTO } from "./rule-type"
 
 /**
  * @interface
- * 
+ *
  * A price rule's data.
  */
 export interface PriceRuleDTO {
@@ -18,7 +18,7 @@ export interface PriceRuleDTO {
   price_set_id: string
   /**
    * The associated price set.
-   * 
+   *
    * @expandable
    */
   price_set: PriceSetDTO
@@ -28,17 +28,10 @@ export interface PriceRuleDTO {
   rule_type_id: string
   /**
    * The associated rule type.
-   * 
+   *
    * @expandable
    */
   rule_type: RuleTypeDTO
-  /** 
-   * @ignore
-   * @privateRemarks
-   * 
-   * Behavior behind this property is not implemented yet.
-   */
-  is_dynamic: boolean
   /**
    * The value of the price rule.
    */
@@ -58,9 +51,9 @@ export interface PriceRuleDTO {
 }
 
 /**
- * 
+ *
  * @interface
- * 
+ *
  * A price rule to create.
  */
 export interface CreatePriceRuleDTO {
@@ -76,13 +69,6 @@ export interface CreatePriceRuleDTO {
    * The ID of the associated rule type.
    */
   rule_type_id: string
-  /** 
-   * @ignore
-   * @privateRemarks
-   * 
-   * Behavior behind this property is not implemented yet.
-   */
-  is_dynamic?: boolean
   /**
    * The value of the price rule.
    */
@@ -92,22 +78,15 @@ export interface CreatePriceRuleDTO {
 }
 
 /**
- * 
+ *
  * @interface
- * 
+ *
  * The data to update in a price rule. The `id` is used to identify which money amount to update.
  */
 export interface UpdatePriceRuleDTO {
   id: string
   price_set_id?: string
   rule_type_id?: string
-  /** 
-   * @ignore
-   * @privateRemark
-   * 
-   * Behavior behind this property is not implemented yet.
-   */
-  is_dynamic?: boolean
   /**
    * The value of the price rule.
    */
@@ -128,7 +107,7 @@ export interface UpdatePriceRuleDTO {
 
 /**
  * @interface
- * 
+ *
  * Filters to apply on price rules.
  */
 export interface FilterablePriceRuleProps
