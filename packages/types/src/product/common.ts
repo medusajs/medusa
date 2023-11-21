@@ -1,5 +1,5 @@
-import { BaseFilterable } from "../dal";
-import { OperatorMap } from "../dal/utils";
+import { BaseFilterable } from "../dal"
+import { OperatorMap } from "../dal/utils"
 
 /**
  * @enum
@@ -950,8 +950,6 @@ export interface CreateProductVariantDTO {
    * The tile of the product variant.
    */
   title: string
-
-  product_id: string
   /**
    * The SKU of the product variant.
    */
