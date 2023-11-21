@@ -52,6 +52,9 @@ module.exports = {
         "Enumeration Members": false,
       },
     },
+    functions: {
+      maxLevel: 1,
+    },
   },
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,

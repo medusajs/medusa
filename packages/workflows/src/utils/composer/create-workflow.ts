@@ -46,16 +46,19 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
 } & THooks
 
 /**
- * This function creates a new workflow with the provided name and composer function.
- * The composer function builds the workflow from steps created by the {@link createStep} function.
- * The composer function is only executed when the `run` method in {@link ReturnWorkflow} is used.
+ * This function creates a new workflow with the provided name and a constructor function.
+ * The constructor function builds the workflow from steps created by the {@link createStep} function.
+ * The constructor function is only executed when the `run` method in {@link ReturnWorkflow} is used.
  *
  * @typeParam TData - The type of the input passed to the composer function.
  * @typeParam TResult - The type of the output returned by the composer function.
- * @typeParam THooks - (?)
+ * @typeParam THooks - The type of hooks defined in the workflow.
  *
  * @param name - The name of the workflow.
- * @param composer - The composer function that is executed when the `run` method in {@link ReturnWorkflow} is used.
+ * @param composer -
+ * The constructor function that is executed when the `run` method in {@link ReturnWorkflow} is used.
+ * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
+ * You'll have to use the {@link transform} function if you need to directly manipulate data.
  *
  *
  * @returns The created workflow. You can later invoke the workflow using the `run` method.
@@ -77,16 +80,24 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
  *
  * const myWorkflow = createWorkflow(
  *   "my-workflow",
- *   (input: StepReturn<MyWorkflowData>) => {
+ *   function (input: StepReturn<MyWorkflowData>) {
  *     // Everything here will be executed and resolved later during the execution. Including the data access.
  *
  *     const product = createProductStep(input)
  *     const prices = createPricesStep(product)
  *
  *     const id = product.id
- *     return getProductStep(product.id)
+ *     return getProductStep(id)
  *   }
  * )
+ *
+ * myWorkflow()
+ *  .run({
+ *    title: "Shirt"
+ *  })
+ * .then((product) => {
+ *   console.log(product.id)
+ * })
  */
 
 export function createWorkflow<

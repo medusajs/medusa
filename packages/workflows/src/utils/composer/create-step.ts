@@ -21,12 +21,13 @@ import {
  * The type of invocation function passed to a step.
  *
  * @typeParam TInput - The type of the input that the function expects.
- * @typeParam O - The type of the output that the function returns.
+ * @typeParam TOutput - The type of the output that the function returns.
+ * @typeParam TCompensateInput - The type of the input that the compensation function expects.
  *
  * @param input - The input of the step.
  * @param context - The step's context.
  *
- * @returns The expected output based on the type parameter `0`.
+ * @returns The expected output based on the type parameter `TOutput`.
  */
 type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
   input: {
@@ -183,16 +184,25 @@ function applyStep<
  * This function creates a {@link StepFunction}. It can be used as a step in a workflow inside a {@link createWorkflow} function.
  *
  * @param name - The name of the step.
- * @param invokeFn - An invocation function that will be executed when the step is used.
- * @param compensateFn - A compensation function that's executed if an error occurs in the workflow. Typically, it's used to roll-back actions when errors occur.
+ * @param invokeFn -
+ * An invocation function that will be executed when the step is used. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
+ * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
+ * @param compensateFn -
+ * A compensation function that's executed if an error occurs in the workflow. It's used to roll-back actions when errors occur.
+ * It accepts as a parameter the second argument passed to the {@link StepResponse} instance returned by the invocation function.
  *
- * @typeParam TInvokeInput - The type of the expected input.
- * @typeParam TInvokeResult - The type of the expected output.
+ * @typeParam TInvokeInput - The type of the expected input parameter to the invocation function.
+ * @typeParam TInvokeResultOutput - The type of the expected output parameter of the invocation function.
+ * @typeParam TInvokeResultCompensateInput - The type of the expected input parameter to the invocation function.
  *
  * @returns A step function to be used in a workflow.
  *
  * @example
- * import { createStep } from "@medusajs/workflows"
+ * import {
+ *   createStep,
+ *   StepResponse,
+ *   StepExecutionContext
+ * } from "@medusajs/workflows"
  *
  * interface CreateProductInput {
  *   title: string
@@ -215,12 +225,11 @@ function applyStep<
  *      "productService"
  *    )
  *    const product = await productService.create(input)
- *    return {
- *      product,
- *      compensateInput: {
- *        product_id: product.id
- *      }
- *    }
+ *    return new StepResponse({
+ *      product
+ *    }, {
+ *      product_id: product.id
+ *    })
  *  },
  *  async function (
  *    input: { product_id: string },

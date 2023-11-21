@@ -95,8 +95,8 @@ export function transform<T extends object | StepReturn, RA, RB, RC, RD, RE, RF,
  *
  * This function transforms the output of other steps using the provided functions.
  *
- * This is useful if you're using the value(s) of some step(s) as an input to a later step. It ensures that the input
- * that the later step receives is the output of the other step(s) during runtime.
+ * This is useful if you're using the value(s) of some step(s) as an input to a later step. As you can't directly manipulate data in the  workflow constructor function passed to {@link createWorkflow},
+ * the `transform` function provides access to the runtime value of the step(s) output so that you can manipulate them.
  *
  * This is also useful if you're using the runtime value of some step(s) as the output of a workflow.
  *
