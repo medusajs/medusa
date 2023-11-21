@@ -5,16 +5,13 @@ import {
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
+import { CreateWorkflowComposerContext, StepReturn } from "./type"
 import {
-  CreateWorkflowComposerContext,
   resolveValue,
-  StepReturn,
-} from "./index"
-import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowStep,
-} from "./symbol"
+} from "./helpers"
 
 global[SymbolMedusaWorkflowComposerContext] = null
 
@@ -147,13 +144,10 @@ export function createWorkflow<
         TResultOverride extends undefined ? TResult : TResultOverride
       >
 
-      // In case the workflow does not return a step directly but a plain object containing steps or value to resolve
-      if (!args.resultFrom && returnedStep) {
-        workflowResult.result = await resolveValue(
-          returnedStep,
-          workflowResult.transaction.getContext()
-        )
-      }
+      workflowResult.result = await resolveValue(
+        workflowResult.result,
+        workflowResult.transaction.getContext()
+      )
 
       return workflowResult
     }) as any

@@ -1,5 +1,5 @@
 import { CreateWorkflowComposerContext, StepReturn } from "./type"
-import { SymbolMedusaWorkflowComposerContext } from "./symbol"
+import { SymbolMedusaWorkflowComposerContext } from "./helpers"
 
 /**
  * Parallelize multiple steps.

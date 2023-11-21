@@ -3,6 +3,7 @@ import {
   SymbolInputReference,
   SymbolWorkflowHook,
   SymbolWorkflowStep,
+  SymbolWorkflowStepResponse,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
 
@@ -19,7 +20,14 @@ async function resolveProperty(property, transactionContext) {
   } else if (property?.__type === SymbolWorkflowHook) {
     return await property.__value(transactionContext)
   } else if (property?.__type === SymbolWorkflowStep) {
-    return invokeRes[property.__step__]?.output
+    const output = invokeRes[property.__step__]?.output
+    if (output?.__type === SymbolWorkflowStepResponse) {
+      return output.output
+    }
+
+    return output
+  } else if (property?.__type === SymbolWorkflowStepResponse) {
+    return property.output
   } else {
     return property
   }
