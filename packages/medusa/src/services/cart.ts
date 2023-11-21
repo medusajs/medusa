@@ -487,23 +487,24 @@ class CartService extends TransactionBaseService {
         const createdCart = cartRepo.create(rawCart)
         const cart = await cartRepo.save(createdCart)
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            SalesChannelFeatureFlag.key
-          ) &&
-          this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
-        ) {
-          await this.remoteLink_.create({
-            cartService: {
-              cart_id: cart.id,
-            },
-            salesChannelService: {
-              sales_channel_id: (
-                await this.getValidatedSalesChannel(data.sales_channel_id)
-              ).id,
-            },
-          })
-        }
+        // TODO: this will be done in the workflow
+        // if (
+        //   this.featureFlagRouter_.isFeatureEnabled(
+        //     SalesChannelFeatureFlag.key
+        //   ) &&
+        //   this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
+        // ) {
+        //   await this.remoteLink_.create({
+        //     cartService: {
+        //       cart_id: cart.id,
+        //     },
+        //     salesChannelService: {
+        //       sales_channel_id: (
+        //         await this.getValidatedSalesChannel(data.sales_channel_id)
+        //       ).id,
+        //     },
+        //   })
+        // }
 
         await this.eventBus_
           .withTransaction(transactionManager)
@@ -1279,6 +1280,10 @@ class CartService extends TransactionBaseService {
 
           await this.onSalesChannelChange(cart, data.sales_channel_id)
 
+          /**
+           * TODO: remove this once update cart workflow is build
+           * since this will be handled in a handler by the workflow
+           */
           if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
             if (cart.sales_channel_id) {
               await this.remoteLink_.dismiss({
