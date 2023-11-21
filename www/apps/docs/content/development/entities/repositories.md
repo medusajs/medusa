@@ -135,9 +135,9 @@ export const GET = async (
 
 You can learn more about API Route [here](../api-routes/overview.mdx).
 
-### Services and Subscribers
+### Services
 
-As custom repositories are registered in the [dependency container](../fundamentals/dependency-injection.md#dependency-container-and-injection), they can be accessed through dependency injection in the constructor of a service or a subscriber.
+As custom repositories are registered in the [dependency container](../fundamentals/dependency-injection.md#dependency-container-and-injection), they can be accessed through dependency injection in the constructor of a service.
 
 For example:
 
@@ -166,6 +166,32 @@ class PostService extends TransactionBaseService {
 ```
 
 You can learn more about services [here](../services/overview.mdx).
+
+### Subscribers
+
+A subscriber handler function can resolve a repository using the `container` property of its parameter. The `container` has a method `resolve` which accepts the registration name of the repository as a parameter.
+
+For example:
+
+```ts title=src/subscribers/post-handler.ts
+import {
+  type SubscriberArgs,
+} from "@medusajs/medusa"
+
+import { PostRepository } from "../repositories/post"
+
+export default async function postHandler({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs) {
+  const postRepository: PostRepository = container.resolve(
+    "postRepository"
+  )
+  
+  // ...
+}
+
+// ...
+```
 
 ### Other Resources
 

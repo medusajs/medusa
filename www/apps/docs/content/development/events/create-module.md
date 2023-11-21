@@ -62,9 +62,9 @@ In the class you must implement the `emit` method. You can optionally implement 
 
 ### Note About the eventToSubscribersMap Property
 
-The `AbstractEventBusModuleService` implements two methods for handling subscription: `subscribe` and `unsubscribe`. In these methods, the subscribed handler methods are managed within a class property `eventToSubscribersMap`, which is a JavaScript Map. The map's keys are the event names, whereas the value of each key is an array of subscribed handler methods.
+The `AbstractEventBusModuleService` implements two methods for handling subscription: `subscribe` and `unsubscribe`. In these methods, the subscribed handler functions are managed within a class property `eventToSubscribersMap`, which is a JavaScript Map. The map's keys are the event names, whereas the value of each key is an array of subscribed handler functions.
 
-In your custom implementation, you can use this property to manage the subscribed handler methods. For example, you can get the subscribers of a method using the `get` method of the map:
+In your custom implementation, you can use this property to manage the subscribed handler functions. For example, you can get the subscribers of a method using the `get` method of the map:
 
 ```ts
 const eventSubscribers = 
@@ -144,13 +144,13 @@ class CustomEventBus extends AbstractEventBusModuleService {
 
 As mentioned earlier, this method is already implemented in the `AbstractEventBusModuleService` class. This section explains how you can implement your custom subscribe logic if necessary.
 
-The `subscribe` method attaches a handler method to the specified event, which is run when the event is triggered. It is typically used inside a subscriber class.
+The `subscribe` method attaches a handler function to the specified event, which is run when the event is triggered. It is typically used inside a subscriber class.
 
 The  `subscribe` method accepts three parameters:
 
-1. The first parameter `eventName` is a required string. It indicates which event the handler method is subscribing to.
+1. The first parameter `eventName` is a required string. It indicates which event the handler function is subscribing to.
 2. The second parameter `subscriber` is a required function that performs an action when the event is triggered.
-3. The third parameter `context` is an optional object that has the property `subscriberId`. Subscriber IDs are useful to differentiate between handler methods when retrying a failed method. It’s also useful for unsubscribing an event handler. Note that if you must implement the mechanism around assigning IDs to subscribers when you override the `subscribe` method.
+3. The third parameter `context` is an optional object that has the property `subscriberId`. Subscriber IDs are useful to differentiate between handler functions when retrying a failed method. It’s also useful for unsubscribing an event handler. Note that if you must implement the mechanism around assigning IDs to subscribers when you override the `subscribe` method.
 
 The implementation of this method depends on the service you’re using for the event bus:
 
@@ -170,11 +170,11 @@ class CustomEventBus extends AbstractEventBusModuleService {
 
 As mentioned earlier, this method is already implemented in the `AbstractEventBusModuleService` class. This section explains how you can implement your custom unsubscribe logic if necessary.
 
-The `unsubscribe` method is used to unsubscribe a handler method from an event.
+The `unsubscribe` method is used to unsubscribe a handler function from an event.
 
 The `unsubscribe` method accepts three parameters:
 
-1. The first parameter `eventName` is a required string. It indicates which event the handler method is unsubscribing from.
+1. The first parameter `eventName` is a required string. It indicates which event the handler function is unsubscribing from.
 2. The second parameter `subscriber` is a required function that was initially subscribed to the event.
 3. The third parameter `context` is an optional object that has the property `subscriberId`. It can be used to specify the ID of the subscriber to unsubscribe.
 

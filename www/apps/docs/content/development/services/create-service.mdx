@@ -391,15 +391,29 @@ res.json({
 
 ### In a Subscriber
 
-To use your custom service in a subscriber, you can have easy access to it in the subscriber’s dependencies injected to the constructor of your subscriber:
+To resolve your custom service in subscriber handler functions, use the `container` property of the handler function's parameter. The `container` has a method `resolve` which accepts the registration name of the service as a parameter.
+
+For example:
 
 ```ts
-class MySubscriber {
-  constructor({ postService, eventBusService }) {
-    this.postService = postService
-  }
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+} from "@medusajs/medusa"
+
+import { PostService } from "../services/post.ts"
+
+export default async function postHandler({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const postService: PostService = container.resolve(
+    "postService"
+  )
+
   // ...
 }
+
+// ...
 ```
 
 ---
