@@ -116,8 +116,13 @@ function applyStep<
             const stepOutput = transactionContext.invoke[stepName].output
             const invokeResult =
               stepOutput?.__type === SymbolWorkflowStepResponse
-                ? stepOutput.compensateInput ?? stepOutput.output
-                : stepOutput
+                ? (stepOutput.compensateInput || stepOutput.output) &&
+                  JSON.parse(
+                    JSON.stringify(
+                      stepOutput.compensateInput ?? stepOutput.output
+                    )
+                  )
+                : stepOutput && JSON.parse(JSON.stringify(stepOutput))
 
             const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
