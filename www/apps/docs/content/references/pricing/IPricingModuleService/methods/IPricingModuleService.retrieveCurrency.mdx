@@ -20,7 +20,7 @@ This method retrieves a currency by its code and and optionally based on the pro
 A simple example that retrieves a currency by its code:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -38,7 +38,7 @@ async function retrieveCurrency (code: string) {
 To specify attributes that should be retrieved:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -153,7 +153,7 @@ async function retrieveCurrency (code: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -180,7 +180,7 @@ async function retrieveCurrency (code: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,

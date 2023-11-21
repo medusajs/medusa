@@ -18,13 +18,13 @@ This method is used to update price rules, each with their provided data.
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
 async function updatePriceRules (
   id: string,
-  priceSetId: string, 
+  priceSetId: string,
 ) {
   const pricingService = await initializePricingModule()
 
@@ -53,7 +53,7 @@ async function updatePriceRules (
       {
         "name": "id",
         "type": "`string`",
-        "description": "The ID of the price rule to update.",
+        "description": "",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -71,7 +71,7 @@ async function updatePriceRules (
       {
         "name": "price_set_id",
         "type": "`string`",
-        "description": "The ID of the associated price set.",
+        "description": "",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -98,7 +98,7 @@ async function updatePriceRules (
       {
         "name": "rule_type_id",
         "type": "`string`",
-        "description": "The ID of the associated rule type.",
+        "description": "",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -126,7 +126,7 @@ async function updatePriceRules (
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -153,7 +153,7 @@ async function updatePriceRules (
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -212,10 +212,10 @@ async function updatePriceRules (
           {
             "name": "price_set",
             "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)",
-            "description": "The associated price set. It may only be available if the relation `price_set` is expanded.",
+            "description": "The associated price set.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -248,10 +248,10 @@ async function updatePriceRules (
           {
             "name": "rule_type",
             "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)",
-            "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
+            "description": "The associated rule type.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
