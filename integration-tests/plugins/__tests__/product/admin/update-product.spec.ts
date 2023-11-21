@@ -109,11 +109,11 @@ describe("POST /admin/products/:id", () => {
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.product.variants).toHaveLength(2)
+    expect(response.data.product.variants).toHaveLength(1)
     expect(response.data.product).toEqual(
       expect.objectContaining({
         id: expect.any(String),
-        variants: expect.arrayContaining([
+        variants: [
           expect.objectContaining({
             id: variant.id,
             title: "test variant update",
@@ -129,7 +129,7 @@ describe("POST /admin/products/:id", () => {
               }),
             ]),
           }),
-        ]),
+        ],
       })
     )
   })
