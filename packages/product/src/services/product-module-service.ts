@@ -269,6 +269,12 @@ export default class ProductModuleService<
       )
     }
 
+    const optionsToUpsert: (
+      | CreateProductOptionValueDTO
+      | UpdateProductOptionValueDTO
+    )[] = []
+    const optionsToDelete: string[] = []
+
     const toUpdate = await Promise.all(
       data.map(async ({ id, options, ...rest }) => {
         const variant = variantsMap.get(id)!
@@ -286,12 +292,6 @@ export default class ProductModuleService<
             })
           )
 
-          const optionsToUpsert: (
-            | CreateProductOptionValueDTO
-            | UpdateProductOptionValueDTO
-          )[] = []
-          const optionsToDelete: string[] = []
-
           for (const existingOption of variant.options) {
             if (!optionIdToUpdateValueMap.has(existingOption.option)) {
               optionsToDelete.push(existingOption.id)
@@ -308,17 +308,6 @@ export default class ProductModuleService<
           for (const [option, value] of optionIdToUpdateValueMap.entries()) {
             optionsToUpsert.push({ option, value, variant: id })
           }
-
-          await promiseAll([
-            await this.productOptionValueService_.delete(
-              optionsToDelete,
-              sharedContext
-            ),
-            await this.productOptionValueService_.upsert(
-              optionsToUpsert,
-              sharedContext
-            ),
-          ])
         }
 
         if (Object.keys(rest).length) {
@@ -335,19 +324,28 @@ export default class ProductModuleService<
 
     const groups = groupBy(toUpdate, "product_id")
 
-    const result = (
-      await Promise.all(
-        [...groups.entries()].map(async ([product_id, update]) => {
-          return await this.productVariantService_.update(
-            product_id,
-            update.map(({ product_id, ...update }) => update),
-            sharedContext
-          )
-        })
-      )
-    ).flat()
+    const [, , result]: [void, TProductOptionValue[], TProductVariant[][]] =
+      await promiseAll([
+        await this.productOptionValueService_.delete(
+          optionsToDelete,
+          sharedContext
+        ),
+        await this.productOptionValueService_.upsert(
+          optionsToUpsert,
+          sharedContext
+        ),
+        await promiseAll(
+          [...groups.entries()].map(async ([product_id, update]) => {
+            return await this.productVariantService_.update(
+              product_id,
+              update.map(({ product_id, ...update }) => update),
+              sharedContext
+            )
+          })
+        ),
+      ])
 
-    return JSON.parse(JSON.stringify(result))
+    return JSON.parse(JSON.stringify(result.flat()))
   }
 
   @InjectManager("baseRepository_")
