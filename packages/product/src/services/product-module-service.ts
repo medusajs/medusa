@@ -279,7 +279,7 @@ export default class ProductModuleService<
         }
 
         if (options?.length) {
-          const optionsUpdateMap = new Map(
+          const optionIdToUpdateValueMap = new Map(
             options.map(({ option, option_id, value }) => {
               const computedOptionId = option_id ?? option.id ?? option
               return [computedOptionId, value]
@@ -293,29 +293,31 @@ export default class ProductModuleService<
           const optionsToDelete: string[] = []
 
           for (const existingOption of variant.options) {
-            if (!optionsUpdateMap.has(existingOption.option)) {
+            if (!optionIdToUpdateValueMap.has(existingOption.option)) {
               optionsToDelete.push(existingOption.id)
             } else {
               optionsToUpsert.push({
                 id: existingOption.id,
                 option: existingOption.option as unknown as string,
-                value: optionsUpdateMap.get(existingOption.option)!,
+                value: optionIdToUpdateValueMap.get(existingOption.option)!,
               })
-              optionsUpdateMap.delete(existingOption.option)
+              optionIdToUpdateValueMap.delete(existingOption.option)
             }
           }
 
-          optionsToUpsert.push(
-            ...[...optionsUpdateMap.entries()].map(
-              ([option, value]): CreateProductOptionValueDTO => {
-                return { option, value, variant: id }
-              }
-            )
-          )
+          for (const [option, value] of optionIdToUpdateValueMap.entries()) {
+            optionsToUpsert.push({ option, value, variant: id })
+          }
 
           await promiseAll([
-            await this.productOptionValueService_.delete(optionsToDelete),
-            await this.productOptionValueService_.upsert(optionsToUpsert),
+            await this.productOptionValueService_.delete(
+              optionsToDelete,
+              sharedContext
+            ),
+            await this.productOptionValueService_.upsert(
+              optionsToUpsert,
+              sharedContext
+            ),
           ])
         }
 
