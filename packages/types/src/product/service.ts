@@ -5,6 +5,7 @@ import {
   CreateProductOptionDTO,
   CreateProductTagDTO,
   CreateProductTypeDTO,
+  CreateProductVariantDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductOptionProps,
@@ -1494,6 +1495,34 @@ export interface IProductModuleService {
     data: UpdateProductVariantDTO[],
     sharedContext?: Context
   ): Promise<ProductVariantDTO[]>
+
+  createVariants(
+    data: CreateProductVariantDTO[],
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO[]>
+
+  /**
+   * This method is used to delete ProductVariant. This method will completely remove the ProductVariant and they can no longer be accessed or retrieved.
+   *
+   * @param {string[]} productVariantIds - The IDs of the ProductVariant to be deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the ProductVariant are successfully deleted.
+   *
+   * @example
+   * import {
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   *
+   * async function deleteProducts (ids: string[]) {
+   *   const productModule = await initializeProductModule()
+   *
+   *   await productModule.deleteVariants(ids)
+   * }
+   */
+  deleteVariants(
+    productVariantIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method is used to retrieve a paginated list of product variants along with the total count of available product variants satisfying the provided filters.

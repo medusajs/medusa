@@ -515,6 +515,11 @@ export interface ProductOptionDTO {
  * @interface
  *
  * The product image's data.
+ *
+ * @prop id - The ID of the product image.
+ * @prop url - The URL of the product image.
+ * @prop metadata - Holds custom data in key-value pairs.
+ * @prop deleted_at - When the product image was deleted.
  */
 export interface ProductImageDTO {
   /**
@@ -539,6 +544,13 @@ export interface ProductImageDTO {
  * @interface
  *
  * The product option value's data.
+ *
+ * @prop id - The ID of the product option value.
+ * @prop value - The value of the product option value.
+ * @prop option - The associated product option. It may only be available if the `option` relation is expanded.
+ * @prop variant - The associated product variant. It may only be available if the `variant` relation is expanded.
+ * @prop metadata - Holds custom data in key-value pairs.
+ * @prop deleted_at - When the product option value was deleted.
  */
 export interface ProductOptionValueDTO {
   /**
@@ -575,6 +587,13 @@ export interface ProductOptionValueDTO {
  * @interface
  *
  * The filters to apply on retrieved products.
+ *
+ * @prop q - Search through the products' attributes, such as titles and descriptions, using this search term.
+ * @prop handle - The handles to filter products by.
+ * @prop id - The IDs to filter products by.
+ * @prop tags - Filters on a product's tags.
+ * @prop categories - Filters on a product's categories.
+ * @prop collection_id - Filters a product by its associated collections.
  */
 export interface FilterableProductProps
   extends BaseFilterable<FilterableProductProps> {
@@ -630,6 +649,9 @@ export interface FilterableProductProps
  * @interface
  *
  * The filters to apply on retrieved product tags.
+ *
+ * @prop id - The IDs to filter product tags by.
+ * @prop value - The value to filter product tags by.
  */
 export interface FilterableProductTagProps
   extends BaseFilterable<FilterableProductTagProps> {
@@ -647,6 +669,9 @@ export interface FilterableProductTagProps
  * @interface
  *
  * The filters to apply on retrieved product types.
+ *
+ * @prop id - The IDs to filter product types by.
+ * @prop value - The value to filter product types by.
  */
 export interface FilterableProductTypeProps
   extends BaseFilterable<FilterableProductTypeProps> {
@@ -664,6 +689,10 @@ export interface FilterableProductTypeProps
  * @interface
  *
  * The filters to apply on retrieved product options.
+ *
+ * @prop id - The IDs to filter product options by.
+ * @prop title - The titles to filter product options by.
+ * @prop product_id - Filter the product options by their associated products' IDs.
  */
 export interface FilterableProductOptionProps
   extends BaseFilterable<FilterableProductOptionProps> {
@@ -685,6 +714,9 @@ export interface FilterableProductOptionProps
  * @interface
  *
  * The filters to apply on retrieved product collections.
+ *
+ * @prop id - The IDs to filter product collections by.
+ * @prop title - The title to filter product collections by.
  */
 export interface FilterableProductCollectionProps
   extends BaseFilterable<FilterableProductCollectionProps> {
@@ -706,6 +738,11 @@ export interface FilterableProductCollectionProps
  * @interface
  *
  * The filters to apply on retrieved product variants.
+ *
+ * @prop id - The IDs to filter product variants by.
+ * @prop sku - The SKUs to filter product variants by.
+ * @prop product_id - Filter the product variants by their associated products' IDs.
+ * @prop options - Filter product variants by their associated options.
  */
 export interface FilterableProductVariantProps
   extends BaseFilterable<FilterableProductVariantProps> {
@@ -736,6 +773,14 @@ export interface FilterableProductVariantProps
  * @interface
  *
  * The filters to apply on retrieved product categories.
+ *
+ * @prop id - The IDs to filter product categories by.
+ * @prop name - The names to filter product categories by.
+ * @prop parent_category_id - Filter product categories by their parent category's ID.
+ * @prop handle - The handles to filter product categories by.
+ * @prop is_active - Filter product categories by whether they're active.
+ * @prop is_internal - Filter product categories by whether they're internal.
+ * @prop include_descendants_tree - Whether to include children of retrieved product categories.
  */
 export interface FilterableProductCategoryProps
   extends BaseFilterable<FilterableProductCategoryProps> {
@@ -773,6 +818,11 @@ export interface FilterableProductCategoryProps
  * @interface
  *
  * A product collection to create.
+ *
+ * @prop title - The product collection's title.
+ * @prop handle - The product collection's handle. If not provided, the value of this attribute is set to the slug version of the title.
+ * @prop products - The products to associate with the collection.
+ * @prop metadata - Holds custom data in key-value pairs.
  */
 export interface CreateProductCollectionDTO {
   /**
@@ -946,6 +996,10 @@ export interface CreateProductVariantOptionDTO {
  * A product variant to create.
  */
 export interface CreateProductVariantDTO {
+  /**
+   * The id of the product
+   */
+  product_id?: string
   /**
    * The tile of the product variant.
    */
@@ -1354,6 +1408,7 @@ export interface CreateProductOnlyDTO {
 }
 
 export interface CreateProductVariantOnlyDTO {
+  product_id?: string
   title: string
   sku?: string
   barcode?: string
