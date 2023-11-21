@@ -114,7 +114,7 @@ async function createPriceSet() {
             "name": "amount",
             "type": "`number`",
             "description": "The amount of this money amount.",
-            "optional": true,
+            "optional": false,
             "defaultValue": "",
             "expandable": false,
             "children": []
@@ -148,7 +148,7 @@ async function createPriceSet() {
           },
           {
             "name": "max_quantity",
-            "type": "``null`` \\| `number`",
+            "type": "`null` \\| `number`",
             "description": "The maximum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
@@ -157,7 +157,7 @@ async function createPriceSet() {
           },
           {
             "name": "min_quantity",
-            "type": "``null`` \\| `number`",
+            "type": "`null` \\| `number`",
             "description": "The minimum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
@@ -177,7 +177,7 @@ async function createPriceSet() {
       },
       {
         "name": "rules",
-        "type": "`&#123; rule_attribute: string  &#125;`[]",
+        "type": "``{ rule_attribute: string  }``[]",
         "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
         "optional": true,
         "defaultValue": "",
@@ -207,7 +207,7 @@ async function createPriceSet() {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -234,7 +234,7 @@ async function createPriceSet() {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -330,6 +330,15 @@ async function createPriceSet() {
             "name": "min_quantity",
             "type": "`number`",
             "description": "The minimum quantity required to be purchased for this price to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_set_money_amount",
+            "type": "[PriceSetMoneyAmountDTO](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
+            "description": "",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -485,7 +494,7 @@ async function createPriceSets() {
             "name": "amount",
             "type": "`number`",
             "description": "The amount of this money amount.",
-            "optional": true,
+            "optional": false,
             "defaultValue": "",
             "expandable": false,
             "children": []
@@ -519,7 +528,7 @@ async function createPriceSets() {
           },
           {
             "name": "max_quantity",
-            "type": "``null`` \\| `number`",
+            "type": "`null` \\| `number`",
             "description": "The maximum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
@@ -528,7 +537,7 @@ async function createPriceSets() {
           },
           {
             "name": "min_quantity",
-            "type": "``null`` \\| `number`",
+            "type": "`null` \\| `number`",
             "description": "The minimum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
@@ -548,7 +557,7 @@ async function createPriceSets() {
       },
       {
         "name": "rules",
-        "type": "`&#123; rule_attribute: string  &#125;`[]",
+        "type": "``{ rule_attribute: string  }``[]",
         "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
         "optional": true,
         "defaultValue": "",
@@ -578,7 +587,7 @@ async function createPriceSets() {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -605,7 +614,7 @@ async function createPriceSets() {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,

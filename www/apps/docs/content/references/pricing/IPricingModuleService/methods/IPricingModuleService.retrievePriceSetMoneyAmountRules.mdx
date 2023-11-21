@@ -20,7 +20,7 @@ This method is used to a price set money amount rule by its ID based on the prov
 A simple example that retrieves a price set money amount rule by its ID:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -36,7 +36,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
 To specify relations that should be retrieved:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -148,7 +148,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -175,7 +175,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -235,6 +235,15 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
             "name": "money_amount",
             "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)",
             "description": "The money amount associated with the price set money amount. It may only be available if the relation `money_amount` is expanded.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_list",
+            "type": "[PriceListDTO](../../interfaces/PriceListDTO.mdx)",
+            "description": "",
             "optional": true,
             "defaultValue": "",
             "expandable": false,

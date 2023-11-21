@@ -23,7 +23,7 @@ A price set to create.
         "name": "amount",
         "type": "`number`",
         "description": "The amount of this money amount.",
-        "optional": true,
+        "optional": false,
         "defaultValue": "",
         "expandable": false,
         "children": []
@@ -94,7 +94,7 @@ A price set to create.
       },
       {
         "name": "max_quantity",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The maximum quantity required to be purchased for this money amount to be applied.",
         "optional": true,
         "defaultValue": "",
@@ -103,7 +103,7 @@ A price set to create.
       },
       {
         "name": "min_quantity",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The minimum quantity required to be purchased for this money amount to be applied.",
         "optional": true,
         "defaultValue": "",
@@ -123,7 +123,7 @@ A price set to create.
   },
   {
     "name": "rules",
-    "type": "`&#123; rule_attribute: string  &#125;`[]",
+    "type": "``{ rule_attribute: string  }``[]",
     "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
     "optional": true,
     "defaultValue": "",

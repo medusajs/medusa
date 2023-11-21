@@ -6,15 +6,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # PriceListDTO
 
-A price list's details.
-
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "ends_at",
     "type": "`null` \\| `string`",
-    "description": "The price list expires after this date.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -23,7 +21,7 @@ A price list's details.
   {
     "name": "id",
     "type": "`string`",
-    "description": "The price list's ID.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -32,16 +30,16 @@ A price list's details.
   {
     "name": "money_amounts",
     "type": "[MoneyAmountDTO](MoneyAmountDTO.mdx)[]",
-    "description": "The associated money amounts.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "number_rules",
     "type": "`number`",
-    "description": "The number of rules associated with this price list.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -50,43 +48,43 @@ A price list's details.
   {
     "name": "price_list_rules",
     "type": "[PriceListRuleDTO](PriceListRuleDTO.mdx)[]",
-    "description": "The price set's rules.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "price_set_money_amounts",
     "type": "[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[]",
-    "description": "The associated price set money amounts.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "rule_types",
     "type": "[RuleTypeDTO](RuleTypeDTO.mdx)[]",
-    "description": "The associated rule types.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "rules",
     "type": "[PriceListRuleDTO](PriceListRuleDTO.mdx)[]",
-    "description": "The price set's rules.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "starts_at",
     "type": "`null` \\| `string`",
-    "description": "The price list is enabled starting from this date.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -95,7 +93,7 @@ A price list's details.
   {
     "name": "status",
     "type": "[PriceListStatus](../enums/PriceListStatus-2.mdx)",
-    "description": "The price list's status.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -104,7 +102,7 @@ A price list's details.
   {
     "name": "title",
     "type": "`string`",
-    "description": "The price list's title.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,

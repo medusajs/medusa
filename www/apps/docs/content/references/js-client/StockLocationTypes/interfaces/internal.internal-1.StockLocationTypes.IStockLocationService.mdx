@@ -35,7 +35,7 @@ async function createStockLocation (name: string) {
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx)",
+    "type": "[CreateStockLocationInput](../types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx)",
     "description": "The details of the stock location to create.",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ async function createStockLocation (name: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "type": "Promise&#60;[StockLocationDTO](../../internal/types/internal.StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created stock location's details.",
@@ -197,7 +197,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableStockLocationProps](../../StockLocationTypes/interfaces/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
+    "type": "[FilterableStockLocationProps](internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
     "description": "The filters to apply on the retrieved stock locations.",
     "optional": false,
     "defaultValue": "",
@@ -206,7 +206,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../../internal/types/internal.StockLocationDTO.mdx)&#62;",
     "description": "The configurations determining how the stock locations are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.",
     "optional": true,
     "defaultValue": "",
@@ -229,7 +229,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[]&#62;",
+    "type": "Promise&#60;[StockLocationDTO](../../internal/types/internal.StockLocationDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of stock locations.",
@@ -311,7 +311,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableStockLocationProps](../../StockLocationTypes/interfaces/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
+    "type": "[FilterableStockLocationProps](internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
     "description": "The filters to apply on the retrieved stock locations.",
     "optional": false,
     "defaultValue": "",
@@ -320,7 +320,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../../internal/types/internal.StockLocationDTO.mdx)&#62;",
     "description": "The configurations determining how the stock locations are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.",
     "optional": true,
     "defaultValue": "",
@@ -343,7 +343,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[StockLocationDTO](../../internal/types/internal.StockLocationDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of stock locations along with the total count.",
@@ -408,7 +408,7 @@ async function retrieveStockLocation (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../../internal/types/internal.StockLocationDTO.mdx)&#62;",
     "description": "The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a stock location.",
     "optional": true,
     "defaultValue": "",
@@ -431,7 +431,7 @@ async function retrieveStockLocation (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "type": "Promise&#60;[StockLocationDTO](../../internal/types/internal.StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The stock location's details.",
@@ -478,7 +478,7 @@ async function updateStockLocation (id:string, name: string) {
   },
   {
     "name": "input",
-    "type": "[UpdateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx)",
+    "type": "[UpdateStockLocationInput](../types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx)",
     "description": "The attributes to update in the stock location.",
     "optional": false,
     "defaultValue": "",
@@ -501,7 +501,7 @@ async function updateStockLocation (id:string, name: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "type": "Promise&#60;[StockLocationDTO](../../internal/types/internal.StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The stock location's details.",

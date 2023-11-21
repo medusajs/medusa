@@ -6,15 +6,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # PriceListRuleDTO
 
-The price list rule's details.
-
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "id",
     "type": "`string`",
-    "description": "The price list rule's ID.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -23,34 +21,34 @@ The price list rule's details.
   {
     "name": "price_list",
     "type": "[PriceListDTO](internal.internal-1.PricingTypes.PriceListDTO.mdx)",
-    "description": "The associated price list.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "price_list_rule_values",
     "type": "[PriceListRuleValueDTO](internal.internal-1.PricingTypes.PriceListRuleValueDTO.mdx)[]",
-    "description": "The associated rule values.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "rule_type",
     "type": "[RuleTypeDTO](internal.internal-1.PricingTypes.RuleTypeDTO.mdx)",
-    "description": "The associated rule type.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "value",
     "type": "`string`",
-    "description": "The value of the rule.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

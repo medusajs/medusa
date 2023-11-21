@@ -23,10 +23,10 @@ A money amount's data. A money amount represents a price.
   {
     "name": "currency",
     "type": "[CurrencyDTO](internal.internal-1.PricingTypes.CurrencyDTO.mdx)",
-    "description": "The money amount's currency.",
+    "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
@@ -68,7 +68,7 @@ A money amount's data. A money amount represents a price.
   {
     "name": "price_set_money_amount",
     "type": "[PriceSetMoneyAmountDTO](internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)",
-    "description": "The details of the relation between the money amount and its associated price set.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,

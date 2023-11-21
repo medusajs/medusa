@@ -18,16 +18,16 @@ This method is used to create new price rules based on the provided data.
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
 async function createPriceRules (
   id: string,
-  priceSetId: string, 
-  ruleTypeId: string, 
-  value: string, 
-  priceSetMoneyAmountId: string, 
+  priceSetId: string,
+  ruleTypeId: string,
+  value: string,
+  priceSetMoneyAmountId: string,
   priceListId: string
 ) {
   const pricingService = await initializePricingModule()
@@ -62,15 +62,6 @@ async function createPriceRules (
         "name": "id",
         "type": "`string`",
         "description": "The ID of the price rule.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "price_list_id",
-        "type": "`string`",
-        "description": "The ID of the associated price list.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -134,7 +125,7 @@ async function createPriceRules (
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -161,7 +152,7 @@ async function createPriceRules (
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,

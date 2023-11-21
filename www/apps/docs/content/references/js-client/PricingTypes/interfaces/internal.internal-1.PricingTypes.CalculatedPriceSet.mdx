@@ -6,15 +6,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # CalculatedPriceSet
 
-The calculated price for a specific price set and context.
-
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "calculated_amount",
     "type": "`null` \\| `number`",
-    "description": "The amount of the calculated price, or `null` if there isn't a calculated price.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -23,7 +21,7 @@ The calculated price for a specific price set and context.
   {
     "name": "calculated_price",
     "type": "`object`",
-    "description": "The details of the calculated price.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -32,7 +30,7 @@ The calculated price for a specific price set and context.
   {
     "name": "calculated_price.max_quantity",
     "type": "`null` \\| `number`",
-    "description": "The `max_quantity` field defined on a money amount.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -41,7 +39,7 @@ The calculated price for a specific price set and context.
   {
     "name": "calculated_price.min_quantity",
     "type": "`null` \\| `number`",
-    "description": "The `min_quantity` field defined on a money amount.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -50,7 +48,7 @@ The calculated price for a specific price set and context.
   {
     "name": "calculated_price.money_amount_id",
     "type": "`null` \\| `string`",
-    "description": "The ID of the money amount selected as the calculated price.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -59,7 +57,7 @@ The calculated price for a specific price set and context.
   {
     "name": "calculated_price.price_list_id",
     "type": "`null` \\| `string`",
-    "description": "The ID of the associated price list, if any.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -68,7 +66,7 @@ The calculated price for a specific price set and context.
   {
     "name": "calculated_price.price_list_type",
     "type": "`null` \\| `string`",
-    "description": "The type of the associated price list, if any.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -77,7 +75,7 @@ The calculated price for a specific price set and context.
   {
     "name": "currency_code",
     "type": "`null` \\| `string`",
-    "description": "The currency code of the calculated price, or null if there isn't a calculated price.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -86,7 +84,7 @@ The calculated price for a specific price set and context.
   {
     "name": "id",
     "type": "`string`",
-    "description": "The ID of the price set.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -95,7 +93,7 @@ The calculated price for a specific price set and context.
   {
     "name": "is_calculated_price_price_list",
     "type": "`boolean`",
-    "description": "Whether the calculated price is associated with a price list. During the calculation process, if no valid price list is found, the calculated price is set to the original price, which doesn't belong to a price list. In that case, the value of this property is `false`.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -104,7 +102,7 @@ The calculated price for a specific price set and context.
   {
     "name": "is_original_price_price_list",
     "type": "`boolean`",
-    "description": "Whether the original price is associated with a price list. During the calculation process, if the price list of the calculated price is of type override, the original price will be the same as the calculated price. In that case, the value of this property is `true`.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -113,7 +111,7 @@ The calculated price for a specific price set and context.
   {
     "name": "original_amount",
     "type": "`null` \\| `number`",
-    "description": "The amount of the original price, or `null` if there isn't a calculated price.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -122,7 +120,7 @@ The calculated price for a specific price set and context.
   {
     "name": "original_price",
     "type": "`object`",
-    "description": "The details of the original price.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -131,7 +129,7 @@ The calculated price for a specific price set and context.
   {
     "name": "original_price.max_quantity",
     "type": "`null` \\| `number`",
-    "description": "The `max_quantity` field defined on a money amount.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -140,7 +138,7 @@ The calculated price for a specific price set and context.
   {
     "name": "original_price.min_quantity",
     "type": "`null` \\| `number`",
-    "description": "The `min_quantity` field defined on a money amount.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -149,7 +147,7 @@ The calculated price for a specific price set and context.
   {
     "name": "original_price.money_amount_id",
     "type": "`null` \\| `string`",
-    "description": "The ID of the money amount selected as the original price.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -158,7 +156,7 @@ The calculated price for a specific price set and context.
   {
     "name": "original_price.price_list_id",
     "type": "`null` \\| `string`",
-    "description": "The ID of the associated price list, if any.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -167,7 +165,7 @@ The calculated price for a specific price set and context.
   {
     "name": "original_price.price_list_type",
     "type": "`null` \\| `string`",
-    "description": "The type of the associated price list, if any.",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

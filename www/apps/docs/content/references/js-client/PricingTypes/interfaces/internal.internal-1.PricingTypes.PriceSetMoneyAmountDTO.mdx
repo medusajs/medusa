@@ -23,43 +23,43 @@ A price set money amount's data.
   {
     "name": "money_amount",
     "type": "[MoneyAmountDTO](internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)",
-    "description": "The money amount associated with the price set money amount.",
+    "description": "The money amount associated with the price set money amount. It may only be available if the relation `money_amount` is expanded.",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "price_list",
     "type": "[PriceListDTO](internal.internal-1.PricingTypes.PriceListDTO.mdx)",
-    "description": "The price list associated with the price set money amount.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "price_rules",
     "type": "[PriceRuleDTO](internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]",
-    "description": "The price rules associated with the price set money amount.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "price_set",
     "type": "[PriceSetDTO](internal.internal-1.PricingTypes.PriceSetDTO.mdx)",
-    "description": "The price set associated with the price set money amount.",
+    "description": "The price set associated with the price set money amount. It may only be available if the relation `price_set` is expanded.",
     "optional": true,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
     "name": "price_set_id",
     "type": "`string`",
-    "description": "The ID of the associated price set.",
+    "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,

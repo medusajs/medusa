@@ -20,7 +20,7 @@ This method is used to retrieve a paginated list of price set money amount rules
 To retrieve a list of price set money amount rules using their IDs:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -38,7 +38,7 @@ async function retrievePriceSetMoneyAmountRules (id: string) {
 To specify relations that should be retrieved within the price set money amount rules:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -58,7 +58,7 @@ async function retrievePriceSetMoneyAmountRules (id: string) {
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -80,7 +80,7 @@ async function retrievePriceSetMoneyAmountRules (id: string, skip: number, take:
 You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -258,7 +258,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -285,7 +285,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
