@@ -26,12 +26,13 @@ import {
   UpdateProductOptionDTO,
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
+  UpdateProductVariantDTO,
 } from "./common"
-
-import { FindConfig } from "../common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { ModuleJoinerConfig } from "../modules-sdk"
+
 import { Context } from "../shared-context"
+import { FindConfig } from "../common"
+import { ModuleJoinerConfig } from "../modules-sdk"
 
 export interface IProductModuleService {
   /**
@@ -1517,6 +1518,11 @@ export interface IProductModuleService {
     productVariantIds: string[],
     sharedContext?: Context
   ): Promise<void>
+
+  updateVariants(
+    data: UpdateProductVariantDTO[],
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO[]>
 
   /**
    * This method is used to retrieve a paginated list of product variants along with the total count of available product variants satisfying the provided filters.
