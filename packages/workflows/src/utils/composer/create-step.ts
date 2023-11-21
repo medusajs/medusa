@@ -119,7 +119,7 @@ function applyStep<
                 ? stepOutput.compensateInput
                 : undefined
 
-            const args = [executionContext, invokeResult]
+            const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
             return {
               output,
