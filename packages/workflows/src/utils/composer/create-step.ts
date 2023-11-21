@@ -116,8 +116,8 @@ function applyStep<
             const stepOutput = transactionContext.invoke[stepName].output
             const invokeResult =
               stepOutput?.__type === SymbolWorkflowStepResponse
-                ? stepOutput.compensateInput
-                : undefined
+                ? stepOutput.compensateInput ?? stepOutput.output
+                : stepOutput
 
             const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
