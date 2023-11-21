@@ -20,7 +20,7 @@ This method is used to retrieve a paginated list of money amounts based on optio
 To retrieve a list of money amounts using their IDs:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -40,7 +40,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[]) {
 To specify relations that should be retrieved within the money amounts:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -63,7 +63,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[]) {
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -88,7 +88,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], skip: number, tak
 You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -251,7 +251,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -278,7 +278,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -328,10 +328,10 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
           {
             "name": "currency",
             "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
-            "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
+            "description": "The money amount's currency.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -368,6 +368,15 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
             "optional": true,
             "defaultValue": "",
             "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_set_money_amount",
+            "type": "[PriceSetMoneyAmountDTO](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
+            "description": "The details of the relation between the money amount and its associated price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
             "children": []
           }
         ]

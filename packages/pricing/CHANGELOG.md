@@ -1,5 +1,17 @@
 # @medusajs/pricing
 
+## 0.1.4
+
+### Patch Changes
+
+- [#5646](https://github.com/medusajs/medusa/pull/5646) [`4f0bea490`](https://github.com/medusajs/medusa/commit/4f0bea4909f5b42ece922b3efe46b57610fb312b) Thanks [@riqwan](https://github.com/riqwan)! - fix(pricing): add missing migrations for pricing module
+
+- [#5498](https://github.com/medusajs/medusa/pull/5498) [`1772e80ed`](https://github.com/medusajs/medusa/commit/1772e80ed1ecab27741be80204f5df92eaa3f2b4) Thanks [@riqwan](https://github.com/riqwan)! - feat(pricing,types): price list API + price calculations with price lists
+
+- Updated dependencies [[`61aef4aaa`](https://github.com/medusajs/medusa/commit/61aef4aaa7295f178c61c9a891f03a0a48b15c81), [`1772e80ed`](https://github.com/medusajs/medusa/commit/1772e80ed1ecab27741be80204f5df92eaa3f2b4), [`cedab5833`](https://github.com/medusajs/medusa/commit/cedab583395275444001f0268e4b9ccab9b2b262)]:
+  - @medusajs/types@1.11.7
+  - @medusajs/utils@1.11.0
+
 ## 0.1.3
 
 ### Patch Changes

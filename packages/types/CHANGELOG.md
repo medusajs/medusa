@@ -1,5 +1,13 @@
 # @medusajs/types
 
+## 1.11.7
+
+### Patch Changes
+
+- [#5630](https://github.com/medusajs/medusa/pull/5630) [`61aef4aaa`](https://github.com/medusajs/medusa/commit/61aef4aaa7295f178c61c9a891f03a0a48b15c81) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(types): Fix types used in the IInventoryService
+
+- [#5498](https://github.com/medusajs/medusa/pull/5498) [`1772e80ed`](https://github.com/medusajs/medusa/commit/1772e80ed1ecab27741be80204f5df92eaa3f2b4) Thanks [@riqwan](https://github.com/riqwan)! - feat(pricing,types): price list API + price calculations with price lists
+
 ## 1.11.6
 
 ### Patch Changes

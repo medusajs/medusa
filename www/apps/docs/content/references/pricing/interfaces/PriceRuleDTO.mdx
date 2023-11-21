@@ -32,10 +32,10 @@ A price rule's data.
   {
     "name": "price_set",
     "type": "[PriceSetDTO](PriceSetDTO.mdx)",
-    "description": "The associated price set. It may only be available if the relation `price_set` is expanded.",
+    "description": "The associated price set.",
     "optional": false,
     "defaultValue": "",
-    "expandable": false,
+    "expandable": true,
     "children": [
       {
         "name": "id",
@@ -66,10 +66,10 @@ A price rule's data.
           {
             "name": "currency",
             "type": "[CurrencyDTO](CurrencyDTO.mdx)",
-            "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
+            "description": "The money amount's currency.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -106,6 +106,15 @@ A price rule's data.
             "optional": true,
             "defaultValue": "",
             "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_set_money_amount",
+            "type": "[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)",
+            "description": "The details of the relation between the money amount and its associated price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
             "children": []
           }
         ]
@@ -188,10 +197,10 @@ A price rule's data.
   {
     "name": "rule_type",
     "type": "[RuleTypeDTO](RuleTypeDTO.mdx)",
-    "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
+    "description": "The associated rule type.",
     "optional": false,
     "defaultValue": "",
-    "expandable": false,
+    "expandable": true,
     "children": [
       {
         "name": "default_priority",
