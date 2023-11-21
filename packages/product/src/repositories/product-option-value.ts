@@ -29,9 +29,6 @@ export class ProductOptionValueRepository extends DALUtils.MikroOrmBaseRepositor
 
     findOptions_.options ??= {}
 
-    Object.assign(findOptions_.options, {
-      strategy: LoadStrategy.SELECT_IN,
-    })
 
     return await manager.find(
       ProductOptionValue,
