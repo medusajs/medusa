@@ -17,8 +17,15 @@ import { NextSelect } from "../../../components/molecules/select/next-select"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import TreeCrumbs from "../components/tree-crumbs"
+import MetadataForm, {
+  getSubmittableMetadata,
+  MetadataFormType,
+} from "../../../components/forms/general/metadata-form"
+import { Controller, useForm } from "react-hook-form"
+import { nestedForm } from '../../../utils/nested-form';
+import { TFunction } from "i18next"
 
-const visibilityOptions = (t) => [
+const visibilityOptions = (t: TFunction<"translation", undefined, "translation">) => [
   {
     label: t("modals-public", "Public"),
     value: "public",
@@ -26,7 +33,7 @@ const visibilityOptions = (t) => [
   { label: t("modals-private", "Private"), value: "private" },
 ]
 
-const statusOptions = (t) => [
+const statusOptions = (t: TFunction<"translation", undefined, "translation">) => [
   { label: t("modals-active", "Active"), value: "active" },
   { label: t("modals-inactive", "Inactive"), value: "inactive" },
 ]
@@ -34,6 +41,15 @@ const statusOptions = (t) => [
 type CreateProductCategoryProps = {
   closeModal: () => void
   parentCategory?: ProductCategory
+}
+
+type CategoryFormData = {
+  name: string
+  handle: string | undefined
+  description: string | undefined
+  metadata: MetadataFormType
+  is_active: boolean
+  is_public: boolean
 }
 
 /**
@@ -45,6 +61,19 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
   const notification = useNotification()
   const queryClient = useQueryClient()
 
+  const form = useForm<CategoryFormData>({
+    defaultValues: {
+      name: "",
+      handle: "",
+      description: "",
+      metadata: {
+        entries: [],
+      },
+      is_active: true,
+      is_public: true,
+    },
+  })
+  const { register, handleSubmit, reset, control } = form
   const [name, setName] = useState("")
   const [handle, setHandle] = useState("")
   const [description, setDescription] = useState("")
@@ -53,36 +82,38 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
 
   const { mutateAsync: createProductCategory } = useAdminCreateProductCategory()
 
-  const onSubmit = async () => {
-    try {
-      await createProductCategory({
-        name,
-        handle,
-        description,
-        is_active: isActive,
-        is_internal: !isPublic,
-        parent_category_id: parentCategory?.id ?? null,
-      })
-      // TODO: temporary here, investigate why `useAdminCreateProductCategory` doesn't invalidate this
-      await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
-      closeModal()
-      notification(
-        t("modals-success", "Success"),
-        t(
-          "modals-successfully-created-a-category",
-          "Successfully created a category"
-        ),
-        "success"
-      )
-    } catch (e) {
-      const errorMessage =
-        getErrorMessage(e) ||
-        t(
-          "modals-failed-to-create-a-new-category",
-          "Failed to create a new category"
-        )
-      notification(t("modals-error", "Error"), errorMessage, "error")
-    }
+  const submit = async (data: CategoryFormData) => {
+    console.log(data);
+    return
+    // try {
+    //   await createProductCategory({
+    //     name,
+    //     handle,
+    //     description,
+    //     is_active: isActive,
+    //     is_internal: !isPublic,
+    //     parent_category_id: parentCategory?.id ?? null,
+    //   })
+    //   // TODO: temporary here, investigate why `useAdminCreateProductCategory` doesn't invalidate this
+    //   await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
+    //   closeModal()
+    //   notification(
+    //     t("modals-success", "Success"),
+    //     t(
+    //       "modals-successfully-created-a-category",
+    //       "Successfully created a category"
+    //     ),
+    //     "success"
+    //   )
+    // } catch (e) {
+    //   const errorMessage =
+    //     getErrorMessage(e) ||
+    //     t(
+    //       "modals-failed-to-create-a-new-category",
+    //       "Failed to create a new category"
+    //     )
+    //   notification(t("modals-error", "Error"), errorMessage, "error")
+    // }
   }
 
   return (
@@ -96,8 +127,8 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
             <Button
               size="small"
               variant="primary"
-              onClick={onSubmit}
               disabled={!name}
+              onSubmit={handleSubmit(submit)}
               className="rounded-rounded"
             >
               {t("modals-save-category", "Save category")}
@@ -105,7 +136,6 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           </div>
         </div>
       </FocusModal.Header>
-
       <FocusModal.Main className="no-scrollbar flex w-full justify-center">
         <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
           <h1 className="inter-xlarge-semibold text-grey-90 pb-6">
@@ -136,59 +166,78 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
               required
               label={t("modals-name", "Name")}
               type="string"
-              name="name"
-              value={name}
               className="w-[338px]"
               placeholder={t(
                 "modals-give-this-category-a-name",
                 "Give this category a name"
               )}
-              onChange={(ev) => setName(ev.target.value)}
+              {...register("name", { required: true })}
             />
 
             <InputField
               label={t("modals-handle", "Handle")}
               type="string"
-              name="handle"
-              value={handle}
               className="w-[338px]"
               placeholder={t("modals-custom-handle", "Custom handle")}
-              onChange={(ev) => setHandle(ev.target.value)}
+              {...register("handle", { required: true })}
             />
           </div>
 
           <div className="mb-8">
             <TextArea
               label={t("modals-description", "Description")}
-              name="description"
-              value={description}
               placeholder={t(
                 "modals-give-this-category-a-description",
                 "Give this category a description"
               )}
-              onChange={(ev) => setDescription(ev.target.value)}
+              {...register("description")}
             />
           </div>
 
           <div className="mb-8 flex justify-between gap-6">
             <div className="flex-1">
-              <NextSelect
-                label={t("modals-status", "Status")}
-                options={statusOptions(t)}
-                value={statusOptions(t)[isActive ? 0 : 1]}
-                onChange={(o) => setIsActive(o.value === "active")}
+            <Controller
+              name={'is_active'}
+              control={control}
+              render={({ field }) => {
+                return (
+                  <NextSelect
+                    {...field}
+                    label={t("modals-status", "Status")}
+                    placeholder="Choose a country"
+                    options={statusOptions(t)}
+                    value={statusOptions(t)[field.value?.value === 'active' ? 0 : 1]}
+                  />
+                )
+              }}
               />
             </div>
 
             <div className="flex-1">
-              <NextSelect
-                label={t("modals-visibility", "Visibility")}
-                options={visibilityOptions(t)}
-                value={visibilityOptions(t)[isPublic ? 0 : 1]}
-                onChange={(o) => setIsPublic(o.value === "public")}
+            <Controller
+              name={'is_public'}
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => {
+                return (
+                  <NextSelect
+                    {...field}
+                    label={t("modals-visibility", "Visibility")}
+                    placeholder="Choose a country"
+                    options={visibilityOptions(t)}
+                    value={visibilityOptions(t)[field.value.value === 'public' ? 0 : 1]}
+                  />
+                )
+              }}
               />
             </div>
           </div>
+          <div className="mt-xlarge">
+              <h2 className="inter-base-semibold mb-base">
+                {t("collection-modal-metadata", "Metadata")}
+              </h2>
+              <MetadataForm form={nestedForm(form, "metadata")} />
+            </div>
         </div>
       </FocusModal.Main>
     </FocusModal>
