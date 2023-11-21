@@ -1,6 +1,6 @@
 ---
 "@medusajs/workflows": minor
-"@medusajs/medusa": patch
+"@medusajs/medusa": minor
 "@medusajs/utils": minor
 ---
 
