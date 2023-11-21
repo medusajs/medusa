@@ -55,7 +55,7 @@ async function retrieveMoneyAmounts() {
         "name": "amount",
         "type": "`number`",
         "description": "The amount of this money amount.",
-        "optional": true,
+        "optional": false,
         "defaultValue": "",
         "expandable": false,
         "children": []
@@ -126,7 +126,7 @@ async function retrieveMoneyAmounts() {
       },
       {
         "name": "max_quantity",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The maximum quantity required to be purchased for this money amount to be applied.",
         "optional": true,
         "defaultValue": "",
@@ -135,7 +135,7 @@ async function retrieveMoneyAmounts() {
       },
       {
         "name": "min_quantity",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The minimum quantity required to be purchased for this money amount to be applied.",
         "optional": true,
         "defaultValue": "",
@@ -155,7 +155,7 @@ async function retrieveMoneyAmounts() {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -182,7 +182,7 @@ async function retrieveMoneyAmounts() {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -232,10 +232,10 @@ async function retrieveMoneyAmounts() {
           {
             "name": "currency",
             "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
-            "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
+            "description": "The money amount's currency.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -272,6 +272,15 @@ async function retrieveMoneyAmounts() {
             "optional": true,
             "defaultValue": "",
             "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_set_money_amount",
+            "type": "[PriceSetMoneyAmountDTO](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
+            "description": "The details of the relation between the money amount and its associated price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
             "children": []
           }
         ]
