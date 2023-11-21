@@ -5,6 +5,7 @@ export const SymbolInputReference = Symbol.for("WorkflowInputReference")
 export const SymbolWorkflowStep = Symbol.for("WorkflowStep")
 export const SymbolWorkflowHook = Symbol.for("WorkflowHook")
 export const SymbolWorkflowStepReturn = Symbol.for("WorkflowStepReturn")
+export const SymbolWorkflowStepResponse = Symbol.for("WorkflowStepResponse")
 export const SymbolWorkflowStepBind = Symbol.for("WorkflowStepBind")
 export const SymbolWorkflowStepTransformer = Symbol.for(
   "WorkflowStepTransformer"

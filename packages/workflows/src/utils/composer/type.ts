@@ -10,13 +10,10 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => TOutput extends []
     ? [
         ...StepReturn<{
-          [K in keyof Omit<
-            TOutput[number],
-            "compensateInput"
-          >]: TOutput[number][K]
+          [K in keyof TOutput]: TOutput[number][K]
         }>[]
       ]
-    : StepReturn<{ [K in keyof Omit<TOutput, "compensateInput">]: TOutput[K] }>
+    : StepReturn<{ [K in keyof TOutput]: TOutput[K] }>
 
 /**
  * A step function to be used in a workflow.
@@ -26,10 +23,10 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
  */
 export type StepFunction<TInput extends object = object, TOutput = unknown> = {
   (input: { [K in keyof TInput]: StepReturn<TInput[K]> }): StepReturn<{
-    [K in keyof Omit<TOutput, "compensateInput">]: TOutput[K]
+    [K in keyof TOutput]: TOutput[K]
   }>
 } & StepReturnProperties<{
-  [K in keyof Omit<TOutput, "compensateInput">]: TOutput[K]
+  [K in keyof TOutput]: TOutput[K]
 }>
 
 export type StepReturnProperties<T = unknown> = {

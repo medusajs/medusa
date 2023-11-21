@@ -1,8 +1,8 @@
-import { resolveValue } from "./resolve-value"
 import {
+  resolveValue,
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowHook,
-} from "./symbol"
+} from "./helpers"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,

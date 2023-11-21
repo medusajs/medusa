@@ -7640,8 +7640,8 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.17.4
     "@medusajs/openapi-typescript-codegen": ^0.2.1
-    "@medusajs/types": "workspace:^"
-    "@medusajs/utils": "workspace:^"
+    "@medusajs/types": ^1.11.6
+    "@medusajs/utils": ^1.10.5
     "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.0.0-beta.123
@@ -7927,7 +7927,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.10.0, @medusajs/types@^1.11.5, @medusajs/types@^1.11.6, @medusajs/types@^1.8.10, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.10.0, @medusajs/types@^1.11.5, @medusajs/types@^1.11.6, @medusajs/types@^1.8.10, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -8030,7 +8030,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.10.0, @medusajs/utils@^1.10.5, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.10.0, @medusajs/utils@^1.10.5, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -36292,7 +36292,7 @@ __metadata:
     "@babel/preset-env": ^7.15.6
     "@babel/register": ^7.15.3
     "@babel/runtime": ^7.15.4
-    "@medusajs/utils": "workspace:^"
+    "@medusajs/utils": ^1.10.5
     "@shopify/shopify-api": ^1.4.1
     axios: ^0.21.4
     body-parser: ^1.19.0

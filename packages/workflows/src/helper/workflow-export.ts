@@ -11,7 +11,7 @@ import { MedusaModule } from "@medusajs/modules-sdk"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { Workflows } from "../definitions"
-import { SymbolWorkflowStepReturn } from "../utils/composer/symbol"
+import { SymbolWorkflowStepReturn } from "../utils/composer"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData

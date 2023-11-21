@@ -1,5 +1,5 @@
 import { CreateWorkflowComposerContext, StepReturn } from "./type"
-import { SymbolMedusaWorkflowComposerContext } from "./symbol"
+import { SymbolMedusaWorkflowComposerContext } from "./helpers"
 
 /**
  * This function is used to run multiple steps in parallel. The result of each step will be returned as part of the result array.
