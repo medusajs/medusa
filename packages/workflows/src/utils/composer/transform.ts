@@ -91,12 +91,33 @@ export function transform<T extends object | StepReturn, RA, RB, RC, RD, RE, RF,
 ): StepReturn<RFinal>
 
 /**
- * Transforms the input value(s) using the provided functions.
- * Allow to perform transformation on the future result of the step(s) to be passed
- * to other steps later on at run time.
  *
- * @param values
- * @param functions
+ * @mainSignature
+ *
+ * This function transforms the output of other steps using the provided functions.
+ *
+ * This is useful if you're using the value(s) of some step(s) as an input to a later step. It ensures that the input
+ * that the later step receives is the output of the other step(s) during runtime.
+ *
+ * This is also useful if you're using the runtime value of some step(s) as the output of a workflow.
+ *
+ * @example
+ * const myWorkflow = createWorkflow("hello-world", (input: StepReturn<WorkflowInput>): StepReturn<WorkflowOutput> => {
+ *   const str1 = step1(input)
+ *   const str2 = step2(input)
+ *
+ *   return transform({
+ *     str1,
+ *     str2
+ *   }, (input) => ({
+ *     message: `${input.str1}${input.str2}`
+ *   }))
+ * })
+ *
+ * @param values - The output(s) of other step functions.
+ * @param functions - The transform function(s) used to perform action on the runtime values of the provided `values`.
+ *
+ * @returns There's no expected value to be returned by the `transform` function.
  */
 export function transform(
   values: any | any[],

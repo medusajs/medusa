@@ -17,6 +17,10 @@
     {
       "tagName": "@apiIgnore",
       "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@mainSignature",
+      "syntaxKind": "modifier"
     }
   ]
 }

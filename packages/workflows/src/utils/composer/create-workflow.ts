@@ -18,6 +18,20 @@ import {
 
 global[SymbolMedusaWorkflowComposerContext] = null
 
+/**
+ * The type of a created workflow. To execute the workflow, use the `run` command.
+ *
+ * @example
+ * myWorkflow()
+ *   .run({
+ *     input: {
+ *       name: "John"
+ *     }
+ *   })
+ *   .then(({ result }) => {
+ *     console.log(result)
+ *   })
+ */
 type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
@@ -35,32 +49,47 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
 } & THooks
 
 /**
- * Creates a new workflow with the given name and composer function.
- * The composer function will compose the workflow by using the step, parallelize and other util functions that
- * will allow to define the flow of event of a workflow.
+ * This function creates a new workflow with the provided name and composer function.
+ * The composer function builds the workflow from steps created by the {@link createStep} function.
+ * The composer function is only executed when the `run` method in {@link ReturnWorkflow} is used.
  *
- * @param name
- * @param composer
+ * @typeParam TData - The type of the input passed to the composer function.
+ * @typeParam TResult - The type of the output returned by the composer function.
+ * @typeParam THooks - (?)
+ *
+ * @param name - The name of the workflow.
+ * @param composer - The composer function that is executed when the `run` method in {@link ReturnWorkflow} is used.
+ *
+ *
+ * @returns The created workflow. You can later invoke the workflow using the `run` method.
  *
  * @example
- * ```ts
- * import { createWorkflow, StepReturn } from "@medusajs/workflows"
- * import { createProductStep, getProductStep, createPricesStep } from "./steps"
+ * import {
+ *   createWorkflow,
+ *   StepReturn
+ * } from "@medusajs/workflows"
+ * import {
+ *   createProductStep,
+ *   getProductStep,
+ *   createPricesStep
+ * } from "./steps"
  *
  * interface MyWorkflowData {
  *  title: string
  * }
  *
- * const myWorkflow = createWorkflow("my-workflow", (input: StepReturn<MyWorkflowData>) => {
- *    // Everything here will be executed and resolved later during the execution. Including the data access.
+ * const myWorkflow = createWorkflow(
+ *   "my-workflow",
+ *   (input: StepReturn<MyWorkflowData>) => {
+ *     // Everything here will be executed and resolved later during the execution. Including the data access.
  *
- *    const product = createProductStep(input)
- *    const prices = createPricesStep(product)
+ *     const product = createProductStep(input)
+ *     const prices = createPricesStep(product)
  *
- *    const id = product.id
- *    return getProductStep(product.id)
- * })
- * ```
+ *     const id = product.id
+ *     return getProductStep(product.id)
+ *   }
+ * )
  */
 
 export function createWorkflow<
@@ -70,6 +99,9 @@ export function createWorkflow<
 >(
   name: string,
   composer: (
+    /**
+     * The input of the composer function
+     */
     input: StepReturn<TData>
   ) =>
     | void

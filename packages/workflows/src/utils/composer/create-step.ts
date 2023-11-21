@@ -15,6 +15,17 @@ import {
   WorkflowTransactionContext,
 } from "./type"
 
+/**
+ * The type of invocation function passed to a step.
+ *
+ * @typeParam TInput - The type of the input that the function expects.
+ * @typeParam O - The type of the output that the function returns.
+ *
+ * @param input - The input of the step.
+ * @param context - The step's context.
+ *
+ * @returns The expected output based on the type parameter `0`.
+ */
 type InvokeFn<TInput extends object, O> = (
   input: {
     [Key in keyof TInput]: TInput[Key]
@@ -22,6 +33,16 @@ type InvokeFn<TInput extends object, O> = (
   context: StepExecutionContext
 ) => Promise<O>
 
+/**
+ * The type of compensation function passed to a step.
+ *
+ * @typeParam T - The type of the argument passed to the compensation function. Typically, this would be the the output type of a step.
+ *
+ * @param arg - The argument passed to the compensation function.
+ * @param context - The step's context.
+ *
+ * @returns There's no expected value to be returned by the compensation function.
+ */
 type CompensateFn<T> = (
   arg: T,
   context: StepExecutionContext
@@ -45,6 +66,8 @@ interface ApplyStepOptions<
 }
 
 /**
+ * @internal
+ *
  * Internal function to create the invoke and compensate handler for a step.
  * This is where the inputs and context are passed to the underlying invoke and compensate function.
  *
@@ -139,16 +162,20 @@ function applyStep<
 }
 
 /**
- * Function which will create a StepFunction to be used inside a createWorkflow composer function.
- * This function will return a function which can be used to bind the step to a workflow.
- * The types of the input to be passed to the step function is defined by the generic of the invoke function provided.
+ * This function creates a {@link StepFunction}. It can be used as a step in a workflow inside a {@link createWorkflow} function.
  *
- * @param name
- * @param invokeFn
- * @param compensateFn
+ * @param name - The name of the step.
+ * @param invokeFn - An invocation function that will be executed when the step is used.
+ * @param compensateFn - A compensation function that's executed if an error occurs in the workflow. Typically, it's used to roll-back actions when errors occur.
+ *
+ * @typeParam TInvokeInput - The type of the expected input.
+ * @typeParam TInvokeResult - The type of the expected output.
+ *
+ * @returns A step function to be used in a workflow.
  *
  * @example
- * ```ts
+ * import { createStep } from "@medusajs/workflows"
+ *
  * interface CreateProductInput {
  *   title: string
  * }
@@ -162,8 +189,13 @@ function applyStep<
  *
  * export const createProductStep = createStep(
  *  "createProductStep",
- *  async function (input: Step1Input, context: StepExecutionContext): Promise<CreateProductOutput> {
- *    const productService = context.container.resolve("productService")
+ *  async function (
+ *    input: Step1Input,
+ *    context: StepExecutionContext
+ *  ): Promise<CreateProductOutput> {
+ *    const productService = context.container.resolve(
+ *      "productService"
+ *    )
  *    const product = await productService.create(input)
  *    return {
  *      product,
@@ -172,8 +204,13 @@ function applyStep<
  *      }
  *    }
  *  },
- *  async function (input: { product_id: string }, context: StepExecutionContext) {
- *     const productService = context.container.resolve("productService")
+ *  async function (
+ *    input: { product_id: string },
+ *    context: StepExecutionContext
+ *  ) {
+ *     const productService = context.container.resolve(
+ *       "productService"
+ *     )
  *     await productService.delete(input.product_id)
  *  })
  */

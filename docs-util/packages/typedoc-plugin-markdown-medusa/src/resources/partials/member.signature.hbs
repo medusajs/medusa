@@ -14,9 +14,25 @@
 
 {{/if}}
 
+{{#if (sectionEnabled "member_signature_example")}}
+
+{{{example this 4}}}
+
+{{/if}}
+
 {{#if (sectionEnabled "member_signature_typeParameters")}}
 
 {{#if typeParameters}}
+
+{{#if showSources}}
+
+{{{titleLevel 4}}} Type Parameters
+
+{{else}}
+
+{{{titleLevel 5}}} Type Parameters
+
+{{/if}}
 
 {{#with typeParameters}}
 
@@ -25,12 +41,6 @@
 {{/with}}
 
 {{/if}}
-
-{{/if}}
-
-{{#if (sectionEnabled "member_signature_example")}}
-
-{{{example this 4}}}
 
 {{/if}}
 
