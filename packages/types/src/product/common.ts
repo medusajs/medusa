@@ -1,5 +1,5 @@
-import { BaseFilterable } from "../dal"
-import { OperatorMap } from "../dal/utils"
+import { BaseFilterable } from "../dal";
+import { OperatorMap } from "../dal/utils";
 
 /**
  * @enum
@@ -13,7 +13,7 @@ export enum ProductStatus {
 
 /**
  * @interface
- * 
+ *
  * A product's data.
  */
 export interface ProductDTO {
@@ -83,43 +83,43 @@ export interface ProductDTO {
   material?: string | null
   /**
    * The associated product collection.
-   * 
+   *
    * @expandable
    */
   collection: ProductCollectionDTO
   /**
    * The associated product categories.
-   * 
+   *
    * @expandable
    */
   categories?: ProductCategoryDTO[] | null
   /**
    * The associated product type.
-   * 
+   *
    * @expandable
    */
   type: ProductTypeDTO[]
   /**
    * The associated product tags.
-   * 
+   *
    * @expandable
    */
   tags: ProductTagDTO[]
   /**
    * The associated product variants.
-   * 
+   *
    * @expandable
    */
   variants: ProductVariantDTO[]
   /**
    * The associated product options.
-   * 
+   *
    * @expandable
    */
   options: ProductOptionDTO[]
   /**
    * The associated product images.
-   * 
+   *
    * @expandable
    */
   images: ProductImageDTO[]
@@ -152,7 +152,7 @@ export interface ProductDTO {
 
 /**
  * @interface
- * 
+ *
  * A product variant's data.
  */
 export interface ProductVariantDTO {
@@ -226,17 +226,17 @@ export interface ProductVariantDTO {
   width?: number | null
   /**
    * The associated product options.
-   * 
+   *
    * @expandable
    */
-  options: ProductOptionValueDTO
+  options: ProductOptionValueDTO[]
   /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
   /**
    * The associated product.
-   * 
+   *
    * @expandable
    */
   product: ProductDTO
@@ -264,7 +264,7 @@ export interface ProductVariantDTO {
 
 /**
  * @interface
- * 
+ *
  * A product category's data.
  */
 export interface ProductCategoryDTO {
@@ -298,13 +298,13 @@ export interface ProductCategoryDTO {
   rank?: number
   /**
    * The associated parent category.
-   * 
+   *
    * @expandable
    */
   parent_category?: ProductCategoryDTO
   /**
    * The associated child categories.
-   * 
+   *
    * @expandable
    */
   category_children: ProductCategoryDTO[]
@@ -320,7 +320,7 @@ export interface ProductCategoryDTO {
 
 /**
  * @interface
- * 
+ *
  * A product category to create.
  */
 export interface CreateProductCategoryDTO {
@@ -356,7 +356,7 @@ export interface CreateProductCategoryDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product category.
  */
 export interface UpdateProductCategoryDTO {
@@ -392,7 +392,7 @@ export interface UpdateProductCategoryDTO {
 
 /**
  * @interface
- * 
+ *
  * A product tag's data.
  */
 export interface ProductTagDTO {
@@ -410,7 +410,7 @@ export interface ProductTagDTO {
   metadata?: Record<string, unknown> | null
   /**
    * The associated products.
-   * 
+   *
    * @expandable
    */
   products?: ProductDTO[]
@@ -418,7 +418,7 @@ export interface ProductTagDTO {
 
 /**
  * @interface
- * 
+ *
  * A product collection's data.
  */
 export interface ProductCollectionDTO {
@@ -444,7 +444,7 @@ export interface ProductCollectionDTO {
   deleted_at?: string | Date
   /**
    * The associated products.
-   * 
+   *
    * @expandable
    */
   products?: ProductDTO[]
@@ -452,7 +452,7 @@ export interface ProductCollectionDTO {
 
 /**
  * @interface
- * 
+ *
  * A product type's data.
  */
 export interface ProductTypeDTO {
@@ -476,9 +476,9 @@ export interface ProductTypeDTO {
 
 /**
  * @interface
- * 
+ *
  * A product option's data.
- * 
+ *
  */
 export interface ProductOptionDTO {
   /**
@@ -491,13 +491,13 @@ export interface ProductOptionDTO {
   title: string
   /**
    * The associated product.
-   * 
+   *
    * @expandable
    */
   product: ProductDTO
   /**
    * The associated product option values.
-   * 
+   *
    * @expandable
    */
   values: ProductOptionValueDTO[]
@@ -513,7 +513,7 @@ export interface ProductOptionDTO {
 
 /**
  * @interface
- * 
+ *
  * The product image's data.
  */
 export interface ProductImageDTO {
@@ -537,7 +537,7 @@ export interface ProductImageDTO {
 
 /**
  * @interface
- * 
+ *
  * The product option value's data.
  */
 export interface ProductOptionValueDTO {
@@ -551,13 +551,13 @@ export interface ProductOptionValueDTO {
   value: string
   /**
    * The associated product option.
-   * 
+   *
    * @expandable
    */
   option: ProductOptionDTO
   /**
    * The associated product variant.
-   * 
+   *
    * @expandable
    */
   variant: ProductVariantDTO
@@ -573,7 +573,7 @@ export interface ProductOptionValueDTO {
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved products.
  */
 export interface FilterableProductProps
@@ -593,7 +593,7 @@ export interface FilterableProductProps
   /**
    * Filters on a product's tags.
    */
-  tags?: { 
+  tags?: {
     /**
      * Values to filter product tags by.
      */
@@ -628,7 +628,7 @@ export interface FilterableProductProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product tags.
  */
 export interface FilterableProductTagProps
@@ -645,7 +645,7 @@ export interface FilterableProductTagProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product types.
  */
 export interface FilterableProductTypeProps
@@ -662,7 +662,7 @@ export interface FilterableProductTypeProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product options.
  */
 export interface FilterableProductOptionProps
@@ -683,7 +683,7 @@ export interface FilterableProductOptionProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product collections.
  */
 export interface FilterableProductCollectionProps
@@ -704,7 +704,7 @@ export interface FilterableProductCollectionProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product variants.
  */
 export interface FilterableProductVariantProps
@@ -724,7 +724,7 @@ export interface FilterableProductVariantProps
   /**
    * Filter product variants by their associated options.
    */
-  options?: { 
+  options?: {
     /**
      * IDs to filter options by.
      */
@@ -734,7 +734,7 @@ export interface FilterableProductVariantProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product categories.
  */
 export interface FilterableProductCategoryProps
@@ -771,7 +771,7 @@ export interface FilterableProductCategoryProps
 
 /**
  * @interface
- * 
+ *
  * A product collection to create.
  */
 export interface CreateProductCollectionDTO {
@@ -795,7 +795,7 @@ export interface CreateProductCollectionDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product collection. The `id` is used to identify which product collection to update.
  */
 export interface UpdateProductCollectionDTO {
@@ -827,7 +827,7 @@ export interface UpdateProductCollectionDTO {
 
 /**
  * @interface
- * 
+ *
  * A product type to create.
  */
 export interface CreateProductTypeDTO {
@@ -852,7 +852,7 @@ export interface UpsertProductTypeDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product type. The `id` is used to identify which product type to update.
  */
 export interface UpdateProductTypeDTO {
@@ -872,7 +872,7 @@ export interface UpdateProductTypeDTO {
 
 /**
  * @interface
- * 
+ *
  * A product tag to create.
  */
 export interface CreateProductTagDTO {
@@ -888,9 +888,9 @@ export interface UpsertProductTagDTO {
 }
 
 /**
- * 
+ *
  * @interface
- * 
+ *
  * The data to update in a product tag. The `id` is used to identify which product tag to update.
  */
 export interface UpdateProductTagDTO {
@@ -906,7 +906,7 @@ export interface UpdateProductTagDTO {
 
 /**
  * @interface
- * 
+ *
  * A product option to create.
  */
 export interface CreateProductOptionDTO {
@@ -928,7 +928,7 @@ export interface UpdateProductOptionDTO {
 
 /**
  * @interface
- * 
+ *
  * A product variant option to create.
  */
 export interface CreateProductVariantOptionDTO {
@@ -936,11 +936,13 @@ export interface CreateProductVariantOptionDTO {
    * The value of a product variant option.
    */
   value: string
+
+  option_id?: string
 }
 
 /**
  * @interface
- * 
+ *
  * A product variant to create.
  */
 export interface CreateProductVariantDTO {
@@ -948,6 +950,8 @@ export interface CreateProductVariantDTO {
    * The tile of the product variant.
    */
   title: string
+
+  product_id: string
   /**
    * The SKU of the product variant.
    */
@@ -1020,7 +1024,7 @@ export interface CreateProductVariantDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product variant. The `id` is used to identify which product variant to update.
  */
 export interface UpdateProductVariantDTO {
@@ -1104,7 +1108,7 @@ export interface UpdateProductVariantDTO {
 
 /**
  * @interface
- * 
+ *
  * A product to create.
  */
 export interface CreateProductDTO {
@@ -1214,7 +1218,7 @@ export interface CreateProductDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product. The `id` is used to identify which product to update.
  */
 export interface UpdateProductDTO {

@@ -1,11 +1,14 @@
 import { ProductOptionValue } from "@models"
-import { Context } from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { DALUtils } from "@medusajs/utils"
 import {
   CreateProductOptionValueDTO,
   UpdateProductOptionValueDTO,
 } from "../types/services/product-option-value"
+import { LoadStrategy } from "@mikro-orm/core"
+import { FilterQuery as MikroFilterQuery } from "@mikro-orm/core/typings"
+import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 
 export class ProductOptionValueRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -15,6 +18,26 @@ export class ProductOptionValueRepository extends DALUtils.MikroOrmBaseRepositor
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
+  }
+
+  async find(
+    findOptions: DAL.FindOptions<ProductOptionValue> = { where: {} },
+    context: Context = {}
+  ): Promise<ProductOptionValue[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const findOptions_ = { ...findOptions }
+
+    findOptions_.options ??= {}
+
+    Object.assign(findOptions_.options, {
+      strategy: LoadStrategy.SELECT_IN,
+    })
+
+    return await manager.find(
+      ProductOptionValue,
+      findOptions_.where as MikroFilterQuery<ProductOptionValue>,
+      findOptions_.options as MikroOptions<ProductOptionValue>
+    )
   }
 
   async upsert(

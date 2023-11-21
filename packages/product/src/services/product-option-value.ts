@@ -34,7 +34,7 @@ export default class ProductOptionValueService<
 
   @InjectTransactionManager("productOptionValueRepository_")
   async upsert(
-    data: UpdateProductOptionValueDTO[] | CreateProductOptionValueDTO[],
+    data: (UpdateProductOptionValueDTO | CreateProductOptionValueDTO)[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (

@@ -18,6 +18,6 @@ export interface UpdateProductVariantDTO {
   length?: number
   height?: number
   width?: number
-  options?: CreateProductVariantOptionDTO[]
+  options?: (CreateProductVariantOptionDTO & { id?: string })[]
   metadata?: Record<string, unknown>
 }

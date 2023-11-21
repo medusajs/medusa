@@ -62,6 +62,9 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
         {
           options: [{ option_id: "test-product-option-1", value: "test" }],
         },
+        {
+          options: [{ option_id: "test-product-option-1", value: "test 2" }],
+        },
       ],
       options: [
         {
@@ -245,6 +248,125 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
                 currency_code: "usd",
               }),
             ]),
+          }),
+        ]),
+      })
+    )
+  })
+
+  it("Should update variant option value", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-option-1",
+          value: "updated",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    const variant2 = product.variants[1]
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-option-1",
+                value: "updated",
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: variant2.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-option-1",
+                value: "test 2",
+              }),
+            ],
+          }),
+        ]),
+      })
+    )
+  })
+
+  it("Should remove options not present in update", async () => {
+    const api = useApi()! as AxiosInstance
+
+    product = await simpleProductFactory(dbConnection, {
+      id: "test-product-with-multiple-options",
+      variants: [
+        {
+          options: [{ option_id: "test-product-option-1", value: "test" }],
+        },
+        {
+          options: [{ option_id: "test-product-option-1", value: "test 2" }],
+        },
+      ],
+      options: [
+        {
+          id: "test-product-multi-option-1",
+          title: "Test option 1",
+        },
+        {
+          id: "test-product-multi-option-2",
+          title: "Test option 2",
+        },
+      ],
+    })
+
+    variant = product.variants[0]
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-multi-option-1",
+          value: "updated",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-multi-option-1",
+                value: "updated",
+              }),
+            ],
           }),
         ]),
       })

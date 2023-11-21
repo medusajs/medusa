@@ -1,5 +1,5 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
-import { ProductTypes } from "@medusajs/types"
+import { ProductTypes, UpdateProductVariantOnlyDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInput = {
@@ -14,21 +14,22 @@ export async function updateProductVariants({
 > {
   const { productVariantsMap } = data
   const productsVariants: ProductTypes.UpdateProductVariantDTO[] = []
-  const updateProductsData: ProductTypes.UpdateProductDTO[] = []
+  const updateVariantsData: ProductTypes.UpdateProductVariantOnlyDTO[] = []
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
-  for (const [productId, variantsData = []] of productVariantsMap) {
-    updateProductsData.push({
-      id: productId,
-      variants: variantsData,
-    })
+  for (const [product_id, variantsData = []] of productVariantsMap) {
+    updateVariantsData.push(
+      ...(variantsData as unknown as UpdateProductVariantOnlyDTO[]).map(
+        (update) => ({ ...update, product_id })
+      )
+    )
 
     productsVariants.push(...variantsData)
   }
 
-  if (updateProductsData.length) {
-    await productModuleService.update(updateProductsData)
+  if (updateVariantsData.length) {
+    await productModuleService.updateVariants(updateVariantsData)
   }
 
   return productsVariants
