@@ -25,10 +25,6 @@ export default function DocSidebarItemLink({
   const isActive = isActiveSidebarItem(item, activePath)
   const isInternalLink = isInternalUrl(href)
 
-  if (label === "Experimental Features") {
-    console.log(customProps)
-  }
-
   return (
     <li
       className={clsx(
