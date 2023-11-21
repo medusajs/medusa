@@ -350,7 +350,11 @@ export default class ProductModuleService<
       ),
     ])
 
-    return JSON.parse(JSON.stringify(productVariants.flat()))
+    return await this.baseRepository_.serialize<
+      ProductTypes.ProductVariantDTO[]
+    >(productVariants.flat(), {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
