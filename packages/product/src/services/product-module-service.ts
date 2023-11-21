@@ -251,7 +251,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductVariantDTO[]> {
     const variants = await this.listVariants(
       { id: data.map(({ id }) => id) },
-      { relations: ["options"] },
+      { relations: ["options", "options.option"] },
       sharedContext
     )
     const variantsMap = new Map(
@@ -297,7 +297,7 @@ export default class ProductModuleService<
           } else {
             optionsToUpsert.push({
               id: existingOption.id,
-              option: existingOption.option as unknown as string,
+              option: existingOption.option.id,
               value: optionIdToUpdateValueMap.get(existingOption.option)!,
             })
             optionIdToUpdateValueMap.delete(existingOption.option)
