@@ -328,28 +328,31 @@ export default class ProductModuleService<
 
     const groups = groupBy(toUpdate, "product_id")
 
-    const [, , result]: [void, TProductOptionValue[], TProductVariant[][]] =
-      await promiseAll([
-        await this.productOptionValueService_.delete(
-          optionsValuesToDelete,
-          sharedContext
-        ),
-        await this.productOptionValueService_.upsert(
-          optionValuesToUpsert,
-          sharedContext
-        ),
-        await promiseAll(
-          [...groups.entries()].map(async ([product_id, update]) => {
-            return await this.productVariantService_.update(
-              product_id,
-              update.map(({ product_id, ...update }) => update),
-              sharedContext
-            )
-          })
-        ),
-      ])
+    const [, , productVariants]: [
+      void,
+      TProductOptionValue[],
+      TProductVariant[][]
+    ] = await promiseAll([
+      await this.productOptionValueService_.delete(
+        optionsValuesToDelete,
+        sharedContext
+      ),
+      await this.productOptionValueService_.upsert(
+        optionValuesToUpsert,
+        sharedContext
+      ),
+      await promiseAll(
+        [...groups.entries()].map(async ([product_id, update]) => {
+          return await this.productVariantService_.update(
+            product_id,
+            update.map(({ product_id, ...update }) => update),
+            sharedContext
+          )
+        })
+      ),
+    ])
 
-    return JSON.parse(JSON.stringify(result.flat()))
+    return JSON.parse(JSON.stringify(productVariants.flat()))
   }
 
   @InjectManager("baseRepository_")
