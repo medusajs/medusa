@@ -269,16 +269,16 @@ export default class ProductModuleService<
       )
     }
 
-    const optionsToUpsert: (
+    const optionValuesToUpsert: (
       | CreateProductOptionValueDTO
       | UpdateProductOptionValueDTO
     )[] = []
-    const optionsToDelete: string[] = []
+    const optionsValuesToDelete: string[] = []
 
     const toUpdate = data.map(({ id, options, ...rest }) => {
       const variant = variantsMap.get(id)!
 
-      const toUpdate: UpdateProductVariantDTO & { product_id: string } = {
+      const toUpdate: UpdateProductVariantDTO = {
         id,
         product_id: variant.product_id,
       }
@@ -291,21 +291,27 @@ export default class ProductModuleService<
           })
         )
 
-        for (const existingOption of variant.options) {
-          if (!optionIdToUpdateValueMap.has(existingOption.option)) {
-            optionsToDelete.push(existingOption.id)
+        for (const existingOptionValue of variant.options) {
+          if (!optionIdToUpdateValueMap.has(existingOptionValue.option.id)) {
+            optionsValuesToDelete.push(existingOptionValue.id)
           } else {
-            optionsToUpsert.push({
-              id: existingOption.id,
-              option: existingOption.option.id,
-              value: optionIdToUpdateValueMap.get(existingOption.option)!,
+            optionValuesToUpsert.push({
+              id: existingOptionValue.id,
+              option_id: existingOptionValue.option.id,
+              value: optionIdToUpdateValueMap.get(
+                existingOptionValue.option.id
+              )!,
             })
-            optionIdToUpdateValueMap.delete(existingOption.option)
+            optionIdToUpdateValueMap.delete(existingOptionValue.option.id)
           }
         }
 
-        for (const [option, value] of optionIdToUpdateValueMap.entries()) {
-          optionsToUpsert.push({ option, value, variant: id })
+        for (const [option_id, value] of optionIdToUpdateValueMap.entries()) {
+          optionValuesToUpsert.push({
+            option_id,
+            value,
+            variant_id: id,
+          })
         }
       }
 
@@ -325,11 +331,11 @@ export default class ProductModuleService<
     const [, , result]: [void, TProductOptionValue[], TProductVariant[][]] =
       await promiseAll([
         await this.productOptionValueService_.delete(
-          optionsToDelete,
+          optionsValuesToDelete,
           sharedContext
         ),
         await this.productOptionValueService_.upsert(
-          optionsToUpsert,
+          optionValuesToUpsert,
           sharedContext
         ),
         await promiseAll(

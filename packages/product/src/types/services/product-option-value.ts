@@ -1,14 +1,14 @@
 export interface UpdateProductOptionValueDTO {
   id: string
   value: string
-  option: string
+  option_id: string
   metadata?: Record<string, unknown> | null
 }
 
 export interface CreateProductOptionValueDTO {
   id?: string
   value: string
-  option: string
-  variant: string
+  option_id: string
+  variant_id: string
   metadata?: Record<string, unknown> | null
 }
