@@ -27,7 +27,7 @@ export class Migration20231101232834 extends Migration {
     )
 
     this.addSql(
-      'alter table "price_list" add column if not exists "title" text, add column if not exists "description" text not null, add column if not exists "type" text check ("type" in (\'sale\', \'override\')) not null default \'sale\', add column if not exists "created_at" timestamptz not null default now(), add column if not exists "updated_at" timestamptz not null default now(), add column if not exists "deleted_at" timestamptz null;'
+      'alter table "price_list" add column if not exists "title" text, add column if not exists "name" text, add column if not exists "description" text not null, add column if not exists "type" text check ("type" in (\'sale\', \'override\')) not null default \'sale\', add column if not exists "created_at" timestamptz not null default now(), add column if not exists "updated_at" timestamptz not null default now(), add column if not exists "deleted_at" timestamptz null;'
     )
 
     this.addSql(`
@@ -37,6 +37,8 @@ export class Migration20231101232834 extends Migration {
 
     this.addSql(`alter table "price_list"
         alter column "title" set not null `)
+
+    this.addSql('alter table "price_list" drop column if exists "name";')
 
     this.addSql(
       'create index if not exists "IDX_price_list_deleted_at" on "price_list" ("deleted_at");'
