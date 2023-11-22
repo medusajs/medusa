@@ -1,20 +1,26 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react";
 
-import { ProductCategory } from "@medusajs/medusa"
-import { useAdminUpdateProductCategory } from "medusa-react"
-import { TFunction } from "i18next"
-import { useTranslation } from "react-i18next"
+import { ProductCategory } from "@medusajs/medusa";
+import { useAdminUpdateProductCategory } from "medusa-react";
+import { TFunction } from "i18next";
+import { useTranslation } from "react-i18next";
 
-import Button from "../../../components/fundamentals/button"
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
-import InputField from "../../../components/molecules/input"
-import TextArea from "../../../components/molecules/textarea"
-import SideModal from "../../../components/molecules/modal/side-modal"
-import { NextSelect } from "../../../components/molecules/select/next-select"
-import useNotification from "../../../hooks/use-notification"
-import { Option } from "../../../types/shared"
-import { getErrorMessage } from "../../../utils/error-messages"
-import TreeCrumbs from "../components/tree-crumbs"
+import Button from "../../../components/fundamentals/button";
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon";
+import InputField from "../../../components/molecules/input";
+import TextArea from "../../../components/molecules/textarea";
+import SideModal from "../../../components/molecules/modal/side-modal";
+import { NextSelect } from "../../../components/molecules/select/next-select";
+import useNotification from "../../../hooks/use-notification";
+import { Option } from "../../../types/shared";
+import { getErrorMessage } from "../../../utils/error-messages";
+import TreeCrumbs from "../components/tree-crumbs";
+import MetadataForm, {
+  getSubmittableMetadata,
+} from "../../../components/forms/general/metadata-form";
+import { Controller, useForm } from "react-hook-form";
+import { nestedForm } from "../../../utils/nested-form";
+import { CategoryFormData } from "./add-product-category";
 
 const visibilityOptions: (t: TFunction) => Option[] = (t) => [
   {
@@ -22,18 +28,19 @@ const visibilityOptions: (t: TFunction) => Option[] = (t) => [
     value: "public",
   },
   { label: "Private", value: "private" },
-]
+];
 
 const statusOptions: (t: TFunction) => Option[] = (t) => [
   { label: "Active", value: "active" },
   { label: "Inactive", value: "inactive" },
-]
+];
 
 type EditProductCategoriesSideModalProps = {
-  activeCategory: ProductCategory
-  close: () => void
-  isVisible: boolean
-}
+  activeCategory: ProductCategory;
+  close: () => void;
+  isVisible: boolean;
+  categories: ProductCategory[];
+};
 
 /**
  * Modal for editing product categories
@@ -41,40 +48,96 @@ type EditProductCategoriesSideModalProps = {
 function EditProductCategoriesSideModal(
   props: EditProductCategoriesSideModalProps
 ) {
-  const { isVisible, close, activeCategory, categories } = props
+  const { isVisible, close, activeCategory, categories } = props;
 
-  const [name, setName] = useState("")
-  const [handle, setHandle] = useState("")
-  const [description, setDescription] = useState("")
-  const [isActive, setIsActive] = useState(true)
-  const [isPublic, setIsPublic] = useState(true)
-
-  const { t } = useTranslation()
-  const notification = useNotification()
+  const { t } = useTranslation();
+  const notification = useNotification();
 
   const { mutateAsync: updateCategory } = useAdminUpdateProductCategory(
     activeCategory?.id
-  )
+  );
+
+  const form = useForm<CategoryFormData>({
+    defaultValues: {
+      name: activeCategory?.name || "",
+      handle: activeCategory?.handle || "",
+      description: activeCategory?.description || "",
+      metadata: {
+        entries: Object.entries(activeCategory?.metadata || {}).map(
+          ([key, value]) => ({
+            key,
+            value: value as string,
+            state: "existing",
+          })
+        ),
+      },
+      is_active: {
+        value: activeCategory?.is_active ? "active" : "inactive",
+        label: activeCategory?.is_active
+          ? t("modals-active", "Public") || "Public"
+          : t("modals-inactive", "Inactive") || "Inactive",
+      },
+      is_public: {
+        value: activeCategory?.is_internal ? "private" : "public",
+        label: activeCategory?.is_internal
+          ? t("modals-private", "Private") || "Private"
+          : t("modals-public", "Public") || "Public",
+      },
+    },
+    mode: "onChange",
+  });
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    control,
+    formState: { errors, isDirty, isValid, isSubmitting },
+  } = form;
 
   useEffect(() => {
     if (activeCategory) {
-      setName(activeCategory.name)
-      setHandle(activeCategory.handle)
-      setDescription(activeCategory.description)
-      setIsActive(activeCategory.is_active)
-      setIsPublic(!activeCategory.is_internal)
+      reset({
+        name: activeCategory.name,
+        handle: activeCategory.handle,
+        description: activeCategory.description,
+        metadata: {
+          entries: Object.entries(activeCategory?.metadata || {}).map(
+            ([key, value]) => ({
+              key,
+              value: value as string,
+              state: "existing",
+            })
+          ),
+        },
+        is_active: {
+          value: activeCategory.is_active ? "active" : "inactive",
+          label: activeCategory.is_active
+            ? t("modals-active", "Public") || "Public"
+            : t("modals-inactive", "Inactive") || "Inactive",
+        },
+        is_public: {
+          value: activeCategory.is_internal ? "private" : "public",
+          label: activeCategory.is_internal
+            ? t("modals-private", "Private") || "Private"
+            : t("modals-public", "Public") || "Public",
+        },
+      });
     }
-  }, [activeCategory])
+  }, [activeCategory, reset]);
 
-  const onSave = async () => {
+  const onSave = async (data: CategoryFormData) => {
+    console.log(data);
     try {
       await updateCategory({
-        name,
-        handle,
-        description,
-        is_active: isActive,
-        is_internal: !isPublic,
-      })
+        name: data.name,
+        handle: data.handle,
+        description: data.description,
+        is_active: data.is_active.value === "active",
+        is_internal: data.is_public.value === "private",
+        metadata: getSubmittableMetadata(data.metadata),
+      });
 
       notification(
         t("modals-success", "Success"),
@@ -83,40 +146,51 @@ function EditProductCategoriesSideModal(
           "Successfully updated the category"
         ),
         "success"
-      )
-      close()
+      );
+      close();
     } catch (e) {
       const errorMessage =
         getErrorMessage(e) ||
         t(
           "modals-failed-to-update-the-category",
           "Failed to update the category"
-        )
-      notification(t("modals-error", "Error"), errorMessage, "error")
+        );
+      notification(t("modals-error", "Error"), errorMessage, "error");
     }
-  }
+  };
 
   const onClose = () => {
-    close()
-  }
+    close();
+  };
 
   return (
     <SideModal close={onClose} isVisible={!!isVisible}>
-      <div className="flex h-full flex-col justify-between">
+      <div className="flex h-full flex-col justify-between overflow-auto">
         {/* === HEADER === */}
         <div className="flex items-center justify-between p-6">
-          <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
-            {t("modals-edit-product-category", "Edit product category")}
-          </h3>
           <Button
+            size="small"
             variant="secondary"
             className="h-8 w-8 p-2"
             onClick={props.close}
           >
             <CrossIcon size={20} className="text-grey-50" />
           </Button>
+          <div className="gap-x-small flex">
+            <Button
+              size="small"
+              variant="primary"
+              disabled={!isDirty || !isValid || isSubmitting}
+              onClick={handleSubmit(onSave)}
+              className="rounded-rounded"
+            >
+              {t("modals-save-category", "Save category")}
+            </Button>
+          </div>
         </div>
-
+        <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900 px-6">
+          {t("modals-edit-product-category", "Edit product category")}
+        </h3>
         {/* === DIVIDER === */}
         <div className="block h-[1px] bg-gray-200" />
 
@@ -129,72 +203,88 @@ function EditProductCategoriesSideModal(
         <div className="flex-grow px-6">
           <InputField
             required
-            label={t("modals-name", "Name")}
+            label={t("modals-name", "Name") || "Name"}
             type="string"
-            name="name"
-            value={name}
             className="my-6"
-            placeholder={t(
-              "modals-give-this-category-a-name",
-              "Give this category a name"
-            )}
-            onChange={(ev) => setName(ev.target.value)}
+            placeholder={
+              t(
+                "modals-give-this-category-a-name",
+                "Give this category a name"
+              ) || "Give this category a name"
+            }
+            {...register("name", { required: true })}
           />
 
           <InputField
-            required
-            label={t("modals-handle", "Handle")}
-            type="string"
-            name="handle"
-            value={handle}
+            label={t("modals-handle", "Handle") || "Handle"}
             className="my-6"
-            placeholder={t("modals-custom-handle", "Custom handle")}
-            onChange={(ev) => setHandle(ev.target.value)}
+            type="string"
+            placeholder={
+              t("modals-custom-handle", "Custom handle") || "Custom handle"
+            }
+            {...register("handle")}
           />
 
           <TextArea
             label={t("modals-description", "Description")}
-            name="description"
-            value={description}
             className="my-6"
-            placeholder={t(
-              "modals-give-this-category-a-description",
-              "Give this category a description"
-            )}
-            onChange={(ev) => setDescription(ev.target.value)}
+            placeholder={
+              t(
+                "modals-give-this-category-a-description",
+                "Give this category a description"
+              ) || "Give this category a description"
+            }
+            {...register("description")}
           />
 
-          <NextSelect
-            label={t("modals-status", "Status")}
-            options={statusOptions(t)}
-            value={statusOptions(t)[isActive ? 0 : 1]}
-            onChange={(o) => setIsActive(o.value === "active")}
+          <Controller
+            name={"is_active"}
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => {
+              return (
+                <NextSelect
+                  {...field}
+                  label={t("modals-status", "Status") || "Status"}
+                  placeholder="Choose a country"
+                  options={statusOptions(t)}
+                  value={
+                    statusOptions(t)[field.value?.value === "active" ? 0 : 1]
+                  }
+                />
+              );
+            }}
           />
 
-          <NextSelect
-            className="my-6"
-            label={t("modals-visibility", "Visibility")}
-            options={visibilityOptions(t)}
-            value={visibilityOptions(t)[isPublic ? 0 : 1]}
-            onChange={(o) => setIsPublic(o.value === "public")}
+          <Controller
+            name={"is_public"}
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => {
+              return (
+                <NextSelect
+                  {...field}
+                  className="my-6"
+                  label={t("modals-visibility", "Visibility") || "Visibility"}
+                  placeholder="Choose a country"
+                  options={visibilityOptions(t)}
+                  value={
+                    visibilityOptions(t)[field.value.value === "public" ? 0 : 1]
+                  }
+                />
+              );
+            }}
           />
-        </div>
-
-        {/* === DIVIDER === */}
-        <div className="block h-[1px] bg-gray-200" />
-
-        {/* === FOOTER === */}
-        <div className="flex justify-end gap-2 p-3">
-          <Button size="small" variant="ghost" onClick={onClose}>
-            {t("modals-cancel", "Cancel")}
-          </Button>
-          <Button size="small" variant="primary" onClick={onSave}>
-            {t("modals-save-and-close", "Save and close")}
-          </Button>
+          <div className="mt-small mb-xlarge">
+            <h2 className="inter-base-semibold mb-base">
+              {t("collection-modal-metadata", "Metadata")}
+            </h2>
+            <MetadataForm form={nestedForm(form, "metadata")} />
+          </div>
         </div>
       </div>
     </SideModal>
-  )
+  );
 }
 
-export default EditProductCategoriesSideModal
+export default EditProductCategoriesSideModal;

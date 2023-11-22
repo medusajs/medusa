@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { ProductCategory } from "@medusajs/medusa"
 import {
@@ -41,15 +41,22 @@ const statusOptions = (t: TFunction<"translation", undefined, "translation">) =>
 type CreateProductCategoryProps = {
   closeModal: () => void
   parentCategory?: ProductCategory
+  categories: ProductCategory[]
 }
 
-type CategoryFormData = {
+export type CategoryFormData = {
   name: string
   handle: string | undefined
   description: string | undefined
   metadata: MetadataFormType
-  is_active: boolean
-  is_public: boolean
+  is_active: {
+    value: "active" | "inactive"
+    label: string
+  }
+  is_public: {
+    value: "public" | "private"
+    label: string
+  }
 }
 
 /**
@@ -69,51 +76,60 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
       metadata: {
         entries: [],
       },
-      is_active: true,
-      is_public: true,
+      is_active: {
+        value: "active",
+        label: t("modals-active", "Active") || "Active",
+      },
+      is_public: {
+        value: "public",
+        label: t("modals-public", "Public") || "Public",
+      },
     },
+    mode: "onChange",
   })
-  const { register, handleSubmit, reset, control } = form
-  const [name, setName] = useState("")
-  const [handle, setHandle] = useState("")
-  const [description, setDescription] = useState("")
-  const [isActive, setIsActive] = useState(true)
-  const [isPublic, setIsPublic] = useState(true)
+  const { register, handleSubmit, watch, reset, control, formState: { errors, isDirty, isValid, isSubmitting }} = form
+  const name = watch("name", "");
+
+  useEffect(() => {
+    console.log(errors);
+    console.log(isSubmitting);
+  }
+  , [errors,isSubmitting]);
 
   const { mutateAsync: createProductCategory } = useAdminCreateProductCategory()
 
   const submit = async (data: CategoryFormData) => {
     console.log(data);
-    return
-    // try {
-    //   await createProductCategory({
-    //     name,
-    //     handle,
-    //     description,
-    //     is_active: isActive,
-    //     is_internal: !isPublic,
-    //     parent_category_id: parentCategory?.id ?? null,
-    //   })
-    //   // TODO: temporary here, investigate why `useAdminCreateProductCategory` doesn't invalidate this
-    //   await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
-    //   closeModal()
-    //   notification(
-    //     t("modals-success", "Success"),
-    //     t(
-    //       "modals-successfully-created-a-category",
-    //       "Successfully created a category"
-    //     ),
-    //     "success"
-    //   )
-    // } catch (e) {
-    //   const errorMessage =
-    //     getErrorMessage(e) ||
-    //     t(
-    //       "modals-failed-to-create-a-new-category",
-    //       "Failed to create a new category"
-    //     )
-    //   notification(t("modals-error", "Error"), errorMessage, "error")
-    // }
+    try {
+      await createProductCategory({
+        name: data.name,
+        handle: data.handle,
+        description: data.description,
+        is_active: data.is_active.value === "active",
+        is_internal: data.is_public.value === "private",
+        parent_category_id: parentCategory?.id ?? null,
+        metadata: getSubmittableMetadata(data.metadata),
+      })
+      // TODO: temporary here, investigate why `useAdminCreateProductCategory` doesn't invalidate this
+      await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
+      closeModal()
+      notification(
+        t("modals-success", "Success"),
+        t(
+          "modals-successfully-created-a-category",
+          "Successfully created a category"
+        ),
+        "success"
+      )
+    } catch (e) {
+      const errorMessage =
+        getErrorMessage(e) ||
+        t(
+          "modals-failed-to-create-a-new-category",
+          "Failed to create a new category"
+        )
+      notification(t("modals-error", "Error"), errorMessage, "error")
+    }
   }
 
   return (
@@ -127,8 +143,8 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
             <Button
               size="small"
               variant="primary"
-              disabled={!name}
-              onSubmit={handleSubmit(submit)}
+              disabled={!isDirty || !isValid || isSubmitting}
+              onClick={handleSubmit(submit)}
               className="rounded-rounded"
             >
               {t("modals-save-category", "Save category")}
@@ -164,22 +180,22 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           <div className="mb-8 flex justify-between gap-6">
             <InputField
               required
-              label={t("modals-name", "Name")}
+              label={t("modals-name", "Name") || "Name"}
               type="string"
               className="w-[338px]"
               placeholder={t(
                 "modals-give-this-category-a-name",
                 "Give this category a name"
-              )}
+              ) || "Give this category a name"}
               {...register("name", { required: true })}
             />
 
             <InputField
-              label={t("modals-handle", "Handle")}
+              label={t("modals-handle", "Handle") || "Handle"}
               type="string"
               className="w-[338px]"
-              placeholder={t("modals-custom-handle", "Custom handle")}
-              {...register("handle", { required: true })}
+              placeholder={t("modals-custom-handle", "Custom handle") || "Custom handle"}
+              {...register("handle")}
             />
           </div>
 
@@ -189,7 +205,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
               placeholder={t(
                 "modals-give-this-category-a-description",
                 "Give this category a description"
-              )}
+              ) || "Give this category a description"}
               {...register("description")}
             />
           </div>
@@ -199,11 +215,12 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
             <Controller
               name={'is_active'}
               control={control}
+              rules={{ required: true }}
               render={({ field }) => {
                 return (
                   <NextSelect
                     {...field}
-                    label={t("modals-status", "Status")}
+                    label={t("modals-status", "Status") || "Status"}
                     placeholder="Choose a country"
                     options={statusOptions(t)}
                     value={statusOptions(t)[field.value?.value === 'active' ? 0 : 1]}
@@ -222,7 +239,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
                 return (
                   <NextSelect
                     {...field}
-                    label={t("modals-visibility", "Visibility")}
+                    label={t("modals-visibility", "Visibility") || "Visibility"}
                     placeholder="Choose a country"
                     options={visibilityOptions(t)}
                     value={visibilityOptions(t)[field.value.value === 'public' ? 0 : 1]}
