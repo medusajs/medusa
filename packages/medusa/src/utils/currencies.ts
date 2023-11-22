@@ -1,12 +1,12 @@
 export type Currency = {
-  symbol: string
-  name: string
-  symbol_native: string
-  decimal_digits: number
-  rounding: number
-  code: string
-  name_plural: string
-}
+  symbol: string;
+  name: string;
+  symbol_native: string;
+  decimal_digits: number;
+  rounding: number;
+  code: string;
+  name_plural: string;
+};
 
 export const currencies: Record<string, Currency> = {
   USD: {
@@ -675,6 +675,15 @@ export const currencies: Record<string, Currency> = {
     code: "MUR",
     name_plural: "Mauritian rupees",
   },
+  MWK: {
+    symbol: "MK",
+    name: "Malawian Kwacha",
+    symbol_native: "MK",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "MWK",
+    ame_plural: "Malawian Kwachas",
+  },
   MXN: {
     symbol: "MX$",
     name: "Mexican Peso",
@@ -1089,4 +1098,4 @@ export const currencies: Record<string, Currency> = {
     code: "ZWL",
     name_plural: "Zimbabwean Dollar",
   },
-}
+};
