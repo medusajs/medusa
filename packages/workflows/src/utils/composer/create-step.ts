@@ -121,7 +121,7 @@ function applyStep<
               context: transactionContext.context,
             }
 
-            const stepOutput = transactionContext.invoke[stepName].output
+            const stepOutput = transactionContext.invoke[stepName]?.output
             const invokeResult =
               stepOutput?.__type === SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&
