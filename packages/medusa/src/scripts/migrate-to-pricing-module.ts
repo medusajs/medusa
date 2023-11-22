@@ -49,16 +49,12 @@ const migratePriceLists = async (container: AwilixContainer) => {
       pricingModulePriceLists.map((pl) => [pl.id, pl])
     )
 
-    const priceListsToCreate = new Map<string, PriceList>(
-      corePriceLists
-        .filter(({ id }) => !priceListsToUpdateProxy.has(id))
-        .map((pl) => [pl.id, pl])
+    const priceListsToCreate: PriceList[] = corePriceLists.filter(
+      ({ id }) => !priceListsToUpdateProxy.has(id)
     )
 
-    const priceListsToUpdate = new Map<string, PriceList>(
-      corePriceLists
-        .filter(({ id }) => priceListsToUpdateProxy.has(id))
-        .map((pl) => [pl.id, pl])
+    const priceListsToUpdate: PriceList[] = corePriceLists.filter(({ id }) =>
+      priceListsToUpdateProxy.has(id)
     )
 
     const variantIds = corePriceLists
@@ -80,9 +76,9 @@ const migratePriceLists = async (container: AwilixContainer) => {
       variantPriceSets.map((mps) => [mps.variant_id, mps.price_set_id])
     )
 
-    if (priceListsToUpdate.size !== 0) {
+    if (priceListsToUpdate.length !== 0) {
       await pricingModuleService.updatePriceLists(
-        [...priceListsToUpdate.values()].map((priceList) => {
+        priceListsToUpdate.map((priceList) => {
           const updateData: PricingTypes.UpdatePriceListDTO = {
             id: priceList.id,
             title: priceList.name,
@@ -98,7 +94,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
         })
       )
 
-      const input = [...priceListsToUpdate.values()].map((priceList) => {
+      const input = priceListsToUpdate.map((priceList) => {
         return {
           priceListId: priceList.id,
           prices: priceList.prices
@@ -118,9 +114,9 @@ const migratePriceLists = async (container: AwilixContainer) => {
       await pricingModuleService.addPriceListPrices(input)
     }
 
-    if (priceListsToCreate.size !== 0) {
+    if (priceListsToCreate.length !== 0) {
       await pricingModuleService.createPriceLists(
-        [...priceListsToCreate.values()].map(
+        priceListsToCreate.map(
           ({ name: title, prices, customer_groups, ...priceList }) => {
             const createData: PricingTypes.CreatePriceListDTO = {
               ...priceList,
