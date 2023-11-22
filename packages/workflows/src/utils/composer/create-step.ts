@@ -195,45 +195,40 @@ function applyStep<
  * import {
  *   createStep,
  *   StepResponse,
- *   StepExecutionContext
+ *   StepExecutionContext,
+ *   WorkflowData
  * } from "@medusajs/workflows"
  *
  * interface CreateProductInput {
  *   title: string
  * }
  *
- * interface CreateProductOutput {
- *   product: { id: string; title: string }
- *   compensateInput: {
- *     product_id: string
- *   }
- * }
- *
  * export const createProductStep = createStep(
- *  "createProductStep",
- *  async function (
- *    input: Step1Input,
- *    context: StepExecutionContext
- *  ): Promise<CreateProductOutput> {
- *    const productService = context.container.resolve(
- *      "productService"
- *    )
- *    const product = await productService.create(input)
- *    return new StepResponse({
- *      product
- *    }, {
- *      product_id: product.id
- *    })
- *  },
- *  async function (
- *    input: { product_id: string },
- *    context: StepExecutionContext
- *  ) {
+ *   "createProductStep",
+ *   async function (
+ *     input: CreateProductInput,
+ *     context
+ *   ) {
+ *     const productService = context.container.resolve(
+ *       "productService"
+ *     )
+ *     const product = await productService.create(input)
+ *     return new StepResponse({
+ *       product
+ *     }, {
+ *       product_id: product.id
+ *     })
+ *   },
+ *   async function (
+ *     input,
+ *     context
+ *   ) {
  *     const productService = context.container.resolve(
  *       "productService"
  *     )
  *     await productService.delete(input.product_id)
- *  })
+ *   }
+ * )
  */
 export function createStep<
   TInvokeInput extends object,

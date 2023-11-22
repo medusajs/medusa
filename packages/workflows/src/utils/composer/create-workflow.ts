@@ -98,19 +98,21 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
  *
  * @example
  * import { createWorkflow } from "@medusajs/workflows"
- * import { Product } from "@medusajs/medusa"
+ * import { MedusaRequest, MedusaResponse, Product } from "@medusajs/medusa"
  * import {
  *   createProductStep,
  *   getProductStep,
  *   createPricesStep
  * } from "./steps"
  *
- * interface MyWorkflowData {
+ * interface WorkflowInput {
  *  title: string
  * }
  *
- * const myWorkflow = createWorkflow<MyWorkflowData, Product>
- *   ("my-workflow", (input) => {
+ * const myWorkflow = createWorkflow<
+ *     WorkflowInput,
+ *     Product
+ *   >("my-workflow", (input) => {
  *    // Everything here will be executed and resolved later
  *    // during the execution. Including the data access.
  *
@@ -120,13 +122,20 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
  *   }
  * )
  *
- * myWorkflow()
+ * export async function GET(
+ *   req: MedusaRequest,
+ *   res: MedusaResponse
+ * ) {
+ *   myWorkflow(req.scope)
  *  .run({
- *    title: "Shirt"
- *  })
- * .then((product) => {
- *   console.log(product.id)
- * })
+ *    input: {
+ *     title: "Shirt"
+ *     }
+ *   })
+ *   .then(({ result: product }) => {
+ *     console.log(product.id)
+ *   })
+ * }
  */
 
 export function createWorkflow<

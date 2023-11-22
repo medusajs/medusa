@@ -21,20 +21,23 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  *   attachProductToSalesChannelStep
  * } from "./steps"
  *
- * interface MyWorkflowData {
+ * interface WorkflowInput {
  *   title: string
  * }
  *
- * const myWorkflow = createWorkflow<MyWorkflowData, Product>("my-workflow", (input) => {
- *   const product = createProductStep(input)
+ * const myWorkflow = createWorkflow<
+ *   WorkflowInput,
+ *   Product
+ * >("my-workflow", (input) => {
+ *    const product = createProductStep(input)
  *
- *     const [prices, productSalesChannel] = parallelize(
- *       createPricesStep(product),
- *       attachProductToSalesChannelStep(product)
- *     )
+ *    const [prices, productSalesChannel] = parallelize(
+ *      createPricesStep(product),
+ *      attachProductToSalesChannelStep(product)
+ *    )
  *
- *     const id = product.id
- *     return getProductStep(product.id)
+ *    const id = product.id
+ *    return getProductStep(product.id)
  *  }
  * )
  */

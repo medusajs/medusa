@@ -22,8 +22,9 @@ import {
  * @example
  * import {
  *   createWorkflow,
- *   StepReturn,
- *   StepExecutionContext
+ *   StepExecutionContext,
+ *   hook,
+ *   transform
  * } from "@medusajs/workflows"
  * import {
  *   createProductStep,
@@ -31,44 +32,62 @@ import {
  *   createPricesStep
  * } from "./steps"
  * import {
- *   Product
+ *   MedusaRequest,
+ *   MedusaResponse,
+ *   Product, ProductService
  * } from "@medusajs/medusa"
  *
- * interface MyWorkflowData {
+ * interface WorkflowInput {
  *  title: string
  * }
  *
- * const myWorkflow = createWorkflow
- *   <MyWorkflowData, Product>(
- *   "my-workflow",
+ * const myWorkflow = createWorkflow<
+ *   WorkflowInput,
+ *   Product
+ * >("my-workflow",
  *   function (input) {
  *     const product = createProductStep(input)
  *
- *     const hookRes = hook("createdProductHook", product)
+ *     const hookProduct = hook<Product>("createdProductHook", product)
  *
- *     const prices = createPricesStep(hookRes?.product || product)
+ *     const newProduct = transform({
+ *       product,
+ *       hookProduct
+ *     }, (input) => {
+ *       return input.hookProduct || input.product
+ *     })
+ *
+ *     const prices = createPricesStep(newProduct)
  *
  *     return getProductStep(product.id)
  *   }
  * )
  *
- * myWorkflow.createdProductHook(async (product: Product, context: StepExecutionContext) => {
- *   const productService = context.container.resolve<ProductService>("productService")
+ * myWorkflow.createdProductHook(
+ *   async (product, context: StepExecutionContext) => {
+ *     const productService: ProductService = context.container.resolve("productService")
  *
- *   const updatedProduct = await productService.update(product.id, {
- *     description: "a cool shirt"
+ *     const updatedProduct = await productService.update(product.id, {
+ *       description: "a cool shirt"
+ *     })
+ *
+ *     return updatedProduct
+ * })
+ *
+ * export async function POST(
+ *   req: MedusaRequest,
+ *   res: MedusaResponse
+ * ) {
+ *   myWorkflow(req.scope)
+ *   .run({
+ *     input: {
+ *       title: req.body.title
+ *     }
  *   })
- *
- *   return updatedProduct
- * })
- *
- * myWorkflow()
- *  .run({
- *    title: "Shirt"
- *  })
- * .then((product) => {
- *   console.log(product.id)
- * })
+ *   .then(({ result: product }) => {
+ *     console.log(product.id)
+ *   })
+ * }
  */
 export function hook<TOutput>(
   /**

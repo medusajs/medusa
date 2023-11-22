@@ -35,7 +35,7 @@ export type WorkflowDataProperties<T = unknown> = {
 }
 
 /**
- * This type is used to encapsulate the type of a step's input or result.
+ * This type is used to encapsulate the input or output type of all utils.
  *
  * @typeParam T - The type of a step's input or result.
  */

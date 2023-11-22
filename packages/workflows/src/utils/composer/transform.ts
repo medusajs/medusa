@@ -15,12 +15,14 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
 
 /**
  *
- * This function transforms the output of other steps using the provided functions.
+ * This function transforms the output of other utility functions.
  *
- * This is useful if you're using the value(s) of some step(s) as an input to a later step. As you can't directly manipulate data in the  workflow constructor function passed to {@link createWorkflow},
+ * For example, if you're using the value(s) of some step(s) as an input to a later step. As you can't directly manipulate data in the  workflow constructor function passed to {@link createWorkflow},
  * the `transform` function provides access to the runtime value of the step(s) output so that you can manipulate them.
  *
- * This is also useful if you're using the runtime value of some step(s) as the output of a workflow.
+ * Another example is if you're using the runtime value of some step(s) as the output of a workflow.
+ *
+ * If you're also retrieving the output of a hook and want to check if its value is set, you must use a workflow to get the runtime value of that hook.
  *
  * @returns There's no expected value to be returned by the `transform` function.
  *
@@ -39,7 +41,10 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
  *   message: string
  * }
  *
- * const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>
+ * const myWorkflow = createWorkflow<
+ *     WorkflowInput,
+ *     WorkflowOutput
+ *   >
  *   ("hello-world", (input) => {
  *     const str1 = step1(input)
  *     const str2 = step2(input)
@@ -60,7 +65,7 @@ export function transform<T extends object | WorkflowData, RFinal>(
    */
   values: T,
   /**
-   * The transform function(s) used to perform action on the runtime values of the provided `values`.
+   * The transform function used to perform action on the runtime values of the provided `values`.
    */
   ...func:
     | [Func1<T, RFinal>]
