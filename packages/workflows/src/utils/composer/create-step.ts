@@ -21,17 +21,21 @@ type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
     [Key in keyof TInput]: TInput[Key]
   },
   context: StepExecutionContext
-) => Promise<
-  StepResponse<
-    TOutput,
-    TCompensateInput extends undefined ? TOutput : TCompensateInput
-  >
->
+) =>
+  | void
+  | StepResponse<
+      TOutput,
+      TCompensateInput extends undefined ? TOutput : TCompensateInput
+    >
+  | Promise<void | StepResponse<
+      TOutput,
+      TCompensateInput extends undefined ? TOutput : TCompensateInput
+    >>
 
 type CompensateFn<T> = (
   input: T,
   context: StepExecutionContext
-) => Promise<unknown>
+) => unknown | Promise<unknown>
 
 interface ApplyStepOptions<
   TStepInputs extends {
