@@ -16,7 +16,7 @@ async function resolveProperty(property, transactionContext) {
     if (isDefined(property.__value)) {
       return property.__value
     }
-    return await property(transactionContext)
+    return await property.__resolver(transactionContext)
   } else if (property?.__type === SymbolWorkflowHook) {
     return await property.__value(transactionContext)
   } else if (property?.__type === SymbolWorkflowStep) {
