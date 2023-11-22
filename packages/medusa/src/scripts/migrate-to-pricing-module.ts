@@ -99,6 +99,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
           return {
             priceListId: priceList.id,
             prices: priceList.prices
+              .filter((vp) => variantIdPriceSetIdMap.has(vp.variants?.[0]?.id))
               .map((vp) => {
                 return {
                   price_set_id: variantIdPriceSetIdMap.get(
@@ -109,8 +110,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
                   min_quantity: vp.min_quantity,
                   max_quantity: vp.max_quantity,
                 }
-              })
-              .filter((vp) => vp.price_set_id),
+              }),
           }
         })
       )
