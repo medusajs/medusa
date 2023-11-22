@@ -37,7 +37,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
     )
 
     const pricingModulePriceLists = await pricingModuleService.listPriceLists(
-      { id: corePriceLists.map((pl) => pl.id) },
+      { id: corePriceLists.map(({ id }) => id) },
       {
         take: BATCH_SIZE,
         skip: offset,
@@ -86,7 +86,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
 
           if (priceList?.customer_groups?.length) {
             updateData.rules = {
-              customer_group_id: priceList.customer_groups.map((cg) => cg.id),
+              customer_group_id: priceList.customer_groups.map(({ id }) => id),
             }
           }
 
@@ -99,16 +99,18 @@ const migratePriceLists = async (container: AwilixContainer) => {
           return {
             priceListId: priceList.id,
             prices: priceList.prices
-              .filter((vp) => variantIdPriceSetIdMap.has(vp.variants?.[0]?.id))
-              .map((vp) => {
+              .filter((price) =>
+                variantIdPriceSetIdMap.has(price.variants?.[0]?.id)
+              )
+              .map((price) => {
                 return {
                   price_set_id: variantIdPriceSetIdMap.get(
-                    vp.variants?.[0]?.id
+                    price.variants?.[0]?.id
                   )!,
-                  currency_code: vp.currency_code,
-                  amount: vp.amount,
-                  min_quantity: vp.min_quantity,
-                  max_quantity: vp.max_quantity,
+                  currency_code: price.currency_code,
+                  amount: price.amount,
+                  min_quantity: price.min_quantity,
+                  max_quantity: price.max_quantity,
                 }
               }),
           }
@@ -129,20 +131,20 @@ const migratePriceLists = async (container: AwilixContainer) => {
 
             if (customer_groups?.length) {
               createData.rules = {
-                customer_group_id: customer_groups.map((cg) => cg.id),
+                customer_group_id: customer_groups.map(({ id }) => id),
               }
             }
 
             if (prices?.length) {
-              createData.prices = prices.map((vp) => {
+              createData.prices = prices.map((price) => {
                 return {
                   price_set_id: variantIdPriceSetIdMap.get(
-                    vp.variants?.[0]?.id
+                    price.variants?.[0]?.id
                   )!,
-                  currency_code: vp.currency_code,
-                  amount: vp.amount,
-                  min_quantity: vp.min_quantity,
-                  max_quantity: vp.max_quantity,
+                  currency_code: price.currency_code,
+                  amount: price.amount,
+                  min_quantity: price.min_quantity,
+                  max_quantity: price.max_quantity,
                 }
               })
             }
@@ -175,13 +177,11 @@ const ensureCurrencies = async (container: AwilixContainer) => {
     { take: 100000 }
   )
 
-  const moduleCurrenciesMap = new Map(
-    moduleCurrencies.map((c) => [c.code, null])
-  )
+  const moduleCurrenciesSet = new Set(moduleCurrencies.map(({ code }) => code))
 
   const currenciesToCreate = coreCurrencies
     .filter(({ code }) => {
-      return !moduleCurrenciesMap.has(code)
+      return !moduleCurrenciesSet.has(code)
     })
     .map(({ includes_tax, ...currency }) => currency)
 
