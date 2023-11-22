@@ -6,7 +6,7 @@ import {
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
-  StepReturn,
+  WorkflowData,
 } from "./type"
 
 /**
@@ -73,7 +73,7 @@ import {
  *   console.log(product.id)
  * })
  */
-export function hook<TOutput>(name: string, value: any): StepReturn<TOutput> {
+export function hook<TOutput>(name: string, value: any): WorkflowData<TOutput> {
   const hookBinder = (
     global[SymbolMedusaWorkflowComposerContext] as CreateWorkflowComposerContext
   ).hookBinder

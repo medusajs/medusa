@@ -7,8 +7,8 @@ import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
 import {
   CreateWorkflowComposerContext,
-  StepReturn,
-  StepReturnProperties,
+  WorkflowData,
+  WorkflowDataProperties,
 } from "./type"
 import {
   resolveValue,
@@ -69,24 +69,16 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
  * @returns The created workflow. You can later invoke the workflow using the `run` method.
  *
  * @example
- * import {
- *   createWorkflow,
- *   StepReturn
- * } from "@medusajs/workflows"
- * import {
- *   createProductStep,
- *   getProductStep,
- *   createPricesStep
- * } from "./steps"
+ * ```ts
+ * import { createWorkflow, WorkflowData } from "@medusajs/workflows"
+ * import { createProductStep, getProductStep, createPricesStep } from "./steps"
  *
  * interface MyWorkflowData {
  *  title: string
  * }
  *
- * const myWorkflow = createWorkflow(
- *   "my-workflow",
- *   function (input: StepReturn<MyWorkflowData>) {
- *     // Everything here will be executed and resolved later during the execution. Including the data access.
+ * const myWorkflow = createWorkflow("my-workflow", (input: WorkflowData<MyWorkflowData>) => {
+ *    // Everything here will be executed and resolved later during the execution. Including the data access.
  *
  *     const product = createProductStep(input)
  *     const prices = createPricesStep(product)
@@ -108,16 +100,16 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
 export function createWorkflow<
   TData,
   TResult,
-  THooks extends Record<string, Function>
+  THooks extends Record<string, Function> = Record<string, Function>
 >(
   name: string,
-  composer: (input: StepReturn<TData>) =>
+  composer: (input: WorkflowData<TData>) =>
     | void
-    | StepReturn<TResult>
+    | WorkflowData<TResult>
     | {
         [K in keyof TResult]:
-          | StepReturn<TResult[K]>
-          | StepReturnProperties<TResult[K]>
+          | WorkflowData<TResult[K]>
+          | WorkflowDataProperties<TResult[K]>
       }
 ): ReturnWorkflow<TData, TResult, THooks> {
   const handlers: WorkflowHandler = new Map()
@@ -148,7 +140,7 @@ export function createWorkflow<
 
   global[SymbolMedusaWorkflowComposerContext] = context
 
-  const valueHolder = proxify<StepReturn>({
+  const valueHolder = proxify<WorkflowData>({
     __value: {},
     __type: SymbolInputReference,
     __step__: "",

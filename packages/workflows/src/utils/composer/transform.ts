@@ -1,12 +1,12 @@
 import { resolveValue, SymbolWorkflowStepTransformer } from "./helpers"
-import { StepExecutionContext, StepReturn } from "./type"
+import { StepExecutionContext, WorkflowData } from "./type"
 import { proxify } from "./helpers/proxy"
 
-type Func1<T extends object | StepReturn, U> = (
-  input: T extends StepReturn<infer U>
+type Func1<T extends object | WorkflowData, U> = (
+  input: T extends WorkflowData<infer U>
     ? U
     : T extends object
-    ? { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
+    ? { [K in keyof T]: T[K] extends WorkflowData<infer U> ? U : T[K] }
     : {},
   context: StepExecutionContext
 ) => U | Promise<U>
@@ -15,45 +15,45 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
 
 // prettier-ignore
 // eslint-disable-next-line max-len
-export function transform<T extends object | StepReturn, RFinal>(
+export function transform<T extends object | WorkflowData, RFinal>(
   values: T,
   ...func:
     | [Func1<T, RFinal>]
-): StepReturn<RFinal>
+): WorkflowData<RFinal>
 
 // prettier-ignore
 // eslint-disable-next-line max-len
-export function transform<T extends object | StepReturn, RA, RFinal>(
+export function transform<T extends object | WorkflowData, RA, RFinal>(
   values: T,
   ...func:
     | [Func1<T, RFinal>]
     | [Func1<T, RA>, Func<RA, RFinal>]
-): StepReturn<RFinal>
+): WorkflowData<RFinal>
 
 // prettier-ignore
 // eslint-disable-next-line max-len
-export function transform<T extends object | StepReturn, RA, RB, RFinal>(
+export function transform<T extends object | WorkflowData, RA, RB, RFinal>(
   values: T,
   ...func:
     | [Func1<T, RFinal>]
     | [Func1<T, RA>, Func<RA, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
-): StepReturn<RFinal>
+): WorkflowData<RFinal>
 
 // prettier-ignore
 // eslint-disable-next-line max-len
-export function transform<T extends object | StepReturn, RA, RB, RC, RFinal>(
+export function transform<T extends object | WorkflowData, RA, RB, RC, RFinal>(
   values: T,
   ...func:
     | [Func1<T, RFinal>]
     | [Func1<T, RA>, Func<RA, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
-): StepReturn<RFinal>
+): WorkflowData<RFinal>
 
 // prettier-ignore
 // eslint-disable-next-line max-len
-export function transform<T extends object | StepReturn, RA, RB, RC, RD, RFinal>(
+export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RFinal>(
   values: T,
   ...func:
     | [Func1<T, RFinal>]
@@ -61,11 +61,11 @@ export function transform<T extends object | StepReturn, RA, RB, RC, RD, RFinal>
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RFinal>]
-): StepReturn<RFinal>
+): WorkflowData<RFinal>
 
 // prettier-ignore
 // eslint-disable-next-line max-len
-export function transform<T extends object | StepReturn, RA, RB, RC, RD, RE, RFinal>(
+export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RE, RFinal>(
   values: T,
   ...func:
     | [Func1<T, RFinal>]
@@ -74,11 +74,11 @@ export function transform<T extends object | StepReturn, RA, RB, RC, RD, RE, RFi
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RFinal>]
-): StepReturn<RFinal>
+): WorkflowData<RFinal>
 
 // prettier-ignore
 // eslint-disable-next-line max-len
-export function transform<T extends object | StepReturn, RA, RB, RC, RD, RE, RF, RFinal>(
+export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RE, RF, RFinal>(
   values: T,
   ...func:
     | [Func1<T, RFinal>]
@@ -88,7 +88,7 @@ export function transform<T extends object | StepReturn, RA, RB, RC, RD, RE, RF,
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RFinal>]
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RF>, Func<RF, RFinal>]
-): StepReturn<RFinal>
+): WorkflowData<RFinal>
 
 /**
  *
@@ -125,7 +125,6 @@ export function transform(
 ): unknown {
   const ret = {
     __type: SymbolWorkflowStepTransformer,
-    __value: undefined,
     __resolver: undefined,
   }
 
@@ -150,12 +149,11 @@ export function transform(
       finalResult = await fn.apply(fn, [arg, executionContext])
     }
 
-    ret.__value = finalResult
     return finalResult
   }
 
-  const proxyfiedRet = proxify<StepReturn & { __resolver: any }>(
-    ret as unknown as StepReturn
+  const proxyfiedRet = proxify<WorkflowData & { __resolver: any }>(
+    ret as unknown as WorkflowData
   )
   proxyfiedRet.__resolver = returnFn as any
 

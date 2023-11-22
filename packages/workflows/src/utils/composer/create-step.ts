@@ -5,14 +5,14 @@ import {
   SymbolWorkflowStep,
   SymbolWorkflowStepBind,
   SymbolWorkflowStepResponse,
-  SymbolWorkflowStepReturn,
+  SymbolWorkflowWorkflowData,
 } from "./helpers"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
   StepFunction,
   StepFunctionResult,
-  StepReturn,
+  WorkflowData,
 } from "./type"
 import { proxify } from "./helpers/proxy"
 
@@ -33,7 +33,12 @@ type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
     [Key in keyof TInput]: TInput[Key]
   },
   context: StepExecutionContext
-) => Promise<StepResponse<TOutput, TCompensateInput>>
+) => Promise<
+  StepResponse<
+    TOutput,
+    TCompensateInput extends undefined ? TOutput : TCompensateInput
+  >
+>
 
 /**
  * The type of compensation function passed to a step.
@@ -52,7 +57,7 @@ type CompensateFn<T> = (
 
 interface ApplyStepOptions<
   TStepInputs extends {
-    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
+    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
   TInvokeInput extends object,
   TInvokeResultOutput,
@@ -82,7 +87,7 @@ interface ApplyStepOptions<
 function applyStep<
   TInvokeInput extends object,
   TStepInput extends {
-    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
+    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
   TInvokeResultOutput,
   TInvokeResultCompensateInput
@@ -124,7 +129,7 @@ function applyStep<
             : stepResponse
 
         return {
-          __type: SymbolWorkflowStepReturn,
+          __type: SymbolWorkflowWorkflowData,
           output: stepResponseJSON,
         }
       },
@@ -139,12 +144,8 @@ function applyStep<
             const stepOutput = transactionContext.invoke[stepName].output
             const invokeResult =
               stepOutput?.__type === SymbolWorkflowStepResponse
-                ? (stepOutput.compensateInput || stepOutput.output) &&
-                  JSON.parse(
-                    JSON.stringify(
-                      stepOutput.compensateInput ?? stepOutput.output
-                    )
-                  )
+                ? stepOutput.compensateInput &&
+                  JSON.parse(JSON.stringify(stepOutput.compensateInput))
                 : stepOutput && JSON.parse(JSON.stringify(stepOutput))
 
             const args = [invokeResult, executionContext]
@@ -247,8 +248,8 @@ export function createStep<
   const stepName = name ?? invokeFn.name
 
   const returnFn = function (input: {
-    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
-  }): StepReturn<TInvokeResultOutput> {
+    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
+  }): WorkflowData<TInvokeResultOutput> {
     if (!global[SymbolMedusaWorkflowComposerContext]) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
@@ -264,7 +265,7 @@ export function createStep<
     return stepBinder<TInvokeResultOutput>(
       applyStep<
         TInvokeInput,
-        { [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]> },
+        { [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]> },
         TInvokeResultOutput,
         TInvokeResultCompensateInput
       >({

@@ -1,4 +1,4 @@
-import { CreateWorkflowComposerContext, StepReturn } from "./type"
+import { CreateWorkflowComposerContext, WorkflowData } from "./type"
 import { SymbolMedusaWorkflowComposerContext } from "./helpers"
 
 /**
@@ -11,26 +11,16 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  * @returns The step results. The results are ordered in the array by the order they're passed in the function's parameter.
  *
  * @example
- * import {
- *   createWorkflow,
- *   StepReturn,
- *   parallelize
- * } from "@medusajs/workflows"
- * import {
- *   createProductStep,
- *   getProductStep,
- *   createPricesStep,
- *   attachProductToSalesChannelStep
- * } from "./steps"
+ * ```ts
+ * import { createWorkflow, WorkflowData, parallelize } from "@medusajs/workflows"
+ * import { createProductStep, getProductStep, createPricesStep, attachProductToSalesChannelStep } from "./steps"
  *
  * interface MyWorkflowData {
  *   title: string
  * }
  *
- * const myWorkflow = createWorkflow(
- *   "my-workflow",
- *   (input: StepReturn<MyWorkflowData>) => {
- *     const product = createProductStep(input)
+ * const myWorkflow = createWorkflow("my-workflow", (input: WorkflowData<MyWorkflowData>) => {
+ *   const product = createProductStep(input)
  *
  *     const [prices, productSalesChannel] = parallelize(
  *       createPricesStep(product),
@@ -42,7 +32,7 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  *  }
  * )
  */
-export function parallelize<TResult extends StepReturn[]>(
+export function parallelize<TResult extends WorkflowData[]>(
   ...steps: TResult
 ): TResult {
   if (!global[SymbolMedusaWorkflowComposerContext]) {

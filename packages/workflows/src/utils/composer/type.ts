@@ -9,11 +9,11 @@ import { Context, MedusaContainer } from "@medusajs/types"
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => TOutput extends []
     ? [
-        ...StepReturn<{
+        ...WorkflowData<{
           [K in keyof TOutput]: TOutput[number][K]
         }>[]
       ]
-    : StepReturn<{ [K in keyof TOutput]: TOutput[K] }>
+    : WorkflowData<{ [K in keyof TOutput]: TOutput[K] }>
 
 /**
  * A step function to be used in a workflow.
@@ -22,14 +22,14 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
  * @typeParam TOutput - The type of the output of the step.
  */
 export type StepFunction<TInput extends object = object, TOutput = unknown> = {
-  (input: { [K in keyof TInput]: StepReturn<TInput[K]> }): StepReturn<{
+  (input: { [K in keyof TInput]: WorkflowData<TInput[K]> }): WorkflowData<{
     [K in keyof TOutput]: TOutput[K]
   }>
-} & StepReturnProperties<{
+} & WorkflowDataProperties<{
   [K in keyof TOutput]: TOutput[K]
 }>
 
-export type StepReturnProperties<T = unknown> = {
+export type WorkflowDataProperties<T = unknown> = {
   __type: Symbol
   __step__: string
   __value?: T | (() => T)
@@ -40,12 +40,12 @@ export type StepReturnProperties<T = unknown> = {
  *
  * @typeParam T - The type of a step's input or result.
  */
-export type StepReturn<T = unknown> = (T extends object
+export type WorkflowData<T = unknown> = (T extends object
   ? {
-      [Key in keyof T]: StepReturn<T[Key]>
+      [Key in keyof T]: WorkflowData<T[Key]>
     }
-  : StepReturnProperties<T>) &
-  StepReturnProperties<T>
+  : WorkflowDataProperties<T>) &
+  WorkflowDataProperties<T>
 
 export type CreateWorkflowComposerContext = {
   hooks_: string[]
@@ -53,12 +53,14 @@ export type CreateWorkflowComposerContext = {
   workflowId: string
   flow: OrchestratorBuilder
   handlers: WorkflowHandler
-  stepBinder: <TOutput = unknown>(fn: StepFunctionResult) => StepReturn<TOutput>
+  stepBinder: <TOutput = unknown>(
+    fn: StepFunctionResult
+  ) => WorkflowData<TOutput>
   hookBinder: <TOutput = unknown>(
     name: string,
     fn: Function
-  ) => StepReturn<TOutput>
-  parallelizeBinder: <TOutput extends StepReturn[] = StepReturn[]>(
+  ) => WorkflowData<TOutput>
+  parallelizeBinder: <TOutput extends WorkflowData[] = WorkflowData[]>(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput
 }

@@ -1,4 +1,4 @@
-import { isDefined, promiseAll } from "@medusajs/utils"
+import { promiseAll } from "@medusajs/utils"
 import {
   SymbolInputReference,
   SymbolWorkflowHook,
@@ -13,9 +13,6 @@ async function resolveProperty(property, transactionContext) {
   if (property?.__type === SymbolInputReference) {
     return property.__value
   } else if (property?.__type === SymbolWorkflowStepTransformer) {
-    if (isDefined(property.__value)) {
-      return property.__value
-    }
     return await property.__resolver(transactionContext)
   } else if (property?.__type === SymbolWorkflowHook) {
     return await property.__value(transactionContext)

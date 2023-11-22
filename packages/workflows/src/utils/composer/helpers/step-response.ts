@@ -1,13 +1,13 @@
 import { SymbolWorkflowStepResponse } from "./symbol"
 
-export class StepResponse<TOutput, TCompensateInput> {
+export class StepResponse<TOutput, TCompensateInput = TOutput> {
   readonly #__type = SymbolWorkflowStepResponse
   readonly #output: TOutput
   readonly #compensateInput?: TCompensateInput
 
   constructor(output: TOutput, compensateInput?: TCompensateInput) {
     this.#output = output
-    this.#compensateInput = compensateInput
+    this.#compensateInput = (compensateInput ?? output) as TCompensateInput
   }
 
   get __type() {
