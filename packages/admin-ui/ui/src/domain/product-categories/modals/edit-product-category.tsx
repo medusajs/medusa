@@ -128,7 +128,6 @@ function EditProductCategoriesSideModal(
   }, [activeCategory, reset]);
 
   const onSave = async (data: CategoryFormData) => {
-    console.log(data);
     try {
       await updateCategory({
         name: data.name,
