@@ -16,6 +16,7 @@ import {
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowStep,
 } from "./helpers"
+import { proxify } from "./helpers/proxy"
 
 global[SymbolMedusaWorkflowComposerContext] = null
 
@@ -107,11 +108,11 @@ export function createWorkflow<
 
   global[SymbolMedusaWorkflowComposerContext] = context
 
-  const valueHolder: StepReturn = {
+  const valueHolder = proxify<StepReturn>({
     __value: {},
     __type: SymbolInputReference,
     __step__: "",
-  }
+  })
 
   const returnedStep = composer.apply(context, [valueHolder])
 

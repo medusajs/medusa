@@ -7,15 +7,14 @@ import {
   SymbolWorkflowStepResponse,
   SymbolWorkflowStepReturn,
 } from "./helpers"
-import { transform } from "./transform"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
   StepFunction,
   StepFunctionResult,
   StepReturn,
-  WorkflowTransactionContext,
 } from "./type"
+import { proxify } from "./helpers/proxy"
 
 type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
   input: {
@@ -143,24 +142,7 @@ function applyStep<
       __step__: stepName,
     }
 
-    return new Proxy(ret, {
-      get(target: any, prop: string | symbol): any {
-        if (target[prop]) {
-          return target[prop]
-        }
-
-        return transform(target[prop], (input, context) => {
-          const { invoke } = context as WorkflowTransactionContext
-          let output = invoke?.[ret.__step__]?.output
-          output =
-            output?.__type === SymbolWorkflowStepResponse
-              ? output.output?.[prop]
-              : output?.[prop]
-
-          return output && JSON.parse(JSON.stringify(output))
-        })
-      },
-    })
+    return proxify(ret)
   }
 }
 

@@ -1,5 +1,6 @@
 import { resolveValue, SymbolWorkflowStepTransformer } from "./helpers"
 import { StepExecutionContext, StepReturn } from "./type"
+import { proxify } from "./helpers/proxy"
 
 type Func1<T extends object | StepReturn, U> = (
   input: T extends StepReturn<infer U>
@@ -101,6 +102,12 @@ export function transform(
   values: any | any[],
   ...functions: Function[]
 ): unknown {
+  const ret = {
+    __type: SymbolWorkflowStepTransformer,
+    __value: undefined,
+    __resolver: undefined,
+  }
+
   const returnFn = async function (transactionContext): Promise<any> {
     const executionContext = {
       container: transactionContext.container,
@@ -122,12 +129,14 @@ export function transform(
       finalResult = await fn.apply(fn, [arg, executionContext])
     }
 
-    returnFn.__value = finalResult
+    ret.__value = finalResult
     return finalResult
   }
 
-  returnFn.__type = SymbolWorkflowStepTransformer
-  returnFn.__value = undefined
+  const proxyfiedRet = proxify<StepReturn & { __resolver: any }>(
+    ret as unknown as StepReturn
+  )
+  proxyfiedRet.__resolver = returnFn as any
 
-  return returnFn
+  return proxyfiedRet
 }
