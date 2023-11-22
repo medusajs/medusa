@@ -5,14 +5,14 @@ import {
   SymbolWorkflowStep,
   SymbolWorkflowStepBind,
   SymbolWorkflowStepResponse,
-  SymbolWorkflowStepReturn,
+  SymbolWorkflowWorkflowData,
 } from "./helpers"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
   StepFunction,
   StepFunctionResult,
-  StepReturn,
+  WorkflowData,
 } from "./type"
 import { proxify } from "./helpers/proxy"
 
@@ -30,7 +30,7 @@ type CompensateFn<T> = (
 
 interface ApplyStepOptions<
   TStepInputs extends {
-    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
+    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
   TInvokeInput extends object,
   TInvokeResultOutput,
@@ -58,7 +58,7 @@ interface ApplyStepOptions<
 function applyStep<
   TInvokeInput extends object,
   TStepInput extends {
-    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
+    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
   TInvokeResultOutput,
   TInvokeResultCompensateInput
@@ -100,7 +100,7 @@ function applyStep<
             : stepResponse
 
         return {
-          __type: SymbolWorkflowStepReturn,
+          __type: SymbolWorkflowWorkflowData,
           output: stepResponseJSON,
         }
       },
@@ -201,8 +201,8 @@ export function createStep<
   const stepName = name ?? invokeFn.name
 
   const returnFn = function (input: {
-    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
-  }): StepReturn<TInvokeResultOutput> {
+    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
+  }): WorkflowData<TInvokeResultOutput> {
     if (!global[SymbolMedusaWorkflowComposerContext]) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
@@ -218,7 +218,7 @@ export function createStep<
     return stepBinder<TInvokeResultOutput>(
       applyStep<
         TInvokeInput,
-        { [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]> },
+        { [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]> },
         TInvokeResultOutput,
         TInvokeResultCompensateInput
       >({

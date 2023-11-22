@@ -1,4 +1,4 @@
-import { CreateWorkflowComposerContext, StepReturn } from "./type"
+import { CreateWorkflowComposerContext, WorkflowData } from "./type"
 import { SymbolMedusaWorkflowComposerContext } from "./helpers"
 
 /**
@@ -10,14 +10,14 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  *
  * @example
  * ```ts
- * import { createWorkflow, StepReturn, parallelize } from "@medusajs/workflows"
+ * import { createWorkflow, WorkflowData, parallelize } from "@medusajs/workflows"
  * import { createProductStep, getProductStep, createPricesStep, attachProductToSalesChannelStep } from "./steps"
  *
  * interface MyWorkflowData {
  *   title: string
  * }
  *
- * const myWorkflow = createWorkflow("my-workflow", (input: StepReturn<MyWorkflowData>) => {
+ * const myWorkflow = createWorkflow("my-workflow", (input: WorkflowData<MyWorkflowData>) => {
  *   const product = createProductStep(input)
  *
  *   const [prices, productSalesChannel] = parallelize(
@@ -29,7 +29,7 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  *   return getProductStep(product.id)
  * })
  */
-export function parallelize<TResult extends StepReturn[]>(
+export function parallelize<TResult extends WorkflowData[]>(
   ...steps: TResult
 ): TResult {
   if (!global[SymbolMedusaWorkflowComposerContext]) {

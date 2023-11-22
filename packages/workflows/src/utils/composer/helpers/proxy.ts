@@ -1,9 +1,9 @@
 import { transform } from "../transform"
-import { StepReturn, WorkflowTransactionContext } from "../type"
+import { WorkflowData, WorkflowTransactionContext } from "../type"
 import { SymbolInputReference, SymbolWorkflowStepTransformer } from "./symbol"
 import { resolveValue } from "./resolve-value"
 
-export function proxify<T>(obj: StepReturn<any>): T {
+export function proxify<T>(obj: WorkflowData<any>): T {
   return new Proxy(obj, {
     get(target: any, prop: string | symbol): any {
       if (prop in target) {
@@ -15,7 +15,7 @@ export function proxify<T>(obj: StepReturn<any>): T {
         let output =
           target.__type === SymbolInputReference ||
           target.__type === SymbolWorkflowStepTransformer
-            ? target.__value
+            ? target
             : invoke?.[obj.__step__]?.output
 
         output = await resolveValue(output, context)
