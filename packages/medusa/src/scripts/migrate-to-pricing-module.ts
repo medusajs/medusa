@@ -94,24 +94,26 @@ const migratePriceLists = async (container: AwilixContainer) => {
         })
       )
 
-      const input = priceListsToUpdate.map((priceList) => {
-        return {
-          priceListId: priceList.id,
-          prices: priceList.prices
-            .map((vp) => {
-              return {
-                price_set_id: variantIdPriceSetIdMap.get(vp.variants?.[0]?.id)!,
-                currency_code: vp.currency_code,
-                amount: vp.amount,
-                min_quantity: vp.min_quantity,
-                max_quantity: vp.max_quantity,
-              }
-            })
-            .filter((vp) => vp.price_set_id),
-        }
-      })
-
-      await pricingModuleService.addPriceListPrices(input)
+      await pricingModuleService.addPriceListPrices(
+        priceListsToUpdate.map((priceList) => {
+          return {
+            priceListId: priceList.id,
+            prices: priceList.prices
+              .map((vp) => {
+                return {
+                  price_set_id: variantIdPriceSetIdMap.get(
+                    vp.variants?.[0]?.id
+                  )!,
+                  currency_code: vp.currency_code,
+                  amount: vp.amount,
+                  min_quantity: vp.min_quantity,
+                  max_quantity: vp.max_quantity,
+                }
+              })
+              .filter((vp) => vp.price_set_id),
+          }
+        })
+      )
     }
 
     if (priceListsToCreate.length) {
