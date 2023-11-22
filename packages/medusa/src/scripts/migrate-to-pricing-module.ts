@@ -7,7 +7,7 @@ import { createDefaultRuleTypes } from "./utils/create-default-rule-types"
 import dotenv from "dotenv"
 import express from "express"
 import loaders from "../loaders"
-import { migrateProductVariantPricing } from "./utils/money-amount-pricing-module-migration"
+import { migrateProductVariantPricing } from "./utils/migrate-money-amounts-to-pricing-module"
 
 dotenv.config()
 
