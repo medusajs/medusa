@@ -141,10 +141,39 @@ const Body = ({
               backgroundColor: "#111827",
             },
             styles: [
+              ...themes.palenight.styles,
               {
                 types: ["keyword"],
                 style: {
-                  color: "var(--fg-on-color)",
+                  fontStyle: "normal",
+                  color: "rgb(187,160,255)",
+                },
+              },
+              {
+                types: ["punctuation", "operator"],
+                style: {
+                  fontStyle: "normal",
+                  color: "rgb(255,255,255)",
+                },
+              },
+              {
+                types: ["constant", "boolean"],
+                style: {
+                  fontStyle: "normal",
+                  color: "rgb(187,77,96)",
+                },
+              },
+              {
+                types: ["function"],
+                style: {
+                  fontStyle: "normal",
+                  color: "rgb(27,198,242)",
+                },
+              },
+              {
+                types: ["number"],
+                style: {
+                  color: "rgb(247, 208, 25)",
                 },
               },
               {
@@ -153,7 +182,18 @@ const Body = ({
                   color: "rgb(255, 203, 107)",
                 },
               },
-              ...themes.palenight.styles,
+              {
+                types: ["string"],
+                style: {
+                  color: "rgb(73,209,110)",
+                },
+              },
+              {
+                types: ["comment"],
+                style: {
+                  color: "#34D399",
+                },
+              },
             ],
           }}
           code={active.code}
