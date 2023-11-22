@@ -10,7 +10,10 @@ export default function AdmonitionIconDanger({
   return (
     <ExclamationCircleSolid
       {...props}
-      className={clsx("inline-block mr-0.125 text-medusa-fg-error", className)}
+      className={clsx(
+        "inline-block mr-0.125 text-medusa-tag-red-icon",
+        className
+      )}
     />
   )
 }

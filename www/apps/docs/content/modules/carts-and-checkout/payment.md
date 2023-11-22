@@ -50,7 +50,7 @@ When you run your Medusa backend, the Payment Processor will be registered on yo
 
 Once the Payment Processor is added to the backend, the store operator will be able to choose using the [admin dashboard](../../admin/quickstart.mdx) the payment processors available in a region. You can alternatively do that using the [admin APIs](https://docs.medusajs.com/api/admin). These payment processors are shown to the customer at checkout as payment methods to choose from and use.
 
-:::caution
+:::warning
 
 It’s important to enable a payment processor in a region, or else the payment processor cannot be used by customers on checkout.
 
