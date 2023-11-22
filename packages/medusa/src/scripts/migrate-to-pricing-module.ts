@@ -45,16 +45,16 @@ const migratePriceLists = async (container: AwilixContainer) => {
       }
     )
 
-    const priceListsToUpdateProxy = new Map<string, PricingTypes.PriceListDTO>(
-      pricingModulePriceLists.map((pl) => [pl.id, pl])
+    const priceListIdsToUpdateSet = new Set<string>(
+      pricingModulePriceLists.map(({ id }) => id)
     )
 
     const priceListsToCreate: PriceList[] = corePriceLists.filter(
-      ({ id }) => !priceListsToUpdateProxy.has(id)
+      ({ id }) => !priceListIdsToUpdateSet.has(id)
     )
 
     const priceListsToUpdate: PriceList[] = corePriceLists.filter(({ id }) =>
-      priceListsToUpdateProxy.has(id)
+      priceListIdsToUpdateSet.has(id)
     )
 
     const variantIds = corePriceLists
@@ -221,9 +221,10 @@ const migrate = async function ({ directory }) {
 migrate({ directory: process.cwd() })
   .then(() => {
     console.log("Migrated price lists")
+    process.exit(0)
   })
   .catch((error) => {
-    console.log(error)
-    console.warn(JSON.stringify(error, null, 2))
+    console.warn(error)
     console.log("Failed to migrate price lists")
+    process.exit(1)
   })
