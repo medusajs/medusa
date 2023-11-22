@@ -16,8 +16,7 @@ export class CartSalesChannelsLink1698160215000 implements MigrationInterface {
             "updated_at"        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "deleted_at"        TIMESTAMP WITH TIME ZONE,
                                               CONSTRAINT "cart_sales_channel_pk"              PRIMARY KEY ("id"),
-            CONSTRAINT "cart_sales_channel_cart_id_unique"  UNIQUE ("cart_id"),
-            CONSTRAINT "cart_sales_channel_cart_id_sales_channel_id_unique"  UNIQUE ("cart_id", "sales_channel_id")
+            CONSTRAINT "cart_sales_channel_cart_id_unique"  UNIQUE ("cart_id")
             );
 
         insert into "cart_sales_channel" (id, cart_id, sales_channel_id)

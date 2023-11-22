@@ -31,17 +31,15 @@ export type CartFactoryData = {
   shipping_methods?: ShippingMethodFactoryData[]
   sales_channel?: SalesChannelFactoryData
   sales_channel_id?: string
-  isMedusaV2Enabled?: boolean
 }
+
+const isMedusaV2Enabled = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
 export const simpleCartFactory = async (
   dataSource: DataSource,
   data: CartFactoryData = {},
   seed?: number
 ): Promise<Cart> => {
-  data.isMedusaV2Enabled =
-    data.isMedusaV2Enabled ?? process.env.MEDUSA_FF_MEDUSA_V2 == "true"
-
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
@@ -92,7 +90,7 @@ export const simpleCartFactory = async (
     sales_channel_id: sales_channel?.id ?? data.sales_channel_id ?? null,
   }
 
-  if (data.isMedusaV2Enabled) {
+  if (isMedusaV2Enabled) {
     await manager.query(
       `INSERT INTO "cart_sales_channel" (id, cart_id, sales_channel_id) 
         VALUES ('${generateEntityId(undefined, "cartsc")}', '${toSave.id}', '${
