@@ -65,21 +65,19 @@ export function returnReflectionComponentFormatter({
         canRetrieveChildren
       ) {
         typeArgs.forEach((typeArg) => {
-          if (!typeArg.type) {
+          const reflectionTypeArg =
+            typeArg instanceof TypeParameterReflection ? typeArg.type : typeArg
+          if (!reflectionTypeArg) {
             return
           }
           const typeArgComponent = returnReflectionComponentFormatter({
-            reflectionType:
-              typeArg instanceof TypeParameterReflection
-                ? typeArg.type
-                : typeArg,
+            reflectionType: reflectionTypeArg,
             project,
             level: level + 1,
             maxLevel,
           })
-          if (typeArgComponent.length) {
-            componentItem[parentKey - 1].children?.push(...typeArgComponent)
-          }
+
+          componentItem[parentKey - 1].children?.push(...typeArgComponent)
         })
       }
     } else {
@@ -134,9 +132,7 @@ export function returnReflectionComponentFormatter({
         level: level + 1,
         maxLevel,
       })
-      if (elementTypeItem.length) {
-        componentItem[parentKey - 1].children?.push(...elementTypeItem)
-      }
+      componentItem[parentKey - 1].children?.push(...elementTypeItem)
     }
   } else if (reflectionType.type === "tuple") {
     let pushTo: Parameter[] = []
@@ -172,9 +168,7 @@ export function returnReflectionComponentFormatter({
           level: level + 1,
           maxLevel,
         })
-        if (elementTypeItem.length) {
-          pushTo.push(...elementTypeItem)
-        }
+        pushTo.push(...elementTypeItem)
       })
     }
   } else {

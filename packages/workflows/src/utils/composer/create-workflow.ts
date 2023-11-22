@@ -56,15 +56,14 @@ global[SymbolMedusaWorkflowComposerContext] = null
  *   req: MedusaRequest,
  *   res: MedusaResponse
  * ) {
- *   myWorkflow(req.scope)
+ *   const { result } = await myWorkflow(req.scope)
  *     .run({
  *       input: {
  *         name: req.query.name as string
  *       }
  *     })
- *     .then(({ result }) => {
- *       res.send(result)
- *     })
+ *
+ *   res.send(result)
  * }
  * ```
  */
@@ -126,14 +125,15 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
  *   req: MedusaRequest,
  *   res: MedusaResponse
  * ) {
- *   myWorkflow(req.scope)
- *  .run({
- *    input: {
- *     title: "Shirt"
- *     }
- *   })
- *   .then(({ result: product }) => {
- *     console.log(product.id)
+ *   const { result: product } = await myWorkflow(req.scope)
+ *     .run({
+ *       input: {
+ *         title: "Shirt"
+ *       }
+ *     })
+ *
+ *   res.json({
+ *     product
  *   })
  * }
  */

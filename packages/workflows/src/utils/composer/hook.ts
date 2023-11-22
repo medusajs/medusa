@@ -78,14 +78,15 @@ import {
  *   req: MedusaRequest,
  *   res: MedusaResponse
  * ) {
- *   myWorkflow(req.scope)
+ *   const { result: product } = await myWorkflow(req.scope)
  *   .run({
  *     input: {
  *       title: req.body.title
  *     }
  *   })
- *   .then(({ result: product }) => {
- *     console.log(product.id)
+ *
+ *   res.json({
+ *     product
  *   })
  * }
  */
