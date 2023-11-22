@@ -11,7 +11,7 @@ async function resolveProperty(property, transactionContext) {
   const { invoke: invokeRes } = transactionContext
 
   if (property?.__type === SymbolInputReference) {
-    return property.__value
+    return transactionContext.payload
   } else if (property?.__type === SymbolWorkflowStepTransformer) {
     return await property.__resolver(transactionContext)
   } else if (property?.__type === SymbolWorkflowHook) {

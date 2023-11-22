@@ -108,13 +108,6 @@ export function transform(
   }
 
   const returnFn = async function (transactionContext): Promise<any> {
-    const executionContext = {
-      container: transactionContext.container,
-      metadata: transactionContext.metadata,
-      context: transactionContext.context,
-      invoke: transactionContext.invoke,
-    }
-
     const allValues = await resolveValue(values, transactionContext)
     const stepValue = allValues
       ? JSON.parse(JSON.stringify(allValues))
@@ -125,7 +118,7 @@ export function transform(
       const fn = functions[i]
       const arg = i === 0 ? stepValue : finalResult
 
-      finalResult = await fn.apply(fn, [arg, executionContext])
+      finalResult = await fn.apply(fn, [arg, transactionContext])
     }
 
     return finalResult
