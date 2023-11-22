@@ -33,7 +33,7 @@ type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
     >>
 
 type CompensateFn<T> = (
-  input: T,
+  input: T | undefined,
   context: StepExecutionContext
 ) => unknown | Promise<unknown>
 
