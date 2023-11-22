@@ -211,7 +211,7 @@ YARN_PRODUCTION=false
 NODE_ENV=production
 ```
 
-:::caution
+:::warning
 
 It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
 

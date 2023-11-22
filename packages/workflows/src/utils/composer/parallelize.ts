@@ -39,9 +39,6 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  * )
  */
 export function parallelize<TResult extends WorkflowData[]>(
-  /**
-   * The steps to run in parallel
-   */
   ...steps: TResult
 ): TResult {
   if (!global[SymbolMedusaWorkflowComposerContext]) {

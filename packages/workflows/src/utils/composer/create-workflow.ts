@@ -180,13 +180,12 @@ export function createWorkflow<
 
   global[SymbolMedusaWorkflowComposerContext] = context
 
-  const valueHolder = proxify<WorkflowData>({
-    __value: {},
+  const inputPlaceHolder = proxify<WorkflowData>({
     __type: SymbolInputReference,
     __step__: "",
   })
 
-  const returnedStep = composer.apply(context, [valueHolder])
+  const returnedStep = composer.apply(context, [inputPlaceHolder])
 
   delete global[SymbolMedusaWorkflowComposerContext]
 
@@ -216,7 +215,6 @@ export function createWorkflow<
           : undefined
 
       // Forwards the input to the ref object on composer.apply
-      valueHolder.__value = args?.input as any
       const workflowResult = (await originalRun(
         args
       )) as unknown as WorkflowResult<

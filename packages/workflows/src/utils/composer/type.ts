@@ -32,7 +32,6 @@ export type StepFunction<TInput extends object = object, TOutput = unknown> = {
 export type WorkflowDataProperties<T = unknown> = {
   __type: Symbol
   __step__: string
-  __value?: T | (() => T)
 }
 
 /**
