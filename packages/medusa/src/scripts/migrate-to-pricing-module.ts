@@ -76,7 +76,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
       variantPriceSets.map((mps) => [mps.variant_id, mps.price_set_id])
     )
 
-    if (priceListsToUpdate.length !== 0) {
+    if (priceListsToUpdate.length) {
       await pricingModuleService.updatePriceLists(
         priceListsToUpdate.map((priceList) => {
           const updateData: PricingTypes.UpdatePriceListDTO = {
@@ -114,7 +114,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
       await pricingModuleService.addPriceListPrices(input)
     }
 
-    if (priceListsToCreate.length !== 0) {
+    if (priceListsToCreate.length) {
       await pricingModuleService.createPriceLists(
         priceListsToCreate.map(
           ({ name: title, prices, customer_groups, ...priceList }) => {
