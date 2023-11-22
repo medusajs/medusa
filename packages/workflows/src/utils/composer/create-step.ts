@@ -104,7 +104,7 @@ function applyStep<
         )
 
         const stepResponseJSON =
-          stepResponse.__type === SymbolWorkflowStepResponse
+          stepResponse?.__type === SymbolWorkflowStepResponse
             ? stepResponse.toJSON()
             : stepResponse
 
