@@ -131,7 +131,8 @@ function TabList({
             "tabs",
             "list-none",
             isCodeTabs && "no-scrollbar",
-            !isCodeTabs && "overflow-visible",
+            !isCodeTabs &&
+              "overflow-visible border-0 border-b border-solid border-medusa-border-base pb-1",
             className
           )}
         >
@@ -156,13 +157,15 @@ function TabList({
                     "text-medusa-code-text-base border border-solid border-medusa-code-border bg-medusa-code-bg-base xs:!border-none xs:!bg-transparent",
                   attributes?.badge &&
                     "[&_.badge]:ml-0.5 [&_.badge]:py-0.125 [&_.badge]:px-[6px] [&_.badge]:rounded-full pl-0.75 pr-0.25",
+                  !attributes?.badge && "px-0.75",
                 ],
                 !isCodeTabs && [
                   "[&:not(:last-child)]:mr-0.5 px-0.75 py-[6px] txt-compact-small-plus",
                   "border-0 rounded-full transition-shadow duration-200 ease-ease",
                   selectedValue === value &&
                     "text-medusa-fg-base shadow-card-rest dark:shadow-card-rest-dark",
-                  selectedValue !== value && "text-medusa-fg-subtle ",
+                  selectedValue !== value &&
+                    "text-medusa-fg-subtle hover:text-medusa-fg-base",
                   "flex gap-0.5",
                 ],
                 "!mt-0 cursor-pointer",
@@ -248,7 +251,8 @@ export default function Tabs(props: TabsProps): JSX.Element {
       className={clsx(
         "tabs-wrapper",
         props.wrapperClassName,
-        isCodeTabs && "code-tabs"
+        isCodeTabs && "code-tabs",
+        !isCodeTabs && "my-4"
       )}
     >
       <TabsComponent
