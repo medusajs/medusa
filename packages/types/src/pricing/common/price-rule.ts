@@ -18,7 +18,6 @@ export interface PriceRuleDTO {
   price_set_id: string
   /**
    * The associated price set.
-   *
    * @expandable
    */
   price_set: PriceSetDTO
@@ -107,7 +106,6 @@ export interface UpdatePriceRuleDTO {
 
 /**
  * @interface
- *
  * Filters to apply on price rules.
  */
 export interface FilterablePriceRuleProps

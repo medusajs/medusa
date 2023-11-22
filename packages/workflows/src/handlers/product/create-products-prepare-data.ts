@@ -1,8 +1,8 @@
 import { ProductTypes, SalesChannelTypes, WorkflowTypes } from "@medusajs/types"
 import {
   FeatureFlagUtils,
-  ShippingProfileUtils,
   kebabCase,
+  ShippingProfileUtils,
 } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 
@@ -114,23 +114,17 @@ export async function createProductsPrepareData({
     }
 
     if (product.variants) {
-      const hasPrices = product.variants.some((variant) => {
-        return (variant.prices?.length ?? 0) > 0
+      const items =
+        productsHandleVariantsIndexPricesMap.get(product.handle!) ?? []
+
+      product.variants.forEach((variant, index) => {
+        items.push({
+          index,
+          prices: variant.prices!,
+        })
       })
 
-      if (hasPrices) {
-        const items =
-          productsHandleVariantsIndexPricesMap.get(product.handle!) ?? []
-
-        product.variants.forEach((variant, index) => {
-          items.push({
-            index,
-            prices: variant.prices!,
-          })
-        })
-
-        productsHandleVariantsIndexPricesMap.set(product.handle!, items)
-      }
+      productsHandleVariantsIndexPricesMap.set(product.handle!, items)
     }
   }
 

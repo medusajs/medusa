@@ -5,7 +5,7 @@ import getMigrations, {
   runIsolatedModulesMigration,
 } from "./utils/get-migrations"
 
-import { MedusaV2Flag, createMedusaContainer } from "@medusajs/utils"
+import { createMedusaContainer } from "@medusajs/utils"
 import configModuleLoader from "../loaders/config"
 import databaseLoader from "../loaders/database"
 import featureFlagLoader from "../loaders/feature-flags"
@@ -38,6 +38,11 @@ const getDataSource = async (directory) => {
 const runLinkMigrations = async (directory) => {
   const configModule = configModuleLoader(directory)
   const container = createMedusaContainer()
+  const featureFlagRouter = featureFlagLoader(configModule)
+
+  container.register({
+    featureFlagRouter: asValue(featureFlagRouter),
+  })
 
   await pgConnectionLoader({ configModule, container })
 
@@ -63,16 +68,13 @@ const main = async function ({ directory }) {
 
   const configModule = configModuleLoader(directory)
   const dataSource = await getDataSource(directory)
-  const featureFlagRouter = featureFlagLoader(configModule)
 
   if (args[0] === "run") {
     await dataSource.runMigrations()
     await dataSource.destroy()
     await runIsolatedModulesMigration(configModule)
 
-    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-      await runLinkMigrations(directory)
-    }
+    await runLinkMigrations(directory)
     process.exit()
 
     Logger.info("Migrations completed.")
