@@ -128,17 +128,16 @@ describe("/store/product-categories", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("throws error on querying not allowed fields", async () => {
+    it("should return mpath when requested in the fields", async () => {
       const api = useApi()
 
-      const error = await api
-        .get(`/store/product-categories/${productCategory.id}?fields=mpath`)
-        .catch((e) => e)
+      const response = await api.get(
+        `/store/product-categories/${productCategory.id}?fields=mpath`
+      )
 
-      expect(error.response.status).toEqual(400)
-      expect(error.response.data.type).toEqual("invalid_data")
-      expect(error.response.data.message).toEqual(
-        "Fields [mpath] are not valid"
+      expect(response.status).toEqual(200)
+      expect(response.data.product_category.mpath).toEqual(
+        `${productCategoryParent.id}.${productCategory.id}.`
       )
     })
 

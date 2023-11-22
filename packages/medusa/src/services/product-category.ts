@@ -46,6 +46,18 @@ class ProductCategoryService extends TransactionBaseService {
 
     this.eventBusService_ = eventBusService
     this.productCategoryRepo_ = productCategoryRepository
+
+    // TypeORM treats mpath as a virtual attribute and does not return it in the response
+    // Turning this into an actual attribute will return it in the response.
+    // Issue Ref - https://github.com/typeorm/typeorm/issues/4232#issuecomment-822322122
+    this.productCategoryRepo_.metadata.columns =
+      this.productCategoryRepo_.metadata.columns.map((x) => {
+        if (x.databaseName === "mpath") {
+          x.isVirtual = false
+        }
+
+        return x
+      })
   }
 
   /**

@@ -73,6 +73,7 @@ export const allowedStoreProductCategoryFields = [
   "updated_at",
   "rank",
   "metadata",
+  "mpath",
 ]
 
 /**
