@@ -377,7 +377,12 @@ export class MarkdownTheme extends Theme {
         (signature) => signature.comment?.hasModifier("@mainSignature")
       )
 
+      if (this.reflection.name === "transform") {
+        console.log(this.reflection.signatures.length)
+      }
+
       if (mainSignatureIndex !== -1) {
+        console.log(mainSignatureIndex)
         const mainSignature = this.reflection.signatures[mainSignatureIndex]
         this.reflection.signatures = [mainSignature]
       }

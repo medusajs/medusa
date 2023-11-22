@@ -6,20 +6,26 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  *
  * @typeParam TResult - The type of the expected result.
  *
- * @param steps - The steps to run in parallel
- *
  * @returns The step results. The results are ordered in the array by the order they're passed in the function's parameter.
  *
  * @example
  * ```ts
- * import { createWorkflow, WorkflowData, parallelize } from "@medusajs/workflows"
- * import { createProductStep, getProductStep, createPricesStep, attachProductToSalesChannelStep } from "./steps"
+ * import {
+ *   createWorkflow,
+ *   parallelize
+ * } from "@medusajs/workflows"
+ * import {
+ *   createProductStep,
+ *   getProductStep,
+ *   createPricesStep,
+ *   attachProductToSalesChannelStep
+ * } from "./steps"
  *
  * interface MyWorkflowData {
  *   title: string
  * }
  *
- * const myWorkflow = createWorkflow("my-workflow", (input: WorkflowData<MyWorkflowData>) => {
+ * const myWorkflow = createWorkflow<MyWorkflowData, Product>("my-workflow", (input) => {
  *   const product = createProductStep(input)
  *
  *     const [prices, productSalesChannel] = parallelize(
@@ -33,6 +39,9 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  * )
  */
 export function parallelize<TResult extends WorkflowData[]>(
+  /**
+   * The steps to run in parallel
+   */
   ...steps: TResult
 ): TResult {
   if (!global[SymbolMedusaWorkflowComposerContext]) {

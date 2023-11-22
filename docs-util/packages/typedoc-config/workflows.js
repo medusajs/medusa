@@ -31,6 +31,7 @@ module.exports = {
         reflection_indexable: false,
         member_signature_title: false,
         member_signature_returns: false,
+        member_getterSetter: false,
       },
       parameterStyle: "component",
       parameterComponent: "ParameterTypes",
@@ -54,6 +55,16 @@ module.exports = {
     },
     functions: {
       maxLevel: 1,
+    },
+    "classes/StepResponse": {
+      reflectionGroups: {
+        Properties: false,
+      },
+    },
+    transform: {
+      reflectionGroups: {
+        "Type Parameters": false,
+      },
     },
   },
   objectLiteralTypeDeclarationStyle: "component",

@@ -13,14 +13,62 @@ type Func1<T extends object | WorkflowData, U> = (
 
 type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
 
+/**
+ *
+ * This function transforms the output of other steps using the provided functions.
+ *
+ * This is useful if you're using the value(s) of some step(s) as an input to a later step. As you can't directly manipulate data in the  workflow constructor function passed to {@link createWorkflow},
+ * the `transform` function provides access to the runtime value of the step(s) output so that you can manipulate them.
+ *
+ * This is also useful if you're using the runtime value of some step(s) as the output of a workflow.
+ *
+ * @returns There's no expected value to be returned by the `transform` function.
+ *
+ * @example
+ * import {
+ *   createWorkflow,
+ *   transform
+ * } from "@medusajs/workflows"
+ * import { step1, step2 } from "./steps"
+ *
+ * type WorkflowInput = {
+ *   name: string
+ * }
+ *
+ * type WorkflowOutput = {
+ *   message: string
+ * }
+ *
+ * const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>
+ *   ("hello-world", (input) => {
+ *     const str1 = step1(input)
+ *     const str2 = step2(input)
+ *
+ *     return transform({
+ *       str1,
+ *       str2
+ *     }, (input) => ({
+ *       message: `${input.str1}${input.str2}`
+ *     }))
+ * })
+ */
 // prettier-ignore
 // eslint-disable-next-line max-len
 export function transform<T extends object | WorkflowData, RFinal>(
+  /**
+   * The output(s) of other step functions.
+   */
   values: T,
+  /**
+   * The transform function(s) used to perform action on the runtime values of the provided `values`.
+   */
   ...func:
     | [Func1<T, RFinal>]
 ): WorkflowData<RFinal>
 
+/**
+ * @internal
+ */
 // prettier-ignore
 // eslint-disable-next-line max-len
 export function transform<T extends object | WorkflowData, RA, RFinal>(
@@ -30,6 +78,9 @@ export function transform<T extends object | WorkflowData, RA, RFinal>(
     | [Func1<T, RA>, Func<RA, RFinal>]
 ): WorkflowData<RFinal>
 
+/**
+ * @internal
+ */
 // prettier-ignore
 // eslint-disable-next-line max-len
 export function transform<T extends object | WorkflowData, RA, RB, RFinal>(
@@ -40,6 +91,9 @@ export function transform<T extends object | WorkflowData, RA, RB, RFinal>(
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
 ): WorkflowData<RFinal>
 
+/**
+ * @internal
+ */
 // prettier-ignore
 // eslint-disable-next-line max-len
 export function transform<T extends object | WorkflowData, RA, RB, RC, RFinal>(
@@ -51,6 +105,9 @@ export function transform<T extends object | WorkflowData, RA, RB, RC, RFinal>(
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
 ): WorkflowData<RFinal>
 
+/**
+ * @internal
+ */
 // prettier-ignore
 // eslint-disable-next-line max-len
 export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RFinal>(
@@ -63,6 +120,9 @@ export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RFina
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RFinal>]
 ): WorkflowData<RFinal>
 
+/**
+ * @internal
+ */
 // prettier-ignore
 // eslint-disable-next-line max-len
 export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RE, RFinal>(
@@ -76,6 +136,9 @@ export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RE, R
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RFinal>]
 ): WorkflowData<RFinal>
 
+/**
+ * @internal
+ */
 // prettier-ignore
 // eslint-disable-next-line max-len
 export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RE, RF, RFinal>(
@@ -90,35 +153,6 @@ export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RE, R
     | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RF>, Func<RF, RFinal>]
 ): WorkflowData<RFinal>
 
-/**
- *
- * @mainSignature
- *
- * This function transforms the output of other steps using the provided functions.
- *
- * This is useful if you're using the value(s) of some step(s) as an input to a later step. As you can't directly manipulate data in the  workflow constructor function passed to {@link createWorkflow},
- * the `transform` function provides access to the runtime value of the step(s) output so that you can manipulate them.
- *
- * This is also useful if you're using the runtime value of some step(s) as the output of a workflow.
- *
- * @example
- * const myWorkflow = createWorkflow("hello-world", (input: StepReturn<WorkflowInput>): StepReturn<WorkflowOutput> => {
- *   const str1 = step1(input)
- *   const str2 = step2(input)
- *
- *   return transform({
- *     str1,
- *     str2
- *   }, (input) => ({
- *     message: `${input.str1}${input.str2}`
- *   }))
- * })
- *
- * @param values - The output(s) of other step functions.
- * @param functions - The transform function(s) used to perform action on the runtime values of the provided `values`.
- *
- * @returns There's no expected value to be returned by the `transform` function.
- */
 export function transform(
   values: any | any[],
   ...functions: Function[]

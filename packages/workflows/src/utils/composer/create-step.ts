@@ -23,15 +23,18 @@ import { proxify } from "./helpers/proxy"
  * @typeParam TOutput - The type of the output that the function returns.
  * @typeParam TCompensateInput - The type of the input that the compensation function expects.
  *
- * @param input - The input of the step.
- * @param context - The step's context.
- *
  * @returns The expected output based on the type parameter `TOutput`.
  */
 type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
+  /**
+   * The input of the step.
+   */
   input: {
     [Key in keyof TInput]: TInput[Key]
   },
+  /**
+   * The step's context.
+   */
   context: StepExecutionContext
 ) => Promise<
   StepResponse<
@@ -45,13 +48,16 @@ type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
  *
  * @typeParam T - The type of the argument passed to the compensation function. Typically, this would be the the output type of a step.
  *
- * @param arg - The argument passed to the compensation function.
- * @param context - The step's context.
- *
  * @returns There's no expected value to be returned by the compensation function.
  */
 type CompensateFn<T> = (
+  /**
+   * The argument passed to the compensation function.
+   */
   input: T,
+  /**
+   * The step's context.
+   */
   context: StepExecutionContext
 ) => Promise<unknown>
 
@@ -172,15 +178,7 @@ function applyStep<
 }
 
 /**
- * This function creates a {@link StepFunction}. It can be used as a step in a workflow inside a {@link createWorkflow} function.
- *
- * @param name - The name of the step.
- * @param invokeFn -
- * An invocation function that will be executed when the step is used. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
- * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
- * @param compensateFn -
- * A compensation function that's executed if an error occurs in the workflow. It's used to roll-back actions when errors occur.
- * It accepts as a parameter the second argument passed to the {@link StepResponse} instance returned by the invocation function.
+ * This function creates a {@link StepFunction} that can be used as a step in a workflow constructed by the {@link createWorkflow} function.
  *
  * @typeParam TInvokeInput - The type of the expected input parameter to the invocation function.
  * @typeParam TInvokeResultOutput - The type of the expected output parameter of the invocation function.
@@ -237,12 +235,25 @@ export function createStep<
   TInvokeResultOutput,
   TInvokeResultCompensateInput
 >(
+  /**
+   * The name of the step.
+   */
   name: string,
+  /**
+   * An invocation function that will be executed when the step is used. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
+   * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
+   */
   invokeFn: InvokeFn<
     TInvokeInput,
     TInvokeResultOutput,
     TInvokeResultCompensateInput
   >,
+  /**
+   * A compensation function that's executed if an error occurs in the workflow. It's used to roll-back actions when errors occur.
+   * It accepts as a parameter the second argument passed to the constructor of the {@link StepResponse} instance returned by the invocation function. If the
+   * invocation function doesn't pass the second argument to `StepResponse` constructor, the compensation function receives the first argument
+   * passed to the `StepResponse` constructor instead.
+   */
   compensateFn?: CompensateFn<TInvokeResultCompensateInput>
 ): StepFunction<TInvokeInput, TInvokeResultOutput> {
   const stepName = name ?? invokeFn.name

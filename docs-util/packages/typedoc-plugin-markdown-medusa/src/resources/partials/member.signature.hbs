@@ -16,7 +16,7 @@
 
 {{#if (sectionEnabled "member_signature_example")}}
 
-{{{example this 4}}}
+{{{example this commentLevel}}}
 
 {{/if}}
 
@@ -24,15 +24,7 @@
 
 {{#if typeParameters}}
 
-{{#if showSources}}
-
-{{{titleLevel 4}}} Type Parameters
-
-{{else}}
-
-{{{titleLevel 5}}} Type Parameters
-
-{{/if}}
+{{{titleLevel commentLevel}}} Type Parameters
 
 {{#with typeParameters}}
 
@@ -48,15 +40,7 @@
 
 {{#if parameters}}
 
-{{#if showSources}}
-
-{{{titleLevel 4}}} Parameters
-
-{{else}}
-
-{{{titleLevel 5}}} Parameters
-
-{{/if}}
+{{{titleLevel commentLevel}}} Parameters
 
 {{#with parameters}}
 
@@ -72,15 +56,7 @@
 
 {{#if type}}
 
-{{#if showSources}}
-
-{{{titleLevel 4}}} Returns
-
-{{else}}
-
-{{{titleLevel 5}}} Returns
-
-{{/if}}
+{{{titleLevel commentLevel}}} Returns
 
 {{#if (sectionEnabled "member_signature_returns")}}
 
@@ -102,7 +78,7 @@
 
 {{#each declaration.signatures}}
 
-{{> member.signature showSources=false }}
+{{> member.signature showSources=false commentLevel=commentLevel }}
 
 {{/each}}
 
@@ -136,7 +112,7 @@
 
 {{#if hasVisibleComponent}}
 
-{{{comments this false true 4 ..}}}
+{{{comments this false true commentLevel ..}}}
 
 {{/if}}
 

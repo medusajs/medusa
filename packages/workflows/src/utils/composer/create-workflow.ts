@@ -59,32 +59,29 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
  * @typeParam TResult - The type of the output returned by the composer function.
  * @typeParam THooks - The type of hooks defined in the workflow.
  *
- * @param name - The name of the workflow.
- * @param composer -
- * The constructor function that is executed when the `run` method in {@link ReturnWorkflow} is used.
- * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
- * You'll have to use the {@link transform} function if you need to directly manipulate data.
- *
- *
  * @returns The created workflow. You can later invoke the workflow using the `run` method.
  *
  * @example
- * ```ts
- * import { createWorkflow, WorkflowData } from "@medusajs/workflows"
- * import { createProductStep, getProductStep, createPricesStep } from "./steps"
+ * import { createWorkflow } from "@medusajs/workflows"
+ * import { Product } from "@medusajs/medusa"
+ * import {
+ *   createProductStep,
+ *   getProductStep,
+ *   createPricesStep
+ * } from "./steps"
  *
  * interface MyWorkflowData {
  *  title: string
  * }
  *
- * const myWorkflow = createWorkflow("my-workflow", (input: WorkflowData<MyWorkflowData>) => {
- *    // Everything here will be executed and resolved later during the execution. Including the data access.
+ * const myWorkflow = createWorkflow<MyWorkflowData, Product>
+ *   ("my-workflow", (input) => {
+ *    // Everything here will be executed and resolved later
+ *    // during the execution. Including the data access.
  *
  *     const product = createProductStep(input)
  *     const prices = createPricesStep(product)
- *
- *     const id = product.id
- *     return getProductStep(id)
+ *     return getProductStep(product.id)
  *   }
  * )
  *
@@ -102,7 +99,15 @@ export function createWorkflow<
   TResult,
   THooks extends Record<string, Function> = Record<string, Function>
 >(
+  /**
+   * The name of the workflow.
+   */
   name: string,
+  /**
+   * The constructor function that is executed when the `run` method in {@link ReturnWorkflow} is used.
+   * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
+   * You'll have to use the {@link transform} function if you need to directly manipulate data.
+   */
   composer: (input: WorkflowData<TData>) =>
     | void
     | WorkflowData<TResult>

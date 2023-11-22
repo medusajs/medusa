@@ -17,9 +17,6 @@ import {
  * Then, developers using that workflow can hook into that point to access the product, modify its attributes, then return the updated product.
  *
  * @typeParam TOutput - The expected output of the hook's handler function.
- *
- * @param name - The name of the hook. This will be used by the consumer to add a handler method for the hook.
- * @param value - The data that a handler function receives as a parameter.
  * @returns The output of handler functions of this hook. If there are no handler functions, the output is `undefined`.
  *
  * @example
@@ -41,17 +38,17 @@ import {
  *  title: string
  * }
  *
- * const myWorkflow = createWorkflow(
+ * const myWorkflow = createWorkflow
+ *   <MyWorkflowData, Product>(
  *   "my-workflow",
- *   function (input: StepReturn<MyWorkflowData>) {
+ *   function (input) {
  *     const product = createProductStep(input)
  *
  *     const hookRes = hook("createdProductHook", product)
  *
  *     const prices = createPricesStep(hookRes?.product || product)
  *
- *     const id = product.id
- *     return getProductStep(id)
+ *     return getProductStep(product.id)
  *   }
  * )
  *
@@ -73,7 +70,16 @@ import {
  *   console.log(product.id)
  * })
  */
-export function hook<TOutput>(name: string, value: any): WorkflowData<TOutput> {
+export function hook<TOutput>(
+  /**
+   * The name of the hook. This will be used by the consumer to add a handler method for the hook.
+   */
+  name: string,
+  /**
+   * The data that a handler function receives as a parameter.
+   */
+  value: any
+): WorkflowData<TOutput> {
   const hookBinder = (
     global[SymbolMedusaWorkflowComposerContext] as CreateWorkflowComposerContext
   ).hookBinder

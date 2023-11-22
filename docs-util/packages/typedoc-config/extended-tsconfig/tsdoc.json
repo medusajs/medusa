@@ -21,6 +21,10 @@
     {
       "tagName": "@mainSignature",
       "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@docHideSignature",
+      "syntaxKind": "modifier"
     }
   ]
 }
