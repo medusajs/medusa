@@ -1,7 +1,7 @@
 import { IPricingModuleService, MedusaContainer } from "@medusajs/types"
 import { MedusaError, promiseAll } from "@medusajs/utils"
 
-import { ProductVariantService } from "../services"
+import { ProductVariantService } from "../../services"
 import dotenv from "dotenv"
 
 dotenv.config()
