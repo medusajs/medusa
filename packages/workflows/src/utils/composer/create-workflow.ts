@@ -21,9 +21,14 @@ import { proxify } from "./helpers/proxy"
 global[SymbolMedusaWorkflowComposerContext] = null
 
 /**
- * The type of a created workflow. To execute the workflow, use the `run` command.
+ * An exported workflow, which is the type of a workflow constructed by the {@link createWorkflow} function. The exported workflow can be invoked to create
+ * an executable workflow, optionally within a specified container. So, to execute the workflow, you must invoke the exported workflow, then run the
+ * `run` method of the exported workflow.
  *
  * @example
+ * To execute a workflow:
+ *
+ * ```ts
  * myWorkflow()
  *   .run({
  *     input: {
@@ -33,6 +38,35 @@ global[SymbolMedusaWorkflowComposerContext] = null
  *   .then(({ result }) => {
  *     console.log(result)
  *   })
+ * ```
+ *
+ * To specify the container of the workflow, you can pass it as an argument to the call of the exported workflow. This is necessary when executing the workflow
+ * within a Medusa resource such as an API Route or a Subscriber.
+ *
+ * For example:
+ *
+ * ```ts
+ * import type {
+ *   MedusaRequest,
+ *   MedusaResponse
+ * } from "@medusajs/medusa";
+ * import myWorkflow from "../../../workflows/hello-world";
+ *
+ * export async function GET(
+ *   req: MedusaRequest,
+ *   res: MedusaResponse
+ * ) {
+ *   myWorkflow(req.scope)
+ *     .run({
+ *       input: {
+ *         name: req.query.name as string
+ *       }
+ *     })
+ *     .then(({ result }) => {
+ *       res.send(result)
+ *     })
+ * }
+ * ```
  */
 type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
@@ -51,15 +85,16 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
 } & THooks
 
 /**
- * This function creates a new workflow with the provided name and a constructor function.
+ * This function creates a workflow with the provided name and a constructor function.
  * The constructor function builds the workflow from steps created by the {@link createStep} function.
- * The constructor function is only executed when the `run` method in {@link ReturnWorkflow} is used.
+ * The returned workflow is an exported workflow of type {@link ReturnWorkflow}, meaning it's not executed right away. To execute it,
+ * invoke the exported workflow, then run its `run` method.
  *
  * @typeParam TData - The type of the input passed to the composer function.
  * @typeParam TResult - The type of the output returned by the composer function.
  * @typeParam THooks - The type of hooks defined in the workflow.
  *
- * @returns The created workflow. You can later invoke the workflow using the `run` method.
+ * @returns The created workflow. You can later execute the workflow by invoking it, then using its `run` method.
  *
  * @example
  * import { createWorkflow } from "@medusajs/workflows"

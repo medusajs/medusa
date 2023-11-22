@@ -5,7 +5,6 @@ import {
   PageEvent,
   ProjectReflection,
   Reflection,
-  ReflectionGroup,
   ReflectionKind,
   RenderTemplate,
   Renderer,
@@ -377,12 +376,7 @@ export class MarkdownTheme extends Theme {
         (signature) => signature.comment?.hasModifier("@mainSignature")
       )
 
-      if (this.reflection.name === "transform") {
-        console.log(this.reflection.signatures.length)
-      }
-
       if (mainSignatureIndex !== -1) {
-        console.log(mainSignatureIndex)
         const mainSignature = this.reflection.signatures[mainSignatureIndex]
         this.reflection.signatures = [mainSignature]
       }
@@ -390,24 +384,19 @@ export class MarkdownTheme extends Theme {
   }
 
   protected removeGroups(model?: DeclarationReflection | ProjectReflection) {
-    if (!model || !model.groups) {
+    if (!model?.groups) {
       return
     }
 
     const options = this.getFormattingOptionsForLocation()
 
-    const tempGroups: ReflectionGroup[] = []
-    model.groups.forEach((reflectionGroup) => {
-      if (
+    model.groups = model.groups.filter((reflectionGroup) => {
+      return (
         !options.reflectionGroups ||
         !(reflectionGroup.title in options.reflectionGroups) ||
         options.reflectionGroups[reflectionGroup.title]
-      ) {
-        tempGroups.push(reflectionGroup)
-      }
+      )
     })
-
-    model.groups = tempGroups
   }
 
   get globalsFile() {

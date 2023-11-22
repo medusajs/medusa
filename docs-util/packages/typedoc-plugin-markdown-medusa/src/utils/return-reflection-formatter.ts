@@ -15,16 +15,25 @@ import {
 } from "./reflection-formatter"
 import { MarkdownTheme } from "../theme"
 
-export function returnReflectionComponentFormatter(
-  reflectionType: SomeType,
-  project: ProjectReflection,
-  comment?: Comment,
-  level = 1,
+type ReturnReflectionComponentFormatterParams = {
+  reflectionType: SomeType
+  project: ProjectReflection
+  comment?: Comment
+  level: number
   maxLevel?: number | undefined
-): Parameter[] {
+}
+
+export function returnReflectionComponentFormatter({
+  reflectionType,
+  project,
+  comment,
+  level = 1,
+  maxLevel,
+}: ReturnReflectionComponentFormatterParams): Parameter[] {
   const typeName = getType(reflectionType, "object", false, true)
   const type = getType(reflectionType, "object")
   const componentItem: Parameter[] = []
+  const canRetrieveChildren = level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   if (reflectionType.type === "reference") {
     if (reflectionType.typeArguments || reflectionType.refersToTypeParameter) {
       const parentKey = componentItem.push({
@@ -45,50 +54,33 @@ export function returnReflectionComponentFormatter(
         featureFlag: Handlebars.helpers.featureFlag(comment),
         children: [],
       })
-      if (reflectionType.typeArguments) {
-        if (
-          !isOnlyVoid(reflectionType.typeArguments) &&
-          level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
-        ) {
-          reflectionType.typeArguments.forEach((typeArg) => {
-            const typeArgComponent = returnReflectionComponentFormatter(
-              typeArg,
-              project,
-              undefined,
-              level + 1,
-              maxLevel
-            )
-            if (typeArgComponent.length) {
-              componentItem[parentKey - 1].children?.push(...typeArgComponent)
-            }
-          })
-        }
-      } else if (
-        reflectionType.refersToTypeParameter &&
-        "typeParameters" in reflectionType
+      const typeArgs = reflectionType.typeArguments
+        ? reflectionType.typeArguments
+        : "typeParameters" in reflectionType
+        ? (reflectionType.typeParameters as TypeParameterReflection[])
+        : undefined
+      if (
+        typeArgs &&
+        !isOnlyVoid(typeArgs as unknown as SomeType[]) &&
+        canRetrieveChildren
       ) {
-        const typeParameters =
-          reflectionType.typeParameters as TypeParameterReflection[]
-        if (
-          !isOnlyVoid(typeParameters as unknown as SomeType[]) &&
-          level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
-        ) {
-          typeParameters.forEach((typeArg) => {
-            if (!typeArg.type) {
-              return
-            }
-            const typeArgComponent = returnReflectionComponentFormatter(
-              typeArg.type,
-              project,
-              undefined,
-              level + 1,
-              maxLevel
-            )
-            if (typeArgComponent.length) {
-              componentItem[parentKey - 1].children?.push(...typeArgComponent)
-            }
+        typeArgs.forEach((typeArg) => {
+          if (!typeArg.type) {
+            return
+          }
+          const typeArgComponent = returnReflectionComponentFormatter({
+            reflectionType:
+              typeArg instanceof TypeParameterReflection
+                ? typeArg.type
+                : typeArg,
+            project,
+            level: level + 1,
+            maxLevel,
           })
-        }
+          if (typeArgComponent.length) {
+            componentItem[parentKey - 1].children?.push(...typeArgComponent)
+          }
+        })
       }
     } else {
       const reflection = (reflectionType.reflection ||
@@ -135,14 +127,13 @@ export function returnReflectionComponentFormatter(
       featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
     })
-    if (level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)) {
-      const elementTypeItem = returnReflectionComponentFormatter(
-        reflectionType.elementType,
+    if (canRetrieveChildren) {
+      const elementTypeItem = returnReflectionComponentFormatter({
+        reflectionType: reflectionType.elementType,
         project,
-        undefined,
-        level + 1,
-        maxLevel
-      )
+        level: level + 1,
+        maxLevel,
+      })
       if (elementTypeItem.length) {
         componentItem[parentKey - 1].children?.push(...elementTypeItem)
       }
@@ -173,15 +164,14 @@ export function returnReflectionComponentFormatter(
     } else {
       pushTo = componentItem
     }
-    if (level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)) {
+    if (canRetrieveChildren) {
       reflectionType.elements.forEach((element) => {
-        const elementTypeItem = returnReflectionComponentFormatter(
-          element,
+        const elementTypeItem = returnReflectionComponentFormatter({
+          reflectionType: element,
           project,
-          undefined,
-          level + 1,
-          maxLevel
-        )
+          level: level + 1,
+          maxLevel,
+        })
         if (elementTypeItem.length) {
           pushTo.push(...elementTypeItem)
         }

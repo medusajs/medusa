@@ -50,9 +50,10 @@ type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
 /**
  * The type of compensation function passed to a step.
  *
- * @typeParam T - The type of the argument passed to the compensation function. Typically, this would be the the output type of a step.
+ * @typeParam T -
+ * The type of the argument passed to the compensation function. If not specified, then it will be the same type as the invocation function's output.
  *
- * @returns There's no expected value to be returned by the compensation function.
+ * @returns There's no expected type to be returned by the compensation function.
  */
 type CompensateFn<T> = (
   /**
@@ -186,7 +187,7 @@ function applyStep<
  *
  * @typeParam TInvokeInput - The type of the expected input parameter to the invocation function.
  * @typeParam TInvokeResultOutput - The type of the expected output parameter of the invocation function.
- * @typeParam TInvokeResultCompensateInput - The type of the expected input parameter to the invocation function.
+ * @typeParam TInvokeResultCompensateInput - The type of the expected input parameter to the compensation function.
  *
  * @returns A step function to be used in a workflow.
  *
@@ -244,7 +245,7 @@ export function createStep<
    */
   name: string,
   /**
-   * An invocation function that will be executed when the step is used. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
+   * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
    */
   invokeFn: InvokeFn<
