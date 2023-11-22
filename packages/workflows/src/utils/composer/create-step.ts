@@ -36,12 +36,16 @@ type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
    * The step's context.
    */
   context: StepExecutionContext
-) => Promise<
-  StepResponse<
-    TOutput,
-    TCompensateInput extends undefined ? TOutput : TCompensateInput
-  >
->
+) =>
+  | void
+  | StepResponse<
+      TOutput,
+      TCompensateInput extends undefined ? TOutput : TCompensateInput
+    >
+  | Promise<void | StepResponse<
+      TOutput,
+      TCompensateInput extends undefined ? TOutput : TCompensateInput
+    >>
 
 /**
  * The type of compensation function passed to a step.
@@ -59,7 +63,7 @@ type CompensateFn<T> = (
    * The step's context.
    */
   context: StepExecutionContext
-) => Promise<unknown>
+) => unknown | Promise<unknown>
 
 interface ApplyStepOptions<
   TStepInputs extends {
