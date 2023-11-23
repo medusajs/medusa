@@ -15,7 +15,7 @@ If a feature flag is enabled/disabled by default, you don’t need to manually e
 
 ## Enable Feature Flags
 
-:::caution
+:::warning
 
 Features guarded by feature flags are experimental and beta features. Enable them with caution.
 

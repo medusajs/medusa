@@ -67,7 +67,7 @@ This shows a table with the Name field editable. Enter a name for the Access Key
 
 Then, two keys will be available under the Key column of the table. The first one is the Access Key ID and the second is the Secret Access Key. Copy both as you’ll use them later.
 
-:::caution
+:::warning
 
 The secret access key will not be shown again after you leave the page. Make sure to copy it when you see it or you’ll need to re-generate a new one.
 
@@ -124,7 +124,7 @@ const plugins = [
 ]
 ```
 
-:::caution
+:::warning
 
 If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
 
