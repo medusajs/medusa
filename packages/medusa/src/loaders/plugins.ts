@@ -42,6 +42,7 @@ import {
 import { RoutesLoader } from "./helpers/routing"
 import { SubscriberLoader } from "./helpers/subscribers"
 import logger from "./logger"
+import { isPricingModuleContextTransformer } from "../interfaces/pricing-module-context"
 
 type Options = {
   rootDirectory: string
@@ -288,6 +289,26 @@ export function registerStrategies(
           })
 
           registeredServices["priceSelectionStrategy"] = file
+        } else {
+          logger.warn(
+            `Cannot register ${file}. A price selection strategy is already registered`
+          )
+        }
+        break
+      }
+
+      case isPricingModuleContextTransformer(module.prototype): {
+        if (
+          !("pricingModuleContextTransformationStrategy" in registeredServices)
+        ) {
+          container.register({
+            pricingModuleContextTransformationStrategy: asFunction(
+              (cradle) => new module(cradle, pluginDetails.options)
+            ).singleton(),
+          })
+
+          registeredServices["pricingModuleContextTransformationStrategy"] =
+            file
         } else {
           logger.warn(
             `Cannot register ${file}. A price selection strategy is already registered`

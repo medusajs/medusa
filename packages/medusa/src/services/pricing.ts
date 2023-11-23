@@ -42,6 +42,7 @@ import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusi
 import { TaxServiceRate } from "../types/tax-service"
 import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
+import { IPricingModuleContextTransformer } from "../interfaces/pricing-module-context"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -50,6 +51,7 @@ type InjectedDependencies = {
   regionService: RegionService
   customerService: CustomerService
   priceSelectionStrategy: IPriceSelectionStrategy
+  pricingModuleContextTransformationStrategy: IPricingModuleContextTransformer
   featureFlagRouter: FlagRouter
   remoteQuery: RemoteQueryFunction
   pricingModuleService: IPricingModuleService
@@ -65,6 +67,8 @@ class PricingService extends TransactionBaseService {
   protected readonly priceSelectionStrategy: IPriceSelectionStrategy
   protected readonly productVariantService: ProductVariantService
   protected readonly featureFlagRouter: FlagRouter
+  // eslint-disable-next-line max-len
+  protected readonly moduleContextTransformationStrategy: IPricingModuleContextTransformer
 
   protected get pricingModuleService(): IPricingModuleService {
     return this.__container__.pricingModuleService
@@ -81,6 +85,7 @@ class PricingService extends TransactionBaseService {
     priceSelectionStrategy,
     featureFlagRouter,
     customerService,
+    pricingModuleContextTransformationStrategy,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -91,6 +96,8 @@ class PricingService extends TransactionBaseService {
     this.productVariantService = productVariantService
     this.customerService_ = customerService
     this.featureFlagRouter = featureFlagRouter
+    this.moduleContextTransformationStrategy =
+      pricingModuleContextTransformationStrategy
   }
 
   /**
@@ -245,11 +252,15 @@ class PricingService extends TransactionBaseService {
 
     let calculatedPrices: CalculatedPriceSet[] = []
 
+    const transformedContext = await this.moduleContextTransformationStrategy
+      .withTransaction(this.activeManager_)
+      .transformContext(queryContext)
+
     if (queryContext.currency_code) {
       calculatedPrices = (await this.pricingModuleService.calculatePrices(
         { id: priceSetIds },
         {
-          context: queryContext as any,
+          context: transformedContext,
         }
       )) as unknown as CalculatedPriceSet[]
     }
