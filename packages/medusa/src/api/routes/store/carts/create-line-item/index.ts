@@ -123,6 +123,14 @@ export default async (req, res) => {
             variant_id: validated.variant_id,
           }
 
+          const relations = [
+            ...defaultStoreCartRelations,
+            "billing_address",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ]
+
           let cart = await cartService.retrieve(cartId, {
             select: ["id", "region_id", "customer_id"],
           })
@@ -139,9 +147,15 @@ export default async (req, res) => {
 
               const txCartService =
                 cartService.withTransaction(transactionManager)
+
               await txCartService.addOrUpdateLineItems(cart.id, line, {
                 validateSalesChannels:
                   featureFlagRouter.isFeatureEnabled("sales_channels"),
+              })
+
+              cart = await txCartService.retrieveWithTotals(cart.id, {
+                select: defaultStoreCartFields,
+                relations,
               })
 
               if (cart.payment_sessions?.length) {
@@ -152,37 +166,25 @@ export default async (req, res) => {
             }
           )
 
-          const relations = [
-            ...defaultStoreCartRelations,
-            "billing_address",
-            "region.payment_providers",
-            "payment_sessions",
-            "customer",
-          ]
-
-          cart = await cartService.retrieveWithTotals(cart.id, {
-            select: defaultStoreCartFields,
-            relations,
-          })
-
           const shouldSetAvailability =
             relations?.some((rel) => rel.includes("variant")) &&
             featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
 
           if (shouldSetAvailability) {
-            await productVariantInventoryService.setVariantAvailability(
-              cart.items.map((i) => i.variant),
-              cart.sales_channel_id!
-            )
+            await productVariantInventoryService
+              .withTransaction(manager)
+              .setVariantAvailability(
+                cart.items.map((i) => i.variant),
+                cart.sales_channel_id!
+              )
           }
 
-          stepOptions.idempotencyKey.response_code = 200
-          stepOptions.idempotencyKey.response_body = { cart }
-          await idempotencyKeyService
+          idempotencyKey = await idempotencyKeyService
             .withTransaction(manager)
-            .update(stepOptions.idempotencyKey.idempotency_key, {
-              response_code: stepOptions.idempotencyKey.response_code,
-              response_body: stepOptions.idempotencyKey.response_body,
+            .update(idempotencyKey.idempotency_key, {
+              recovery_point: CreateLineItemSteps.FINISHED,
+              response_code: 200,
+              response_body: { cart },
             })
         } catch (e) {
           inProgress = false
