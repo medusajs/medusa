@@ -1085,7 +1085,7 @@ You also export the object `config` of type `WidgetConfig`, which is another wid
 To test out your widget, run the following command in the root backend directory:
 
 ```bash
-npx @medusajs/medusa-cli@latest develop
+npx medusa develop
 ```
 
 This command will build your backend and admin, then runs the backend.
