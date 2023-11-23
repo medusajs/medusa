@@ -15,7 +15,6 @@ const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
 
 let isShuttingDown = false
-
 export default async function ({ port, cpus, directory }) {
   if (cluster.isPrimary) {
     const killMainProccess = () => process.exit(0)
@@ -23,8 +22,9 @@ export default async function ({ port, cpus, directory }) {
     cpus ??= os.cpus().length
     const numCPUs = Math.min(os.cpus().length, cpus)
 
-    for (let i = 0; i < numCPUs; i++) {
-      cluster.fork()
+    for (let index = 0; index < numCPUs; index++) {
+      const worker = cluster.fork()
+      worker.send({ index })
     }
 
     cluster.on("exit", (worker) => {
@@ -83,6 +83,12 @@ export default async function ({ port, cpus, directory }) {
       return { dbConnection, server }
     }
 
-    await start()
+    process.on("message", async (msg) => {
+      if (msg.index > 0) {
+        process.env.MEDUSA_ADMIN_UI_SKIP_CACHE = true
+      }
+
+      await start()
+    })
   }
 }
