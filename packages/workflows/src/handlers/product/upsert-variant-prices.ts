@@ -79,8 +79,8 @@ export async function upsertVariantPrices({
 
     for (const price of prices) {
       const region = price.region_id && regionsMap.get(price.region_id)
-      let region_currency_code: string | undefined,
-        region_rules: Record<string, string> | undefined
+      let region_currency_code: string | undefined
+      let region_rules: Record<string, string> | undefined
 
       if (region) {
         region_currency_code = region.currency_code

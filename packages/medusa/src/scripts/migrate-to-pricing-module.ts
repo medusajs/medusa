@@ -1,17 +1,18 @@
-import { CurrencyService, PriceListService } from "../services"
 import { IPricingModuleService, PricingTypes } from "@medusajs/types"
-
+import { promiseAll } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
-import { PriceList } from "../models"
-import { createDefaultRuleTypes } from "./utils/create-default-rule-types"
 import dotenv from "dotenv"
 import express from "express"
 import loaders from "../loaders"
+import Logger from "../loaders/logger"
+import { PriceList } from "../models"
+import { CurrencyService, PriceListService } from "../services"
+import { createDefaultRuleTypes } from "./utils/create-default-rule-types"
 import { migrateProductVariantPricing } from "./utils/migrate-money-amounts-to-pricing-module"
 
 dotenv.config()
 
-const BATCH_SIZE = 10
+const BATCH_SIZE = 1000
 
 const migratePriceLists = async (container: AwilixContainer) => {
   const pricingModuleService: IPricingModuleService = container.resolve(
@@ -24,7 +25,10 @@ const migratePriceLists = async (container: AwilixContainer) => {
 
   const remoteQuery = container.resolve("remoteQuery")
 
-  const [_, totalCount] = await priceListCoreService.listAndCount({})
+  const [_, totalCount] = await priceListCoreService.listAndCount(
+    {},
+    { select: ["id"] }
+  )
 
   while (offset < totalCount) {
     const corePriceLists = await priceListCoreService.list(
@@ -49,17 +53,23 @@ const migratePriceLists = async (container: AwilixContainer) => {
       pricingModulePriceLists.map(({ id }) => id)
     )
 
-    const priceListsToCreate: PriceList[] = corePriceLists.filter(
-      ({ id }) => !priceListIdsToUpdateSet.has(id)
-    )
+    const priceListsToCreate: PriceList[] = []
+    const priceListsToUpdate: PriceList[] = []
+    const variantIds: string[] = []
 
-    const priceListsToUpdate: PriceList[] = corePriceLists.filter(({ id }) =>
-      priceListIdsToUpdateSet.has(id)
-    )
+    for (const corePriceList of corePriceLists) {
+      if (priceListIdsToUpdateSet.has(corePriceList.id)) {
+        priceListsToCreate.push(corePriceList)
+      } else {
+        priceListsToUpdate.push(corePriceList)
+      }
 
-    const variantIds = corePriceLists
-      .map(({ prices }) => prices.map(({ variants }) => variants[0]?.id))
-      .flat()
+      const corePrices = corePriceList.prices || []
+
+      variantIds.push(
+        ...corePrices.map((corePrice) => corePrice.variants?.[0]?.id)
+      )
+    }
 
     const query = {
       product_variant_price_set: {
@@ -73,8 +83,10 @@ const migratePriceLists = async (container: AwilixContainer) => {
     const variantPriceSets = await remoteQuery(query)
 
     const variantIdPriceSetIdMap = new Map<string, string>(
-      variantPriceSets.map((mps) => [mps.variant_id, mps.price_set_id])
+      variantPriceSets.map((vps) => [vps.variant_id, vps.price_set_id])
     )
+
+    const promises: Promise<any>[] = []
 
     if (priceListsToUpdate.length) {
       await pricingModuleService.updatePriceLists(
@@ -94,70 +106,76 @@ const migratePriceLists = async (container: AwilixContainer) => {
         })
       )
 
-      await pricingModuleService.addPriceListPrices(
-        priceListsToUpdate.map((priceList) => {
-          return {
-            priceListId: priceList.id,
-            prices: priceList.prices
-              .filter((price) =>
-                variantIdPriceSetIdMap.has(price.variants?.[0]?.id)
-              )
-              .map((price) => {
-                return {
-                  price_set_id: variantIdPriceSetIdMap.get(
-                    price.variants?.[0]?.id
-                  )!,
-                  currency_code: price.currency_code,
-                  amount: price.amount,
-                  min_quantity: price.min_quantity,
-                  max_quantity: price.max_quantity,
-                }
-              }),
-          }
-        })
-      )
-    }
-
-    if (priceListsToCreate.length) {
-      await pricingModuleService.createPriceLists(
-        priceListsToCreate.map(
-          ({ name: title, prices, customer_groups, ...priceList }) => {
-            const createData: PricingTypes.CreatePriceListDTO = {
-              ...priceList,
-              starts_at: priceList.starts_at?.toISOString(),
-              ends_at: priceList.ends_at?.toISOString(),
-              title,
+      promises.push(
+        pricingModuleService.addPriceListPrices(
+          priceListsToUpdate.map((priceList) => {
+            return {
+              priceListId: priceList.id,
+              prices: priceList.prices
+                .filter((price) =>
+                  variantIdPriceSetIdMap.has(price.variants?.[0]?.id)
+                )
+                .map((price) => {
+                  return {
+                    price_set_id: variantIdPriceSetIdMap.get(
+                      price.variants?.[0]?.id
+                    )!,
+                    currency_code: price.currency_code,
+                    amount: price.amount,
+                    min_quantity: price.min_quantity,
+                    max_quantity: price.max_quantity,
+                  }
+                }),
             }
-
-            if (customer_groups?.length) {
-              createData.rules = {
-                customer_group_id: customer_groups.map(({ id }) => id),
-              }
-            }
-
-            if (prices?.length) {
-              createData.prices = prices.map((price) => {
-                return {
-                  price_set_id: variantIdPriceSetIdMap.get(
-                    price.variants?.[0]?.id
-                  )!,
-                  currency_code: price.currency_code,
-                  amount: price.amount,
-                  min_quantity: price.min_quantity,
-                  max_quantity: price.max_quantity,
-                }
-              })
-            }
-
-            return createData
-          }
+          })
         )
       )
     }
 
+    if (priceListsToCreate.length) {
+      promises.push(
+        pricingModuleService.createPriceLists(
+          priceListsToCreate.map(
+            ({ name: title, prices, customer_groups, ...priceList }) => {
+              const createData: PricingTypes.CreatePriceListDTO = {
+                ...priceList,
+                starts_at: priceList.starts_at?.toISOString(),
+                ends_at: priceList.ends_at?.toISOString(),
+                title,
+              }
+
+              if (customer_groups?.length) {
+                createData.rules = {
+                  customer_group_id: customer_groups.map(({ id }) => id),
+                }
+              }
+
+              if (prices?.length) {
+                createData.prices = prices.map((price) => {
+                  return {
+                    price_set_id: variantIdPriceSetIdMap.get(
+                      price.variants?.[0]?.id
+                    )!,
+                    currency_code: price.currency_code,
+                    amount: price.amount,
+                    min_quantity: price.min_quantity,
+                    max_quantity: price.max_quantity,
+                  }
+                })
+              }
+
+              return createData
+            }
+          )
+        )
+      )
+    }
+
+    await promiseAll(promises)
+
     offset += corePriceLists.length
 
-    console.log(`Processed ${offset} of ${totalCount}`)
+    Logger.info(`Processed ${offset} of ${totalCount}`)
   }
 }
 
@@ -197,36 +215,36 @@ const migrate = async function ({ directory }) {
     isTest: false,
   })
 
-  console.log("-----------------------------------------------")
-  console.log("------------- Creating currencies -------------")
-  console.log("-----------------------------------------------")
+  Logger.info("-----------------------------------------------")
+  Logger.info("------------- Creating currencies -------------")
+  Logger.info("-----------------------------------------------")
   await ensureCurrencies(container)
 
-  console.log("-----------------------------------------------")
-  console.log("--------- Creating default rule types ---------")
-  console.log("-----------------------------------------------")
+  Logger.info("-----------------------------------------------")
+  Logger.info("--------- Creating default rule types ---------")
+  Logger.info("-----------------------------------------------")
   await createDefaultRuleTypes(container)
 
-  console.log("-----------------------------------------------")
-  console.log("---------- Migrating Variant Prices -----------")
-  console.log("-----------------------------------------------")
+  Logger.info("-----------------------------------------------")
+  Logger.info("---------- Migrating Variant Prices -----------")
+  Logger.info("-----------------------------------------------")
 
   await migrateProductVariantPricing(container)
 
-  console.log("-----------------------------------------------")
-  console.log("----------- Migrating Price Lists -------------")
-  console.log("-----------------------------------------------")
+  Logger.info("-----------------------------------------------")
+  Logger.info("----------- Migrating Price Lists -------------")
+  Logger.info("-----------------------------------------------")
 
   return await migratePriceLists(container)
 }
 
 migrate({ directory: process.cwd() })
   .then(() => {
-    console.log("Migrated price lists")
+    Logger.info("Migrated price lists")
     process.exit(0)
   })
   .catch((error) => {
     console.warn(error)
-    console.log("Failed to migrate price lists")
+    Logger.info("Failed to migrate price lists")
     process.exit(1)
   })
