@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { PriceList } from "../models/price-list"
-import { DateComparisonOperator, FindConfig } from "./common"
+import { DateComparisonOperator } from "./common"
 import { XorConstraint } from "./validators/xor"
 
 /**

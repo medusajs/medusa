@@ -11,6 +11,7 @@ import { MedusaModule } from "@medusajs/modules-sdk"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { Workflows } from "../definitions"
+import { SymbolWorkflowWorkflowData } from "../utils/composer"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData
@@ -26,7 +27,7 @@ export type WorkflowResult<TResult = unknown> = {
 }
 
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
-  workflowId: Workflows,
+  workflowId: Workflows | string,
   defaultResult?: string,
   dataPreparation?: (data: TData) => Promise<unknown>
 ) => {
@@ -63,7 +64,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
       if (typeof dataPreparation === "function") {
         try {
-          const copyInput = JSON.parse(JSON.stringify(input))
+          const copyInput = input ? JSON.parse(JSON.stringify(input)) : input
           input = await dataPreparation(copyInput as TData)
         } catch (err) {
           if (throwOnError) {
@@ -97,11 +98,13 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
       if (resultFrom) {
         if (Array.isArray(resultFrom)) {
-          result = resultFrom.map(
-            (from) => transaction.getContext().invoke?.[from]
-          )
+          result = resultFrom.map((from) => {
+            const res = transaction.getContext().invoke?.[from]
+            return res?.__type === SymbolWorkflowWorkflowData ? res.output : res
+          })
         } else {
-          result = transaction.getContext().invoke?.[resultFrom]
+          const res = transaction.getContext().invoke?.[resultFrom]
+          result = res?.__type === SymbolWorkflowWorkflowData ? res.output : res
         }
       }
 

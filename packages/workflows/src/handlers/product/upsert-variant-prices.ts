@@ -23,11 +23,9 @@ type HandlerInput = {
 
 export async function upsertVariantPrices({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInput>) {
   const { variantPricesMap } = data
-
   const featureFlagRouter = container.resolve("featureFlagRouter")
 
   if (!featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
@@ -80,29 +78,34 @@ export async function upsertVariantPrices({
     )
 
     for (const price of prices) {
+      const region = price.region_id && regionsMap.get(price.region_id)
+      let region_currency_code: string | undefined
+      let region_rules: Record<string, string> | undefined
+
+      if (region) {
+        region_currency_code = region.currency_code
+        region_rules = {
+          region_id: region.id,
+        }
+      }
+
       if (price.id) {
-        moneyAmountsToUpdate.push({
+        const priceToUpdate = {
           id: price.id,
           min_quantity: price.min_quantity,
           max_quantity: price.max_quantity,
           amount: price.amount,
-          currency_code: price.currency_code,
-        })
+          currency_code: region_currency_code ?? price.currency_code,
+        }
+
+        moneyAmountsToUpdate.push(priceToUpdate)
       } else {
-        const region = price.region_id && regionsMap.get(price.region_id)
         const variantPrice: PricingTypes.CreatePricesDTO = {
           min_quantity: price.min_quantity,
           max_quantity: price.max_quantity,
           amount: price.amount,
-          currency_code: price.currency_code,
-          rules: {},
-        }
-
-        if (region) {
-          variantPrice.currency_code = region.currency_code
-          variantPrice.rules = {
-            region_id: region.id,
-          }
+          currency_code: region_currency_code ?? price.currency_code,
+          rules: region_rules ?? {},
         }
 
         delete price.region_id
@@ -129,16 +132,16 @@ export async function upsertVariantPrices({
       priceSetId = createdPriceSet?.id
 
       createdPriceSets.push(createdPriceSet)
-    }
 
-    linksToCreate.push({
-      productService: {
-        variant_id: variantId,
-      },
-      pricingService: {
-        price_set_id: priceSetId,
-      },
-    })
+      linksToCreate.push({
+        productService: {
+          variant_id: variantId,
+        },
+        pricingService: {
+          price_set_id: priceSetId,
+        },
+      })
+    }
   }
 
   const createdLinks = await remoteLink.create(linksToCreate)

@@ -5,7 +5,6 @@ import {
   PageEvent,
   ProjectReflection,
   Reflection,
-  ReflectionGroup,
   ReflectionKind,
   RenderTemplate,
   Renderer,
@@ -359,22 +358,45 @@ export class MarkdownTheme extends Theme {
     this.location = page.url
     this.reflection =
       page.model instanceof DeclarationReflection ? page.model : undefined
-    const options = this.getFormattingOptionsForLocation()
-    if (this.reflection && this.reflection.groups) {
-      // filter out unwanted groups
-      const tempGroups: ReflectionGroup[] = []
-      this.reflection.groups.forEach((reflectionGroup) => {
-        if (
-          !options.reflectionGroups ||
-          !(reflectionGroup.title in options.reflectionGroups) ||
-          options.reflectionGroups[reflectionGroup.title]
-        ) {
-          tempGroups.push(reflectionGroup)
-        }
-      })
 
-      this.reflection.groups = tempGroups
+    if (
+      page.model instanceof DeclarationReflection ||
+      page.model instanceof ProjectReflection
+    ) {
+      this.removeGroups(page.model)
     }
+
+    if (
+      this.reflection instanceof DeclarationReflection &&
+      this.reflection.signatures
+    ) {
+      // check if any of its signature has the `@mainSignature` tag
+      // and if so remove other signatures
+      const mainSignatureIndex = this.reflection.signatures.findIndex(
+        (signature) => signature.comment?.hasModifier("@mainSignature")
+      )
+
+      if (mainSignatureIndex !== -1) {
+        const mainSignature = this.reflection.signatures[mainSignatureIndex]
+        this.reflection.signatures = [mainSignature]
+      }
+    }
+  }
+
+  protected removeGroups(model?: DeclarationReflection | ProjectReflection) {
+    if (!model?.groups) {
+      return
+    }
+
+    const options = this.getFormattingOptionsForLocation()
+
+    model.groups = model.groups.filter((reflectionGroup) => {
+      return (
+        !options.reflectionGroups ||
+        !(reflectionGroup.title in options.reflectionGroups) ||
+        options.reflectionGroups[reflectionGroup.title]
+      )
+    })
   }
 
   get globalsFile() {

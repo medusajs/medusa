@@ -63,7 +63,7 @@ To generate access keys for your plugin:
 3. This will open a new form with randomly-generated keys. Click on the Create button.
 4. A pop-up will then show the value for your Access Key and Secret Key. Copy them to use in the next section.
 
-:::caution
+:::warning
 
 You will not be able to access the Secret Key after closing the pop-up. So, make sure to store it somewhere to use later when configuring the plugin.
 
@@ -107,7 +107,7 @@ const plugins = [
 ]
 ```
 
-:::caution
+:::warning
 
 If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
 

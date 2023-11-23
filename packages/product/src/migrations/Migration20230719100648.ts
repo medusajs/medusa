@@ -8,8 +8,11 @@ export class Migration20230719100648 extends Migration {
     this.addSql(
       'create index IF NOT EXISTS "IDX_product_category_path" on "product_category" ("mpath");'
     )
+
+    this.addSql('DROP INDEX IF EXISTS "IDX_product_category_handle";')
+
     this.addSql(
-      'alter table "product_category" add constraint "IDX_product_category_handle" unique ("handle");'
+      'alter table "product_category" ADD CONSTRAINT "IDX_product_category_handle" unique ("handle");'
     )
 
     this.addSql(
