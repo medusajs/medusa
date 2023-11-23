@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import "dotenv/config"
 import fs from "fs"
+import path from "path"
 import { themes as prismThemes } from "prism-react-renderer"
 const reverseSidebarItems = require("./src/utils/reverse-sidebar")
 const excludeSidebarResults = require("./src/utils/exclude-sidebar-results")
@@ -24,6 +25,7 @@ const config = {
       admonitions: false,
       headingIds: false,
     },
+    mermaid: true,
   },
   plugins: [
     require.resolve("docusaurus-plugin-image-zoom"),
@@ -62,7 +64,15 @@ const config = {
         },
       }
     },
+    [
+      "./src/plugins/docusaurus-plugin-diagram2code-showcase",
+      {
+        directoryPath: path.join(__dirname, "diagrams"),
+        outputPath: path.join(__dirname, "src", "utils"),
+      },
+    ],
   ],
+  themes: ["@docusaurus/theme-mermaid"],
   themeConfig: {
     image: "img/docs-meta.jpg",
     colorMode: {
