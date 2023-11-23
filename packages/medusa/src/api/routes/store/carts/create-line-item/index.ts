@@ -160,6 +160,11 @@ export default async (req, res) => {
             "customer",
           ]
 
+          cart = await cartService.retrieveWithTotals(cart.id, {
+            select: defaultStoreCartFields,
+            relations,
+          })
+
           const shouldSetAvailability =
             relations?.some((rel) => rel.includes("variant")) &&
             featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
@@ -170,11 +175,6 @@ export default async (req, res) => {
               cart.sales_channel_id!
             )
           }
-
-          cart = await cartService.retrieveWithTotals(cart.id, {
-            select: defaultStoreCartFields,
-            relations,
-          })
 
           idempotencyKey.response_code = 200
           idempotencyKey.response_body = { cart }
