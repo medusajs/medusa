@@ -114,56 +114,56 @@ export default async (req, res) => {
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
       case CreateLineItemSteps.STARTED: {
-        const cartId = id
-        const data = {
-          customer_id: customerId,
-          metadata: validated.metadata,
-          quantity: validated.quantity,
-          variant_id: validated.variant_id,
-        }
+        try {
+          const cartId = id
+          const data = {
+            customer_id: customerId,
+            metadata: validated.metadata,
+            quantity: validated.quantity,
+            variant_id: validated.variant_id,
+          }
 
-        let cart = await cartService.retrieve(cartId, {
-          select: ["id", "region_id", "customer_id"],
-        })
-
-        const line = await lineItemService
-          .withTransaction(manager)
-          .generate(data.variant_id, cart.region_id, data.quantity, {
-            customer_id: data.customer_id || cart.customer_id,
-            metadata: data.metadata,
+          let cart = await cartService.retrieve(cartId, {
+            select: ["id", "region_id", "customer_id"],
           })
 
-        await manager.transaction(
-          stepOptions.isolationLevel,
-          async (transactionManager) => {
-            const txCartService =
-              cartService.withTransaction(transactionManager)
-            await txCartService.addOrUpdateLineItems(cart.id, line, {
-              validateSalesChannels:
-                featureFlagRouter.isFeatureEnabled("sales_channels"),
-            })
+          await manager.transaction(
+            stepOptions.isolationLevel,
+            async (transactionManager) => {
+              const line = await lineItemService
+                .withTransaction(transactionManager)
+                .generate(data.variant_id, cart.region_id, data.quantity, {
+                  customer_id: data.customer_id || cart.customer_id,
+                  metadata: data.metadata,
+                })
 
-            if (cart.payment_sessions?.length) {
-              await txCartService.setPaymentSessions(
-                cart as WithRequiredProperty<Cart, "total">
-              )
+              const txCartService =
+                cartService.withTransaction(transactionManager)
+              await txCartService.addOrUpdateLineItems(cart.id, line, {
+                validateSalesChannels:
+                  featureFlagRouter.isFeatureEnabled("sales_channels"),
+              })
+
+              if (cart.payment_sessions?.length) {
+                await txCartService.setPaymentSessions(
+                  cart as WithRequiredProperty<Cart, "total">
+                )
+              }
             }
-          }
-        )
+          )
 
-        const relations = [
-          ...defaultStoreCartRelations,
-          "billing_address",
-          "region.payment_providers",
-          "payment_sessions",
-          "customer",
-        ]
+          const relations = [
+            ...defaultStoreCartRelations,
+            "billing_address",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ]
 
-        const shouldSetAvailability =
-          relations?.some((rel) => rel.includes("variant")) &&
-          featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
+          const shouldSetAvailability =
+            relations?.some((rel) => rel.includes("variant")) &&
+            featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
 
-        try {
           if (shouldSetAvailability) {
             await productVariantInventoryService.setVariantAvailability(
               cart.items.map((i) => i.variant),
