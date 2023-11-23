@@ -176,12 +176,14 @@ export default async (req, res) => {
             )
           }
 
-          idempotencyKey.response_code = 200
-          idempotencyKey.response_body = { cart }
-          await idempotencyKeyService.update(idempotencyKey.id, {
-            response_code: idempotencyKey.response_code,
-            response_body: idempotencyKey.response_body,
-          })
+          stepOptions.idempotencyKey.response_code = 200
+          stepOptions.idempotencyKey.response_body = { cart }
+          await idempotencyKeyService
+            .withTransaction(manager)
+            .update(stepOptions.idempotencyKey.idempotency_key, {
+              response_code: stepOptions.idempotencyKey.response_code,
+              response_body: stepOptions.idempotencyKey.response_body,
+            })
         } catch (e) {
           inProgress = false
           err = e
