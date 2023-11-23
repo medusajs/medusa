@@ -19,5 +19,8 @@
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.3",
     "turbo": "latest"
+  },
+  "resolutions": {
+    "@medusajs/workflows": "portal:/Users/shahednasser/medusa/packages/workflows"
   }
 }
