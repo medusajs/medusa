@@ -170,6 +170,8 @@ describe("ProductModuleService products", function () {
         thumbnail: images[0],
       })
 
+      const variantTitle = data.variants[0].title
+
       const updateData = {
         ...data,
         id: productOne.id,
@@ -191,10 +193,14 @@ describe("ProductModuleService products", function () {
         ],
       })
 
+      const createdVariant = product.variants.find(
+        (v) => v.title === variantTitle
+      )
+
       expect(product.images).toHaveLength(1)
-      expect(product.variants[0].options).toHaveLength(1)
+      expect(createdVariant?.options).toHaveLength(1)
       expect(product.tags).toHaveLength(1)
-      expect(product.variants).toHaveLength(1)
+      expect(product.variants).toHaveLength(2)
 
       expect(product).toEqual(
         expect.objectContaining({

@@ -1857,6 +1857,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminCurrenciesListRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /admin/currencies/{code}:
     post:
       operationId: PostCurrenciesCurrency
@@ -1917,6 +1929,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminCurrenciesRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /admin/customer-groups:
     get:
       operationId: GetCustomerGroups
@@ -25228,6 +25252,15 @@ components:
         rank:
           type: number
           description: The rank of the category in the tree node (starting from 0)
+        metadata:
+          description: An optional set of key-value pairs to hold additional information.
+          type: object
+          externalDocs:
+            description: >-
+              Learn about the metadata attribute, and how to delete and update
+              it.
+            url: >-
+              https://docs.medusajs.com/development/entities/overview#metadata-attribute
     AdminPostProductCategoriesReq:
       type: object
       required:
@@ -25258,6 +25291,15 @@ components:
         parent_category_id:
           type: string
           description: The ID of the parent product category
+        metadata:
+          description: An optional set of key-value pairs to hold additional information.
+          type: object
+          externalDocs:
+            description: >-
+              Learn about the metadata attribute, and how to delete and update
+              it.
+            url: >-
+              https://docs.medusajs.com/development/entities/overview#metadata-attribute
     AdminPostProductsProductMetadataReq:
       type: object
       required:
@@ -32975,6 +33017,7 @@ components:
         - id
         - is_active
         - is_internal
+        - metadata
         - mpath
         - name
         - parent_category_id
@@ -33047,6 +33090,18 @@ components:
           description: The date with timezone at which the resource was updated.
           type: string
           format: date-time
+        metadata:
+          description: An optional key-value map with additional details
+          nullable: true
+          type: object
+          example:
+            car: white
+          externalDocs:
+            description: >-
+              Learn about the metadata attribute, and how to delete and update
+              it.
+            url: >-
+              https://docs.medusajs.com/development/entities/overview#metadata-attribute
     ProductCollection:
       title: Product Collection
       description: >-

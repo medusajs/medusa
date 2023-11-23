@@ -11,7 +11,7 @@ export default function AdmonitionIconNote({
     <InformationCircleSolid
       {...props}
       className={clsx(
-        "inline-block mr-0.125 text-medusa-tag-blue-icon",
+        "inline-block mr-0.125 text-medusa-tag-neutral-icon",
         className
       )}
     />

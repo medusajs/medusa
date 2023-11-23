@@ -31,8 +31,7 @@ export default function (theme: MarkdownTheme) {
           (reflection.parent?.kindOf(ReflectionKind.Enum) ? " = " : ": ") +
           Handlebars.helpers.type.call(
             reflectionType ? reflectionType : reflection,
-            "object",
-            false
+            "object"
           )
         )
       }

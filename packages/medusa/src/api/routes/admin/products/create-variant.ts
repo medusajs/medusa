@@ -1,7 +1,6 @@
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { CreateProductVariants } from "@medusajs/workflows"
 import {
   IsArray,
   IsBoolean,
@@ -11,19 +10,22 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-
-import { EntityManager } from "typeorm"
-import { IInventoryService } from "@medusajs/types"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 import { Type } from "class-transformer"
-import { createVariantsTransaction } from "./transaction/create-product-variant"
+import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { getProductWithIsolatedProductModule } from "./get-product"
+import { createVariantsTransaction } from "./transaction/create-product-variant"
 
 /**
  * @oas [post] /admin/products/{id}/variants
@@ -122,6 +124,8 @@ export default async (req, res) => {
     req.body
   )
 
+  const manager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const inventoryService: IInventoryService | undefined =
     req.scope.resolve("inventoryService")
   const productVariantInventoryService: ProductVariantInventoryService =
@@ -129,29 +133,56 @@ export default async (req, res) => {
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-
-  const manager: EntityManager = req.scope.resolve("manager")
-
-  await manager.transaction(async (transactionManager) => {
-    await createVariantsTransaction(
-      {
-        manager: transactionManager,
-        inventoryService,
-        productVariantInventoryService,
-        productVariantService,
-      },
-      id,
-      [validated as CreateProductVariantInput]
-    )
-  })
-
-  const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  let rawProduct
 
-  const rawProduct = await productService.retrieve(id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const createVariantsWorkflow = CreateProductVariants.createProductVariants(
+      req.scope
+    )
+
+    const input = {
+      productVariants: [
+        {
+          product_id: id,
+          ...validated,
+        },
+      ] as WorkflowTypes.ProductWorkflow.CreateProductVariantsInputDTO[],
+    }
+
+    await createVariantsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    rawProduct = await getProductWithIsolatedProductModule(
+      req,
+      id,
+      req.retrieveConfig
+    )
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await createVariantsTransaction(
+        {
+          manager: transactionManager,
+          inventoryService,
+          productVariantInventoryService,
+          productVariantService,
+        },
+        id,
+        [validated as CreateProductVariantInput]
+      )
+    })
+
+    const productService: ProductService = req.scope.resolve("productService")
+
+    rawProduct = await productService.retrieve(id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+  }
 
   const [product] = await pricingService.setAdminProductPricing([rawProduct])
 

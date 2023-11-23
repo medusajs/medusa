@@ -46,7 +46,7 @@ async function createInventoryItem (item: {
     "children": [
       {
         "name": "description",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The description of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -55,7 +55,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "height",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The height of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -64,7 +64,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "hs_code",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The HS code of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -73,7 +73,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "length",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The length of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -82,7 +82,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "material",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The material of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -91,7 +91,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| `Record<string, unknown>`",
+        "type": "`null` \\| `Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -100,7 +100,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "mid_code",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The MID code of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -109,7 +109,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "origin_country",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The origin country of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -119,7 +119,7 @@ async function createInventoryItem (item: {
       {
         "name": "requires_shipping",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the inventory item requires shipping.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -127,7 +127,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "sku",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The SKU of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -136,7 +136,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "thumbnail",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The thumbnail of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -145,7 +145,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "title",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The title of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -154,7 +154,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "weight",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The weight of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -163,7 +163,7 @@ async function createInventoryItem (item: {
       },
       {
         "name": "width",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The width of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -232,7 +232,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "deleted_at",
-            "type": "`string` \\| `Date` \\| ``null``",
+            "type": "`string` \\| `Date` \\| `null`",
             "description": "The date with timezone at which the resource was deleted.",
             "optional": false,
             "defaultValue": "",
@@ -241,7 +241,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "description",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "Description of the inventory item",
             "optional": true,
             "defaultValue": "",
@@ -250,7 +250,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "height",
-            "type": "`number` \\| ``null``",
+            "type": "`number` \\| `null`",
             "description": "The height of the Inventory Item. May be used in shipping rate calculations.",
             "optional": true,
             "defaultValue": "",
@@ -259,7 +259,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "hs_code",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
             "optional": true,
             "defaultValue": "",
@@ -277,7 +277,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "length",
-            "type": "`number` \\| ``null``",
+            "type": "`number` \\| `null`",
             "description": "The length of the Inventory Item. May be used in shipping rate calculations.",
             "optional": true,
             "defaultValue": "",
@@ -286,7 +286,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "material",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
             "optional": true,
             "defaultValue": "",
@@ -295,7 +295,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "metadata",
-            "type": "`Record<string, unknown>` \\| ``null``",
+            "type": "`Record<string, unknown>` \\| `null`",
             "description": "An optional key-value map with additional details",
             "optional": true,
             "defaultValue": "",
@@ -304,7 +304,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "mid_code",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
             "optional": true,
             "defaultValue": "",
@@ -313,7 +313,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "origin_country",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
             "optional": true,
             "defaultValue": "",
@@ -331,7 +331,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "sku",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The Stock Keeping Unit (SKU) code of the Inventory Item.",
             "optional": true,
             "defaultValue": "",
@@ -340,7 +340,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "thumbnail",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "Thumbnail for the inventory item",
             "optional": true,
             "defaultValue": "",
@@ -349,7 +349,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "title",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "Title of the inventory item",
             "optional": true,
             "defaultValue": "",
@@ -367,7 +367,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "weight",
-            "type": "`number` \\| ``null``",
+            "type": "`number` \\| `null`",
             "description": "The weight of the Inventory Item. May be used in shipping rate calculations.",
             "optional": true,
             "defaultValue": "",
@@ -376,7 +376,7 @@ async function createInventoryItem (item: {
           },
           {
             "name": "width",
-            "type": "`number` \\| ``null``",
+            "type": "`number` \\| `null`",
             "description": "The width of the Inventory Item. May be used in shipping rate calculations.",
             "optional": true,
             "defaultValue": "",

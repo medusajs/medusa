@@ -89,7 +89,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "productRepository_",
-    "type": "Repository&#60;[Product](Product.mdx)&#62; & `&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;`",
+    "type": "Repository&#60;[Product](Product.mdx)&#62; & ``{ _applyCategoriesQuery: Method _applyCategoriesQuery ; _findWithRelations: Method _findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -116,7 +116,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "shippingProfileRepository_",
-    "type": "Repository&#60;[ShippingProfile](ShippingProfile.mdx)&#62; & `&#123; findByProducts: Method findByProducts  &#125;`",
+    "type": "Repository&#60;[ShippingProfile](ShippingProfile.mdx)&#62; & ``{ findByProducts: Method findByProducts  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -675,7 +675,7 @@ Removes a product or an array of products from the profile.
 <ParameterTypes parameters={[
   {
     "name": "profileId",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "the profile to add the products to.",
     "optional": false,
     "defaultValue": "",
@@ -761,16 +761,16 @@ ___
 
 ### retrieveDefault
 
-`**retrieveDefault**(): Promise&#60;`null` \| [ShippingProfile](ShippingProfile.mdx)&#62;`
+`**retrieveDefault**(): Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;`
 
 #### Returns
 
-Promise&#60;`null` \| [ShippingProfile](ShippingProfile.mdx)&#62;
+Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;`null` \\| [ShippingProfile](ShippingProfile.mdx)&#62;",
+    "type": "Promise&#60;null \\| [ShippingProfile](ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -819,18 +819,18 @@ ___
 
 ### retrieveGiftCardDefault
 
-`**retrieveGiftCardDefault**(): Promise&#60;`null` \| [ShippingProfile](ShippingProfile.mdx)&#62;`
+`**retrieveGiftCardDefault**(): Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Retrieves the default gift card profile
 
 #### Returns
 
-Promise&#60;`null` \| [ShippingProfile](ShippingProfile.mdx)&#62;
+Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;`null` \\| [ShippingProfile](ShippingProfile.mdx)&#62;",
+    "type": "Promise&#60;null \\| [ShippingProfile](ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the shipping profile for gift cards",
@@ -850,7 +850,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",

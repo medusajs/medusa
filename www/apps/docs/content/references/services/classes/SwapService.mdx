@@ -318,7 +318,7 @@ EntityManager
 <ParameterTypes parameters={[
   {
     "name": "returnItems",
-    "type": "[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Partial](../types/Partial.mdx)&#60;[ReturnItem](ReturnItem.mdx)&#62;, `\"item_id\"`&#62;[]",
+    "type": "[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Partial](../types/Partial.mdx)&#60;[ReturnItem](ReturnItem.mdx)&#62;, \"item_id\"&#62;[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -523,7 +523,7 @@ and an optional return shipping method.
   },
   {
     "name": "returnItems",
-    "type": "[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Partial](../types/Partial.mdx)&#60;[ReturnItem](ReturnItem.mdx)&#62;, `\"item_id\"`&#62;[]",
+    "type": "[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Partial](../types/Partial.mdx)&#60;[ReturnItem](ReturnItem.mdx)&#62;, \"item_id\"&#62;[]",
     "description": "the items to return in the swap",
     "optional": false,
     "defaultValue": "",
@@ -532,7 +532,7 @@ and an optional return shipping method.
   },
   {
     "name": "additionalItems",
-    "type": "[Pick](../types/Pick.mdx)&#60;[LineItem](LineItem.mdx), `\"variant_id\"` \\| `\"quantity\"`&#62;[]",
+    "type": "[Pick](../types/Pick.mdx)&#60;[LineItem](LineItem.mdx), \"variant_id\" \\| \"quantity\"&#62;[]",
     "description": "the items to send to the customer",
     "optional": true,
     "defaultValue": "",
@@ -654,7 +654,7 @@ swap.
   },
   {
     "name": "customShippingOptions",
-    "type": "`&#123; option_id: string ; price: number  &#125;`[]",
+    "type": "``{ option_id: string ; price: number  }``[]",
     "description": "the shipping options",
     "optional": false,
     "defaultValue": "[]",
@@ -776,7 +776,7 @@ Marks a fulfillment as shipped and attaches tracking numbers.
   },
   {
     "name": "trackingLinks",
-    "type": "`&#123; tracking_number: string  &#125;`[]",
+    "type": "``{ tracking_number: string  }``[]",
     "description": "the tracking numbers associated with the shipment",
     "optional": true,
     "defaultValue": "",
@@ -1088,7 +1088,7 @@ Retrieves a swap with the given id.
   },
   {
     "name": "config",
-    "type": "[Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, `\"select\"`&#62; & `&#123; select?: string[]  &#125;`",
+    "type": "[Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, \"select\"&#62; & ``{ select?: string[]  }``",
     "description": "the configuration to retrieve the swap",
     "optional": false,
     "defaultValue": "{}",
@@ -1171,7 +1171,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1200,7 +1200,7 @@ ___
 
 ### transformQueryForCart
 
-`Protected **transformQueryForCart**(config): [Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, `"select"`&#62; & &#123; select?: string[]  &#125; & &#123; cartRelations: undefined \| string[] ; cartSelects: undefined \| keyof [Cart](Cart.mdx)[]  &#125;`
+`Protected **transformQueryForCart**(config): [Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, "select"&#62; & &#123; select?: string[]  &#125; & &#123; cartRelations: undefined \| string[] ; cartSelects: undefined \| keyof [Cart](Cart.mdx)[]  &#125;`
 
 Transform find config object for retrieval.
 
@@ -1209,7 +1209,7 @@ Transform find config object for retrieval.
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, `\"select\"`&#62; & `&#123; select?: string[]  &#125;`",
+    "type": "[Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, \"select\"&#62; & ``{ select?: string[]  }``",
     "description": "parsed swap find config",
     "optional": false,
     "defaultValue": "",
@@ -1220,12 +1220,12 @@ Transform find config object for retrieval.
 
 #### Returns
 
-[Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, `"select"`&#62; & `&#123; select?: string[]  &#125;` & `&#123; cartRelations: undefined \| string[] ; cartSelects: undefined \| keyof [Cart](Cart.mdx)[]  &#125;`
+[Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, "select"&#62; & ``{ select?: string[]  }`` & ``{ cartRelations: undefined \| string[] ; cartSelects: undefined \| keyof [Cart](Cart.mdx)[]  }``
 
 <ParameterTypes parameters={[
   {
-    "name": "Omit&#60;FindConfig&#60;Swap&#62;, `\"select\"`&#62; & &#123; select?: string[]  &#125; & &#123; cartRelations: undefined \\| string[] ; cartSelects: undefined \\| keyof Cart[]  &#125;",
-    "type": "[Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, `\"select\"`&#62; & `&#123; select?: string[]  &#125;` & `&#123; cartRelations: undefined \\| string[] ; cartSelects: undefined \\| keyof [Cart](Cart.mdx)[]  &#125;`",
+    "name": "Omit&#60;FindConfig&#60;Swap&#62;, \"select\"&#62; & &#123; select?: string[]  &#125; & &#123; cartRelations: undefined \\| string[] ; cartSelects: undefined \\| keyof Cart[]  &#125;",
+    "type": "[Omit](../types/Omit.mdx)&#60;[FindConfig](../interfaces/FindConfig.mdx)&#60;[Swap](Swap.mdx)&#62;, \"select\"&#62; & ``{ select?: string[]  }`` & ``{ cartRelations: undefined \\| string[] ; cartSelects: undefined \\| keyof [Cart](Cart.mdx)[]  }``",
     "optional": true,
     "defaultValue": "",
     "description": "transformed find swap config",

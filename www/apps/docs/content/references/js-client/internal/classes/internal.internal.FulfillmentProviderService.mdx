@@ -298,7 +298,7 @@ ___
   },
   {
     "name": "fulfillment",
-    "type": "[Omit](../types/internal.Omit.mdx)&#60;[Fulfillment](internal.Fulfillment.mdx), `\"beforeInsert\"`&#62;",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[Fulfillment](internal.Fulfillment.mdx), \"beforeInsert\"&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -464,7 +464,7 @@ Fetches documents from the fulfillment provider
   },
   {
     "name": "documentType",
-    "type": "``\"label\"`` \\| ``\"invoice\"``",
+    "type": "`\"label\"` \\| `\"invoice\"`",
     "description": "the typ of",
     "optional": false,
     "defaultValue": "",
@@ -528,7 +528,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",

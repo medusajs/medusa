@@ -1185,6 +1185,77 @@ describe("PricingModule Service - Calculate Price", () => {
         ])
       })
 
+      it("should return best price list price first when price list conditions match", async () => {
+        await createPriceLists(service)
+        await createPriceLists(
+          service,
+          {},
+          {},
+          defaultPriceListPrices.map((price) => {
+            return { ...price, amount: price.amount / 2 }
+          })
+        )
+
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR", "price-set-PLN"] },
+          {
+            context: {
+              currency_code: "PLN",
+              region_id: "DE",
+              customer_group_id: "vip-customer-group-id",
+              company_id: "medusa-company-id",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
+            currency_code: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+          },
+          {
+            id: "price-set-PLN",
+            is_calculated_price_price_list: true,
+            calculated_amount: 116,
+            is_original_price_price_list: false,
+            original_amount: 400,
+            currency_code: "PLN",
+            calculated_price: {
+              money_amount_id: expect.any(String),
+              price_list_id: expect.any(String),
+              price_list_type: "sale",
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: expect.any(String),
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: 1,
+              max_quantity: 5,
+            },
+          },
+        ])
+      })
+
       it("should return price list prices when price list dont have rules, but context is loaded", async () => {
         await createPriceLists(service, {}, {})
 

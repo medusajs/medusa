@@ -9,6 +9,7 @@ import middlewares, {
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
 } from "../products"
 
 import { FlagRouter } from "@medusajs/utils"
@@ -84,6 +85,50 @@ export default (app, featureFlagRouter: FlagRouter) => {
   )
 
   return app
+}
+
+export const defaultAdminPriceListRemoteQueryObject = {
+  fields: [
+    "created_at",
+    "deleted_at",
+    "description",
+    "ends_at",
+    "id",
+    "title",
+    "starts_at",
+    "status",
+    "type",
+    "updated_at",
+  ],
+  price_list_rules: {
+    price_list_rule_values: {
+      fields: ["value"],
+    },
+    rule_type: {
+      fields: ["rule_attribute"],
+    },
+  },
+  price_set_money_amounts: {
+    money_amount: {
+      fields: [
+        "id",
+        "currency_code",
+        "amount",
+        "min_quantity",
+        "max_quantity",
+        "created_at",
+        "deleted_at",
+        "updated_at",
+      ],
+    },
+    price_set: {
+      variant_link: {
+        variant: {
+          fields: defaultAdminProductRemoteQueryObject.variants.fields,
+        },
+      },
+    },
+  },
 }
 
 export const defaultAdminPriceListFields = [

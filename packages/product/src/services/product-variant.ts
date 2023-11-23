@@ -1,14 +1,14 @@
-import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { ProductVariantRepository } from "@repositories"
 import {
   InjectManager,
   InjectTransactionManager,
-  isString,
   MedusaContext,
   ModulesSdkUtils,
+  isString,
   retrieveEntity,
 } from "@medusajs/utils"
+import { Product, ProductVariant } from "@models"
+import { ProductVariantRepository } from "@repositories"
 
 import { ProductVariantServiceTypes } from "../types/services"
 import ProductService from "./product"
@@ -96,7 +96,7 @@ export default class ProductVariantService<
     if (isString(productOrId)) {
       product = await this.productService_.retrieve(
         productOrId,
-        {},
+        { relations: ["variants"] },
         sharedContext
       )
     }
@@ -105,6 +105,8 @@ export default class ProductVariantService<
 
     const data_ = [...data]
     data_.forEach((variant) => {
+      delete variant?.product_id
+
       Object.assign(variant, {
         variant_rank: computedRank++,
         product,

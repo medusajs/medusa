@@ -31,7 +31,7 @@ The product option value's data.
   },
   {
     "name": "metadata",
-    "type": "``null`` \\| `Record<string, unknown>`",
+    "type": "`null` \\| `Record<string, unknown>`",
     "description": "Holds custom data in key-value pairs.",
     "optional": true,
     "defaultValue": "",
@@ -41,10 +41,10 @@ The product option value's data.
   {
     "name": "option",
     "type": "[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)",
-    "description": "The associated product option. It may only be available if the `option` relation is expanded.",
+    "description": "The associated product option.",
     "optional": false,
     "defaultValue": "",
-    "expandable": false,
+    "expandable": true,
     "children": []
   },
   {
@@ -59,10 +59,10 @@ The product option value's data.
   {
     "name": "variant",
     "type": "[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)",
-    "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
+    "description": "The associated product variant.",
     "optional": false,
     "defaultValue": "",
-    "expandable": false,
+    "expandable": true,
     "children": []
   }
 ]} />

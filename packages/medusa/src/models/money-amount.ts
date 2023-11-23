@@ -69,7 +69,7 @@ export class MoneyAmount extends SoftDeletableEntity {
 
   @Index("idx_money_amount_region_id")
   @Column({ nullable: true })
-  region_id: string
+  region_id: string | null
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })

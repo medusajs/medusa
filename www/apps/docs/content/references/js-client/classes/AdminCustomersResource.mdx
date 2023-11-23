@@ -156,7 +156,7 @@ medusa.admin.customers
               },
               {
                 "name": "billing_address_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The customer's billing address ID",
                 "optional": false,
                 "defaultValue": "",
@@ -174,7 +174,7 @@ medusa.admin.customers
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -430,7 +430,7 @@ medusa.admin.customers
     "children": [
       {
         "name": "AdminCustomersListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; customers: [Customer](../internal/classes/internal.Customer.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ customers: [Customer](../internal/classes/internal.Customer.mdx)[]  }``",
         "description": "The list of customers with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -482,7 +482,7 @@ medusa.admin.customers
               },
               {
                 "name": "billing_address_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The customer's billing address ID",
                 "optional": false,
                 "defaultValue": "",
@@ -500,7 +500,7 @@ medusa.admin.customers
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -692,7 +692,7 @@ medusa.admin.customers.retrieve(customerId).then(({ customer }) => {
               },
               {
                 "name": "billing_address_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The customer's billing address ID",
                 "optional": false,
                 "defaultValue": "",
@@ -710,7 +710,7 @@ medusa.admin.customers.retrieve(customerId).then(({ customer }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -989,7 +989,7 @@ medusa.admin.customers
               },
               {
                 "name": "billing_address_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The customer's billing address ID",
                 "optional": false,
                 "defaultValue": "",
@@ -1007,7 +1007,7 @@ medusa.admin.customers
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",

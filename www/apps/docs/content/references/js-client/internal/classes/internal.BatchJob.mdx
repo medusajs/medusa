@@ -58,7 +58,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
   },
   {
     "name": "created_by",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "The unique identifier of the user that created the batch job.",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
   },
   {
     "name": "deleted_at",
-    "type": "``null`` \\| `Date`",
+    "type": "`null` \\| `Date`",
     "description": "The date with timezone at which the resource was deleted.",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
   },
   {
     "name": "result",
-    "type": "`&#123; advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../types/internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../types/internal.internal.BatchJobResultStatDescriptor.mdx)[]  &#125;` & `Record<string, unknown>`",
+    "type": "``{ advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../types/internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../types/internal.internal.BatchJobResultStatDescriptor.mdx)[]  }`` & `Record<string, unknown>`",
     "description": "The result of the batch job.",
     "optional": false,
     "defaultValue": "",
