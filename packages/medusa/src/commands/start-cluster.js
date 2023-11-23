@@ -85,7 +85,7 @@ export default async function ({ port, cpus, directory }) {
 
     process.on("message", async (msg) => {
       if (msg.index > 0) {
-        process.env.MEDUSA_ADMIN_UI_SKIP_CACHE = true
+        process.env.PLUGIN_ADMIN_UI_SKIP_CACHE = true
       }
 
       await start()

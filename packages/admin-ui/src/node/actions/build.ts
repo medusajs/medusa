@@ -15,7 +15,7 @@ export async function build({
   options,
   reporting = "fancy",
 }: BuildArgs) {
-  if (!process.env.MEDUSA_ADMIN_UI_SKIP_CACHE) {
+  if (!process.env.PLUGIN_ADMIN_UI_SKIP_CACHE) {
     await createCacheDir({ appDir, plugins })
   }
 
