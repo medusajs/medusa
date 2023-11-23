@@ -70,7 +70,7 @@ export class WorkflowManager {
 
   static register(
     workflowId: string,
-    flow: TransactionStepsDefinition | OrchestratorBuilder,
+    flow: TransactionStepsDefinition | OrchestratorBuilder | undefined,
     handlers: WorkflowHandler,
     requiredModules?: Set<string>,
     optionalModules?: Set<string>
@@ -78,19 +78,22 @@ export class WorkflowManager {
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
 
     if (WorkflowManager.workflows.has(workflowId)) {
-      const areStepsEqual =
-        JSON.stringify(finalFlow) ===
-        JSON.stringify(WorkflowManager.workflows.get(workflowId)!.flow_)
+      const areStepsEqual = finalFlow
+        ? JSON.stringify(finalFlow) ===
+          JSON.stringify(WorkflowManager.workflows.get(workflowId)!.flow_)
+        : true
 
       if (!areStepsEqual) {
-        throw new Error(`Workflow with id "${workflowId}" and step definition already exists.`)
+        throw new Error(
+          `Workflow with id "${workflowId}" and step definition already exists.`
+        )
       }
     }
 
     WorkflowManager.workflows.set(workflowId, {
       id: workflowId,
-      flow_: finalFlow,
-      orchestrator: new TransactionOrchestrator(workflowId, finalFlow),
+      flow_: finalFlow!,
+      orchestrator: new TransactionOrchestrator(workflowId, finalFlow ?? {}),
       handler: WorkflowManager.buildHandlers(handlers),
       handlers_: handlers,
       requiredModules,

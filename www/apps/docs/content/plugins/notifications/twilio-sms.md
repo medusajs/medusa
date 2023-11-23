@@ -124,7 +124,7 @@ In the handler function, you resolve the `twilioSmsService` and `orderService` u
 
 The `sendSms` method of the Twilio service accepts an object of parameters. These parameters are based on Twilio’s SMS APIs. You can check their [API documentation](https://www.twilio.com/docs/sms/api/message-resource#create-a-message-resource) for more fields that you can add.
 
-:::caution
+:::warning
 
 If you’re on a Twilio trial make sure that the phone number you entered on checkout is a [verified Twilio number on your console](https://console.twilio.com/us1/develop/phone-numbers/manage/verified).
 

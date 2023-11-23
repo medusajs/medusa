@@ -49,7 +49,7 @@ const plugins = [
 ]
 ```
 
-:::caution
+:::warning
 
 If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
 

@@ -1,19 +1,7 @@
-import { LightBulbSolid } from "@medusajs/icons"
 import type { IconProps } from "@medusajs/icons/dist/types"
-import clsx from "clsx"
 import React from "react"
+import AdmonitionIconNote from "./Note"
 
-export default function AdmonitionIconTip({
-  className,
-  ...props
-}: IconProps): JSX.Element {
-  return (
-    <LightBulbSolid
-      {...props}
-      className={clsx(
-        "inline-block mr-0.125 text-medusa-tag-orange-icon",
-        className
-      )}
-    />
-  )
+export default function AdmonitionIconTip(props: IconProps): JSX.Element {
+  return <AdmonitionIconNote {...props} />
 }
