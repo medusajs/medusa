@@ -59,7 +59,7 @@ type CompensateFn<T> = (
   /**
    * The argument passed to the compensation function.
    */
-  input: T,
+  input: T | undefined,
   /**
    * The step's context.
    */
@@ -152,7 +152,7 @@ function applyStep<
               context: transactionContext.context,
             }
 
-            const stepOutput = transactionContext.invoke[stepName].output
+            const stepOutput = transactionContext.invoke[stepName]?.output
             const invokeResult =
               stepOutput?.__type === SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&

@@ -138,22 +138,62 @@ const Body = ({
             ...themes.palenight,
             plain: {
               color: "rgba(249, 250, 251, 1)",
-              backgroundColor: "#111827",
+              backgroundColor: "rgb(17,24,39)",
             },
             styles: [
+              ...themes.palenight.styles,
               {
                 types: ["keyword"],
                 style: {
-                  color: "var(--fg-on-color)",
+                  fontStyle: "normal",
+                  color: "rgb(187,160,255)",
+                },
+              },
+              {
+                types: ["punctuation", "operator"],
+                style: {
+                  fontStyle: "normal",
+                  color: "rgb(255,255,255)",
+                },
+              },
+              {
+                types: ["constant", "boolean"],
+                style: {
+                  fontStyle: "normal",
+                  color: "rgb(187,77,96)",
+                },
+              },
+              {
+                types: ["function"],
+                style: {
+                  fontStyle: "normal",
+                  color: "rgb(27,198,242)",
+                },
+              },
+              {
+                types: ["number"],
+                style: {
+                  color: "rgb(247,208,25)",
                 },
               },
               {
                 types: ["maybe-class-name"],
                 style: {
-                  color: "rgb(255, 203, 107)",
+                  color: "rgb(255,203,107)",
                 },
               },
-              ...themes.palenight.styles,
+              {
+                types: ["string"],
+                style: {
+                  color: "rgb(73,209,110)",
+                },
+              },
+              {
+                types: ["comment"],
+                style: {
+                  color: "rgb(52,211,153)",
+                },
+              },
             ],
           }}
           code={active.code}
