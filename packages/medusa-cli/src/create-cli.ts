@@ -242,14 +242,22 @@ function buildLocalCommands(cli, isLocalProject) {
           type: `string`,
           default: defaultHost,
           describe: `Set host. Defaults to ${defaultHost}`,
-        }).option(`p`, {
-          alias: `port`,
-          type: `string`,
-          default: process.env.PORT || defaultPort,
-          describe: process.env.PORT
-            ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
-            : `Set port. Defaults to ${defaultPort}`,
-        }),
+        })
+          .option(`p`, {
+            alias: `port`,
+            type: `string`,
+            default: process.env.PORT || defaultPort,
+            describe: process.env.PORT
+              ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+              : `Set port. Defaults to ${defaultPort}`,
+          })
+          .option(`c`, {
+            alias: `cpus`,
+            type: `number`,
+            default: process.env.CPUS,
+            describe:
+              "Set number of cpus to use. Defaults to max number of cpus available on the system (set by env.CPUS)",
+          }),
       handler: handlerP(
         getCommandHandler(`start-cluster`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`

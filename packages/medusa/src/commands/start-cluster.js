@@ -13,14 +13,15 @@ import Logger from "../loaders/logger"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
-const numCPUs = os.cpus().length
+
 let isShuttingDown = false
 
-export default async function ({ port, directory }) {
+export default async function ({ port, cpus, directory }) {
   if (cluster.isPrimary) {
-    Logger.info(`Master ${process.pid} is running`)
-
     const killMainProccess = () => process.exit(0)
+
+    cpus ??= os.cpus().length
+    const numCPUs = Math.min(os.cpus().length, cpus)
 
     for (let i = 0; i < numCPUs; i++) {
       cluster.fork()
