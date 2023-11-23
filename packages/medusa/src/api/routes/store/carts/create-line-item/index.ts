@@ -135,16 +135,16 @@ export default async (req, res) => {
             select: ["id", "region_id", "customer_id"],
           })
 
+          const line = await lineItemService
+            .withTransaction(manager)
+            .generate(data.variant_id, cart.region_id, data.quantity, {
+              customer_id: data.customer_id || cart.customer_id,
+              metadata: data.metadata,
+            })
+
           await manager.transaction(
             stepOptions.isolationLevel,
             async (transactionManager) => {
-              const line = await lineItemService
-                .withTransaction(transactionManager)
-                .generate(data.variant_id, cart.region_id, data.quantity, {
-                  customer_id: data.customer_id || cart.customer_id,
-                  metadata: data.metadata,
-                })
-
               const txCartService =
                 cartService.withTransaction(transactionManager)
 
