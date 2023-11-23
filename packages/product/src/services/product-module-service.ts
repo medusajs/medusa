@@ -231,6 +231,82 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(variants)), count]
   }
 
+  async createVariants(
+    data: ProductTypes.CreateProductVariantDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.ProductVariantDTO[]> {
+    const productOptionIds = data
+      .map((pv) => (pv.options || []).map((opt) => opt.option_id!))
+      .flat()
+
+    const productOptions = await this.listOptions(
+      { id: productOptionIds },
+      {},
+      sharedContext
+    )
+
+    const productOptionsMap = new Map<string, ProductTypes.ProductOptionDTO>(
+      productOptions.map((po) => [po.id, po])
+    )
+
+    const productVariantsMap = new Map<
+      string,
+      ProductTypes.CreateProductVariantDTO[]
+    >()
+
+    for (const productVariantData of data) {
+      productVariantData.options = productVariantData.options?.map((option) => {
+        const productOption = productOptionsMap.get(option.option_id!)
+
+        return {
+          option: productOption?.id,
+          value: option.value,
+        }
+      })
+
+      const productVariants = productVariantsMap.get(
+        productVariantData.product_id!
+      )
+
+      if (productVariants) {
+        productVariants.push(productVariantData)
+      } else {
+        productVariantsMap.set(productVariantData.product_id!, [
+          productVariantData,
+        ])
+      }
+    }
+
+    const productVariants = (
+      await promiseAll(
+        [...productVariantsMap].map(async ([productId, variants]) => {
+          return await this.productVariantService_.create(
+            productId,
+            variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
+            sharedContext
+          )
+        })
+      )
+    ).flat()
+
+    return productVariants as unknown as ProductTypes.ProductVariantDTO[]
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteVariants(
+    productVariantIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productVariantService_.delete(productVariantIds, sharedContext)
+
+    await this.eventBusModuleService_?.emit<ProductEventData>(
+      productVariantIds.map((id) => ({
+        eventName: ProductEvents.PRODUCT_DELETED,
+        data: { id },
+      }))
+    )
+  }
+
   @InjectManager("baseRepository_")
   async retrieveTag(
     tagId: string,

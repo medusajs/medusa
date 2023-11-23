@@ -82,7 +82,7 @@ async function adjustInventory (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../../internal/types/internal.InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory level's details.",
@@ -206,7 +206,7 @@ async function createInventoryItem (item: {
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateInventoryItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)",
+    "type": "[CreateInventoryItemInput](internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)",
     "description": "The details of the inventory item to create.",
     "optional": false,
     "defaultValue": "",
@@ -229,7 +229,7 @@ async function createInventoryItem (item: {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../../internal/types/internal.InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created inventory item's details.",
@@ -270,7 +270,7 @@ async function createInventoryItems (items: {
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateInventoryItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)[]",
+    "type": "[CreateInventoryItemInput](internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)[]",
     "description": "The details of the inventory items to create.",
     "optional": false,
     "defaultValue": "",
@@ -293,7 +293,7 @@ async function createInventoryItems (items: {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)[]&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../../internal/types/internal.InventoryItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created inventory items' details.",
@@ -335,7 +335,7 @@ async function createInventoryLevel (item: {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateInventoryLevelInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)",
+    "type": "[CreateInventoryLevelInput](internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)",
     "description": "The details of the inventory level to create.",
     "optional": false,
     "defaultValue": "",
@@ -358,7 +358,7 @@ async function createInventoryLevel (item: {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../../internal/types/internal.InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created inventory level's details.",
@@ -400,7 +400,7 @@ async function createInventoryLevels (items: {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateInventoryLevelInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)[]",
+    "type": "[CreateInventoryLevelInput](internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)[]",
     "description": "The details of the inventory levels to create.",
     "optional": false,
     "defaultValue": "",
@@ -423,7 +423,7 @@ async function createInventoryLevels (items: {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[]&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../../internal/types/internal.InventoryLevelDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created inventory levels' details.",
@@ -465,7 +465,7 @@ async function createReservationItem (item: {
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateReservationItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)",
+    "type": "[CreateReservationItemInput](internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)",
     "description": "The details of the reservation item to create.",
     "optional": false,
     "defaultValue": "",
@@ -488,7 +488,7 @@ async function createReservationItem (item: {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
+    "type": "Promise&#60;[ReservationItemDTO](../../internal/types/internal.ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created reservation item's details.",
@@ -530,7 +530,7 @@ async function createReservationItems (items: {
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateReservationItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)[]",
+    "type": "[CreateReservationItemInput](internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)[]",
     "description": "The details of the reservation items to create.",
     "optional": false,
     "defaultValue": "",
@@ -553,7 +553,7 @@ async function createReservationItems (items: {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)[]&#62;",
+    "type": "Promise&#60;[ReservationItemDTO](../../internal/types/internal.ReservationItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created reservation items' details.",
@@ -567,7 +567,7 @@ ___
 ### deleteInventoryItem
 
 This method is used to delete an inventory item or multiple inventory items. The inventory items are only soft deleted and can be restored using the
-[restoreInventoryItem](internal.IInventoryService.mdx#restoreinventoryitem) method.
+[restoreInventoryItem](internal.internal-1.InventoryTypes.IInventoryService.mdx#restoreinventoryitem) method.
 
 #### Example
 
@@ -1013,7 +1013,7 @@ async function retrieveInventoryItems (ids: string[], skip: number, take: number
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableInventoryItemProps](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.FilterableInventoryItemProps.mdx)",
+    "type": "[FilterableInventoryItemProps](internal.internal-1.InventoryTypes.FilterableInventoryItemProps.mdx)",
     "description": "The filters to apply on the retrieved inventory items.",
     "optional": false,
     "defaultValue": "",
@@ -1022,7 +1022,7 @@ async function retrieveInventoryItems (ids: string[], skip: number, take: number
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryItemDTO](../../internal/types/internal.InventoryItemDTO.mdx)&#62;",
     "description": "The configurations determining how the inventory items are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a inventory item.",
     "optional": true,
     "defaultValue": "",
@@ -1045,7 +1045,7 @@ async function retrieveInventoryItems (ids: string[], skip: number, take: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[InventoryItemDTO](../../internal/types/internal.InventoryItemDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of inventory items along with the total count.",
@@ -1127,7 +1127,7 @@ async function retrieveInventoryLevels (inventoryItemIds: string[], skip: number
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableInventoryLevelProps](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.FilterableInventoryLevelProps.mdx)",
+    "type": "[FilterableInventoryLevelProps](internal.internal-1.InventoryTypes.FilterableInventoryLevelProps.mdx)",
     "description": "The filters to apply on the retrieved inventory levels.",
     "optional": false,
     "defaultValue": "",
@@ -1136,7 +1136,7 @@ async function retrieveInventoryLevels (inventoryItemIds: string[], skip: number
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryLevelDTO](../../internal/types/internal.InventoryLevelDTO.mdx)&#62;",
     "description": "The configurations determining how the inventory levels are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a inventory level.",
     "optional": true,
     "defaultValue": "",
@@ -1159,7 +1159,7 @@ async function retrieveInventoryLevels (inventoryItemIds: string[], skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[InventoryLevelDTO](../../internal/types/internal.InventoryLevelDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of inventory levels along with the total count.",
@@ -1241,7 +1241,7 @@ async function retrieveReservationItems (ids: string[], skip: number, take: numb
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableReservationItemProps](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.FilterableReservationItemProps.mdx)",
+    "type": "[FilterableReservationItemProps](internal.internal-1.InventoryTypes.FilterableReservationItemProps.mdx)",
     "description": "The filters to apply on the retrieved reservation items.",
     "optional": false,
     "defaultValue": "",
@@ -1250,7 +1250,7 @@ async function retrieveReservationItems (ids: string[], skip: number, take: numb
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ReservationItemDTO](../../internal/types/internal.ReservationItemDTO.mdx)&#62;",
     "description": "The configurations determining how the reservation items are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a reservation item.",
     "optional": true,
     "defaultValue": "",
@@ -1273,7 +1273,7 @@ async function retrieveReservationItems (ids: string[], skip: number, take: numb
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[ReservationItemDTO](../../internal/types/internal.ReservationItemDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of reservation items along with the total count.",
@@ -1286,7 +1286,7 @@ ___
 
 ### restoreInventoryItem
 
-This method is used to restore an inventory item or multiple inventory items that were previously deleted using the [deleteInventoryItem](internal.IInventoryService.mdx#deleteinventoryitem) method.
+This method is used to restore an inventory item or multiple inventory items that were previously deleted using the [deleteInventoryItem](internal.internal-1.InventoryTypes.IInventoryService.mdx#deleteinventoryitem) method.
 
 #### Example
 
@@ -1473,7 +1473,7 @@ async function retrieveInventoryItem (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryItemDTO](../../internal/types/internal.InventoryItemDTO.mdx)&#62;",
     "description": "The configurations determining how the inventory item is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a inventory item.",
     "optional": true,
     "defaultValue": "",
@@ -1496,7 +1496,7 @@ async function retrieveInventoryItem (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../../internal/types/internal.InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved inventory item.",
@@ -1570,7 +1570,7 @@ async function retrieveInventoryLevel (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../../internal/types/internal.InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved inventory level.",
@@ -1629,7 +1629,7 @@ async function retrieveReservationItem (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
+    "type": "Promise&#60;[ReservationItemDTO](../../internal/types/internal.ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved reservation item.",
@@ -1830,7 +1830,7 @@ async function updateInventoryItem (
   },
   {
     "name": "input",
-    "type": "[Partial](../types/internal.Partial.mdx)&#60;[CreateInventoryItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)&#62;",
+    "type": "[Partial](../../internal/types/internal.Partial.mdx)&#60;[CreateInventoryItemInput](internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)&#62;",
     "description": "The attributes to update in the inventory item.",
     "optional": false,
     "defaultValue": "",
@@ -1853,7 +1853,7 @@ async function updateInventoryItem (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../../internal/types/internal.InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The updated inventory item's details.",
@@ -1917,7 +1917,7 @@ async function updateInventoryLevel (
   },
   {
     "name": "update",
-    "type": "[UpdateInventoryLevelInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx)",
+    "type": "[UpdateInventoryLevelInput](internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx)",
     "description": "The attributes to update in the location level.",
     "optional": false,
     "defaultValue": "",
@@ -1940,7 +1940,7 @@ async function updateInventoryLevel (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../../internal/types/internal.InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The updated inventory level's details.",
@@ -1982,7 +1982,7 @@ async function updateInventoryLevels (items: {
 <ParameterTypes parameters={[
   {
     "name": "updates",
-    "type": "[BulkUpdateInventoryLevelInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.BulkUpdateInventoryLevelInput.mdx)[]",
+    "type": "[BulkUpdateInventoryLevelInput](internal.internal-1.InventoryTypes.BulkUpdateInventoryLevelInput.mdx)[]",
     "description": "The attributes to update in each inventory level.",
     "optional": false,
     "defaultValue": "",
@@ -2005,7 +2005,7 @@ async function updateInventoryLevels (items: {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[]&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../../internal/types/internal.InventoryLevelDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The updated inventory levels' details.",
@@ -2058,7 +2058,7 @@ async function updateReservationItem (
   },
   {
     "name": "input",
-    "type": "[UpdateReservationItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.UpdateReservationItemInput.mdx)",
+    "type": "[UpdateReservationItemInput](internal.internal-1.InventoryTypes.UpdateReservationItemInput.mdx)",
     "description": "The attributes to update in the reservation item.",
     "optional": false,
     "defaultValue": "",
@@ -2081,7 +2081,7 @@ async function updateReservationItem (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
+    "type": "Promise&#60;[ReservationItemDTO](../../internal/types/internal.ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The updated reservation item.",
