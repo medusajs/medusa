@@ -24,12 +24,15 @@ export interface Config {
  * @interface
  * 
  * Options to pass to requests sent to custom API Routes
- * 
- * @prop timeout - The number of milliseconds before the request times out.
- * @prop numberOfRetries - The number of times to retry a request before failing.
  */
 export interface RequestOptions {
+  /**
+   * The number of milliseconds before the request times out.
+   */
   timeout?: number
+  /**
+   * The number of times to retry a request before failing.
+   */
   numberOfRetries?: number
 }
 

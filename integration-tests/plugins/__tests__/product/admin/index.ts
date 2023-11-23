@@ -441,6 +441,7 @@ describe("/admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
+      await createDefaultRuleTypes(medusaContainer)
 
       await simpleSalesChannelFactory(dbConnection, {
         name: "Default channel",

@@ -1,5 +1,11 @@
 # @medusajs/ui
 
+## 2.2.2
+
+### Patch Changes
+
+- [#5640](https://github.com/medusajs/medusa/pull/5640) [`a67a8e7e9`](https://github.com/medusajs/medusa/commit/a67a8e7e90f35636c8d99858fc5b19358df4c174) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui): Fix the width of line numbers in the CodeBlock component, such that they are always the same width as the widest line number.
+
 ## 2.2.1
 
 ### Patch Changes

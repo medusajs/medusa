@@ -148,7 +148,7 @@ async function retrieveCategory (id: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -175,7 +175,7 @@ async function retrieveCategory (id: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -208,18 +208,18 @@ async function retrieveCategory (id: string) {
       {
         "name": "category_children",
         "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
-        "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
+        "description": "The associated child categories.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "category_children",
             "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
-            "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
+            "description": "The associated child categories.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -288,10 +288,10 @@ async function retrieveCategory (id: string) {
           {
             "name": "parent_category",
             "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
-            "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
+            "description": "The associated parent category.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -380,18 +380,18 @@ async function retrieveCategory (id: string) {
       {
         "name": "parent_category",
         "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
-        "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
+        "description": "The associated parent category.",
         "optional": true,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "category_children",
             "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
-            "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
+            "description": "The associated child categories.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -460,10 +460,10 @@ async function retrieveCategory (id: string) {
           {
             "name": "parent_category",
             "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
-            "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
+            "description": "The associated parent category.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {

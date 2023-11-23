@@ -22,7 +22,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
   },
   {
     "name": "authorized_amount",
-    "type": "``null`` \\| `number`",
+    "type": "`null` \\| `number`",
     "description": "Authorized amount of the payment collection.",
     "optional": false,
     "defaultValue": "",
@@ -114,7 +114,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
   },
   {
     "name": "deleted_at",
-    "type": "``null`` \\| `Date`",
+    "type": "`null` \\| `Date`",
     "description": "The date with timezone at which the resource was deleted.",
     "optional": false,
     "defaultValue": "",
@@ -123,7 +123,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
   },
   {
     "name": "description",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "Description of the payment collection",
     "optional": false,
     "defaultValue": "",
@@ -176,7 +176,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "cart_id",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The ID of the cart that the payment session was created for.",
         "optional": false,
         "defaultValue": "",
@@ -230,7 +230,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "is_selected",
-        "type": "``null`` \\| `boolean`",
+        "type": "`null` \\| `boolean`",
         "description": "A flag to indicate if the Payment Session has been selected as the method that will be used to complete the purchase.",
         "optional": false,
         "defaultValue": "",
@@ -511,7 +511,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "deleted_at",
-        "type": "``null`` \\| `Date`",
+        "type": "`null` \\| `Date`",
         "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
@@ -602,7 +602,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "tax_provider_id",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The ID of the tax provider used in this region",
         "optional": false,
         "defaultValue": "",
@@ -620,7 +620,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "tax_rates",
-        "type": "``null`` \\| [TaxRate](TaxRate.mdx)[]",
+        "type": "`null` \\| [TaxRate](TaxRate.mdx)[]",
         "description": "The details of the tax rates used in the region, aside from the default rate.",
         "optional": false,
         "defaultValue": "",
@@ -657,7 +657,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
     "children": [
       {
         "name": "AUTHORIZED",
-        "type": "``\"authorized\"``",
+        "type": "`\"authorized\"`",
         "description": "The payment colleciton is authorized.",
         "optional": true,
         "defaultValue": "",
@@ -666,7 +666,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "AWAITING",
-        "type": "``\"awaiting\"``",
+        "type": "`\"awaiting\"`",
         "description": "The payment collection is awaiting payment.",
         "optional": true,
         "defaultValue": "",
@@ -675,7 +675,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "CANCELED",
-        "type": "``\"canceled\"``",
+        "type": "`\"canceled\"`",
         "description": "The payment collection is canceled.",
         "optional": true,
         "defaultValue": "",
@@ -684,7 +684,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "NOT_PAID",
-        "type": "``\"not_paid\"``",
+        "type": "`\"not_paid\"`",
         "description": "The payment collection isn't paid.",
         "optional": true,
         "defaultValue": "",
@@ -693,7 +693,7 @@ A payment collection allows grouping and managing a list of payments at one. Thi
       },
       {
         "name": "PARTIALLY_AUTHORIZED",
-        "type": "``\"partially_authorized\"``",
+        "type": "`\"partially_authorized\"`",
         "description": "Some of the payments in the payment collection are authorized.",
         "optional": true,
         "defaultValue": "",

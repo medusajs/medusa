@@ -240,7 +240,7 @@ medusa.productTypes
     "children": [
       {
         "name": "StoreProductTypesListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; product_types: [ProductType](../internal/classes/internal.ProductType.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ product_types: [ProductType](../internal/classes/internal.ProductType.mdx)[]  }``",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -292,7 +292,7 @@ medusa.productTypes
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",

@@ -45,7 +45,7 @@ const migrateProductVariant = async (
     rules: [{ rule_attribute: "region_id" }],
     prices: variant.prices.map((price) => ({
       rules: {
-        region_id: price.region_id,
+        ...(price.region_id ? { region_id: price.region_id } : {}),
       },
       currency_code: price.currency_code,
       min_quantity: price.min_quantity,

@@ -10,5 +10,9 @@ export const createDefaultRuleTypes = async (container) => {
       name: "region_id",
       rule_attribute: "region_id",
     },
+    {
+      name: "customer_group_id",
+      rule_attribute: "customer_group_id",
+    },
   ])
 }

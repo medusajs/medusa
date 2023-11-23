@@ -46,6 +46,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   },
   {
+    "name": "metadata",
+    "type": "`Record<string, unknown>`",
+    "description": "An optional set of key-value pairs to hold additional information.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "name",
     "type": "`string`",
     "description": "The name of the product category",
@@ -56,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "parent_category_id",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "The ID of the parent product category",
     "optional": true,
     "defaultValue": "",

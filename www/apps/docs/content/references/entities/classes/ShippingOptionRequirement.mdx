@@ -57,7 +57,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "amount",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
         "optional": false,
         "defaultValue": "",
@@ -84,7 +84,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "deleted_at",
-        "type": "``null`` \\| `Date`",
+        "type": "`null` \\| `Date`",
         "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
@@ -239,7 +239,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
     "children": [
       {
         "name": "MAX_SUBTOTAL",
-        "type": "``\"max_subtotal\"``",
+        "type": "`\"max_subtotal\"`",
         "description": "The shipping option can only be applied if the subtotal is less than the requirement's amont.",
         "optional": true,
         "defaultValue": "",
@@ -248,7 +248,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "MIN_SUBTOTAL",
-        "type": "``\"min_subtotal\"``",
+        "type": "`\"min_subtotal\"`",
         "description": "The shipping option can only be applied if the subtotal is greater than the requirement's amount.",
         "optional": true,
         "defaultValue": "",

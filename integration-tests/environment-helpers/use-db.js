@@ -32,6 +32,8 @@ const keepTables = [
   "payment_provider",
   "country",
   "currency",
+  "migrations",
+  "mikro_orm_migrations",
 ]
 
 const DbTestUtil = {
@@ -52,21 +54,23 @@ const DbTestUtil = {
 
   teardown: async function ({ forceDelete } = {}) {
     forceDelete = forceDelete || []
-    const entities = this.db_.entityMetadatas
     const manager = this.db_.manager
 
     await manager.query(`SET session_replication_role = 'replica';`)
+    const tableNames = await manager.query(`SELECT table_name
+                                            FROM information_schema.tables
+                                            WHERE table_schema = 'public';`)
 
-    for (const entity of entities) {
+    for (const { table_name } of tableNames) {
       if (
-        keepTables.includes(entity.tableName) &&
-        !forceDelete.includes(entity.tableName)
+        keepTables.includes(table_name) &&
+        !forceDelete.includes(table_name)
       ) {
         continue
       }
 
       await manager.query(`DELETE
-                           FROM "${entity.tableName}";`)
+                           FROM "${table_name}";`)
     }
 
     await manager.query(`SET session_replication_role = 'origin';`)

@@ -39,9 +39,6 @@ export default class PriceRule {
   })
   rule_type: RuleType
 
-  @Property({ columnType: "boolean", default: false })
-  is_dynamic: boolean
-
   @Property({ columnType: "text" })
   value: string
 

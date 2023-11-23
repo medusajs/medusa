@@ -83,6 +83,15 @@ A product category can be used to categorize products into a hierarchy of catego
     "children": []
   },
   {
+    "name": "metadata",
+    "type": "`Record<string, unknown>`",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "name",
     "type": "`string`",
     "description": "The product category's name",
@@ -93,7 +102,7 @@ A product category can be used to categorize products into a hierarchy of catego
   },
   {
     "name": "parent_category",
-    "type": "``null`` \\| [ProductCategory](ProductCategory.mdx)",
+    "type": "`null` \\| [ProductCategory](ProductCategory.mdx)",
     "description": "The details of the parent of this category.",
     "optional": false,
     "defaultValue": "",
@@ -102,7 +111,7 @@ A product category can be used to categorize products into a hierarchy of catego
   },
   {
     "name": "parent_category_id",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "The ID of the parent category.",
     "optional": false,
     "defaultValue": "null",

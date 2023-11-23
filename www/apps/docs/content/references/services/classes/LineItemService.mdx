@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](Cart.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
+    "type": "Repository&#60;[Cart](Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "itemTaxLineRepo_",
-    "type": "Repository&#60;[LineItemTaxLine](LineItemTaxLine.mdx)&#62; & `&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  &#125;`",
+    "type": "Repository&#60;[LineItemTaxLine](LineItemTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](LineItem.mdx)&#62; & `&#123; findByReturn: Method findByReturn  &#125;`",
+    "type": "Repository&#60;[LineItem](LineItem.mdx)&#62; & ``{ findByReturn: Method findByReturn  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -479,7 +479,7 @@ ___
 
 ### delete
 
-`**delete**(id): Promise&#60;undefined \| `null` \| [LineItem](LineItem.mdx)&#62;`
+`**delete**(id): Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;`
 
 Deletes a line item.
 
@@ -499,12 +499,12 @@ Deletes a line item.
 
 #### Returns
 
-Promise&#60;undefined \| `null` \| [LineItem](LineItem.mdx)&#62;
+Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| `null` \\| [LineItem](LineItem.mdx)&#62;",
+    "type": "Promise&#60;undefined \\| null \\| [LineItem](LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -517,7 +517,7 @@ ___
 
 ### deleteWithTaxLines
 
-`**deleteWithTaxLines**(id): Promise&#60;undefined \| `null` \| [LineItem](LineItem.mdx)&#62;`
+`**deleteWithTaxLines**(id): Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;`
 
 #### Parameters
 
@@ -535,12 +535,12 @@ ___
 
 #### Returns
 
-Promise&#60;undefined \| `null` \| [LineItem](LineItem.mdx)&#62;
+Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| `null` \\| [LineItem](LineItem.mdx)&#62;",
+    "type": "Promise&#60;undefined \\| null \\| [LineItem](LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -696,7 +696,7 @@ ___
   },
   {
     "name": "variant.product.thumbnail",
-    "type": "``null`` \\| `string`",
+    "type": "`null` \\| `string`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -741,7 +741,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[GenerateLineItemContext](../types/GenerateLineItemContext.mdx) & `&#123; variantPricing: [ProductVariantPricing](../types/ProductVariantPricing.mdx)  &#125;`",
+    "type": "[GenerateLineItemContext](../types/GenerateLineItemContext.mdx) & ``{ variantPricing: [ProductVariantPricing](../types/ProductVariantPricing.mdx)  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -869,7 +869,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
