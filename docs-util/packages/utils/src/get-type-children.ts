@@ -65,7 +65,15 @@ export function getTypeChildren(
       children = getTypeChildren(reflectionType.elementType, project)
   }
 
-  return children
+  return filterChildren(children)
+}
+
+const REJECTED_CHILDREN_NAMES = ["__type"]
+
+function filterChildren(children: DeclarationReflection[]) {
+  return children.filter(
+    (child) => !REJECTED_CHILDREN_NAMES.includes(child.name)
+  )
 }
 
 function removeChild(name: unknown, children: DeclarationReflection[]) {

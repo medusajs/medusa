@@ -31,13 +31,13 @@ function getReturnFromType(
     return ""
   }
 
-  const componentItems = returnReflectionComponentFormatter(
-    reflection.type,
-    reflection.project || theme.project,
-    reflection.comment,
-    1,
-    maxLevel
-  )
+  const componentItems = returnReflectionComponentFormatter({
+    reflectionType: reflection.type,
+    project: reflection.project || theme.project,
+    comment: reflection.comment,
+    level: 1,
+    maxLevel,
+  })
 
   if (parameterStyle === "component") {
     return `<${parameterComponent} parameters={${JSON.stringify(
