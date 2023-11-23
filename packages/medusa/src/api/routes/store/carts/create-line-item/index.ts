@@ -5,7 +5,6 @@ import { CreateLineItemSteps } from "./utils/handler-steps"
 import { Cart, IdempotencyKey } from "../../../../../models"
 import {
   initializeIdempotencyRequest,
-  runIdempotencyStep,
   RunIdempotencyStepOptions,
 } from "../../../../../utils/idempotency"
 import { cleanResponseData } from "../../../../../utils/clean-response-data"
@@ -136,27 +135,23 @@ export default async (req, res) => {
             metadata: data.metadata,
           })
 
-        await runIdempotencyStep(async ({ manager: transactionManager }) => {
-          const txCartService_ = cartService.withTransaction(transactionManager)
-          await txCartService_.addOrUpdateLineItems(cart.id, line, {
-            validateSalesChannels:
-              featureFlagRouter.isFeatureEnabled("sales_channels"),
-          })
+        await manager.transaction(
+          stepOptions.isolationLevel,
+          async (transactionManager) => {
+            const txCartService_ =
+              cartService.withTransaction(transactionManager)
+            await txCartService_.addOrUpdateLineItems(cart.id, line, {
+              validateSalesChannels:
+                featureFlagRouter.isFeatureEnabled("sales_channels"),
+            })
 
-          if (cart.payment_sessions?.length) {
-            await txCartService_.setPaymentSessions(
-              cart as WithRequiredProperty<Cart, "total">
-            )
+            if (cart.payment_sessions?.length) {
+              await txCartService_.setPaymentSessions(
+                cart as WithRequiredProperty<Cart, "total">
+              )
+            }
           }
-
-          return {
-            response_code: 200,
-            response_body: { cart },
-          }
-        }, stepOptions).catch((e) => {
-          inProgress = false
-          err = e
-        })
+        )
 
         const relations = [
           ...defaultStoreCartRelations,
@@ -170,24 +165,30 @@ export default async (req, res) => {
           relations?.some((rel) => rel.includes("variant")) &&
           featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
 
-        if (shouldSetAvailability) {
-          await productVariantInventoryService.setVariantAvailability(
-            cart.items.map((i) => i.variant),
-            cart.sales_channel_id!
-          )
+        try {
+          if (shouldSetAvailability) {
+            await productVariantInventoryService.setVariantAvailability(
+              cart.items.map((i) => i.variant),
+              cart.sales_channel_id!
+            )
+          }
+
+          cart = await txCartService.retrieveWithTotals(cart.id, {
+            select: defaultStoreCartFields,
+            relations,
+          })
+
+          idempotencyKey.response_code = 200
+          idempotencyKey.response_body = { cart }
+          await idempotencyKeyService.update(idempotencyKey.id, {
+            response_code: idempotencyKey.response_code,
+            response_body: idempotencyKey.response_body,
+          })
+        } catch (e) {
+          inProgress = false
+          err = e
         }
 
-        cart = await txCartService.retrieveWithTotals(cart.id, {
-          select: defaultStoreCartFields,
-          relations,
-        })
-
-        idempotencyKey.response_code = 200
-        idempotencyKey.response_body = { cart }
-        await idempotencyKeyService.update(idempotencyKey.id, {
-          response_code: idempotencyKey.response_code,
-          response_body: idempotencyKey.response_body,
-        })
         break
       }
 
