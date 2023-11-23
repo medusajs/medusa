@@ -98,6 +98,7 @@ module.exports = {
           "./packages/product/tsconfig.json",
           "./packages/orchestration/tsconfig.json",
           "./packages/workflows/tsconfig.spec.json",
+          "./packages/core-flows/tsconfig.spec.json",
         ],
       },
       rules: {

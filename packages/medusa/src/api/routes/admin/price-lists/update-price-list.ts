@@ -10,7 +10,7 @@ import {
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 
-import { updatePriceLists } from "@medusajs/workflows"
+import { updatePriceLists } from "@medusajs/core-flows"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { PriceList } from "../../../.."

@@ -4,7 +4,6 @@ import {
   WorkflowStepHandler,
 } from "@medusajs/orchestration"
 import { Context, MedusaContainer, SharedContext } from "@medusajs/types"
-import { InputAlias } from "../definitions"
 import { mergeData } from "./merge-data"
 
 export type WorkflowStepMiddlewareReturn = {
@@ -21,7 +20,7 @@ interface PipelineInput {
   /**
    * The alias of the input data to store in
    */
-  inputAlias?: InputAlias | string
+  inputAlias?: string
   /**
    * Descriptors to get the data from
    */

@@ -1,5 +1,5 @@
 import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-import { removePriceListVariantPrices } from "@medusajs/workflows"
+import { removePriceListVariantPrices } from "@medusajs/core-flows"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { WorkflowTypes } from "@medusajs/types"

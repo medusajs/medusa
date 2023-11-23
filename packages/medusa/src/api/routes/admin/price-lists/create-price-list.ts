@@ -5,7 +5,7 @@ import {
   PriceListStatus,
   PriceListType,
 } from "@medusajs/utils"
-import { createPriceLists } from "@medusajs/workflows"
+import { createPriceLists } from "@medusajs/core-flows"
 import { Type } from "class-transformer"
 import {
   IsArray,

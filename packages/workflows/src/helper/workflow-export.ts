@@ -10,7 +10,6 @@ import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { EOL } from "os"
 import { ulid } from "ulid"
-import { Workflows } from "../definitions"
 import { SymbolWorkflowWorkflowData } from "../utils/composer"
 
 export type FlowRunOptions<TData = unknown> = {
@@ -27,7 +26,7 @@ export type WorkflowResult<TResult = unknown> = {
 }
 
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
-  workflowId: Workflows | string,
+  workflowId: string,
   defaultResult?: string,
   dataPreparation?: (data: TData) => Promise<unknown>
 ) => {

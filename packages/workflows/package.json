@@ -1,7 +1,7 @@
 {
   "name": "@medusajs/workflows",
   "version": "0.3.0",
-  "description": "Set of workflows for Medusa",
+  "description": "Set of workflows tooling for Medusa",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {

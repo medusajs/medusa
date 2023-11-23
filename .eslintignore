@@ -23,6 +23,7 @@ packages/*
 !packages/product
 !packages/orchestration
 !packages/workflows
+!packages/core-flows
 
 
 **/models/*
