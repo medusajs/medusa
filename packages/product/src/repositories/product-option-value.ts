@@ -1,13 +1,14 @@
-import { ProductOptionValue } from "@models"
 import { Context, DAL } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils } from "@medusajs/utils"
 import {
   CreateProductOptionValueDTO,
   UpdateProductOptionValueDTO,
 } from "../types/services/product-option-value"
+
+import { DALUtils } from "@medusajs/utils"
 import { FilterQuery as MikroFilterQuery } from "@mikro-orm/core/typings"
 import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
+import { ProductOptionValue } from "@models"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class ProductOptionValueRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -41,9 +42,13 @@ export class ProductOptionValueRepository extends DALUtils.MikroOrmBaseRepositor
   ): Promise<ProductOptionValue[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const optionValueIds = optionValues
-      .filter((option) => !!option.id)
-      .map(({ id }) => id!)
+    const optionValueIds: string[] = []
+
+    for (const optionValue of optionValues) {
+      if (optionValue.id) {
+        optionValueIds.push(optionValue.id)
+      }
+    }
 
     const existingOptionValues = await this.find(
       {

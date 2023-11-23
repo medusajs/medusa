@@ -1,5 +1,3 @@
-import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import {
   simpleProductFactory,
@@ -7,11 +5,13 @@ import {
 } from "../../../../factories"
 
 import { AxiosInstance } from "axios"
-import path from "path"
-import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import path from "path"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { useApi } from "../../../../environment-helpers/use-api"
 
 jest.setTimeout(50000)
 
@@ -305,7 +305,7 @@ describe("POST /admin/products/:id/variants/:id", () => {
     )
   })
 
-  it.only("should update variant metadata", async () => {
+  it("should update variant metadata", async () => {
     const api = useApi()! as AxiosInstance
 
     const data = {
