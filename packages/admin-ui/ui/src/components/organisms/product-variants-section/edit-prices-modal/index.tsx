@@ -1,27 +1,26 @@
 import { MoneyAmount, Product } from "@medusajs/client-types"
-import mapKeys from "lodash/mapKeys"
-import pick from "lodash/pick"
-import pickBy from "lodash/pickBy"
-import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
-import { useEffect, useMemo, useRef, useState } from "react"
-
-import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
-
-import useNotification from "../../../../hooks/use-notification"
-import Fade from "../../../atoms/fade-wrapper"
-import Button from "../../../fundamentals/button"
-import CrossIcon from "../../../fundamentals/icons/cross-icon"
-import Modal from "../../../molecules/modal"
-import DeletePrompt from "../../delete-prompt"
-import EditPricesActions from "./edit-prices-actions"
-import EditPricesTable from "./edit-prices-table"
-import SavePrompt from "./save-prompt"
 import {
   getAllProductPricesCurrencies,
   getAllProductPricesRegions,
   getCurrencyPricesOnly,
   getRegionPricesOnly,
 } from "./utils"
+import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
+import { useEffect, useMemo, useRef, useState } from "react"
+
+import Button from "../../../fundamentals/button"
+import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
+import CrossIcon from "../../../fundamentals/icons/cross-icon"
+import DeletePrompt from "../../delete-prompt"
+import EditPricesActions from "./edit-prices-actions"
+import EditPricesTable from "./edit-prices-table"
+import Fade from "../../../atoms/fade-wrapper"
+import Modal from "../../../molecules/modal"
+import SavePrompt from "./save-prompt"
+import mapKeys from "lodash/mapKeys"
+import pick from "lodash/pick"
+import pickBy from "lodash/pickBy"
+import useNotification from "../../../../hooks/use-notification"
 
 type EditPricesModalProps = {
   close: () => void
