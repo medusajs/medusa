@@ -122,9 +122,7 @@ export default async (req, res) => {
           variant_id: validated.variant_id,
         }
 
-        const txCartService = cartService.withTransaction(manager)
-
-        let cart = await txCartService.retrieve(cartId, {
+        let cart = await cartService.retrieve(cartId, {
           select: ["id", "region_id", "customer_id"],
         })
 
@@ -138,15 +136,15 @@ export default async (req, res) => {
         await manager.transaction(
           stepOptions.isolationLevel,
           async (transactionManager) => {
-            const txCartService_ =
+            const txCartService =
               cartService.withTransaction(transactionManager)
-            await txCartService_.addOrUpdateLineItems(cart.id, line, {
+            await txCartService.addOrUpdateLineItems(cart.id, line, {
               validateSalesChannels:
                 featureFlagRouter.isFeatureEnabled("sales_channels"),
             })
 
             if (cart.payment_sessions?.length) {
-              await txCartService_.setPaymentSessions(
+              await txCartService.setPaymentSessions(
                 cart as WithRequiredProperty<Cart, "total">
               )
             }
@@ -173,7 +171,7 @@ export default async (req, res) => {
             )
           }
 
-          cart = await txCartService.retrieveWithTotals(cart.id, {
+          cart = await cartService.retrieveWithTotals(cart.id, {
             select: defaultStoreCartFields,
             relations,
           })
