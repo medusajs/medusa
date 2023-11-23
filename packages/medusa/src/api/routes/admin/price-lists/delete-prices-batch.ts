@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
 import { WorkflowTypes } from "@medusajs/types"
-import { removePriceListPrices } from "@medusajs/core-flows/dist/definition/price-list/remove-price-list-prices"
+import { removePriceListPrices } from "@medusajs/core-flows"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/prices/batch
