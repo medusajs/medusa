@@ -9,3 +9,9 @@ As Medusa moves towards modularization, commerce concepts such as Products or Pr
 Experimental Features are guarded in the Medusa backend by a feature flag.
 
 To use them, [enable the `medusa_v2` feature flag](../development/feature-flags/toggle.md) in your backend.
+
+Then, run migrations in your backend with the following command:
+
+```bash
+npx medusa migrations run
+```
