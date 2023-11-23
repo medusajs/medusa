@@ -42,6 +42,10 @@ export default async function ({ port, cpus, directory }) {
       }
     }
 
+    scheduleJob(CRON_SCHEDULE, () => {
+      track("PING")
+    })
+
     process.on("SIGTERM", gracefulShutDown)
     process.on("SIGINT", gracefulShutDown)
   } else {
@@ -75,10 +79,6 @@ export default async function ({ port, cpus, directory }) {
 
       process.on("SIGTERM", gracefulShutDown)
       process.on("SIGINT", gracefulShutDown)
-
-      scheduleJob(CRON_SCHEDULE, () => {
-        track("PING")
-      })
 
       return { dbConnection, server }
     }
