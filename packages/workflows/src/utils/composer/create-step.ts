@@ -33,7 +33,7 @@ type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
     >>
 
 type CompensateFn<T> = (
-  input: T,
+  input: T | undefined,
   context: StepExecutionContext
 ) => unknown | Promise<unknown>
 
@@ -121,7 +121,7 @@ function applyStep<
               context: transactionContext.context,
             }
 
-            const stepOutput = transactionContext.invoke[stepName].output
+            const stepOutput = transactionContext.invoke[stepName]?.output
             const invokeResult =
               stepOutput?.__type === SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&
