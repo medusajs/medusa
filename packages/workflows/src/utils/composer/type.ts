@@ -15,6 +15,12 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
       ]
     : WorkflowData<{ [K in keyof TOutput]: TOutput[K] }>
 
+/**
+ * A step function to be used in a workflow.
+ *
+ * @typeParam TInput - The type of the input of the step.
+ * @typeParam TOutput - The type of the output of the step.
+ */
 export type StepFunction<TInput extends object = object, TOutput = unknown> = {
   (input: { [K in keyof TInput]: WorkflowData<TInput[K]> }): WorkflowData<{
     [K in keyof TOutput]: TOutput[K]
@@ -28,6 +34,11 @@ export type WorkflowDataProperties<T = unknown> = {
   __step__: string
 }
 
+/**
+ * This type is used to encapsulate the input or output type of all utils.
+ *
+ * @typeParam T - The type of a step's input or result.
+ */
 export type WorkflowData<T = unknown> = (T extends object
   ? {
       [Key in keyof T]: WorkflowData<T[Key]>
@@ -53,9 +64,21 @@ export type CreateWorkflowComposerContext = {
   ) => TOutput
 }
 
+/**
+ * The step's context.
+ */
 export interface StepExecutionContext {
+  /**
+   * The container used to access resources, such as services, in the step.
+   */
   container: MedusaContainer
+  /**
+   * Metadata passed in the input.
+   */
   metadata: TransactionPayload["metadata"]
+  /**
+   * {@inheritDoc Context}
+   */
   context: Context
 }
 
