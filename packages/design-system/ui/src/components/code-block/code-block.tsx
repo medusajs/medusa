@@ -138,7 +138,7 @@ const Body = ({
             ...themes.palenight,
             plain: {
               color: "rgba(249, 250, 251, 1)",
-              backgroundColor: "#111827",
+              backgroundColor: "rgb(17,24,39)",
             },
             styles: [
               ...themes.palenight.styles,
@@ -173,13 +173,13 @@ const Body = ({
               {
                 types: ["number"],
                 style: {
-                  color: "rgb(247, 208, 25)",
+                  color: "rgb(247,208,25)",
                 },
               },
               {
                 types: ["maybe-class-name"],
                 style: {
-                  color: "rgb(255, 203, 107)",
+                  color: "rgb(255,203,107)",
                 },
               },
               {
@@ -191,7 +191,7 @@ const Body = ({
               {
                 types: ["comment"],
                 style: {
-                  color: "#34D399",
+                  color: "rgb(52,211,153)",
                 },
               },
             ],
