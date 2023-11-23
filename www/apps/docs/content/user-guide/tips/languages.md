@@ -1,6 +1,6 @@
 # Admin Languages
 
-Find in this documentation the full list of available languages in the Admin, both official and by the community.
+Medusa Admin comes with multi-language support. This document covers the complete list of available languages, both official and by the community.
 
 :::note
 
