@@ -10,6 +10,9 @@ import {
 } from "./type"
 
 /**
+ *
+ * @ignore
+ *
  * This function allows you to add hooks in your workflow that provide access to some data. Then, consumers of that workflow can add a handler function that performs
  * an action with the provided data or modify it.
  *
