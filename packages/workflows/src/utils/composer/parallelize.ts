@@ -2,32 +2,44 @@ import { CreateWorkflowComposerContext, WorkflowData } from "./type"
 import { SymbolMedusaWorkflowComposerContext } from "./helpers"
 
 /**
- * Parallelize multiple steps.
- * The steps will be run in parallel. The result of each step will be returned as part of the result array.
- * Each StepResult can be accessed from the resulted array in the order they were passed to the parallelize function.
+ * This function is used to run multiple steps in parallel. The result of each step will be returned as part of the result array.
  *
- * @param steps
+ * @typeParam TResult - The type of the expected result.
+ *
+ * @returns The step results. The results are ordered in the array by the order they're passed in the function's parameter.
  *
  * @example
  * ```ts
- * import { createWorkflow, WorkflowData, parallelize } from "@medusajs/workflows"
- * import { createProductStep, getProductStep, createPricesStep, attachProductToSalesChannelStep } from "./steps"
+ * import {
+ *   createWorkflow,
+ *   parallelize
+ * } from "@medusajs/workflows"
+ * import {
+ *   createProductStep,
+ *   getProductStep,
+ *   createPricesStep,
+ *   attachProductToSalesChannelStep
+ * } from "./steps"
  *
- * interface MyWorkflowData {
+ * interface WorkflowInput {
  *   title: string
  * }
  *
- * const myWorkflow = createWorkflow("my-workflow", (input: WorkflowData<MyWorkflowData>) => {
- *   const product = createProductStep(input)
+ * const myWorkflow = createWorkflow<
+ *   WorkflowInput,
+ *   Product
+ * >("my-workflow", (input) => {
+ *    const product = createProductStep(input)
  *
- *   const [prices, productSalesChannel] = parallelize(
+ *    const [prices, productSalesChannel] = parallelize(
  *      createPricesStep(product),
  *      attachProductToSalesChannelStep(product)
- *   )
+ *    )
  *
- *   const id = product.id
- *   return getProductStep(product.id)
- * })
+ *    const id = product.id
+ *    return getProductStep(product.id)
+ *  }
+ * )
  */
 export function parallelize<TResult extends WorkflowData[]>(
   ...steps: TResult

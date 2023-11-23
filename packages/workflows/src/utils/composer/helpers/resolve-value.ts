@@ -30,6 +30,9 @@ async function resolveProperty(property, transactionContext) {
   }
 }
 
+/**
+ * @internal
+ */
 export async function resolveValue(input, transactionContext) {
   const unwrapInput = async (
     inputTOUnwrap: Record<string, unknown>,
