@@ -2661,6 +2661,10 @@ describe("CartService", () => {
       .register("remoteQuery", asValue(null))
       .register("pricingModuleService", asValue(undefined))
       .register("pricingService", asClass(PricingService))
+      .register(
+        "pricingModuleContextTransformationStrategy",
+        asValue(undefined)
+      )
 
     const cartService = container.resolve("cartService")
 
