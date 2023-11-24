@@ -19,11 +19,12 @@ export async function prepareRemoveVariantPrices({
 
   const variables = {
     variant_id: variant_ids,
+    take: null,
   }
 
   const query = {
     product_variant_price_set: {
-      __args: { ...variables, take: null },
+      __args: variables,
       fields: ["variant_id", "price_set_id"],
     },
   }

@@ -206,11 +206,12 @@ class PricingService extends TransactionBaseService {
   ) {
     const variables = {
       variant_id: variantPriceData.map((pricedata) => pricedata.variantId),
+      take: null,
     }
 
     const query = {
       product_variant_price_set: {
-        __args: { ...variables, take: null },
+        __args: variables,
         fields: ["variant_id", "price_set_id"],
       },
     }
@@ -685,11 +686,12 @@ class PricingService extends TransactionBaseService {
   ): Promise<Map<string, MoneyAmount[]>> {
     const variables = {
       variant_id: variantIds,
+      take: null,
     }
 
     const query = {
       product_variant_price_set: {
-        __args: { ...variables, take: null },
+        __args: variables,
         fields: ["variant_id", "price_set_id"],
       },
     }

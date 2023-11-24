@@ -19,11 +19,12 @@ export async function prepareRemoveProductPrices({
 
   const variables = {
     id: product_ids,
+    take: null,
   }
 
   const query = {
     product: {
-      __args: { ...variables, take: null },
+      __args: variables,
       ...defaultAdminProductRemoteQueryObject,
     },
   }

@@ -28,11 +28,12 @@ export async function prepareUpdatePriceLists({
 
   const variables = {
     variant_id: variantIds,
+    take: null,
   }
 
   const query = {
     product_variant_price_set: {
-      __args: { ...variables, take: null },
+      __args: variables,
       fields: ["variant_id", "price_set_id"],
     },
   }
