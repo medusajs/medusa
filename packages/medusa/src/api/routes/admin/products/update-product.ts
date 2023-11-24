@@ -5,7 +5,7 @@ import {
   MedusaV2Flag,
   promiseAll,
 } from "@medusajs/utils"
-import { Workflows, updateProducts } from "@medusajs/workflows"
+import { updateProducts, Workflows } from "@medusajs/core-flows"
 import { Type } from "class-transformer"
 import {
   IsArray,
