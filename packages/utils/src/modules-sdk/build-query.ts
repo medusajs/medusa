@@ -22,7 +22,7 @@ export function buildQuery<T = any, TDto = any>(
       (Number.isSafeInteger(config.skip) && config.skip! >= 0) ||
       null === config.skip
         ? config.skip ?? undefined
-        : 15,
+        : 0,
   }
 
   if (config.order) {
