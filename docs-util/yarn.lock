@@ -1381,6 +1381,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "commander@npm:11.1.0"
+  checksum: 13cc6ac875e48780250f723fb81c1c1178d35c5decb1abb1b628b3177af08a8554e76b2c0f29de72d69eef7c864d12613272a71fabef8047922bc622ab75a179
+  languageName: node
+  linkType: hard
+
 "commander@npm:^9.1.0":
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
@@ -4176,12 +4183,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"workflows-diagram-generator-old@workspace:packages/workflows-diagrams-generator-old":
+  version: 0.0.0-use.local
+  resolution: "workflows-diagram-generator-old@workspace:packages/workflows-diagrams-generator-old"
+  dependencies:
+    "@medusajs/workflows": "link:../../../packages/workflows"
+    "@types/node": ^20.9.4
+    commander: ^11.1.0
+    glob: ^10.3.10
+    ts-node: ^10.9.1
+    typescript: ^5.1.6
+  languageName: unknown
+  linkType: soft
+
 "workflows-diagram-generator@workspace:packages/workflows-diagrams-generator":
   version: 0.0.0-use.local
   resolution: "workflows-diagram-generator@workspace:packages/workflows-diagrams-generator"
   dependencies:
     "@medusajs/workflows": "link:../../../packages/workflows"
     "@types/node": ^20.9.4
+    commander: ^11.1.0
     ts-node: ^10.9.1
     typescript: ^5.1.6
   languageName: unknown

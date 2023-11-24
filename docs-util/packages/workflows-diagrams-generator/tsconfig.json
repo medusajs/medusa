@@ -1,12 +1,19 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
-    "outDir": "./dist",
-    "module": "ESNext",
-    "moduleResolution": "node"
+    "target": "ESNext",
+    "module": "Node16", 
+    "moduleResolution": "node16",
+    "outDir": "./dist", 
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
   },
-  "include": ["*.ts"],
+  "include": ["src"],
   "ts-node": {
-    "esm": true
-  },
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true
+  }
 }

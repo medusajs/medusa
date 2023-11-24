@@ -1,6 +1,5 @@
 import React from "react"
 import { Diagram2CodeSpec } from "@medusajs/docs"
-import MDXContent from "@theme/MDXContent"
 import Tabs from "@theme/Tabs"
 import TabItem from "@theme/TabItem"
 import { specs } from "../../utils/specs"
@@ -18,12 +17,11 @@ const Diagram2CodeSpecs = ({ specName }: WorkflowReferenceProps) => {
   const specsData: Diagram2CodeSpec = specs[specName]
   return (
     <>
-      {!Object.keys(specsData).length && <span>No workflows found</span>}
-      {Object.entries(specsData).map(([name, diagram2code]) => {
-        const diagram = "```mermaid\n" + diagram2code.diagram + "\n```"
-        const code = "```ts\n" + diagram2code.code + "\n```"
-        return (
-          <Tabs groupId="workflows" key={name}>
+      {!Object.keys(specsData).length && <span>No diagrams found</span>}
+      {Object.entries(specsData).map(([name, diagram2code]) => (
+          <React.Fragment key={name}>
+            <h2>{name}</h2>
+          <Tabs groupId="workflows">
             <TabItem value="diagram" label="Diagram" default>
               <Mermaid value={diagram2code.diagram} />
             </TabItem>
@@ -31,8 +29,8 @@ const Diagram2CodeSpecs = ({ specName }: WorkflowReferenceProps) => {
               <CodeBlock language="ts">{diagram2code.code}</CodeBlock>
             </TabItem>
           </Tabs>
-        )
-      })}
+          </React.Fragment>
+        ))}
     </>
   )
 }

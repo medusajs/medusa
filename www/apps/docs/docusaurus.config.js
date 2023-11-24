@@ -74,6 +74,17 @@ const config = {
   ],
   themes: ["@docusaurus/theme-mermaid"],
   themeConfig: {
+    mermaid: {
+      options: {
+        themeVariables: {
+          background: "F9FAFB",
+          primaryColor: "#FFFFFF",
+          primaryTextColor: "#030712",
+          primaryBorderColor: "#D1D5DB",
+          lineColor: "#11181C",
+        },
+      },
+    },
     image: "img/docs-meta.jpg",
     colorMode: {
       defaultMode: "light",

@@ -1,9 +1,9 @@
 {
-  "name": "workflows-diagram-generator",
+  "name": "workflows-diagram-generator-old",
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "ts-node test.ts"
   },
   "publishConfig": {
     "access": "public"
@@ -13,6 +13,7 @@
   "dependencies": {
     "@medusajs/workflows": "link:../../../packages/workflows",
     "commander": "^11.1.0",
+    "glob": "^10.3.10",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
