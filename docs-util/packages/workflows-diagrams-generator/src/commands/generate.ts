@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { WorkflowManager } from "@medusajs/orchestration"
 import path from "path"
 import { existsSync, mkdirSync, writeFileSync } from "fs"
@@ -10,15 +11,15 @@ type Options = {
 }
 
 export default async function (workflowPath: string, options: Options) {
-  await registerWorkflows(workflowPath)
+  const workflowDefinitions = await registerWorkflows(workflowPath)
 
   const registeredWorkflows = WorkflowManager.getWorkflows()
 
-  switch (options.type) {
-    case "docs":
-      for (const [name, workflow] of registeredWorkflows) {
-        const diagram = createDiagram(workflow.flow_)
+  for (const [name, workflow] of registeredWorkflows) {
+    const diagram = createDiagram(workflow.flow_)
 
+    switch (options.type) {
+      case "docs":
         // write files
         const workflowPath = path.join(options.output, name)
         if (!existsSync(workflowPath)) {
@@ -26,7 +27,21 @@ export default async function (workflowPath: string, options: Options) {
         }
 
         writeFileSync(path.join(workflowPath, "diagram.mermaid"), diagram)
-        // writeFileSync(path.join(workflowPath, "code.ts"), workflow.code)
-      }
+        const workflowDefinition = workflowDefinitions.get(workflow.id)
+        if (workflowDefinition) {
+          writeFileSync(path.join(workflowPath, "code.ts"), workflowDefinition)
+        }
+        break
+      case "mermaid":
+        writeFileSync(path.join(options.output, `${name}.mermaid`), diagram)
+        break
+      case "markdown":
+        writeFileSync(
+          path.join(options.output, `${name}.md`),
+          `\`\`\`mermaid\n${diagram}\n\`\`\``
+        )
+    }
   }
+
+  console.log(`Generated diagrams for ${registeredWorkflows.size} workflows.`)
 }

@@ -3,7 +3,8 @@ import {
   StepResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows"
+  parallelize
+} from "@medusajs/workflows-sdk"
 
 type WorkflowOutput = {
   message: string
@@ -35,12 +36,24 @@ const step3 = createStep("step-3", async ({ name }: WorkflowInput) => {
   throw new Error("Throwing an error...")
 })
 
-const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>(
+const step4 = createStep("step-4", async ({ name }: WorkflowInput) => {
+  throw new Error("Throwing an error...")
+})
+
+const step5 = createStep("step-5", async ({ name }: WorkflowInput) => {
+  throw new Error("Throwing an error...")
+})
+
+
+export const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>(
   "hello-world",
   function (input) {
     const str1 = step1({})
     const str2 = step2(input)
-    const str3 = step3(input)
+    
+    parallelize(step3(input), step4(input))
+
+    step5(input)
 
     const result = transform(
       {
@@ -55,5 +68,3 @@ const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>(
     return result
   }
 )
-
-export default myWorkflow
