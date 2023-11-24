@@ -4,19 +4,19 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
+import { FlowRunOptions, WorkflowResult, exportWorkflow } from "../../helper"
+import {
+  SymbolInputReference,
+  SymbolMedusaWorkflowComposerContext,
+  SymbolWorkflowStep,
+  resolveValue,
+} from "./helpers"
+import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
   WorkflowData,
   WorkflowDataProperties,
 } from "./type"
-import {
-  resolveValue,
-  SymbolInputReference,
-  SymbolMedusaWorkflowComposerContext,
-  SymbolWorkflowStep,
-} from "./helpers"
-import { proxify } from "./helpers/proxy"
 
 global[SymbolMedusaWorkflowComposerContext] = null
 
@@ -81,7 +81,9 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
       >
     >
   }
-} & THooks
+} & THooks & {
+    getName: () => string
+  }
 
 /**
  * This function creates a workflow with the provided name and a constructor function.
@@ -258,6 +260,8 @@ export function createWorkflow<
       shouldRegisterHookHandler = false
     }
   }
+
+  mainFlow.getName = () => name
 
   return mainFlow as ReturnWorkflow<TData, TResult, THooks>
 }
