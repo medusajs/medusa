@@ -1,5 +1,5 @@
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { Workflows, createProducts } from "@medusajs/workflows"
+import { createProducts, Workflows } from "@medusajs/core-flows"
 import {
   IsArray,
   IsBoolean,
