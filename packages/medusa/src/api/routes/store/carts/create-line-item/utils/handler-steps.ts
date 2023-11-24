@@ -1,4 +1,4 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
 import { Cart } from "../../../../../../models"
@@ -143,9 +143,12 @@ export async function setPaymentSessionAndVariantAvailability({
     relations,
   })
 
+  const promises: Promise<any>[] = []
   if (cart.payment_sessions?.length) {
-    await txCartService.setPaymentSessions(
-      cart as WithRequiredProperty<Cart, "total">
+    promises.push(
+      txCartService.setPaymentSessions(
+        cart as WithRequiredProperty<Cart, "total">
+      )
     )
   }
 
@@ -154,12 +157,18 @@ export async function setPaymentSessionAndVariantAvailability({
     featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
 
   if (shouldSetAvailability) {
-    await productVariantInventoryService
-      .withTransaction(manager)
-      .setVariantAvailability(
-        cart.items.map((i) => i.variant),
-        cart.sales_channel_id!
-      )
+    promises.push(
+      productVariantInventoryService
+        .withTransaction(manager)
+        .setVariantAvailability(
+          cart.items.map((i) => i.variant),
+          cart.sales_channel_id!
+        )
+    )
+  }
+
+  if (promises.length) {
+    await promiseAll(promises)
   }
 
   return cart
