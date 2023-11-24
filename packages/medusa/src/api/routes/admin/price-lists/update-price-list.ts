@@ -99,22 +99,22 @@ export default async (req, res) => {
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const updateVariantsWorkflow = updatePriceLists(req.scope)
-    const rules: PricingTypes.CreatePriceListRules = {}
-    const customerGroups = validated.customer_groups || []
+    const customerGroups = validated.customer_groups
     delete validated.customer_groups
 
-    if (customerGroups.length) {
-      rules["customer_group_id"] = customerGroups.map((group) => group.id)
+    const updatePriceListInput = {
+      id,
+      ...validated,
+    } as PricingTypes.UpdatePriceListDTO
+
+    if (Array.isArray(customerGroups)) {
+      updatePriceListInput.rules = {
+        customer_group_id: customerGroups.map((group) => group.id),
+      }
     }
 
     const input = {
-      price_lists: [
-        {
-          id,
-          ...validated,
-          rules,
-        },
-      ],
+      price_lists: [updatePriceListInput],
     } as WorkflowTypes.PriceListWorkflow.UpdatePriceListWorkflowInputDTO
 
     await updateVariantsWorkflow.run({
