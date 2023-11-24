@@ -1,5 +1,5 @@
 ---
-"@medusajs/workflows": patch
+"@medusajs/workflows-sdk": patch
 "@medusajs/product": patch
 "@medusajs/types": patch
 ---

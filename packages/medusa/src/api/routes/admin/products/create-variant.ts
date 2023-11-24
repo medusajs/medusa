@@ -1,6 +1,6 @@
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-import { CreateProductVariants } from "@medusajs/workflows"
+import { CreateProductVariants } from "@medusajs/core-flows"
 import {
   IsArray,
   IsBoolean,

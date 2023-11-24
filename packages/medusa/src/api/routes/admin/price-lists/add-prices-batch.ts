@@ -1,5 +1,5 @@
 import { MedusaV2Flag } from "@medusajs/utils"
-import { updatePriceLists } from "@medusajs/workflows"
+import { updatePriceLists } from "@medusajs/core-flows"
 import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { EntityManager } from "typeorm"
