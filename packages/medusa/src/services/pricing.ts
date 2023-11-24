@@ -689,7 +689,7 @@ class PricingService extends TransactionBaseService {
 
     const query = {
       product_variant_price_set: {
-        __args: variables,
+        __args: { ...variables, take: null },
         fields: ["variant_id", "price_set_id"],
       },
     }
@@ -713,6 +713,7 @@ class PricingService extends TransactionBaseService {
           price_set_id: priceSetIds,
         },
         {
+          take: null,
           relations: [
             "money_amount",
             "price_list",
