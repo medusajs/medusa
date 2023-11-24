@@ -2671,6 +2671,11 @@ module.exports = {
         },
         {
           type: "doc",
+          label: "Install in Medusa",
+          id: "experimental/pricing/install-medusa",
+        },
+        {
+          type: "doc",
           label: "Install in Node.js",
           id: "experimental/pricing/install-nodejs",
         },
@@ -2723,6 +2728,11 @@ module.exports = {
           type: "doc",
           label: "Overview",
           id: "experimental/product/overview",
+        },
+        {
+          type: "doc",
+          label: "Install in Medusa",
+          id: "experimental/product/install-medusa",
         },
         {
           type: "doc",

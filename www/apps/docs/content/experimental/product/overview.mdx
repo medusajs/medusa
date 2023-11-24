@@ -61,7 +61,7 @@ const products = await productService.update([
 
 The Product Module can be used in many use cases, including:
 
-- Medusa Backend: Use the Product Module in the Medusa backend or replace it with your custom module. To use the Product Module in the backend, make sure to [enable the `medusa_v2` feature flag](../../development/feature-flags/toggle.md).
+- Medusa Backend: The Medusa backend uses the product module to implement some product features. However, it's guarded by the [experimental feature flag](../index.md#enabling-experimental-features). If you want to use the product module in your backend's customizations, follow [this installation guide](./install-medusa.mdx).
 - Serverless Application: Use the Product Module in a serverless application, such as a Next.js application, without having to manage a fully-fledged ecommerce system. You can use it by [installing it in your Node.js project as an NPM package](./install-nodejs.md).
 - Node.js Application: Use the Product Module in any Node.js application. Follow [this guide](./install-nodejs.md) to learn how to install it.
 

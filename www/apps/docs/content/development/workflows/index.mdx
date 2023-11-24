@@ -22,11 +22,14 @@ A workflow is made of a series of steps. A step is created using the `createStep
 Create the file `src/workflows/hello-world.ts` with the following content:
 
 ```ts title=src/workflows/hello-world.ts
-import { createStep, StepResponse } from '@medusajs/workflows-sdk';
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
 
-const step1 = createStep('step-1', async () => {
-  return new StepResponse(`Hello from step one!`);
-});
+const step1 = createStep("step-1", async () => {
+  return new StepResponse(`Hello from step one!`)
+})
 ```
 
 This creates one step that returns a hello message.
@@ -39,27 +42,27 @@ Next, you can create a workflow using the `createWorkflow` function:
 import {
   createStep, 
   StepResponse,
-  createWorkflow
-} from '@medusajs/workflows-sdk'
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
 
 type WorkflowOutput = {
   message: string;
 };
 
-const step1 = createStep('step-1', async () => {
-  return new StepResponse(`Hello from step one!`);
-});
+const step1 = createStep("step-1", async () => {
+  return new StepResponse(`Hello from step one!`)
+})
 
 const myWorkflow = createWorkflow<any, WorkflowOutput>(
-  'hello-world',
+  "hello-world",
   function () {
-    const str1 = step1({});
+    const str1 = step1({})
 
     return {
       message: str1,
-    };
+    }
   }
-);
+)
 ```
 
 This creates a `hello-world` workflow. When you create a workflow, it’s constructed but not executed yet.
@@ -74,7 +77,7 @@ You can execute a workflow from different places within Medusa.
 
 To execute the workflow, invoke it passing the Medusa container as a parameter, then use its `run` method:
 
-<Tabs groupId="execute-type" isCodeTabs={true}>
+<Tabs groupId="resource-type" isCodeTabs={true}>
   <TabItem value="api-route" label="API Route" attributes={{
     title: "src/api/store/custom/route.ts"
   }} default>
@@ -180,9 +183,12 @@ type WorkflowInput = {
   name: string;
 };
 
-const step2 = createStep('step-2', async ({ name }: WorkflowInput) => {
-  return new StepResponse(`Hello ${name} from step two!`);
-});
+const step2 = createStep(
+  "step-2", 
+  async ({ name }: WorkflowInput) => {
+    return new StepResponse(`Hello ${name} from step two!`)
+  }
+)
 ```
 
 Then, update the workflow to accept input and pass it to the new step:
@@ -190,17 +196,17 @@ Then, update the workflow to accept input and pass it to the new step:
 ```ts title=src/workflows/hello-world.ts
 import {
   // previous imports 
-  transform
-} from '@medusajs/workflows-sdk'
+  transform,
+} from "@medusajs/workflows-sdk"
 
 // ...
 
 const myWorkflow = createWorkflow<
   WorkflowInput, WorkflowOutput
 >(
-  'hello-world',
+  "hello-world",
   function (input) {
-    const str1 = step1({});
+    const str1 = step1({})
     const str2 = step2(input)
 
     const result = transform(
@@ -211,11 +217,11 @@ const myWorkflow = createWorkflow<
       (input) => ({
         message: `${input.str1}\n${input.str2}`,
       })
-    );
+    )
 
-    return result;
+    return result
   }
-);
+)
 ```
 
 Notice that to use the results of the steps, you must use the `transform` utility function. It gives you access to the real-time results of the steps once the workflow is executed.
@@ -234,19 +240,22 @@ The compensation function only runs if an error occurs throughout the Workflow. 
 For example, change step one to add a compensation function and step two to throw an error:
 
 ```ts title=src/workflows/hello-world.ts
-const step1 = createStep('step-1', async () => {
+const step1 = createStep("step-1", async () => {
   const message = `Hello from step one!`
     
   console.log(message)
 
-  return new StepResponse(message);
+  return new StepResponse(message)
 }, async () => {
   console.log("Oops! Rolling back my changes...")
-});
+})
 
-const step2 = createStep('step-2', async ({ name }: WorkflowInput) => {
-  throw new Error("Throwing an error...")
-});
+const step2 = createStep(
+  "step-2", 
+  async ({ name }: WorkflowInput) => {
+    throw new Error("Throwing an error...")
+  }
+)
 ```
 
 If you execute the Workflow, you should see:
@@ -303,19 +312,20 @@ const updateProduct = createStep(
       context.container.resolve("productService")
     
     const { id, ...updateData } = input
-    const previousProductData = await productService.retrieve(id, {
-      select: ["title", "description", "images"]
-    })
+    const previousProductData = await productService.retrieve(
+      id, {
+        select: ["title", "description", "images"],
+      }
+    )
     const product = productService.update(id, updateData)
 
     return new StepResponse(product, {
       id,
-      previousProductData
+      previousProductData,
     })
   }, async ({ id, previousProductData }, context) => {
-    const productService: ProductService = context.container.resolve(
-      "productService"
-    )
+    const productService: ProductService = 
+      context.container.resolve("productService")
 
     productService.update(id, previousProductData)
   }
@@ -363,7 +373,7 @@ const myWorkflow = createWorkflow<
     const str2 = step2(input)
     
     return {
-      message: `${input.str1}${input.str2}`
+      message: `${input.str1}${input.str2}`,
     }
   }
 )
@@ -378,9 +388,9 @@ const myWorkflow = createWorkflow<
     
     const result = transform({
       str1,
-      str2
+      str2,
     }, (input) => ({
-      message: `${input.str1}${input.str2}`
+      message: `${input.str1}${input.str2}`,
     }))
 
     return result
