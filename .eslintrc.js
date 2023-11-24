@@ -97,7 +97,7 @@ module.exports = {
           "./packages/create-medusa-app/tsconfig.json",
           "./packages/product/tsconfig.json",
           "./packages/orchestration/tsconfig.json",
-          "./packages/workflows/tsconfig.spec.json",
+          "./packages/workflows-sdk/tsconfig.spec.json",
           "./packages/core-flows/tsconfig.spec.json",
         ],
       },

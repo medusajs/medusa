@@ -1,6 +1,6 @@
 import { ProductTypes, ProductVariantDTO } from "@medusajs/types"
 
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 import { UpdateProductsPreparedData } from "../product"
 
 export async function updateProductsExtractCreatedVariants({

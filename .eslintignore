@@ -22,7 +22,7 @@ packages/*
 !packages/create-medusa-app
 !packages/product
 !packages/orchestration
-!packages/workflows
+!packages/workflows-sdk
 !packages/core-flows
 
 

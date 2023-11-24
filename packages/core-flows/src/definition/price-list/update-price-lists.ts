@@ -3,7 +3,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { WorkflowTypes } from "@medusajs/types"
-import { exportWorkflow, pipe } from "@medusajs/workflows"
+import { exportWorkflow, pipe } from "@medusajs/workflows-sdk"
 
 import { Workflows } from "../../definitions"
 import { PriceListHandlers } from "../../handlers"

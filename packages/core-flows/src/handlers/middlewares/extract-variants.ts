@@ -1,6 +1,6 @@
 import { ProductTypes } from "@medusajs/types"
 
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 export async function extractVariants({
   data,

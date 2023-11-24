@@ -1,6 +1,6 @@
 import { PricingTypes } from "@medusajs/types"
 import { MedusaV2Flag } from "@medusajs/utils"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInput = {
   createdLinks: Record<any, any>[]

@@ -1,7 +1,7 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { ProductDTO, ProductTypes } from "@medusajs/types"
 
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInput = {
   products: ProductTypes.UpdateProductDTO[]

@@ -1,4 +1,4 @@
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 import { IInventoryService, ProductVariantDTO } from "@medusajs/types"
 
 export async function useVariantsInventoryItems({

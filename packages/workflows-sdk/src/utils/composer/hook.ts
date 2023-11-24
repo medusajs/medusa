@@ -28,7 +28,7 @@ import {
  *   StepExecutionContext,
  *   hook,
  *   transform
- * } from "@medusajs/workflows"
+ * } from "@medusajs/workflows-sdk"
  * import {
  *   createProductStep,
  *   getProductStep,

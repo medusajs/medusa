@@ -1,7 +1,7 @@
 import { CartWorkflow } from "@medusajs/types"
 import { SalesChannelFeatureFlag } from "@medusajs/utils"
 
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInputData = {
   line_items: {

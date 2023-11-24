@@ -13,7 +13,7 @@ import {
   RegionHandlers,
   SalesChannelHandlers,
 } from "../../handlers"
-import { exportWorkflow, pipe } from "@medusajs/workflows"
+import { exportWorkflow, pipe } from "@medusajs/workflows-sdk"
 
 enum CreateCartActions {
   setContext = "setContext",

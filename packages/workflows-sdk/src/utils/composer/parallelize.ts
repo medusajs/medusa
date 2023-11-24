@@ -13,7 +13,7 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  * import {
  *   createWorkflow,
  *   parallelize
- * } from "@medusajs/workflows"
+ * } from "@medusajs/workflows-sdk"
  * import {
  *   createProductStep,
  *   getProductStep,

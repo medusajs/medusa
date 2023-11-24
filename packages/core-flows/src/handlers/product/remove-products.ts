@@ -1,5 +1,5 @@
 import { ProductTypes } from "@medusajs/types"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 type HandlerInput = { products: { id: string }[] }

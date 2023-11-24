@@ -2,7 +2,7 @@ import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { MedusaError, MedusaV2Flag } from "@medusajs/utils"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type ProductHandle = string
 type VariantIndexAndPrices = {

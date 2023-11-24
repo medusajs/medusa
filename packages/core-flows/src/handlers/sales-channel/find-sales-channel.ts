@@ -1,7 +1,7 @@
 import { MedusaError } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
 
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type AttachSalesChannelDTO = {
   sales_channel_id?: string

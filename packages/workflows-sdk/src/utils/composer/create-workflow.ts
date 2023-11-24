@@ -96,7 +96,7 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
  * @returns The created workflow. You can later execute the workflow by invoking it, then using its `run` method.
  *
  * @example
- * import { createWorkflow } from "@medusajs/workflows"
+ * import { createWorkflow } from "@medusajs/workflows-sdk"
  * import { MedusaRequest, MedusaResponse, Product } from "@medusajs/medusa"
  * import {
  *   createProductStep,

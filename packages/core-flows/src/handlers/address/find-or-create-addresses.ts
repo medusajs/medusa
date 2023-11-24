@@ -1,7 +1,7 @@
 import { AddressDTO } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type AddressesDTO = {
   shipping_address_id?: string

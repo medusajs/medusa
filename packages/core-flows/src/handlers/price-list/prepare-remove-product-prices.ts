@@ -1,4 +1,4 @@
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 import { prepareCreatePriceLists } from "./prepare-create-price-list"
 
 type Result = {

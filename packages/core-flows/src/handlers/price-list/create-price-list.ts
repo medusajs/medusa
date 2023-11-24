@@ -5,7 +5,7 @@ import {
 } from "@medusajs/types"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type Result = {
   priceList: PriceListDTO

@@ -6,7 +6,7 @@ import {
   UpdateProductDTO,
 } from "@medusajs/types"
 
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 import { UpdateProductsPreparedData } from "./update-products-prepare-data"
 
 type HandlerInput = UpdateProductsPreparedData & {

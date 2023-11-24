@@ -1,6 +1,6 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { ProductTypes, UpdateProductVariantOnlyDTO } from "@medusajs/types"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInput = {
   productVariantsMap: Map<string, ProductTypes.UpdateProductVariantDTO[]>

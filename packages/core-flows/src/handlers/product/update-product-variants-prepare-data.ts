@@ -1,7 +1,7 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { ProductTypes, ProductWorkflow, WorkflowTypes } from "@medusajs/types"
 import { MedusaV2Flag } from "@medusajs/utils"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type VariantPrice = {
   region_id?: string

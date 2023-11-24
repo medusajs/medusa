@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/workflows",
+  "name": "@medusajs/workflows-sdk",
   "version": "0.3.0",
   "description": "Set of workflows tooling for Medusa",
   "main": "dist/index.js",

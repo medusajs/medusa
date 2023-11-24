@@ -4,7 +4,7 @@ import {
   kebabCase,
   ShippingProfileUtils,
 } from "@medusajs/utils"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type ShippingProfileId = string
 type SalesChannelId = string

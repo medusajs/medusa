@@ -3,7 +3,7 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe } from "@medusajs/workflows"
+import { exportWorkflow, pipe } from "@medusajs/workflows-sdk"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import {

@@ -30,7 +30,7 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
  * import {
  *   createWorkflow,
  *   transform
- * } from "@medusajs/workflows"
+ * } from "@medusajs/workflows-sdk"
  * import { step1, step2 } from "./steps"
  *
  * type WorkflowInput = {

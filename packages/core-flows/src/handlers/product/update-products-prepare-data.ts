@@ -1,6 +1,6 @@
 import { ProductDTO, SalesChannelDTO, WorkflowTypes } from "@medusajs/types"
 import { MedusaV2Flag } from "@medusajs/utils"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type ProductWithSalesChannelsDTO = ProductDTO & {
   sales_channels?: SalesChannelDTO[]

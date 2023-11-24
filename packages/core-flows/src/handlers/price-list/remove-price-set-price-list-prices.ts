@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 import { prepareCreatePriceLists } from "./prepare-create-price-list"
 
 export async function removePriceListPriceSetPrices({

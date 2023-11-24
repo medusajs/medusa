@@ -197,7 +197,7 @@ function applyStep<
  *   StepResponse,
  *   StepExecutionContext,
  *   WorkflowData
- * } from "@medusajs/workflows"
+ * } from "@medusajs/workflows-sdk"
  *
  * interface CreateProductInput {
  *   title: string

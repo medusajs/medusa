@@ -3,7 +3,7 @@ import {
   InventoryItemDTO,
   SharedContext,
 } from "@medusajs/types"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 export async function restoreInventoryItems({
   container,

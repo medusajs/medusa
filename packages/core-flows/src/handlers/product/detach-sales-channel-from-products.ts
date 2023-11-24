@@ -1,4 +1,4 @@
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 import { promiseAll } from "@medusajs/utils"
 
 type ProductHandle = string

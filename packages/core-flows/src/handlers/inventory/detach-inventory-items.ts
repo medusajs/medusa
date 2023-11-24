@@ -1,5 +1,5 @@
 import { InventoryItemDTO } from "@medusajs/types"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 import { promiseAll } from "@medusajs/utils"
 
 export async function detachInventoryItems({

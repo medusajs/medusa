@@ -1,5 +1,5 @@
 import { CartDTO } from "@medusajs/types"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInputData = {
   cart: {

@@ -1,6 +1,6 @@
 import { validateEmail } from "@medusajs/utils"
 
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type CustomerDTO = {
   customer_id?: string

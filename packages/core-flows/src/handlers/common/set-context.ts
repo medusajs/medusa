@@ -1,4 +1,4 @@
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type ContextDTO = {
   context?: Record<any, any>

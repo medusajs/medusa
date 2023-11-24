@@ -1,4 +1,4 @@
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 /**
  * Middleware for map input data to a key/s.

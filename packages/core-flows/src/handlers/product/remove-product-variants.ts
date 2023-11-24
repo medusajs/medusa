@@ -1,6 +1,6 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { WorkflowArguments } from "@medusajs/workflows"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInput = { productVariants: { id: string }[] }
 

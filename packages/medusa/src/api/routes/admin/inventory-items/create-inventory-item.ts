@@ -8,7 +8,7 @@ import {
   CreateInventoryItemActions,
   createInventoryItems,
 } from "@medusajs/core-flows"
-import { pipe } from "@medusajs/workflows"
+import { pipe } from "@medusajs/workflows-sdk"
 import { ProductVariantInventoryService } from "../../../../services"
 
 import { FindParams } from "../../../../types/common"
