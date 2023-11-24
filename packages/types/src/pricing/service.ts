@@ -3,7 +3,6 @@ import {
   AddPricesDTO,
   AddRulesDTO,
   CalculatedPriceSet,
-  CalculatedPriceSetDTO,
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
   CreatePriceListDTO,
@@ -63,7 +62,7 @@ export interface IPricingModuleService {
    * The context used to select the prices. For example, you can specify the region ID in this context, and only prices having the same value
    * will be retrieved.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CalculatedPriceSetDTO>} The calculated price matching the context and filters provided.
+   * @returns {Promise<CalculatedPriceSet[]>} The calculated prices matching the context and filters provided.
    *
    * @example
    * When you calculate prices, you must at least specify the currency code:
