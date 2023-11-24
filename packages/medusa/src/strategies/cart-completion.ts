@@ -229,8 +229,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       return res
     }
 
+    const txCartService = this.cartService_.withTransaction(manager)
+
     let cart: Cart | WithRequiredProperty<Cart, "total"> =
-      await this.cartService_.retrieveWithTotals(id, {
+      await txCartService.retrieveWithTotals(id, {
         relations: [
           "billing_address",
           "region.payment_providers",
@@ -241,23 +243,21 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       })
 
     if (cart.payment_sessions?.length) {
-      await this.cartService_.setPaymentSessions(cart)
+      await txCartService.setPaymentSessions(cart)
     }
 
-    cart = await this.cartService_
-      .withTransaction(manager)
-      .authorizePayment(cart, {
-        ...context,
-        cart_id: id,
-        idempotency_key: idempotencyKey,
-      })
+    cart = await txCartService.authorizePayment(cart, {
+      ...context,
+      cart_id: id,
+      idempotency_key: idempotencyKey,
+    })
 
     if (cart.payment_session) {
       if (
         cart.payment_session.status === "requires_more" ||
         cart.payment_session.status === "pending"
       ) {
-        await this.cartService_.withTransaction(manager).deleteTaxLines(id)
+        await txCartService.deleteTaxLines(id)
 
         return {
           response_code: 200,

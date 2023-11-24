@@ -167,13 +167,15 @@ export default async (req, res) => {
             "customer",
           ]
 
-          const cart = await cartService.retrieveWithTotals(id, {
+          const txCartService = cartService.withTransaction(manager)
+
+          const cart = await txCartService.retrieveWithTotals(id, {
             select: defaultStoreCartFields,
             relations,
           })
 
           if (cart.payment_sessions?.length) {
-            await cartService.setPaymentSessions(
+            await txCartService.setPaymentSessions(
               cart as WithRequiredProperty<Cart, "total">
             )
           }
