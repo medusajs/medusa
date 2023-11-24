@@ -47,21 +47,25 @@ async function importFile(filePath: string): Promise<FileInfo> {
   const relativeFilePath = getRelativeImportPath(filePath)
   const imported = await import(relativeFilePath)
 
-  // fileInfo.code = readFileSync(relativeFilePath, "utf-8")
+  fileInfo.code = readFileSync(filePath, "utf-8")
 
-  // if (imported.default) {
-  //   fileInfo.workflowId = imported.default.getId()
-  // } else if (typeof imported === "object") {
-  //   const exportedVariables = Object.values(imported)
-  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   exportedVariables.find((variable: any) => {
-  //     if ("getId" in variable && typeof variable.getId === "function") {
-  //       fileInfo.workflowId = variable.getId()
-  //       return true
-  //     }
-  //     return false
-  //   })
-  // }
+  if (
+    imported.default &&
+    "getName" in imported.default &&
+    typeof imported.default.getName === "function"
+  ) {
+    fileInfo.workflowId = imported.default.getName()
+  } else if (typeof imported === "object") {
+    const exportedVariables = Object.values(imported)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    exportedVariables.find((variable: any) => {
+      if ("getName" in variable && typeof variable.getName === "function") {
+        fileInfo.workflowId = variable.getName()
+        return true
+      }
+      return false
+    })
+  }
 
   return fileInfo
 }
