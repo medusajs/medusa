@@ -1,10 +1,10 @@
 import { WorkflowTypes } from "@medusajs/types"
 import {
   Handlers,
-  pipe,
   updateProducts,
   UpdateProductsActions,
-} from "@medusajs/workflows"
+} from "@medusajs/core-flows"
+import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
 
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"

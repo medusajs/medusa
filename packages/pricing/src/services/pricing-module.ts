@@ -14,12 +14,12 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
+  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
-  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -140,7 +140,7 @@ export default class PricingModuleService<
     pricingFilters: PricingFilters,
     pricingContext: PricingContext = { context: {} },
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.CalculatedPriceSetDTO> {
+  ): Promise<PricingTypes.CalculatedPriceSet[]> {
     const results = await this.pricingRepository_.calculatePrices(
       pricingFilters,
       pricingContext,
@@ -149,55 +149,58 @@ export default class PricingModuleService<
 
     const pricesSetPricesMap = groupBy(results, "price_set_id")
 
-    const calculatedPrices = pricingFilters.id.map(
-      (priceSetId: string): PricingTypes.CalculatedPriceSet => {
-        // This is where we select prices, for now we just do a first match based on the database results
-        // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
-        // inject custom price selection here
-        const prices = pricesSetPricesMap.get(priceSetId) || []
-        const priceListPrice = prices.find((p) => p.price_list_id)
+    const calculatedPrices: PricingTypes.CalculatedPriceSet[] =
+      pricingFilters.id.map(
+        (priceSetId: string): PricingTypes.CalculatedPriceSet => {
+          // This is where we select prices, for now we just do a first match based on the database results
+          // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
+          // inject custom price selection here
+          const prices = pricesSetPricesMap.get(priceSetId) || []
+          const priceListPrice = prices.find((p) => p.price_list_id)
 
-        const defaultPrice = prices?.find((p) => !p.price_list_id)
+          const defaultPrice = prices?.find((p) => !p.price_list_id)
 
-        let calculatedPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
-        let originalPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
+          let calculatedPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
+          let originalPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
 
-        if (priceListPrice) {
-          calculatedPrice = priceListPrice
+          if (priceListPrice) {
+            calculatedPrice = priceListPrice
 
-          if (priceListPrice.price_list_type === PriceListType.OVERRIDE) {
-            originalPrice = priceListPrice
+            if (priceListPrice.price_list_type === PriceListType.OVERRIDE) {
+              originalPrice = priceListPrice
+            }
+          }
+
+          return {
+            id: priceSetId,
+            is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
+            calculated_amount: parseInt(calculatedPrice?.amount || "") || null,
+
+            is_original_price_price_list: !!originalPrice?.price_list_id,
+            original_amount: parseInt(originalPrice?.amount || "") || null,
+
+            currency_code: calculatedPrice?.currency_code || null,
+
+            calculated_price: {
+              money_amount_id: calculatedPrice?.id || null,
+              price_list_id: calculatedPrice?.price_list_id || null,
+              price_list_type: calculatedPrice?.price_list_type || null,
+              min_quantity:
+                parseInt(calculatedPrice?.min_quantity || "") || null,
+              max_quantity:
+                parseInt(calculatedPrice?.max_quantity || "") || null,
+            },
+
+            original_price: {
+              money_amount_id: originalPrice?.id || null,
+              price_list_id: originalPrice?.price_list_id || null,
+              price_list_type: originalPrice?.price_list_type || null,
+              min_quantity: parseInt(originalPrice?.min_quantity || "") || null,
+              max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
+            },
           }
         }
-
-        return {
-          id: priceSetId,
-          is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
-          calculated_amount: parseInt(calculatedPrice?.amount || "") || null,
-
-          is_original_price_price_list: !!originalPrice?.price_list_id,
-          original_amount: parseInt(originalPrice?.amount || "") || null,
-
-          currency_code: calculatedPrice?.currency_code || null,
-
-          calculated_price: {
-            money_amount_id: calculatedPrice?.id || null,
-            price_list_id: calculatedPrice?.price_list_id || null,
-            price_list_type: calculatedPrice?.price_list_type || null,
-            min_quantity: parseInt(calculatedPrice?.min_quantity || "") || null,
-            max_quantity: parseInt(calculatedPrice?.max_quantity || "") || null,
-          },
-
-          original_price: {
-            money_amount_id: originalPrice?.id || null,
-            price_list_id: originalPrice?.price_list_id || null,
-            price_list_type: originalPrice?.price_list_type || null,
-            min_quantity: parseInt(originalPrice?.min_quantity || "") || null,
-            max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
-          },
-        }
-      }
-    )
+      )
 
     return JSON.parse(JSON.stringify(calculatedPrices))
   }
@@ -1499,10 +1502,15 @@ export default class PricingModuleService<
     @MedusaContext() sharedContext: Context = {}
   ) {
     const updatedPriceLists: PricingTypes.PriceListDTO[] = []
-    const priceListIds = data.map((d) => d.id)
-    const ruleAttributes = data
-      .map((priceListData) => Object.keys(priceListData.rules || {}))
-      .flat()
+    const ruleAttributes: string[] = []
+    const priceListIds: string[] = []
+
+    for (const priceListData of data) {
+      if (typeof priceListData.rules === "object") {
+        ruleAttributes.push(...Object.keys(priceListData.rules))
+        priceListIds.push(priceListData.id)
+      }
+    }
 
     const existingPriceLists = await this.listPriceLists(
       { id: priceListIds },
@@ -1542,21 +1550,25 @@ export default class PricingModuleService<
     )
 
     for (const priceListData of data) {
-      const { rules = {}, ...priceListOnlyData } = priceListData
+      const { rules, ...priceListOnlyData } = priceListData
+      const updatePriceListData = {
+        ...priceListOnlyData,
+      }
+
+      if (typeof rules === "object") {
+        updatePriceListData.number_rules = Object.keys(rules).length
+      }
 
       const [updatedPriceList] = (await this.priceListService_.update(
-        [
-          {
-            ...priceListOnlyData,
-            number_rules: Object.keys(rules).length,
-          },
-        ],
+        [updatePriceListData],
         sharedContext
       )) as unknown as PricingTypes.PriceListDTO[]
 
       updatedPriceLists.push(updatedPriceList)
 
-      for (const [ruleAttribute, ruleValues = []] of Object.entries(rules)) {
+      for (const [ruleAttribute, ruleValues = []] of Object.entries(
+        rules || {}
+      )) {
         let ruleType = ruleTypeMap.get(ruleAttribute)
 
         if (!ruleType) {
