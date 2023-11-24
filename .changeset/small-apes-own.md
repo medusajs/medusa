@@ -1,5 +1,5 @@
 ---
-"@medusajs/workflows": patch
+"@medusajs/workflows-sdk": patch
 ---
 
 Fix(workflows): compensation handling

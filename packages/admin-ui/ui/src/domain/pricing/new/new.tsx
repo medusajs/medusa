@@ -631,7 +631,7 @@ const PriceListNew = () => {
               <ProgressTabs.Trigger
                 value={Tab.PRICES}
                 disabled={
-                  status[Tab.DETAILS] !== "completed" &&
+                  status[Tab.DETAILS] !== "completed" ||
                   status[Tab.PRODUCTS] !== "completed"
                 }
                 className="w-full min-w-0 max-w-[200px]"

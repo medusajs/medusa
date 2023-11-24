@@ -3,8 +3,9 @@ import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import {
   CreateInventoryItemActions,
   createInventoryItems,
-  pipe,
-} from "@medusajs/workflows"
+} from "@medusajs/core-flows"
+
+import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { getContainer } from "../../../../environment-helpers/use-container"
