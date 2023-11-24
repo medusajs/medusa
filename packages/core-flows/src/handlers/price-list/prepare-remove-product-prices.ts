@@ -23,7 +23,7 @@ export async function prepareRemoveProductPrices({
 
   const query = {
     product: {
-      __args: variables,
+      __args: { ...variables, take: null },
       ...defaultAdminProductRemoteQueryObject,
     },
   }

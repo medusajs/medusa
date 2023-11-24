@@ -29,7 +29,7 @@ export async function prepareCreatePriceLists({
 
   const query = {
     product_variant_price_set: {
-      __args: variables,
+      __args: { ...variables, take: null },
       fields: ["variant_id", "price_set_id"],
     },
   }
