@@ -1689,14 +1689,14 @@ class CartService extends TransactionBaseService {
    * a payment object, that we will use to update our cart payment with.
    * Additionally, if the payment does not require more or fails, we will
    * set the payment on the cart.
-   * @param cartId - the id of the cart to authorize payment for
+   * @param cartOrId - the id of the cart to authorize payment for
    * @param context - object containing whatever is relevant for
    *    authorizing the payment with the payment provider. As an example,
    *    this could be IP address or similar for fraud handling.
    * @return the resulting cart
    */
   async authorizePayment(
-    cartId: string,
+    cartOrId: Cart | string,
     context: Record<string, unknown> & {
       cart_id: string
     } = { cart_id: "" }
@@ -1707,9 +1707,11 @@ class CartService extends TransactionBaseService {
           this.cartRepository_
         )
 
-        const cart = await this.retrieveWithTotals(cartId, {
-          relations: ["payment_sessions", "items.variant.product.profiles"],
-        })
+        const cart = isString(cartOrId)
+          ? await this.retrieveWithTotals(cartOrId, {
+              relations: ["payment_sessions", "items.variant.product.profiles"],
+            })
+          : cartOrId
 
         // If cart total is 0, we don't perform anything payment related
         if (cart.total! <= 0) {

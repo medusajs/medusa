@@ -7,7 +7,7 @@ import {
   IInventoryService,
   ReservationItemDTO,
 } from "@medusajs/types"
-import { IdempotencyKey, Order } from "../models"
+import { Cart, IdempotencyKey, Order } from "../models"
 import OrderService, {
   ORDER_CART_ALREADY_EXISTS_ERROR,
 } from "../services/order"
@@ -23,6 +23,7 @@ import { MedusaError } from "medusa-core-utils"
 import { RequestContext } from "../types/request"
 import SwapService from "../services/swap"
 import { promiseAll } from "@medusajs/utils"
+import { WithRequiredProperty } from "../types/common"
 
 type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
@@ -228,9 +229,24 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       return res
     }
 
-    const cart = await this.cartService_
+    let cart: Cart | WithRequiredProperty<Cart, "total"> =
+      await this.cartService_.retrieveWithTotals(id, {
+        relations: [
+          "billing_address",
+          "region.payment_providers",
+          "payment_sessions",
+          "customer",
+          "items.variant.product.profiles",
+        ],
+      })
+
+    if (cart.payment_sessions?.length) {
+      await this.cartService_.setPaymentSessions(cart)
+    }
+
+    cart = await this.cartService_
       .withTransaction(manager)
-      .authorizePayment(id, {
+      .authorizePayment(cart, {
         ...context,
         cart_id: id,
         idempotency_key: idempotencyKey,

@@ -123,15 +123,7 @@ export default async (req, res) => {
             variant_id: validated.variant_id,
           }
 
-          const relations = [
-            ...defaultStoreCartRelations,
-            "billing_address",
-            "region.payment_providers",
-            "payment_sessions",
-            "customer",
-          ]
-
-          let cart = await cartService.retrieve(cartId, {
+          const cart = await cartService.retrieve(cartId, {
             select: ["id", "region_id", "customer_id"],
           })
 
@@ -142,29 +134,49 @@ export default async (req, res) => {
               metadata: data.metadata,
             })
 
-          await manager.transaction(
-            stepOptions.isolationLevel,
-            async (transactionManager) => {
-              const txCartService =
-                cartService.withTransaction(transactionManager)
+          await manager.transaction(async (transactionManager) => {
+            const txCartService =
+              cartService.withTransaction(transactionManager)
 
-              await txCartService.addOrUpdateLineItems(cart.id, line, {
-                validateSalesChannels:
-                  featureFlagRouter.isFeatureEnabled("sales_channels"),
-              })
+            await txCartService.addOrUpdateLineItems(cart.id, line, {
+              validateSalesChannels:
+                featureFlagRouter.isFeatureEnabled("sales_channels"),
+            })
+          })
 
-              cart = await txCartService.retrieveWithTotals(cart.id, {
-                select: defaultStoreCartFields,
-                relations,
-              })
+          idempotencyKey = await idempotencyKeyService
+            .withTransaction(manager)
+            .update(idempotencyKey.idempotency_key, {
+              recovery_point: CreateLineItemSteps.SET_PAYMENT_SESSIONS,
+            })
+        } catch (e) {
+          inProgress = false
+          err = e
+        }
 
-              if (cart.payment_sessions?.length) {
-                await txCartService.setPaymentSessions(
-                  cart as WithRequiredProperty<Cart, "total">
-                )
-              }
-            }
-          )
+        break
+      }
+
+      case CreateLineItemSteps.SET_PAYMENT_SESSIONS: {
+        try {
+          const relations = [
+            ...defaultStoreCartRelations,
+            "billing_address",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ]
+
+          const cart = await cartService.retrieveWithTotals(id, {
+            select: defaultStoreCartFields,
+            relations,
+          })
+
+          if (cart.payment_sessions?.length) {
+            await cartService.setPaymentSessions(
+              cart as WithRequiredProperty<Cart, "total">
+            )
+          }
 
           const shouldSetAvailability =
             relations?.some((rel) => rel.includes("variant")) &&

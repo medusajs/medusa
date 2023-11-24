@@ -11,10 +11,10 @@ import { WithRequiredProperty } from "../../../../../../types/common"
 import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-key"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
 import SalesChannelFeatureFlag from "../../../../../../loaders/feature-flags/sales-channels"
-import { MedusaError } from "medusa-core-utils"
 
 export const CreateLineItemSteps = {
   STARTED: "started",
+  SET_PAYMENT_SESSIONS: "set-payment-sessions",
   FINISHED: "finished",
 }
 
