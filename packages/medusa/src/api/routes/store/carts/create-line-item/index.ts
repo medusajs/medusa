@@ -1,23 +1,15 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../../utils/validator"
-import { CreateLineItemSteps } from "./utils/handler-steps"
-import { Cart, IdempotencyKey } from "../../../../../models"
 import {
-  initializeIdempotencyRequest,
-  RunIdempotencyStepOptions,
-} from "../../../../../utils/idempotency"
+  addOrUpdateLineItem,
+  CreateLineItemSteps,
+  setPaymentSessionAndVariantAvailability,
+} from "./utils/handler-steps"
+import { IdempotencyKey } from "../../../../../models"
+import { initializeIdempotencyRequest } from "../../../../../utils/idempotency"
 import { cleanResponseData } from "../../../../../utils/clean-response-data"
-import {
-  CartService,
-  LineItemService,
-  ProductVariantInventoryService,
-} from "../../../../../services"
-import { FlagRouter } from "@medusajs/utils"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "../index"
-import SalesChannelFeatureFlag from "../../../../../loaders/feature-flags/sales-channels"
 import IdempotencyKeyService from "../../../../../services/idempotency-key"
-import { WithRequiredProperty } from "../../../../../types/common"
 
 /**
  * @oas [post] /store/carts/{id}/line-items
@@ -95,21 +87,9 @@ export default async (req, res) => {
   let inProgress = true
   let err: unknown = false
 
-  const stepOptions: RunIdempotencyStepOptions = {
-    manager,
-    idempotencyKey,
-    container: req.scope,
-    isolationLevel: "SERIALIZABLE",
-  }
-
-  const cartService: CartService = req.scope.resolve("cartService")
-  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
@@ -123,25 +103,11 @@ export default async (req, res) => {
             variant_id: validated.variant_id,
           }
 
-          const cart = await cartService.retrieve(cartId, {
-            select: ["id", "region_id", "customer_id"],
-          })
-
-          const line = await lineItemService
-            .withTransaction(manager)
-            .generate(data.variant_id, cart.region_id, data.quantity, {
-              customer_id: data.customer_id || cart.customer_id,
-              metadata: data.metadata,
-            })
-
-          await manager.transaction(async (transactionManager) => {
-            const txCartService =
-              cartService.withTransaction(transactionManager)
-
-            await txCartService.addOrUpdateLineItems(cart.id, line, {
-              validateSalesChannels:
-                featureFlagRouter.isFeatureEnabled("sales_channels"),
-            })
+          await addOrUpdateLineItem({
+            cartId,
+            container: req.scope,
+            manager,
+            data,
           })
 
           idempotencyKey = await idempotencyKeyService
@@ -159,39 +125,11 @@ export default async (req, res) => {
 
       case CreateLineItemSteps.SET_PAYMENT_SESSIONS: {
         try {
-          const relations = [
-            ...defaultStoreCartRelations,
-            "billing_address",
-            "region.payment_providers",
-            "payment_sessions",
-            "customer",
-          ]
-
-          const txCartService = cartService.withTransaction(manager)
-
-          const cart = await txCartService.retrieveWithTotals(id, {
-            select: defaultStoreCartFields,
-            relations,
+          const cart = await setPaymentSessionAndVariantAvailability({
+            cartId: id,
+            container: req.scope,
+            manager,
           })
-
-          if (cart.payment_sessions?.length) {
-            await txCartService.setPaymentSessions(
-              cart as WithRequiredProperty<Cart, "total">
-            )
-          }
-
-          const shouldSetAvailability =
-            relations?.some((rel) => rel.includes("variant")) &&
-            featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
-
-          if (shouldSetAvailability) {
-            await productVariantInventoryService
-              .withTransaction(manager)
-              .setVariantAvailability(
-                cart.items.map((i) => i.variant),
-                cart.sales_channel_id!
-              )
-          }
 
           idempotencyKey = await idempotencyKeyService
             .withTransaction(manager)
