@@ -223,4 +223,59 @@ describe("POST /admin/price-lists/:id", () => {
       })
     )
   })
+
+  it("should not delete customer groups if customer_groups is not passed as a param", async () => {
+    await createVariantPriceSet({
+      container: appContainer,
+      variantId: variant2.id,
+      prices: [],
+    })
+
+    const [priceList] = await pricingModuleService.createPriceLists([
+      {
+        title: "test price list",
+        description: "test",
+        status: PriceListStatus.DRAFT,
+        rules: {
+          customer_group_id: ["customer-group-2"],
+        },
+        prices: [],
+      },
+    ])
+
+    await createVariantPriceSet({
+      container: appContainer,
+      variantId: variant.id,
+      prices: [],
+    })
+
+    const api = useApi() as any
+    const data = {
+      status: PriceListStatus.ACTIVE,
+    }
+
+    await api.post(`admin/price-lists/${priceList.id}`, data, adminHeaders)
+
+    const response = await api.get(
+      `/admin/price-lists/${priceList.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.price_list).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        customer_groups: [
+          {
+            id: expect.any(String),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+            name: "Test Group 2",
+            metadata: null,
+          },
+        ],
+      })
+    )
+  })
 })
