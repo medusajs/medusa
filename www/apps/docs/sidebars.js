@@ -1351,6 +1351,17 @@ module.exports = {
       items: [
         {
           type: "category",
+          label: "Workflows",
+          items: [
+            {
+              type: "doc",
+              id: "development/workflows/index",
+              label: "Introduction",
+            },
+          ],
+        },
+        {
+          type: "category",
           label: "Entity",
           items: [
             {
