@@ -53,7 +53,7 @@
     "@medusajs/modules-sdk": "^1.12.3",
     "@medusajs/orchestration": "^0.4.4",
     "@medusajs/utils": "^1.11.0",
-    "@medusajs/workflows-sdk": "^0.3.0",
+    "@medusajs/workflows-sdk": "workspace:^",
     "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
     "boxen": "^5.0.1",

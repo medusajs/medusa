@@ -7692,7 +7692,7 @@ __metadata:
     "@medusajs/orchestration": ^0.4.4
     "@medusajs/types": ^1.11.7
     "@medusajs/utils": ^1.11.0
-    "@medusajs/workflows-sdk": ^0.3.0
+    "@medusajs/workflows-sdk": "workspace:^"
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
@@ -8071,7 +8071,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-sdk@^0.3.0, @medusajs/workflows-sdk@workspace:^, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
+"@medusajs/workflows-sdk@workspace:^, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/workflows-sdk"
   dependencies:
