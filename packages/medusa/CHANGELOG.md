@@ -1,5 +1,29 @@
 # Change Log
 
+## 1.18.0
+
+### Minor Changes
+
+- [#5603](https://github.com/medusajs/medusa/pull/5603) [`cedab5833`](https://github.com/medusajs/medusa/commit/cedab583395275444001f0268e4b9ccab9b2b262) Thanks [@riqwan](https://github.com/riqwan)! - feat(workflows,medusa,utils): add medusa v2 feature flag
+
+- [`b53ab22a7`](https://github.com/medusajs/medusa/commit/b53ab22a7c47a1ff24bc0bdc5035c4229a7753af) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(changesets): Minor-bump @medusajs/medusa
+
+### Patch Changes
+
+- [#5597](https://github.com/medusajs/medusa/pull/5597) [`2947f57db`](https://github.com/medusajs/medusa/commit/2947f57db1cabb343644bde379fa9ec54e9d7750) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Update wrapHandler so that it is also able to catch errors for sync handlers
+
+- [#5624](https://github.com/medusajs/medusa/pull/5624) [`57573ed4d`](https://github.com/medusajs/medusa/commit/57573ed4d7d657d0d98bf00fb756cfbfb9cbcd8d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(medusa): Adds a new alternative syntax for creating Subscribers in Medusa, as well as adding a new API for creating scheduled jobs.
+
+- [#5599](https://github.com/medusajs/medusa/pull/5599) [`b3093c3e3`](https://github.com/medusajs/medusa/commit/b3093c3e3d64e4c024a04d76fb0f727c1c38108b) Thanks [@bqst](https://github.com/bqst)! - feat(medusa): Add `metadata` to Product Category
+
+- [#5635](https://github.com/medusajs/medusa/pull/5635) [`7226f5b69`](https://github.com/medusajs/medusa/commit/7226f5b6997a69bfcdbdd16ec16b209746023f0c) Thanks [@chemicalkosek](https://github.com/chemicalkosek)! - fix(medusa): Add missing import of promiseAll
+
+- [#5634](https://github.com/medusajs/medusa/pull/5634) [`52800710a`](https://github.com/medusajs/medusa/commit/52800710a294e32ebda6ba8a224fe85d289bfa0f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Ensure that errorHandler middleware is applied if no middleware config exists
+
+- Updated dependencies [[`cedab5833`](https://github.com/medusajs/medusa/commit/cedab583395275444001f0268e4b9ccab9b2b262)]:
+  - @medusajs/workflows@0.3.0
+  - @medusajs/utils@1.11.0
+
 ## 1.17.4
 
 ### Patch Changes

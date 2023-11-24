@@ -4,15 +4,18 @@ import {
   PriceSetMoneyAmountDTO,
   RemoteQueryFunction,
 } from "@medusajs/types"
-
+import {
+  CustomerService,
+  ProductVariantService,
+  RegionService,
+  TaxProviderService,
+} from "."
 import {
   FlagRouter,
   MedusaV2Flag,
   promiseAll,
   removeNullish,
 } from "@medusajs/utils"
-import { ProductVariantService, RegionService, TaxProviderService } from "."
-
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -33,11 +36,11 @@ import {
   TaxedPricing,
 } from "../types/pricing"
 
-import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { MedusaError } from "medusa-core-utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
+import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
 
 type InjectedDependencies = {
@@ -45,6 +48,7 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   taxProviderService: TaxProviderService
   regionService: RegionService
+  customerService: CustomerService
   priceSelectionStrategy: IPriceSelectionStrategy
   featureFlagRouter: FlagRouter
   remoteQuery: RemoteQueryFunction
@@ -57,6 +61,7 @@ type InjectedDependencies = {
 class PricingService extends TransactionBaseService {
   protected readonly regionService: RegionService
   protected readonly taxProviderService: TaxProviderService
+  protected readonly customerService_: CustomerService
   protected readonly priceSelectionStrategy: IPriceSelectionStrategy
   protected readonly productVariantService: ProductVariantService
   protected readonly featureFlagRouter: FlagRouter
@@ -64,6 +69,7 @@ class PricingService extends TransactionBaseService {
   protected get pricingModuleService(): IPricingModuleService {
     return this.__container__.pricingModuleService
   }
+
   protected get remoteQuery(): RemoteQueryFunction {
     return this.__container__.remoteQuery
   }
@@ -74,6 +80,7 @@ class PricingService extends TransactionBaseService {
     regionService,
     priceSelectionStrategy,
     featureFlagRouter,
+    customerService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -82,6 +89,7 @@ class PricingService extends TransactionBaseService {
     this.taxProviderService = taxProviderService
     this.priceSelectionStrategy = priceSelectionStrategy
     this.productVariantService = productVariantService
+    this.customerService_ = customerService
     this.featureFlagRouter = featureFlagRouter
   }
 
@@ -220,9 +228,20 @@ class PricingService extends TransactionBaseService {
       (variantPriceSet) => variantPriceSet.price_set_id
     )
 
-    const queryContext: PriceSelectionContext = removeNullish(
-      context.price_selection
-    )
+    const queryContext: PriceSelectionContext & {
+      customer_group_id?: string[]
+    } = removeNullish(context.price_selection)
+
+    if (queryContext.customer_id) {
+      const { groups } = await this.customerService_.retrieve(
+        queryContext.customer_id,
+        { relations: ["groups"] }
+      )
+
+      if (groups?.length) {
+        queryContext.customer_group_id = groups.map((group) => group.id)
+      }
+    }
 
     let calculatedPrices: CalculatedPriceSet[] = []
 
@@ -259,25 +278,37 @@ class PricingService extends TransactionBaseService {
       }
 
       if (priceSetId) {
-        const calculatedPrice: CalculatedPriceSet | undefined =
+        const calculatedPrices: CalculatedPriceSet | undefined =
           calculatedPriceMap.get(priceSetId)
 
-        if (calculatedPrice) {
-          pricingResult.prices = [
-            {
-              id: calculatedPrice.calculated_price?.money_amount_id,
-              currency_code: calculatedPrice.currency_code,
-              amount: calculatedPrice.calculated_amount,
-              min_quantity: calculatedPrice.calculated_price?.min_quantity,
-              max_quantity: calculatedPrice.calculated_price?.max_quantity,
-              price_list_id: calculatedPrice.calculated_price?.price_list_id,
-            },
-          ] as MoneyAmount[]
+        if (calculatedPrices) {
+          pricingResult.prices.push({
+            id: calculatedPrices?.original_price?.money_amount_id,
+            currency_code: calculatedPrices.currency_code,
+            amount: calculatedPrices.original_amount,
+            min_quantity: calculatedPrices.original_price?.min_quantity,
+            max_quantity: calculatedPrices.original_price?.max_quantity,
+            price_list_id: calculatedPrices.original_price?.price_list_id,
+          } as MoneyAmount)
 
-          pricingResult.original_price = calculatedPrice?.original_amount
-          pricingResult.calculated_price = calculatedPrice?.calculated_amount
+          if (
+            calculatedPrices.calculated_price?.money_amount_id !==
+            calculatedPrices.original_price?.money_amount_id
+          ) {
+            pricingResult.prices.push({
+              id: calculatedPrices.calculated_price?.money_amount_id,
+              currency_code: calculatedPrices.currency_code,
+              amount: calculatedPrices.calculated_amount,
+              min_quantity: calculatedPrices.calculated_price?.min_quantity,
+              max_quantity: calculatedPrices.calculated_price?.max_quantity,
+              price_list_id: calculatedPrices.calculated_price?.price_list_id,
+            } as MoneyAmount)
+          }
+
+          pricingResult.original_price = calculatedPrices?.original_amount
+          pricingResult.calculated_price = calculatedPrices?.calculated_amount
           pricingResult.calculated_price_type =
-            calculatedPrice?.calculated_price?.price_list_type
+            calculatedPrices?.calculated_price?.price_list_type
         }
       }
 

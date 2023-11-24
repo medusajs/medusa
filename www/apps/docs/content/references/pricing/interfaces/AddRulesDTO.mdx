@@ -22,8 +22,8 @@ The rules to add to a price set.
   },
   {
     "name": "rules",
-    "type": "`&#123; attribute: string  &#125;`[]",
-    "description": "The rules to add to a price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
+    "type": "``{ attribute: string  }``[]",
+    "description": "The rules to add to a price set.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -31,7 +31,7 @@ The rules to add to a price set.
       {
         "name": "attribute",
         "type": "`string`",
-        "description": "",
+        "description": "The value of the rule's `rule_attribute` attribute.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,

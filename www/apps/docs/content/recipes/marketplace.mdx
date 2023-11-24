@@ -256,7 +256,7 @@ You can also extend services if you need to customize a functionality implemente
 
 While implementing your marketplace, you'll typically need to listen to certain events then perform actions asynchronously. For example, you can listen to the `order.placed` event and, when triggered, create child orders of the order, separating ordered items by their associated store.
 
-To listen to events, you need to create Subscribers that subscribe a handler method to an event. In that handler method, you can implement the desired functionality.
+To listen to events, you need to create Subscribers that subscribe a handler function to an event. In that handler function, you can implement the desired functionality.
 
 <DocCard item={{
   type: 'link',
@@ -274,17 +274,24 @@ To listen to events, you need to create Subscribers that subscribe a handler met
   To listen to the `order.placed` event, create the file `src/subscribers/orderNotifier.ts` with the following content:
 
   ```ts title=src/subscribers/orderNotifier.ts
-  class OrderNotifierSubscriber {
-    constructor({ eventBusService }) {
-      eventBusService.subscribe("order.placed", this.handleOrder)
-    }
+  import { 
+    type SubscriberConfig, 
+    type SubscriberArgs,
+    OrderService,
+  } from "@medusajs/medusa"
 
-    handleOrder = async (data) => {
-      // TODO perform functionality
-    }
+  export default async function handleOrderPlaced({ 
+    data, eventName, container, pluginOptions, 
+  }: SubscriberArgs<Record<string, string>>) {
+    // TODO perform functionality
   }
 
-  export default OrderNotifierSubscriber
+  export const config: SubscriberConfig = {
+    event: OrderService.Events.PLACED,
+    context: {
+      subscriberId: "order-placed-handler",
+    },
+  }
   ```
 
   This subscribes the `handleOrder` method to be executed whenever the `order.placed` event is emitted.

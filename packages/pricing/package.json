@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/pricing",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Medusa Pricing module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -48,8 +48,8 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.3",
-    "@medusajs/types": "^1.11.6",
-    "@medusajs/utils": "^1.10.5",
+    "@medusajs/types": "^1.11.7",
+    "@medusajs/utils": "^1.11.0",
     "@mikro-orm/core": "5.7.12",
     "@mikro-orm/migrations": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",

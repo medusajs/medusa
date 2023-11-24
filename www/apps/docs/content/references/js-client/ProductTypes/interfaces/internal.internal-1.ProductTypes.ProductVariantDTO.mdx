@@ -23,7 +23,7 @@ A product variant's data.
   {
     "name": "barcode",
     "type": "`null` \\| `string`",
-    "description": "The barcode of the product variant. It can possibly be `null`.",
+    "description": "The barcode of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -50,7 +50,7 @@ A product variant's data.
   {
     "name": "ean",
     "type": "`null` \\| `string`",
-    "description": "The EAN of the product variant. It can possibly be `null`.",
+    "description": "The EAN of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -59,7 +59,7 @@ A product variant's data.
   {
     "name": "height",
     "type": "`null` \\| `number`",
-    "description": "The height of the product variant. It can possibly be `null`.",
+    "description": "The height of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -68,7 +68,7 @@ A product variant's data.
   {
     "name": "hs_code",
     "type": "`null` \\| `string`",
-    "description": "The HS Code of the product variant. It can possibly be `null`.",
+    "description": "The HS Code of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -95,7 +95,7 @@ A product variant's data.
   {
     "name": "length",
     "type": "`null` \\| `number`",
-    "description": "The length of the product variant. It can possibly be `null`.",
+    "description": "The length of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -113,7 +113,7 @@ A product variant's data.
   {
     "name": "material",
     "type": "`null` \\| `string`",
-    "description": "The material of the product variant. It can possibly be `null`.",
+    "description": "The material of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -131,7 +131,7 @@ A product variant's data.
   {
     "name": "mid_code",
     "type": "`null` \\| `string`",
-    "description": "The MID Code of the product variant. It can possibly be `null`.",
+    "description": "The MID Code of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -140,16 +140,16 @@ A product variant's data.
   {
     "name": "options",
     "type": "[ProductOptionValueDTO](internal.internal-1.ProductTypes.ProductOptionValueDTO.mdx)",
-    "description": "The associated product options. It may only be available if the `options` relation is expanded.",
+    "description": "The associated product options.",
     "optional": false,
     "defaultValue": "",
-    "expandable": false,
+    "expandable": true,
     "children": []
   },
   {
     "name": "origin_country",
     "type": "`null` \\| `string`",
-    "description": "The origin country of the product variant. It can possibly be `null`.",
+    "description": "The origin country of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -158,10 +158,10 @@ A product variant's data.
   {
     "name": "product",
     "type": "[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)",
-    "description": "The associated product. It may only be available if the `product` relation is expanded.",
+    "description": "The associated product.",
     "optional": false,
     "defaultValue": "",
-    "expandable": false,
+    "expandable": true,
     "children": []
   },
   {
@@ -176,7 +176,7 @@ A product variant's data.
   {
     "name": "sku",
     "type": "`null` \\| `string`",
-    "description": "The SKU of the product variant. It can possibly be `null`.",
+    "description": "The SKU of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -194,7 +194,7 @@ A product variant's data.
   {
     "name": "upc",
     "type": "`null` \\| `string`",
-    "description": "The UPC of the product variant. It can possibly be `null`.",
+    "description": "The UPC of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -212,7 +212,7 @@ A product variant's data.
   {
     "name": "variant_rank",
     "type": "`null` \\| `number`",
-    "description": "The ranking of the variant among other variants associated with the product. It can possibly be `null`.",
+    "description": "he ranking of the variant among other variants associated with the product.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -221,7 +221,7 @@ A product variant's data.
   {
     "name": "weight",
     "type": "`null` \\| `number`",
-    "description": "The weight of the product variant. It can possibly be `null`.",
+    "description": "The weight of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -230,7 +230,7 @@ A product variant's data.
   {
     "name": "width",
     "type": "`null` \\| `number`",
-    "description": "The width of the product variant. It can possibly be `null`.",
+    "description": "The width of the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
