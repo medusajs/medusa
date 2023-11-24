@@ -18,7 +18,7 @@ export interface MoneyAmountDTO {
   currency_code?: string
   /**
    * The money amount's currency.
-   * 
+   *
    * @expandable
    */
   currency?: CurrencyDTO
@@ -115,4 +115,9 @@ export interface FilterableMoneyAmountProps
    * Currency codes to filter money amounts by.
    */
   currency_code?: string | string[]
+
+  /**
+   * Price set money amount ids to filter by
+   */
+  price_set_money_amount_id?: string | string[]
 }

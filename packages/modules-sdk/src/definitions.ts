@@ -112,7 +112,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       canOverride: true,
       isQueryable: true,
-      dependencies: ["logger"],
+      dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,

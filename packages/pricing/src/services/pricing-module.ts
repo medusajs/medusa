@@ -5,6 +5,7 @@ import {
   CreatePriceListRuleDTO,
   DAL,
   FindConfig,
+  IEventBusModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   PriceSetDTO,
@@ -14,12 +15,12 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
+  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
-  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -52,6 +53,10 @@ import {
 } from "@services"
 import { joinerConfig } from "../joiner-config"
 import { CreatePriceListRuleValueDTO, PricingRepositoryService } from "../types"
+import {
+  MoneyAmountEventData,
+  MoneyAmountEvents,
+} from "../types/service/money-amount"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -67,6 +72,7 @@ type InjectedDependencies = {
   priceListService: PriceListService<any>
   priceListRuleService: PriceListRuleService<any>
   priceListRuleValueService: PriceListRuleValueService<any>
+  eventBusModuleService?: IEventBusModuleService
 }
 
 export default class PricingModuleService<
@@ -96,6 +102,7 @@ export default class PricingModuleService<
   protected readonly priceListService_: PriceListService<TPriceList>
   protected readonly priceListRuleService_: PriceListRuleService<TPriceListRule>
   protected readonly priceListRuleValueService_: PriceListRuleValueService<TPriceListRuleValue>
+  protected readonly eventBusModuleService_?: IEventBusModuleService
 
   constructor(
     {
@@ -112,6 +119,7 @@ export default class PricingModuleService<
       priceListService,
       priceListRuleService,
       priceListRuleValueService,
+      eventBusModuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -129,6 +137,7 @@ export default class PricingModuleService<
     this.priceListService_ = priceListService
     this.priceListRuleService_ = priceListRuleService
     this.priceListRuleValueService_ = priceListRuleValueService
+    this.eventBusModuleService_ = eventBusModuleService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -821,6 +830,15 @@ export default class PricingModuleService<
       sharedContext
     )
 
+    await this.eventBusModuleService_?.emit<MoneyAmountEventData>([
+      {
+        eventName: MoneyAmountEvents.MONEY_AMOUNT_CREATED,
+        data: {
+          id: moneyAmounts.map(({ id }) => id),
+        },
+      },
+    ])
+
     return this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
       moneyAmounts,
       {
@@ -838,6 +856,15 @@ export default class PricingModuleService<
       data,
       sharedContext
     )
+
+    await this.eventBusModuleService_?.emit<MoneyAmountEventData>([
+      {
+        eventName: MoneyAmountEvents.MONEY_AMOUNT_UPDATED,
+        data: {
+          id: moneyAmounts.map(({ id }) => id),
+        },
+      },
+    ])
 
     return this.baseRepository_.serialize<PricingTypes.MoneyAmountDTO[]>(
       moneyAmounts,

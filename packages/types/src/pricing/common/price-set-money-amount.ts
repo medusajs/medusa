@@ -1,8 +1,8 @@
-import { BaseFilterable } from "../../dal"
-import { MoneyAmountDTO } from "./money-amount"
-import { PriceListDTO } from "./price-list"
-import { PriceRuleDTO } from "./price-rule"
-import { PriceSetDTO } from "./price-set"
+import { BaseFilterable } from "../../dal";
+import { MoneyAmountDTO } from "./money-amount";
+import { PriceListDTO } from "./price-list";
+import { PriceRuleDTO } from "./price-rule";
+import { PriceSetDTO } from "./price-set";
 
 /**
  * @interface
@@ -20,13 +20,13 @@ export interface PriceSetMoneyAmountDTO {
   title?: string
   /**
    * The price set associated with the price set money amount.
-   * 
+   *
    * @expandable
    */
   price_set?: PriceSetDTO
   /**
    * The price list associated with the price set money amount.
-   * 
+   *
    * @expandable
    */
   price_list?: PriceListDTO
@@ -36,13 +36,13 @@ export interface PriceSetMoneyAmountDTO {
   price_set_id?: string
   /**
    * The price rules associated with the price set money amount.
-   * 
+   *
    * @expandable
    */
   price_rules?: PriceRuleDTO[]
   /**
    * The money amount associated with the price set money amount.
-   * 
+   *
    * @expandable
    */
   money_amount?: MoneyAmountDTO
@@ -81,4 +81,8 @@ export interface FilterablePriceSetMoneyAmountProps
    * The IDs to filter the price set money amount's associated price list.
    */
   price_list_id?: string[]
+  /**
+   * The IDs to filter price set money amounts based on associated money_amount_id.
+   */
+  money_amount_id?: string[]
 }
