@@ -62,7 +62,7 @@ const toTest = [
 
         expect(cartServiceMock.authorizePayment).toHaveBeenCalledTimes(1)
         expect(cartServiceMock.authorizePayment).toHaveBeenCalledWith(
-          expect.objectContaining({ id: "test-cart" }),
+          "test-cart",
           {
             cart_id: "test-cart",
             idempotency_key: {
