@@ -2,7 +2,7 @@
 
 {{#if name}}
 
-{{titleLevel 3}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
+{{titleLevel 4}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
 
 {{/if}}
 
@@ -14,7 +14,7 @@
 
 {{#each signatures}}
 
-{{> member.signature showSources=true }}
+{{> member.signature showSources=true commentLevel=../commentLevel }}
 
 {{/each}}
 

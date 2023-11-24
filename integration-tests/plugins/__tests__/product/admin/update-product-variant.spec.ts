@@ -1,5 +1,3 @@
-import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import {
   simpleProductFactory,
@@ -7,11 +5,13 @@ import {
 } from "../../../../factories"
 
 import { AxiosInstance } from "axios"
-import path from "path"
-import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import path from "path"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { useApi } from "../../../../environment-helpers/use-api"
 
 jest.setTimeout(50000)
 
@@ -61,6 +61,9 @@ describe("POST /admin/products/:id/variants/:id", () => {
       variants: [
         {
           options: [{ option_id: "test-product-option-1", value: "test" }],
+        },
+        {
+          options: [{ option_id: "test-product-option-1", value: "test 2" }],
         },
       ],
       options: [
@@ -247,6 +250,233 @@ describe("POST /admin/products/:id/variants/:id", () => {
             ]),
           }),
         ]),
+      })
+    )
+  })
+
+  it("should update variant option value", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-option-1",
+          value: "updated",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-option-1",
+                value: "updated",
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: product.variants[1].id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-option-1",
+                value: "test 2",
+              }),
+            ],
+          }),
+        ]),
+      })
+    )
+  })
+
+  it("should update variant metadata", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const data = {
+      metadata: {
+        test: "string",
+      },
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: variant.id,
+            metadata: {
+              test: "string",
+            },
+          }),
+        ]),
+      })
+    )
+  })
+
+  it("should remove options not present in update", async () => {
+    const api = useApi()! as AxiosInstance
+
+    product = await simpleProductFactory(dbConnection, {
+      id: "test-product-with-multiple-options",
+      variants: [
+        {
+          options: [
+            { option_id: "test-product-multi-option-1", value: "test" },
+            { option_id: "test-product-multi-option-2", value: "test value" },
+          ],
+        },
+      ],
+      options: [
+        {
+          id: "test-product-multi-option-1",
+          title: "Test option 1",
+        },
+        {
+          id: "test-product-multi-option-2",
+          title: "Test option 2",
+        },
+      ],
+    })
+
+    variant = product.variants[0]
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-multi-option-1",
+          value: "updated",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: [
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-multi-option-1",
+                value: "updated",
+              }),
+            ],
+          }),
+        ],
+      })
+    )
+  })
+
+  it("should update several options in the same api call", async () => {
+    const api = useApi()! as AxiosInstance
+
+    product = await simpleProductFactory(dbConnection, {
+      id: "test-product-with-multiple-options",
+      variants: [
+        {
+          options: [
+            { option_id: "test-product-multi-option-1", value: "test" },
+            { option_id: "test-product-multi-option-2", value: "test value" },
+          ],
+        },
+      ],
+      options: [
+        {
+          id: "test-product-multi-option-1",
+          title: "Test option 1",
+        },
+        {
+          id: "test-product-multi-option-2",
+          title: "Test option 2",
+        },
+      ],
+    })
+
+    variant = product.variants[0]
+
+    const data = {
+      options: [
+        {
+          option_id: "test-product-multi-option-1",
+          value: "updated",
+        },
+        {
+          option_id: "test-product-multi-option-2",
+          value: "updated 2",
+        },
+      ],
+    }
+
+    await api.post(
+      `/admin/products/${product.id}/variants/${variant.id}`,
+      data,
+      adminHeaders
+    )
+
+    const response = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: [
+          expect.objectContaining({
+            id: variant.id,
+            options: [
+              expect.objectContaining({
+                option_id: "test-product-multi-option-1",
+                value: "updated",
+              }),
+              expect.objectContaining({
+                option_id: "test-product-multi-option-2",
+                value: "updated 2",
+              }),
+            ],
+          }),
+        ],
       })
     )
   })

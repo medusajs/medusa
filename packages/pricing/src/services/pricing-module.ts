@@ -1499,10 +1499,15 @@ export default class PricingModuleService<
     @MedusaContext() sharedContext: Context = {}
   ) {
     const updatedPriceLists: PricingTypes.PriceListDTO[] = []
-    const priceListIds = data.map((d) => d.id)
-    const ruleAttributes = data
-      .map((priceListData) => Object.keys(priceListData.rules || {}))
-      .flat()
+    const ruleAttributes: string[] = []
+    const priceListIds: string[] = []
+
+    for (const priceListData of data) {
+      if (typeof priceListData.rules === "object") {
+        ruleAttributes.push(...Object.keys(priceListData.rules))
+        priceListIds.push(priceListData.id)
+      }
+    }
 
     const existingPriceLists = await this.listPriceLists(
       { id: priceListIds },
@@ -1542,21 +1547,25 @@ export default class PricingModuleService<
     )
 
     for (const priceListData of data) {
-      const { rules = {}, ...priceListOnlyData } = priceListData
+      const { rules, ...priceListOnlyData } = priceListData
+      const updatePriceListData = {
+        ...priceListOnlyData,
+      }
+
+      if (typeof rules === "object") {
+        updatePriceListData.number_rules = Object.keys(rules).length
+      }
 
       const [updatedPriceList] = (await this.priceListService_.update(
-        [
-          {
-            ...priceListOnlyData,
-            number_rules: Object.keys(rules).length,
-          },
-        ],
+        [updatePriceListData],
         sharedContext
       )) as unknown as PricingTypes.PriceListDTO[]
 
       updatedPriceLists.push(updatedPriceList)
 
-      for (const [ruleAttribute, ruleValues = []] of Object.entries(rules)) {
+      for (const [ruleAttribute, ruleValues = []] of Object.entries(
+        rules || {}
+      )) {
         let ruleType = ruleTypeMap.get(ruleAttribute)
 
         if (!ruleType) {

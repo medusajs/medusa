@@ -26,12 +26,13 @@ import {
   UpdateProductOptionDTO,
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
+  UpdateProductVariantDTO,
 } from "./common"
-
-import { FindConfig } from "../common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { ModuleJoinerConfig } from "../modules-sdk"
+
 import { Context } from "../shared-context"
+import { FindConfig } from "../common"
+import { ModuleJoinerConfig } from "../modules-sdk"
 
 export interface IProductModuleService {
   /**
@@ -1487,6 +1488,11 @@ export interface IProductModuleService {
   listVariants(
     filters?: FilterableProductVariantProps,
     config?: FindConfig<ProductVariantDTO>,
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO[]>
+
+  updateVariants(
+    data: UpdateProductVariantDTO[],
     sharedContext?: Context
   ): Promise<ProductVariantDTO[]>
 

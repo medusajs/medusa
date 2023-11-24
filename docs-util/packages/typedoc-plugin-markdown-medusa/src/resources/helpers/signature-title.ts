@@ -15,7 +15,7 @@ export default function (theme: MarkdownTheme) {
         theme.getFormattingOptionsForLocation()
       if (sections && sections.member_signature_title === false) {
         // only show title if there are more than one signatures
-        if (!this.parent.signatures || this.parent.signatures?.length <= 1) {
+        if (!this.parent.signatures || this.parent.signatures.length <= 1) {
           return ""
         }
       }

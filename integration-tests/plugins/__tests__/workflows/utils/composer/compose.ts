@@ -6,7 +6,7 @@ import {
   parallelize,
   StepResponse,
   transform,
-} from "@medusajs/workflows"
+} from "@medusajs/workflows-sdk"
 
 jest.setTimeout(30000)
 
@@ -1841,5 +1841,42 @@ describe("Workflow composer", function () {
         moreProperties: "more properties",
       })
     })
+  })
+
+  it("should compose a workflow that throws without crashing and the compensation will receive undefined for the step that fails", async () => {
+    const mockStep1Fn = jest.fn().mockImplementation(function (input) {
+      throw new Error("invoke fail")
+    })
+
+    const mockCompensateSte1 = jest.fn().mockImplementation(function (input) {
+      return input
+    })
+
+    const step1 = createStep("step1", mockStep1Fn, mockCompensateSte1)
+
+    const workflow = createWorkflow("workflow1", function (input) {
+      return step1(input)
+    })
+
+    const workflowInput = { test: "payload1" }
+    const { errors } = await workflow().run({
+      input: workflowInput,
+      throwOnError: false,
+    })
+
+    expect(errors).toHaveLength(1)
+    expect(errors[0]).toEqual({
+      action: "step1",
+      handlerType: "invoke",
+      error: expect.objectContaining({
+        message: "invoke fail",
+      }),
+    })
+
+    expect(mockStep1Fn).toHaveBeenCalledTimes(1)
+    expect(mockCompensateSte1).toHaveBeenCalledTimes(1)
+
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
+    expect(mockCompensateSte1.mock.calls[0][0]).toEqual(undefined)
   })
 })

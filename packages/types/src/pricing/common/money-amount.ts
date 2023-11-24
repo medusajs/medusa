@@ -36,8 +36,6 @@ export interface MoneyAmountDTO {
   max_quantity?: number
   /**
    * The details of the relation between the money amount and its associated price set.
-   * 
-   * @expandable
    */
   price_set_money_amount?: PriceSetMoneyAmountDTO
 }
