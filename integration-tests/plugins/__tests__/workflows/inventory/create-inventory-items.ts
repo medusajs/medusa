@@ -5,7 +5,7 @@ import {
   createInventoryItems,
 } from "@medusajs/core-flows"
 
-import { pipe } from "@medusajs/workflows"
+import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { getContainer } from "../../../../environment-helpers/use-container"

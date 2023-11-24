@@ -21,7 +21,7 @@
 - [#5634](https://github.com/medusajs/medusa/pull/5634) [`52800710a`](https://github.com/medusajs/medusa/commit/52800710a294e32ebda6ba8a224fe85d289bfa0f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Ensure that errorHandler middleware is applied if no middleware config exists
 
 - Updated dependencies [[`cedab5833`](https://github.com/medusajs/medusa/commit/cedab583395275444001f0268e4b9ccab9b2b262)]:
-  - @medusajs/workflows-sdk@0.3.0
+  - @medusajs/workflows@0.3.0
   - @medusajs/utils@1.11.0
 
 ## 1.17.4
@@ -46,7 +46,7 @@
   - @medusajs/modules-sdk@1.12.3
   - @medusajs/orchestration@0.4.4
   - @medusajs/utils@1.10.5
-  - @medusajs/workflows-sdk@0.2.5
+  - @medusajs/workflows@0.2.5
   - @medusajs/link-modules@0.2.3
 
 ## 1.17.3
@@ -90,7 +90,7 @@
 
 - [#5365](https://github.com/medusajs/medusa/pull/5365) [`ddff91965`](https://github.com/medusajs/medusa/commit/ddff9196557c662cbdfb463dc5c76bf7bee6c087) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(medusa): Introduces a new file based routing system as an alternative to the current approach. File based routing is optional, and the previous approach can still be used. The two approaches can also be used together allowing for incremental adoption.
 
-- [#5301](https://github.com/medusajs/medusa/pull/5301) [`66413d094`](https://github.com/medusajs/medusa/commit/66413d094e916debbdb74b68800c96ca2c9302c9) Thanks [@srindom](https://github.com/srindom)! - fix: move create inventory workflow to @medusajs/workflows-sdk
+- [#5301](https://github.com/medusajs/medusa/pull/5301) [`66413d094`](https://github.com/medusajs/medusa/commit/66413d094e916debbdb74b68800c96ca2c9302c9) Thanks [@srindom](https://github.com/srindom)! - fix: move create inventory workflow to @medusajs/workflows
 
 - [#5394](https://github.com/medusajs/medusa/pull/5394) [`a0963f0ed`](https://github.com/medusajs/medusa/commit/a0963f0edf909f6cfea17bd7a0c7899707808057) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Remove t() on product.status update
 
@@ -99,7 +99,7 @@
   - @medusajs/link-modules@0.2.1
   - @medusajs/modules-sdk@1.12.1
   - @medusajs/orchestration@0.4.2
-  - @medusajs/workflows-sdk@0.2.4
+  - @medusajs/workflows@0.2.4
 
 ## 1.17.1
 
@@ -150,7 +150,7 @@
   - @medusajs/utils@1.10.2
   - @medusajs/orchestration@0.4.1
   - @medusajs/modules-sdk@1.11.3
-  - @medusajs/workflows-sdk@0.2.3
+  - @medusajs/workflows@0.2.3
 
 ## 1.16.1
 
@@ -193,7 +193,7 @@
   - @medusajs/orchestration@0.4.0
   - @medusajs/modules-sdk@1.11.0
   - @medusajs/utils@1.10.1
-  - @medusajs/workflows-sdk@0.2.2
+  - @medusajs/workflows@0.2.2
 
 ## 1.15.1
 
@@ -228,7 +228,7 @@
   - @medusajs/orchestration@0.3.0
   - @medusajs/utils@1.10.0
   - @medusajs/medusa-cli@1.3.21
-  - @medusajs/workflows-sdk@0.2.1
+  - @medusajs/workflows@0.2.1
 
 ## 1.15.0
 
@@ -275,7 +275,7 @@
 - [#4685](https://github.com/medusajs/medusa/pull/4685) [`281b0746c`](https://github.com/medusajs/medusa/commit/281b0746cfbe80b83c6a67d1ea120b47a0ea7121) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,workflows,types) Create cart workflow
 
 - Updated dependencies [[`8ae31aff4`](https://github.com/medusajs/medusa/commit/8ae31aff4b23c980a2ecc8300a75798c263f0298), [`ac866ebb5`](https://github.com/medusajs/medusa/commit/ac866ebb5197ee694dda91824b501109012a3dd1), [`3f3a84262`](https://github.com/medusajs/medusa/commit/3f3a84262ce9cbd911923278a54e301fbe9a4634), [`30ce35b16`](https://github.com/medusajs/medusa/commit/30ce35b163afa25f4e1d8d1bd392f401a3b413df), [`281b0746c`](https://github.com/medusajs/medusa/commit/281b0746cfbe80b83c6a67d1ea120b47a0ea7121), [`c0ca00290`](https://github.com/medusajs/medusa/commit/c0ca00290106fbdc8e15077bc8d1c3eafbef59f2)]:
-  - @medusajs/workflows-sdk@0.2.0
+  - @medusajs/workflows@0.2.0
   - @medusajs/orchestration@0.2.0
   - @medusajs/modules-sdk@1.9.2
   - @medusajs/utils@1.9.6
@@ -299,7 +299,7 @@
   - @medusajs/medusa-cli@1.3.18
   - @medusajs/modules-sdk@1.9.1
   - @medusajs/utils@1.9.5
-  - @medusajs/workflows-sdk@0.1.1
+  - @medusajs/workflows@0.1.1
 
 ## 1.13.0
 
