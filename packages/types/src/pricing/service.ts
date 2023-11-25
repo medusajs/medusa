@@ -2,7 +2,7 @@ import {
   AddPriceListPricesDTO,
   AddPricesDTO,
   AddRulesDTO,
-  CalculatedPriceSetDTO,
+  CalculatedPriceSet,
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
   CreatePriceListDTO,
@@ -62,7 +62,7 @@ export interface IPricingModuleService {
    * The context used to select the prices. For example, you can specify the region ID in this context, and only prices having the same value
    * will be retrieved.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CalculatedPriceSetDTO>} The calculated price matching the context and filters provided.
+   * @returns {Promise<CalculatedPriceSet[]>} The calculated prices matching the context and filters provided.
    *
    * @example
    * When you calculate prices, you must at least specify the currency code:
@@ -137,7 +137,7 @@ export interface IPricingModuleService {
     filters: PricingFilters,
     context?: PricingContext,
     sharedContext?: Context
-  ): Promise<CalculatedPriceSetDTO>
+  ): Promise<CalculatedPriceSet[]>
 
   /**
    * This method is used to retrieve a price set by its ID.
@@ -3170,16 +3170,16 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to create price lists.
-   * 
+   *
    * @param {CreatePriceListDTO[]} data - The details of each price list to be created.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceListDTO[]>} The created price lists.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createPriceList (items: {
    *   title: string
    *   description: string
@@ -3187,9 +3187,9 @@ export interface IPricingModuleService {
    *   ends_at?: string
    * }[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceList = await pricingService.createPriceLists(items)
-   * 
+   *
    *   // do something with the price lists or return them
    * }
    */
@@ -3200,16 +3200,16 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to update price lists.
-   * 
+   *
    * @param {UpdatePriceListDTO[]} data - The attributes to update in each price list.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceListDTO[]>} The updated price lists.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function updatePriceLists (items: {
    *   id: string
    *   title: string
@@ -3218,9 +3218,9 @@ export interface IPricingModuleService {
    *   ends_at?: string
    * }[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceList = await pricingService.updatePriceLists(items)
-   * 
+   *
    *   // do something with the price lists or return them
    * }
    */
@@ -3231,19 +3231,19 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to delete price lists.
-   * 
+   *
    * @param {string[]} priceListIds - The IDs of the price lists to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the price lists are deleted successfully.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function deletePriceLists (ids: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.deletePriceLists(ids)
    * }
    */
@@ -3269,14 +3269,14 @@ export interface IPricingModuleService {
    * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceListRule (priceListRuleId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceListRule = await pricingService.retrievePriceListRule(
    *     priceListRuleId
    *   )
-   * 
+   *
    *   // do something with the price list rule or return it
    * }
    * ```
@@ -3287,17 +3287,17 @@ export interface IPricingModuleService {
    * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceListRule (priceListRuleId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceListRule = await pricingService.retrievePriceListRule(
    *     priceListRuleId,
    *     {
    *       relations: ["price_list"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the price list rule or return it
    * }
    * ```
@@ -3546,24 +3546,24 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to create price list rules.
-   * 
+   *
    * @param {CreatePriceListRuleDTO[]} data - The price list rules to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceListRuleDTO[]>} The created price list rules.
-   * 
+   *
    * @example
    * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createPriceListRules (items: {
    *   rule_type_id: string
    *   price_list_id: string
    * }[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceListRules = await pricingService.createPriceListRules(items)
-   * 
+   *
    *   // do something with the price list rule or return them
    * }
    */
@@ -3574,25 +3574,25 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to update price list rules.
-   * 
+   *
    * @param {UpdatePriceListRuleDTO[]} data - The attributes to update for each price list rule.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceListRuleDTO[]>} The updated price list rules.
-   * 
+   *
    * @example
    * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function updatePriceListRules (items: {
    *   id: string
    *   rule_type_id?: string
    *   price_list_id?: string
    * }[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceListRules = await pricingService.updatePriceListRules(items)
-   * 
+   *
    *   // do something with the price list rule or return them
    * }
    */
@@ -3603,19 +3603,19 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to delete price list rules.
-   * 
+   *
    * @param {string[]} priceListRuleIds - The IDs of the price list rules to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves successfully when the price list rules are deleted.
-   * 
+   *
    * @example
    * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function deletePriceListRules (priceListRuleIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.deletePriceListRules(priceListRuleIds)
    * }
    */
@@ -3626,16 +3626,16 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to add prices to price lists.
-   * 
+   *
    * @param {AddPriceListPricesDTO[]} data - The prices to add for each price list.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceListDTO[]>} The updated price lists.
-   * 
+   *
    * @example
    * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function addPriceListPrices (items: {
    *   priceListId: string,
    *   prices: {
@@ -3645,9 +3645,9 @@ export interface IPricingModuleService {
    *   }[]
    * }[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceLists = await pricingService.addPriceListPrices(items)
-   * 
+   *
    *   // do something with the price lists or return them
    * }
    */
@@ -3658,26 +3658,26 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to set the rules of a price list.
-   * 
+   *
    * @param {SetPriceListRulesDTO} data - The rules to set for a price list.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceListDTO>} The updated price lists.
-   * 
+   *
    * @example
    * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function setPriceListRules (priceListId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceList = await pricingService.setPriceListRules({
    *     priceListId,
    *     rules: {
    *       region_id: "US"
    *     }
    *   })
-   * 
+   *
    *   // do something with the price list or return it
    * }
    */
@@ -3688,24 +3688,24 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to remove rules from a price list.
-   * 
+   *
    * @param {RemovePriceListRulesDTO} data - The rules to remove from a price list.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceListDTO>} The updated price lists.
-   * 
+   *
    * @example
    * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function setPriceListRules (priceListId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceList = await pricingService.removePriceListRules({
    *     priceListId,
    *     rules: ["region_id"]
    *   })
-   * 
+   *
    *   // do something with the price list or return it
    * }
    */

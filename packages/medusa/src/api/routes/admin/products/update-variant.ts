@@ -1,6 +1,6 @@
 import { WorkflowTypes } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
-import { UpdateProductVariants } from "@medusajs/workflows"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { UpdateProductVariants } from "@medusajs/core-flows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -12,8 +12,6 @@ import {
   ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
-
-import { MedusaV2Flag } from "@medusajs/utils"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,

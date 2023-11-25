@@ -83,43 +83,43 @@ export interface ProductDTO {
   material?: string | null
   /**
    * The associated product collection.
-   * 
+   *
    * @expandable
    */
   collection: ProductCollectionDTO
   /**
    * The associated product categories.
-   * 
+   *
    * @expandable
    */
   categories?: ProductCategoryDTO[] | null
   /**
    * The associated product type.
-   * 
+   *
    * @expandable
    */
   type: ProductTypeDTO[]
   /**
    * The associated product tags.
-   * 
+   *
    * @expandable
    */
   tags: ProductTagDTO[]
   /**
    * The associated product variants.
-   * 
+   *
    * @expandable
    */
   variants: ProductVariantDTO[]
   /**
    * The associated product options.
-   * 
+   *
    * @expandable
    */
   options: ProductOptionDTO[]
   /**
    * The associated product images.
-   * 
+   *
    * @expandable
    */
   images: ProductImageDTO[]
@@ -226,17 +226,17 @@ export interface ProductVariantDTO {
   width?: number | null
   /**
    * The associated product options.
-   * 
+   *
    * @expandable
    */
-  options: ProductOptionValueDTO
+  options: ProductOptionValueDTO[]
   /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
   /**
    * The associated product.
-   * 
+   *
    * @expandable
    */
   product: ProductDTO
@@ -298,13 +298,13 @@ export interface ProductCategoryDTO {
   rank?: number
   /**
    * The associated parent category.
-   * 
+   *
    * @expandable
    */
   parent_category?: ProductCategoryDTO
   /**
    * The associated child categories.
-   * 
+   *
    * @expandable
    */
   category_children: ProductCategoryDTO[]
@@ -410,7 +410,7 @@ export interface ProductTagDTO {
   metadata?: Record<string, unknown> | null
   /**
    * The associated products.
-   * 
+   *
    * @expandable
    */
   products?: ProductDTO[]
@@ -444,7 +444,7 @@ export interface ProductCollectionDTO {
   deleted_at?: string | Date
   /**
    * The associated products.
-   * 
+   *
    * @expandable
    */
   products?: ProductDTO[]
@@ -478,7 +478,7 @@ export interface ProductTypeDTO {
  * @interface
  *
  * A product option's data.
- * 
+ *
  */
 export interface ProductOptionDTO {
   /**
@@ -491,13 +491,13 @@ export interface ProductOptionDTO {
   title: string
   /**
    * The associated product.
-   * 
+   *
    * @expandable
    */
   product: ProductDTO
   /**
    * The associated product option values.
-   * 
+   *
    * @expandable
    */
   values: ProductOptionValueDTO[]
@@ -563,13 +563,13 @@ export interface ProductOptionValueDTO {
   value: string
   /**
    * The associated product option.
-   * 
+   *
    * @expandable
    */
   option: ProductOptionDTO
   /**
    * The associated product variant.
-   * 
+   *
    * @expandable
    */
   variant: ProductVariantDTO
@@ -612,7 +612,7 @@ export interface FilterableProductProps
   /**
    * Filters on a product's tags.
    */
-  tags?: { 
+  tags?: {
     /**
      * Values to filter product tags by.
      */
@@ -761,7 +761,7 @@ export interface FilterableProductVariantProps
   /**
    * Filter product variants by their associated options.
    */
-  options?: { 
+  options?: {
     /**
      * IDs to filter options by.
      */
@@ -986,6 +986,7 @@ export interface CreateProductVariantOptionDTO {
    * The value of a product variant option.
    */
   value: string
+
   option_id?: string
 }
 
