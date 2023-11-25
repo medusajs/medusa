@@ -110,7 +110,6 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
     useAdminCreateProductCategory();
 
   const submit = async (data: CategoryFormData) => {
-    console.log(data);
     try {
       await createProductCategory({
         name: data.name,
