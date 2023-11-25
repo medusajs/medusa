@@ -40,11 +40,10 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
 
   if (configModule?.projectConfig?.redis_url) {
     const RedisStore = createStore(session)
-    const redisClient = new Redis(configModule.projectConfig.redis_url, {
-      // Lazy connect to properly handle connection errors
-      lazyConnect: true,
-      ...(configModule.projectConfig.redis_options ?? {}),
-    })
+    const redisClient = new Redis(
+      configModule.projectConfig.redis_url, 
+      configModule.projectConfig.redis_options ?? {}
+    )
     sessionOpts.store = new RedisStore({
       client: redisClient,
       prefix: `${configModule?.projectConfig?.redis_prefix ?? ""}sess:`,
