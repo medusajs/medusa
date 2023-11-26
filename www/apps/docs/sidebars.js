@@ -12,6 +12,7 @@
  * - To add a sidebar title, add in customProps sidebar_is_title: true
  * - To add a group headline, add in customProps sidebar_is_group_headline: true
  * - To add a coming soon link (with a badge), add in customProps sidebar_is_soon: true
+ * - To add a badge, add in customProps sidebar_badge with its value being the props to pass to the Badge component.
  */
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
@@ -1572,9 +1573,25 @@ module.exports = {
               label: "Create an Event Module",
             },
             {
-              type: "doc",
-              id: "development/events/create-subscriber",
+              type: "category",
+              link: {
+                type: "doc",
+                id: "development/events/create-subscriber",
+              },
               label: "Create a Subscriber",
+              items: [
+                {
+                  type: "doc",
+                  id: "development/events/create-subscriber-deprecated",
+                  label: "Create a Subscriber",
+                  customProps: {
+                    sidebar_badge: {
+                      variant: "orange",
+                      children: "Deprecated",
+                    },
+                  },
+                },
+              ],
             },
           ],
         },
@@ -1618,9 +1635,25 @@ module.exports = {
               },
             },
             {
-              type: "doc",
-              id: "development/scheduled-jobs/create",
+              type: "category",
+              link: {
+                type: "doc",
+                id: "development/scheduled-jobs/create",
+              },
               label: "Create a Scheduled Job",
+              items: [
+                {
+                  type: "doc",
+                  id: "development/scheduled-jobs/create-deprecated",
+                  label: "Create a Scheduled Job",
+                  customProps: {
+                    sidebar_badge: {
+                      variant: "orange",
+                      children: "Deprecated",
+                    },
+                  },
+                },
+              ],
             },
           ],
         },

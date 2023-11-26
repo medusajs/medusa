@@ -67,6 +67,12 @@ export default function DocSidebarItemLink({
         )}
         {label}
         {!isInternalLink && <IconExternalLink />}
+        {customProps?.sidebar_badge && (
+          <Badge
+            {...customProps.sidebar_badge}
+            className={`sidebar-soon-badge`}
+          />
+        )}
       </Link>
       {customProps?.sidebar_is_soon && (
         <Badge variant="purple" className={`sidebar-soon-badge`}>

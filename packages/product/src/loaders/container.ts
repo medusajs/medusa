@@ -5,6 +5,7 @@ import {
   ProductCollectionRepository,
   ProductImageRepository,
   ProductOptionRepository,
+  ProductOptionValueRepository,
   ProductRepository,
   ProductTagRepository,
   ProductTypeRepository,
@@ -17,6 +18,7 @@ import {
   ProductImageService,
   ProductModuleService,
   ProductOptionService,
+  ProductOptionValueService,
   ProductService,
   ProductTagService,
   ProductTypeService,
@@ -48,6 +50,7 @@ export default async ({
     productImageService: asClass(ProductImageService).singleton(),
     productTypeService: asClass(ProductTypeService).singleton(),
     productOptionService: asClass(ProductOptionService).singleton(),
+    productOptionValueService: asClass(ProductOptionValueService).singleton(),
   })
 
   if (customRepositories) {
@@ -69,6 +72,9 @@ function loadDefaultRepositories({ container }) {
     productTagRepository: asClass(ProductTagRepository).singleton(),
     productTypeRepository: asClass(ProductTypeRepository).singleton(),
     productOptionRepository: asClass(ProductOptionRepository).singleton(),
+    productOptionValueRepository: asClass(
+      ProductOptionValueRepository
+    ).singleton(),
     productVariantRepository: asClass(ProductVariantRepository).singleton(),
   })
 }

@@ -1,5 +1,16 @@
 # @medusajs/admin-ui
 
+## 2.1.8
+
+### Patch Changes
+
+- [#5479](https://github.com/medusajs/medusa/pull/5479) [`3f016d871`](https://github.com/medusajs/medusa/commit/3f016d871a091a0a72c2eaec2f4ff74e0ad5b426) Thanks [@VariableVic](https://github.com/VariableVic)! - fix: sort supportedLanguages array
+
+- [#5641](https://github.com/medusajs/medusa/pull/5641) [`c08240df3`](https://github.com/medusajs/medusa/commit/c08240df3f2fe0c4c5c35af471f68a2187f8e582) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Resolves an issue where decimal numbers would be stripped when the locale uses commas as the decimal separator
+
+- Updated dependencies [[`a67a8e7e9`](https://github.com/medusajs/medusa/commit/a67a8e7e90f35636c8d99858fc5b19358df4c174)]:
+  - @medusajs/ui@2.2.2
+
 ## 2.1.7
 
 ### Patch Changes

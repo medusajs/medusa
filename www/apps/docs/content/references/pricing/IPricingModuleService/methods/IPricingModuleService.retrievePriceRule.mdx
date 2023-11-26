@@ -20,7 +20,7 @@ This method is used to retrieve a price rule by its ID.
 A simple example that retrieves a price rule by its ID:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -36,7 +36,7 @@ async function retrievePriceRule (id: string) {
 To specify relations that should be retrieved:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -148,7 +148,7 @@ async function retrievePriceRule (id: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -175,7 +175,7 @@ async function retrievePriceRule (id: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -226,10 +226,10 @@ async function retrievePriceRule (id: string) {
       {
         "name": "price_set",
         "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)",
-        "description": "The associated price set. It may only be available if the relation `price_set` is expanded.",
+        "description": "The associated price set.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "id",
@@ -290,10 +290,10 @@ async function retrievePriceRule (id: string) {
       {
         "name": "rule_type",
         "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)",
-        "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
+        "description": "The associated rule type.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "default_priority",

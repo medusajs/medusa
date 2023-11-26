@@ -1,5 +1,5 @@
-import { LocalWorkflow } from "../../workflow/local-workflow"
 import { TransactionState } from "../../transaction/types"
+import { LocalWorkflow } from "../../workflow/local-workflow"
 import { WorkflowManager } from "../../workflow/workflow-manager"
 
 describe("WorkflowManager", () => {
@@ -216,5 +216,19 @@ describe("WorkflowManager", () => {
     expect(
       WorkflowManager.getWorkflow("create-product")?.handlers_.has("xor")
     ).toEqual(false)
+  })
+
+  it("should return the final flow definition when calling getFlow()", async () => {
+    const flow = new LocalWorkflow("deliver-product", container)
+
+    expect(flow.getFlow()).toEqual({
+      action: "foo",
+      next: {
+        action: "callExternal",
+        async: true,
+        noCompensation: true,
+        next: { action: "bar" },
+      },
+    })
   })
 })

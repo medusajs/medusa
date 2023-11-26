@@ -1,4 +1,5 @@
 # @medusajs/inventory
+# @medusajs/inventory
 
 ## 1.11.3
 

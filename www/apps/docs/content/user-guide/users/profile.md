@@ -42,7 +42,7 @@ The Medusa admin supports multiple languages, and you can change the default lan
 
 :::note
 
-English, French, and Portuguese are the only official translations. Other available languages are contributions from the Medusa community. If you find problems with the translations, please [open an issue in our GitHub repository](https://github.com/medusajs/medusa/issues).
+Some languages are not official, so they may not be accurate. Please refer to [this document](../tips/languages.md) for a full list of official languages and community translations.
 
 :::
 

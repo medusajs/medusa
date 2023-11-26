@@ -96,6 +96,7 @@ export default async ({
       )
       registerCoreRouters(pluginDetails, container)
       await registerSubscribers(pluginDetails, container, activityId)
+      await registerWorkflows(pluginDetails)
     })
   )
 
@@ -578,8 +579,6 @@ async function registerSubscribers(
   container: MedusaContainer,
   activityId: string
 ): Promise<void> {
-  const exclude: string[] = []
-
   const loadedFiles = await new SubscriberLoader(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
@@ -590,11 +589,12 @@ async function registerSubscribers(
   /**
    * Exclude any files that have already been loaded by the subscriber loader
    */
-  exclude.push(...(loadedFiles ?? []))
+  const normalizedLoadedFiles =
+    loadedFiles?.map((file) => file.replace(/\\/g, "/")) ?? []
 
   const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
   files
-    .filter((file) => !exclude.includes(file))
+    .filter((file) => !normalizedLoadedFiles.includes(file))
     .forEach((fn) => {
       const loaded = require(fn).default
 
@@ -632,6 +632,15 @@ function registerRepositories(
       }
     })
   })
+}
+
+/**
+ * import files from the workflows directory to run the registration of the wofklows
+ * @param pluginDetails
+ */
+async function registerWorkflows(pluginDetails: PluginDetails): Promise<void> {
+  const files = glob.sync(`${pluginDetails.resolve}/workflows/*.js`, {})
+  await Promise.all(files.map(async (file) => import(file)))
 }
 
 /**

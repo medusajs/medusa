@@ -11,7 +11,7 @@ subscribers when events happen. Events will run asynchronously.
 
 ## Implements
 
-- [IEventBusService](../interfaces/internal.IEventBusService.mdx)
+- [IEventBusService](../../EventBusTypes/interfaces/internal.internal-1.EventBusTypes.IEventBusService.mdx)
 
 ## Properties
 
@@ -45,7 +45,7 @@ subscribers when events happen. Events will run asynchronously.
   },
   {
     "name": "config_",
-    "type": "[ConfigModule](../types/internal.ConfigModule.mdx)",
+    "type": "[ConfigModule](../../CommonTypes/types/internal.internal-1.CommonTypes.ConfigModule.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -63,7 +63,7 @@ subscribers when events happen. Events will run asynchronously.
   },
   {
     "name": "logger_",
-    "type": "[Logger](../interfaces/internal.Logger.mdx)",
+    "type": "[Logger](../../LoggerTypes/interfaces/internal.internal-1.LoggerTypes.Logger.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -135,7 +135,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "IEventBusModuleService",
-    "type": "[IEventBusModuleService](../interfaces/internal.IEventBusModuleService.mdx)",
+    "type": "[IEventBusModuleService](../../EventBusTypes/interfaces/internal.internal-1.EventBusTypes.IEventBusModuleService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -211,7 +211,7 @@ Calls all subscribers when an event occurs.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[EmitData](../types/internal.EmitData.mdx)&#60;T&#62;[]",
+    "type": "[EmitData](../../EventBusTypes/types/internal.internal-1.EventBusTypes.EmitData.mdx)&#60;T&#62;[]",
     "description": "The data to use to process the events",
     "optional": false,
     "defaultValue": "",
@@ -422,7 +422,7 @@ Adds a function to a list of event subscribers.
   },
   {
     "name": "subscriber",
-    "type": "[Subscriber](../types/internal.Subscriber.mdx)&#60;unknown&#62;",
+    "type": "[Subscriber](../../EventBusTypes/types/internal.internal-1.EventBusTypes.Subscriber.mdx)&#60;unknown&#62;",
     "description": "the function to be called when a certain event happens. Subscribers must return a Promise.",
     "optional": false,
     "defaultValue": "",
@@ -431,7 +431,7 @@ Adds a function to a list of event subscribers.
   },
   {
     "name": "context",
-    "type": "[SubscriberContext](../types/internal.SubscriberContext.mdx)",
+    "type": "[SubscriberContext](../../EventBusTypes/types/internal.internal-1.EventBusTypes.SubscriberContext.mdx)",
     "description": "subscriber context",
     "optional": true,
     "defaultValue": "",
@@ -474,7 +474,7 @@ Removes function from the list of event subscribers.
   },
   {
     "name": "subscriber",
-    "type": "[Subscriber](../types/internal.Subscriber.mdx)&#60;unknown&#62;",
+    "type": "[Subscriber](../../EventBusTypes/types/internal.internal-1.EventBusTypes.Subscriber.mdx)&#60;unknown&#62;",
     "description": "the function to be removed",
     "optional": false,
     "defaultValue": "",
@@ -483,7 +483,7 @@ Removes function from the list of event subscribers.
   },
   {
     "name": "context",
-    "type": "[SubscriberContext](../types/internal.SubscriberContext.mdx)",
+    "type": "[SubscriberContext](../../EventBusTypes/types/internal.internal-1.EventBusTypes.SubscriberContext.mdx)",
     "description": "subscriber context",
     "optional": false,
     "defaultValue": "",
