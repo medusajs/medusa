@@ -16,6 +16,7 @@ export async function prepareCreatePriceLists({
   })[]
 }>): Promise<Result | void> {
   const remoteQuery = container.resolve("remoteQuery")
+  const regionService = container.resolve("regionService")
 
   const { price_lists } = data
 
@@ -58,6 +59,16 @@ export async function prepareCreatePriceLists({
       `No priceSet exist for variants: ${variantsWithoutPriceSets.join(", ")}`
     )
   }
+  const regionIds = price_lists
+    .map(({ prices }) => prices?.map((price) => price.region_id) ?? [])
+    .flat(2)
+  const regions = await regionService.list({ id: regionIds })
+  const regionsMap: Map<string, string> = new Map(
+    regions.map((region: { id: string; currency_code: string }) => [
+      region.id,
+      region.currency_code,
+    ])
+  )
 
   return price_lists.map((priceListDTO) => {
     priceListDTO.title ??= priceListDTO.name
@@ -71,11 +82,16 @@ export async function prepareCreatePriceLists({
         const price_set_id = variantIdPriceSetIdMap.get(price.variant_id)!
 
         return {
-          currency_code: price.currency_code,
+          currency_code:
+            regionsMap.get(price.region_id as string) ??
+            (price.currency_code as string),
           amount: price.amount,
           min_quantity: price.min_quantity,
           max_quantity: price.max_quantity,
           price_set_id,
+          rules: {
+            ...(price.region_id ? { region_id: price.region_id } : {}),
+          },
         }
       }) ?? []
 

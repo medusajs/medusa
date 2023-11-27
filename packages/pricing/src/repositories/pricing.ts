@@ -177,9 +177,9 @@ export class PricingRepository
 
       .orderBy([
         { column: "psma.has_price_list", order: "asc" },
+        { column: "amount", order: "asc" },
         { column: "number_rules", order: "desc" },
         { column: "default_priority", order: "desc" },
-        { column: "amount", order: "asc" },
       ])
 
     if (quantity) {

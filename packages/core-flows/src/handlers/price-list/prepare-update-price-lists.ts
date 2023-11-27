@@ -74,7 +74,9 @@ export async function prepareUpdatePriceLists({
         amount: priceData.amount,
         min_quantity: priceData.min_quantity,
         max_quantity: priceData.max_quantity,
-        rules: { region_id: priceData.region_id },
+        rules: {
+          ...(priceData.region_id ? { region_id: priceData.region_id } : {}),
+        },
       })
 
       return

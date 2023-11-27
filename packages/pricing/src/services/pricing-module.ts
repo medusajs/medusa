@@ -14,13 +14,12 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
+  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
-  arrayDifference,
-  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -1397,19 +1396,19 @@ export default class PricingModuleService<
       .map((priceListData) => Object.keys(priceListData.rules || {}))
       .flat()
     console.log("ruleAttributes - ", ruleAttributes)
-    const invalidPriceListPriceRuleAttributes = arrayDifference(
-      priceListPriceRuleAttributes,
-      ruleAttributes
-    )
-
-    if (invalidPriceListPriceRuleAttributes.length > 0) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Price List Price's RuleType don't match with PriceList RuleType: ${invalidPriceListPriceRuleAttributes.join(
-          ", "
-        )}`
-      )
-    }
+    // const invalidPriceListPriceRuleAttributes = arrayDifference(
+    //   priceListPriceRuleAttributes,
+    //   ruleAttributes
+    // )
+    //
+    // if (invalidPriceListPriceRuleAttributes.length > 0) {
+    //   throw new MedusaError(
+    //     MedusaError.Types.NOT_FOUND,
+    //     `Price List Price's RuleType don't match with PriceList RuleType: ${invalidPriceListPriceRuleAttributes.join(
+    //       ", "
+    //     )}`
+    //   )
+    // }
 
     const ruleTypes = await this.listRuleTypes(
       {
@@ -1816,7 +1815,7 @@ export default class PricingModuleService<
             sharedContext
           )
 
-          const noOfRules = Object.keys(prices?.rules ?? {}).length
+          const noOfRules = Object.keys(price?.rules ?? {}).length
 
           const psma = await this.priceSetMoneyAmountService_.create(
             [
@@ -1825,7 +1824,7 @@ export default class PricingModuleService<
                 money_amount: moneyAmount.id,
                 title: "test",
                 price_list: priceList.id,
-                number_of_rules: noOfRules,
+                number_rules: noOfRules,
               },
             ],
             sharedContext
