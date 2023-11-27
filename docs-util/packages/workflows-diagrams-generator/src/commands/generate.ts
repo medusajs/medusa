@@ -18,6 +18,10 @@ export default async function (workflowPath: string, options: Options) {
   for (const [name, workflow] of registeredWorkflows) {
     const diagram = createDiagram(workflow.flow_)
 
+    if (workflow.id === "update-price-lists") {
+      console.log(workflow.flow_)
+    }
+
     switch (options.type) {
       case "docs":
         // write files

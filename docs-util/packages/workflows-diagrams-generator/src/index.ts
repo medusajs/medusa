@@ -8,7 +8,7 @@ program
   .description("Generate diagram(s) for workflow(s).")
 
 program
-  .command("generate")
+  .command("run")
   .description(
     "Generate Mermaid.js diagrams for your workflows based on the type you choose."
   )
@@ -25,10 +25,7 @@ program
       "-t, --type <type>",
       "Type of diagrams to be generated. `docs` generate spec directories having diagrams with associated code. `markdown` prints all diagrams in a single markdown file. `mermaid` prints each diagram in a file having `.mermaid` extension."
     )
-      .choices(
-        // TODO remove other options if haven't added in time
-        ["docs", "markdown", "mermaid"]
-      )
+      .choices(["docs", "markdown", "mermaid"])
       .default("docs")
   )
   .action(generate)

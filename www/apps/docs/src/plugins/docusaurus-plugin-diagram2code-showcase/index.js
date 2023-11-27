@@ -46,7 +46,7 @@ export default async function docusaurusPluginDiagram2codeShowcase(
               (await readIfExists(path.join(specPath, "code.tsx"))) ||
               (await readIfExists(path.join(specPath, "code.js")))
 
-            if (!diagram || !code) {
+            if (!diagram) {
               return
             }
 

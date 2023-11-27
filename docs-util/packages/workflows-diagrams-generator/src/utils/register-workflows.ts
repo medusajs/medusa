@@ -19,7 +19,7 @@ export default async function (
       workflowDefinitions.set(fileInfo.workflowId, fileInfo.code)
     }
   } else {
-    const files = glob.sync(`${workflowPath}/*.{ts,js}`, {})
+    const files = glob.sync(`${workflowPath}/**/*.{ts,js}`, {})
     await Promise.all(
       files.map(async (file) => {
         const fileInfo = await importFile(file)
@@ -49,23 +49,31 @@ async function importFile(filePath: string): Promise<FileInfo> {
 
   fileInfo.code = readFileSync(filePath, "utf-8")
 
-  if (
-    imported.default &&
-    "getName" in imported.default &&
-    typeof imported.default.getName === "function"
-  ) {
-    fileInfo.workflowId = imported.default.getName()
+  if (imported.default) {
+    switch (typeof imported.default) {
+      case "function":
+        fileInfo.workflowId = getWorkflowName(imported.default) || ""
+        break
+      case "object":
+        Object.values(imported.default).find((exportedVariable: unknown) => {
+          fileInfo.workflowId = getWorkflowName(exportedVariable) || ""
+          return fileInfo.workflowId.length !== 0
+        })
+    }
   } else if (typeof imported === "object") {
-    const exportedVariables = Object.values(imported)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    exportedVariables.find((variable: any) => {
-      if ("getName" in variable && typeof variable.getName === "function") {
-        fileInfo.workflowId = variable.getName()
-        return true
-      }
-      return false
+    Object.values(imported).find((exportedVariable: unknown) => {
+      fileInfo.workflowId = getWorkflowName(exportedVariable) || ""
+      return fileInfo.workflowId.length !== 0
     })
   }
 
   return fileInfo
+}
+
+function getWorkflowName(variable: unknown): string | undefined {
+  return typeof variable === "function" &&
+    "getName" in variable &&
+    typeof variable.getName === "function"
+    ? variable.getName()
+    : undefined
 }

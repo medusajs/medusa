@@ -19,18 +19,20 @@ const Diagram2CodeSpecs = ({ specName }: WorkflowReferenceProps) => {
     <>
       {!Object.keys(specsData).length && <span>No diagrams found</span>}
       {Object.entries(specsData).map(([name, diagram2code]) => (
-          <React.Fragment key={name}>
-            <h2>{name}</h2>
+        <React.Fragment key={name}>
+          <h2>{name}</h2>
           <Tabs groupId="workflows">
             <TabItem value="diagram" label="Diagram" default>
               <Mermaid value={diagram2code.diagram} />
             </TabItem>
-            <TabItem value="code" label="Code">
-              <CodeBlock language="ts">{diagram2code.code}</CodeBlock>
-            </TabItem>
+            {diagram2code.code && (
+              <TabItem value="code" label="Code">
+                <CodeBlock language="ts">{diagram2code.code}</CodeBlock>
+              </TabItem>
+            )}
           </Tabs>
-          </React.Fragment>
-        ))}
+        </React.Fragment>
+      ))}
     </>
   )
 }

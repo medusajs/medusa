@@ -1,25 +1,11 @@
 import { TransactionStepsDefinition } from "@medusajs/orchestration"
 import { getLinePrefix } from "./formatting.js"
+import getRandomString from "./get-random-string.js"
 
 export default function (workflow: TransactionStepsDefinition): string {
   const topLevelLinePrefix = getLinePrefix(1)
 
-  let diagram = `%%{
-    init: {
-      'theme': 'base',
-      'themeVariables': {
-        'background': '#F9FAFB',
-        'primaryColor': '#FFFFFF',
-        'primaryTextColor': '#030712',
-        'primaryBorderColor': '#D1D5DB',
-        'lineColor': '#11181C',
-        'fontFamily': 'Inter',
-        'fontSize': '13px',
-        'clusterBkg': 'transparent',
-        'clusterBorder': 'transparent'
-      }
-    }
-  }%%${topLevelLinePrefix}flowchart TB`
+  let diagram = `${getThemeConfig()}${topLevelLinePrefix}flowchart TB`
 
   const stepsDiagram = getSteps(workflow)
 
@@ -34,6 +20,28 @@ type ReturnedSteps = {
   defsStr: string
 }
 
+function getThemeConfig(): string {
+  return `%%{
+    init: {
+      'theme': 'base',
+      'themeVariables': {
+        'background': '#FFFFFF',
+        'mainBkg': '#FFFFFF',
+        'primaryColor': '#FFFFFF',
+        'primaryTextColor': '#030712',
+        'primaryBorderColor': '#D1D5DB',
+        'nodeBorder': '#D1D5DB',
+        'lineColor': '#11181C',
+        'fontFamily': 'Inter',
+        'fontSize': '13px',
+        'tertiaryColor': '#F3F4F6',
+        'tertiaryBorderColor': '#D1D5DB',
+        'tertiaryTextColor': '#030712'
+      }
+    }
+  }%%`
+}
+
 function getSteps(
   flow: TransactionStepsDefinition | TransactionStepsDefinition[],
   level = 2
@@ -46,23 +54,57 @@ function getSteps(
   const flowArr: TransactionStepsDefinition[] | undefined = Array.isArray(flow)
     ? flow
     : !flow.action && Array.isArray(flow.next)
-    ? flow.next
-    : undefined
+      ? flow.next
+      : undefined
 
   if (flowArr) {
+    // these are steps running in parallel
+    // since there are changes where the flowArr contains
+    // one item, we check the length before treating the
+    // main steps as steps running in parallel
+    const areStepsParallel = flowArr.length > 1
+    const parallelDefinitions: Record<string, string> = {}
     flowArr.forEach((flowItem) => {
       const flowSteps = getSteps(flowItem)
-      defsStr += `${linePrefix}${flowSteps.defsStr}`
+      if (areStepsParallel) {
+        const escapedName = getEscapedStepName(flowItem.action)
+        if (escapedName) {
+          const itemDefinition = `${linePrefix}${escapedName}(${flowItem.action!})`
+          parallelDefinitions[itemDefinition] = flowSteps.defsStr.replace(
+            itemDefinition,
+            ""
+          )
+        } else {
+          // if the step doesn't have an action name
+          // we just show it as a regular step rather than
+          // a subgraph
+          defsStr += `${linePrefix}${flowSteps.defsStr}`
+        }
+      } else {
+        // if the steps aren't parallel
+        // just show them as regular steps
+        defsStr += `${linePrefix}${flowSteps.defsStr}`
+      }
       links.push(...flowSteps.links)
       escapedStepNames.push(...flowSteps.escapedStepNames)
     })
+
+    // if there are steps in parallel,
+    // we show them as a subgraph
+    const definitionKeys = Object.keys(parallelDefinitions)
+    if (definitionKeys.length) {
+      defsStr += `${getSubgraph(
+        definitionKeys.join(""),
+        linePrefix
+      )}${linePrefix}${Object.values(parallelDefinitions).join("")}`
+    }
   } else {
     const flowItem = flow as TransactionStepsDefinition
-    const escapedName = flowItem.action?.replaceAll("-", "") || ""
+    const escapedName = getEscapedStepName(flowItem.action)
 
     if (escapedName.length) {
       escapedStepNames.push(escapedName)
-      defsStr += `${linePrefix}${escapedName}[${flowItem.action!}]`
+      defsStr += `${linePrefix}${escapedName}(${flowItem.action!})`
     }
 
     if (flowItem.next) {
@@ -82,6 +124,14 @@ function getSteps(
     links,
     defsStr,
   }
+}
+
+function getSubgraph(defsStr: string, linePrefix: string): string {
+  return `${linePrefix}subgraph parallel${getRandomString()} [Parallel]${linePrefix}${defsStr}${linePrefix}end`
+}
+
+function getEscapedStepName(originalName: string | undefined): string {
+  return originalName?.replaceAll("-", "") || ""
 }
 
 // TODO need to explore with this function
