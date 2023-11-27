@@ -11,11 +11,12 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  mapObjectTo,
   MapToConfig,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  mapObjectTo,
 } from "@medusajs/utils"
 import { LinkService } from "@services"
 import { shouldForceTransaction } from "../utils"
@@ -126,6 +127,10 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     config: FindConfig<unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<unknown[]> {
+    if (!isDefined(config.take)) {
+      config.take = null
+    }
+
     const rows = await this.linkService_.list(filters, config, sharedContext)
 
     return await this.baseRepository_.serialize<object[]>(rows)
@@ -137,6 +142,10 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     config: FindConfig<unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[unknown[], number]> {
+    if (!isDefined(config.take)) {
+      config.take = null
+    }
+
     const [rows, count] = await this.linkService_.listAndCount(
       filters,
       config,
