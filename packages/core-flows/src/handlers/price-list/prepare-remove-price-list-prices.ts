@@ -30,6 +30,7 @@ export async function prepareRemovePriceListPrices({
         "price_set_money_amount",
         "price_set_money_amount.price_list",
       ],
+      take: null,
     }
   )
 

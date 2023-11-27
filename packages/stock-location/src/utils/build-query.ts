@@ -46,11 +46,11 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   }
 
   if ("skip" in config) {
-    ;(query as FindManyOptions<TEntity>).skip = config.skip
+    ;(query as FindManyOptions<TEntity>).skip = config.skip ?? undefined
   }
 
   if ("take" in config) {
-    ;(query as FindManyOptions<TEntity>).take = config.take
+    ;(query as FindManyOptions<TEntity>).take = config.take ?? undefined
   }
 
   if (config.relations) {
