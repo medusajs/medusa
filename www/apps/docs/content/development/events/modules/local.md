@@ -37,7 +37,7 @@ npm install @medusajs/event-bus-local
 
 In `medusa-config.js`, add the following to the exported object:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   // ...
   modules: {

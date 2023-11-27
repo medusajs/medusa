@@ -108,7 +108,7 @@ Where:
 
 Finally, in `medusa-config.js` add a new item to the `plugins` array:
 
-```jsx title=medusa-config.js
+```jsx title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -160,7 +160,7 @@ If this configuration is not added, you’ll receive the error ["next/image Un-
 
 In `next.config.js` add the following option in the exported object:
 
-```jsx title=next.config.js
+```jsx title="next.config.js"
 const { withStoreConfig } = require("./store-config")
 
 // ...

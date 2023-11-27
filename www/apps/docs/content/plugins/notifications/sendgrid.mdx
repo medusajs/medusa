@@ -3943,7 +3943,7 @@ Where `<ORDER_PLACED_TEMPLATE_ID` is the ID of your template for order placed em
 
 Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array of plugins:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...,
   {
@@ -4000,7 +4000,7 @@ You can resolve the SendGrid service to send emails from your custom services or
 
 For example, in an API Route:
 
-```ts title=src/api/store/email/route.ts
+```ts title="src/api/store/email/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
