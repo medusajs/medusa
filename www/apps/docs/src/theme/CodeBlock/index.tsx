@@ -42,7 +42,7 @@ export default function CodeBlock({
     if (props.metastring) {
       const titleRegex = /title="?(.*)"?/
       const matchedTitle = props.metastring.match(titleRegex)
-      if (matchedTitle.length) {
+      if (matchedTitle?.length) {
         title = matchedTitle[1].replace(/^"/, "").replace(/"$/, "")
         props.metastring = props.metastring.replace(titleRegex, "")
       }
