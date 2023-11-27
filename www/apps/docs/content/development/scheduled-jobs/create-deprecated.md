@@ -43,7 +43,7 @@ For the example in this tutorial, you can create the file `src/loaders/publish.t
 
 To create a scheduled job, add the following code in the file you created, which is `src/loaders/publish.ts` in this example:
 
-```ts title=src/loaders/publish.ts
+```ts title="src/loaders/publish.ts"
 import { MedusaContainer } from "@medusajs/medusa"
 
 const publishJob = async (

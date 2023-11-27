@@ -60,7 +60,7 @@ The first step to create a payment processor is to create a JavaScript or TypeSc
 
 For example, create the file `src/services/my-payment-processor.ts` with the following content:
 
-```ts title=src/services/my-payment-processor.ts
+```ts title="src/services/my-payment-processor.ts"
 import { 
   AbstractPaymentProcessor, 
   PaymentProcessorContext, 
