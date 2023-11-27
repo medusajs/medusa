@@ -41,10 +41,10 @@ The product option value's data.
   {
     "name": "option",
     "type": "[ProductOptionDTO](ProductOptionDTO.mdx)",
-    "description": "The associated product option.",
+    "description": "The associated product option. It may only be available if the `option` relation is expanded.",
     "optional": false,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": [
       {
         "name": "deleted_at",
@@ -391,10 +391,10 @@ The product option value's data.
           {
             "name": "option",
             "type": "[ProductOptionDTO](ProductOptionDTO.mdx)",
-            "description": "The associated product option.",
+            "description": "The associated product option. It may only be available if the `option` relation is expanded.",
             "optional": false,
             "defaultValue": "",
-            "expandable": true,
+            "expandable": false,
             "children": []
           },
           {
@@ -409,10 +409,10 @@ The product option value's data.
           {
             "name": "variant",
             "type": "[ProductVariantDTO](ProductVariantDTO.mdx)",
-            "description": "The associated product variant.",
+            "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
             "optional": false,
             "defaultValue": "",
-            "expandable": true,
+            "expandable": false,
             "children": []
           }
         ]
@@ -431,10 +431,10 @@ The product option value's data.
   {
     "name": "variant",
     "type": "[ProductVariantDTO](ProductVariantDTO.mdx)",
-    "description": "The associated product variant.",
+    "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
     "optional": false,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": [
       {
         "name": "allow_backorder",
@@ -564,7 +564,7 @@ The product option value's data.
       },
       {
         "name": "options",
-        "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)",
+        "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)[]",
         "description": "The associated product options.",
         "optional": false,
         "defaultValue": "",
@@ -600,10 +600,10 @@ The product option value's data.
           {
             "name": "option",
             "type": "[ProductOptionDTO](ProductOptionDTO.mdx)",
-            "description": "The associated product option.",
+            "description": "The associated product option. It may only be available if the `option` relation is expanded.",
             "optional": false,
             "defaultValue": "",
-            "expandable": true,
+            "expandable": false,
             "children": []
           },
           {
@@ -618,10 +618,10 @@ The product option value's data.
           {
             "name": "variant",
             "type": "[ProductVariantDTO](ProductVariantDTO.mdx)",
-            "description": "The associated product variant.",
+            "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
             "optional": false,
             "defaultValue": "",
-            "expandable": true,
+            "expandable": false,
             "children": []
           }
         ]

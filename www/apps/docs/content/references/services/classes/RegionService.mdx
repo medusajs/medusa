@@ -10,11 +10,11 @@ Provides layer to manipulate regions.
 
 ## Constructors
 
-### constructor
+#### constructor
 
 `**new RegionService**(«destructured»)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -215,35 +215,19 @@ Provides layer to manipulate regions.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-`Protected get**activeManager_**(): EntityManager`
-
-#### Returns
-
-EntityManager
-
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+ `Protected` **activeManager\_**: [object Object]
 
 ## Methods
 
-### addCountry
+#### addCountry
 
 `**addCountry**(regionId, code): Promise&#60;[Region](Region.mdx)&#62;`
 
 Adds a country to the region.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -266,7 +250,7 @@ Adds a country to the region.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -284,14 +268,14 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### addFulfillmentProvider
+#### addFulfillmentProvider
 
 `**addFulfillmentProvider**(regionId, providerId): Promise&#60;[Region](Region.mdx)&#62;`
 
 Adds a fulfillment provider that is available in the region. Fails if the
 provider doesn't exist.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -314,7 +298,7 @@ provider doesn't exist.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -332,14 +316,14 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### addPaymentProvider
+#### addPaymentProvider
 
 `**addPaymentProvider**(regionId, providerId): Promise&#60;[Region](Region.mdx)&#62;`
 
 Adds a payment provider that is available in the region. Fails if the
 provider doesn't exist.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -362,7 +346,7 @@ provider doesn't exist.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -380,13 +364,15 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+##### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -409,7 +395,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -441,7 +427,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;TResult&#62;
 
@@ -459,13 +445,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-### create
+#### create
 
 `**create**(data): Promise&#60;[Region](Region.mdx)&#62;`
 
 Creates a region.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -479,7 +465,7 @@ Creates a region.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -497,13 +483,13 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### delete
+#### delete
 
 `**delete**(regionId): Promise&#60;void&#62;`
 
 Deletes a region.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -517,7 +503,7 @@ Deletes a region.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void&#62;
 
@@ -535,13 +521,13 @@ Promise&#60;void&#62;
 
 ___
 
-### list
+#### list
 
 `**list**(selector?, config?): Promise&#60;[Region](Region.mdx)[]&#62;`
 
 Lists all regions based on a query
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -564,7 +550,7 @@ Lists all regions based on a query
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)[]&#62;
 
@@ -582,13 +568,13 @@ Promise&#60;[Region](Region.mdx)[]&#62;
 
 ___
 
-### listAndCount
+#### listAndCount
 
 `**listAndCount**(selector?, config?): Promise&#60;[[Region](Region.mdx)[], number]&#62;`
 
 Lists all regions based on a query and returns them along with count
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -611,7 +597,7 @@ Lists all regions based on a query and returns them along with count
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[[Region](Region.mdx)[], number]&#62;
 
@@ -629,13 +615,13 @@ Promise&#60;[[Region](Region.mdx)[], number]&#62;
 
 ___
 
-### removeCountry
+#### removeCountry
 
 `**removeCountry**(regionId, code): Promise&#60;[Region](Region.mdx)&#62;`
 
 Removes a country from a Region.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -658,7 +644,7 @@ Removes a country from a Region.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -676,13 +662,13 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### removeFulfillmentProvider
+#### removeFulfillmentProvider
 
 `**removeFulfillmentProvider**(regionId, providerId): Promise&#60;[Region](Region.mdx)&#62;`
 
 Removes a fulfillment provider from a region. Is idempotent.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -705,7 +691,7 @@ Removes a fulfillment provider from a region. Is idempotent.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -723,13 +709,13 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### removePaymentProvider
+#### removePaymentProvider
 
 `**removePaymentProvider**(regionId, providerId): Promise&#60;[Region](Region.mdx)&#62;`
 
 Removes a payment provider from a region. Is idempotent.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -752,7 +738,7 @@ Removes a payment provider from a region. Is idempotent.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -770,13 +756,13 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### retrieve
+#### retrieve
 
 `**retrieve**(regionId, config?): Promise&#60;[Region](Region.mdx)&#62;`
 
 Retrieves a region by its id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -799,7 +785,7 @@ Retrieves a region by its id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -817,13 +803,13 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### retrieveByCountryCode
+#### retrieveByCountryCode
 
 `**retrieveByCountryCode**(code, config?): Promise&#60;[Region](Region.mdx)&#62;`
 
 Retrieve a region by country code.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -846,7 +832,7 @@ Retrieve a region by country code.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -864,13 +850,13 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### retrieveByName
+#### retrieveByName
 
 `**retrieveByName**(name): Promise&#60;[Region](Region.mdx)&#62;`
 
 Retrieves a region by name.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -884,7 +870,7 @@ Retrieves a region by name.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -902,11 +888,11 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -920,7 +906,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -938,13 +924,13 @@ ___
 
 ___
 
-### update
+#### update
 
 `**update**(regionId, update): Promise&#60;[Region](Region.mdx)&#62;`
 
 Updates a region
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -967,7 +953,7 @@ Updates a region
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Region](Region.mdx)&#62;
 
@@ -985,14 +971,14 @@ Promise&#60;[Region](Region.mdx)&#62;
 
 ___
 
-### validateCountry
+#### validateCountry
 
 `Protected **validateCountry**(code, regionId): Promise&#60;[Country](Country.mdx)&#62;`
 
 Validates a country code. Will normalize the code before checking for
 existence.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1015,7 +1001,7 @@ existence.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Country](Country.mdx)&#62;
 
@@ -1033,13 +1019,13 @@ Promise&#60;[Country](Country.mdx)&#62;
 
 ___
 
-### validateCurrency
+#### validateCurrency
 
 `Protected **validateCurrency**(currencyCode): Promise&#60;void&#62;`
 
 Validates a currency code. Will throw if the currency code doesn't exist.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1053,7 +1039,7 @@ Validates a currency code. Will throw if the currency code doesn't exist.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void&#62;
 
@@ -1075,12 +1061,14 @@ if the provided currency code is invalid
 
 ___
 
-### validateFields
+#### validateFields
 
 `Protected **validateFields**<TypeParameter T>(regionData, id?): Promise&#60;DeepPartial&#60;[Region](Region.mdx)&#62;&#62;`
 
 Validates fields for creation and updates. If the region already exists
 the id can be passed to check that country updates are allowed.
+
+##### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1094,7 +1082,7 @@ the id can be passed to check that country updates are allowed.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1117,7 +1105,7 @@ the id can be passed to check that country updates are allowed.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;DeepPartial&#60;[Region](Region.mdx)&#62;&#62;
 
@@ -1135,13 +1123,13 @@ Promise&#60;DeepPartial&#60;[Region](Region.mdx)&#62;&#62;
 
 ___
 
-### validateTaxRate
+#### validateTaxRate
 
 `Protected **validateTaxRate**(taxRate): void`
 
 Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1155,7 +1143,7 @@ Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -1177,11 +1165,11 @@ if the tax rate isn't number between 0-100
 
 ___
 
-### withTransaction
+#### withTransaction
 
 `**withTransaction**(transactionManager?): [RegionService](RegionService.mdx)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1195,7 +1183,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [RegionService](RegionService.mdx)
 

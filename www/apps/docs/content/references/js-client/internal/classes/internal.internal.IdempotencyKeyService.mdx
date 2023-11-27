@@ -67,31 +67,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -123,7 +113,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -139,13 +129,13 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates an idempotency key for a request.
 If no idempotency key is provided in request, we will create a unique
 identifier.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -159,7 +149,7 @@ identifier.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -175,11 +165,11 @@ identifier.
 
 ___
 
-### initializeRequest
+#### initializeRequest
 
 Execute the initial steps in a idempotent request.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -220,7 +210,7 @@ Execute the initial steps in a idempotent request.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -236,11 +226,11 @@ Execute the initial steps in a idempotent request.
 
 ___
 
-### lock
+#### lock
 
 Locks an idempotency.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -254,7 +244,7 @@ Locks an idempotency.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -270,11 +260,11 @@ Locks an idempotency.
 
 ___
 
-### retrieve
+#### retrieve
 
 Retrieves an idempotency key
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -288,7 +278,7 @@ Retrieves an idempotency key
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -304,9 +294,9 @@ Retrieves an idempotency key
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -320,7 +310,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -336,11 +326,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Locks an idempotency.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -363,7 +353,7 @@ Locks an idempotency.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -379,9 +369,9 @@ Locks an idempotency.
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -395,7 +385,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -411,7 +401,7 @@ ___
 
 ___
 
-### workStage
+#### workStage
 
 Performs an atomic work stage.
 An atomic work stage contains some related functionality, that needs to be
@@ -419,7 +409,7 @@ transactionally executed in isolation. An idempotent request will
 always consist of 2 or more of these phases. The required phases are
 "started" and "finished".
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -442,7 +432,7 @@ always consist of 2 or more of these phases. The required phases are
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

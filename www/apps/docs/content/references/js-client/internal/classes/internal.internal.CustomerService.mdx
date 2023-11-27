@@ -132,27 +132,17 @@ Provides layer to manipulate customers.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addAddress
+#### addAddress
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -175,7 +165,7 @@ Provides layer to manipulate customers.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -191,13 +181,13 @@ Provides layer to manipulate customers.
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -229,7 +219,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -245,11 +235,11 @@ transaction manager is created.
 
 ___
 
-### count
+#### count
 
 Return the total number of documents in database
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -265,14 +255,14 @@ Return the total number of documents in database
 
 ___
 
-### create
+#### create
 
 Creates a customer from an email - customers can have accounts associated,
 e.g. to login and view order history, etc. If a password is provided the
 customer will automatically get an account, otherwise the customer is just
 used to hold details of customers.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -286,7 +276,7 @@ used to hold details of customers.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -302,11 +292,11 @@ used to hold details of customers.
 
 ___
 
-### delete
+#### delete
 
 Deletes a customer from a given customer id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -320,7 +310,7 @@ Deletes a customer from a given customer id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -336,7 +326,7 @@ Deletes a customer from a given customer id.
 
 ___
 
-### generateResetPasswordToken
+#### generateResetPasswordToken
 
 Generate a JSON Web token, that will be sent to a customer, that wishes to
 reset password.
@@ -344,7 +334,7 @@ The token will be signed with the customer's current password hash as a
 secret a long side a payload with userId and the expiry time for the token,
 which is always 15 minutes.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -358,7 +348,7 @@ which is always 15 minutes.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -374,11 +364,11 @@ which is always 15 minutes.
 
 ___
 
-### hashPassword\_
+#### hashPassword\_
 
 Hashes a password
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -392,7 +382,7 @@ Hashes a password
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -408,9 +398,9 @@ Hashes a password
 
 ___
 
-### list
+#### list
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -433,7 +423,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -449,9 +439,9 @@ ___
 
 ___
 
-### listAndCount
+#### listAndCount
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -474,7 +464,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -490,9 +480,9 @@ ___
 
 ___
 
-### listByEmail
+#### listByEmail
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -515,7 +505,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -531,9 +521,9 @@ ___
 
 ___
 
-### removeAddress
+#### removeAddress
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -556,7 +546,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -572,11 +562,11 @@ ___
 
 ___
 
-### retrieve
+#### retrieve
 
 Gets a customer by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -599,7 +589,7 @@ Gets a customer by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -615,11 +605,11 @@ Gets a customer by id.
 
 ___
 
-### retrieveByEmail
+#### retrieveByEmail
 
 Gets a registered customer by email.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -642,7 +632,7 @@ Gets a registered customer by email.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -660,11 +650,11 @@ Gets a registered customer by email.
 
 ___
 
-### retrieveByPhone
+#### retrieveByPhone
 
 Gets a customer by phone.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -687,7 +677,7 @@ Gets a customer by phone.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -703,50 +693,9 @@ Gets a customer by phone.
 
 ___
 
-### retrieveRegisteredByEmail
+#### retrieveRegisteredByEmail
 
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "email",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-___
-
-### retrieveUnregisteredByEmail
-
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -769,7 +718,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -785,9 +734,50 @@ ___
 
 ___
 
-### shouldRetryTransaction\_
+#### retrieveUnregisteredByEmail
 
-#### Parameters
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "email",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+#### shouldRetryTransaction\_
+
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -801,7 +791,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -817,11 +807,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates a customer.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -844,7 +834,7 @@ Updates a customer.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -860,9 +850,9 @@ Updates a customer.
 
 ___
 
-### updateAddress
+#### updateAddress
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -894,7 +884,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -910,11 +900,11 @@ ___
 
 ___
 
-### updateBillingAddress\_
+#### updateBillingAddress\_
 
 Updates the customers' billing address.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -937,7 +927,7 @@ Updates the customers' billing address.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -953,9 +943,9 @@ Updates the customers' billing address.
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -969,7 +959,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

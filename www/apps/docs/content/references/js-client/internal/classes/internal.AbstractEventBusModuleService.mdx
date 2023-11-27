@@ -26,29 +26,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### eventToSubscribersMap
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "Map",
-    "type": "Map&#60;string \\| symbol, [SubscriberDescriptor](../../EventBusTypes/types/internal.internal-1.EventBusTypes.SubscriberDescriptor.mdx)[]&#62;",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+#### eventToSubscribersMap
 
 ## Methods
 
-### emit
+#### emit
 
 `Abstract **emit**<TypeParameter T>(eventName, data, options): Promise&#60;void&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -80,7 +66,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -96,7 +82,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 `Abstract **emit**<TypeParameter T>(data): Promise&#60;void&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -110,7 +96,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -126,9 +112,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ___
 
-### storeSubscribers
+#### storeSubscribers
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -169,7 +155,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -185,9 +171,9 @@ ___
 
 ___
 
-### subscribe
+#### subscribe
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -219,7 +205,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -235,9 +221,9 @@ ___
 
 ___
 
-### unsubscribe
+#### unsubscribe
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -269,7 +255,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
