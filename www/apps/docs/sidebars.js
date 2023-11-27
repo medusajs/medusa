@@ -3179,8 +3179,8 @@ module.exports = {
   pricingReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3213,8 +3213,8 @@ module.exports = {
   productReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
