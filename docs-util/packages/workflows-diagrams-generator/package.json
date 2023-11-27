@@ -3,7 +3,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
   },
   "publishConfig": {
     "access": "public"
@@ -11,7 +14,7 @@
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
-    "@medusajs/workflows-sdk": "link:../../../packages/workflows-sdk",
+    "@medusajs/workflows-sdk": "latest",
     "commander": "^11.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
