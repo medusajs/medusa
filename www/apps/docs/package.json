@@ -30,7 +30,7 @@
     "clsx": "^1.1.1",
     "docs-ui": "*",
     "docusaurus-plugin-image-zoom": "^0.1.1",
-    "dotenv": "^16.0.3",
+    "dotenv": "16.3.1",
     "eslint": "^8.49.0",
     "eslint-config-docs": "*",
     "file-loader": "^6.2.0",

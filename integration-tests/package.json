@@ -10,7 +10,7 @@
   "author": "Zakaria S. El Asri",
   "license": "ISC",
   "devDependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "16.3.1"
   },
   "dependencies": {
     "@faker-js/faker": "^5.5.3",

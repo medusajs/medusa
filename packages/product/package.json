@@ -56,7 +56,7 @@
     "@mikro-orm/migrations": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.0",
-    "dotenv": "^16.1.4",
+    "dotenv": "16.3.1",
     "knex": "2.4.2",
     "lodash": "^4.17.21"
   }
