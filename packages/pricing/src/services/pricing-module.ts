@@ -1777,6 +1777,8 @@ export default class PricingModuleService<
             sharedContext
           )
 
+          const noOfRules = Object.keys(prices?.rules ?? {}).length
+
           const psma = await this.priceSetMoneyAmountService_.create(
             [
               {
@@ -1784,6 +1786,7 @@ export default class PricingModuleService<
                 money_amount: moneyAmount.id,
                 title: "test",
                 price_list: priceList.id,
+                number_of_rules: noOfRules,
               },
             ],
             sharedContext
