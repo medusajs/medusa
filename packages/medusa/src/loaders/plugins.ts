@@ -600,8 +600,6 @@ async function registerSubscribers(
   container: MedusaContainer,
   activityId: string
 ): Promise<void> {
-  const exclude: string[] = []
-
   const loadedFiles = await new SubscriberLoader(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
@@ -612,11 +610,12 @@ async function registerSubscribers(
   /**
    * Exclude any files that have already been loaded by the subscriber loader
    */
-  exclude.push(...(loadedFiles ?? []))
+  const normalizedLoadedFiles =
+    loadedFiles?.map((file) => file.replace(/\\/g, "/")) ?? []
 
   const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
   files
-    .filter((file) => !exclude.includes(file))
+    .filter((file) => !normalizedLoadedFiles.includes(file))
     .forEach((fn) => {
       const loaded = require(fn).default
 
