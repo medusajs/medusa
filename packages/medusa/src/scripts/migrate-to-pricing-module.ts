@@ -59,9 +59,9 @@ const migratePriceLists = async (container: AwilixContainer) => {
 
     for (const corePriceList of corePriceLists) {
       if (priceListIdsToUpdateSet.has(corePriceList.id)) {
-        priceListsToCreate.push(corePriceList)
-      } else {
         priceListsToUpdate.push(corePriceList)
+      } else {
+        priceListsToCreate.push(corePriceList)
       }
 
       const corePrices = corePriceList.prices || []
@@ -93,7 +93,6 @@ const migratePriceLists = async (container: AwilixContainer) => {
         priceListsToUpdate.map((priceList) => {
           const updateData: PricingTypes.UpdatePriceListDTO = {
             id: priceList.id,
-            title: priceList.name,
           }
 
           if (priceList?.customer_groups?.length) {
