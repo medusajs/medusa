@@ -29,7 +29,7 @@
     "@medusajs/modules-sdk": "^1.12.3",
     "@medusajs/orchestration": "^0.4.4",
     "@medusajs/utils": "^1.11.0",
-    "@medusajs/workflows-sdk": "^0.1.0",
+    "@medusajs/workflows-sdk": "^0.0.1",
     "awilix": "^8.0.1",
     "ulid": "^2.3.0"
   },
