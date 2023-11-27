@@ -89,31 +89,25 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Implementation of
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[IBatchJobStrategy](../interfaces/internal.internal.IBatchJobStrategy.mdx).[activeManager_](../interfaces/internal.internal.IBatchJobStrategy.mdx#activemanager_)
+
+#### Inherited from
+
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -145,7 +139,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -161,11 +155,11 @@ transaction manager is created.
 
 ___
 
-### buildTemplate
+#### buildTemplate
 
 Builds and returns a template file that can be downloaded and filled in
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -181,9 +175,9 @@ Builds and returns a template file that can be downloaded and filled in
 
 ___
 
-### handleProcessingError
+#### handleProcessingError
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -215,7 +209,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -231,11 +225,11 @@ ___
 
 ___
 
-### preProcessBatchJob
+#### preProcessBatchJob
 
 Method for pre-processing a batch job
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -249,7 +243,7 @@ Method for pre-processing a batch job
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -265,11 +259,11 @@ Method for pre-processing a batch job
 
 ___
 
-### prepareBatchJobForProcessing
+#### prepareBatchJobForProcessing
 
 Method for preparing a batch job for processing
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -292,7 +286,7 @@ Method for preparing a batch job for processing
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -308,11 +302,11 @@ Method for preparing a batch job for processing
 
 ___
 
-### processJob
+#### processJob
 
 Method does the actual processing of the job. Should report back on the progress of the operation.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -326,7 +320,7 @@ Method does the actual processing of the job. Should report back on the progress
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -342,9 +336,9 @@ Method does the actual processing of the job. Should report back on the progress
 
 ___
 
-### shouldRetryOnProcessingError
+#### shouldRetryOnProcessingError
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -367,7 +361,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -383,9 +377,9 @@ ___
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -399,7 +393,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -415,9 +409,9 @@ ___
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -431,7 +425,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

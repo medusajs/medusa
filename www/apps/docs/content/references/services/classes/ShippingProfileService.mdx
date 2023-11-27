@@ -12,11 +12,11 @@ Provides layer to manipulate profiles.
 
 ## Constructors
 
-### constructor
+#### constructor
 
 `**new ShippingProfileService**(«destructured»)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -136,33 +136,17 @@ Provides layer to manipulate profiles.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-`Protected get**activeManager_**(): EntityManager`
-
-#### Returns
-
-EntityManager
-
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+ `Protected` **activeManager\_**: [object Object]
 
 ## Methods
 
-### addProduct
+#### addProduct
 
 `**addProduct**(profileId, productId): Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -185,7 +169,7 @@ EntityManager
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -207,13 +191,13 @@ use [addProducts](ShippingProfileService.mdx#addproducts) instead
 
 ___
 
-### addProducts
+#### addProducts
 
 `**addProducts**(profileId, productId): Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Adds a product or an array of products to the profile.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -236,7 +220,7 @@ Adds a product or an array of products to the profile.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -254,14 +238,14 @@ Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### addShippingOption
+#### addShippingOption
 
 `**addShippingOption**(profileId, optionId): Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Adds a shipping option to the profile. The shipping option can be used to
 fulfill the products in the products field.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -284,7 +268,7 @@ fulfill the products in the products field.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -302,13 +286,15 @@ Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+##### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -331,7 +317,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -363,7 +349,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;TResult&#62;
 
@@ -381,13 +367,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-### create
+#### create
 
 `**create**(profile): Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Creates a new shipping profile.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -401,7 +387,7 @@ Creates a new shipping profile.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -419,13 +405,13 @@ Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### createDefault
+#### createDefault
 
 `**createDefault**(): Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Creates a default shipping profile, if this does not already exist.
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -443,14 +429,14 @@ Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### createGiftCardDefault
+#### createGiftCardDefault
 
 `**createGiftCardDefault**(): Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Creates a default shipping profile, for gift cards if unless it already
 exists.
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -468,13 +454,13 @@ Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### delete
+#### delete
 
 `**delete**(profileId): Promise&#60;void&#62;`
 
 Deletes a profile with a given profile id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -488,7 +474,7 @@ Deletes a profile with a given profile id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void&#62;
 
@@ -506,14 +492,14 @@ Promise&#60;void&#62;
 
 ___
 
-### fetchCartOptions
+#### fetchCartOptions
 
 `**fetchCartOptions**(cart): Promise&#60;[ShippingOption](ShippingOption.mdx)[]&#62;`
 
 Finds all the shipping profiles that cover the products in a cart, and
 validates all options that are available for the cart.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -527,7 +513,7 @@ validates all options that are available for the cart.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingOption](ShippingOption.mdx)[]&#62;
 
@@ -545,11 +531,11 @@ Promise&#60;[ShippingOption](ShippingOption.mdx)[]&#62;
 
 ___
 
-### getMapProfileIdsByProductIds
+#### getMapProfileIdsByProductIds
 
 `**getMapProfileIdsByProductIds**(productIds): Promise&#60;Map&#60;string, string&#62;&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -563,7 +549,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;Map&#60;string, string&#62;&#62;
 
@@ -581,13 +567,13 @@ Promise&#60;Map&#60;string, string&#62;&#62;
 
 ___
 
-### getProfilesInCart
+#### getProfilesInCart
 
 `Protected **getProfilesInCart**(cart): Promise&#60;string[]&#62;`
 
 Returns a list of all the productIds in the cart.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -601,7 +587,7 @@ Returns a list of all the productIds in the cart.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;string[]&#62;
 
@@ -619,11 +605,11 @@ Promise&#60;string[]&#62;
 
 ___
 
-### list
+#### list
 
 `**list**(selector?, config?): Promise&#60;[ShippingProfile](ShippingProfile.mdx)[]&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -646,7 +632,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)[]&#62;
 
@@ -664,13 +650,13 @@ Promise&#60;[ShippingProfile](ShippingProfile.mdx)[]&#62;
 
 ___
 
-### removeProducts
+#### removeProducts
 
 `**removeProducts**(profileId, productId): Promise&#60;void \| [ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Removes a product or an array of products from the profile.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -693,7 +679,7 @@ Removes a product or an array of products from the profile.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void \| [ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -711,14 +697,14 @@ Promise&#60;void \| [ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### retrieve
+#### retrieve
 
 `**retrieve**(profileId, options?): Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Gets a profile by id.
 Throws in case of DB Error and if profile was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -741,7 +727,7 @@ Throws in case of DB Error and if profile was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -759,11 +745,11 @@ Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### retrieveDefault
+#### retrieveDefault
 
 `**retrieveDefault**(): Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;`
 
-#### Returns
+##### Returns
 
 Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -781,11 +767,11 @@ Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### retrieveForProducts
+#### retrieveForProducts
 
 `**retrieveForProducts**(productIds): Promise&#60;&#123; [product_id: string]: [ShippingProfile](ShippingProfile.mdx)[];  &#125;&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -799,7 +785,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;&#123; [product_id: string]: [ShippingProfile](ShippingProfile.mdx)[];  &#125;&#62;
 
@@ -817,13 +803,13 @@ Promise&#60;&#123; [product_id: string]: [ShippingProfile](ShippingProfile.mdx)[
 
 ___
 
-### retrieveGiftCardDefault
+#### retrieveGiftCardDefault
 
 `**retrieveGiftCardDefault**(): Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;`
 
 Retrieves the default gift card profile
 
-#### Returns
+##### Returns
 
 Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -841,11 +827,11 @@ Promise&#60;null \| [ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -859,7 +845,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -877,7 +863,7 @@ ___
 
 ___
 
-### update
+#### update
 
 `**update**(profileId, update): Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;`
 
@@ -885,7 +871,7 @@ Updates a profile. Metadata updates and product updates should use
 dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
 will throw errors if metadata or product updates are attempted.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -908,7 +894,7 @@ will throw errors if metadata or product updates are attempted.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
@@ -926,11 +912,11 @@ Promise&#60;[ShippingProfile](ShippingProfile.mdx)&#62;
 
 ___
 
-### withTransaction
+#### withTransaction
 
 `**withTransaction**(transactionManager?): [ShippingProfileService](ShippingProfileService.mdx)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -944,7 +930,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [ShippingProfileService](ShippingProfileService.mdx)
 

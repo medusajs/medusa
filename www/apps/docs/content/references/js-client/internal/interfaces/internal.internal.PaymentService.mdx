@@ -64,31 +64,21 @@ in the near future use the new PaymentProcessor interface instead
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](../classes/internal.internal.TransactionBaseService.mdx).[activeManager_](../classes/internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -120,7 +110,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -136,11 +126,11 @@ transaction manager is created.
 
 ___
 
-### authorizePayment
+#### authorizePayment
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -163,7 +153,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -183,11 +173,11 @@ in the near future use PaymentProcessor.authorizePayment instead
 
 ___
 
-### cancelPayment
+#### cancelPayment
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -201,7 +191,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -221,11 +211,11 @@ in the near future use PaymentProcessor.cancelPayment instead
 
 ___
 
-### capturePayment
+#### capturePayment
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -239,7 +229,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -259,13 +249,13 @@ in the near future use PaymentProcessor.capturePayment instead
 
 ___
 
-### createPayment
+#### createPayment
 
 `**createPayment**(context): Promise&#60;[PaymentSessionResponse](../types/internal.internal.PaymentSessionResponse.mdx)&#62;`
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -279,7 +269,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -301,7 +291,7 @@ in the near future use PaymentProcessor.initiatePayment instead
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -315,7 +305,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -335,11 +325,11 @@ in the near future use createPayment(context: `Cart & PaymentContext): Promise<P
 
 ___
 
-### deletePayment
+#### deletePayment
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -353,7 +343,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -373,9 +363,9 @@ in the near future use PaymentProcessor.cancelPayment instead
 
 ___
 
-### getIdentifier
+#### getIdentifier
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -391,11 +381,11 @@ ___
 
 ___
 
-### getPaymentData
+#### getPaymentData
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -409,7 +399,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -429,11 +419,11 @@ in the near future use PaymentProcessor.retrievePayment instead
 
 ___
 
-### getStatus
+#### getStatus
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -447,7 +437,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -467,11 +457,11 @@ in the near future use PaymentProcessor.getPaymentStatus instead
 
 ___
 
-### refundPayment
+#### refundPayment
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -494,7 +484,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -514,11 +504,11 @@ in the near future use PaymentProcessor.refundPayment instead
 
 ___
 
-### retrievePayment
+#### retrievePayment
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -532,7 +522,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -552,11 +542,11 @@ in the near future use PaymentProcessor.retrievePayment instead
 
 ___
 
-### retrieveSavedMethods
+#### retrieveSavedMethods
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -570,7 +560,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -590,9 +580,9 @@ in the near future use PaymentProcessor.getSavedMethods instead
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -606,7 +596,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -622,11 +612,11 @@ ___
 
 ___
 
-### updatePayment
+#### updatePayment
 
 `**updatePayment**(paymentSessionData, context): Promise&#60;[Data](../types/internal.internal.Data.mdx) \| [PaymentSessionResponse](../types/internal.internal.PaymentSessionResponse.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -649,7 +639,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -667,7 +657,7 @@ ___
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -690,7 +680,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -710,11 +700,11 @@ in the near future use PaymentProcessor.updatePayment instead
 
 ___
 
-### updatePaymentData
+#### updatePaymentData
 
 This will be
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -737,7 +727,7 @@ This will be
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -757,9 +747,9 @@ in the near future use PaymentProcessor.updatePayment instead
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -773,7 +763,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

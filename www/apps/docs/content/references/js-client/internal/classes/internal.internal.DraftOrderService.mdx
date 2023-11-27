@@ -170,31 +170,21 @@ Handles draft orders
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -226,7 +216,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -242,11 +232,11 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates a draft order.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -260,7 +250,7 @@ Creates a draft order.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -276,11 +266,11 @@ Creates a draft order.
 
 ___
 
-### delete
+#### delete
 
 Deletes draft order idempotently.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -294,7 +284,7 @@ Deletes draft order idempotently.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -310,11 +300,11 @@ Deletes draft order idempotently.
 
 ___
 
-### list
+#### list
 
 Lists draft orders
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -337,7 +327,7 @@ Lists draft orders
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -353,11 +343,11 @@ Lists draft orders
 
 ___
 
-### listAndCount
+#### listAndCount
 
 Lists draft orders alongside the count
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -380,7 +370,7 @@ Lists draft orders alongside the count
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -396,11 +386,11 @@ Lists draft orders alongside the count
 
 ___
 
-### registerCartCompletion
+#### registerCartCompletion
 
 Registers a draft order as completed, when an order has been completed.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -423,7 +413,7 @@ Registers a draft order as completed, when an order has been completed.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -439,11 +429,11 @@ Registers a draft order as completed, when an order has been completed.
 
 ___
 
-### retrieve
+#### retrieve
 
 Retrieves a draft order with the given id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -466,7 +456,7 @@ Retrieves a draft order with the given id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -482,11 +472,11 @@ Retrieves a draft order with the given id.
 
 ___
 
-### retrieveByCartId
+#### retrieveByCartId
 
 Retrieves a draft order based on its associated cart id
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -509,7 +499,7 @@ Retrieves a draft order based on its associated cart id
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -525,9 +515,9 @@ Retrieves a draft order based on its associated cart id
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -541,7 +531,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -557,11 +547,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates a draft order with the given data
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -593,7 +583,7 @@ Updates a draft order with the given data
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -609,9 +599,9 @@ Updates a draft order with the given data
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -625,7 +615,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

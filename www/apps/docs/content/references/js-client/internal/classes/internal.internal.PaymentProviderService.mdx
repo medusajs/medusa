@@ -141,49 +141,25 @@ Helps retrieve payment providers
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ___
 
-### paymentService\_
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "default",
-    "type": "[PaymentService](internal.PaymentService.mdx)",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+#### paymentService\_
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -215,7 +191,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -231,9 +207,9 @@ transaction manager is created.
 
 ___
 
-### authorizePayment
+#### authorizePayment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -256,7 +232,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -272,11 +248,11 @@ ___
 
 ___
 
-### buildPaymentProcessorContext
+#### buildPaymentProcessorContext
 
 Build the create session context for both legacy and new API
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -290,7 +266,7 @@ Build the create session context for both legacy and new API
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -306,9 +282,9 @@ Build the create session context for both legacy and new API
 
 ___
 
-### cancelPayment
+#### cancelPayment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -322,7 +298,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -338,9 +314,9 @@ ___
 
 ___
 
-### capturePayment
+#### capturePayment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -354,7 +330,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -370,9 +346,9 @@ ___
 
 ___
 
-### createPayment
+#### createPayment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -386,7 +362,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -402,11 +378,11 @@ ___
 
 ___
 
-### createSession
+#### createSession
 
 `**createSession**(providerId, cart): Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -429,7 +405,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -449,7 +425,7 @@ ___
 
 Creates a payment session with the given provider.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -463,7 +439,7 @@ Creates a payment session with the given provider.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -479,9 +455,9 @@ Creates a payment session with the given provider.
 
 ___
 
-### deleteSession
+#### deleteSession
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -495,7 +471,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -511,9 +487,9 @@ ___
 
 ___
 
-### getStatus
+#### getStatus
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -527,7 +503,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -543,9 +519,9 @@ ___
 
 ___
 
-### list
+#### list
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -561,11 +537,11 @@ ___
 
 ___
 
-### listPayments
+#### listPayments
 
 List all the payments according to the given selector and config.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -588,7 +564,7 @@ List all the payments according to the given selector and config.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -604,11 +580,11 @@ List all the payments according to the given selector and config.
 
 ___
 
-### processUpdateRequestsData
+#### processUpdateRequestsData
 
 Process the collected data. Can be used every time we need to process some collected data returned by the provider
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -631,7 +607,7 @@ Process the collected data. Can be used every time we need to process some colle
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -647,12 +623,12 @@ Process the collected data. Can be used every time we need to process some colle
 
 ___
 
-### refreshSession
+#### refreshSession
 
 Refreshes a payment session with the given provider.
 This means, that we delete the current one and create a new.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -702,7 +678,7 @@ This means, that we delete the current one and create a new.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -718,9 +694,9 @@ This means, that we delete the current one and create a new.
 
 ___
 
-### refundFromPayment
+#### refundFromPayment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -761,7 +737,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -777,9 +753,9 @@ ___
 
 ___
 
-### refundPayment
+#### refundPayment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -820,7 +796,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -836,9 +812,9 @@ ___
 
 ___
 
-### registerInstalledProviders
+#### registerInstalledProviders
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -852,7 +828,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -868,11 +844,11 @@ ___
 
 ___
 
-### retrievePayment
+#### retrievePayment
 
 Retrieve a payment entity with the given id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -895,7 +871,7 @@ Retrieve a payment entity with the given id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -911,11 +887,11 @@ Retrieve a payment entity with the given id.
 
 ___
 
-### retrieveProvider
+#### retrieveProvider
 
 Finds a provider given an id
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -929,7 +905,7 @@ Finds a provider given an id
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -945,9 +921,9 @@ Finds a provider given an id
 
 ___
 
-### retrieveRefund
+#### retrieveRefund
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -970,7 +946,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -986,11 +962,11 @@ ___
 
 ___
 
-### retrieveSession
+#### retrieveSession
 
 Return the payment session for the given id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1013,7 +989,7 @@ Return the payment session for the given id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1029,11 +1005,11 @@ Return the payment session for the given id.
 
 ___
 
-### saveSession
+#### saveSession
 
 Create or update a Payment session data.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1119,7 +1095,7 @@ Create or update a Payment session data.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1135,9 +1111,9 @@ Create or update a Payment session data.
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1151,7 +1127,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1167,9 +1143,9 @@ ___
 
 ___
 
-### updatePayment
+#### updatePayment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1210,7 +1186,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1226,11 +1202,11 @@ ___
 
 ___
 
-### updateSession
+#### updateSession
 
 Update a payment session with the given provider.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1280,7 +1256,7 @@ Update a payment session with the given provider.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1296,9 +1272,9 @@ Update a payment session with the given provider.
 
 ___
 
-### updateSessionData
+#### updateSessionData
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1321,7 +1297,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1337,9 +1313,9 @@ ___
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1353,7 +1329,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
