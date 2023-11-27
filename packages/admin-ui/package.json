@@ -2,7 +2,7 @@
   "name": "@medusajs/admin-ui",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa.git",
@@ -37,7 +37,7 @@
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.3.1",
     "@medusajs/icons": "^1.1.0",
-    "@medusajs/ui": "^2.2.2",
+    "@medusajs/ui": "^2.2.3",
     "@medusajs/ui-preset": "^1.0.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@radix-ui/react-accordion": "^1.0.1",
@@ -117,8 +117,8 @@
   },
   "devDependencies": {
     "@babel/types": "7.22.5",
-    "@medusajs/medusa": "^1.18.0",
-    "@medusajs/types": "^1.11.7",
+    "@medusajs/medusa": "^1.18.1",
+    "@medusajs/types": "^1.11.8",
     "@types/pluralize": "^0.0.29",
     "@types/react": "^18.2.0",
     "@types/react-datepicker": "^4.10.0",

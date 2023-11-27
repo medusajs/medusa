@@ -103,31 +103,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -159,7 +149,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -175,12 +165,12 @@ transaction manager is created.
 
 ___
 
-### listAndCount
+#### listAndCount
 
 Lists currencies based on the provided parameters and includes the count of
 currencies that match the query.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -203,7 +193,7 @@ currencies that match the query.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -219,11 +209,11 @@ currencies that match the query.
 
 ___
 
-### retrieveByCode
+#### retrieveByCode
 
 Return the currency
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -237,7 +227,7 @@ Return the currency
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -253,9 +243,9 @@ Return the currency
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -269,7 +259,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -285,11 +275,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Update a currency
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -312,7 +302,7 @@ Update a currency
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -328,9 +318,9 @@ Update a currency
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -344,7 +334,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

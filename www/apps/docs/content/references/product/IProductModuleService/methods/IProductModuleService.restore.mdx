@@ -18,7 +18,7 @@ This method is used to restore products which were deleted using the [softDelete
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -48,7 +48,7 @@ async function restoreProducts (ids: string[]) {
   {
     "name": "config",
     "type": "[RestoreReturn](../../interfaces/RestoreReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
-    "description": "Configurations determining which relations to restore along with the each of the products. You can pass to its `returnLinkableKeys` property any of the product's relation attribute names, such as `variant_id`.",
+    "description": "Configurations determining which relations to restore along with each of the products. You can pass to its `returnLinkableKeys` property any of the product's relation attribute names, such as `variant_id`.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,

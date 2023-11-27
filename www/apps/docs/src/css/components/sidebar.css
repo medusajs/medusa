@@ -154,14 +154,3 @@
 .theme-doc-sidebar-item-link {
   @apply flex items-center;
 }
-
-/** Redocly sidebar **/
-
-.redocusaurus .menu-content > div > ul > li > ul label:not([type=tag]):not(.active) {
-  @apply text-medusa-fg-subtle;
-  @apply hover:text-medusa-fg-base;
-}
-
-.redocusaurus .menu-content > div > ul > li > ul label:not([type=tag]).active {
-  @apply text-medusa-fg-base;
-}

@@ -58,31 +58,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](../classes/internal.internal.TransactionBaseService.mdx).[activeManager_](../classes/internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -114,7 +104,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -130,11 +120,11 @@ transaction manager is created.
 
 ___
 
-### delete
+#### delete
 
 remove file from fileservice
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -148,7 +138,7 @@ remove file from fileservice
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -164,11 +154,11 @@ remove file from fileservice
 
 ___
 
-### getDownloadStream
+#### getDownloadStream
 
 download file from fileservice as stream
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -182,7 +172,7 @@ download file from fileservice as stream
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -198,11 +188,11 @@ download file from fileservice as stream
 
 ___
 
-### getPresignedDownloadUrl
+#### getPresignedDownloadUrl
 
 Generate a presigned download url to obtain a file
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -216,7 +206,7 @@ Generate a presigned download url to obtain a file
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -232,11 +222,11 @@ Generate a presigned download url to obtain a file
 
 ___
 
-### getUploadStreamDescriptor
+#### getUploadStreamDescriptor
 
 upload file to fileservice from stream
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -250,7 +240,7 @@ upload file to fileservice from stream
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -266,9 +256,9 @@ upload file to fileservice from stream
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -282,7 +272,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -298,11 +288,11 @@ ___
 
 ___
 
-### upload
+#### upload
 
 upload file to fileservice
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -316,7 +306,7 @@ upload file to fileservice
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -332,11 +322,11 @@ upload file to fileservice
 
 ___
 
-### uploadProtected
+#### uploadProtected
 
 upload private file to fileservice
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -350,7 +340,7 @@ upload private file to fileservice
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -366,9 +356,9 @@ upload private file to fileservice
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -382,7 +372,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
