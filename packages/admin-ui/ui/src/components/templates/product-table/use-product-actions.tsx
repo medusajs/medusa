@@ -49,8 +49,6 @@ const useProductActions = (product: Product) => {
           expand: "inventory_items",
         })
 
-        console.warn("variants", variants)
-
         variants
           .filter(({ inventory_items }) => !!inventory_items?.length)
           .map(({ inventory_items }) =>
