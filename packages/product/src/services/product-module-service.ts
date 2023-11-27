@@ -255,7 +255,9 @@ export default class ProductModuleService<
 
     const productOptions = await this.listOptions(
       { id: productOptionIds },
-      {},
+      {
+        take: null,
+      },
       sharedContext
     )
 
@@ -345,7 +347,7 @@ export default class ProductModuleService<
     const variantIdsToUpdate = data.map(({ id }) => id)
     const variants = await this.listVariants(
       { id: variantIdsToUpdate },
-      { relations: ["options", "options.option"] },
+      { relations: ["options", "options.option"], take: null },
       sharedContext
     )
     const variantsMap = new Map(
@@ -1053,7 +1055,9 @@ export default class ProductModuleService<
     const productIds = data.map((pd) => pd.id)
     const existingProductVariants = await this.productVariantService_.list(
       { product_id: productIds },
-      {},
+      {
+        take: null,
+      },
       sharedContext
     )
 

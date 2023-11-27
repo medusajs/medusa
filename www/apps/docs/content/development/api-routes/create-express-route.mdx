@@ -19,7 +19,7 @@ Following v1.17.2 of `@medusajs/medusa`, it's highly recommended to use the [API
 
 To create a new endpoint, start by creating a new file in `src/api` called `index.ts`. At its basic format, `index.ts` should look something like this:
 
-```ts title=src/api/index.ts
+```ts title="src/api/index.ts"
 import { Router } from "express"
 
 export default (rootDirectory, options) => {
@@ -62,7 +62,7 @@ Instead of returning an Express router in the function, you can return an array 
 
 For example:
 
-```ts title=src/api/index.ts
+```ts title="src/api/index.ts"
 import { Router } from "express"
 
 export default (rootDirectory, options) => {
@@ -199,7 +199,7 @@ If you want to accept request body parameters, you need to pass express middlewa
 
 For example:
 
-```ts title=src/api/index.ts
+```ts title="src/api/index.ts"
 import bodyParser from "body-parser"
 import express, { Router } from "express"
 
@@ -356,7 +356,7 @@ The function returns an object with the following properties:
 
 Here's an example of retrieving the configurations within an endpoint using `getConfigFile`:
 
-```ts title=src/api/index.ts
+```ts title="src/api/index.ts"
 import { Router } from "express"
 import { ConfigModule } from "@medusajs/medusa"
 import { getConfigFile } from "medusa-core-utils"
@@ -382,7 +382,7 @@ Notice that `getConfigFile` is a generic function. So, if you're using TypeScrip
 
 If you're accessing custom configurations, you'll need to create a new type that defines these configurations. For example:
 
-```ts title=src/api/index.ts
+```ts title="src/api/index.ts"
 import { Router } from "express"
 import { ConfigModule } from "@medusajs/medusa"
 import { getConfigFile } from "medusa-core-utils"
@@ -426,7 +426,7 @@ Code snippets are taken from the [full example available at the end of this docu
 
 To handle errors using Medusa's middlewares, first, import the `errorHandler` middleware from `@medusajs/medusa` and apply it on your routers. Make sure it's applied after all other middlewares and routes:
 
-```ts title=src/api/index.ts
+```ts title="src/api/index.ts"
 import express, { Router } from "express"
 import adminRoutes from "./admin"
 import storeRoutes from "./store"
@@ -449,7 +449,7 @@ export default (rootDirectory, options) => {
 
 Then, wrap the function handler of every route with the `wrapHandler` middleware imported from `@medusajs/medusa`. For example:
 
-```ts title=src/api/admin.ts
+```ts title="src/api/admin.ts"
 import { wrapHandler } from "@medusajs/medusa"
 
 // ...
@@ -477,7 +477,7 @@ Alternatively, you can define the endpoints in different files, and import and u
 
 <!-- eslint-disable @typescript-eslint/no-var-requires -->
 
-```ts title=src/api/admin.ts
+```ts title="src/api/admin.ts"
 import { wrapHandler } from "@medusajs/medusa"
 
 // ...

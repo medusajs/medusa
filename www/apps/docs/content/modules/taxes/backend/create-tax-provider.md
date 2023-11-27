@@ -19,7 +19,7 @@ A tax provider class should be defined in a TypeScript or JavaScript file under 
 
 For example, you can create the file `src/services/my-tax.ts` with the following content:
 
-```ts title=src/services/my-tax.ts
+```ts title="src/services/my-tax.ts"
 import { 
   AbstractTaxService,
   ItemTaxCalculationLine,
@@ -49,7 +49,7 @@ Since the class extends `AbstractTaxService`, it must implement its abstract met
 
 You can use a constructor to access services and resources registered in the dependency container using dependency injection. For example:
 
-```ts title=src/services/my-tax.ts
+```ts title="src/services/my-tax.ts"
 // ...
 import { LineItemService } from "@medusajs/medusa"
 
@@ -79,7 +79,7 @@ Every tax provider must have a unique identifier. The identifier is defined as a
 
 Add the static property `identifier` in your tax provider class:
 
-```ts title=src/services/my-tax.ts
+```ts title="src/services/my-tax.ts"
 class MyTaxService extends AbstractTaxService {
   static identifier = "my-tax"
   // ...
@@ -161,7 +161,7 @@ The Medusa backend determines whether an object in the returned array is a shipp
 
 For example, the `system` tax provider returns the tax calculation line items in the first parameter and the tax calculation shipping methods in the second parameter as is:
 
-```ts title=src/services/my-tax.ts
+```ts title="src/services/my-tax.ts"
 // ...
 
 class SystemTaxService extends AbstractTaxService {

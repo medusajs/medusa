@@ -52,7 +52,7 @@ Where `<YOUR_MEILISEARCH_HOST>` is the host of your MeiliSearch instance. By def
 
 Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -76,7 +76,7 @@ const plugins = [
 
 Under the `settings` key of the plugin's options, you can add settings specific to each index. The settings are of the following format:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -117,7 +117,7 @@ These settings are just examples of what you can pass to the MeiliSearch provide
 
 Here's an example of the settings you can use:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -223,7 +223,7 @@ The Next.js Starter Template has the MeiliSearch integration available out of th
 
 First, ensure that the search feature is enabled in `store.config.json`:
 
-```json title=store.config.json
+```json title="store.config.json"
 {
   "features": {
     "search": true

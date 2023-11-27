@@ -1,18 +1,18 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import { useAdminRegions, useAdminStore } from "medusa-react"
 import { Product } from "@medusajs/client-types"
+import { useAdminRegions, useAdminStore } from "medusa-react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 
+import useNotification from "../../../../hooks/use-notification"
+import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
+import Tooltip from "../../../atoms/tooltip"
+import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
+import CurrencyCell from "./currency-cell"
 import {
   getCurrencyPricesOnly,
   getRegionPricesOnly,
-  mod,
   isText,
+  mod,
 } from "./utils"
-import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
-import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
-import Tooltip from "../../../atoms/tooltip"
-import CurrencyCell from "./currency-cell"
-import useNotification from "../../../../hooks/use-notification"
 
 enum ArrowMove {
   UP,
@@ -669,21 +669,22 @@ function EditPricesTable(props: EditPricesTableProps) {
   }
 
   return (
-    <div className="h-full overflow-x-auto">
+    // 60px is the height of the subheader, 64px is the height of the header
+    <div className="h-[calc(100%-60px-64px)] overflow-auto">
       <table
         onMouseMove={
           /** prevent default browser highlighting while dragging **/
           (e) => e.preventDefault()
         }
         style={{ fontSize: 13, borderCollapse: "collapse" }}
-        className="w-full table-auto"
+        className="h-full w-full table-auto"
       >
         <thead>
           <tr
             style={{ height: 42 }}
             className="tw-text-medusa-text-subtle h-2 text-left font-normal"
           >
-            <th className="h-2 border pl-4 font-medium text-gray-400">
+            <th className="h-2 border border-t-0 pl-4 font-medium text-gray-400">
               Product
             </th>
             {props.currencies.map((c) => {
@@ -691,7 +692,7 @@ function EditPricesTable(props: EditPricesTableProps) {
               return (
                 <th
                   key={c}
-                  className="min-w-[220px] border px-4 font-medium text-gray-400"
+                  className="min-w-[220px] border border-t-0 px-4 font-medium text-gray-400"
                 >
                   <div className="flex items-center justify-between">
                     <span>Price {c.toUpperCase()}</span>
@@ -712,7 +713,7 @@ function EditPricesTable(props: EditPricesTableProps) {
               return (
                 <th
                   key={r}
-                  className="min-w-[220px] max-w-[220px]  border px-4 font-medium text-gray-400"
+                  className="min-w-[220px] max-w-[220px]  border border-t-0 px-4 font-medium text-gray-400"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="flex overflow-hidden">

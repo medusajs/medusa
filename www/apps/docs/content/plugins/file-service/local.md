@@ -37,7 +37,7 @@ npm install @medusajs/file-local
 
 Then, configure your `medusa-config.js` to include the plugin with the required options:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -80,7 +80,7 @@ If this configuration is not added, you’ll receive the error ["next/image Un-c
 
 In `next.config.js` add the following option in the exported object:
 
-```js title=next.config.js
+```js title="next.config.js"
 const { withStoreConfig } = require("./store-config")
 
 // ...

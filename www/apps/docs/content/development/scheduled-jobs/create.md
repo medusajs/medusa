@@ -35,7 +35,7 @@ The scheduled job file exports a default handler function, and the scheduled job
 
 For example:
 
-```ts title=src/loaders/publish.ts
+```ts title="src/loaders/publish.ts"
 import { 
   type ProductService, 
   type ScheduledJobConfig, 
