@@ -24,6 +24,10 @@ In `medusa-config.js`, add the pricing module to the exported object under the `
 ```js title=medusa-config.js
 module.exports = {
   // ...
+  featureFlags: {
+    // ...
+    medusa_v2: true,
+  },
   modules: {
     // ...
     pricingService: {
