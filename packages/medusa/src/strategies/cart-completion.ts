@@ -230,7 +230,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     const txCartService = this.cartService_.withTransaction(manager)
 
-    let cart = await this.cartService_.withTransaction(manager).retrieve(id, {
+    let cart = await txCartService.retrieve(id, {
       relations: ["payment_sessions"],
     })
 
