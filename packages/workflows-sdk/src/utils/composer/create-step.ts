@@ -15,6 +15,8 @@ import {
   WorkflowData,
 } from "./type"
 import { proxify } from "./helpers/proxy"
+import { TransactionStepsDefinition } from "@medusajs/orchestration"
+import { isString } from "@medusajs/utils"
 
 /**
  * The type of invocation function passed to a step.
@@ -75,6 +77,7 @@ interface ApplyStepOptions<
   TInvokeResultCompensateInput
 > {
   stepName: string
+  stepConfig?: TransactionStepsDefinition
   input: TStepInputs
   invokeFn: InvokeFn<
     TInvokeInput,
@@ -91,6 +94,7 @@ interface ApplyStepOptions<
  * This is where the inputs and context are passed to the underlying invoke and compensate function.
  *
  * @param stepName
+ * @param stepConfig
  * @param input
  * @param invokeFn
  * @param compensateFn
@@ -104,6 +108,7 @@ function applyStep<
   TInvokeResultCompensateInput
 >({
   stepName,
+  stepConfig = {},
   input,
   invokeFn,
   compensateFn,
@@ -168,9 +173,9 @@ function applyStep<
         : undefined,
     }
 
-    this.flow.addAction(stepName, {
-      noCompensation: !compensateFn,
-    })
+    stepConfig!.noCompensation = !compensateFn
+
+    this.flow.addAction(stepName, stepConfig)
     this.handlers.set(stepName, handler)
 
     const ret = {
@@ -236,9 +241,11 @@ export function createStep<
   TInvokeResultCompensateInput
 >(
   /**
-   * The name of the step.
+   * The name of the step or its configuration (currently support maxRetries).
    */
-  name: string,
+  nameOrConfig:
+    | string
+    | ({ name: string } & Pick<TransactionStepsDefinition, "maxRetries">),
   /**
    * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
@@ -256,7 +263,9 @@ export function createStep<
    */
   compensateFn?: CompensateFn<TInvokeResultCompensateInput>
 ): StepFunction<TInvokeInput, TInvokeResultOutput> {
-  const stepName = name ?? invokeFn.name
+  const stepName =
+    (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name) ?? invokeFn.name
+  const config = isString(nameOrConfig) ? {} : nameOrConfig
 
   const returnFn = function (input: {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
@@ -281,6 +290,7 @@ export function createStep<
         TInvokeResultCompensateInput
       >({
         stepName,
+        stepConfig: config,
         input,
         invokeFn,
         compensateFn,
