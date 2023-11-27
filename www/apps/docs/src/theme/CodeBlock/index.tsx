@@ -49,7 +49,6 @@ export default function CodeBlock({
     }
   }
 
-  console.log(props, title)
   return (
     <div className="code-wrapper">
       {title && <div className="code-header">{title}</div>}
