@@ -6,6 +6,12 @@ As Medusa moves towards modularization, commerce concepts such as Products or Pr
 
 ## Enabling Experimental Features
 
+:::danger [Production Warning]
+
+All features guarded by the `medusa_v2` flag are not ready for production and will cause unexpected issues in your production server.
+
+:::
+
 Experimental Features are guarded in the Medusa backend by a feature flag.
 
 To use them, [enable the `medusa_v2` feature flag](../development/feature-flags/toggle.md) in your backend.
