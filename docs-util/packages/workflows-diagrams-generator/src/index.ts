@@ -28,6 +28,7 @@ program
       .choices(["docs", "markdown", "mermaid"])
       .default("docs")
   )
+  .option("--no-theme", "Remove theming from outputted diagrams.", true)
   .action(generate)
 
 program.parse()

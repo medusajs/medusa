@@ -1,10 +1,11 @@
 import { exec } from "child_process"
+import { Dirent } from "fs"
 import { readdir, readFile, writeFile } from "fs/promises"
 import path from "path"
 
 export default async function docusaurusPluginDiagram2codeShowcase(
   context,
-  { directoryPath, routePaths, outputPath, debug = false }
+  { directoryPath, outputPath, debug = false }
 ) {
   async function readIfExists(filePath) {
     try {
@@ -20,11 +21,20 @@ export default async function docusaurusPluginDiagram2codeShowcase(
   }
 
   async function generateSpecs() {
-    const specs = {}
-    // read files under the provided directory path
-    const diagramSpecDirectories = (
-      await readdir(directoryPath, { withFileTypes: true })
-    ).filter((dirent) => dirent.isDirectory())
+    let specs = {}
+    let diagramSpecDirectories = []
+
+    try {
+      // read files under the provided directory path
+      diagramSpecDirectories = (
+        await readdir(directoryPath, { withFileTypes: true })
+      ).filter((dirent) => dirent.isDirectory())
+    } catch {
+      console.error(
+        `Directory ${directoryPath} doesn't exist. Skipping reading diagrams...`
+      )
+      return
+    }
 
     await Promise.all(
       diagramSpecDirectories.map(async (dirent) => {
@@ -62,6 +72,15 @@ export default async function docusaurusPluginDiagram2codeShowcase(
         }
       })
     )
+
+    // order steps alphabetically
+    specs = Object.keys(specs)
+      .sort()
+      .reduce((accumulator, key) => {
+        accumulator[key] = specs[key]
+
+        return accumulator
+      }, {})
 
     // store specs in a JavaScript object that can be consumed
     const specOutputFilePath = path.join(outputPath, "specs.ts")

@@ -15,14 +15,27 @@ const Diagram2CodeSpecs = ({ specName }: WorkflowReferenceProps) => {
     return <></>
   }
   const specsData: Diagram2CodeSpec = specs[specName]
+
+  const transformTitle = (title: string): string => {
+    return title
+      .split("-")
+      .map((word) => `${word.charAt(0).toUpperCase()}${word.substring(1)}`)
+      .join(" ")
+  }
+
   return (
     <>
       {!Object.keys(specsData).length && <span>No diagrams found</span>}
       {Object.entries(specsData).map(([name, diagram2code]) => (
         <React.Fragment key={name}>
-          <h2>{name}</h2>
+          <h2>{transformTitle(name)}</h2>
           <Tabs groupId="workflows">
-            <TabItem value="diagram" label="Diagram" default>
+            <TabItem
+              value="diagram"
+              label="Diagram"
+              default
+              className="bg-diagrams bg-repeat rounded [&>div]:flex [&>div]:justify-center [&>div]:items-center"
+            >
               <Mermaid value={diagram2code.diagram} />
             </TabItem>
             {diagram2code.code && (

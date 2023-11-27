@@ -75,6 +75,10 @@ const config = {
   themes: ["@docusaurus/theme-mermaid"],
   themeConfig: {
     mermaid: {
+      theme: {
+        light: "base",
+        dark: "base",
+      },
       options: {
         themeVariables: {
           background: "#FFFFFF",
@@ -89,6 +93,7 @@ const config = {
           tertiaryColor: "#F3F4F6",
           tertiaryBorderColor: "#D1D5DB",
           tertiaryTextColor: "#030712",
+          clusterBkg: "#F3F4F6",
         },
       },
     },

@@ -8,6 +8,7 @@ import createDiagram from "../utils/create-diagram.js"
 type Options = {
   output: string
   type: "docs" | "markdown" | "mermaid"
+  theme: boolean
 }
 
 export default async function (workflowPath: string, options: Options) {
@@ -16,18 +17,17 @@ export default async function (workflowPath: string, options: Options) {
   const registeredWorkflows = WorkflowManager.getWorkflows()
 
   for (const [name, workflow] of registeredWorkflows) {
-    const diagram = createDiagram(workflow.flow_)
-
-    if (workflow.id === "update-price-lists") {
-      console.log(workflow.flow_)
-    }
+    const diagram = createDiagram({
+      workflow: workflow.flow_,
+      addTheme: options.theme,
+    })
 
     switch (options.type) {
       case "docs":
         // write files
         const workflowPath = path.join(options.output, name)
         if (!existsSync(workflowPath)) {
-          mkdirSync(workflowPath)
+          mkdirSync(workflowPath, { recursive: true })
         }
 
         writeFileSync(path.join(workflowPath, "diagram.mermaid"), diagram)

@@ -2,10 +2,20 @@ import { TransactionStepsDefinition } from "@medusajs/orchestration"
 import { getLinePrefix } from "./formatting.js"
 import getRandomString from "./get-random-string.js"
 
-export default function (workflow: TransactionStepsDefinition): string {
+type CreateDiagramOptions = {
+  workflow: TransactionStepsDefinition
+  addTheme?: boolean
+}
+
+export default function ({
+  workflow,
+  addTheme = true,
+}: CreateDiagramOptions): string {
   const topLevelLinePrefix = getLinePrefix(1)
 
-  let diagram = `${getThemeConfig()}${topLevelLinePrefix}flowchart TB`
+  let diagram = `${
+    addTheme ? getThemeConfig() : ""
+  }${topLevelLinePrefix}flowchart TB`
 
   const stepsDiagram = getSteps(workflow)
 
@@ -114,6 +124,8 @@ function getSteps(
         nextSteps.escapedStepNames.forEach((escapedStep) => {
           links.push(`${linePrefix}${escapedName} --> ${escapedStep}`)
         })
+      } else {
+        escapedStepNames.push(...nextSteps.escapedStepNames)
       }
       links.push(...nextSteps.links)
     }
