@@ -111,7 +111,7 @@ Where `<YOUR_SEGMENT_WRITE_KEY>` is the Write Key shown on the page of the Segme
 
 Finally, in `medusa-config.js`, add the following new item to the `plugins` array:
 
-```jsx title=medusa-config.js
+```jsx title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -155,7 +155,7 @@ In some cases, you might want to track more events or custom events. You can do 
 
 For example, you can add the following [subscriber](../../development/events/subscribers.mdx) to listen to the `customer.created` event and add tracking for every customer created:
 
-```ts title=src/subscribers/customer.ts
+```ts title="src/subscribers/customer.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,

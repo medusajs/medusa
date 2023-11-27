@@ -33,7 +33,7 @@ In the file you created, you can import the entity you’re extending from the c
 
 Here’s an example of extending the Product entity:
 
-```ts title=src/models/product.ts
+```ts title="src/models/product.ts"
 import { Column, Entity } from "typeorm"
 import {
   // alias the core entity to not cause a naming conflict
@@ -55,7 +55,7 @@ If you’re using JavaScript instead of TypeScript in your implementation, you c
 
 To ensure that TypeScript is aware of your extended entity and affects the typing of the Medusa package itself, create the file `src/index.d.ts` with the following content:
 
-```ts title=src/index.d.ts
+```ts title="src/index.d.ts"
 export declare module "@medusajs/medusa/dist/models/product" {
   declare interface Product {
     customAttribute: string;
@@ -81,7 +81,7 @@ You can learn how to create or generate a migration in [this documentation](./mi
 
 Here’s an example of a migration of the entity extended in this guide:
 
-```ts title=src/migration/1680013376180-changeProduct.ts
+```ts title="src/migration/1680013376180-changeProduct.ts"
 import { MigrationInterface, QueryRunner } from "typeorm"
 
 class changeProduct1680013376180 implements MigrationInterface {
@@ -140,7 +140,7 @@ To change that and ensure your custom attribute is returned in your request, you
 
 For example, if you added a custom attribute in the `Product` entity and you want to ensure it's returned in all the product's store API Routes (API Routes under the prefix `/store/products`), you can create a file under the `src/loaders` directory in your Medusa backend with the following content:
 
-```ts title=src/loaders/extend-product-fields.ts
+```ts title="src/loaders/extend-product-fields.ts"
 export default async function () {
   const imports = (await import(
     "@medusajs/medusa/dist/api/routes/store/products/index"

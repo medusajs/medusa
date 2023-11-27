@@ -32,7 +32,7 @@ Fulfillment providers are loaded and installed on the backend startup.
 
 The first step is to create a JavaScript or TypeScript file under `src/services`. For example, create the file `src/services/my-fulfillment.ts` with the following content:
 
-```ts title=src/services/my-fulfillment.ts
+```ts title="src/services/my-fulfillment.ts"
 import { 
   AbstractFulfillmentService, 
   Cart, 
