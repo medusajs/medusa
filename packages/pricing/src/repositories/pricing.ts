@@ -103,6 +103,7 @@ export class PricingRepository
           "count(DISTINCT plrt.rule_attribute) = pl.number_rules AND psma1.price_list_id IS NOT NULL"
         )
       )
+
     psmaSubQueryKnex.orWhere((q) => {
       for (const [key, value] of Object.entries(context)) {
         q.orWhere({
@@ -124,14 +125,30 @@ export class PricingRepository
           this.whereNull("pl.ends_at").orWhere("pl.ends_at", ">=", date)
         })
         .andWhere(function () {
-          for (const [key, value] of Object.entries(context)) {
-            this.orWhere({
-              "plrt.rule_attribute": key,
-            })
-            this.whereIn("plrv.value", [value])
-          }
+          this.andWhere(function () {
+            this.andWhere(function () {
+              for (const [key, value] of Object.entries(context)) {
+                this.orWhere({
+                  "plrt.rule_attribute": key,
+                })
+                this.whereIn("plrv.value", [value])
+              }
 
-          this.orWhere("pl.number_rules", "=", 0)
+              this.orWhere("pl.number_rules", "=", 0)
+            })
+
+            this.andWhere(function () {
+              for (const [key, value] of Object.entries(context)) {
+                this.orWhere({
+                  "rt.rule_attribute": key,
+                  "pr.value": value,
+                })
+              }
+
+              this.andWhere("psma1.number_rules", ">", 0)
+              this.orWhere("psma1.number_rules", "=", 0)
+            })
+          })
         })
     })
 

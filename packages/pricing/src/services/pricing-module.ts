@@ -14,12 +14,13 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
-  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
+  arrayDifference,
+  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -148,7 +149,7 @@ export default class PricingModuleService<
     )
 
     const pricesSetPricesMap = groupBy(results, "price_set_id")
-
+    console.log("pricesSetPricesMap - ", pricesSetPricesMap)
     const calculatedPrices: PricingTypes.CalculatedPriceSet[] =
       pricingFilters.id.map(
         (priceSetId: string): PricingTypes.CalculatedPriceSet => {
@@ -1387,13 +1388,32 @@ export default class PricingModuleService<
     @MedusaContext() sharedContext: Context = {}
   ) {
     const createdPriceLists: PricingTypes.PriceListDTO[] = []
+    const priceListPriceRuleAttributes: string[] = data
+      .map((pl) =>
+        (pl.prices || []).map((price) => Object.keys(price.rules || {}))
+      )
+      .flat(2)
     const ruleAttributes = data
       .map((priceListData) => Object.keys(priceListData.rules || {}))
       .flat()
+    console.log("ruleAttributes - ", ruleAttributes)
+    const invalidPriceListPriceRuleAttributes = arrayDifference(
+      priceListPriceRuleAttributes,
+      ruleAttributes
+    )
+
+    if (invalidPriceListPriceRuleAttributes.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Price List Price's RuleType don't match with PriceList RuleType: ${invalidPriceListPriceRuleAttributes.join(
+          ", "
+        )}`
+      )
+    }
 
     const ruleTypes = await this.listRuleTypes(
       {
-        rule_attribute: ruleAttributes,
+        rule_attribute: ruleAttributes.concat(priceListPriceRuleAttributes),
       },
       { take: null }
     )
@@ -1401,7 +1421,7 @@ export default class PricingModuleService<
     const ruleTypeMap: Map<string, RuleTypeDTO> = new Map(
       ruleTypes.map((rt) => [rt.rule_attribute, rt])
     )
-
+    console.log("ruleTypeMap -- ", ruleTypeMap)
     for (const priceListData of data) {
       const { rules = {}, prices = [], ...priceListOnlyData } = priceListData
 
@@ -1422,6 +1442,7 @@ export default class PricingModuleService<
         let ruleType = ruleTypeMap.get(ruleAttribute)
 
         if (!ruleType) {
+          console.log("ruleType ---- ", ruleType)
           ;[ruleType] = await this.createRuleTypes(
             [
               {
@@ -1461,25 +1482,43 @@ export default class PricingModuleService<
       }
 
       for (const price of prices) {
-        const { price_set_id: priceSetId, ...moneyAmountData } = price
+        const {
+          price_set_id: priceSetId,
+          rules: priceRules = {},
+          ...moneyAmountData
+        } = price
 
         const [moneyAmount] = await this.moneyAmountService_.create(
           [moneyAmountData],
           sharedContext
         )
 
-        await this.priceSetMoneyAmountService_.create(
-          [
+        const [priceSetMoneyAmount] =
+          await this.priceSetMoneyAmountService_.create(
+            [
+              {
+                price_set: priceSetId,
+                price_list: createdPriceList,
+                money_amount: moneyAmount,
+                title: "test",
+                number_rules: Object.keys(priceRules || {}).length,
+              },
+            ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+            sharedContext
+          )
+
+        for (const [ruleAttribute, ruleValue] of Object.entries(priceRules)) {
+          ;(await this.createPriceRules([
             {
-              price_set: priceSetId,
-              price_list: createdPriceList,
-              money_amount: moneyAmount,
-              title: "test",
-              number_rules: 0,
+              price_set_id: priceSetId,
+              rule_type:
+                ruleTypeMap.get(ruleAttribute)!?.id ||
+                ruleTypeMap.get(ruleAttribute)!,
+              value: ruleValue,
+              price_set_money_amount: priceSetMoneyAmount as any,
             },
-          ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
-          sharedContext
-        )
+          ])) as unknown as PricingTypes.CreatePriceRuleDTO[]
+        }
       }
     }
 

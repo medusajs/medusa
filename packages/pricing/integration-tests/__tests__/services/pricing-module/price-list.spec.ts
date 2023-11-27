@@ -393,5 +393,163 @@ describe("PriceList Service", () => {
         })
       )
     })
+
+    it("should create a price list with granular rules within prices", async () => {
+      const [created] = await service.createPriceLists([
+        {
+          title: "test",
+          description: "test",
+          starts_at: "10/01/2023",
+          ends_at: "10/30/2023",
+          rules: {
+            customer_group_id: [
+              "vip-customer-group-id",
+              "another-vip-customer-group-id",
+            ],
+            region_id: ["DE", "DK"],
+          },
+          prices: [
+            {
+              amount: 400,
+              currency_code: "EUR",
+              price_set_id: "price-set-1",
+              rules: {
+                region_id: "DE",
+              },
+            },
+            {
+              amount: 600,
+              currency_code: "EUR",
+              price_set_id: "price-set-1",
+            },
+          ],
+        },
+      ])
+
+      const [priceList] = await service.listPriceLists(
+        {
+          id: [created.id],
+        },
+        {
+          relations: [
+            "price_set_money_amounts.money_amount",
+            "price_set_money_amounts.price_set",
+            "price_set_money_amounts.price_rules",
+            "price_list_rules.price_list_rule_values",
+            "price_list_rules.rule_type",
+          ],
+          select: [
+            "id",
+            "price_set_money_amounts.price_rules.value",
+            "price_set_money_amounts.number_rules",
+            "price_set_money_amounts.money_amount.amount",
+            "price_set_money_amounts.money_amount.currency_code",
+            "price_set_money_amounts.money_amount.price_list_id",
+            "price_list_rules.price_list_rule_values.value",
+            "price_list_rules.rule_type.rule_attribute",
+          ],
+        }
+      )
+
+      expect(priceList).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          price_set_money_amounts: expect.arrayContaining([
+            expect.objectContaining({
+              number_rules: 1,
+              price_rules: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "DE",
+                }),
+              ]),
+              price_list: expect.objectContaining({
+                id: expect.any(String),
+              }),
+              money_amount: expect.objectContaining({
+                amount: 400,
+                currency_code: "EUR",
+              }),
+            }),
+            expect.objectContaining({
+              number_rules: 0,
+              price_rules: [],
+              price_list: expect.objectContaining({
+                id: expect.any(String),
+              }),
+              money_amount: expect.objectContaining({
+                amount: 600,
+                currency_code: "EUR",
+              }),
+            }),
+          ]),
+          price_list_rules: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              rule_type: expect.objectContaining({
+                id: expect.any(String),
+                rule_attribute: "customer_group_id",
+              }),
+              price_list_rule_values: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "vip-customer-group-id",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "another-vip-customer-group-id",
+                }),
+              ]),
+            }),
+            expect.objectContaining({
+              id: expect.any(String),
+              rule_type: expect.objectContaining({
+                id: expect.any(String),
+                rule_attribute: "region_id",
+              }),
+              price_list_rule_values: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "DE",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "DK",
+                }),
+              ]),
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("should throw an error when price list prices have invalid rules", async () => {
+      const result = await service
+        .createPriceLists([
+          {
+            title: "test",
+            description: "test",
+            rules: {
+              region_id: ["DE", "DK"],
+            },
+            prices: [
+              {
+                amount: 400,
+                currency_code: "EUR",
+                price_set_id: "price-set-1",
+                rules: {
+                  random_rule: "DE",
+                },
+              },
+            ],
+          },
+        ])
+        .catch((e) => e)
+      console.log("result --  ", result)
+
+      expect(result.message).toBe(
+        "Price List Price's RuleType don't match with PriceList RuleType: random_rule"
+      )
+    })
   })
 })
