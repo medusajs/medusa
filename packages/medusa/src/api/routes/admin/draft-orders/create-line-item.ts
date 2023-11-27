@@ -1,19 +1,25 @@
 import {
-  CartService,
-  DraftOrderService,
-  LineItemService,
-} from "../../../../services"
-import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
+  IsBoolean,
+  IsInt,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
   defaultAdminDraftOrdersFields,
 } from "."
+import {
+  CartService,
+  DraftOrderService,
+  LineItemService,
+} from "../../../../services"
 
-import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
-import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/line-items
@@ -42,12 +48,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/draft-orders/{id}/line-items' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/draft-orders/{id}/line-items' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "quantity": 1
@@ -55,6 +61,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Draft Orders
  * responses:
@@ -114,12 +121,17 @@ export default async (req, res) => {
           validated.variant_id,
           draftOrder.cart.region_id,
           validated.quantity,
-          { metadata: validated.metadata, unit_price: validated.unit_price }
+          {
+            metadata: validated.metadata,
+            unit_price: validated.unit_price,
+          }
         )
 
       await cartService
         .withTransaction(manager)
-        .addLineItem(draftOrder.cart_id, line, { validateSalesChannels: false })
+        .addOrUpdateLineItems(draftOrder.cart_id, line, {
+          validateSalesChannels: false,
+        })
     } else {
       // custom line items can be added to a draft order
       await lineItemService.withTransaction(manager).create({
@@ -129,6 +141,7 @@ export default async (req, res) => {
         allow_discounts: false,
         unit_price: validated.unit_price || 0,
         quantity: validated.quantity,
+        metadata: validated.metadata,
       })
     }
 
@@ -167,6 +180,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: The optional key-value map with additional details about the Line Item.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsString()

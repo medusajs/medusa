@@ -4,6 +4,7 @@ import qs from "qs"
 import React, { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import ProductsFilter from "../../../domain/products/filter-dropdown"
 import { useAnalytics } from "../../../providers/analytics-provider"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
@@ -26,6 +27,7 @@ const defaultQueryProps = {
 
 const ProductTable = () => {
   const location = useLocation()
+  const { t } = useTranslation()
 
   const { isFeatureEnabled } = useFeatureFlag()
   const { trackNumberOfProducts } = useAnalytics()
@@ -185,7 +187,7 @@ const ProductTable = () => {
         count: count!,
         offset: offs,
         pageSize: offs + rows.length,
-        title: "Products",
+        title: t("product-table-products", "Products"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,

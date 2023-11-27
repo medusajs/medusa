@@ -32,18 +32,19 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/customers/me' \
- *       -H 'Cookie: connect.sid={sid}' \
+ *       curl -X POST '{backend_url}/store/customers/me' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Laury"
  *       }'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:
@@ -116,6 +117,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: "Additional custom data about the customer."
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class StorePostCustomersCustomerReq {
   @IsOptional()

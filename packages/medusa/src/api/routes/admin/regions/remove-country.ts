@@ -32,15 +32,16 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.deleteCountry(regionId, "dk")
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/regions/{id}/countries/{country_code}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/regions/{id}/countries/{country_code}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Regions
  * responses:

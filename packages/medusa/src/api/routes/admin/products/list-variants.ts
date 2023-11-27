@@ -12,7 +12,10 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/products/{id}/variants
  * operationId: "GetProductsProductVariants"
  * summary: "List a Product's Variants"
- * description: "Retrieve a list of Product Variants associated with a Product. The variants can be paginated."
+ * description: |
+ *   Retrieve a list of Product Variants associated with a Product. The variants can be paginated.
+ *
+ *   By default, each variant will only have the `id` and `variant_id` fields. You can use the `expand` and `fields` request parameters to retrieve more fields or relations.
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} ID of the product.
@@ -27,11 +30,12 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/products/{id}/variants' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/products/{id}/variants' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

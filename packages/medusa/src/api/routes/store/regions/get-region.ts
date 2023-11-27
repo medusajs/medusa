@@ -19,11 +19,11 @@ import { defaultRelations } from "."
  *       medusa.regions.retrieve(regionId)
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/regions/{id}'
+ *       curl '{backend_url}/store/regions/{id}'
  * tags:
  *   - Regions
  * responses:

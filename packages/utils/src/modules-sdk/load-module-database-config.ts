@@ -3,7 +3,9 @@ import { ModulesSdkTypes } from "@medusajs/types"
 
 function getEnv(key: string, moduleName: string): string {
   const value =
-    process.env[`${moduleName.toUpperCase()}_${key}`] ?? process.env[`${key}`]
+    process.env[`${moduleName.toUpperCase()}_${key}`] ??
+    process.env[`MEDUSA_${key}`] ??
+    process.env[`${key}`]
   return value ?? ""
 }
 
@@ -39,6 +41,16 @@ function getDefaultDriverOptions(clientUrl: string) {
     : {}
 }
 
+function getDatabaseUrl(
+  config: ModulesSdkTypes.ModuleServiceInitializeOptions
+): string {
+  const { clientUrl, host, port, user, password, database } = config.database!
+  if (clientUrl) {
+    return clientUrl
+  }
+  return `postgres://${user}:${password}@${host}:${port}/${database}`
+}
+
 /**
  * Load the config for the database connection. The options can be retrieved
  * e.g through PRODUCT_* (e.g PRODUCT_POSTGRES_URL) or * (e.g POSTGRES_URL) environment variables or the options object.
@@ -47,14 +59,16 @@ function getDefaultDriverOptions(clientUrl: string) {
  */
 export function loadDatabaseConfig(
   moduleName: string,
-  options?:
-    | ModulesSdkTypes.ModuleServiceInitializeOptions
-    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-): ModulesSdkTypes.ModuleServiceInitializeOptions["database"] {
+  options?: ModulesSdkTypes.ModuleServiceInitializeOptions,
+  silent: boolean = false
+): Pick<
+  ModulesSdkTypes.ModuleServiceInitializeOptions["database"],
+  "clientUrl" | "schema" | "driverOptions" | "debug"
+> {
   const clientUrl = getEnv("POSTGRES_URL", moduleName)
-
+  
   const database = {
-    clientUrl: getEnv("POSTGRES_URL", moduleName),
+    clientUrl,
     schema: getEnv("POSTGRES_SCHEMA", moduleName) ?? "public",
     driverOptions: JSON.parse(
       getEnv("POSTGRES_DRIVER_OPTIONS", moduleName) ||
@@ -64,19 +78,20 @@ export function loadDatabaseConfig(
   }
 
   if (isModuleServiceInitializeOptions(options)) {
-    database.clientUrl = options.database.clientUrl ?? database.clientUrl
-    database.schema = options.database.schema ?? database.schema
+    database.clientUrl = getDatabaseUrl(options)
+    database.schema = options.database!.schema ?? database.schema
     database.driverOptions =
-      options.database.driverOptions ??
+      options.database!.driverOptions ??
       getDefaultDriverOptions(database.clientUrl)
-    database.debug = options.database.debug ?? database.debug
+    database.debug = options.database!.debug ?? database.debug
   }
 
-  if (!database.clientUrl) {
+  if (!database.clientUrl && !silent) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
-      "No database clientUrl provided. Please provide the clientUrl through the PRODUCT_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."
+      "No database clientUrl provided. Please provide the clientUrl through the [MODULE]_POSTGRES_URL, MEDUSA_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."
     )
   }
+
   return database
 }

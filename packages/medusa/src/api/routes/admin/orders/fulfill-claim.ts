@@ -14,7 +14,8 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  * @oas [post] /admin/orders/{id}/claims/{claim_id}/fulfillments
  * operationId: "PostOrdersOrderClaimsClaimFulfillments"
  * summary: "Create a Claim Fulfillment"
- * description: "Create a Fulfillment for a Claim."
+ * description: "Create a Fulfillment for a Claim, and change its fulfillment status to `partially_fulfilled` or `fulfilled` depending on whether all the items were fulfilled.
+ * It may also change the status to `requires_action` if any actions are required."
  * x-authenticated: true
  * externalDocs:
  *   description: Fulfill a claim
@@ -43,15 +44,16 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/claims/{claim_id}/fulfillments' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/orders/{id}/claims/{claim_id}/fulfillments' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -143,9 +145,16 @@ export default async (req, res) => {
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Claim.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Claim.
  *     type: boolean
+ *   location_id:
+ *     description: "The ID of the fulfillment's location."
+ *     type: string
  */
 export class AdminPostOrdersOrderClaimsClaimFulfillmentsReq {
   @IsObject()

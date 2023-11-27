@@ -26,15 +26,16 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.capturePayment(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/capture' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/orders/{id}/capture' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

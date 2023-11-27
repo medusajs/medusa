@@ -2,11 +2,11 @@ import { ProductType } from "@models"
 import {
   Context,
   CreateProductTypeDTO,
-  UpsertProductTypeDTO,
-  UpdateProductTypeDTO,
   DAL,
   FindConfig,
-  ProductTypes
+  ProductTypes,
+  UpdateProductTypeDTO,
+  UpsertProductTypeDTO,
 } from "@medusajs/types"
 import { ProductTypeRepository } from "@repositories"
 import {
@@ -17,7 +17,7 @@ import {
   retrieveEntity,
 } from "@medusajs/utils"
 
-import { doNotForceTransaction, shouldForceTransaction } from "../utils"
+import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productTypeRepository: DAL.RepositoryService
@@ -38,10 +38,7 @@ export default class ProductTypeService<
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<
-      ProductType,
-      ProductTypes.ProductTypeDTO
-    >({
+    return (await retrieveEntity<ProductType, ProductTypes.ProductTypeDTO>({
       id: productTypeId,
       entityName: ProductType.name,
       repository: this.productTypeRepository_,
@@ -76,9 +73,12 @@ export default class ProductTypeService<
 
   private buildQueryForList(
     filters: ProductTypes.FilterableProductTypeProps = {},
-    config: FindConfig<ProductTypes.ProductTypeDTO> = {},
+    config: FindConfig<ProductTypes.ProductTypeDTO> = {}
   ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductType>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductType>(
+      filters,
+      config
+    )
 
     if (filters.value) {
       queryOptions.where["value"] = { $ilike: filters.value }
@@ -87,7 +87,7 @@ export default class ProductTypeService<
     return queryOptions
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager("productTypeRepository_")
   async upsert(
     types: UpsertProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -96,7 +96,7 @@ export default class ProductTypeService<
       .upsert!(types, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager("productTypeRepository_")
   async create(
     data: CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -107,7 +107,7 @@ export default class ProductTypeService<
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager("productTypeRepository_")
   async update(
     data: UpdateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -118,7 +118,7 @@ export default class ProductTypeService<
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager("productTypeRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

@@ -19,11 +19,11 @@ import { defaultStoreSwapRelations } from "."
  *       medusa.swaps.retrieveByCartId(cartId)
  *       .then(({ swap }) => {
  *         console.log(swap.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/swaps/{cart_id}'
+ *       curl '{backend_url}/store/swaps/{cart_id}'
  * tags:
  *   - Swaps
  * responses:

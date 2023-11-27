@@ -1,10 +1,19 @@
-import { Image, Product, ProductCategory, ProductVariant } from "@models"
+import {
+  Image,
+  Product,
+  ProductCategory,
+  ProductCollection,
+  ProductVariant,
+} from "@models"
 import {
   assignCategoriesToProduct,
+  buildProductOnlyData,
+  createCollections,
   createImages,
   createProductAndTags,
   createProductVariants,
 } from "../../../__fixtures__/product"
+
 import {
   categoriesData,
   productsData,
@@ -12,13 +21,12 @@ import {
 } from "../../../__fixtures__/product/data"
 
 import { ProductDTO, ProductTypes } from "@medusajs/types"
+import { kebabCase } from "@medusajs/utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductRepository } from "@repositories"
 import { ProductService } from "@services"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { TestDatabase } from "../../../utils"
-import { buildProductOnlyData } from "../../../__fixtures__/product/data/create-product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
-import { kebabCase } from "@medusajs/utils"
+import { TestDatabase } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -30,6 +38,7 @@ describe("Product Service", () => {
   let productOne: Product
   let variants!: ProductVariant[]
   let categories!: ProductCategory[]
+  let collections!: ProductCollection[]
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
@@ -81,15 +90,19 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('Product with id: does-not-exist was not found')
+      expect(error.message).toEqual(
+        "Product with id: does-not-exist was not found"
+      )
     })
 
     it("should return a product when product with an id exists", async () => {
       const result = await service.retrieve(productOne.id)
 
-      expect(result).toEqual(expect.objectContaining({
-        id: productOne.id
-      }))
+      expect(result).toEqual(
+        expect.objectContaining({
+          id: productOne.id,
+        })
+      )
     })
   })
 
@@ -150,18 +163,22 @@ describe("Product Service", () => {
     })
 
     it("should update a product and its allowed relations", async () => {
-      const updateData = [{
-        id: productOne.id,
-        title: "update test 1",
-        images: images,
-        thumbnail: images[0].url,
-      }]
+      const updateData = [
+        {
+          id: productOne.id,
+          title: "update test 1",
+          images: images,
+          thumbnail: images[0].url,
+        },
+      ]
 
       const products = await service.update(updateData)
 
       expect(products.length).toEqual(1)
 
-      let result = await service.retrieve(productOne.id, {relations: ["images", "thumbnail"]})
+      let result = await service.retrieve(productOne.id, {
+        relations: ["images", "thumbnail"],
+      })
       let serialized = JSON.parse(JSON.stringify(result))
 
       expect(serialized).toEqual(
@@ -183,13 +200,16 @@ describe("Product Service", () => {
 
     it("should throw an error when id is not present", async () => {
       let error
-      const updateData = [{
-        id: productOne.id,
-        title: "update test 1",
-      }, {
-        id: undefined as unknown as string,
-        title: "update test 2",
-      }]
+      const updateData = [
+        {
+          id: productOne.id,
+          title: "update test 1",
+        },
+        {
+          id: undefined as unknown as string,
+          title: "update test 2",
+        },
+      ]
 
       try {
         await service.update(updateData)
@@ -206,10 +226,12 @@ describe("Product Service", () => {
 
     it("should throw an error when product with id does not exist", async () => {
       let error
-      const updateData = [{
-        id: "does-not-exist",
-        title: "update test 1",
-      }]
+      const updateData = [
+        {
+          id: "does-not-exist",
+          title: "update test 1",
+        },
+      ]
 
       try {
         await service.update(updateData)
@@ -217,13 +239,14 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`Product with id "does-not-exist" not found`)
+      expect(error.message).toEqual(
+        `Product with id "does-not-exist" not found`
+      )
     })
   })
 
   describe("list", () => {
     describe("soft deleted", function () {
-      let deletedProduct
       let product
 
       beforeEach(async () => {
@@ -232,20 +255,20 @@ describe("Product Service", () => {
         const products = await createProductAndTags(testManager, productsData)
 
         product = products[1]
-        deletedProduct = await service.softDelete([products[0].id])
+        await service.softDelete([products[0].id])
       })
 
       it("should list all products that are not deleted", async () => {
         const products = await service.list()
 
-        expect(products).toHaveLength(1)
+        expect(products).toHaveLength(2)
         expect(products[0].id).toEqual(product.id)
       })
 
       it("should list all products including the deleted", async () => {
         const products = await service.list({}, { withDeleted: true })
 
-        expect(products).toHaveLength(2)
+        expect(products).toHaveLength(3)
       })
     })
 
@@ -398,6 +421,132 @@ describe("Product Service", () => {
       })
     })
 
+    describe("relation: collections", () => {
+      let workingProduct: Product
+      let workingProductTwo: Product
+      let workingCollection: ProductCollection
+      let workingCollectionTwo: ProductCollection
+      const collectionData = [
+        {
+          id: "test-1",
+          title: "col 1",
+        },
+        {
+          id: "test-2",
+          title: "col 2",
+        },
+      ]
+
+      beforeEach(async () => {
+        testManager = await TestDatabase.forkManager()
+        collections = await createCollections(testManager, collectionData)
+        workingCollection = (await testManager.findOne(
+          ProductCollection,
+          "test-1"
+        )) as ProductCollection
+        workingCollectionTwo = (await testManager.findOne(
+          ProductCollection,
+          "test-2"
+        )) as ProductCollection
+
+        products = await createProductAndTags(testManager, [
+          {
+            ...productsData[0],
+            collection_id: workingCollection.id,
+          },
+          {
+            ...productsData[1],
+            collection_id: workingCollectionTwo.id,
+          },
+          {
+            ...productsData[2],
+          },
+        ])
+
+        workingProduct = products.find((p) => p.id === "test-1") as Product
+        workingProductTwo = products.find((p) => p.id === "test-2") as Product
+      })
+
+      it("should filter by collection relation and scope fields", async () => {
+        const products = await service.list(
+          {
+            id: workingProduct.id,
+            collection_id: workingCollection.id,
+          },
+          {
+            select: ["title", "collection.title"],
+            relations: ["collection"],
+          }
+        )
+
+        const serialized = JSON.parse(JSON.stringify(products))
+
+        expect(serialized.length).toEqual(1)
+        expect(serialized).toEqual([
+          {
+            id: workingProduct.id,
+            title: workingProduct.title,
+            collection_id: workingCollection.id,
+            collection: {
+              id: workingCollection.id,
+              title: workingCollection.title,
+            },
+          },
+        ])
+      })
+
+      it("should filter by collection when multiple collection ids are passed", async () => {
+        const products = await service.list(
+          {
+            collection_id: [workingCollection.id, workingCollectionTwo.id],
+          },
+          {
+            select: ["title", "collection.title"],
+            relations: ["collection"],
+          }
+        )
+
+        const serialized = JSON.parse(JSON.stringify(products))
+
+        expect(serialized.length).toEqual(2)
+        expect(serialized).toEqual([
+          {
+            id: workingProduct.id,
+            title: workingProduct.title,
+            collection_id: workingCollection.id,
+            collection: {
+              id: workingCollection.id,
+              title: workingCollection.title,
+            },
+          },
+          {
+            id: workingProductTwo.id,
+            title: workingProductTwo.title,
+            collection_id: workingCollectionTwo.id,
+            collection: {
+              id: workingCollectionTwo.id,
+              title: workingCollectionTwo.title,
+            },
+          },
+        ])
+      })
+
+      it("should returns empty array when querying for a collection that doesnt exist", async () => {
+        const products = await service.list(
+          {
+            id: workingProduct.id,
+            collection_id: "collection-doesnt-exist-id",
+          },
+          {
+            select: ["title", "collection.title"] as (keyof ProductDTO)[],
+            relations: ["collection"],
+          }
+        )
+
+        expect(products).toEqual([])
+      })
+    })
+
     describe("relation: variants", () => {
       beforeEach(async () => {
         testManager = await TestDatabase.forkManager()
@@ -462,7 +611,19 @@ describe("Product Service", () => {
       })
 
       const products = await service.create([data])
-      const deleteProducts = await service.softDelete(products.map((p) => p.id))
+      await service.softDelete(products.map((p) => p.id))
+      const deleteProducts = await service.list(
+        { id: products.map((p) => p.id) },
+        {
+          relations: [
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+          ],
+          withDeleted: true,
+        }
+      )
 
       expect(deleteProducts).toHaveLength(1)
       expect(deleteProducts[0].deleted_at).not.toBeNull()
@@ -487,7 +648,7 @@ describe("Product Service", () => {
       const products = await service.create([data])
       const product = products[0]
       await service.softDelete([product.id])
-      const restoreProducts = await service.restore([product.id])
+      const [restoreProducts] = await service.restore([product.id])
 
       expect(restoreProducts).toHaveLength(1)
       expect(restoreProducts[0].deleted_at).toBeNull()

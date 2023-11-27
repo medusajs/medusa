@@ -24,12 +24,12 @@ import { IsString } from "class-validator"
  *       })
  *       .then(({ download_url }) => {
  *         console.log(download_url);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/uploads/download-url' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/uploads/download-url' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "file_key": "{file_key}"
@@ -37,6 +37,7 @@ import { IsString } from "class-validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Uploads
  * responses:
@@ -76,7 +77,7 @@ export default async (req, res) => {
  *   - file_key
  * properties:
  *   file_key:
- *     description: "key of the file to obtain the download link for"
+ *     description: "key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly."
  *     type: string
  */
 export class AdminPostUploadsDownloadUrlReq {

@@ -1,6 +1,10 @@
-import { EntityManager } from "typeorm"
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
+import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -22,11 +26,11 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.lineItems.delete(cartId, lineId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
+ *       curl -X DELETE '{backend_url}/store/carts/{id}/line-items/{line_id}'
  * tags:
  *   - Carts
  * responses:
@@ -53,6 +57,9 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   await manager.transaction(async (m) => {
     const cartServiceTx = cartService.withTransaction(m)
 
@@ -73,6 +80,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }

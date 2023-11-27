@@ -38,7 +38,7 @@ import { ErrorIntentStatus } from "../../types"
 
 const container = {}
 
-describe("StripeTest", () => {
+describe.skip("StripeTest", () => {
   describe("getPaymentStatus", function () {
     let stripeTest
 

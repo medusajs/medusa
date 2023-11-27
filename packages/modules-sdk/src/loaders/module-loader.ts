@@ -4,12 +4,38 @@ import {
   MODULE_SCOPE,
   ModuleResolution,
 } from "@medusajs/types"
+
 import { asValue } from "awilix"
 import { EOL } from "os"
-import { ModulesHelper } from "../module-helper"
 import { loadInternalModule } from "./utils"
 
-export const moduleHelper = new ModulesHelper()
+export const moduleLoader = async ({
+  container,
+  moduleResolutions,
+  logger,
+}: {
+  container: MedusaContainer
+  moduleResolutions: Record<string, ModuleResolution>
+  logger: Logger
+}): Promise<void> => {
+  for (const resolution of Object.values(moduleResolutions ?? {})) {
+    const registrationResult = await loadModule(container, resolution, logger!)
+
+    if (registrationResult?.error) {
+      const { error } = registrationResult
+      if (resolution.definition.isRequired) {
+        logger?.error(
+          `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
+        )
+        throw error
+      }
+
+      logger?.warn(
+        `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
+      )
+    }
+  }
+}
 
 async function loadModule(
   container: MedusaContainer,
@@ -38,9 +64,7 @@ async function loadModule(
       message = `The module ${resolution.definition.label} is missing its resources config`
     }
 
-    container.register({
-      [registrationName]: asValue(undefined),
-    })
+    container.register(registrationName, asValue(undefined))
 
     return {
       error: new Error(message),
@@ -48,53 +72,10 @@ async function loadModule(
   }
 
   if (resolution.resolutionPath === false) {
-    container.register({
-      [registrationName]: asValue(undefined),
-    })
+    container.register(registrationName, asValue(undefined))
 
     return
   }
 
   return await loadInternalModule(container, resolution, logger)
-}
-
-export const moduleLoader = async ({
-  container,
-  moduleResolutions,
-  logger,
-}: {
-  container: MedusaContainer
-  moduleResolutions: Record<string, ModuleResolution>
-  logger: Logger
-}): Promise<void> => {
-  for (const resolution of Object.values(moduleResolutions ?? {})) {
-    const registrationResult = await loadModule(container, resolution, logger!)
-
-    if (registrationResult?.error) {
-      const { error } = registrationResult
-      if (resolution.definition.isRequired) {
-        logger?.error(
-          `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
-        )
-        throw error
-      }
-
-      logger?.warn(
-        `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
-      )
-    }
-  }
-
-  moduleHelper.setModules(
-    Object.entries(moduleResolutions).reduce((acc, [k, v]) => {
-      if (v.resolutionPath) {
-        acc[k] = v
-      }
-      return acc
-    }, {})
-  )
-
-  container.register({
-    modulesHelper: asValue(moduleHelper),
-  })
 }

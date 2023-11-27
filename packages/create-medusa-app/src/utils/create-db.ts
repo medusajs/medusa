@@ -24,12 +24,22 @@ export async function runCreateDb({
   client: pg.Client
   dbName: string
   spinner: Ora
-}) {
-  // create postgres database
+}): Promise<pg.Client> {
+  let newClient = client
+
   try {
+    // create postgres database
     await createDb({
       client,
       db: dbName,
+    })
+
+    // create a new connection with database selected
+    await client.end()
+    newClient = await postgresClient({
+      user: client.user,
+      password: client.password,
+      database: dbName,
     })
   } catch (e) {
     spinner.stop()
@@ -38,9 +48,11 @@ export async function runCreateDb({
       type: "error",
     })
   }
+
+  return newClient
 }
 
-export async function getDbClientAndCredentials(dbName: string): Promise<{
+async function getForDbName(dbName: string): Promise<{
   client: pg.Client
   dbConnectionString: string
 }> {
@@ -82,7 +94,7 @@ export async function getDbClientAndCredentials(dbName: string): Promise<{
       })
     } catch (e) {
       logMessage({
-        message: `Couldn't connect to PostgreSQL. Make sure you have PostgreSQL installed and the credentials you provided are correct.${EOL}${EOL}You can learn how to install PostgreSQL here: https://docs.medusajs.com/development/backend/prepare-environment?os=${getCurrentOs()}#postgresql${EOL}${EOL}If you keep running into this issue despite having PostgreSQL installed, please check out our troubleshooting guidelines: https://docs.medusajs.com/troubleshooting/database-error`,
+        message: `Couldn't connect to PostgreSQL because of the following error: ${e}.${EOL}${EOL}Make sure you have PostgreSQL installed and the credentials you provided are correct.${EOL}${EOL}You can learn how to install PostgreSQL here: https://docs.medusajs.com/development/backend/prepare-environment?os=${getCurrentOs()}#postgresql${EOL}${EOL}If you keep running into this issue despite having PostgreSQL installed, please check out our troubleshooting guidelines: https://docs.medusajs.com/troubleshooting/database-error`,
         type: "error",
       })
     }
@@ -99,5 +111,42 @@ export async function getDbClientAndCredentials(dbName: string): Promise<{
   return {
     client,
     dbConnectionString,
+  }
+}
+
+async function getForDbUrl(dbUrl: string): Promise<{
+  client: pg.Client
+  dbConnectionString: string
+}> {
+  let client!: pg.Client
+
+  try {
+    client = await postgresClient({
+      connectionString: dbUrl,
+    })
+  } catch (e) {
+    logMessage({
+      message: `Couldn't connect to PostgreSQL using the database URL you passed. Make sure it's correct and try again.`,
+      type: "error",
+    })
+  }
+
+  return {
+    client,
+    dbConnectionString: dbUrl,
+  }
+}
+
+export async function getDbClientAndCredentials({
+  dbName = "",
+  dbUrl = "",
+}): Promise<{
+  client: pg.Client
+  dbConnectionString: string
+}> {
+  if (dbName) {
+    return await getForDbName(dbName)
+  } else {
+    return await getForDbUrl(dbUrl)
   }
 }

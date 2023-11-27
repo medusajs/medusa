@@ -7,7 +7,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /store/customers/password-token
  * operationId: PostCustomersCustomerPasswordToken
  * summary: Request Password Reset
- * description: "Create a reset password token to be used in a subsequent Reset Password endpoint. This emits the event `customer.password_reset`. If a notification provider is
+ * description: "Create a reset password token to be used in a subsequent Reset Password API Route. This emits the event `customer.password_reset`. If a notification provider is
  *  installed in the Medusa backend and is configured to handle this event, a notification to the customer, such as an email, may be sent with reset instructions."
  * externalDocs:
  *   description: "How to reset password"
@@ -37,7 +37,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/customers/password-token' \
+ *       curl -X POST '{backend_url}/store/customers/password-token' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com"

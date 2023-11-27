@@ -7,7 +7,7 @@ export const productCategoriesData = [
   {
     id: "category-1",
     name: "category 1",
-    parent_category_id: "category-0"
+    parent_category_id: "category-0",
   },
   {
     id: "category-1-a",
@@ -23,7 +23,7 @@ export const productCategoriesData = [
   {
     id: "category-1-b-1",
     name: "category 1 b 1",
-    parent_category_id: "category-1-b"
+    parent_category_id: "category-1-b",
   },
 ]
 
@@ -65,4 +65,3 @@ export const productCategoriesRankData = [
     rank: 2,
   },
 ]
-

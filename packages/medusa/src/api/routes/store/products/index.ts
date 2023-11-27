@@ -2,17 +2,17 @@ import "reflect-metadata"
 
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 
-import { FlagRouter } from "../../../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
+import { Router } from "express"
+import { Product } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import { PricedProduct } from "../../../../types/pricing"
-import { Product } from "../../../.."
-import { Router } from "express"
-import { StoreGetProductsParams } from "./list-products"
-import { StoreGetProductsProductParams } from "./get-product"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 import { withDefaultSalesChannel } from "../../../middlewares/with-default-sales-channel"
+import { StoreGetProductsProductParams } from "./get-product"
+import { StoreGetProductsParams } from "./list-products"
 
 const route = Router()
 
@@ -40,7 +40,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/:id",
-    withDefaultSalesChannel({}),
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetProductsProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
@@ -111,6 +111,95 @@ export const allowedStoreProductsRelations = [
   "sales_channels",
 ]
 
+/**
+ * This is temporary.
+ */
+export const defaultStoreProductRemoteQueryObject = {
+  fields: defaultStoreProductsFields,
+  images: {
+    fields: ["id", "created_at", "updated_at", "deleted_at", "url", "metadata"],
+  },
+  tags: {
+    fields: ["id", "created_at", "updated_at", "deleted_at", "value"],
+  },
+
+  type: {
+    fields: ["id", "created_at", "updated_at", "deleted_at", "value"],
+  },
+
+  collection: {
+    fields: ["title", "handle", "id", "created_at", "updated_at", "deleted_at"],
+  },
+
+  options: {
+    fields: [
+      "id",
+      "created_at",
+      "updated_at",
+      "deleted_at",
+      "title",
+      "product_id",
+      "metadata",
+    ],
+    values: {
+      fields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "value",
+        "option_id",
+        "variant_id",
+        "metadata",
+      ],
+    },
+  },
+
+  variants: {
+    fields: [
+      "id",
+      "created_at",
+      "updated_at",
+      "deleted_at",
+      "title",
+      "product_id",
+      "sku",
+      "barcode",
+      "ean",
+      "upc",
+      "variant_rank",
+      "inventory_quantity",
+      "allow_backorder",
+      "manage_inventory",
+      "hs_code",
+      "origin_country",
+      "mid_code",
+      "material",
+      "weight",
+      "length",
+      "height",
+      "width",
+      "metadata",
+    ],
+
+    options: {
+      fields: [
+        "id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "value",
+        "option_id",
+        "variant_id",
+        "metadata",
+      ],
+    },
+  },
+  profile: {
+    fields: ["id", "created_at", "updated_at", "deleted_at", "name", "type"],
+  },
+}
+
 export * from "./list-products"
 export * from "./search"
 
@@ -144,6 +233,7 @@ export type StoreProductsRes = {
 
 /**
  * @schema StorePostSearchRes
+ * description: "The list of search results."
  * allOf:
  *   - type: object
  *     required:
@@ -161,6 +251,7 @@ export type StorePostSearchRes = {
 /**
  * @schema StoreProductsListRes
  * type: object
+ * description: "The list of products with pagination fields."
  * x-expanded-relations:
  *   field: products
  *   relations:

@@ -8,21 +8,21 @@ import { ProductVariant } from "@models"
 import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
-  MedusaError,
-  isDefined,
+  DALUtils,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
 } from "@medusajs/utils"
 
 import { ProductVariantServiceTypes } from "../types/services"
-import { AbstractBaseRepository } from "./base"
-import { doNotForceTransaction } from "../utils"
 
-export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
+// eslint-disable-next-line max-len
+export class ProductVariantRepository extends DALUtils.MikroOrmAbstractBaseRepository<ProductVariant> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -80,30 +80,31 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     )
   }
 
-  @InjectTransactionManager()
   async create(
     data: RequiredEntityData<ProductVariant>[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<ProductVariant[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
     const variants = data.map((variant) => {
       return (manager as SqlEntityManager).create(ProductVariant, variant)
     })
 
-    await (manager as SqlEntityManager).persist(variants)
+    manager.persist(variants)
 
     return variants
   }
 
   async update(
-    data: WithRequiredProperty<ProductVariantServiceTypes.UpdateProductVariantDTO, "id">[],
+    data: WithRequiredProperty<
+      ProductVariantServiceTypes.UpdateProductVariantDTO,
+      "id"
+    >[],
     context: Context = {}
   ): Promise<ProductVariant[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const productVariantsToUpdate = await manager.find(ProductVariant, {
-      id: data.map((updateData) => updateData.id)
+      id: data.map((updateData) => updateData.id),
     })
 
     const productVariantsToUpdateMap = new Map<string, ProductVariant>(
@@ -123,7 +124,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
       return manager.assign(productVariant, variantData)
     })
 
-    await manager.persist(variants)
+    manager.persist(variants)
 
     return variants
   }

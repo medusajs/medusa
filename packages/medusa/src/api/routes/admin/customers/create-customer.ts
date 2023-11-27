@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/customers
  * operationId: "PostCustomers"
  * summary: "Create a Customer"
- * description: "Allow admins to create a customer."
+ * description: "Create a customer as an admin."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -32,12 +32,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/customers' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/customers' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
@@ -48,6 +48,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:
@@ -112,6 +113,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostCustomersReq {
   @IsEmail()

@@ -22,11 +22,11 @@ import ReturnReasonService from "../../../../services/return-reason"
  *       medusa.returnReasons.retrieve(reasonId)
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/return-reasons/{id}'
+ *       curl '{backend_url}/store/return-reasons/{id}'
  * tags:
  *   - Return Reasons
  * responses:

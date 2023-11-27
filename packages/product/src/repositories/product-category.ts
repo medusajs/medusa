@@ -3,12 +3,11 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { Product, ProductCategory } from "@models"
+import { ProductCategory } from "@models"
 import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
-import { BaseTreeRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext, isDefined, MedusaError } from "@medusajs/utils"
+import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 
 import { ProductCategoryServiceTypes } from "../types"
 
@@ -25,11 +24,14 @@ export type ReorderConditions = {
 }
 
 export const tempReorderRank = 99999
-export class ProductCategoryRepository extends BaseTreeRepository {
+
+// eslint-disable-next-line max-len
+export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -89,8 +91,13 @@ export class ProductCategoryRepository extends BaseTreeRepository {
         },
       }
 
-      delete whereOptions.parent_category_id
-      delete whereOptions.id
+      if ("parent_category_id" in whereOptions) {
+        delete whereOptions.parent_category_id
+      }
+
+      if ("id" in whereOptions) {
+        delete whereOptions.id
+      }
 
       const descendantsForCategory = await manager.find(
         ProductCategory,
@@ -113,7 +120,7 @@ export class ProductCategoryRepository extends BaseTreeRepository {
         return category
       }
 
-      let children = descendantsByParentId[productCategory.id] || []
+      const children = descendantsByParentId[productCategory.id] || []
       productCategory = addChildrenToCategory(productCategory, children)
     }
 
@@ -163,12 +170,7 @@ export class ProductCategoryRepository extends BaseTreeRepository {
     ]
   }
 
-  @InjectTransactionManager()
-  async delete(
-    id: string,
-    @MedusaContext()
-    context: Context = {}
-  ): Promise<void> {
+  async delete(id: string, context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
     const productCategory = await manager.findOneOrFail(
       ProductCategory,
@@ -202,19 +204,15 @@ export class ProductCategoryRepository extends BaseTreeRepository {
     )
   }
 
-  @InjectTransactionManager()
   async create(
     data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
-    @MedusaContext() sharedContext: Context = {}
+    context: Context = {}
   ): Promise<ProductCategory> {
     const categoryData = { ...data }
-    const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
-    const siblings = await manager.find(
-      ProductCategory,
-      {
-        parent_category_id: categoryData?.parent_category_id || null
-      },
-    )
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const siblings = await manager.find(ProductCategory, {
+      parent_category_id: categoryData?.parent_category_id || null,
+    })
 
     if (!isDefined(categoryData.rank)) {
       categoryData.rank = siblings.length
@@ -222,16 +220,15 @@ export class ProductCategoryRepository extends BaseTreeRepository {
 
     const productCategory = manager.create(ProductCategory, categoryData)
 
-    await manager.persist(productCategory)
+    manager.persist(productCategory)
 
     return productCategory
   }
 
-  @InjectTransactionManager()
   async update(
     id: string,
     data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<ProductCategory> {
     const categoryData = { ...data }
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -265,7 +262,7 @@ export class ProductCategoryRepository extends BaseTreeRepository {
   protected fetchReorderConditions(
     productCategory: ProductCategory,
     data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
-    shouldDeleteElement: boolean = false
+    shouldDeleteElement = false
   ): ReorderConditions {
     const originalParentId = productCategory.parent_category_id || null
     const targetParentId = data.parent_category_id
@@ -343,25 +340,19 @@ export class ProductCategoryRepository extends BaseTreeRepository {
 
     // The current sibling count will replace targetRank if
     // targetRank is greater than the count of siblings.
-    const siblingCount = await manager.count(
-      ProductCategory,
-      {
-        parent_category_id: targetParentId || null,
-        id: { $ne: targetCategoryId },
-      }
-    )
+    const siblingCount = await manager.count(ProductCategory, {
+      parent_category_id: targetParentId || null,
+      id: { $ne: targetCategoryId },
+    })
 
     // The category record that will be placed at the requested rank
     // We've temporarily placed it at a temporary rank that is
     // beyond a reasonable value (tempReorderRank)
-    const targetCategory = await manager.findOne(
-      ProductCategory,
-      {
-        id: targetCategoryId,
-        parent_category_id: targetParentId || null,
-        rank: tempReorderRank,
-      }
-    )
+    const targetCategory = await manager.findOne(ProductCategory, {
+      id: targetCategoryId,
+      parent_category_id: targetParentId || null,
+      rank: tempReorderRank,
+    })
 
     // If the targetRank is not present, or if targetRank is beyond the
     // rank of the last category, we set the rank as the last rank
@@ -409,7 +400,7 @@ export class ProductCategoryRepository extends BaseTreeRepository {
       }
 
       if (!isDefined(sibling.rank)) {
-        throw "error"
+        throw new Error("sibling rank is not defined")
       }
 
       const rank = shouldIncrementRank ? ++sibling.rank : --sibling.rank

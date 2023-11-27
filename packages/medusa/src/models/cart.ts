@@ -177,6 +177,9 @@
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   shipping_total:
  *     description: The total of shipping
  *     type: integer
@@ -269,6 +272,9 @@ export enum CartType {
 
 @Entity()
 export class Cart extends SoftDeletableEntity {
+  /**
+   * @apiIgnore
+   */
   readonly object = "cart"
 
   @Column({ nullable: true })
@@ -403,6 +409,9 @@ export class Cart extends SoftDeletableEntity {
   gift_card_total?: number
   gift_card_tax_total?: number
 
+  /**
+   * @apiIgnore
+   */
   @AfterLoad()
   private afterLoad(): void {
     if (this.payment_sessions) {
@@ -410,6 +419,9 @@ export class Cart extends SoftDeletableEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "cart")

@@ -1,9 +1,9 @@
+import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
 import { ShippingOption } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
-import { FlagRouter } from "../../../../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
@@ -55,6 +55,7 @@ export const defaultRelations = ["region", "profile", "requirements"]
 /**
  * @schema AdminShippingOptionsListRes
  * type: object
+ * description: "The list of shipping options with pagination fields."
  * x-expanded-relations:
  *   field: shipping_options
  *   relations:
@@ -92,6 +93,7 @@ export type AdminShippingOptionsListRes = PaginatedResponse & {
 /**
  * @schema AdminShippingOptionsRes
  * type: object
+ * description: "The shipping option's details."
  * x-expanded-relations:
  *   field: shipping_option
  *   relations:

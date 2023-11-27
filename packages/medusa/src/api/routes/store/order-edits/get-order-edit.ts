@@ -19,11 +19,11 @@ import { OrderEditService } from "../../../../services"
  *       medusa.orderEdits.retrieve(orderEditId)
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/order-edits/{id}'
+ *       curl '{backend_url}/store/order-edits/{id}'
  * tags:
  *   - Order Edits
  * responses:

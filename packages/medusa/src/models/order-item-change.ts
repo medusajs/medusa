@@ -14,9 +14,23 @@ import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
 import { OrderEdit } from "./order-edit"
 
+/**
+ * @enum
+ * 
+ * The type of the order edit item change.
+ */
 export enum OrderEditItemChangeType {
+  /**
+   * A new item to be added to the original order.
+   */
   ITEM_ADD = "item_add",
+  /**
+   * An existing item to be removed from the original order.
+   */
   ITEM_REMOVE = "item_remove",
+  /**
+   * An existing item to be updated in the original order.
+   */
   ITEM_UPDATE = "item_update",
 }
 
@@ -51,6 +65,9 @@ export class OrderItemChange extends SoftDeletableEntity {
   @JoinColumn({ name: "line_item_id" })
   line_item?: LineItem
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "oic")

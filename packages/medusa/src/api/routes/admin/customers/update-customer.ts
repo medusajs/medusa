@@ -44,12 +44,12 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/customers/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/customers/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Dolly"
@@ -57,6 +57,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:
@@ -130,7 +131,7 @@ class Group {
  * properties:
  *   email:
  *     type: string
- *     description: The Customer's email.
+ *     description: The Customer's email. You can't update the email of a registered customer.
  *     format: email
  *   first_name:
  *     type: string
@@ -159,6 +160,9 @@ class Group {
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostCustomersCustomerReq {
   @IsEmail()

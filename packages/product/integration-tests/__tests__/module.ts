@@ -1,13 +1,24 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
+import { IProductModuleService } from "@medusajs/types"
+import { kebabCase } from "@medusajs/utils"
+import { knex } from "knex"
 import { initialize } from "../../src"
+import { EventBusService } from "../__fixtures__/event-bus"
 import * as CustomRepositories from "../__fixtures__/module"
-import { ProductRepository } from "../__fixtures__/module"
-import { createProductAndTags } from "../__fixtures__/product"
+import {
+  buildProductAndRelationsData,
+  createProductAndTags,
+} from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
-import { buildProductAndRelationsData } from "../__fixtures__/product/data/create-product"
-import { kebabCase } from "@medusajs/utils"
-import { IProductModuleService } from "@medusajs/types"
+
+const sharedPgConnection = knex<any, any>({
+  client: "pg",
+  searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+  connection: {
+    connectionString: DB_URL,
+  },
+})
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -19,6 +30,8 @@ const afterEach_ = async () => {
 }
 
 describe("Product module", function () {
+  const eventBus = new EventBusService()
+
   describe("Using built-in data access layer", function () {
     let module: IProductModuleService
 
@@ -26,12 +39,17 @@ describe("Product module", function () {
       const testManager = await beforeEach_()
       await createProductAndTags(testManager, productsData)
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -40,27 +58,38 @@ describe("Product module", function () {
       expect(module).toBeDefined()
     })
 
+    it("should have a connection that is not the shared connection", async () => {
+      expect(
+        (module as any).baseRepository_.manager_.getConnection().client
+      ).not.toEqual(sharedPgConnection)
+    })
+
     it("should return a list of product", async () => {
       const products = await module.list()
-      expect(products).toHaveLength(2)
+      expect(products).toHaveLength(3)
     })
   })
 
   describe("Using custom data access layer", function () {
-    let module: IProductModuleService
+    let module
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
 
       await createProductAndTags(testManager, productsData)
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
+          repositories: CustomRepositories,
         },
-        repositories: CustomRepositories,
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -69,16 +98,22 @@ describe("Product module", function () {
       expect(module).toBeDefined()
     })
 
+    it("should have a connection that is not the shared connection", async () => {
+      expect(
+        (module as any).baseRepository_.manager_.getConnection().client
+      ).not.toEqual(sharedPgConnection)
+    })
+
     it("should return a list of product", async () => {
       const products = await module.list()
 
-      expect(ProductRepository.prototype.find).toHaveBeenCalled()
+      expect(module.productService_.productRepository_.find).toHaveBeenCalled()
       expect(products).toHaveLength(0)
     })
   })
 
-  describe("Using custom data access layer and connection", function () {
-    let module: IProductModuleService
+  describe("Using custom data access layer and manager", function () {
+    let module
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
@@ -86,10 +121,15 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        manager: testManager,
-        repositories: CustomRepositories,
-      })
+      module = await initialize(
+        {
+          manager: testManager,
+          repositories: CustomRepositories,
+        },
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -98,11 +138,51 @@ describe("Product module", function () {
       expect(module).toBeDefined()
     })
 
+    it("should have a connection that is not the shared connection", async () => {
+      expect(
+        (module as any).baseRepository_.manager_.getConnection().client
+      ).not.toEqual(sharedPgConnection)
+    })
+
     it("should return a list of product", async () => {
       const products = await module.list()
 
-      expect(ProductRepository.prototype.find).toHaveBeenCalled()
+      expect(module.productService_.productRepository_.find).toHaveBeenCalled()
       expect(products).toHaveLength(0)
+    })
+  })
+
+  describe("Using an existing connection", function () {
+    let module: IProductModuleService
+
+    beforeEach(async () => {
+      const testManager = await beforeEach_()
+      await createProductAndTags(testManager, productsData)
+
+      MedusaModule.clearInstances()
+
+      module = await initialize(
+        {
+          database: {
+            connection: sharedPgConnection,
+          },
+        },
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
+    })
+
+    afterEach(afterEach_)
+
+    it("should initialize and return a list of product", async () => {
+      expect(module).toBeDefined()
+    })
+
+    it("should have a connection that is the shared connection", async () => {
+      expect(
+        (module as any).baseRepository_.manager_.getConnection().client
+      ).toEqual(sharedPgConnection)
     })
   })
 
@@ -115,12 +195,17 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -211,12 +296,17 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -230,7 +320,6 @@ describe("Product module", function () {
       const products = await module.create([data])
 
       await module.softDelete([products[0].id])
-
       const deletedProducts = await module.list(
         { id: products[0].id },
         {
@@ -282,12 +371,17 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)

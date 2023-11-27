@@ -1,13 +1,11 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
-  ModulesSdkUtils,
-  retrieveEntity,
+  InjectManager,
   InjectTransactionManager,
   MedusaContext,
-  InjectManager,
+  ModulesSdkUtils,
+  retrieveEntity,
 } from "@medusajs/utils"
-
-import { shouldForceTransaction } from "../utils"
 import { ProductCollectionRepository } from "../repositories"
 
 import { ProductCollection } from "@models"
@@ -85,29 +83,27 @@ export default class ProductCollectionService<
     return queryOptions
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productCollectionRepository_")
+  @InjectTransactionManager("productCollectionRepository_")
   async create(
     data: ProductTypes.CreateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.productCollectionRepository_ as ProductCollectionRepository).create(
-      data,
-      sharedContext
-    )) as TEntity[]
+    return (await (
+      this.productCollectionRepository_ as ProductCollectionRepository
+    ).create(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productCollectionRepository_")
+  @InjectTransactionManager("productCollectionRepository_")
   async update(
     data: ProductTypes.UpdateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.productCollectionRepository_ as ProductCollectionRepository).update(
-      data,
-      sharedContext
-    )) as TEntity[]
+    return (await (
+      this.productCollectionRepository_ as ProductCollectionRepository
+    ).update(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productCollectionRepository_")
+  @InjectTransactionManager("productCollectionRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

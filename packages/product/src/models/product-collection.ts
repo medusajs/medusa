@@ -2,6 +2,7 @@ import {
   BeforeCreate,
   Collection,
   Entity,
+  Filter,
   Index,
   OneToMany,
   OptionalProps,
@@ -10,16 +11,17 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import { generateEntityId, kebabCase } from "@medusajs/utils"
+import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
 import Product from "./product"
-import { SoftDeletable } from "../utils"
+import { DAL } from "@medusajs/types"
 
 type OptionalRelations = "products"
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product_collection" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductCollection {
-  [OptionalProps]?: OptionalRelations
+  [OptionalProps]?: OptionalRelations | OptionalFields
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -39,6 +41,21 @@ class ProductCollection {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
+
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
 
   @Index({ name: "IDX_product_collection_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })

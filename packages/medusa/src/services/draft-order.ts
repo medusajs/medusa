@@ -29,7 +29,7 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { isDefined } from "@medusajs/utils"
+import { isDefined, promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -334,6 +334,7 @@ class DraftOrderService extends TransactionBaseService {
             allow_discounts: false,
             unit_price: price,
             quantity: item.quantity,
+            metadata: item.metadata,
           })
         })
 
@@ -399,7 +400,7 @@ class DraftOrderService extends TransactionBaseService {
           )
         })
 
-        await Promise.all(promises)
+        await promiseAll(promises)
 
         if (discounts?.length) {
           await cartServiceTx.update(createdCart.id, { discounts })

@@ -18,11 +18,11 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       medusa.collections.retrieve(collectionId)
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/collections/{id}'
+ *       curl '{backend_url}/store/collections/{id}'
  * tags:
  *   - Product Collections
  * responses:

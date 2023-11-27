@@ -4,7 +4,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /store/payment-collections/{id}/sessions/batch/authorize
  * operationId: "PostPaymentCollectionsSessionsBatchAuthorize"
- * summary: "Authorize PaymentSessions"
+ * summary: "Authorize Payment Sessions"
  * description: "Authorize the Payment Sessions of a Payment Collection."
  * x-authenticated: false
  * parameters:
@@ -26,14 +26,14 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.authorize(paymentId)
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch/authorize'
+ *       curl -X POST '{backend_url}/store/payment-collections/{id}/sessions/batch/authorize'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:

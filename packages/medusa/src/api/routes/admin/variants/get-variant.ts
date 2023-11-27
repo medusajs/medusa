@@ -25,17 +25,18 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.variants.retrieve(variantId)
  *       .then(({ variant }) => {
  *         console.log(variant.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/variants/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/variants/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Products
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK
@@ -69,7 +70,7 @@ export default async (req, res) => {
     req.retrieveConfig
   )
 
-  const [variant] = await pricingService.setVariantPrices([rawVariant])
+  const [variant] = await pricingService.setAdminVariantPricing([rawVariant])
 
   res.status(200).json({ variant })
 }

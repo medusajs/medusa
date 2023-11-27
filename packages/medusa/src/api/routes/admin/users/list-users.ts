@@ -18,15 +18,16 @@ import UserService from "../../../../services/user"
  *       medusa.admin.users.list()
  *       .then(({ users }) => {
  *         console.log(users.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/users' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/users' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Users
  * responses:

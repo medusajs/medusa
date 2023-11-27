@@ -63,12 +63,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/draft-orders' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/draft-orders' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
@@ -87,6 +87,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Draft Orders
  * responses:
@@ -172,7 +173,8 @@ enum Status {
  *   - shipping_methods
  * properties:
  *   status:
- *     description: "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid."
+ *     description: >-
+ *       The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.
  *     type: string
  *     enum: [open, completed]
  *   email:
@@ -212,6 +214,9 @@ enum Status {
  *         metadata:
  *           description: The optional key-value map with additional details about the line item.
  *           type: object
+ *           externalDocs:
+ *             description: "Learn about the metadata attribute, and how to delete and update it."
+ *             url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   region_id:
  *     description: The ID of the region for the draft order
  *     type: string
@@ -252,6 +257,9 @@ enum Status {
  *   metadata:
  *     description: The optional key-value map with additional details about the Draft Order.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostDraftOrdersReq {
   @IsEnum(Status)

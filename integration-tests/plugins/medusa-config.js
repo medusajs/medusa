@@ -1,8 +1,13 @@
+const { Modules } = require("@medusajs/modules-sdk")
+const { Workflows } = require("@medusajs/core-flows")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
+process.env.POSTGRES_URL = DB_URL
+
+const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
 module.exports = {
   plugins: [
@@ -30,31 +35,36 @@ module.exports = {
     cookie_secret: "test",
     database_extra: { idle_in_transaction_session_timeout: 0 },
   },
+  featureFlags: {
+    medusa_v2: enableMedusaV2,
+    workflows: {
+      [Workflows.CreateCart]: true,
+    },
+  },
   modules: {
-    stockLocationService: {
+    [Modules.STOCK_LOCATION]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/stock-location",
     },
-    inventoryService: {
+    [Modules.INVENTORY]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/inventory",
     },
-    cacheService: {
+    [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
-      options: { ttl: 5 },
+      options: { ttl: 0 }, // Cache disabled
     },
-    productModuleService: {
+    [Modules.PRODUCT]: {
       scope: "internal",
-      resources: "isolated",
+      resources: "shared",
       resolve: "@medusajs/product",
-      options: {
-        database: {
-          clientUrl: DB_URL,
-          debug: false,
-        },
-      },
+    },
+    [Modules.PRICING]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/pricing",
     },
   },
 }

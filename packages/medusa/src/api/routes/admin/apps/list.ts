@@ -12,13 +12,14 @@ import { OauthService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/apps' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/apps' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Apps
+ *   - Apps Oauth
  * responses:
  *  "200":
  *    description: OK

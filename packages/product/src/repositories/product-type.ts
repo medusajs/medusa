@@ -2,7 +2,6 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
-  RequiredEntityData,
 } from "@mikro-orm/core"
 import { ProductType } from "@models"
 import {
@@ -12,19 +11,14 @@ import {
   UpdateProductTypeDTO,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 
-import { BaseRepository } from "./base"
-
-export class ProductTypeRepository extends BaseRepository {
+export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -69,13 +63,11 @@ export class ProductTypeRepository extends BaseRepository {
     )
   }
 
-  @InjectTransactionManager()
   async upsert(
     types: CreateProductTypeDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
-    const { transactionManager: manager } = context
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const typesValues = types.map((type) => type.value)
     const existingTypes = await this.find(
@@ -94,48 +86,40 @@ export class ProductTypeRepository extends BaseRepository {
     )
 
     const upsertedTypes: ProductType[] = []
-    const typesToCreate: RequiredEntityData<ProductType>[] = []
+    const typesToCreate: ProductType[] = []
+    const typesToUpdate: ProductType[] = []
 
     types.forEach((type) => {
       const aType = existingTypesMap.get(type.value)
       if (aType) {
-        upsertedTypes.push(aType)
+        const updatedType = manager.assign(aType, type)
+        typesToUpdate.push(updatedType)
       } else {
-        const newType = (manager as SqlEntityManager).create(ProductType, type)
+        const newType = manager.create(ProductType, type)
         typesToCreate.push(newType)
       }
     })
 
     if (typesToCreate.length) {
-      const newTypes: ProductType[] = []
-      typesToCreate.forEach((type) => {
-        newTypes.push((manager as SqlEntityManager).create(ProductType, type))
-      })
+      manager.persist(typesToCreate)
+      upsertedTypes.push(...typesToCreate)
+    }
 
-      await (manager as SqlEntityManager).persist(newTypes)
-      upsertedTypes.push(...newTypes)
+    if (typesToUpdate.length) {
+      manager.persist(typesToUpdate)
+      upsertedTypes.push(...typesToUpdate)
     }
 
     return upsertedTypes
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      ProductType,
-      { id: { $in: ids } },
-      {}
-    )
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    await manager.nativeDelete(ProductType, { id: { $in: ids } }, {})
   }
 
-  @InjectTransactionManager()
   async create(
     data: CreateProductTypeDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -144,15 +128,13 @@ export class ProductTypeRepository extends BaseRepository {
       return manager.create(ProductType, typeData)
     })
 
-    await manager.persist(productTypes)
+    manager.persist(productTypes)
 
     return productTypes
   }
 
-  @InjectTransactionManager()
   async update(
     data: UpdateProductTypeDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -185,7 +167,7 @@ export class ProductTypeRepository extends BaseRepository {
       return manager.assign(existingType, typeData)
     })
 
-    await manager.persist(productTypes)
+    manager.persist(productTypes)
 
     return productTypes
   }

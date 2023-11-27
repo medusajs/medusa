@@ -1,8 +1,0 @@
-type: object
-required:
-  - types
-properties:
-  types:
-    type: array
-    items:
-      $ref: ./ProductType.yaml

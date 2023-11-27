@@ -23,6 +23,9 @@ export class ShippingMethodTaxLine extends TaxLine {
   @JoinColumn({ name: "shipping_method_id" })
   shipping_method: ShippingMethod
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "smtl")
@@ -83,4 +86,7 @@ export class ShippingMethodTaxLine extends TaxLine {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { useMemo, useEffect, useState } from "react"
 import { useAdminProductTags, useAdminCollections } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import CheckIcon from "../../components/fundamentals/icons/check-icon"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import FilterDropdownContainer from "../../components/molecules/filter-dropdown/container"
@@ -23,6 +24,7 @@ const ProductsFilter = ({
   onRemoveTab,
   onSaveTab,
 }) => {
+  const { t } = useTranslation()
   const [tempState, setTempState] = useState(filters)
   const [name, setName] = useState("")
 
@@ -113,7 +115,7 @@ const ProductsFilter = ({
             )}
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
-              Filters
+              {t("products-filters", "Filters")}
               <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}
@@ -127,7 +129,7 @@ const ProductsFilter = ({
         }
       >
         <FilterDropdownItem
-          filterTitle="Status"
+          filterTitle={t("products-status", "Status")}
           options={statusFilters}
           filters={tempState.status.filter}
           open={tempState.status.open}
@@ -183,7 +185,7 @@ const ProductsFilter = ({
                 "inter-small-regular": !tempState.tags.open,
               })}
             >
-              Tags
+              {t("products-tags", "Tags")}
             </span>
           </div>
 
@@ -195,7 +197,7 @@ const ProductsFilter = ({
               <TagInput
                 className="pt-0 pb-1"
                 showLabel={false}
-                placeholder="Spring, summer..."
+                placeholder={t("products-spring-summer", "Spring, summer...")}
                 values={(tempState.tags.filter || [])
                   .map((t) => {
                     const found = (product_tags || []).find((pt) => pt.id === t)

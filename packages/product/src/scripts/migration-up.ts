@@ -1,8 +1,7 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import { createConnection } from "../utils"
-import * as ProductModels from "@models"
+import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import * as ProductModels from "@models"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -15,24 +14,32 @@ export async function runMigrations({
   options,
   logger,
 }: Pick<
-  LoaderOptions<
-    | ModulesSdkTypes.ModuleServiceInitializeOptions
-    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-  >,
+  LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
   "options" | "logger"
 > = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)!
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
+  const pathToMigrations = __dirname + "/../migrations"
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(
+    dbData,
+    entities,
+    pathToMigrations
+  )
 
   try {
     const migrator = orm.getMigrator()
 
     const pendingMigrations = await migrator.getPendingMigrations()
-    logger.info(`Running pending migrations: ${pendingMigrations}`)
+    logger.info(
+      `Running pending migrations: ${JSON.stringify(
+        pendingMigrations,
+        null,
+        2
+      )}`
+    )
 
     await migrator.up({
       migrations: pendingMigrations.map((m) => m.name),

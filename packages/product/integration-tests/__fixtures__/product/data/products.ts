@@ -23,6 +23,17 @@ export const productsData = [
       },
     ],
   },
+  {
+    id: "test-3",
+    title: "product 3",
+    status: ProductTypes.ProductStatus.PUBLISHED,
+    tags: [
+      {
+        id: "tag-3",
+        value: "Germany",
+      },
+    ],
+  },
 ]
 
 export const variantsData = [

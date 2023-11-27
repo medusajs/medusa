@@ -34,7 +34,7 @@ const {
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -1177,7 +1177,7 @@ describe("/admin/orders", () => {
       const manager = dbConnection.manager
 
       // add a shipping method so we can fulfill the swap
-      const sm = await manager.create(ShippingMethod, {
+      const sm = manager.create(ShippingMethod, {
         id: "test-method-swap-cart",
         swap_id: sid,
         shipping_option_id: "test-option",
@@ -1616,7 +1616,9 @@ describe("/admin/orders", () => {
               first_name: "lebron",
             }),
             shipping_total: expect.any(Number),
+            shipping_tax_total: expect.any(Number),
             discount_total: expect.any(Number),
+            item_tax_total: expect.any(Number),
             tax_total: expect.any(Number),
             refunded_total: expect.any(Number),
             total: expect.any(Number),
@@ -1654,7 +1656,7 @@ describe("/admin/orders", () => {
       )
     })
 
-    it.only("fails to lists all orders with an invalid status", async () => {
+    it("fails to lists all orders with an invalid status", async () => {
       expect.assertions(3)
       const api = useApi()
 
@@ -2448,7 +2450,9 @@ describe("/admin/orders", () => {
         id: "test-order",
         region: expect.any(Object),
         shipping_total: 1000,
+        shipping_tax_total: 0,
         discount_total: 800,
+        item_tax_total: 0,
         tax_total: 0,
         refunded_total: 0,
         total: 8200,
@@ -2491,7 +2495,9 @@ describe("/admin/orders", () => {
         sales_channel_id: null,
         returnable_items: expect.any(Array),
         shipping_total: 1000,
+        shipping_tax_total: 0,
         discount_total: 800,
+        item_tax_total: 0,
         tax_total: 0,
         refunded_total: 0,
         total: 8200,
@@ -2517,7 +2523,9 @@ describe("/admin/orders", () => {
         id: "test-order",
         returnable_items: expect.any(Array),
         shipping_total: 1000,
+        shipping_tax_total: 0,
         discount_total: 800,
+        item_tax_total: 0,
         tax_total: 0,
         refunded_total: 0,
         total: 8200,

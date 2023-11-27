@@ -1,20 +1,23 @@
-import { Router } from "express"
 import "reflect-metadata"
+
 import { PriceList, Product } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminGetPriceListPaginationParams } from "./list-price-lists"
-import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
 } from "../products"
-import { AdminPostPriceListsPriceListReq } from "./create-price-list"
-import { FlagRouter } from "../../../../utils/flag-router"
+
+import { FlagRouter } from "@medusajs/utils"
+import { Router } from "express"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { AdminPostPriceListsPriceListReq } from "./create-price-list"
+import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
+import { AdminGetPriceListPaginationParams } from "./list-price-lists"
 
 const route = Router()
 
@@ -50,6 +53,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/:id/products/:product_id/prices",
     middlewares.wrap(require("./delete-product-prices").default)
   )
+
+  route.delete(
+    "/:id/products/prices/batch",
+    middlewares.wrap(require("./delete-products-prices-batch").default)
+  )
+
   route.delete(
     "/:id/variants/:variant_id/prices",
     middlewares.wrap(require("./delete-variant-prices").default)
@@ -78,6 +87,50 @@ export default (app, featureFlagRouter: FlagRouter) => {
   return app
 }
 
+export const defaultAdminPriceListRemoteQueryObject = {
+  fields: [
+    "created_at",
+    "deleted_at",
+    "description",
+    "ends_at",
+    "id",
+    "title",
+    "starts_at",
+    "status",
+    "type",
+    "updated_at",
+  ],
+  price_list_rules: {
+    price_list_rule_values: {
+      fields: ["value"],
+    },
+    rule_type: {
+      fields: ["rule_attribute"],
+    },
+  },
+  price_set_money_amounts: {
+    money_amount: {
+      fields: [
+        "id",
+        "currency_code",
+        "amount",
+        "min_quantity",
+        "max_quantity",
+        "created_at",
+        "deleted_at",
+        "updated_at",
+      ],
+    },
+    price_set: {
+      variant_link: {
+        variant: {
+          fields: defaultAdminProductRemoteQueryObject.variants.fields,
+        },
+      },
+    },
+  },
+}
+
 export const defaultAdminPriceListFields = [
   "id",
   "name",
@@ -91,11 +144,16 @@ export const defaultAdminPriceListFields = [
   "deleted_at",
 ]
 
-export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
+export const defaultAdminPriceListRelations = [
+  "prices",
+  "prices.variants",
+  "customer_groups",
+]
 
 /**
  * @schema AdminPriceListRes
  * type: object
+ * description: "The price list's details."
  * x-expanded-relations:
  *   field: price_list
  *   relations:
@@ -115,6 +173,7 @@ export type AdminPriceListRes = {
 /**
  * @schema AdminPriceListDeleteBatchRes
  * type: object
+ * description: "The details of deleting a price list."
  * required:
  *   - ids
  *   - object
@@ -122,9 +181,10 @@ export type AdminPriceListRes = {
  * properties:
  *   ids:
  *     type: array
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
- *       description: The IDs of the deleted prices.
+ *       description: The ID of a deleted price.
  *   object:
  *     type: string
  *     description: The type of the object that was deleted. A price is also named `money-amount`.
@@ -213,6 +273,7 @@ export type AdminPriceListDeleteRes = DeleteResponse
 /**
  * @schema AdminPriceListsListRes
  * type: object
+ * description: "The list of price lists with pagination fields."
  * required:
  *   - price_lists
  *   - count
@@ -241,6 +302,7 @@ export type AdminPriceListsListRes = PaginatedResponse & {
 /**
  * @schema AdminPriceListsProductsListRes
  * type: object
+ * description: "The list of products with pagination fields."
  * x-expanded-relations:
  *   field: products
  *   relations:
@@ -280,8 +342,9 @@ export type AdminPriceListsProductsListRes = PaginatedResponse & {
 export * from "./add-prices-batch"
 export * from "./create-price-list"
 export * from "./delete-price-list"
+export * from "./delete-prices-batch"
+export * from "./delete-products-prices-batch"
 export * from "./get-price-list"
+export * from "./list-price-list-products"
 export * from "./list-price-lists"
 export * from "./update-price-list"
-export * from "./delete-prices-batch"
-export * from "./list-price-list-products"

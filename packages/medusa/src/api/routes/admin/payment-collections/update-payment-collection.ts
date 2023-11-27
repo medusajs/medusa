@@ -28,14 +28,14 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.admin.paymentCollections.update(paymentCollectionId, {
  *         description
  *       })
- *         .then(({ payment_collection }) => {
- *           console.log(payment_collection.id)
- *         })
+ *       .then(({ payment_collection }) => {
+ *         console.log(payment_collection.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/payment-collections/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/payment-collections/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "description": "Description of payment collection"
@@ -43,6 +43,7 @@ import { PaymentCollectionService } from "../../../../services"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:
@@ -95,6 +96,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: A set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminUpdatePaymentCollectionsReq {
   @IsString()

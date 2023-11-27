@@ -1,4 +1,14 @@
-import { ProductStatus, ProductCategoryDTO } from "@medusajs/types"
+import { ProductUtils } from "@medusajs/utils"
+
+export type ProductEventData = {
+  id: string
+}
+
+export enum ProductEvents {
+  PRODUCT_UPDATED = "product.updated",
+  PRODUCT_CREATED = "product.created",
+  PRODUCT_DELETED = "product.deleted",
+}
 
 export interface UpdateProductDTO {
   id: string
@@ -10,7 +20,7 @@ export interface UpdateProductDTO {
   images?: { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
-  status?: ProductStatus
+  status?: ProductUtils.ProductStatus
   collection_id?: string
   width?: number
   height?: number

@@ -5,6 +5,10 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostInventoryItemsReq {
   /**
+   * The ID of the variant to create the inventory item for.
+   */
+  variant_id: string
+  /**
    * The unique SKU of the associated Product Variant.
    */
   sku?: string
@@ -64,6 +68,18 @@ export interface AdminPostInventoryItemsReq {
    * The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.
    */
   material?: string
+  /**
+   * The inventory item's title.
+   */
+  title?: string
+  /**
+   * The inventory item's description.
+   */
+  description?: string
+  /**
+   * The inventory item's thumbnail.
+   */
+  thumbnail?: string
   /**
    * An optional set of key-value pairs with additional information.
    */

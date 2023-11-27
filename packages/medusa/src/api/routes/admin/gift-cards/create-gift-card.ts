@@ -30,12 +30,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/gift-cards' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/gift-cards' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "region_id": "{region_id}"
@@ -43,6 +43,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Gift Cards
  * responses:
@@ -97,7 +98,8 @@ export default async (req, res) => {
  *     description: The value (excluding VAT) that the Gift Card should represent.
  *   is_disabled:
  *     type: boolean
- *     description: Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.
+ *     description: >-
+ *       Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.
  *   ends_at:
  *     type: string
  *     format: date-time
@@ -108,6 +110,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostGiftCardsReq {
   @IsOptional()

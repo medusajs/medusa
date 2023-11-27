@@ -22,11 +22,11 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *       medusa.shippingOptions.listCartOptions(cartId)
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/shipping-options/{cart_id}'
+ *       curl '{backend_url}/store/shipping-options/{cart_id}'
  * tags:
  *   - Shipping Options
  * responses:

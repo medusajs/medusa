@@ -12,7 +12,7 @@ export interface User {
    */
   id: string
   /**
-   * The user's role
+   * The user's role. These roles don't provide any different privileges.
    */
   role: "admin" | "member" | "developer"
   /**

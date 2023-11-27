@@ -21,15 +21,16 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.batchJobs.cancel(batchJobId)
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/batch-jobs/{id}/cancel' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/batch-jobs/{id}/cancel' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Batch Jobs
  * responses:

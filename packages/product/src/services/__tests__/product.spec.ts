@@ -19,8 +19,8 @@ describe("Product service", function () {
         },
         options: {
           fields: undefined,
-          limit: 15,
-          offset: undefined,
+          limit: undefined,
+          offset: 0,
           populate: [],
           withDeleted: undefined,
         },
@@ -44,8 +44,8 @@ describe("Product service", function () {
         },
         options: {
           fields: undefined,
-          limit: 15,
-          offset: undefined,
+          limit: undefined,
+          offset: 0,
           populate: [],
           withDeleted: undefined,
         },
@@ -75,7 +75,7 @@ describe("Product service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           populate: [],
           withDeleted: undefined,
         },
@@ -113,7 +113,7 @@ describe("Product service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           populate: [],
           withDeleted: undefined,
         },
@@ -151,7 +151,7 @@ describe("Product service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           withDeleted: undefined,
           populate: ["tags"],
         },
@@ -189,7 +189,7 @@ describe("Product service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           withDeleted: undefined,
           populate: ["tags"],
         },

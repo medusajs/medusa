@@ -13,6 +13,7 @@ import {
   useAdminVariant,
 } from "medusa-react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 import Button from "../../fundamentals/button"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
@@ -84,6 +85,7 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
   const { store } = useAdminStore()
 
   const location = useLocation()
+  const { t } = useTranslation()
 
   const { stock_locations, isLoading: locationsLoading } =
     useAdminStockLocations()
@@ -217,7 +219,7 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
         count: count || 0,
         offset: offs,
         pageSize: offs + rows.length,
-        title: "Inventory Items",
+        title: t("inventory-table-inventory-items", "Inventory Items"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,
@@ -300,6 +302,7 @@ const InventoryRow = ({
   const inventory = row.original
 
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const {
     state: isShowingAdjustAvailabilityModal,
@@ -312,7 +315,10 @@ const InventoryRow = ({
 
     const actions = [
       {
-        label: "Adjust Availability",
+        label: t(
+          "inventory-table-actions-adjust-availability",
+          "Adjust Availability"
+        ),
         onClick: showAdjustAvailabilityModal,
       },
     ]
@@ -320,7 +326,7 @@ const InventoryRow = ({
     if (productId) {
       return [
         {
-          label: "View Product",
+          label: t("inventory-table-view-product", "View Product"),
           onClick: () => navigate(`/a/products/${productId}`),
         },
         ...actions,
@@ -370,6 +376,7 @@ const AdjustAvailabilityModal = ({
   const inventoryVariantId = inventory.variants?.[0]?.id
   const locationLevel = inventory.location_levels?.[0]
 
+  const { t } = useTranslation()
   const { variant, isLoading } = useAdminVariant(inventoryVariantId || "")
   const {
     mutate: updateLocationLevelForInventoryItem,
@@ -396,8 +403,11 @@ const AdjustAvailabilityModal = ({
       {
         onSuccess: () => {
           notification(
-            "Success",
-            "Inventory item updated successfully",
+            t("inventory-table-success", "Success"),
+            t(
+              "inventory-table-inventory-item-updated-successfully",
+              "Inventory item updated successfully"
+            ),
             "success"
           )
           handleClose()
@@ -412,7 +422,9 @@ const AdjustAvailabilityModal = ({
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-large-semibold">Adjust availability</h1>
+          <h1 className="inter-large-semibold">
+            {t("inventory-table-adjust-availability", "Adjust availability")}
+          </h1>
         </Modal.Header>
         <Modal.Content>
           {isLoading ? (
@@ -468,7 +480,7 @@ const AdjustAvailabilityModal = ({
             className="border"
             onClick={handleClose}
           >
-            Cancel
+            {t("inventory-table-cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -477,7 +489,7 @@ const AdjustAvailabilityModal = ({
             loading={isSubmitting}
             onClick={onSubmit}
           >
-            Save and close
+            {t("inventory-table-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

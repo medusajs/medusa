@@ -1,5 +1,6 @@
 import { useAdminCustomerGroups } from "medusa-react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import Modal from "../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../hooks/use-query-filters"
@@ -20,6 +21,7 @@ import AddConditionFooter from "./add-condition-footer"
 const AddCustomerGroupConditionSelector = ({
   onClose,
 }: AddConditionSelectorProps) => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
 
   const { conditions } = useDiscountForm()
@@ -59,7 +61,10 @@ const AddCustomerGroupConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search groups...",
+            searchPlaceholder: t(
+              "add-condition-tables-search-groups",
+              "Search groups..."
+            ),
           }}
           resourceName="Customer groups"
           totalCount={count || 0}

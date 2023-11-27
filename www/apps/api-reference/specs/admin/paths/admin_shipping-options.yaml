@@ -1,0 +1,106 @@
+get:
+  operationId: GetShippingOptions
+  summary: List Shipping Options
+  description: >-
+    Retrieve a list of Shipping Options. The shipping options can be filtered by
+    fields such as `region_id` or `is_return`.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: region_id
+      schema:
+        type: string
+      description: Filter by a region ID.
+    - in: query
+      name: is_return
+      description: Filter by whether the shipping option is used for returns or orders.
+      schema:
+        type: boolean
+    - in: query
+      name: admin_only
+      schema:
+        type: boolean
+      description: Filter by whether the shipping option is used only by admins or not.
+  x-codegen:
+    method: list
+    queryParams: AdminGetShippingOptionsParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_shipping-options/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_shipping-options/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  tags:
+    - Shipping Options
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminShippingOptionsListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostShippingOptions
+  summary: Create Shipping Option
+  description: Create a Shipping Option.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostShippingOptionsReq.yaml
+  x-codegen:
+    method: create
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_shipping-options/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_shipping-options/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  tags:
+    - Shipping Options
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminShippingOptionsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

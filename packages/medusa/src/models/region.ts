@@ -98,6 +98,9 @@ export class Region extends SoftDeletableEntity {
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax: boolean
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "reg")
@@ -132,7 +135,7 @@ export class Region extends SoftDeletableEntity {
  *     type: string
  *     example: EU
  *   currency_code:
- *     description: The 3 character currency code used in the region.
+ *     description: The three character currency code used in the region.
  *     type: string
  *     example: usd
  *     externalDocs:
@@ -217,4 +220,7 @@ export class Region extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

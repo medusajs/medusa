@@ -1,0 +1,10 @@
+type: object
+description: The list of users.
+required:
+  - users
+properties:
+  users:
+    type: array
+    description: An array of users details.
+    items:
+      $ref: ./User.yaml

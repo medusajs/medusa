@@ -35,12 +35,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/return-reasons/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/return-reasons/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "label": "Damaged"
@@ -48,6 +48,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Return Reasons
  * responses:
@@ -110,6 +111,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostReturnReasonsReasonReq {
   @IsOptional()

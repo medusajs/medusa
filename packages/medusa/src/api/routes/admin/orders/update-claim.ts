@@ -47,12 +47,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/claims/{claim_id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/claims/{claim_id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "no_notification": true
@@ -60,6 +60,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -168,6 +169,9 @@ export default async (req, res) => {
  *         metadata:
  *           description: An optional set of key-value pairs to hold additional information.
  *           type: object
+ *           externalDocs:
+ *             description: "Learn about the metadata attribute, and how to delete and update it."
+ *             url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   shipping_methods:
  *     description: The Shipping Methods to send the additional Line Items with.
  *     type: array
@@ -192,6 +196,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostOrdersOrderClaimsClaimReq {
   @IsArray()

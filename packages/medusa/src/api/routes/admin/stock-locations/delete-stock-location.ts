@@ -1,4 +1,5 @@
 import { IInventoryService, IStockLocationService } from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { SalesChannelLocationService } from "../../../../services"
 
@@ -24,11 +25,12 @@ import { SalesChannelLocationService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/stock-locations/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/stock-locations/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Stock Locations
  * responses:
@@ -63,7 +65,7 @@ export default async (req, res) => {
     await stockLocationService.delete(id)
 
     if (inventoryService) {
-      await Promise.all([
+      await promiseAll([
         inventoryService.deleteInventoryItemLevelByLocationId(id),
         inventoryService.deleteReservationItemByLocationId(id),
       ])

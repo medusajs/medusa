@@ -8,7 +8,7 @@
       "outputs": [
         "!node_modules/**",
         "!src/**",
-        "/*/**"
+        "*/**"
       ]
     },
     "test": {

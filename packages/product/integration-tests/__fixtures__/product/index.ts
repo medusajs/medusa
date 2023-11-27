@@ -8,6 +8,7 @@ import {
   ProductType,
   ProductVariant,
 } from "@models"
+
 import ProductOption from "../../../src/models/product-option"
 
 export * from "./data/create-product"
@@ -19,6 +20,7 @@ export async function createProductAndTags(
     title: string
     status: ProductTypes.ProductStatus
     tags?: { id: string; value: string }[]
+    collection_id?: string
   }[]
 ) {
   const products: any[] = data.map((productData) => {

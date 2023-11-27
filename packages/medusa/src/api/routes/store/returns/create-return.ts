@@ -49,11 +49,11 @@ import { defaultRelations } from "."
  *       })
  *       .then((data) => {
  *         console.log(data.return.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/returns' \
+ *       curl -X POST '{backend_url}/store/returns' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "order_id": "asfasf",
@@ -280,7 +280,7 @@ class Item {
  *           description: The quantity to return.
  *           type: integer
  *         reason_id:
- *           description: The ID of the return reason. Return reasons can be retrieved from the List Return Reasons endpoint.
+ *           description: The ID of the return reason. Return reasons can be retrieved from the List Return Reasons API Route.
  *           type: string
  *         note:
  *           description: A note to add to the item returned.

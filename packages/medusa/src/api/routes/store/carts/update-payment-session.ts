@@ -1,7 +1,11 @@
-import { IsObject } from "class-validator"
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
 import { EntityManager } from "typeorm"
+import { IsObject } from "class-validator"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -33,11 +37,11 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/payment-sessions/manual' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "data": {}
@@ -68,6 +72,8 @@ export default async (req, res) => {
   const validated = req.validatedBody
 
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
@@ -83,6 +89,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }

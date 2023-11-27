@@ -25,15 +25,16 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.discounts.addRegion(discountId, regionId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/discounts/{id}/regions/{region_id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:

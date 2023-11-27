@@ -28,19 +28,18 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.managePaymentSession(payment_id, { provider_id: "stripe" })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
- *
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/payment-collections/{id}/sessions' \
+ *       curl -X POST '{backend_url}/store/payment-collections/{id}/sessions' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "provider_id": "stripe"
  *       }'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:

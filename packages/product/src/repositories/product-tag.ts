@@ -2,7 +2,6 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
-  RequiredEntityData,
 } from "@mikro-orm/core"
 import { ProductTag } from "@models"
 import {
@@ -12,19 +11,15 @@ import {
   UpdateProductTagDTO,
   UpsertProductTagDTO,
 } from "@medusajs/types"
-import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 
-export class ProductTagRepository extends BaseRepository {
+export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -69,10 +64,8 @@ export class ProductTagRepository extends BaseRepository {
     )
   }
 
-  @InjectTransactionManager()
   async create(
     data: CreateProductTagDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -81,15 +74,13 @@ export class ProductTagRepository extends BaseRepository {
       return manager.create(ProductTag, tagData)
     })
 
-    await manager.persist(productTags)
+    manager.persist(productTags)
 
     return productTags
   }
 
-  @InjectTransactionManager()
   async update(
     data: UpdateProductTagDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -122,18 +113,16 @@ export class ProductTagRepository extends BaseRepository {
       return manager.assign(existingTag, tagData)
     })
 
-    await manager.persist(productTags)
+    manager.persist(productTags)
 
     return productTags
   }
 
-  @InjectTransactionManager()
   async upsert(
     tags: UpsertProductTagDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
-    const { transactionManager: manager } = context
+    const manager = this.getActiveManager<SqlEntityManager>(context)
     const tagsValues = tags.map((tag) => tag.value)
     const existingTags = await this.find(
       {
@@ -151,37 +140,34 @@ export class ProductTagRepository extends BaseRepository {
     )
 
     const upsertedTags: ProductTag[] = []
-    const tagsToCreate: RequiredEntityData<ProductTag>[] = []
+    const tagsToCreate: ProductTag[] = []
+    const tagsToUpdate: ProductTag[] = []
 
     tags.forEach((tag) => {
       const aTag = existingTagsMap.get(tag.value)
       if (aTag) {
-        upsertedTags.push(aTag)
+        const updatedTag = manager.assign(aTag, tag)
+        tagsToUpdate.push(updatedTag)
       } else {
-        const newTag = (manager as SqlEntityManager).create(ProductTag, tag)
+        const newTag = manager.create(ProductTag, tag)
         tagsToCreate.push(newTag)
       }
     })
 
     if (tagsToCreate.length) {
-      const newTags: ProductTag[] = []
-      tagsToCreate.forEach((tag) => {
-        newTags.push((manager as SqlEntityManager).create(ProductTag, tag))
-      })
+      manager.persist(tagsToCreate)
+      upsertedTags.push(...tagsToCreate)
+    }
 
-      await (manager as SqlEntityManager).persist(newTags)
-      upsertedTags.push(...newTags)
+    if (tagsToUpdate.length) {
+      manager.persist(tagsToUpdate)
+      upsertedTags.push(...tagsToUpdate)
     }
 
     return upsertedTags
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    context: Context = {}
-  ): Promise<void> {
+  async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     await manager.nativeDelete(ProductTag, { id: { $in: ids } }, {})

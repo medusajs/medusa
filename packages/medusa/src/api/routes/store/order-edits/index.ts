@@ -44,6 +44,7 @@ export default (app) => {
 /**
  * @schema StoreOrderEditsRes
  * type: object
+ * description: "The order edit's details."
  * x-expanded-relations:
  *   field: order_edit
  *   relations:

@@ -8,6 +8,7 @@ import open from "open"
 import waitOn from "wait-on"
 import ora, { Ora } from "ora"
 import fs from "fs"
+import path from "path"
 import isEmailImported from "validator/lib/isEmail.js"
 import logMessage from "../utils/log-message.js"
 import createAbortController, {
@@ -21,6 +22,11 @@ import { nanoid } from "nanoid"
 import { displayFactBox, FactBoxOptions } from "../utils/facts.js"
 import { EOL } from "os"
 import { runCloneRepo } from "../utils/clone-repo.js"
+import {
+  askForNextjsStarter,
+  installNextjsStarter,
+  startNextjsStarter,
+} from "../utils/nextjs-utils.js"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -30,22 +36,26 @@ export type CreateOptions = {
   seed?: boolean
   // commander passed --no-boilerplate as boilerplate
   boilerplate?: boolean
-  stable?: boolean
+  skipDb?: boolean
+  dbUrl?: string
+  browser?: boolean
+  migrations?: boolean
+  directoryPath?: string
+  withNextjsStarter?: boolean
 }
 
 export default async ({
   repoUrl = "",
   seed,
   boilerplate,
-  stable,
+  skipDb,
+  dbUrl,
+  browser,
+  migrations,
+  directoryPath,
+  withNextjsStarter = false,
 }: CreateOptions) => {
-  track("CREATE_CLI")
-  if (repoUrl) {
-    track("STARTER_SELECTED", { starter: repoUrl })
-  }
-  if (seed) {
-    track("SEED_SELECTED", { seed })
-  }
+  track("CREATE_CLI_CMA")
 
   const spinner: Ora = ora()
   const processManager = new ProcessManager()
@@ -57,10 +67,11 @@ export default async ({
     message: "",
     title: "",
   }
-  const dbName = `medusa-${nanoid(4)}`
+  const dbName = !skipDb && !dbUrl ? `medusa-${nanoid(4)}` : ""
   let isProjectCreated = false
   let isDbInitialized = false
   let printedMessage = false
+  let nextjsDirectory = ""
 
   processManager.onTerminated(async () => {
     spinner.stop()
@@ -74,29 +85,35 @@ export default async ({
     // this ensures that the message isn't printed twice to the user
     if (!printedMessage && isProjectCreated) {
       printedMessage = true
-      logMessage({
-        message: boxen(
-          chalk.green(
-            `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
-          ),
-          {
-            titleAlignment: "center",
-            textAlignment: "center",
-            padding: 1,
-            margin: 1,
-            float: "center",
-          }
-        ),
-      })
+      showSuccessMessage(projectName, undefined, nextjsDirectory)
     }
 
     return
   })
 
-  const projectName = await askForProjectName()
-  const { client, dbConnectionString } = await getDbClientAndCredentials(dbName)
+  const projectName = await askForProjectName(directoryPath)
+  const projectPath = getProjectPath(projectName, directoryPath)
+  const adminEmail =
+    !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
+  const installNextjs = withNextjsStarter || (await askForNextjsStarter())
+
+  let { client, dbConnectionString } = !skipDb
+    ? await getDbClientAndCredentials({
+        dbName,
+        dbUrl,
+      })
+    : { client: null, dbConnectionString: "" }
   isDbInitialized = true
-  const adminEmail = await askForAdminEmail(seed, boilerplate)
+
+  track("CMA_OPTIONS", {
+    repoUrl,
+    seed,
+    boilerplate,
+    skipDb,
+    browser,
+    migrations,
+    installNextjs,
+  })
 
   logMessage({
     message: `${emojify(
@@ -113,11 +130,10 @@ export default async ({
 
   try {
     await runCloneRepo({
-      projectName,
+      projectName: projectPath,
       repoUrl,
       abortController,
       spinner,
-      stable,
     })
   } catch {
     return
@@ -126,21 +142,34 @@ export default async ({
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,
     message: "Created project directory",
-    title: "Creating database...",
   })
 
-  await runCreateDb({ client, dbName, spinner })
+  nextjsDirectory = installNextjs
+    ? await installNextjsStarter({
+        directoryName: projectPath,
+        abortController,
+        factBoxOptions,
+      })
+    : ""
 
-  factBoxOptions.interval = displayFactBox({
-    ...factBoxOptions,
-    message: `Database ${dbName} created`,
-  })
+  if (client && !dbUrl) {
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Creating database...",
+    })
+    client = await runCreateDb({ client, dbName, spinner })
+
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      message: `Database ${dbName} created`,
+    })
+  }
 
   // prepare project
   let inviteToken: string | undefined = undefined
   try {
     inviteToken = await prepareProject({
-      directory: projectName,
+      directory: projectPath,
       dbConnectionString,
       admin: {
         email: adminEmail,
@@ -150,6 +179,11 @@ export default async ({
       spinner,
       processManager,
       abortController,
+      skipDb,
+      migrations,
+      onboardingType: installNextjs ? "nextjs" : "default",
+      nextjsDirectory,
+      client,
     })
   } catch (e: any) {
     if (isAbortError(e)) {
@@ -170,6 +204,11 @@ export default async ({
 
   spinner.succeed(chalk.green("Project Prepared"))
 
+  if (skipDb || !browser) {
+    showSuccessMessage(projectPath, inviteToken, nextjsDirectory)
+    process.exit()
+  }
+
   // start backend
   logMessage({
     message: "Starting Medusa...",
@@ -177,9 +216,16 @@ export default async ({
 
   try {
     startMedusa({
-      directory: projectName,
+      directory: projectPath,
       abortController,
     })
+
+    if (installNextjs && nextjsDirectory) {
+      void startNextjsStarter({
+        directory: nextjsDirectory,
+        abortController,
+      })
+    }
   } catch (e) {
     if (isAbortError(e)) {
       process.exit()
@@ -199,16 +245,14 @@ export default async ({
     resources: ["http://localhost:9000/health"],
   }).then(async () =>
     open(
-      stable
-        ? "http://localhost:9000/store/products"
-        : inviteToken
+      inviteToken
         ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
         : "http://localhost:7001"
     )
   )
 }
 
-async function askForProjectName(): Promise<string> {
+async function askForProjectName(directoryPath?: string): Promise<string> {
   const { projectName } = await inquirer.prompt([
     {
       type: "input",
@@ -216,13 +260,15 @@ async function askForProjectName(): Promise<string> {
       message: "What's the name of your project?",
       default: "my-medusa-store",
       filter: (input) => {
-        return slugify(input)
+        return slugify(input).toLowerCase()
       },
       validate: (input) => {
         if (!input.length) {
           return "Please enter a project name"
         }
-        return fs.existsSync(input) && fs.lstatSync(input).isDirectory()
+        const projectPath = getProjectPath(input, directoryPath)
+        return fs.existsSync(projectPath) &&
+          fs.lstatSync(projectPath).isDirectory()
           ? "A directory already exists with the same name. Please enter a different project name."
           : true
       },
@@ -250,4 +296,34 @@ async function askForAdminEmail(
   ])
 
   return adminEmail
+}
+
+function showSuccessMessage(
+  projectName: string,
+  inviteToken?: string,
+  nextjsDirectory?: string
+) {
+  logMessage({
+    message: boxen(
+      chalk.green(
+        // eslint-disable-next-line prettier/prettier
+        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}${inviteToken ? `After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(inviteToken)}${EOL}${EOL}` : ""}${nextjsDirectory?.length ? `The Next.js Starter storefront was installed in the \`${nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}npm run dev${EOL}${EOL}` : ""}Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
+      ),
+      {
+        titleAlignment: "center",
+        textAlignment: "center",
+        padding: 1,
+        margin: 1,
+        float: "center",
+      }
+    ),
+  })
+}
+
+function getProjectPath(projectName: string, directoryPath?: string) {
+  return path.join(directoryPath || "", projectName)
+}
+
+function getInviteUrl(inviteToken: string) {
+  return `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
 }

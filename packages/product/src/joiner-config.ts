@@ -1,9 +1,46 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { JoinerServiceConfig } from "@medusajs/types"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { MapToConfig } from "@medusajs/utils"
+import {
+  Product,
+  ProductCategory,
+  ProductCollection,
+  ProductOption,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+} from "@models"
+import ProductImage from "./models/product-image"
+import moduleSchema from "./schema"
 
-export const joinerConfig: JoinerServiceConfig = {
+export const LinkableKeys = {
+  product_id: Product.name,
+  product_handle: Product.name,
+  variant_id: ProductVariant.name,
+  variant_sku: ProductVariant.name,
+  product_option_id: ProductOption.name,
+  product_type_id: ProductType.name,
+  product_category_id: ProductCategory.name,
+  product_collection_id: ProductCollection.name,
+  product_tag_id: ProductTag.name,
+  product_image_id: ProductImage.name,
+}
+
+const entityLinkableKeysMap: MapToConfig = {}
+Object.entries(LinkableKeys).forEach(([key, value]) => {
+  entityLinkableKeysMap[value] ??= []
+  entityLinkableKeysMap[value].push({
+    mapTo: key,
+    valueFrom: key.split("_").pop()!,
+  })
+})
+export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
+
+export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
+  linkableKeys: LinkableKeys,
+  schema: moduleSchema,
   alias: [
     {
       name: "product",

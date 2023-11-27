@@ -1,5 +1,5 @@
+import { FlagRouter } from "@medusajs/utils"
 import { NextFunction, Request, Response } from "express"
-import { FlagRouter } from "../../utils/flag-router"
 
 export function isFeatureFlagEnabled(
   flagKey: string

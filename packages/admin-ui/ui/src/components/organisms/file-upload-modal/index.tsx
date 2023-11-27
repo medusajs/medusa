@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 import FileUploadField from "../../atoms/file-upload-field"
 import Modal from "../../molecules/modal"
 
@@ -13,11 +14,14 @@ const FileUploadModal: React.FC<FileUploadModalProps> = ({
   filetypes,
   setFiles,
 }) => {
+  const { t } = useTranslation()
   return (
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <span className="inter-xlarge-semibold">Upload a new photo</span>
+          <span className="inter-xlarge-semibold">
+            {t("file-upload-modal-upload-a-new-photo", "Upload a new photo")}
+          </span>
         </Modal.Header>
         <Modal.Content>
           <div className="h-96">

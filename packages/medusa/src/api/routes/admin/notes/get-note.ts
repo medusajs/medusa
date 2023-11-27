@@ -20,15 +20,16 @@ import NoteService from "../../../../services/note"
  *       medusa.admin.notes.retrieve(noteId)
  *       .then(({ note }) => {
  *         console.log(note.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/notes/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/notes/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Notes
  * responses:

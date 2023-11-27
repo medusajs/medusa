@@ -1,0 +1,8 @@
+type: object
+required:
+  - title
+properties:
+  title:
+    description: The title the Product Option.
+    type: string
+    example: Size

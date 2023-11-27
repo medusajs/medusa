@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
   ManyToOne,
@@ -13,8 +14,12 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import { ProductTypes } from "@medusajs/types"
-import { generateEntityId, kebabCase } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  kebabCase,
+  ProductUtils,
+} from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
 import ProductOption from "./product-option"
@@ -22,7 +27,7 @@ import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
 import ProductImage from "./product-image"
-import { SoftDeletable } from "../utils"
+import { DAL } from "@medusajs/types"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -30,11 +35,10 @@ type OptionalFields =
   | "type_id"
   | "is_giftcard"
   | "discountable"
-  | "created_at"
-  | "updated_at"
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class Product {
   [OptionalProps]?: OptionalRelations | OptionalFields
 
@@ -60,8 +64,8 @@ class Product {
   @Property({ columnType: "boolean", default: false })
   is_giftcard!: boolean
 
-  @Enum(() => ProductTypes.ProductStatus)
-  status!: ProductTypes.ProductStatus
+  @Enum(() => ProductUtils.ProductStatus)
+  status!: ProductUtils.ProductStatus
 
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null
@@ -150,13 +154,18 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   external_id?: string | null
 
-  @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
   created_at: Date
 
   @Property({
     onCreate: () => new Date(),
     onUpdate: () => new Date(),
     columnType: "timestamptz",
+    defaultRaw: "now()",
   })
   updated_at: Date
 

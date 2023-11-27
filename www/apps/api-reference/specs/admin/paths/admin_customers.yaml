@@ -1,0 +1,124 @@
+get:
+  operationId: GetCustomers
+  summary: List Customers
+  description: >-
+    Retrieve a list of Customers. The customers can be filtered by fields such
+    as `q` or `groups`. The customers can also be paginated.
+  x-authenticated: true
+  parameters:
+    - in: query
+      name: limit
+      description: The number of customers to return.
+      schema:
+        type: integer
+        default: 50
+    - in: query
+      name: offset
+      description: The number of customers to skip when retrieving the customers.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: expand
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        customer.
+      schema:
+        type: string
+    - in: query
+      name: q
+      description: term to search customers' email, first_name, and last_name fields.
+      schema:
+        type: string
+    - in: query
+      name: groups
+      style: form
+      explode: false
+      description: Filter by customer group IDs.
+      schema:
+        type: array
+        items:
+          type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetCustomersParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_customers/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customers/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  tags:
+    - Customers
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminCustomersListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostCustomers
+  summary: Create a Customer
+  description: Create a customer as an admin.
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostCustomersReq.yaml
+  x-codegen:
+    method: create
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_customers/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customers/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  tags:
+    - Customers
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminCustomersRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

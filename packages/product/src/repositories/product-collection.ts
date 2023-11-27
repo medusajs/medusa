@@ -1,24 +1,28 @@
-import { ProductCollection } from "@models"
+import { Context, DAL, ProductTypes } from "@medusajs/types"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { ProductCollection } from "@models"
 
-import { BaseRepository } from "./base"
+type UpdateProductCollection = ProductTypes.UpdateProductCollectionDTO & {
+  products?: string[]
+}
 
-export class ProductCollectionRepository extends BaseRepository {
+type CreateProductCollection = ProductTypes.CreateProductCollectionDTO & {
+  products?: string[]
+}
+
+// eslint-disable-next-line max-len
+export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -27,8 +31,7 @@ export class ProductCollectionRepository extends BaseRepository {
     findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
     context: Context = {}
   ): Promise<ProductCollection[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -48,8 +51,7 @@ export class ProductCollectionRepository extends BaseRepository {
     findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
     context: Context = {}
   ): Promise<[ProductCollection[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -65,40 +67,38 @@ export class ProductCollectionRepository extends BaseRepository {
     )
   }
 
-  @InjectTransactionManager()
-  async delete(
-    collectionIds: string[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
+  async delete(collectionIds: string[], context: Context = {}): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    await manager.nativeDelete(
       ProductCollection,
       { id: { $in: collectionIds } },
       {}
     )
   }
 
-  @InjectTransactionManager()
   async create(
-    data: ProductTypes.CreateProductCollectionDTO[],
-    @MedusaContext()
+    data: CreateProductCollection[],
     context: Context = {}
   ): Promise<ProductCollection[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
+      }
+
       return manager.create(ProductCollection, collectionData)
     })
 
-    await manager.persist(productCollections)
+    manager.persist(productCollections)
 
     return productCollections
   }
 
-  @InjectTransactionManager()
   async update(
-    data: ProductTypes.UpdateProductCollectionDTO[],
-    @MedusaContext()
+    data: UpdateProductCollection[],
     context: Context = {}
   ): Promise<ProductCollection[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -131,10 +131,16 @@ export class ProductCollectionRepository extends BaseRepository {
         )
       }
 
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
+      }
+
       return manager.assign(existingCollection, collectionData)
     })
 
-    await manager.persist(productCollections)
+    manager.persist(productCollections)
 
     return productCollections
   }

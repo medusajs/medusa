@@ -22,11 +22,11 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.orders.retrieve(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/orders/{id}'
+ *       curl '{backend_url}/store/orders/{id}'
  * tags:
  *   - Orders
  * responses:

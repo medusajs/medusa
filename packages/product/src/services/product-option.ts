@@ -1,20 +1,13 @@
 import { ProductOption } from "@models"
-import {
-  Context,
-  DAL,
-  FindConfig,
-  ProductTypes,
-} from "@medusajs/types"
+import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { ProductOptionRepository } from "@repositories"
 import {
-  InjectTransactionManager,
   InjectManager,
+  InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
   retrieveEntity,
 } from "@medusajs/utils"
-
-import { doNotForceTransaction, shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productOptionRepository: DAL.RepositoryService
@@ -36,10 +29,7 @@ export default class ProductOptionService<
     config: FindConfig<ProductTypes.ProductOptionDTO> = {},
     @MedusaContext() sharedContext?: Context
   ): Promise<TEntity> {
-    return (await retrieveEntity<
-      ProductOption,
-      ProductTypes.ProductOptionDTO
-    >({
+    return (await retrieveEntity<ProductOption, ProductTypes.ProductOptionDTO>({
       id: productOptionId,
       entityName: ProductOption.name,
       repository: this.productOptionRepository_,
@@ -74,9 +64,12 @@ export default class ProductOptionService<
 
   private buildQueryForList(
     filters: ProductTypes.FilterableProductOptionProps = {},
-    config: FindConfig<ProductTypes.ProductOptionDTO> = {},
+    config: FindConfig<ProductTypes.ProductOptionDTO> = {}
   ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductOption>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductOption>(
+      filters,
+      config
+    )
 
     if (filters.title) {
       queryOptions.where["title"] = { $ilike: filters.title }
@@ -85,7 +78,7 @@ export default class ProductOptionService<
     return queryOptions
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productOptionRepository_")
+  @InjectTransactionManager("productOptionRepository_")
   async create(
     data: ProductTypes.CreateProductOptionOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -97,22 +90,32 @@ export default class ProductOptionService<
     })) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productOptionRepository_")
+  @InjectTransactionManager("productOptionRepository_")
   async update(
     data: ProductTypes.UpdateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.productOptionRepository_ as ProductOptionRepository).update(
-      data,
-      sharedContext
-    )) as TEntity[]
+    return (await (
+      this.productOptionRepository_ as ProductOptionRepository
+    ).update(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productOptionRepository_")
+  @InjectTransactionManager("productOptionRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     return await this.productOptionRepository_.delete(ids, sharedContext)
+  }
+
+  @InjectTransactionManager("productOptionRepository_")
+  async upsert(
+    data:
+      | ProductTypes.CreateProductOptionDTO[]
+      | ProductTypes.UpdateProductOptionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    return (await (this.productOptionRepository_ as ProductOptionRepository)
+      .upsert!(data, sharedContext)) as TEntity[]
   }
 }

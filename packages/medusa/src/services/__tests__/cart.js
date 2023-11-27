@@ -1,27 +1,29 @@
-import _ from "lodash"
-import { asClass, asValue, createContainer } from "awilix"
-import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FlagRouter } from "../../utils/flag-router"
+import { IsNull, Not } from "typeorm"
+import { NewTotalsService, PricingService, TaxProviderService } from "../index"
+import { asClass, asValue, createContainer } from "awilix"
+
 import CartService from "../cart"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
-import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { newTotalsServiceMock } from "../__mocks__/new-totals"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import { PaymentSessionStatus } from "../../models"
-import { NewTotalsService, TaxProviderService } from "../index"
-import { cacheServiceMock } from "../__mocks__/cache"
+import { CustomerServiceMock } from "../__mocks__/customer"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { FlagRouter } from "@medusajs/utils"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { LineItemServiceMock } from "../__mocks__/line-item"
+import { MedusaError } from "medusa-core-utils"
 import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import { PaymentSessionStatus } from "../../models"
 import { ProductServiceMock } from "../__mocks__/product"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
-import { LineItemServiceMock } from "../__mocks__/line-item"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
-import { CustomerServiceMock } from "../__mocks__/customer"
-import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import SystemTaxService from "../system-tax"
-import { IsNull, Not } from "typeorm"
+import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import _ from "lodash"
+import { cacheServiceMock } from "../__mocks__/cache"
+import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -2628,6 +2630,7 @@ describe("CartService", () => {
       .register("regionService", asValue(RegionServiceMock))
       .register("lineItemService", asValue(LineItemServiceMock))
       .register("shippingOptionService", asValue(ShippingOptionServiceMock))
+      .register("shippingProfileService", asValue(ShippingProfileServiceMock))
       .register("customerService", asValue(CustomerServiceMock))
       .register("discountService", asValue({}))
       .register("giftCardService", asValue({}))
@@ -2655,6 +2658,9 @@ describe("CartService", () => {
       .register("taxProviderService", asClass(TaxProviderService))
       .register("newTotalsService", asClass(NewTotalsService))
       .register("cartService", asClass(CartService))
+      .register("remoteQuery", asValue(null))
+      .register("pricingModuleService", asValue(undefined))
+      .register("pricingService", asClass(PricingService))
 
     const cartService = container.resolve("cartService")
 

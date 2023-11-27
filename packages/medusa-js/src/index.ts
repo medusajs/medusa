@@ -1,6 +1,6 @@
 import MedusaError from "./error"
 import KeyManager from "./key-manager"
-import Client, { Config } from "./request"
+import Client, { type Config, type RequestOptions } from "./request"
 import {
   Admin,
   AuthResource,
@@ -85,9 +85,7 @@ class Medusa {
 }
 
 export default Medusa
-export { default as MedusaError } from "./error"
-export { default as KeyManager } from "./key-manager"
-export { default as Client, Config } from "./request"
 export * from "./resources"
 export * from "./typings"
-
+export type { Config, RequestOptions }
+export { MedusaError, KeyManager, Client }

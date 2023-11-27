@@ -26,11 +26,12 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/publishable-api-key/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/publishable-api-key/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Publishable Api Keys
  * responses:

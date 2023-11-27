@@ -1,8 +1,4 @@
-import {
-  CartService,
-  ProductService,
-  ProductVariantInventoryService,
-} from "../../../../services"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -11,17 +7,24 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Transform, Type } from "class-transformer"
+import {
+  CartService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { IsType } from "../../../../utils/validators/is-type"
-import { PriceSelectionParams } from "../../../../types/price-selection"
-import PricingService from "../../../../services/pricing"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import PricingService from "../../../../services/pricing"
+import { DateComparisonOperator } from "../../../../types/common"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { defaultStoreCategoryScope } from "../product-categories"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { IsType } from "../../../../utils/validators/is-type"
+import { defaultStoreCategoryScope } from "../product-categories"
+import { defaultStoreProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /store/products
@@ -29,7 +32,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  * summary: List Products
  * description: |
  *   Retrieves a list of products. The products can be filtered by fields such as `id` or `q`. The products can also be sorted or paginated.
- *   This endpoint can also be used to retrieve a product by its handle.
+ *   This API Route can also be used to retrieve a product by its handle.
  *
  *   For accurate and correct pricing of the products based on the customer's context, it's highly recommended to pass fields such as
  *   `region_id`, `currency_code`, and `cart_id` when available.
@@ -184,11 +187,11 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       medusa.products.list()
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/products'
+ *       curl '{backend_url}/store/products'
  * tags:
  *   - Products
  * responses:
@@ -216,6 +219,8 @@ export default async (req, res) => {
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+
   const validated = req.validatedQuery as StoreGetProductsParams
 
   let {
@@ -224,7 +229,6 @@ export default async (req, res) => {
     currency_code: currencyCode,
     ...filterableFields
   } = req.filterableFields
-
   const listConfig = req.listConfig
 
   // get only published products for store endpoint
@@ -246,9 +250,21 @@ export default async (req, res) => {
     }
   }
 
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
+
   const promises: Promise<any>[] = []
 
-  promises.push(productService.listAndCount(filterableFields, listConfig))
+  if (isMedusaV2Enabled) {
+    promises.push(
+      listAndCountProductWithIsolatedProductModule(
+        req,
+        filterableFields,
+        listConfig
+      )
+    )
+  } else {
+    promises.push(productService.listAndCount(filterableFields, listConfig))
+  }
 
   if (validated.cart_id) {
     promises.push(
@@ -259,7 +275,7 @@ export default async (req, res) => {
     )
   }
 
-  const [[rawProducts, count], cart] = await Promise.all(promises)
+  const [[rawProducts, count], cart] = await promiseAll(promises)
 
   if (validated.cart_id) {
     regionId = cart.region_id
@@ -302,7 +318,7 @@ export default async (req, res) => {
 
   // We can run them concurrently as the new properties are assigned to the references
   // of the appropriate entity
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({
     products: cleanResponseData(computedProducts, req.allowedProperties || []),
@@ -312,77 +328,221 @@ export default async (req, res) => {
   })
 }
 
+async function listAndCountProductWithIsolatedProductModule(
+  req,
+  filterableFields,
+  listConfig
+) {
+  // TODO: Add support for fields/expands
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  let salesChannelIdFilter = filterableFields.sales_channel_id
+  if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
+    salesChannelIdFilter ??= req.publishableApiKeyScopes.sales_channel_ids
+  }
+
+  delete filterableFields.sales_channel_id
+
+  filterableFields["categories"] = {
+    $or: [
+      {
+        id: null,
+      },
+      {
+        ...(filterableFields.categories || {}),
+        // Store APIs are only allowed to query active and public categories
+        ...defaultStoreCategoryScope,
+      },
+    ],
+  }
+
+  // This is not the best way of handling cross filtering but for now I would say it is fine
+  if (salesChannelIdFilter) {
+    const salesChannelService = req.scope.resolve(
+      "salesChannelService"
+    ) as SalesChannelService
+
+    const productIdsInSalesChannel =
+      await salesChannelService.listProductIdsBySalesChannelIds(
+        salesChannelIdFilter
+      )
+
+    let filteredProductIds = productIdsInSalesChannel[salesChannelIdFilter]
+
+    if (filterableFields.id) {
+      filterableFields.id = Array.isArray(filterableFields.id)
+        ? filterableFields.id
+        : [filterableFields.id]
+
+      const salesChannelProductIdsSet = new Set(filteredProductIds)
+
+      filteredProductIds = filterableFields.id.filter((productId) =>
+        salesChannelProductIdsSet.has(productId)
+      )
+    }
+
+    filterableFields.id = filteredProductIds
+  }
+
+  const variables = {
+    filters: filterableFields,
+    order: listConfig.order,
+    skip: listConfig.skip,
+    take: listConfig.take,
+  }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultStoreProductRemoteQueryObject,
+    },
+  }
+
+  const {
+    rows: products,
+    metadata: { count },
+  } = await remoteQuery(query)
+
+  products.forEach((product) => {
+    product.profile_id = product.profile?.id
+  })
+
+  return [products, count]
+}
+
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class StoreGetProductsPaginationParams extends PriceSelectionParams {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 100
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 100
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved products.
+ */
 export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
+  /**
+   * {@inheritDoc FilterableProductProps.id}
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * {@inheritDoc FilterableProductProps.q}
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * {@inheritDoc FilterableProductProps.collection_id}
+   */
   @IsArray()
   @IsOptional()
   collection_id?: string[]
 
+  /**
+   * {@inheritDoc FilterableProductProps.tags}
+   */
   @IsArray()
   @IsOptional()
   tags?: string[]
 
+  /**
+   * {@inheritDoc FilterableProductProps.title}
+   */
   @IsString()
   @IsOptional()
   title?: string
 
+  /**
+   * {@inheritDoc FilterableProductProps.description}
+   */
   @IsString()
   @IsOptional()
   description?: string
 
+  /**
+   * {@inheritDoc FilterableProductProps.handle}
+   */
   @IsString()
   @IsOptional()
   handle?: string
 
+  /**
+   * {@inheritDoc FilterableProductProps.is_giftcard}
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
+  /**
+   * {@inheritDoc FilterableProductProps.type_id}
+   */
   @IsArray()
   @IsOptional()
   type_id?: string[]
 
+  /**
+   * {@inheritDoc FilterableProductProps.sales_channel_id}
+   */
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
 
+  /**
+   * {@inheritDoc FilterableProductProps.category_id}
+   */
   @IsArray()
   @IsOptional()
   category_id?: string[]
 
+  /**
+   * {@inheritDoc FilterableProductProps.include_category_children}
+   *
+   * @featureFlag product_categories
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   include_category_children?: boolean
 
+  /**
+   * {@inheritDoc FilterableProductProps.created_at}
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * {@inheritDoc FilterableProductProps.created_at}
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

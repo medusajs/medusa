@@ -1,3 +1,4 @@
+import { Translation } from "react-i18next"
 import StatusIndicator from "../../fundamentals/status-indicator"
 
 export type SimpleProductType = {
@@ -11,13 +12,52 @@ export type SimpleProductType = {
 export const decideStatus = (status: string) => {
   switch (status) {
     case "published":
-      return <StatusIndicator title="Published" variant="success" />
+      return (
+        <Translation>
+          {(t) => (
+            <StatusIndicator
+              title={t(
+                "collection-product-table-decide-status-published",
+                "Published"
+              )}
+              variant="success"
+            />
+          )}
+        </Translation>
+      )
     case "draft":
-      return <StatusIndicator title="Draft" variant="default" />
+      return (
+        <Translation>
+          {(t) => (
+            <StatusIndicator
+              title={t("collection-product-table-draft", "Draft")}
+              variant="default"
+            />
+          )}
+        </Translation>
+      )
     case "proposed":
-      return <StatusIndicator title="Proposed" variant="warning" />
+      return (
+        <Translation>
+          {(t) => (
+            <StatusIndicator
+              title={t("collection-product-table-proposed", "Proposed")}
+              variant="warning"
+            />
+          )}
+        </Translation>
+      )
     case "rejected":
-      return <StatusIndicator title="Rejected" variant="danger" />
+      return (
+        <Translation>
+          {(t) => (
+            <StatusIndicator
+              title={t("collection-product-table-rejected", "Rejected")}
+              variant="danger"
+            />
+          )}
+        </Translation>
+      )
     default:
       return null
   }

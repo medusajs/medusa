@@ -84,6 +84,9 @@ export class TaxRate extends BaseEntity {
   product_type_count?: number
   shipping_option_count?: number
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "txr")
@@ -175,4 +178,7 @@ export class TaxRate extends BaseEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

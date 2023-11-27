@@ -1,12 +1,12 @@
-import { IProductModuleService } from "@medusajs/types"
+import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { Product, ProductCategory } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductTypes } from "@medusajs/types"
 
 import { initialize } from "../../../../src"
 import { DB_URL, TestDatabase } from "../../../utils"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { productCategoriesRankData } from "../../../__fixtures__/product-category/data"
+import { EventBusService } from "../../../__fixtures__/event-bus"
 
 describe("ProductModuleService product categories", () => {
   let service: IProductModuleService
@@ -17,16 +17,20 @@ describe("ProductModuleService product categories", () => {
   let productCategoryOne: ProductCategory
   let productCategoryTwo: ProductCategory
   let productCategories: ProductCategory[]
+  let eventBus
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
+    eventBus = new EventBusService()
 
     service = await initialize({
       database: {
         clientUrl: DB_URL,
         schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
       },
+    }, {
+      eventBusModuleService: eventBus
     })
 
     testManager = await TestDatabase.forkManager()
@@ -43,15 +47,18 @@ describe("ProductModuleService product categories", () => {
       status: ProductTypes.ProductStatus.PUBLISHED,
     })
 
-    const productCategoriesData = [{
-      id: "test-1",
-      name: "category 1",
-      products: [productOne],
-    },{
-      id: "test-2",
-      name: "category",
-      products: [productTwo],
-    }]
+    const productCategoriesData = [
+      {
+        id: "test-1",
+        name: "category 1",
+        products: [productOne],
+      },
+      {
+        id: "test-2",
+        name: "category",
+        products: [productTwo],
+      },
+    ]
 
     productCategories = await createProductCategories(
       testManager,
@@ -66,6 +73,7 @@ describe("ProductModuleService product categories", () => {
 
   afterEach(async () => {
     await TestDatabase.clearDatabase()
+    jest.clearAllMocks()
   })
 
   describe("listCategories", () => {
@@ -121,10 +129,12 @@ describe("ProductModuleService product categories", () => {
         expect.objectContaining({
           id: "test-1",
           name: "category 1",
-          products: [expect.objectContaining({
-            id: "product-1",
-            title: "product 1",
-          })],
+          products: [
+            expect.objectContaining({
+              id: "product-1",
+              title: "product 1",
+            }),
+          ],
         }),
       ])
     })
@@ -191,10 +201,12 @@ describe("ProductModuleService product categories", () => {
         expect.objectContaining({
           id: "test-1",
           name: "category 1",
-          products: [expect.objectContaining({
-            id: "product-1",
-            title: "product 1",
-          })],
+          products: [
+            expect.objectContaining({
+              id: "product-1",
+              title: "product 1",
+            }),
+          ],
         }),
       ])
     })
@@ -203,35 +215,34 @@ describe("ProductModuleService product categories", () => {
   describe("retrieveCategory", () => {
     it("should return the requested category", async () => {
       const result = await service.retrieveCategory(productCategoryOne.id, {
-        select: ["id", "name"]
+        select: ["id", "name"],
       })
 
       expect(result).toEqual(
         expect.objectContaining({
           id: "test-1",
           name: "category 1",
-        }),
+        })
       )
     })
 
     it("should return requested attributes when requested through config", async () => {
-      const result = await service.retrieveCategory(
-        productCategoryOne.id,
-        {
-          select: ["id", "name", "products.title"],
-          relations: ["products"],
-        }
-      )
+      const result = await service.retrieveCategory(productCategoryOne.id, {
+        select: ["id", "name", "products.title"],
+        relations: ["products"],
+      })
 
       expect(result).toEqual(
         expect.objectContaining({
           id: "test-1",
           name: "category 1",
-          products: [expect.objectContaining({
-            id: "product-1",
-            title: "product 1",
-          })],
-        }),
+          products: [
+            expect.objectContaining({
+              id: "product-1",
+              title: "product 1",
+            }),
+          ],
+        })
       )
     })
 
@@ -244,7 +255,9 @@ describe("ProductModuleService product categories", () => {
         error = e
       }
 
-      expect(error.message).toEqual("ProductCategory with id: does-not-exist was not found")
+      expect(error.message).toEqual(
+        "ProductCategory with id: does-not-exist was not found"
+      )
     })
   })
 
@@ -255,11 +268,14 @@ describe("ProductModuleService product categories", () => {
         parent_category_id: productCategoryOne.id,
       })
 
-      const [productCategory] = await service.listCategories({
-        name: "New Category"
-      }, {
-        select: ["name", "rank"]
-      })
+      const [productCategory] = await service.listCategories(
+        {
+          name: "New Category",
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategory).toEqual(
         expect.objectContaining({
@@ -269,11 +285,27 @@ describe("ProductModuleService product categories", () => {
       )
     })
 
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const category = await service.createCategory({
+        name: "New Category",
+        parent_category_id: productCategoryOne.id,
+      })
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith(
+        "product-category.created",
+        {
+          id: category.id
+        }
+      )
+    })
+
     it("should append rank from an existing category depending on parent", async () => {
       await service.createCategory({
         name: "New Category",
         parent_category_id: productCategoryOne.id,
-        rank: 0
+        rank: 0,
       })
 
       await service.createCategory({
@@ -281,11 +313,14 @@ describe("ProductModuleService product categories", () => {
         parent_category_id: productCategoryOne.id,
       })
 
-      const [productCategoryNew] = await service.listCategories({
-        name: "New Category 2"
-      }, {
-        select: ["name", "rank"]
-      })
+      const [productCategoryNew] = await service.listCategories(
+        {
+          name: "New Category 2",
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategoryNew).toEqual(
         expect.objectContaining({
@@ -299,11 +334,14 @@ describe("ProductModuleService product categories", () => {
         parent_category_id: productCategoryNew.id,
       })
 
-      const [productCategoryWithParent] = await service.listCategories({
-        name: "New Category 2.1"
-      }, {
-        select: ["name", "rank", "parent_category_id"]
-      })
+      const [productCategoryWithParent] = await service.listCategories(
+        {
+          name: "New Category 2.1",
+        },
+        {
+          select: ["name", "rank", "parent_category_id"],
+        }
+      )
 
       expect(productCategoryWithParent).toEqual(
         expect.objectContaining({
@@ -340,14 +378,32 @@ describe("ProductModuleService product categories", () => {
       productCategoryZeroTwo = categories[5]
     })
 
-    it("should update the name of the category successfully", async () => {
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
       await service.updateCategory(productCategoryZero.id, {
-        name: "New Category"
+        name: "New Category",
       })
 
-      const productCategory = await service.retrieveCategory(productCategoryZero.id, {
-        select: ["name"]
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith(
+        "product-category.updated",
+        {
+          id: productCategoryZero.id
+        }
+      )
+    })
+
+    it("should update the name of the category successfully", async () => {
+      await service.updateCategory(productCategoryZero.id, {
+        name: "New Category",
       })
+
+      const productCategory = await service.retrieveCategory(
+        productCategoryZero.id,
+        {
+          select: ["name"],
+        }
+      )
 
       expect(productCategory.name).toEqual("New Category")
     })
@@ -357,13 +413,15 @@ describe("ProductModuleService product categories", () => {
 
       try {
         await service.updateCategory("does-not-exist", {
-          name: "New Category"
+          name: "New Category",
         })
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual(`ProductCategory not found ({ id: 'does-not-exist' })`)
+      expect(error.message).toEqual(
+        `ProductCategory not found ({ id: 'does-not-exist' })`
+      )
     })
 
     it("should reorder rank successfully in the same parent", async () => {
@@ -371,11 +429,14 @@ describe("ProductModuleService product categories", () => {
         rank: 0,
       })
 
-      const productCategories = await service.listCategories({
-        parent_category_id: null
-      }, {
-        select: ["name", "rank"]
-      })
+      const productCategories = await service.listCategories(
+        {
+          parent_category_id: null,
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategories).toEqual(
         expect.arrayContaining([
@@ -390,7 +451,7 @@ describe("ProductModuleService product categories", () => {
           expect.objectContaining({
             id: productCategoryOne.id,
             rank: "2",
-          })
+          }),
         ])
       )
     })
@@ -398,14 +459,17 @@ describe("ProductModuleService product categories", () => {
     it("should reorder rank successfully when changing parent", async () => {
       await service.updateCategory(productCategoryTwo.id, {
         rank: 0,
-        parent_category_id: productCategoryZero.id
+        parent_category_id: productCategoryZero.id,
       })
 
-      const productCategories = await service.listCategories({
-        parent_category_id: productCategoryZero.id
-      }, {
-        select: ["name", "rank"]
-      })
+      const productCategories = await service.listCategories(
+        {
+          parent_category_id: productCategoryZero.id,
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategories).toEqual(
         expect.arrayContaining([
@@ -424,7 +488,7 @@ describe("ProductModuleService product categories", () => {
           expect.objectContaining({
             id: productCategoryZeroTwo.id,
             rank: "3",
-          })
+          }),
         ])
       )
     })
@@ -432,14 +496,17 @@ describe("ProductModuleService product categories", () => {
     it("should reorder rank successfully when changing parent and in first position", async () => {
       await service.updateCategory(productCategoryTwo.id, {
         rank: 0,
-        parent_category_id: productCategoryZero.id
+        parent_category_id: productCategoryZero.id,
       })
 
-      const productCategories = await service.listCategories({
-        parent_category_id: productCategoryZero.id
-      }, {
-        select: ["name", "rank"]
-      })
+      const productCategories = await service.listCategories(
+        {
+          parent_category_id: productCategoryZero.id,
+        },
+        {
+          select: ["name", "rank"],
+        }
+      )
 
       expect(productCategories).toEqual(
         expect.arrayContaining([
@@ -458,7 +525,7 @@ describe("ProductModuleService product categories", () => {
           expect.objectContaining({
             id: productCategoryZeroTwo.id,
             rank: "3",
-          })
+          }),
         ])
       )
     })
@@ -483,6 +550,19 @@ describe("ProductModuleService product categories", () => {
       productCategoryTwo = categories[2]
     })
 
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      await service.deleteCategory(productCategoryOne.id)
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith(
+        "product-category.deleted",
+        {
+          id: productCategoryOne.id
+        }
+      )
+    })
+
     it("should throw an error when an id does not exist", async () => {
       let error
 
@@ -492,7 +572,9 @@ describe("ProductModuleService product categories", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`ProductCategory not found ({ id: 'does-not-exist' })`)
+      expect(error.message).toEqual(
+        `ProductCategory not found ({ id: 'does-not-exist' })`
+      )
     })
 
     it("should throw an error when it has children", async () => {
@@ -504,17 +586,22 @@ describe("ProductModuleService product categories", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`Deleting ProductCategory (category-0-0) with category children is not allowed`)
+      expect(error.message).toEqual(
+        `Deleting ProductCategory (category-0-0) with category children is not allowed`
+      )
     })
 
     it("should reorder siblings rank successfully on deleting", async () => {
       await service.deleteCategory(productCategoryOne.id)
 
-      const productCategories = await service.listCategories({
-        parent_category_id: null
-      }, {
-        select: ["id", "rank"]
-      })
+      const productCategories = await service.listCategories(
+        {
+          parent_category_id: null,
+        },
+        {
+          select: ["id", "rank"],
+        }
+      )
 
       expect(productCategories).toEqual(
         expect.arrayContaining([
@@ -525,10 +612,9 @@ describe("ProductModuleService product categories", () => {
           expect.objectContaining({
             id: productCategoryTwo.id,
             rank: "1",
-          })
+          }),
         ])
       )
     })
   })
 })
-

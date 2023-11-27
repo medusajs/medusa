@@ -1,5 +1,67 @@
 # Change Log
 
+## 1.2.5
+
+### Patch Changes
+
+- [#5547](https://github.com/medusajs/medusa/pull/5547) [`09ab1d1be`](https://github.com/medusajs/medusa/commit/09ab1d1be6ec0c50e3fcc828c740265debd2222b) Thanks [@egormkn](https://github.com/egormkn)! - feat(create-medusa-app): print error message for failed database connection
+
+## 1.2.4
+
+### Patch Changes
+
+- [#5474](https://github.com/medusajs/medusa/pull/5474) [`03959c3e3`](https://github.com/medusajs/medusa/commit/03959c3e3a38c155607647e70668ee250b76fda9) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): improve spinner style
+
+## 1.2.3
+
+### Patch Changes
+
+- [#5404](https://github.com/medusajs/medusa/pull/5404) [`a1807aea8`](https://github.com/medusajs/medusa/commit/a1807aea83a5bf82c4221839a1fa57b41d2cc6ac) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add tracking for selected options
+
+## 1.2.2
+
+### Patch Changes
+
+- [#5189](https://github.com/medusajs/medusa/pull/5189) [`18a05dee8`](https://github.com/medusajs/medusa/commit/18a05dee86f55366c92a2669eacbccf526373ff5) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix inconsistency in checking errors in migrations
+
+## 1.2.1
+
+### Patch Changes
+
+- [#5061](https://github.com/medusajs/medusa/pull/5061) [`5b09f816c`](https://github.com/medusajs/medusa/commit/5b09f816cbb44d457c8cbdee803d9f84bd3fed0d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix command for windows OS
+
+## 1.2.0
+
+### Minor Changes
+
+- [#4968](https://github.com/medusajs/medusa/pull/4968) [`240b03800`](https://github.com/medusajs/medusa/commit/240b038006924d4872de068c98e2d6862145cb52) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add install Next.js storefront option
+
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`c58588904`](https://github.com/medusajs/medusa/commit/c58588904c5631111603b15afacf7cdc4c738cc4)]:
+  - medusa-telemetry@0.0.17
+
+## 1.1.0
+
+### Minor Changes
+
+- [#4794](https://github.com/medusajs/medusa/pull/4794) [`c684d16ec`](https://github.com/medusajs/medusa/commit/c684d16ec012a547a9981480db8b4b96f5f22904) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): remove `--stable` option and change to clone default branch
+
+### Patch Changes
+
+- [#4733](https://github.com/medusajs/medusa/pull/4733) [`30ce35b16`](https://github.com/medusajs/medusa/commit/30ce35b163afa25f4e1d8d1bd392f401a3b413df) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app, utils, medusa-cli): add database options + remove util from `@medusajs/utils`
+
+## 1.0.4
+
+### Patch Changes
+
+- [#4567](https://github.com/medusajs/medusa/pull/4567) [`15e87a810`](https://github.com/medusajs/medusa/commit/15e87a8100c9fe66f6d120423ef0351f4c657e7e) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add `stable` option + add URI encoding to database string
+
+- Updated dependencies [[`131477faf`](https://github.com/medusajs/medusa/commit/131477faf0409c49d4aacf26ea591e33b2fa22fd)]:
+  - @medusajs/utils@1.9.3
+
 ## 1.0.3
 
 ### Patch Changes

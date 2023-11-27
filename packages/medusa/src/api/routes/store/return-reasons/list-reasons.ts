@@ -20,11 +20,11 @@ import ReturnReasonService from "../../../../services/return-reason"
  *       medusa.returnReasons.list()
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/return-reasons'
+ *       curl '{backend_url}/store/return-reasons'
  * tags:
  *   - Return Reasons
  * responses:

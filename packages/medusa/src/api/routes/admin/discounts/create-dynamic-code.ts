@@ -39,12 +39,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/discounts/{id}/dynamic-codes' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/discounts/{id}/dynamic-codes' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "code": "TEST"
@@ -52,6 +52,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:
@@ -112,6 +113,9 @@ export default async (req: Request, res: Response) => {
  *   metadata:
  *     type: object
  *     description: An optional set of key-value pairs to hold additional information.
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostDiscountsDiscountDynamicCodesReq {
   @IsString()

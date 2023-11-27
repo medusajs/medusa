@@ -6,74 +6,72 @@ import {
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
+
 import { isObject } from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
-import MODULE_DEFINITIONS from "../definitions"
+import { ModulesDefinition } from "../definitions"
 
-export const registerModules = (
-  modules?: Record<
-    string,
-    | false
-    | string
+export const registerMedusaModule = (
+  moduleKey: string,
+  moduleDeclaration?:
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-  >
+    | string
+    | false,
+  moduleExports?: ModuleExports,
+  definition?: ModuleDefinition
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
-  const projectModules = modules ?? {}
 
-  for (const definition of MODULE_DEFINITIONS) {
-    const customConfig = projectModules[definition.key]
+  const modDefinition = definition ?? ModulesDefinition[moduleKey]
 
-    const canSkip =
-      !customConfig && !definition.isRequired && !definition.defaultPackage
-
-    const isObj = isObject(customConfig)
-    if (isObj && customConfig.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)
-      if (!canSkip) {
-        throw new Error("External Modules are not supported yet.")
-      }
-    }
-
-    moduleResolutions[definition.key] = getInternalModuleResolution(
-      definition,
-      customConfig as InternalModuleDeclaration
-    )
+  if (modDefinition === undefined) {
+    throw new Error(`Module: ${moduleKey} is not defined.`)
   }
+
+  const modDeclaration =
+    moduleDeclaration ??
+    (modDefinition?.defaultModuleDeclaration as InternalModuleDeclaration)
+
+  if (modDeclaration !== false && !modDeclaration) {
+    throw new Error(`Module: ${moduleKey} has no declaration.`)
+  }
+
+  if (
+    isObject(modDeclaration) &&
+    modDeclaration?.scope === MODULE_SCOPE.EXTERNAL
+  ) {
+    // TODO: getExternalModuleResolution(...)
+    throw new Error("External Modules are not supported yet.")
+  }
+
+  moduleResolutions[moduleKey] = getInternalModuleResolution(
+    modDefinition,
+    moduleDeclaration as InternalModuleDeclaration,
+    moduleExports
+  )
 
   return moduleResolutions
 }
 
-export const registerMedusaModule = (
-  moduleKey: string,
-  moduleDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration,
+export const registerMedusaLinkModule = (
+  definition: ModuleDefinition,
+  moduleDeclaration: Partial<InternalModuleDeclaration>,
   moduleExports?: ModuleExports
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
-  for (const definition of MODULE_DEFINITIONS) {
-    if (definition.key !== moduleKey) {
-      continue
-    }
-
-    if (moduleDeclaration.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)
-      throw new Error("External Modules are not supported yet.")
-    }
-
-    moduleResolutions[definition.key] = getInternalModuleResolution(
-      definition,
-      moduleDeclaration as InternalModuleDeclaration,
-      moduleExports
-    )
-  }
+  moduleResolutions[definition.key] = getInternalModuleResolution(
+    definition,
+    moduleDeclaration as InternalModuleDeclaration,
+    moduleExports
+  )
 
   return moduleResolutions
 }
 
 function getInternalModuleResolution(
   definition: ModuleDefinition,
-  moduleConfig: InternalModuleDeclaration | false | string,
+  moduleConfig: InternalModuleDeclaration | string | false,
   moduleExports?: ModuleExports
 ): ModuleResolution {
   if (typeof moduleConfig === "boolean") {
@@ -116,7 +114,7 @@ function getInternalModuleResolution(
       ),
     ],
     moduleDeclaration: {
-      ...definition.defaultModuleDeclaration,
+      ...(definition.defaultModuleDeclaration ?? {}),
       ...moduleDeclaration,
     },
     moduleExports,

@@ -15,6 +15,12 @@ const {
   defaultStoreProductsRelations,
 } = require("@medusajs/medusa/dist")
 
+const adminHeaders = {
+  headers: {
+    "x-medusa-access-token": "test_token",
+  },
+}
+
 jest.setTimeout(30000)
 
 describe("/store/products", () => {
@@ -24,12 +30,18 @@ describe("/store/products", () => {
   const giftCardId = "giftcard"
   const testProductId = "test-product"
   const testProductId1 = "test-product1"
+  const testProductId2 = "test-product2"
   const testProductFilteringId1 = "test-product_filtering_1"
   const testProductFilteringId2 = "test-product_filtering_2"
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
+    dbConnection = await initDb({
+      cwd,
+      env: {
+        CACHE_TTL: 0,
+      },
+    })
     medusaProcess = await setupServer({ cwd })
   })
 
@@ -127,7 +139,7 @@ describe("/store/products", () => {
       const api = useApi()
 
       await simpleProductFactory(dbConnection, {
-        id: "test-product2",
+        id: testProductId2,
         status: "published",
         variants: [
           {
@@ -142,9 +154,28 @@ describe("/store/products", () => {
         ],
       })
 
-      const response = await api.get(
+      let response = await api.get(
         "/store/products?order=-variants.prices.amount"
       )
+
+      // Update amount to unsure order, same amount will add randomness in the result with the same amounts
+      const productToUpdate = response.data.products.find(
+        (p) => p.id === testProductId
+      )
+      const priceToUpdate = productToUpdate.variants[0].prices[0]
+      const priceData = {
+        id: priceToUpdate.id,
+        currency_code: priceToUpdate.currency_code,
+        amount: 120,
+      }
+
+      await api.post(
+        `/admin/products/${testProductId}/variants/${productToUpdate.variants[0].id}`,
+        { prices: [priceData] },
+        adminHeaders
+      )
+
+      response = await api.get("/store/products?order=-variants.prices.amount")
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(6)
@@ -156,11 +187,11 @@ describe("/store/products", () => {
         response.data.products.find((p) => p.id === testProductId1)
       )
       const testProduct2Index = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product2")
+        response.data.products.find((p) => p.id === testProductId2)
       )
 
       expect(testProduct2Index).toBe(3) // 200
-      expect(testProductIndex).toBe(4) // 100
+      expect(testProductIndex).toBe(4) // 120
       expect(testProduct1Index).toBe(5) // 100
     })
 
@@ -168,7 +199,7 @@ describe("/store/products", () => {
       const api = useApi()
 
       await simpleProductFactory(dbConnection, {
-        id: "test-product2",
+        id: testProductId2,
         status: "published",
         variants: [
           {
@@ -183,9 +214,28 @@ describe("/store/products", () => {
         ],
       })
 
-      const response = await api.get(
+      let response = await api.get(
         "/store/products?order=variants.prices.amount"
       )
+
+      // Update amount to unsure order, same amount will add randomness in the result with the same amounts
+      const productToUpdate = response.data.products.find(
+        (p) => p.id === testProductId1
+      )
+      const priceToUpdate = productToUpdate.variants[0].prices[0]
+      const priceData = {
+        id: priceToUpdate.id,
+        currency_code: priceToUpdate.currency_code,
+        amount: 120,
+      }
+
+      await api.post(
+        `/admin/products/${testProductId1}/variants/${productToUpdate.variants[0].id}`,
+        { prices: [priceData] },
+        adminHeaders
+      )
+
+      response = await api.get("/store/products?order=variants.prices.amount")
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(6)
@@ -201,7 +251,7 @@ describe("/store/products", () => {
       )
 
       expect(testProductIndex).toBe(0) // 100
-      expect(testProduct1Index).toBe(1) // 100
+      expect(testProduct1Index).toBe(1) // 120
       expect(testProduct2Index).toBe(2) // 200
     })
 
@@ -970,11 +1020,7 @@ describe("/store/products", () => {
           {
             status: "published",
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminHeaders
         )
         .catch((err) => {
           console.log(err)
