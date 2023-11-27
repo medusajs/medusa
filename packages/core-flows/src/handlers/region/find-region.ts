@@ -5,6 +5,7 @@ import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type RegionDTO = {
   region_id?: string
+  region?: any
 }
 
 type HandlerInputData = {
@@ -27,9 +28,17 @@ export async function findRegion({
   const regionDTO: RegionDTO = {}
 
   if (isDefined(data[Aliases.Region].region_id)) {
-    regionId = data[Aliases.Region].region_id
+    regionDTO.region_id = data[Aliases.Region].region_id
+    regionDTO.region = await regionService.retrieve(regionDTO.region_id, {
+      relations: ["countries"],
+    })
   } else {
-    const regions = await regionService.list({}, {})
+    const regions = await regionService.list(
+      {},
+      {
+        relations: ["countries"],
+      }
+    )
 
     if (!regions?.length) {
       throw new MedusaError(
@@ -38,10 +47,9 @@ export async function findRegion({
       )
     }
 
-    regionId = regions[0].id
+    regionDTO.region_id = regions[0].id
+    regionDTO.region = regions[0]
   }
-
-  regionDTO.region_id = regionId
 
   return regionDTO
 }

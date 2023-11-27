@@ -60,6 +60,7 @@ export type CartCreateProps = {
   shipping_address?: Partial<AddressPayload>
   gift_cards?: GiftCard[]
   discounts?: Discount[]
+  customer?: any
   customer_id?: string
   type?: CartType
   context?: object

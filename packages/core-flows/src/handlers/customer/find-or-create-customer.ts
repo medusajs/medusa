@@ -3,6 +3,7 @@ import { validateEmail } from "@medusajs/utils"
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type CustomerDTO = {
+  customer?: any
   customer_id?: string
   email?: string
 }
@@ -36,6 +37,7 @@ export async function findOrCreateCustomer({
       .retrieve(customerId)
       .catch(() => undefined)
 
+    customerDTO.customer = customer
     customerDTO.customer_id = customer?.id
     customerDTO.email = customer?.email
   }
@@ -53,6 +55,7 @@ export async function findOrCreateCustomer({
       customer = await customerServiceTx.create({ email: validatedEmail })
     }
 
+    customerDTO.customer = customer
     customerDTO.customer_id = customer.id
     customerDTO.email = customer.email
   }
