@@ -22,6 +22,8 @@ export function buildQuery<T = any, TDto = any>(
 
   const defaultLimit = whereHasPrimaryKeyFields ? undefined : 15
 
+  delete config.primaryKeyFields
+
   const findOptions: DAL.OptionsQuery<T, any> = {
     populate: deduplicate(config.relations ?? []),
     fields: config.select as string[],
