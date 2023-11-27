@@ -1,17 +1,17 @@
 const path = require("path")
 const { Region } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../environment-helpers/setup-server")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
-const { simpleRegionFactory } = require("../../factories")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const { simpleRegionFactory } = require("../../../factories")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -61,7 +61,7 @@ describe("/admin/regions", () => {
       const response = await api
         .delete(`/admin/regions/test-region`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -87,7 +87,7 @@ describe("/admin/regions", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -159,7 +159,7 @@ describe("/admin/regions", () => {
       const response = await api
         .get(`/admin/regions`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -183,13 +183,27 @@ describe("/admin/regions", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("returns count of total regions", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/admin/regions?limit=2`, {
+        headers: {
+          "x-medusa-access-token": "test_token",
+        },
+      })
+
+      expect(response.data.regions).toHaveLength(2)
+      expect(response.data.count).toEqual(3)
+      expect(response.status).toEqual(200)
+    })
+
     it("filters correctly on update", async () => {
       const api = useApi()
 
       const response = await api
         .get(`/admin/regions?updated_at[gt]=10-10-2005`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -243,7 +257,7 @@ describe("/admin/regions", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -251,7 +265,7 @@ describe("/admin/regions", () => {
       const response = await api
         .delete(`/admin/regions/test-region`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -282,7 +296,7 @@ describe("/admin/regions", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -351,7 +365,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/regions", () => {
         includes_tax: true,
       }
 
-      let response = await api
+      const response = await api
         .post(`/admin/regions`, payload, adminReqConfig)
         .catch((err) => {
           console.log(err)

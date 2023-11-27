@@ -10,10 +10,10 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  * @oas [post] /admin/reservations/{id}
  * operationId: "PostReservationsReservation"
  * summary: "Update a Reservation"
- * description: "Updates a Reservation which can be associated with any resource as required."
+ * description: "Update a Reservation's details."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Reservation to update.
+ *   - (path) id=* {string} The ID of the Reservation.
  * requestBody:
  *  content:
  *    application/json:
@@ -31,19 +31,20 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       })
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/reservations/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/reservations/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "quantity": 3,
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Reservations
  * responses:
@@ -103,14 +104,20 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   location_id:
- *     description: "The id of the location of the reservation"
+ *     description: "The ID of the location associated with the reservation."
  *     type: string
  *   quantity:
- *     description: "The id of the reservation item"
+ *     description: "The quantity to reserve."
  *     type: number
+ *   description:
+ *     description: "The reservation's description."
+ *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostReservationsReservationReq {
   @IsNumber()

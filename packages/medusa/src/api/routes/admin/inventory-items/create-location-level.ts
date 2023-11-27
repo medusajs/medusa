@@ -6,13 +6,13 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels
  * operationId: "PostInventoryItemsInventoryItemLocationLevels"
- * summary: "Create an Inventory Level"
- * description: "Creates an Inventory Level for a given Inventory Item."
+ * summary: "Create a Location Level"
+ * description: "Create a Location Level for a given Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory item.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory item.
  * requestBody:
  *   content:
  *     application/json:
@@ -29,18 +29,18 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {
- *         location_id: 'sloc_123',
+ *         location_id: "sloc_123",
  *         stocked_quantity: 10,
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "location_id": "sloc_123",
  *           "stocked_quantity": 10
@@ -48,6 +48,7 @@ import { FindParams } from "../../../../types/common"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:
@@ -111,13 +112,13 @@ export default async (req: Request, res: Response) => {
  *   - stocked_quantity
  * properties:
  *   location_id:
- *     description: the item location ID
+ *     description: the ID of the stock location
  *     type: string
  *   stocked_quantity:
- *     description: the stock quantity of an inventory item at the given location ID
+ *     description: the stock quantity of the inventory item at this location
  *     type: number
  *   incoming_quantity:
- *     description: the incoming stock quantity of an inventory item at the given location ID
+ *     description: the incoming stock quantity of the inventory item at this location
  *     type: number
  */
 export class AdminPostInventoryItemsItemLocationLevelsReq {

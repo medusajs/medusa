@@ -1,10 +1,8 @@
-import { LoaderOptions, Logger } from "@medusajs/types"
-import {
-  ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
-} from "../types"
-import { createConnection, loadDatabaseConfig } from "../utils"
 import * as ProductModels from "@models"
+
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+
+import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
 
 /**
@@ -18,18 +16,20 @@ export async function revertMigration({
   options,
   logger,
 }: Pick<
-  LoaderOptions<
-    | ProductServiceInitializeOptions
-    | ProductServiceInitializeCustomDataLayerOptions
-  >,
+  LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
   "options" | "logger"
 > = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = loadDatabaseConfig(options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)!
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
+  const pathToMigrations = __dirname + "/../migrations"
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(
+    dbData,
+    entities,
+    pathToMigrations
+  )
 
   try {
     const migrator = orm.getMigrator()

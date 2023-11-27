@@ -1,9 +1,12 @@
+import { FlagRouter } from "@medusajs/utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import {
   ITaxCalculationStrategy,
   TaxCalculationContext,
   TransactionBaseService,
 } from "../interfaces"
-import { EntityManager } from "typeorm"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Discount,
   DiscountRuleType,
@@ -14,12 +17,9 @@ import {
   ShippingMethod,
   ShippingMethodTaxLine,
 } from "../models"
-import { TaxProviderService } from "./index"
 import { LineAllocationsMap } from "../types/totals"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { FlagRouter } from "../utils/flag-router"
 import { calculatePriceTaxAmount } from "../utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { TaxProviderService } from "./index"
 
 type LineItemTotals = {
   unit_price: number
@@ -635,6 +635,26 @@ export default class NewTotalsService extends TransactionBaseService {
     return shippingMethodsTotals
   }
 
+  getGiftCardableAmount({
+    gift_cards_taxable,
+    subtotal,
+    shipping_total,
+    discount_total,
+    tax_total,
+  }: {
+    gift_cards_taxable?: boolean
+    subtotal: number
+    shipping_total: number
+    discount_total: number
+    tax_total: number
+  }): number {
+    return (
+      (gift_cards_taxable
+        ? subtotal + shipping_total - discount_total
+        : subtotal + shipping_total + tax_total - discount_total) || 0
+    )
+  }
+
   /**
    * Calculate and return the shipping method totals
    * @param shippingMethod
@@ -675,7 +695,7 @@ export default class NewTotalsService extends TransactionBaseService {
       if (!totals.tax_lines) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "Tax Lines must be joined to calculate taxes"
+          "Tax Lines must be joined to calculate shipping taxes"
         )
       }
     }
@@ -720,7 +740,7 @@ export default class NewTotalsService extends TransactionBaseService {
   }
 
   /**
-   * Calculate and return the shipping method totals legacy using teh tax rate
+   * Calculate and return the shipping method totals legacy using the tax rate
    * @param shippingMethod
    * @param calculationContext
    * @param taxRate

@@ -1,6 +1,7 @@
 import { useAdminCreateGiftCard } from "medusa-react"
 import React, { useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import GiftCardBalanceForm, {
   GiftCardBalanceFormType,
 } from "../../components/forms/gift-card/gift-card-balance-form"
@@ -32,6 +33,7 @@ type CustomGiftCardFormType = {
 }
 
 const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onClose, open }) => {
+  const { t } = useTranslation()
   const form = useForm<CustomGiftCardFormType>()
   const {
     handleSubmit,
@@ -70,14 +72,21 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onClose, open }) => {
       {
         onSuccess: () => {
           notification(
-            "Created gift card",
-            "Custom gift card was created successfully",
+            t("gift-cards-created-gift-card", "Created gift card"),
+            t(
+              "gift-cards-custom-gift-card-was-created-successfully",
+              "Custom gift card was created successfully"
+            ),
             "success"
           )
           onClose()
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(
+            t("gift-cards-error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -87,13 +96,17 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onClose, open }) => {
     <Modal open={open} handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h2 className="inter-xlarge-semibold">Custom Gift Card</h2>
+          <h2 className="inter-xlarge-semibold">
+            {t("gift-cards-custom-gift-card", "Custom Gift Card")}
+          </h2>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
-                <h2 className="inter-base-semibold mb-base">Details</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("gift-cards-details", "Details")}
+                </h2>
                 <div className="gap-x-xsmall grid grid-cols-2">
                   <GiftCardRegionForm form={nestedForm(form, "region")} />
                   <GiftCardBalanceForm
@@ -104,7 +117,9 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onClose, open }) => {
               </div>
               <GiftCardEndsAtForm form={nestedForm(form, "ends_at")} />
               <div>
-                <h2 className="inter-base-semibold mb-base">Receiver</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("gift-cards-receiver", "Receiver")}
+                </h2>
                 <GiftCardReceiverForm form={nestedForm(form, "receiver")} />
               </div>
             </div>
@@ -117,7 +132,7 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onClose, open }) => {
                 size="small"
                 type="button"
               >
-                Cancel
+                {t("gift-cards-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -126,7 +141,7 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onClose, open }) => {
                 disabled={isSubmitting || !isDirty}
                 loading={isSubmitting}
               >
-                Create and send
+                {t("gift-cards-create-and-send", "Create and send")}
               </Button>
             </div>
           </Modal.Footer>

@@ -1,11 +1,12 @@
-import path from "path"
-import { execSync, fork } from "child_process"
 import boxen from "boxen"
+import { execSync, fork } from "child_process"
 import chokidar from "chokidar"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
+import path from "path"
 
 import Logger from "../loaders/logger"
+import { resolveAdminCLI } from "./utils/resolve-admin-cli"
 
 const defaultConfig = {
   padding: 5,
@@ -44,10 +45,18 @@ export default async function ({ port, directory }) {
 
   const babelPath = path.join(directory, "node_modules", ".bin", "babel")
 
-  execSync(`"${babelPath}" src -d dist`, {
+  execSync(`"${babelPath}" src -d dist --ignore "src/admin/**"`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
+
+  /**
+   * Environment variable to indicate that the `start` command was initiated by the `develop`.
+   * Used to determine if Admin should build if it is installed and has `autoBuild` enabled.
+   */
+  const COMMAND_INITIATED_BY = {
+    COMMAND_INITIATED_BY: "develop",
+  }
 
   const cliPath = path.join(
     directory,
@@ -61,6 +70,7 @@ export default async function ({ port, directory }) {
   let child = fork(cliPath, [`start`, ...args], {
     execArgv: argv,
     cwd: directory,
+    env: { ...process.env, ...COMMAND_INITIATED_BY },
   })
 
   child.on("error", function (err) {
@@ -68,31 +78,55 @@ export default async function ({ port, directory }) {
     process.exit(1)
   })
 
-  chokidar.watch(`${directory}/src`).on("change", (file) => {
-    const f = file.split("src")[1]
-    Logger.info(`${f} changed: restarting...`)
+  const { cli, binExists } = resolveAdminCLI(directory)
 
-    if (process.platform === "win32") {
-      execSync(`taskkill /PID ${child.pid} /F /T`)
-    }
+  if (binExists) {
+    const backendUrl = `http://localhost:${port}`
 
-    child.kill("SIGINT")
-
-    execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
+    const adminChild = fork(cli, [`develop`, "--backend", `${backendUrl}`], {
       cwd: directory,
-      stdio: ["pipe", process.stdout, process.stderr],
+      env: process.env,
+      stdio: ["pipe", process.stdout, process.stderr, "ipc"],
     })
 
-    Logger.info("Rebuilt")
-
-    child = fork(cliPath, [`start`, ...args], {
-      execArgv: argv,
-      cwd: directory,
-    })
-
-    child.on("error", function (err) {
+    adminChild.on("error", function (err) {
       console.log("Error ", err)
-      process.exit(1)
+      adminChild.kill("SIGINT") // Only kill admin in case of error
     })
-  })
+  }
+
+  chokidar
+    .watch(`${directory}/src`, {
+      ignored: `${directory}/src/admin`,
+    })
+    .on("change", (file) => {
+      const f = file.split("src")[1]
+      Logger.info(`${f} changed: restarting...`)
+
+      if (process.platform === "win32") {
+        execSync(`taskkill /PID ${child.pid} /F /T`)
+      }
+
+      child.kill("SIGINT")
+
+      execSync(
+        `${babelPath} src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
+        {
+          cwd: directory,
+          stdio: ["pipe", process.stdout, process.stderr],
+        }
+      )
+
+      Logger.info("Rebuilt")
+
+      child = fork(cliPath, [`start`, ...args], {
+        cwd: directory,
+        env: { ...process.env, ...COMMAND_INITIATED_BY },
+        stdio: ["pipe", process.stdout, process.stderr, "ipc"],
+      })
+      child.on("error", function (err) {
+        console.log("Error ", err)
+        process.exit(1)
+      })
+    })
 }

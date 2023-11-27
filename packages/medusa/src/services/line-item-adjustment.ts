@@ -1,14 +1,15 @@
+import { promiseAll } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, FindOperator, In } from "typeorm"
 
+import { TransactionBaseService } from "../interfaces"
 import { Cart, DiscountRuleType, LineItem, LineItemAdjustment } from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
 import { FindConfig } from "../types/common"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
-import DiscountService from "./discount"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
 import { CalculationContextData } from "../types/totals"
+import { buildQuery, setMetadata } from "../utils"
+import DiscountService from "./discount"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
@@ -299,7 +300,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
       return []
     }
 
-    return await Promise.all(
+    return await promiseAll(
       cart.items.map(async (li) => this.createAdjustmentForLineItem(cart, li))
     )
   }

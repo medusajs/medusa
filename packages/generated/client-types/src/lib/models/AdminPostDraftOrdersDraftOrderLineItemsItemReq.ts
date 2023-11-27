@@ -5,15 +5,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostDraftOrdersDraftOrderLineItemsItemReq {
   /**
-   * The potential custom price of the item.
+   * The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.
    */
   unit_price?: number
   /**
-   * The potential custom title of the item.
+   * The title of the line item if `variant_id` is not provided.
    */
   title?: string
   /**
-   * The quantity of the Line Item.
+   * The quantity of the line item.
    */
   quantity?: number
   /**

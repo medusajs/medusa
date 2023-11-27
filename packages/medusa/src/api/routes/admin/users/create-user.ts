@@ -10,7 +10,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/users
  * operationId: "PostUsers"
  * summary: "Create a User"
- * description: "Creates a User"
+ * description: "Create an admin User. The user has the same privileges as all admin users, and will be able to authenticate and perform admin functionalities right after creation."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -27,18 +27,18 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.users.create({
- *         email: 'user@example.com',
- *         password: 'supersecret'
+ *         email: "user@example.com",
+ *         password: "supersecret"
  *       })
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/users' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/users' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
  *           "password": "supersecret"
@@ -46,6 +46,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Users
  * responses:
@@ -92,21 +93,21 @@ export default async (req, res) => {
  *   - password
  * properties:
  *   email:
- *     description: "The Users email."
+ *     description: "The User's email."
  *     type: string
  *     format: email
  *   first_name:
- *     description: "The name of the User."
+ *     description: "The first name of the User."
  *     type: string
  *   last_name:
- *     description: "The name of the User."
+ *     description: "The last name of the User."
  *     type: string
  *   role:
- *     description: "Userrole assigned to the user."
+ *     description: "The role assigned to the user. These roles don't provide any different privileges."
  *     type: string
  *     enum: [admin, member, developer]
  *   password:
- *     description: "The Users password."
+ *     description: "The User's password."
  *     type: string
  *     format: password
  */

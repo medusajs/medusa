@@ -1,5 +1,9 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
 import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
@@ -8,9 +12,10 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /store/carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
  * summary: "Create Payment Sessions"
- * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
+ * description: "Create Payment Sessions for each of the available Payment Providers in the Cart's Region. If there's only one payment session created,
+ *  it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
+ *   - (path) id=* {string} The ID of the Cart.
  * x-codegen:
  *   method: createPaymentSessions
  * x-codeSamples:
@@ -19,14 +24,14 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.createPaymentSessions(cart_id)
+ *       medusa.carts.createPaymentSessions(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
+ *       curl -X POST '{backend_url}/store/carts/{id}/payment-sessions'
  * tags:
  *   - Carts
  * responses:
@@ -54,6 +59,10 @@ export default async (req, res) => {
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
+
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const manager: EntityManager = req.scope.resolve("manager")
 
   const headerKey = req.get("Idempotency-Key") || ""
@@ -96,6 +105,11 @@ export default async (req, res) => {
                       select: defaultStoreCartFields,
                       relations: defaultStoreCartRelations,
                     })
+
+                  await productVariantInventoryService.setVariantAvailability(
+                    cart.items.map((i) => i.variant),
+                    cart.sales_channel_id!
+                  )
 
                   return {
                     response_code: 200,

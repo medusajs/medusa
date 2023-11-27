@@ -70,6 +70,10 @@ export function getListQuery(
     queryBuilder.select(legacySelect.map((s) => "inv_item." + s))
   }
 
+  if (query.withDeleted) {
+    queryBuilder.withDeleted()
+  }
+
   if (query.order) {
     const toSelect: string[] = []
     const parsed = Object.entries(query.order).reduce((acc, [k, v]) => {

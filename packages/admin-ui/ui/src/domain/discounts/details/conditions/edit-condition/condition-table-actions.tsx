@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import { useContext } from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../components/fundamentals/button"
 import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
 import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal"
@@ -17,6 +18,7 @@ const ExistingConditionTableActions = ({
   onDeselect,
   onRemove,
 }: Props) => {
+  const { t } = useTranslation()
   const { condition } = useEditConditionContext()
 
   const addConditionsModalScreen = useAddConditionsModalScreen(condition)
@@ -35,7 +37,9 @@ const ExistingConditionTableActions = ({
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="mb-2 flex h-[34px] items-center divide-x">
           <span className="inter-small-regular text-grey-50 mr-3">
-            {numberOfSelectedRows} selected
+            {t("edit-condition-selected-with-count", "{{count}}", {
+              count: numberOfSelectedRows,
+            })}
           </span>
           <div className="space-x-xsmall flex pl-3">
             <Button
@@ -44,7 +48,7 @@ const ExistingConditionTableActions = ({
               variant="ghost"
               className="border-grey-20 border"
             >
-              Deselect
+              {t("edit-condition-deselect", "Deselect")}
             </Button>
             <Button
               onClick={onRemove}
@@ -52,7 +56,7 @@ const ExistingConditionTableActions = ({
               variant="ghost"
               className="border-grey-20 border text-rose-50"
             >
-              Remove
+              {t("edit-condition-remove", "Remove")}
             </Button>
           </div>
         </div>
@@ -63,7 +67,7 @@ const ExistingConditionTableActions = ({
             className="border-grey-20 border"
             onClick={() => push(addConditionsModalScreen)}
           >
-            <PlusIcon size={20} /> Add
+            <PlusIcon size={20} /> {t("edit-condition-add", "Add")}
           </Button>
         </div>
       </div>

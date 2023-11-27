@@ -5,27 +5,35 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetProductCategoriesParams {
   /**
-   * Query used for searching product category names or handles.
+   * term used to search product category's names and handles.
    */
   q?: string
   /**
-   * Query used for searching product category by handle.
+   * Filter by handle.
    */
   handle?: string
   /**
-   * Returns categories scoped by parent
+   * Filter by the ID of a parent category. Only children of the provided parent category are retrieved.
    */
   parent_category_id?: string
   /**
-   * Include all nested descendants of category
+   * Whether all nested categories inside a category should be retrieved.
    */
   include_descendants_tree?: boolean
   /**
-   * How many product categories to skip in the result.
+   * The number of product categories to skip when retrieving the product categories.
    */
   offset?: number
   /**
    * Limit the number of product categories returned.
    */
   limit?: number
+  /**
+   * Comma-separated relations that should be expanded in the returned product categories.
+   */
+  expand?: string
+  /**
+   * Comma-separated fields that should be included in the returned product categories.
+   */
+  fields?: string
 }

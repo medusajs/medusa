@@ -9,10 +9,11 @@
     "directory": "packages/medusa-test-utils"
   },
   "scripts": {
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "test": "jest --passWithNoTests src",
-    "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
-    "watch": "babel -w src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'"
+    "build": "rimraf dist && tsc --build",
+    "watch": "tsc --build --watch",
+    "test": "jest --passWithNoTests src"
   },
   "files": [
     "dist"
@@ -20,18 +21,16 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-transform-runtime": "^7.7.6",
-    "@babel/preset-env": "^7.7.5",
-    "@babel/runtime": "^7.9.6",
     "cross-env": "^5.2.1",
-    "jest": "^25.5.4"
+    "jest": "^25.5.4",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@babel/plugin-transform-classes": "^7.9.5",
+    "@mikro-orm/migrations": "5.7.12",
+    "@mikro-orm/postgresql": "5.7.12",
     "medusa-core-utils": "^1.2.0",
+    "pg-god": "^1.0.12",
     "randomatic": "^3.1.1"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"

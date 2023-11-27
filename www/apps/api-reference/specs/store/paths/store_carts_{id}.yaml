@@ -1,0 +1,90 @@
+get:
+  operationId: GetCartsCart
+  summary: Get a Cart
+  description: Retrieve a Cart's details. This includes recalculating its totals.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Cart.
+      schema:
+        type: string
+  x-codegen:
+    method: retrieve
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_carts_{id}/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_carts_{id}/get.sh
+  tags:
+    - Carts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCartsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostCartsCart
+  summary: Update a Cart
+  description: >-
+    Update a Cart's details. If the cart has payment sessions and the region was
+    not changed, the payment sessions are updated. The cart's totals are also
+    recalculated.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Cart.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCartsCartReq.yaml
+  x-codegen:
+    method: update
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_carts_{id}/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_carts_{id}/post.sh
+  tags:
+    - Carts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCartsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

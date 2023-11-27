@@ -74,9 +74,7 @@ const useEditProductActions = (productId: string) => {
     updateVariant.mutate(
       {
         variant_id: id,
-        ...removeFalsy(payload),
-        manage_inventory: payload.manage_inventory,
-        allow_backorder: payload.allow_backorder,
+        ...payload,
       },
       {
         onSuccess: () => {
@@ -94,7 +92,7 @@ const useEditProductActions = (productId: string) => {
   const onDeleteVariant = (
     variantId: string,
     onSuccess?: () => void,
-    successMessage = "Variant was succesfully deleted"
+    successMessage = "Variant was successfully deleted"
   ) => {
     deleteVariant.mutate(variantId, {
       onSuccess: () => {

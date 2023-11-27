@@ -143,9 +143,6 @@ export const ShippingProfileServiceMock = {
   fetchCartOptions: jest.fn().mockImplementation(() => {
     return Promise.resolve([{ id: IdMap.getId("cartShippingOption") }])
   }),
-  fetchOptionsByProductIds: jest.fn().mockImplementation(() => {
-    return Promise.resolve([{ id: IdMap.getId("cartShippingOption") }])
-  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

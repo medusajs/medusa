@@ -18,8 +18,9 @@ import inquirer from "inquirer"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
-import { clearProject } from "@medusajs/utils"
 import { PanicId } from "../reporter/panic-handler"
+import { clearProject } from "../util/clear-project"
+import path from "path"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
@@ -641,6 +642,11 @@ medusa new ${rootPath} [url-to-starter]
     reporter.info("Final project preparations...")
     // remove demo files
     clearProject(rootPath)
+    // remove .git directory
+    fs.rmSync(path.join(rootPath, '.git'), {
+      recursive: true,
+      force: true,
+    })
   }
 
   successMessage(rootPath)

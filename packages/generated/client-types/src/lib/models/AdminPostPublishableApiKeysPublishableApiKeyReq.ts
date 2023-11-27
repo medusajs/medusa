@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostPublishableApiKeysPublishableApiKeyReq {
   /**
-   * A title to update for the key.
+   * The title of the Publishable API Key.
    */
   title?: string
 }

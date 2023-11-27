@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.7
+
+### Patch Changes
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
 ## 1.3.6
 
 ### Patch Changes

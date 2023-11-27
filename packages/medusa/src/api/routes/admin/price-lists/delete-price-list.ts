@@ -1,3 +1,6 @@
+import { WorkflowTypes } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { removePriceLists } from "@medusajs/core-flows"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 
@@ -5,10 +8,10 @@ import PriceListService from "../../../../services/price-list"
  * @oas [delete] /admin/price-lists/{id}
  * operationId: "DeletePriceListsPriceList"
  * summary: "Delete a Price List"
- * description: "Deletes a Price List"
+ * description: "Delete a Price List and its associated prices."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List to delete.
+ *   - (path) id=* {string} The ID of the Price List.
  * x-codegen:
  *   method: delete
  * x-codeSamples:
@@ -18,18 +21,19 @@ import PriceListService from "../../../../services/price-list"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.delete(price_list_id)
+ *       medusa.admin.priceLists.delete(priceListId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/price-lists/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:
@@ -55,12 +59,33 @@ import PriceListService from "../../../../services/price-list"
 export default async (req, res) => {
   const { id } = req.params
 
-  const priceListService: PriceListService =
-    req.scope.resolve("priceListService")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await priceListService.withTransaction(transactionManager).delete(id)
-  })
+
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
+  )
+
+  if (isMedusaV2FlagEnabled) {
+    const removePriceListsWorkflow = removePriceLists(req.scope)
+
+    const input = {
+      price_lists: [id],
+    } as WorkflowTypes.PriceListWorkflow.RemovePriceListWorkflowInputDTO
+
+    await removePriceListsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+  } else {
+    const priceListService: PriceListService =
+      req.scope.resolve("priceListService")
+    await manager.transaction(async (transactionManager) => {
+      await priceListService.withTransaction(transactionManager).delete(id)
+    })
+  }
 
   res.json({
     id,

@@ -8,12 +8,12 @@ import { FindParams } from "../../../../types/common"
  * @oas [post] /admin/stock-locations/{id}
  * operationId: "PostStockLocationsStockLocation"
  * summary: "Update a Stock Location"
- * description: "Updates a Stock Location."
+ * description: "Update a Stock Location's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Stock Location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned stock location.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned stock location.
  * requestBody:
  *   content:
  *     application/json:
@@ -33,19 +33,20 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/stock-locations/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/stock-locations/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Main Warehouse"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Stock Locations
  * responses:
@@ -85,33 +86,60 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ stock_location: stockLocation })
 }
 
+/**
+ * The attributes of a stock location address to create or update.
+ */
 class StockLocationAddress {
+  /**
+   * First line address.
+   */
   @IsString()
   address_1: string
 
+  /**
+   * Second line address.
+   */
   @IsOptional()
   @IsString()
   address_2?: string
 
+  /**
+   * Company.
+   */
   @IsOptional()
   @IsString()
   company?: string
 
+  /**
+   * City.
+   */
   @IsOptional()
   @IsString()
   city?: string
 
+  /**
+   * Country code.
+   */
   @IsString()
   country_code: string
 
+  /**
+   * Phone.
+   */
   @IsOptional()
   @IsString()
   phone?: string
 
+  /**
+   * Postal code.
+   */
   @IsOptional()
   @IsString()
   postal_code?: string
 
+  /**
+   * Province.
+   */
   @IsOptional()
   @IsString()
   province?: string
@@ -131,7 +159,11 @@ class StockLocationAddress {
  *     type: object
  *     description: An optional key-value map with additional details
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   address:
+ *     description: The data of an associated address to create or update.
  *     $ref: "#/components/schemas/StockLocationAddressInput"
  */
 export class AdminPostStockLocationsLocationReq {

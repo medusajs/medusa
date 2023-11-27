@@ -34,6 +34,7 @@ import ReturnService from "./return"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -377,7 +378,7 @@ export default class ClaimService extends TransactionBaseService {
         let newItems: LineItem[] = []
 
         if (isDefined(additional_items)) {
-          newItems = await Promise.all(
+          newItems = await promiseAll(
             additional_items.map(async (i) =>
               lineItemServiceTx.generate(
                 i.variant_id,
@@ -387,7 +388,7 @@ export default class ClaimService extends TransactionBaseService {
             )
           )
 
-          await Promise.all(
+          await promiseAll(
             newItems.map(async (newItem) => {
               if (newItem.variant_id) {
                 await this.productVariantInventoryService_.reserveQuantity(
@@ -430,7 +431,7 @@ export default class ClaimService extends TransactionBaseService {
               id: result.additional_items.map((i) => i.id),
             },
             {
-              relations: ["variant", "variant.product"],
+              relations: ["variant.product.profiles"],
             }
           )
 
@@ -525,10 +526,8 @@ export default class ClaimService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const claim = await this.retrieve(id, {
           relations: [
-            "additional_items",
             "additional_items.tax_lines",
-            "additional_items.variant",
-            "additional_items.variant.product",
+            "additional_items.variant.product.profiles",
             "shipping_methods",
             "shipping_methods.shipping_option",
             "shipping_methods.tax_lines",

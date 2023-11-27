@@ -38,7 +38,7 @@ export interface Country {
    */
   region_id: string | null
   /**
-   * A region object. Available if the relation `region` is expanded.
+   * The details of the region the country is associated with.
    */
   region?: Region | null
 }

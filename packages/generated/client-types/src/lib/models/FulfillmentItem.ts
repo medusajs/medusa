@@ -7,23 +7,23 @@ import type { Fulfillment } from "./Fulfillment"
 import type { LineItem } from "./LineItem"
 
 /**
- * Correlates a Line Item with a Fulfillment, keeping track of the quantity of the Line Item.
+ * This represents the association between a Line Item and a Fulfillment.
  */
 export interface FulfillmentItem {
   /**
-   * The id of the Fulfillment that the Fulfillment Item belongs to.
+   * The ID of the Fulfillment that the Fulfillment Item belongs to.
    */
   fulfillment_id: string
   /**
-   * The id of the Line Item that the Fulfillment Item references.
+   * The ID of the Line Item that the Fulfillment Item references.
    */
   item_id: string
   /**
-   * A fulfillment object. Available if the relation `fulfillment` is expanded.
+   * The details of the fulfillment.
    */
   fulfillment?: Fulfillment | null
   /**
-   * Available if the relation `item` is expanded.
+   * The details of the line item.
    */
   item?: LineItem | null
   /**

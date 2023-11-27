@@ -20,30 +20,74 @@ import { omit } from "lodash"
  * @oas [get] /admin/variants
  * operationId: "GetVariants"
  * summary: "List Product Variants"
- * description: "Retrieves a list of Product Variants"
+ * description: "Retrieve a list of Product Variants. The product variant can be filtered by fields such as `id` or `title`. The product variant can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) id {string} A Product Variant id to filter by.
- *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.
- *   - (query) expand {string} A comma separated list of Product Variant relations to load.
- *   - (query) fields {string} A comma separated list of Product Variant fields to include.
- *   - (query) offset=0 {number} How many product variants to skip in the result.
- *   - (query) limit=100 {number} Maximum number of Product Variants to return.
- *   - (query) cart_id {string} The id of the cart to use for price selection.
- *   - (query) region_id {string} The id of the region to use for price selection.
- *   - (query) currency_code {string} The currency code to use for price selection.
- *   - (query) customer_id {string} The id of the customer to use for price selection.
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by product variant IDs.
+ *     schema:
+ *       oneOf:
+ *        - type: string
+ *          description: A product variant ID.
+ *        - type: array
+ *          description: An array of product variant IDs.
+ *          items:
+ *            type: string
+ *   - (query) expand {string} "Comma-separated relations that should be expanded in the returned product variants."
+ *   - (query) fields {string} "Comma-separated fields that should be included in the returned product variants."
+ *   - (query) offset=0 {number} The number of product variants to skip when retrieving the product variants.
+ *   - (query) limit=100 {number} Limit the number of product variants returned.
+ *   - in: query
+ *     name: cart_id
+ *     style: form
+ *     explode: false
+ *     description: The ID of the cart to use for the price selection context.
+ *     schema:
+ *       type: string
+ *   - in: query
+ *     name: region_id
+ *     style: form
+ *     explode: false
+ *     description: The ID of the region to use for the price selection context.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         description: "Price selection context overview"
+ *         url: "https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object"
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: The 3 character ISO currency code to use for the price selection context.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         description: "Price selection context overview"
+ *         url: "https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object"
+ *   - in: query
+ *     name: customer_id
+ *     style: form
+ *     explode: false
+ *     description: The ID of the customer to use for the price selection context.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         description: "Price selection context overview"
+ *         url: "https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object"
  *   - in: query
  *     name: title
  *     style: form
  *     explode: false
- *     description: product variant title to search for.
+ *     description: Filter by title.
  *     schema:
  *       oneOf:
  *         - type: string
- *           description: a single title to search by
+ *           description: a single title to filter by
  *         - type: array
- *           description: multiple titles to search by
+ *           description: multiple titles to filter by
  *           items:
  *             type: string
  *   - in: query
@@ -52,9 +96,9 @@ import { omit } from "lodash"
  *     schema:
  *       oneOf:
  *         - type: number
- *           description: a specific number to search by.
+ *           description: a specific number to filter by.
  *         - type: object
- *           description: search using less and greater than comparisons.
+ *           description: filter using less and greater than comparisons.
  *           properties:
  *             lt:
  *               type: number
@@ -81,17 +125,18 @@ import { omit } from "lodash"
  *       medusa.admin.variants.list()
  *       .then(({ variants, limit, offset, count }) => {
  *         console.log(variants.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/variants' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/variants' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Variants
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK
@@ -147,7 +192,7 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  let variants = await pricingService.setVariantPrices(rawVariants, {
+  let variants = await pricingService.setAdminVariantPricing(rawVariants, {
     cart_id: req.validatedQuery.cart_id,
     region_id: regionId,
     currency_code: currencyCode,
@@ -185,37 +230,66 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product variants.
+ */
 export class AdminGetVariantsParams extends AdminPriceSelectionParams {
+  /**
+   * Search term to search product variants' IDs.
+   */
   @IsOptional()
   @IsString()
   q?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 20
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 20
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsOptional()
   @IsString()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string
 
+  /**
+   * IDs to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Titles to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   title?: string | string[]
 
+  /**
+   * Number filters to apply on product variants' `inventory_quantity` field.
+   */
   @IsOptional()
   @IsType([Number, NumericalComparisonOperator])
   inventory_quantity?: number | NumericalComparisonOperator

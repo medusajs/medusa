@@ -15,7 +15,7 @@ export default class ProcessManager {
     })
   }
 
-  onTerminated(fn: Function) {
+  onTerminated(fn: () => Promise<void> | void) {
     process.on("SIGTERM", () => fn())
     process.on("SIGINT", () => fn())
   }
@@ -32,7 +32,7 @@ export default class ProcessManager {
     let processError = false
     let retries = 0
     do {
-      retries++
+      ++retries
       try {
         await process()
       } catch (error) {

@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetReturnsParams {
   /**
-   * The upper limit for the amount of responses returned.
+   * Limit the number of Returns returned.
    */
   limit?: number
   /**
-   * The offset of the list returned.
+   * The number of Returns to skip when retrieving the Returns.
    */
   offset?: number
 }

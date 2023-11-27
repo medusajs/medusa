@@ -1,54 +1,50 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
+const {
+  startBootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const {
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const cartSeeder = require("../../../helpers/cart-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
   simpleProductFactory,
   simpleCustomerFactory,
-} = require("../../../../api/factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+} = require("../../../../factories")
 const {
-  simpleOrderFactory,
   simpleRegionFactory,
-  simpleCartFactory,
   simpleShippingOptionFactory,
-} = require("../../../factories")
-const {
-  simpleDiscountFactory,
-} = require("../../../factories/simple-discount-factory")
-const draftOrderSeeder = require("../../../../api/helpers/draft-order-seeder")
+} = require("../../../../factories")
 const {
   simpleAddressFactory,
-} = require("../../../factories/simple-address-factory")
+} = require("../../../../factories/simple-address-factory")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 
 jest.setTimeout(30000)
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("/store/carts", () => {
-  let express
+  let shutdownServer
   let appContainer
   let dbConnection
-
-  const doAfterEach = async () => {
-    const db = useDb()
-    return await db.teardown()
-  }
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
+  })
 
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+    await shutdownServer()
   })
 
   beforeEach(async () => {})
@@ -57,7 +53,6 @@ describe("/store/carts", () => {
     const variantId = "test-variant"
 
     let region
-    let order
     let invItemId
     let prodVarInventoryService
     let inventoryService
@@ -119,7 +114,7 @@ describe("/store/carts", () => {
       })
     })
 
-    it("creates an order from a draft order and doesn't adjust reservations", async () => {
+    it("should create the order from a draft order and shouldn't adjust reservations", async () => {
       const api = useApi()
       let inventoryItem = await api.get(
         `/admin/inventory-items/${invItemId}`,

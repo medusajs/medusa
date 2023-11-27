@@ -4,7 +4,7 @@ import { TaxProviderService } from "../../../../services"
  * @oas [get] /admin/store/tax-providers
  * operationId: "GetStoreTaxProviders"
  * summary: "List Tax Providers"
- * description: "Retrieves the configured Tax Providers"
+ * description: "Retrieve a list of available Tax Providers in a store."
  * x-authenticated: true
  * x-codegen:
  *   method: listTaxProviders
@@ -18,15 +18,16 @@ import { TaxProviderService } from "../../../../services"
  *       medusa.admin.store.listTaxProviders()
  *       .then(({ tax_providers }) => {
  *         console.log(tax_providers.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/store/tax-providers' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/store/tax-providers' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:

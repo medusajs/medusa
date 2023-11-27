@@ -1,11 +1,10 @@
 import { IEventBusService, ISearchService } from "@medusajs/types"
-import { defaultSearchIndexingProductRelations } from "@medusajs/utils"
+import { FlagRouter, defaultSearchIndexingProductRelations } from "@medusajs/utils"
 import { indexTypes } from "medusa-core-utils"
 import ProductCategoryFeatureFlag from "../loaders/feature-flags/product-categories"
 import { SEARCH_INDEX_EVENT } from "../loaders/search-index"
 import { Product } from "../models"
 import ProductService from "../services/product"
-import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService

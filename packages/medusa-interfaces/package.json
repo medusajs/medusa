@@ -11,7 +11,7 @@
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests src",
-    "build": "babel src --out-dir dist --ignore '**/__tests__','**/__mocks__'",
+    "build": "rimraf dist && babel src --out-dir dist --ignore '**/__tests__','**/__mocks__'",
     "watch": "babel -w src --out-dir dist --ignore '**/__tests__','**/__mocks__'"
   },
   "files": [
@@ -33,6 +33,7 @@
     "jest": "^25.5.4",
     "medusa-core-utils": "^1.2.0",
     "medusa-test-utils": "^1.1.40",
+    "rimraf": "^5.0.1",
     "typescript": "^4.4.4"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"

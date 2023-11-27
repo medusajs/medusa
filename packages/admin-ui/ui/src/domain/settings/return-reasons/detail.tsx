@@ -5,6 +5,7 @@ import {
 } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import DuplicateIcon from "../../../components/fundamentals/icons/duplicate-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import Input from "../../../components/molecules/input"
@@ -38,6 +39,7 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
   const { register, reset, handleSubmit } =
     useForm<ReturnReasonDetailsFormData>()
   const notification = useNotification()
+  const { t } = useTranslation()
   const { mutate: deleteRR } = useAdminDeleteReturnReason(reason?.id)
   const { mutate: update } = useAdminUpdateReturnReason(reason?.id)
 
@@ -54,13 +56,20 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       {
         onSuccess: () => {
           notification(
-            "Success",
-            "Successfully updated return reason",
+            t("return-reasons-success-title", "Success"),
+            t(
+              "return-reasons-successfully-updated-return-reason",
+              "Successfully updated return reason"
+            ),
             "success"
           )
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(
+            t("return-reasons-error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -87,12 +96,12 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       <BodyCard
         actionables={[
           {
-            label: "Duplicate reason",
+            label: t("return-reasons-duplicate-reason", "Duplicate reason"),
             icon: <DuplicateIcon size={20} />,
             onClick: () => handleOpenDuplicateModal(),
           },
           {
-            label: "Delete reason",
+            label: t("return-reasons-delete-reason", "Delete reason"),
             variant: "danger",
             icon: <TrashIcon size={20} />,
             onClick: () => handleOpenPrompt(),
@@ -100,24 +109,30 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
         ]}
         events={[
           {
-            label: "Save",
+            label: t("return-reasons-save", "Save"),
             onClick: handleSubmit(onSave),
           },
           {
-            label: "Cancel",
+            label: t("return-reasons-cancel", "Cancel"),
             onClick: handleCancel,
           },
         ]}
-        title="Details"
+        title={t("return-reasons-details", "Details")}
         subtitle={reason?.value}
       >
         <form onSubmit={handleSubmit(onSave)}>
-          <Input {...register("label")} label="Label" />
+          <Input
+            {...register("label")}
+            label={t("return-reasons-label", "Label")}
+          />
           <Input
             {...register("description")}
-            label="Description"
+            label={t("return-reasons-description", "Description")}
             className="mt-base"
-            placeholder="Customer received the wrong size"
+            placeholder={t(
+              "return-reasons-customer-received-the-wrong-size",
+              "Customer received the wrong size"
+            )}
           />
         </form>
       </BodyCard>
@@ -129,8 +144,14 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       )}
       {showDanger && (
         <DeletePrompt
-          heading="Delete Return Reason"
-          text="Are you sure you want to delete this return reason?"
+          heading={t(
+            "return-reasons-delete-return-reason",
+            "Delete Return Reason"
+          )}
+          text={t(
+            "return-reasons-are-you-sure-you-want-to-delete-this-return-reason",
+            "Are you sure you want to delete this return reason?"
+          )}
           handleClose={handleClosePrompt}
           onDelete={handleDeletion}
         />

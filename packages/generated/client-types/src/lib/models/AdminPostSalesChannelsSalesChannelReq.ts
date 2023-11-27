@@ -5,15 +5,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostSalesChannelsSalesChannelReq {
   /**
-   * Name of the sales channel.
+   * The name of the sales channel
    */
   name?: string
   /**
-   * Sales Channel description.
+   * The description of the sales channel.
    */
   description?: string
   /**
-   * Indication of if the sales channel is active.
+   * Whether the Sales Channel is disabled.
    */
   is_disabled?: boolean
 }

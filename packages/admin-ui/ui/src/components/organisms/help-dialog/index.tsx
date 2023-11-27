@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../fundamentals/button"
 import DiscordIcon from "../../fundamentals/icons/discord-icon"
 import InputField from "../../molecules/input"
@@ -12,6 +13,7 @@ type MailDialogProps = {
 }
 
 const MailDialog = ({ open, onClose }: MailDialogProps) => {
+  const { t } = useTranslation()
   const [subject, setSubject] = useState("")
   const [body, setBody] = useState("")
   const [link, setLink] = useState("mailto:support@medusajs.com")
@@ -30,21 +32,30 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
         <Dialog.Content className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col justify-between p-8">
           <div>
             <Dialog.Title className="inter-xlarge-semibold mb-1">
-              How can we help?
+              {t("help-dialog-how-can-we-help", "How can we help?")}
             </Dialog.Title>
             <Dialog.Description className="inter-small-regular text-grey-50 mb-6">
-              We usually respond in a few hours
+              {t(
+                "help-dialog-we-usually-respond-in-a-few-hours",
+                "We usually respond in a few hours"
+              )}
             </Dialog.Description>
             <InputField
-              label={"Subject"}
+              label={t("help-dialog-subject", "Subject")}
               value={subject}
               className="mb-4"
-              placeholder="What is it about?..."
+              placeholder={t(
+                "help-dialog-what-is-it-about",
+                "What is it about?..."
+              )}
               onChange={(e) => setSubject(e.target.value)}
             />
             <TextArea
-              label={"How can we help?"}
-              placeholder="Write a message..."
+              label={t("help-dialog-how-can-we-help", "How can we help?")}
+              placeholder={t(
+                "help-dialog-write-a-message",
+                "Write a message..."
+              )}
               value={body}
               onChange={(e) => {
                 setBody(e.target.value)
@@ -65,15 +76,21 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
                   <DiscordIcon size={24} />
                 </span>
                 <p className="text-grey-40 inter-small-regular text-center leading-6">
-                  Feel free to join our community of
+                  {t(
+                    "help-dialog-feel-free-to-join-our-community-of",
+                    "Feel free to join our community of"
+                  )}
                   <br />
-                  merchants and e-commerce developers
+                  {t(
+                    "help-dialog-merchants-and-e-commerce-developers",
+                    "merchants and e-commerce developers"
+                  )}
                 </p>
               </div>
             </a>
             <a className="w-full" href={link}>
               <Button variant="primary" size="large" className="w-full">
-                Send a message
+                {t("help-dialog-send-a-message", "Send a message")}
               </Button>
             </a>
           </div>

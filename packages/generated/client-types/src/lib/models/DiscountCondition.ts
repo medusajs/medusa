@@ -19,7 +19,7 @@ export interface DiscountCondition {
    */
   id: string
   /**
-   * The type of the Condition
+   * The type of the condition. The type affects the available resources associated with the condition. For example, if the type is `products`, that means the `products` relation will hold the products associated with this condition and other relations will be empty.
    */
   type:
     | "products"
@@ -28,7 +28,7 @@ export interface DiscountCondition {
     | "product_tags"
     | "customer_groups"
   /**
-   * The operator of the Condition
+   * The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that discountable resources are everything but the specified resources.
    */
   operator: "in" | "not_in"
   /**
@@ -36,27 +36,27 @@ export interface DiscountCondition {
    */
   discount_rule_id: string
   /**
-   * Available if the relation `discount_rule` is expanded.
+   * The details of the discount rule associated with the condition.
    */
   discount_rule?: DiscountRule | null
   /**
-   * products associated with this condition if type = products. Available if the relation `products` is expanded.
+   * products associated with this condition if `type` is `products`.
    */
   products?: Array<Product>
   /**
-   * Product types associated with this condition if type = product_types. Available if the relation `product_types` is expanded.
+   * Product types associated with this condition if `type` is `product_types`.
    */
   product_types?: Array<ProductType>
   /**
-   * Product tags associated with this condition if type = product_tags. Available if the relation `product_tags` is expanded.
+   * Product tags associated with this condition if `type` is `product_tags`.
    */
   product_tags?: Array<ProductTag>
   /**
-   * Product collections associated with this condition if type = product_collections. Available if the relation `product_collections` is expanded.
+   * Product collections associated with this condition if `type` is `product_collections`.
    */
   product_collections?: Array<ProductCollection>
   /**
-   * Customer groups associated with this condition if type = customer_groups. Available if the relation `customer_groups` is expanded.
+   * Customer groups associated with this condition if `type` is `customer_groups`.
    */
   customer_groups?: Array<CustomerGroup>
   /**

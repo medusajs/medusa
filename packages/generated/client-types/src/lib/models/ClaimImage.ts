@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ClaimItem } from "./ClaimItem"
 
 /**
- * Represents photo documentation of a claim.
+ * The details of an image attached to a claim.
  */
 export interface ClaimImage {
   /**
@@ -18,7 +18,7 @@ export interface ClaimImage {
    */
   claim_item_id: string
   /**
-   * A claim item object. Available if the relation `claim_item` is expanded.
+   * The details of the claim item this image is associated with.
    */
   claim_item?: ClaimItem | null
   /**

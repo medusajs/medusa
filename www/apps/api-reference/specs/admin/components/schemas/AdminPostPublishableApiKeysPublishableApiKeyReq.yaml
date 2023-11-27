@@ -1,0 +1,5 @@
+type: object
+properties:
+  title:
+    description: The title of the Publishable API Key.
+    type: string

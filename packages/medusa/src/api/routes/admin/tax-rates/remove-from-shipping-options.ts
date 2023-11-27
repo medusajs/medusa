@@ -9,13 +9,13 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /admin/tax-rates/{id}/shipping-options/batch
  * operationId: "DeleteTaxRatesTaxRateShippingOptions"
- * summary: "Del. for Shipping Options"
- * description: "Removes a Tax Rate from a list of Shipping Options"
+ * summary: "Remove Shipping Options from Rate"
+ * description: "Remove shipping options from a tax rate. This only removes the association between the shipping options and the tax rate. It does not delete the shipping options."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -47,20 +47,20 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.taxRates.removeShippingOptions(tax_rate_id, {
+ *       medusa.admin.taxRates.removeShippingOptions(taxRateId, {
  *         shipping_options: [
- *           shipping_option_id
+ *           shippingOptionId
  *         ]
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/tax-rates/{id}/shipping-options/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/tax-rates/{id}/shipping-options/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "shipping_options": [
  *            "{shipping_option_id}"
@@ -69,6 +69,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Tax Rates
  * responses:
@@ -129,7 +130,7 @@ export default async (req, res) => {
  * properties:
  *   shipping_options:
  *     type: array
- *     description: "The IDs of the shipping options to remove association with this tax rate"
+ *     description: "The IDs of the shipping options to remove their association with this tax rate."
  *     items:
  *       type: string
  */
@@ -138,11 +139,20 @@ export class AdminDeleteTaxRatesTaxRateShippingOptionsReq {
   shipping_options: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminDeleteTaxRatesTaxRateShippingOptionsParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

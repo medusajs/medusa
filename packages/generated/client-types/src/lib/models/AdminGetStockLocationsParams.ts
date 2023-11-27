@@ -5,19 +5,19 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetStockLocationsParams {
   /**
-   * ID of the stock location
+   * Filter by ID.
    */
   id?: string
   /**
-   * Name of the stock location
+   * Filter by name.
    */
   name?: string
   /**
-   * The field to order the results by.
+   * A stock-location field to sort-order the retrieved stock locations by.
    */
   order?: string
   /**
-   * Date comparison for when resulting collections were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -38,7 +38,7 @@ export interface AdminGetStockLocationsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -59,7 +59,7 @@ export interface AdminGetStockLocationsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were deleted.
+   * Filter by a deletion date range.
    */
   deleted_at?: {
     /**
@@ -80,7 +80,7 @@ export interface AdminGetStockLocationsParams {
     gte?: string
   }
   /**
-   * How many stock locations to skip in the result.
+   * The number of stock locations to skip when retrieving the stock locations.
    */
   offset?: number
   /**
@@ -88,11 +88,11 @@ export interface AdminGetStockLocationsParams {
    */
   limit?: number
   /**
-   * (Comma separated) Which fields should be expanded in each stock location of the result.
+   * Comma-separated relations that should be expanded in the returned stock locations.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in each stock location of the result.
+   * Comma-separated fields that should be included in the returned stock locations.
    */
   fields?: string
 }

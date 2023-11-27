@@ -11,6 +11,7 @@ import {
 } from "@tanstack/react-table"
 import { useAdminVariants } from "medusa-react"
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import { useLayeredModal } from "../../../../../components/molecules/modal/layered-modal"
@@ -36,6 +37,7 @@ const AddAdditionalItemsScreen = ({
   order,
 }: Props) => {
   const { pop } = useLayeredModal()
+  const { t } = useTranslation()
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -162,7 +164,7 @@ const AddAdditionalItemsScreen = ({
       <Modal.Footer>
         <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            Go back
+            {t("add-additional-items-screen-go-back", "Go back")}
           </Button>
           <Button
             variant="primary"
@@ -170,7 +172,7 @@ const AddAdditionalItemsScreen = ({
             type="button"
             onClick={onSubmit}
           >
-            Add products
+            {t("add-additional-items-screen-add-products", "Add products")}
           </Button>
         </div>
       </Modal.Footer>
@@ -180,10 +182,14 @@ const AddAdditionalItemsScreen = ({
 
 export const useAddAdditionalItemsScreen = () => {
   const { push, pop } = useLayeredModal()
+  const { t } = useTranslation()
 
   const pushScreen = (props: Props) => {
     push({
-      title: "Add Product Variants",
+      title: t(
+        "add-additional-items-screen-add-product-variants",
+        "Add Product Variants"
+      ),
       onBack: () => pop(),
       view: <AddAdditionalItemsScreen {...props} />,
     })

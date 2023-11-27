@@ -1,10 +1,10 @@
 import { ProductCategory } from "@medusajs/medusa"
 import path from "path"
 
-import startServerWithEnvironment from "../../../helpers/start-server-with-environment"
-import { useApi } from "../../../helpers/use-api"
-import { useDb } from "../../../helpers/use-db"
-import { simpleProductCategoryFactory } from "../../factories"
+import startServerWithEnvironment from "../../../environment-helpers/start-server-with-environment"
+import { useApi } from "../../../environment-helpers/use-api"
+import { useDb } from "../../../environment-helpers/use-db"
+import { simpleProductCategoryFactory } from "../../../factories"
 
 jest.setTimeout(30000)
 
@@ -180,9 +180,7 @@ describe("/store/product-categories", () => {
     it("gets list of product category with immediate children and parents", async () => {
       const api = useApi()
 
-      const response = await api.get(
-        `/store/product-categories?limit=10`,
-      )
+      const response = await api.get(`/store/product-categories?limit=10`)
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(4)

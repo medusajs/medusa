@@ -12,18 +12,19 @@ export class PaymentProvider {
 /**
  * @schema PaymentProvider
  * title: "Payment Provider"
- * description: "Represents a Payment Provider plugin and holds its installation status."
+ * description: "A payment provider represents a payment service installed in the Medusa backend, either through a plugin or backend customizations.
+ *  It holds the payment service's installation status."
  * type: object
  * required:
  *   - id
  *   - is_installed
  * properties:
  *   id:
- *     description: The id of the payment provider as given by the plugin.
+ *     description: The ID of the payment provider as given by the payment service.
  *     type: string
  *     example: manual
  *   is_installed:
- *     description: Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`.
+ *     description: Whether the payment service is installed in the current version. If a payment service is no longer installed, the `is_installed` attribute is set to `false`.
  *     type: boolean
  *     default: true
  */

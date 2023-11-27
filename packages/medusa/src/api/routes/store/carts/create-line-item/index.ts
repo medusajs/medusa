@@ -40,12 +40,12 @@ import { cleanResponseData } from "../../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/line-items' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/line-items' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "variant_id": "{variant_id}",
  *           "quantity": 1
@@ -157,6 +157,9 @@ export default async (req, res) => {
  *   metadata:
  *     type: object
  *     description: An optional key-value map with additional details about the Line Item.
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class StorePostCartsCartLineItemsReq {
   @IsString()

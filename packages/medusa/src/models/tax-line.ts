@@ -19,7 +19,7 @@ export class TaxLine extends BaseEntity {
 /**
  * @schema TaxLine
  * title: "Tax Line"
- * description: "Line item that specifies an amount of tax to add to a line item."
+ * description: "A tax line represents the taxes amount applied to a line item."
  * type: object
  * required:
  *   - code
@@ -60,4 +60,7 @@ export class TaxLine extends BaseEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

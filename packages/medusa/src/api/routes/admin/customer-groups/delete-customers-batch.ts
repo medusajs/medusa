@@ -10,8 +10,8 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /admin/customer-groups/{id}/customers/batch
  * operationId: "DeleteCustomerGroupsGroupCustomerBatch"
- * summary: "Remove Customers"
- * description: "Removes a list of customers, represented by id's, from a customer group."
+ * summary: "Remove Customers from Group"
+ * description: "Remove a list of customers from a customer group. This doesn't delete the customer, only the association between the customer and the customer group."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
@@ -29,22 +29,22 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.removeCustomers(customer_group_id, {
+ *       medusa.admin.customerGroups.removeCustomers(customerGroupId, {
  *         customer_ids: [
  *           {
- *             id: customer_id
+ *             id: customerId
  *           }
  *         ]
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/customer-groups/{id}/customers/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE '{backend_url}/admin/customer-groups/{id}/customers/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "customer_ids": [
  *               {
@@ -55,6 +55,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customer Groups
  * responses:

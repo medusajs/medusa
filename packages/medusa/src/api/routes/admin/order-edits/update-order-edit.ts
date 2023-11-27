@@ -11,8 +11,8 @@ import {
 /**
  * @oas [post] /admin/order-edits/{id}
  * operationId: "PostOrderEditsOrderEdit"
- * summary: "Update an OrderEdit"
- * description: "Updates a OrderEdit."
+ * summary: "Update an Order Edit"
+ * description: "Update an Order Edit's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
@@ -30,24 +30,25 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.update(order_edit_id, {
+ *       medusa.admin.orderEdits.update(orderEditId, {
  *         internal_note: "internal reason XY"
  *       })
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/order-edits/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "internal_note": "internal reason XY"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Order Edits
  * responses:
@@ -103,7 +104,7 @@ export default async (req: Request, res: Response) => {
  * type: object
  * properties:
  *   internal_note:
- *     description: An optional note to create or update for the order edit.
+ *     description: An optional note to create or update in the order edit.
  *     type: string
  */
 export class AdminPostOrderEditsOrderEditReq {

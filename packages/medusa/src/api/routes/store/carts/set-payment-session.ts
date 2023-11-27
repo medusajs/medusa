@@ -1,6 +1,9 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
@@ -9,7 +12,8 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /store/carts/{id}/payment-session
  * operationId: PostCartsCartPaymentSession
  * summary: Select a Payment Session
- * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
+ * description: "Select the Payment Session that will be used to complete the cart. This is typically used when the customer chooses their preferred payment method during checkout.
+ *  The totals of the cart will be recalculated."
  * parameters:
  *   - (path) id=* {string} The ID of the Cart.
  * requestBody:
@@ -25,17 +29,17 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.setPaymentSession(cart_id, {
- *         provider_id: 'manual'
+ *       medusa.carts.setPaymentSession(cartId, {
+ *         provider_id: "manual"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/payment-sessions' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "provider_id": "manual"
  *       }'
@@ -66,6 +70,9 @@ export default async (req, res) => {
 
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await cartService
@@ -77,6 +84,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }

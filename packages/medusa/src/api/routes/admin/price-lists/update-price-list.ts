@@ -1,3 +1,5 @@
+import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
+import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
 import {
   IsArray,
   IsBoolean,
@@ -7,25 +9,23 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-import {
-  AdminPriceListPricesUpdateReq,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
 
+import { updatePriceLists } from "@medusajs/core-flows"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { PriceList } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import PriceListService from "../../../../services/price-list"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
+import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [post] /admin/price-lists/{id}
  * operationId: "PostPriceListsPriceListPriceList"
  * summary: "Update a Price List"
- * description: "Updates a Price List"
+ * description: "Update a Price List's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List.
@@ -43,24 +43,25 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.update(price_list_id, {
- *         name: 'New Price List'
+ *       medusa.admin.priceLists.update(priceListId, {
+ *         name: "New Price List"
  *       })
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/price-lists/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/price-lists/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "New Price List"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:
@@ -85,26 +86,59 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const { id } = req.params
+  let priceList
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const manager: EntityManager = req.scope.resolve("manager")
+  const priceListService: PriceListService =
+    req.scope.resolve("priceListService")
 
   const validated = await validator(
     AdminPostPriceListsPriceListPriceListReq,
     req.body
   )
 
-  const priceListService: PriceListService =
-    req.scope.resolve("priceListService")
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const updateVariantsWorkflow = updatePriceLists(req.scope)
+    const customerGroups = validated.customer_groups
+    delete validated.customer_groups
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .update(id, validated)
-  })
+    const updatePriceListInput = {
+      id,
+      ...validated,
+    } as PricingTypes.UpdatePriceListDTO
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+    if (Array.isArray(customerGroups)) {
+      updatePriceListInput.rules = {
+        customer_group_id: customerGroups.map((group) => group.id),
+      }
+    }
+
+    const input = {
+      price_lists: [updatePriceListInput],
+    } as WorkflowTypes.PriceListWorkflow.UpdatePriceListWorkflowInputDTO
+
+    await updateVariantsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    priceList = await getPriceListPricingModule(id, {
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      return await priceListService
+        .withTransaction(transactionManager)
+        .update(id, validated)
+    })
+
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.json({ price_list: priceList })
 }
@@ -122,7 +156,7 @@ class CustomerGroup {
  *     description: "The name of the Price List"
  *     type: string
  *   description:
- *     description: "A description of the Price List."
+ *     description: "The description of the Price List."
  *     type: string
  *   starts_at:
  *     description: "The date with timezone that the Price List starts being valid."
@@ -139,7 +173,8 @@ class CustomerGroup {
  *      - sale
  *      - override
  *   status:
- *     description: The status of the Price List.
+ *     description: >-
+ *       The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer.
  *     type: string
  *     enum:
  *      - active
@@ -157,10 +192,10 @@ class CustomerGroup {
  *           description: The ID of the price.
  *           type: string
  *         region_id:
- *           description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+ *           description: The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
  *           type: string
  *         currency_code:
- *           description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *           description: The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
  *           type: string
  *           externalDocs:
  *              url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
@@ -179,7 +214,7 @@ class CustomerGroup {
  *           type: integer
  *   customer_groups:
  *     type: array
- *     description: A list of customer groups that the Price List applies to.
+ *     description: An array of customer groups that the Price List applies to.
  *     items:
  *       type: object
  *       required:
@@ -189,7 +224,8 @@ class CustomerGroup {
  *           description: The ID of a customer group
  *           type: string
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Tax included in prices of price list"
+ *     description: "Tax included in prices of price list"
+ *     x-featureFlag: "tax_inclusive_pricing"
  *     type: boolean
  */
 export class AdminPostPriceListsPriceListPriceListReq {

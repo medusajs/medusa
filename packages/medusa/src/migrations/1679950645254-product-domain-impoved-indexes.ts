@@ -5,7 +5,7 @@ export class productDomainImprovedIndexes1679950645254
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // If you want to reset it to 'on' run 'set enable_nestloop to on;'
-    // Improve large IN queries, since we have separate queries everytime it is better to turn it off
+    // Improve large IN queries, since we have separate queries every time it is better to turn it off
     await queryRunner.query(`
       /* You can turn of this settings if you are in a context with lots of variants) set enable_nestloop to off; */
       

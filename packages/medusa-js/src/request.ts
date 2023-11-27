@@ -3,6 +3,7 @@ import * as rax from "retry-axios"
 import { v4 as uuidv4 } from "uuid"
 
 import KeyManager from "./key-manager"
+import JwtTokenManager from "./jwt-token-manager"
 
 const unAuthenticatedAdminEndpoints = {
   "/admin/auth": "POST",
@@ -19,8 +20,19 @@ export interface Config {
   customHeaders?: Record<string, any>
 }
 
+/**
+ * @interface
+ * 
+ * Options to pass to requests sent to custom API Routes
+ */
 export interface RequestOptions {
+  /**
+   * The number of milliseconds before the request times out.
+   */
   timeout?: number
+  /**
+   * The number of times to retry a request before failing.
+   */
   numberOfRetries?: number
 }
 
@@ -125,7 +137,16 @@ class Client {
     if (this.config.apiKey && this.requiresAuthentication(path, method)) {
       defaultHeaders = {
         ...defaultHeaders,
-        Authorization: `Bearer ${this.config.apiKey}`,
+        "x-medusa-access-token": this.config.apiKey,
+      }
+    }
+
+    const domain: "admin" | "store" = path.includes("admin") ? "admin" : "store"
+
+    if (JwtTokenManager.getJwt(domain)) {
+      defaultHeaders = {
+        ...defaultHeaders,
+        Authorization: `Bearer ${JwtTokenManager.getJwt(domain)}`,
       }
     }
 

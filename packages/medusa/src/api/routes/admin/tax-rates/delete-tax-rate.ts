@@ -5,7 +5,7 @@ import { TaxRateService } from "../../../../services"
  * @oas [delete] /admin/tax-rates/{id}
  * operationId: "DeleteTaxRatesTaxRate"
  * summary: "Delete a Tax Rate"
- * description: "Deletes a Tax Rate"
+ * description: "Delete a Tax Rate. Resources associated with the tax rate, such as products or product types, are not deleted."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Option.
@@ -18,18 +18,19 @@ import { TaxRateService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.taxRates.delete(tax_rate_id)
+ *       medusa.admin.taxRates.delete(taxRateId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/tax-rates/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/tax-rates/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Tax Rates
  * responses:

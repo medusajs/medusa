@@ -2,6 +2,7 @@ import { Product, ProductVariant, Region } from "@medusajs/medusa"
 import clsx from "clsx"
 import React, { useContext, useEffect, useState } from "react"
 import { Controller } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import MinusIcon from "../../../../components/fundamentals/icons/minus-icon"
 import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
@@ -23,6 +24,7 @@ import CustomItemSubModal from "./custom-item-sub-modal"
 import { useMedusa } from "medusa-react"
 
 const Items = () => {
+  const { t } = useTranslation()
   const { enableNextPage, disableNextPage, nextStepEnabled } =
     React.useContext(SteppedContext)
 
@@ -116,17 +118,21 @@ const Items = () => {
 
   return (
     <div className="flex min-h-[705px] flex-col pt-4">
-      <span className="inter-base-semibold mb-4">Items for the order</span>
+      <span className="inter-base-semibold mb-4">
+        {t("components-items-for-the-order", "Items for the order")}
+      </span>
       {fields.length > 0 && region && (
         <Table>
           <Table.Head>
             <Table.HeadRow className="text-grey-50 inter-small-semibold border-t">
-              <Table.HeadCell>Details</Table.HeadCell>
+              <Table.HeadCell>
+                {t("components-details", "Details")}
+              </Table.HeadCell>
               <Table.HeadCell className="pr-8 text-right">
-                Quantity
+                {t("components-quantity", "Quantity")}
               </Table.HeadCell>
               <Table.HeadCell className="text-right">
-                Price (excl. Taxes)
+                {t("components-price-excl-taxes", "Price (excl. Taxes)")}
               </Table.HeadCell>
               <Table.HeadCell></Table.HeadCell>
             </Table.HeadRow>
@@ -274,13 +280,14 @@ const Items = () => {
               CreateCustomProductScreen(
                 layeredContext.pop,
                 addCustomItem,
-                region
+                region,
+                t
               )
             )
           }}
         >
           <PlusIcon size={20} />
-          Add Custom
+          {t("components-add-custom", "Add Custom")}
         </Button>
         <Button
           variant="ghost"
@@ -291,22 +298,23 @@ const Items = () => {
               SelectProductsScreen(
                 layeredContext.pop,
                 items.fields.map((item) => ({ id: item.variant_id })),
-                addItem
+                addItem,
+                t
               )
             )
           }}
         >
           <PlusIcon size={20} />
-          Add Existing
+          {t("components-add-existing", "Add Existing")}
         </Button>
       </div>
     </div>
   )
 }
 
-const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems) => {
+const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems, t) => {
   return {
-    title: "Add Products",
+    title: t("components-add-products", "Add Products"),
     onBack: () => pop(),
     view: (
       <RMASelectProductSubModal
@@ -317,9 +325,9 @@ const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems) => {
   }
 }
 
-const CreateCustomProductScreen = (pop, onSubmit, region) => {
+const CreateCustomProductScreen = (pop, onSubmit, region, t) => {
   return {
-    title: "Add Custom Item",
+    title: t("components-add-custom-item", "Add Custom Item"),
     onBack: () => pop(),
     view: <CustomItemSubModal onSubmit={onSubmit} region={region} />,
   }

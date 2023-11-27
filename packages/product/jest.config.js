@@ -4,14 +4,14 @@ module.exports = {
     "^@services": "<rootDir>/src/services",
     "^@repositories": "<rootDir>/src/repositories",
   },
-  globals: {
-    "ts-jest": {
-      tsConfig: "tsconfig.spec.json",
-      isolatedModules: false,
-    },
-  },
   transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
+    "^.+\\.[jt]s?$": [
+      "ts-jest",
+      {
+        tsconfig: "tsconfig.spec.json",
+        isolatedModules: true,
+      },
+    ],
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],

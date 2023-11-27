@@ -14,15 +14,43 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
+/**
+ * @enum
+ * 
+ * The payment collection's status.
+ */
 export enum PaymentCollectionStatus {
+  /**
+   * The payment collection isn't paid.
+   */
   NOT_PAID = "not_paid",
+  /**
+   * The payment collection is awaiting payment.
+   */
   AWAITING = "awaiting",
+  /**
+   * The payment colleciton is authorized.
+   */
   AUTHORIZED = "authorized",
+  /**
+   * Some of the payments in the payment collection are authorized.
+   */
   PARTIALLY_AUTHORIZED = "partially_authorized",
+  /**
+   * The payment collection is canceled.
+   */
   CANCELED = "canceled",
 }
 
+/**
+ * @enum
+ * 
+ * The payment collection's type.
+ */
 export enum PaymentCollectionType {
+  /**
+   * The payment collection is used for an order edit.
+   */
   ORDER_EDIT = "order_edit",
 }
 
@@ -93,6 +121,9 @@ export class PaymentCollection extends SoftDeletableEntity {
   @Column()
   created_by: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "paycol")
@@ -102,7 +133,7 @@ export class PaymentCollection extends SoftDeletableEntity {
 /**
  * @schema PaymentCollection
  * title: "Payment Collection"
- * description: "Payment Collection"
+ * description: "A payment collection allows grouping and managing a list of payments at one. This can be helpful when making additional payment for order edits or integrating installment payments."
  * type: object
  * required:
  *   - amount
@@ -149,32 +180,36 @@ export class PaymentCollection extends SoftDeletableEntity {
  *     nullable: true
  *     type: integer
  *   region_id:
- *     description: The region's ID
+ *     description: The ID of the region this payment collection is associated with.
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: Available if the relation `region` is expanded.
+ *     description: The details of the region this payment collection is associated with.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   currency_code:
- *     description: The 3 character ISO code for the currency.
+ *     description: The three character ISO code for the currency this payment collection is associated with.
  *     type: string
  *     example: usd
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation `currency` is expanded.
+ *     description: The details of the currency this payment collection is associated with.
+ *     x-expandable: "currency"
  *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   payment_sessions:
- *     description: Available if the relation `payment_sessions` is expanded.
+ *     description: The details of the payment sessions created as part of the payment collection.
  *     type: array
+ *     x-expandable: "payment_sessions"
  *     items:
  *       $ref: "#/components/schemas/PaymentSession"
  *   payments:
- *     description: Available if the relation `payments` is expanded.
+ *     description: The details of the payments created as part of the payment collection.
  *     type: array
+ *     x-expandable: "payments"
  *     items:
  *       $ref: "#/components/schemas/Payment"
  *   created_by:
@@ -198,4 +233,7 @@ export class PaymentCollection extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

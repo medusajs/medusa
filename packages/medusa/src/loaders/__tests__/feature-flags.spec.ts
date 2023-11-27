@@ -1,5 +1,5 @@
-import { resolve } from "path"
 import { mkdirSync, rmSync, writeFileSync } from "fs"
+import { resolve } from "path"
 
 import loadFeatureFlags from "../feature-flags"
 
@@ -65,6 +65,27 @@ describe("feature flags", () => {
     )
 
     expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
+  })
+
+  it("should load a nested + simple flag from project", async () => {
+    writeFileSync(
+      resolve(getFolderTestTargetDirectoryPath("flags"), "test.js"),
+      buildFeatureFlag("test", false)
+    )
+
+    writeFileSync(
+      resolve(getFolderTestTargetDirectoryPath("flags"), "simpletest.js"),
+      buildFeatureFlag("simpletest", false)
+    )
+
+    const flags = await loadFeatureFlags(
+      { featureFlags: { test: { nested: true }, simpletest: true } },
+      undefined,
+      getFolderTestTargetDirectoryPath("flags")
+    )
+
+    expect(flags.isFeatureEnabled({ test: "nested" })).toEqual(true)
+    expect(flags.isFeatureEnabled("simpletest")).toEqual(true)
   })
 
   it("should load the default feature flags", async () => {

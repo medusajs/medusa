@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { RegionServiceMock } from "../../../../../services/__mocks__/region"
+import { request } from "../../../../../helpers/test-request"
 
 const defaultFields = [
   "id",
@@ -46,8 +46,8 @@ describe("GET /admin/regions", () => {
     })
 
     it("calls service list", () => {
-      expect(RegionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(RegionServiceMock.list).toHaveBeenCalledWith(
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           select: defaultFields,
@@ -81,8 +81,8 @@ describe("GET /admin/regions", () => {
     })
 
     it("calls service list", () => {
-      expect(RegionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(RegionServiceMock.list).toHaveBeenCalledWith(
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(RegionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           select: defaultFields,

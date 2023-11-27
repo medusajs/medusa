@@ -9,7 +9,11 @@ export interface AdminPostOrdersOrderClaimsClaimFulfillmentsReq {
    */
   metadata?: Record<string, any>
   /**
-   * If set to true no notification will be send related to this Claim.
+   * If set to `true`, no notification will be sent to the customer related to this Claim.
    */
   no_notification?: boolean
+  /**
+   * The ID of the fulfillment's location.
+   */
+  location_id?: string
 }

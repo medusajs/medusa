@@ -15,7 +15,7 @@ export interface AdminPostDraftOrdersDraftOrderReq {
    */
   country_code?: string
   /**
-   * An email to be used on the Draft Order.
+   * An email to be used in the Draft Order.
    */
   email?: string
   /**
@@ -23,7 +23,7 @@ export interface AdminPostDraftOrdersDraftOrderReq {
    */
   billing_address?: AddressPayload | string
   /**
-   * The Address to be used for shipping.
+   * The Address to be used for shipping purposes.
    */
   shipping_address?: AddressPayload | string
   /**
@@ -36,11 +36,11 @@ export interface AdminPostDraftOrdersDraftOrderReq {
     code: string
   }>
   /**
-   * An optional flag passed to the resulting order to determine use of notifications.
+   * An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates.
    */
   no_notification_order?: boolean
   /**
-   * The ID of the Customer to associate the Draft Order with.
+   * The ID of the customer this draft order is associated with.
    */
   customer_id?: string
 }

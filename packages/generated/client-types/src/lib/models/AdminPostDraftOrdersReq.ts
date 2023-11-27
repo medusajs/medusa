@@ -7,7 +7,7 @@ import type { AddressPayload } from "./AddressPayload"
 
 export interface AdminPostDraftOrdersReq {
   /**
-   * The status of the draft order
+   * The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.
    */
   status?: "open" | "completed"
   /**
@@ -19,31 +19,31 @@ export interface AdminPostDraftOrdersReq {
    */
   billing_address?: AddressPayload | string
   /**
-   * The Address to be used for shipping.
+   * The Address to be used for shipping purposes.
    */
   shipping_address?: AddressPayload | string
   /**
-   * The Line Items that have been received.
+   * The draft order's line items.
    */
   items?: Array<{
     /**
-     * The ID of the Product Variant to generate the Line Item from.
+     * The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.
      */
     variant_id?: string
     /**
-     * The potential custom price of the item.
+     * The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.
      */
     unit_price?: number
     /**
-     * The potential custom title of the item.
+     * The title of the line item if `variant_id` is not provided.
      */
     title?: string
     /**
-     * The quantity of the Line Item.
+     * The quantity of the line item.
      */
     quantity: number
     /**
-     * The optional key-value map with additional details about the Line Item.
+     * The optional key-value map with additional details about the line item.
      */
     metadata?: Record<string, any>
   }>
@@ -52,7 +52,7 @@ export interface AdminPostDraftOrdersReq {
    */
   region_id: string
   /**
-   * The discounts to add on the draft order
+   * The discounts to add to the draft order
    */
   discounts?: Array<{
     /**
@@ -61,11 +61,11 @@ export interface AdminPostDraftOrdersReq {
     code: string
   }>
   /**
-   * The ID of the customer to add on the draft order
+   * The ID of the customer this draft order is associated with.
    */
   customer_id?: string
   /**
-   * An optional flag passed to the resulting order to determine use of notifications.
+   * An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates.
    */
   no_notification_order?: boolean
   /**
@@ -81,7 +81,7 @@ export interface AdminPostDraftOrdersReq {
      */
     data?: Record<string, any>
     /**
-     * The potential custom price of the shipping
+     * The price of the shipping method.
      */
     price?: number
   }>

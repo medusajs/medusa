@@ -1,0 +1,65 @@
+{{#if (sectionEnabled "members_group_categories")}}
+
+{{#if categories}}
+
+{{#each categories}}
+
+{{#unless @first}}
+___
+{{/unless}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+## {{title}} {{../title}}
+
+{{/unless}}
+
+{{#if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent}}}
+
+{{/with}}
+
+{{else}}
+
+{{#each children}}
+
+{{> member commentLevel=5}}
+
+{{/each}}
+
+{{/if}}
+
+{{/each}}
+
+{{else}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+## {{title}}
+
+{{/unless}}
+
+{{#if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent}}}
+
+{{/with}}
+
+{{else}}
+
+{{#each children}}
+
+{{> member commentLevel=5}}
+
+{{/each}}
+
+{{/if}}
+
+{{/if}}
+
+{{/if}}

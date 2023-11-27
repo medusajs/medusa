@@ -22,6 +22,7 @@ import IdempotencyKeyService from "../services/idempotency-key"
 import { MedusaError } from "medusa-core-utils"
 import { RequestContext } from "../types/request"
 import SwapService from "../services/swap"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
@@ -189,9 +190,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "discounts",
         "discounts.rule",
         "gift_cards",
-        "items",
-        "items.variant",
-        "items.variant.product",
+        "items.variant.product.profiles",
         "items.adjustments",
         "region",
         "region.tax_rates",
@@ -262,7 +261,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
   protected async removeReservations(reservations) {
     if (this.inventoryService_) {
-      await Promise.all(
+      await promiseAll(
         reservations.map(async ([reservations]) => {
           if (reservations) {
             return reservations.map(async (reservation) => {
@@ -295,7 +294,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "region",
         "payment",
         "payment_sessions",
-        "items.variant.product",
+        "items.variant.product.profiles",
       ],
     })
 
@@ -314,7 +313,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       const productVariantInventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
 
-      reservations = await Promise.all(
+      reservations = await promiseAll(
         cart.items.map(async (item) => {
           if (item.variant_id) {
             try {

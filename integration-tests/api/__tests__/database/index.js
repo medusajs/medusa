@@ -1,7 +1,7 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 jest.setTimeout(30000)
 

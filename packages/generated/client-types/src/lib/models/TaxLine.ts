@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Line item that specifies an amount of tax to add to a line item.
+ * A tax line represents the taxes amount applied to a line item.
  */
 export interface TaxLine {
   /**

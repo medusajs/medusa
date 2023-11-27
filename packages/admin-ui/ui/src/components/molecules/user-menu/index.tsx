@@ -12,7 +12,7 @@ import SignOutIcon from "../../fundamentals/icons/log-out-icon"
 const UserMenu: React.FC = () => {
   const navigate = useNavigate()
 
-  const { user, isLoading } = useAdminGetSession()
+  const { user, isLoading, remove } = useAdminGetSession()
   const { mutate } = useAdminDeleteSession()
 
   const notification = useNotification()
@@ -20,6 +20,7 @@ const UserMenu: React.FC = () => {
   const logOut = () => {
     mutate(undefined, {
       onSuccess: () => {
+        remove()
         navigate("/login")
       },
       onError: (err) => {

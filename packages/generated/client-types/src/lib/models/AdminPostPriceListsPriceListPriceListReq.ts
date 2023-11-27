@@ -9,7 +9,7 @@ export interface AdminPostPriceListsPriceListPriceListReq {
    */
   name?: string
   /**
-   * A description of the Price List.
+   * The description of the Price List.
    */
   description?: string
   /**
@@ -25,7 +25,7 @@ export interface AdminPostPriceListsPriceListPriceListReq {
    */
   type?: "sale" | "override"
   /**
-   * The status of the Price List.
+   * The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer.
    */
   status?: "active" | "draft"
   /**
@@ -37,11 +37,11 @@ export interface AdminPostPriceListsPriceListPriceListReq {
      */
     id?: string
     /**
-     * The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+     * The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
      */
     region_id?: string
     /**
-     * The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+     * The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
      */
     currency_code?: string
     /**
@@ -62,7 +62,7 @@ export interface AdminPostPriceListsPriceListPriceListReq {
     max_quantity?: number
   }>
   /**
-   * A list of customer groups that the Price List applies to.
+   * An array of customer groups that the Price List applies to.
    */
   customer_groups?: Array<{
     /**
@@ -71,7 +71,7 @@ export interface AdminPostPriceListsPriceListPriceListReq {
     id: string
   }>
   /**
-   * [EXPERIMENTAL] Tax included in prices of price list
+   * Tax included in prices of price list
    */
   includes_tax?: boolean
 }

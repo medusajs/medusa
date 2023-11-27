@@ -5,7 +5,7 @@ import CustomerService from "../../../../services/customer"
  * @oas [get] /store/customers/me
  * operationId: GetCustomersCustomer
  * summary: Get a Customer
- * description: "Retrieves a Customer - the Customer must be logged in to retrieve their details."
+ * description: "Retrieve the logged-in Customer's details."
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -19,14 +19,15 @@ import CustomerService from "../../../../services/customer"
  *       medusa.customers.retrieve()
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/customers/me' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl '{backend_url}/store/customers/me' \
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:

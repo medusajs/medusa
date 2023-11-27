@@ -1,5 +1,6 @@
 import { SalesChannel, StockLocationExpandedDTO } from "@medusajs/medusa"
 import { useFieldArray } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import SalesChannelsModal from "../../../../../components/forms/product/sales-channels-modal"
 import Button from "../../../../../components/fundamentals/button"
 import SalesChannelsList from "../../../../../components/molecules/sales-channels-list"
@@ -14,6 +15,7 @@ const SalesChannelsForm = ({
   location: StockLocationExpandedDTO | null
   form: NestedForm<AddSalesChannelsFormType>
 }) => {
+  const { t } = useTranslation()
   const {
     state: showSalesChannelsModal,
     close: closeSalesChannelsModal,
@@ -44,7 +46,7 @@ const SalesChannelsForm = ({
           onClick={openSalesChannelsModal}
           type="button"
         >
-          Add sales channels
+          {t("sales-channels-form-add-sales-channels", "Add sales channels")}
         </Button>
       ) : (
         <div className="flex w-full items-center justify-between">
@@ -58,7 +60,7 @@ const SalesChannelsForm = ({
             type="button"
             onClick={openSalesChannelsModal}
           >
-            Edit channels
+            {t("sales-channels-form-edit-channels", "Edit channels")}
           </Button>
         </div>
       )}

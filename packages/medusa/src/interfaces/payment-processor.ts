@@ -119,6 +119,16 @@ export interface PaymentProcessor {
   getPaymentStatus(
     paymentSessionData: Record<string, unknown>
   ): Promise<PaymentSessionStatus>
+
+  /**
+   * Update the session data for a payment session
+   */
+  updatePaymentData(
+    sessionId: string,
+    data: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 }
 
 /**
@@ -195,6 +205,13 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   abstract updatePayment(
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse | void>
+
+  abstract updatePaymentData(
+    sessionId: string,
+    data: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 }
 
 /**

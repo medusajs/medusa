@@ -58,6 +58,7 @@ export const defaultAdminSwapFields = [
 /**
  * @schema AdminSwapsListRes
  * type: object
+ * description: "The list of swaps with pagination fields."
  * required:
  *   - swaps
  *   - count
@@ -66,6 +67,7 @@ export const defaultAdminSwapFields = [
  * properties:
  *   swaps:
  *     type: array
+ *     description: "An array of swaps details."
  *     items:
  *       $ref: "#/components/schemas/Swap"
  *   count:
@@ -73,7 +75,7 @@ export const defaultAdminSwapFields = [
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of swaps skipped when retrieving the swaps.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -85,6 +87,7 @@ export type AdminSwapsListRes = PaginatedResponse & {
 /**
  * @schema AdminSwapsRes
  * type: object
+ * description: "The swap's details."
  * x-expanded-relations:
  *   field: swap
  *   relations:
@@ -107,6 +110,7 @@ export type AdminSwapsListRes = PaginatedResponse & {
  *   - swap
  * properties:
  *   swap:
+ *     description: "Swap details."
  *     $ref: "#/components/schemas/Swap"
  */
 export type AdminSwapsRes = {

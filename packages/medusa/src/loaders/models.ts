@@ -8,7 +8,6 @@ import path from "path"
 import { ClassConstructor, MedusaContainer } from "../types/global"
 import { EntitySchema } from "typeorm"
 import { asClass, asValue } from "awilix"
-import { upperCaseFirst } from "@medusajs/utils"
 
 type ModelLoaderParams = {
   container: MedusaContainer
@@ -63,9 +62,8 @@ export default (
               // If an extension file is found, override it with that instead
               if (mappedExtensionModel) {
                 const coreModel = require(modelPath)
-                const modelName = upperCaseFirst(
+                const modelName =
                   formatRegistrationNameWithoutNamespace(modelPath)
-                )
 
                 coreModel[modelName] = mappedExtensionModel
                 val = mappedExtensionModel

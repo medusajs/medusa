@@ -1,6 +1,8 @@
 import * as React from "react"
-import { CurrencyType } from "../../../utils/currencies"
+
 import PriceInput, { PriceInputProps } from "../price-input"
+
+import { CurrencyType } from "../../../utils/currencies"
 
 type MedusaPriceInputProps = {
   amount: number
@@ -34,7 +36,7 @@ function MedusaPriceInput(props: MedusaPriceInputProps) {
       const numericalValue = Math.round(floatValue * 10 ** decimal_digits)
       onChange(numericalValue)
     } else {
-      onChange(undefined)
+      onChange(null)
     }
     setRawValue(value)
   }

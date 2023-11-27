@@ -1,10 +1,10 @@
 const path = require("path")
 const { Region, GiftCard } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
@@ -63,7 +63,7 @@ describe("/admin/gift-cards", () => {
       const response = await api
         .get("/admin/gift-cards", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -91,7 +91,7 @@ describe("/admin/gift-cards", () => {
       const response = await api
         .get("/admin/gift-cards?q=gc", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -116,7 +116,7 @@ describe("/admin/gift-cards", () => {
       const response = await api
         .get("/admin/gift-cards?q=bla", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -165,7 +165,7 @@ describe("/admin/gift-cards", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -192,7 +192,7 @@ describe("/admin/gift-cards", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )

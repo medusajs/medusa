@@ -8,7 +8,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  * @oas [get] /store/return-reasons
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
- * description: "Retrieves a list of Return Reasons."
+ * description: "Retrieve a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront."
  * x-codegen:
  *   method: list
  * x-codeSamples:
@@ -20,11 +20,11 @@ import ReturnReasonService from "../../../../services/return-reason"
  *       medusa.returnReasons.list()
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/return-reasons'
+ *       curl '{backend_url}/store/return-reasons'
  * tags:
  *   - Return Reasons
  * responses:

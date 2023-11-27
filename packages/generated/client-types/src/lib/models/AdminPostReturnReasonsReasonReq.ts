@@ -9,11 +9,11 @@ export interface AdminPostReturnReasonsReasonReq {
    */
   label?: string
   /**
-   * The value that the Return Reason will be identified by. Must be unique.
+   * A unique value of the return reason.
    */
   value?: string
   /**
-   * An optional description to for the Reason.
+   * The description of the Reason.
    */
   description?: string
   /**

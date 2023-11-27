@@ -1,11 +1,11 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 
 const {
   ProductVariant,
@@ -14,24 +14,22 @@ const {
   DiscountConditionType,
   DiscountConditionOperator,
 } = require("@medusajs/medusa")
-const priceListSeeder = require("../../helpers/price-list-seeder")
+const priceListSeeder = require("../../../helpers/price-list-seeder")
 const {
   simpleProductFactory,
   simpleDiscountFactory,
   simpleSalesChannelFactory,
   simpleRegionFactory,
-} = require("../../factories")
+  simplePriceListFactory,
+} = require("../../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(50000)
 
-const testProductId = "test-product"
-const testProduct1Id = "test-product1"
-const testProductFilteringId1 = "test-product_filtering_1"
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -116,6 +114,39 @@ describe("/admin/products", () => {
             id: "test-product1",
             status: "draft",
           }),
+        ])
+      )
+    })
+
+    it("should return prices not in price list for list product endpoint", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        prices: [
+          {
+            variant_id: "test-variant",
+            amount: 100,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const res = await api.get("/admin/products?id=test-product", adminHeaders)
+
+      const prices = res.data.products[0].variants.map((v) => v.prices).flat()
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "draft",
+          }),
+        ])
+      )
+      expect(prices).toEqual(
+        expect.not.arrayContaining([
+          expect.objectContaining({ price_list_id: expect.any(String) }),
         ])
       )
     })
@@ -375,10 +406,10 @@ describe("/admin/products", () => {
       expect(expectedVariantPrices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price4",
+            id: "test-price_4",
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price_3",
           }),
         ])
       )
@@ -909,6 +940,142 @@ describe("/admin/products", () => {
           }),
         ])
       )
+    })
+  })
+
+  describe("GET /admin/products/:id", () => {
+    const productId = "testing-get-product"
+
+    beforeEach(async () => {
+      await simpleProductFactory(dbConnection, {
+        id: productId,
+        variants: [
+          {
+            title: "Test variant",
+            prices: [
+              {
+                currency: "usd",
+                amount: 100,
+              },
+            ],
+          },
+        ],
+      })
+
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should get a product with default relations", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get(`/admin/products/${productId}`, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const keysInResponse = Object.keys(res.data.product)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.product.id).toEqual(productId)
+      expect(keysInResponse).toEqual(
+        expect.arrayContaining([
+          // fields
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "title",
+          "subtitle",
+          "description",
+          "handle",
+          "is_giftcard",
+          "status",
+          "thumbnail",
+          "weight",
+          "length",
+          "height",
+          "width",
+          "hs_code",
+          "origin_country",
+          "mid_code",
+          "material",
+          "collection_id",
+          "type_id",
+          "discountable",
+          "external_id",
+          "metadata",
+
+          // relations
+          "categories",
+          "collection",
+          "images",
+          "options",
+          "profiles",
+          "profile",
+          "profile_id",
+          "sales_channels",
+          "tags",
+          "type",
+          "variants",
+        ])
+      )
+
+      const variants = res.data.product.variants
+      const hasPrices = variants.some((variant) => !!variant.prices)
+
+      expect(hasPrices).toBe(true)
+    })
+
+    it("should get a product with prices", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get(
+          `/admin/products/${productId}?expand=variants,variants.prices`,
+          adminHeaders
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const { id, variants } = res.data.product
+
+      expect(id).toEqual(productId)
+      expect(variants[0].prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 100,
+            currency_code: "usd",
+          }),
+        ])
+      )
+    })
+
+    it("should get a product only with variants expanded", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get(`/admin/products/${productId}?expand=variants`, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const { id, variants } = res.data.product
+
+      expect(id).toEqual(productId)
+      expect(variants[0]).toEqual(
+        expect.objectContaining({
+          title: "Test variant",
+        })
+      )
+      // prices is one of many properties that should not be expanded
+      expect(variants[0].prices).toBeUndefined()
     })
   })
 
@@ -1668,6 +1835,7 @@ describe("/admin/products", () => {
 
     it("successfully updates a variant's price by changing an existing price (given a region_id)", async () => {
       const api = useApi()
+
       const data = {
         prices: [
           {
@@ -1748,6 +1916,7 @@ describe("/admin/products", () => {
                   expect.objectContaining({
                     amount: 100,
                     currency_code: "usd",
+                    id: "test-price",
                   }),
                   expect.objectContaining({
                     amount: 4500,

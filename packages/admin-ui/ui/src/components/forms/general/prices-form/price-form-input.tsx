@@ -1,14 +1,15 @@
-import clsx from "clsx"
 import { useCallback, useEffect, useState } from "react"
+
 import AmountField from "react-currency-input-field"
-import { currencies } from "../../../../utils/currencies"
 import InputError from "../../../atoms/input-error"
 import InputHeader from "../../../fundamentals/input-header"
+import clsx from "clsx"
+import { currencies } from "../../../../utils/currencies"
 
 type Props = {
   currencyCode: string
   amount?: number | null
-  onChange: (amount?: number) => void
+  onChange: (amount?: number | null) => void
   errors?: { [x: string]: unknown }
   name?: string
   label?: string
@@ -51,7 +52,7 @@ const PriceFormInput = ({
       const numericalValue = Math.round(floatValue * 10 ** decimal_digits)
       onChange(numericalValue)
     } else {
-      onChange(undefined)
+      onChange(null)
     }
     setFormattedValue(value)
   }

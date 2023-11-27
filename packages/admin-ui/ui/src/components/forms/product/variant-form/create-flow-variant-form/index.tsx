@@ -1,20 +1,19 @@
-import { UseFormReturn } from "react-hook-form"
-import { nestedForm } from "../../../../../utils/nested-form"
-import InputError from "../../../../atoms/input-error"
-import IconTooltip from "../../../../molecules/icon-tooltip"
-import Accordion from "../../../../organisms/accordion"
-import { PricesFormType } from "../../../general/prices-form"
 import CustomsForm, { CustomsFormType } from "../../customs-form"
 import DimensionsForm, { DimensionsFormType } from "../../dimensions-form"
 import VariantGeneralForm, {
   VariantGeneralFormType,
 } from "../variant-general-form"
-import VariantPricesForm from "../variant-prices-form"
 import VariantSelectOptionsForm, {
   VariantOptionValueType,
   VariantSelectOptionsFormType,
 } from "../variant-select-options-form"
 import VariantStockForm, { VariantStockFormType } from "../variant-stock-form"
+
+import Accordion from "../../../../organisms/accordion"
+import IconTooltip from "../../../../molecules/icon-tooltip"
+import InputError from "../../../../atoms/input-error"
+import { UseFormReturn } from "react-hook-form"
+import { nestedForm } from "../../../../../utils/nested-form"
 
 export type CreateFlowVariantFormType = {
   /**
@@ -22,7 +21,6 @@ export type CreateFlowVariantFormType = {
    */
   _internal_id?: string
   general: VariantGeneralFormType
-  prices: PricesFormType
   stock: VariantStockFormType
   options: VariantSelectOptionsFormType
   customs: CustomsFormType
@@ -76,9 +74,6 @@ const CreateFlowVariantForm = ({ form, options, onCreateOption }: Props) => {
             <InputError errors={form.formState.errors} name="options" />
           </div>
         </div>
-      </Accordion.Item>
-      <Accordion.Item title="Pricing" value="pricing">
-        <VariantPricesForm form={nestedForm(form, "prices")} />
       </Accordion.Item>
       <Accordion.Item title="Stock & Inventory" value="stock">
         <VariantStockForm form={nestedForm(form, "stock")} />

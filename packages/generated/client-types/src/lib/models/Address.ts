@@ -7,7 +7,7 @@ import type { Country } from "./Country"
 import type { Customer } from "./Customer"
 
 /**
- * An address.
+ * An address is used across the Medusa backend within other schemas and object types. For example, a customer's billing and shipping addresses both use the Address entity.
  */
 export interface Address {
   /**
@@ -51,7 +51,7 @@ export interface Address {
    */
   country_code: string | null
   /**
-   * A country object. Available if the relation `country` is expanded.
+   * A country object.
    */
   country?: Country | null
   /**

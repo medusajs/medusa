@@ -12,8 +12,8 @@ import { PaymentService } from "../../../../services"
 /**
  * @oas [post] /admin/payments/{id}/refund
  * operationId: "PostPaymentsPaymentRefunds"
- * summary: "Create a Refund"
- * description: "Issues a Refund."
+ * summary: "Refund Payment"
+ * description: "Refund a payment. The payment must be captured first."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Payment.
@@ -31,20 +31,20 @@ import { PaymentService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.payments.refundPayment(payment_id, {
+ *       medusa.admin.payments.refundPayment(paymentId, {
  *         amount: 1000,
- *         reason: 'return',
- *         note: 'Do not like it',
+ *         reason: "return",
+ *         note: "Do not like it",
  *       })
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/payments/pay_123/refund' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/payments/pay_123/refund' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "amount": 1000,
  *           "reason": "return",
@@ -53,6 +53,7 @@ import { PaymentService } from "../../../../services"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payments
  * responses:

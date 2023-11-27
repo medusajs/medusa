@@ -11,8 +11,8 @@ export class PublishableApiKeySalesChannel {
 
 /**
  * @schema PublishableApiKeySalesChannel
- * title: "Publishable API key sales channel"
- * description: "Holds mapping between Publishable API keys and Sales Channels"
+ * title: "Publishable API Key Sales Channel"
+ * description: "This represents the association between the Publishable API keys and Sales Channels"
  * type: object
  * required:
  *   - publishable_key_id

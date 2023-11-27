@@ -1,24 +1,24 @@
+import { FlagRouter } from "@medusajs/utils"
 import { asClass, asValue, createContainer } from "awilix"
-import {
-  defaultContainerMock,
-  giftCards,
-  giftCardsWithTaxRate,
-  lineItems,
-  shippingMethods,
-} from "../__fixtures__/new-totals"
-import { NewTotalsService } from "../index"
 import { TaxCalculationContext } from "../../interfaces"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import {
-  Discount,
-  DiscountRuleType,
-  LineItem,
-  ProductVariant,
-  Region,
-  ShippingMethod,
-} from "../../models"
-import { FlagRouter } from "../../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
+import {
+    Discount,
+    DiscountRuleType,
+    LineItem,
+    ProductVariant,
+    Region,
+    ShippingMethod,
+} from "../../models"
+import {
+    defaultContainerMock,
+    giftCards,
+    giftCardsWithTaxRate,
+    lineItems,
+    shippingMethods,
+} from "../__fixtures__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import { NewTotalsService } from "../index"
 
 describe("New totals service", () => {
   describe("Without [MEDUSA_FF_TAX_INCLUSIVE_PRICING]", () => {

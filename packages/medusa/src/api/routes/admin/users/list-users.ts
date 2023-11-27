@@ -4,7 +4,7 @@ import UserService from "../../../../services/user"
  * @oas [get] /admin/users
  * operationId: "GetUsers"
  * summary: "List Users"
- * description: "Retrieves all users."
+ * description: "Retrieve all admin users."
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -18,15 +18,16 @@ import UserService from "../../../../services/user"
  *       medusa.admin.users.list()
  *       .then(({ users }) => {
  *         console.log(users.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/users' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/users' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Users
  * responses:

@@ -1,6 +1,7 @@
+import { PaginatedResponse } from "@medusajs/types"
+import { Region } from "./../../../../"
 import { Router } from "express"
 import middlewares from "../../../middlewares"
-import { Region } from "./../../../../"
 
 const route = Router()
 
@@ -22,6 +23,7 @@ export const defaultRelations = [
 /**
  * @schema StoreRegionsListRes
  * type: object
+ * description: "The list of regions with pagination fields."
  * x-expanded-relations:
  *   field: regions
  *   relations:
@@ -36,16 +38,27 @@ export const defaultRelations = [
  * properties:
  *   regions:
  *     type: array
+ *     description: "An array of regions details."
  *     items:
  *       $ref: "#/components/schemas/Region"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of regions skipped when retrieving the regions.
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
  */
-export type StoreRegionsListRes = {
+export type StoreRegionsListRes = PaginatedResponse & {
   regions: Region[]
 }
 
 /**
  * @schema StoreRegionsRes
  * type: object
+ * description: "The region's details."
  * x-expanded-relations:
  *   field: region
  *   relations:
@@ -59,6 +72,7 @@ export type StoreRegionsListRes = {
  *   - region
  * properties:
  *   region:
+ *     description: "Region details."
  *     $ref: "#/components/schemas/Region"
  */
 export type StoreRegionsRes = {
