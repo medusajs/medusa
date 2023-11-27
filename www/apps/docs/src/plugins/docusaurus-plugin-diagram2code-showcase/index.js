@@ -112,28 +112,6 @@ export default async function docusaurusPluginDiagram2codeShowcase(
           console.log(`Generated diagram2code spec file at ${specFile}`)
         })
     },
-    // async contentLoaded({ content, actions }) {
-    //   const { createData, addRoute } = actions
-    //   Object.entries(content).forEach(async ([name, specs]) => {
-    //     const specsJsonPath = await createData(
-    //       `${name}.json`,
-    //       JSON.stringify(specs)
-    //     )
-
-    //     addRoute({
-    //       path: Object.hasOwn(routePaths, name)
-    //         ? routePaths[name].path
-    //         : `/showcase/${name}`,
-    //       component: Object.hasOwn(routePaths, name)
-    //         ? routePaths[name].component
-    //         : `@site/src/components/Diagram2CodeShowcase`,
-    //       modules: {
-    //         specs: specsJsonPath,
-    //       },
-    //       exact: true,
-    //     })
-    //   })
-    // },
     getPathsToWatch() {
       return [directoryPath]
     },
