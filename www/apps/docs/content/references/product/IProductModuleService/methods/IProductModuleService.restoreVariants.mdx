@@ -13,13 +13,30 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This documentation provides a reference to the restoreVariants method. This belongs to the Product Module.
 
+This method is used to restore product varaints that were soft deleted. Product variants are soft deleted when they're not 
+provided in a product's details passed to the [update](IProductModuleService.update.mdx) method.
+
+## Example
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+async function restoreProductVariants (ids: string[]) {
+  const productModule = await initializeProductModule()
+
+  await productModule.restoreVariants(ids)
+}
+```
+
 ## Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "variantIds",
     "type": "`string`[]",
-    "description": "",
+    "description": "The IDs of the variants to restore.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -28,7 +45,7 @@ This documentation provides a reference to the restoreVariants method. This belo
   {
     "name": "config",
     "type": "[RestoreReturn](../../interfaces/RestoreReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
-    "description": "",
+    "description": "Configurations determining which relations to restore along with each of the product variants. You can pass to its `returnLinkableKeys` property any of the product variant's relation attribute names.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -47,7 +64,7 @@ This documentation provides a reference to the restoreVariants method. This belo
   {
     "name": "sharedContext",
     "type": "[Context](../../interfaces/Context.mdx)",
-    "description": "",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -109,7 +126,7 @@ This documentation provides a reference to the restoreVariants method. This belo
     "type": "Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product variant entity's relations \nand its value is an array of strings, each being the ID of the record associated with the product variant through this relation.\n\nIf there are no related records that were restored, the promise resolved to `void`.",
     "expandable": false,
     "children": [
       {

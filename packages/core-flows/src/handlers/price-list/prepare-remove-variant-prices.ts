@@ -19,6 +19,7 @@ export async function prepareRemoveVariantPrices({
 
   const variables = {
     variant_id: variant_ids,
+    take: null,
   }
 
   const query = {

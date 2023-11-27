@@ -3,6 +3,7 @@ import React, {
   useRef,
   type ReactElement,
   useEffect,
+  useState,
 } from "react"
 import clsx from "clsx"
 import {
@@ -41,6 +42,7 @@ function TabList({
     useScrollPositionBlocker()
   const codeTabSelectorRef = useRef(null)
   const codeTabsWrapperRef = useRef(null)
+  const [tabsTitle, setTabsTitle] = useState(codeTitle)
 
   const handleTabChange = (
     event:
@@ -107,6 +109,15 @@ function TabList({
       }
     }
   }, [codeTabSelectorRef, tabRefs])
+
+  useEffect(() => {
+    const selectedTab = tabValues.find((tab) => tab.value === selectedValue)
+    if (selectedTab?.attributes?.title) {
+      setTabsTitle(selectedTab.attributes.title as string)
+    } else {
+      setTabsTitle(codeTitle)
+    }
+  }, [selectedValue])
 
   return (
     <div
@@ -183,7 +194,7 @@ function TabList({
             "text-compact-small-plus text-medusa-code-text-subtle hidden xs:block"
           )}
         >
-          {codeTitle}
+          {tabsTitle}
         </span>
       )}
     </div>

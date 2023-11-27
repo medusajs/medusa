@@ -49,50 +49,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-### delete
+#### delete
 
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "url",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "config",
-    "type": "AxiosRequestConfig&#60;D&#62;",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "Promise&#60;R&#62;",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-___
-
-### get
-
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -115,7 +74,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -131,9 +90,50 @@ ___
 
 ___
 
-### getUri
+#### get
 
-#### Parameters
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "url",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "AxiosRequestConfig&#60;D&#62;",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;R&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+#### getUri
+
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -147,7 +147,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -163,50 +163,9 @@ ___
 
 ___
 
-### head
+#### head
 
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "url",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "config",
-    "type": "AxiosRequestConfig&#60;D&#62;",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "Promise&#60;R&#62;",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-___
-
-### options
-
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -229,7 +188,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -245,9 +204,9 @@ ___
 
 ___
 
-### patch
+#### options
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -255,15 +214,6 @@ ___
     "type": "`string`",
     "description": "",
     "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "data",
-    "type": "`D`",
-    "description": "",
-    "optional": true,
     "defaultValue": "",
     "expandable": false,
     "children": []
@@ -279,7 +229,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -295,9 +245,9 @@ ___
 
 ___
 
-### post
+#### patch
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -329,7 +279,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -345,9 +295,9 @@ ___
 
 ___
 
-### put
+#### post
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -379,7 +329,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -395,9 +345,59 @@ ___
 
 ___
 
-### request
+#### put
 
-#### Parameters
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "url",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "`D`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "AxiosRequestConfig&#60;D&#62;",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;R&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+#### request
+
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -411,7 +411,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

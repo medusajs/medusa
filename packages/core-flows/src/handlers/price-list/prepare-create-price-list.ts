@@ -25,6 +25,7 @@ export async function prepareCreatePriceLists({
 
   const variables = {
     variant_id: variantIds,
+    take: null,
   }
 
   const query = {

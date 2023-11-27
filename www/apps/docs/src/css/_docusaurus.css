@@ -282,6 +282,6 @@ h1, h2, h3, h4, h5, h6 {
   @apply bg-medusa-bg-highlight;
 }
 
-.prism-code *::selection, .code-header::selection {
+.prism-code *::selection, .code-header *::selection {
   @apply bg-medusa-code-text-highlight;
 }

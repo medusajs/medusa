@@ -17,7 +17,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [AddPricesDTO](interfaces/AddPricesDTO.mdx)
 - [AddRulesDTO](interfaces/AddRulesDTO.mdx)
 - [BaseFilterable](interfaces/BaseFilterable.mdx)
-- [CalculatedPriceSetDTO](interfaces/CalculatedPriceSetDTO.mdx)
+- [CalculatedPriceSet](interfaces/CalculatedPriceSet.mdx)
 - [Context](interfaces/Context.mdx)
 - [CreateCurrencyDTO](interfaces/CreateCurrencyDTO.mdx)
 - [CreateMoneyAmountDTO](interfaces/CreateMoneyAmountDTO.mdx)

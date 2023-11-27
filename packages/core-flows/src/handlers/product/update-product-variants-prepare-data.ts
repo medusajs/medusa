@@ -58,6 +58,7 @@ export async function updateProductVariantsPrepareData({
     },
     {
       select: ["id", "product_id"],
+      take: null,
     }
   )
 
