@@ -1,8 +1,8 @@
-import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount";
+import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount"
 
-import { BaseFilterable } from "../../dal";
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
-import { RuleTypeDTO } from "./rule-type";
+import { BaseFilterable } from "../../dal"
+import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
+import { RuleTypeDTO } from "./rule-type"
 
 /**
  * @enum
@@ -111,8 +111,10 @@ export interface PriceListPriceDTO extends CreateMoneyAmountDTO {
    * The ID of the associated price set.
    */
   price_set_id: string
-
-  rules: { region_id?: string }
+  /**
+   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   */
+  rules?: Record<string, string>
 }
 
 /**
