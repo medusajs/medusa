@@ -1,6 +1,2 @@
 {
-    "i18n-ally.localesPaths": [
-        "packages/admin-ui/ui/public/locales",
-        "packages/admin-ui/ui/src/i18n"
-    ]
 }
