@@ -1,0 +1,34 @@
+{
+  "name": "integration-tests-services",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --silent=false --runInBand --bail --detectOpenHandles --logHeapUsage --clearMocks --forceExit",
+    "build": "babel src -d dist --extensions \".ts,.js\""
+  },
+  "dependencies": {
+    "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/event-bus-local": "workspace:*",
+    "@medusajs/inventory": "workspace:^",
+    "@medusajs/medusa": "workspace:*",
+    "@medusajs/modules-sdk": "workspace:^",
+    "@medusajs/pricing": "workspace:^",
+    "@medusajs/product": "workspace:^",
+    "faker": "^5.5.3",
+    "medusa-fulfillment-webshipper": "workspace:*",
+    "medusa-interfaces": "workspace:*",
+    "medusa-plugin-sendgrid": "workspace:*",
+    "pg": "^8.11.0",
+    "typeorm": "^0.3.16"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "babel-preset-medusa-package": "*",
+    "jest": "^26.6.3",
+    "jest-environment-node": "26.6.2"
+  }
+}

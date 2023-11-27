@@ -15,6 +15,7 @@ module.exports = {
     "<rootDir>/integration-tests/api/jest.config.js",
     "<rootDir>/integration-tests/plugins/jest.config.js",
     "<rootDir>/integration-tests/repositories/jest.config.js",
+    "<rootDir>/integration-tests/services/jest.config.js",
   ],
   testPathIgnorePatterns: [
     `/examples/`,
