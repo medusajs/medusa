@@ -4183,6 +4183,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mdx-js/react@npm:3, @mdx-js/react@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@mdx-js/react@npm:3.0.0"
+  dependencies:
+    "@types/mdx": ^2.0.0
+  peerDependencies:
+    "@types/react": ">=16"
+    react: ">=16"
+  checksum: 865f6ebc7ae83c6cb9f7e92db4eddd3f85cd1664391643b4736887ddc32b0ddb5aec012db6fbc9b486b552e08e6d5ad800450fcd9d51c20665667ff0f174d966
+  languageName: node
+  linkType: hard
+
 "@mdx-js/react@npm:^2.2.1, @mdx-js/react@npm:^2.3.0":
   version: 2.3.0
   resolution: "@mdx-js/react@npm:2.3.0"
@@ -4192,18 +4204,6 @@ __metadata:
   peerDependencies:
     react: ">=16"
   checksum: 6d647115703dbe258f7fe372499fa8c6fe17a053ff0f2a208111c9973a71ae738a0ed376770445d39194d217e00e1a015644b24f32c2f7cb4f57988de0649b15
-  languageName: node
-  linkType: hard
-
-"@mdx-js/react@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@mdx-js/react@npm:3.0.0"
-  dependencies:
-    "@types/mdx": ^2.0.0
-  peerDependencies:
-    "@types/react": ">=16"
-    react: ">=16"
-  checksum: 865f6ebc7ae83c6cb9f7e92db4eddd3f85cd1664391643b4736887ddc32b0ddb5aec012db6fbc9b486b552e08e6d5ad800450fcd9d51c20665667ff0f174d966
   languageName: node
   linkType: hard
 
@@ -9234,7 +9234,7 @@ __metadata:
     openapi-sampler: ^1.3.1
     openapi-types: ^12.1.3
     postcss: 8.4.27
-    prism-react-renderer: ^2.0.6
+    prism-react-renderer: ^2.3.0
     react: latest
     react-dom: latest
     react-instantsearch: ^7.0.1
@@ -11746,7 +11746,7 @@ __metadata:
     cpy-cli: ^5.0.0
     eslint-config-docs: "*"
     next: latest
-    prism-react-renderer: ^2.0.6
+    prism-react-renderer: ^2.3.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-google-recaptcha: ^3.1.0
@@ -11785,6 +11785,7 @@ __metadata:
     "@docusaurus/theme-mermaid": ^3.0.0
     "@docusaurus/tsconfig": 3.0.0
     "@docusaurus/types": 3.0.0
+    "@mdx-js/react": 3
     "@medusajs/icons": ^1.0.0
     "@svgr/webpack": 6.2.1
     "@types/react": ^18.2.0
@@ -11801,7 +11802,7 @@ __metadata:
     lodash: ^4.17.21
     mdast-util-mdx: ^3.0.0
     postcss: ^8.4.21
-    prism-react-renderer: ^2.1.0
+    prism-react-renderer: ^2.3.0
     react: ^18.2.0
     react-dom: ^18.2.0
     react-tooltip: 5.7.4
@@ -19502,6 +19503,18 @@ __metadata:
   peerDependencies:
     react: ">=16.0.0"
   checksum: 3785026a9399b6e178f097d856159d2305af094dea3ac221dd07aee1553cd0110c41414a75778f48512e87599f03500aacb74d26a70e07e5b71335389e713c56
+  languageName: node
+  linkType: hard
+
+"prism-react-renderer@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "prism-react-renderer@npm:2.3.0"
+  dependencies:
+    "@types/prismjs": ^1.26.0
+    clsx: ^2.0.0
+  peerDependencies:
+    react: ">=16.0.0"
+  checksum: aa8fb176e156ebb1f8ca46d82966d37176f46545e03669ddab7d56479f915b41e95b02accc16af9e2e95c7fcd57ce6222d8eac08977c757d9c49c32c7b0e03ff
   languageName: node
   linkType: hard
 

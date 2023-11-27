@@ -35,6 +35,7 @@ export async function updateProducts({
         // "profiles",
         // "sales_channels",
       ],
+      take: null,
     }
   )
 }

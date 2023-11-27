@@ -92,7 +92,7 @@ Where `<YOUR_APP_ID>` and `<YOUR_ADMIN_API_KEY>` are respectively the Applicatio
 
 Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -151,7 +151,7 @@ These settings are just examples of what you can pass to the Algolia provider. I
 
 Here's an example of the settings you can use:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -243,7 +243,7 @@ The Next.js Starter Template has the Algolia integration available out of the bo
 
 First, ensure that the search feature is enabled in `store.config.json`:
 
-```json title=store.config.json
+```json title="store.config.json"
 {
   "features": {
     "search": true
@@ -263,7 +263,7 @@ Where `<YOUR_APP_ID>` and `<YOUR_SEARCH_API_KEY>` are respectively the Applicati
 
 Finally, change the code in `src/lib/search-client.ts` to the following:
 
-```ts title=src/lib/search-client.ts
+```ts title="src/lib/search-client.ts"
 import algoliasearch from "algoliasearch/lite"
 
 const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || ""

@@ -22,6 +22,7 @@ export async function removePriceListPriceSetPrices({
     },
     {
       relations: ["money_amount"],
+      take: null,
     }
   )
 

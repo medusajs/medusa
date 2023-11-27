@@ -956,7 +956,7 @@ These changes may already be available in your Medusa project. They're included 
 
 First, update your `tsconfig.json` with the following configurations:
 
-```json title=tsconfig.json
+```json title="tsconfig.json"
 {
   "compilerOptions": {
     "target": "es2019",
@@ -997,7 +997,7 @@ The addition of `"jsx": "react-jsx"` specified how should TypeScript transform J
 
 Next, create the file `tsconfig.server.json` with the following content:
 
-```json title=tsconfig.server.json
+```json title="tsconfig.server.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -1012,7 +1012,7 @@ This is the configuration that will be used to transpile your custom backend cod
 
 Finally, create the file `tsconfig.admin.json` with the following content:
 
-```json title=tsconfig.admin.json
+```json title="tsconfig.admin.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -1029,7 +1029,7 @@ This is the configuration that will be used when transpiling your admin code.
 
 You can optionally update the following scripts in `package.json` to make your development process easier:
 
-```json title=package.json
+```json title="package.json"
 {
   // ...
   "scripts": {
@@ -1060,7 +1060,7 @@ To create a new admin widget, start by creating the folder `src/admin/widgets`. 
 
 Then, create the file `src/admin/widgets/product-widget.tsx` with the following content:
 
-```tsx title=src/admin/widgets/product-widget.tsx
+```tsx title="src/admin/widgets/product-widget.tsx"
 import type { WidgetConfig } from "@medusajs/admin"
 
 const ProductWidget = () => {
@@ -1111,7 +1111,7 @@ For example, you can modify the widget you created to show the title of the prod
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/widgets/product-widget.tsx
+```tsx title="src/admin/widgets/product-widget.tsx"
 import type { 
   WidgetConfig, 
   ProductDetailsWidgetProps,
@@ -1151,7 +1151,7 @@ For example, you can update the widget you created earlier to use Tailwind CSS c
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/widgets/product-widget.tsx
+```tsx title="src/admin/widgets/product-widget.tsx"
 import type { 
   WidgetConfig,
 } from "@medusajs/admin"
@@ -1194,7 +1194,7 @@ For example:
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/widgets/product-widget.tsx
+```tsx title="src/admin/widgets/product-widget.tsx"
 import type { WidgetConfig } from "@medusajs/admin"
 import { Link } from "react-router-dom"
 
@@ -1235,7 +1235,7 @@ For example, you can modify the widget you created to retrieve the tags of a pro
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/widgets/product-widget.tsx
+```tsx title="src/admin/widgets/product-widget.tsx"
 import type { ProductDetailsWidgetProps, WidgetConfig } from "@medusajs/admin"
 import { useAdminProductTags } from "medusa-react"
 
