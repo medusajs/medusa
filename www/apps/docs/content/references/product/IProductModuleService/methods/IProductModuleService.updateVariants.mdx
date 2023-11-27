@@ -13,13 +13,34 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This documentation provides a reference to the updateVariants method. This belongs to the Product Module.
 
+This method is used to update a product's variants.
+
+## Example
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+import { 
+  UpdateProductVariantDTO
+} from "@medusajs/product/dist/types/services/product-variant"
+
+async function updateProductVariants (items: UpdateProductVariantDTO[]) {
+  const productModule = await initializeProductModule()
+
+  const productVariants = await productModule.updateVariants(items)
+
+  // do something with the product variants or return them
+}
+```
+
 ## Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
     "type": "[UpdateProductVariantDTO](../../interfaces/UpdateProductVariantDTO.mdx)[]",
-    "description": "",
+    "description": "The product variants to update.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -219,7 +240,7 @@ This documentation provides a reference to the updateVariants method. This belon
   {
     "name": "sharedContext",
     "type": "[Context](../../interfaces/Context.mdx)",
-    "description": "",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -281,7 +302,7 @@ This documentation provides a reference to the updateVariants method. This belon
     "type": "Promise&#60;[ProductVariantDTO](../../interfaces/ProductVariantDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The updated product variants's details.",
     "expandable": false,
     "children": [
       {
