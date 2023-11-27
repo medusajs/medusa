@@ -677,12 +677,12 @@ function EditPricesTable(props: EditPricesTableProps) {
           (e) => e.preventDefault()
         }
         style={{ fontSize: 13, borderCollapse: "collapse" }}
-        className="h-full w-full table-auto"
+        className="w-full table-auto"
       >
         <thead>
           <tr
             style={{ height: 42 }}
-            className="tw-text-medusa-text-subtle h-2 text-left font-normal"
+            className="tw-text-medusa-text-subtle h-10 text-left font-normal"
           >
             <th className="h-2 border border-t-0 pl-4 font-medium text-gray-400">
               Product
@@ -734,7 +734,7 @@ function EditPricesTable(props: EditPricesTableProps) {
           </tr>
         </thead>
         <tbody>
-          <tr style={{ lineHeight: 3, background: "#f9fafb" }}>
+          <tr style={{ lineHeight: 3, background: "#f9fafb" }} className="">
             <td className="border pl-4 pr-4">
               <div className="text-black-800 flex items-center gap-2 overflow-hidden">
                 {props.product.thumbnail && (
@@ -768,7 +768,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                 onMouseEnter={() => onMouseRowEnter(variant.id)}
                 style={{ lineHeight: 3 }}
               >
-                <td className="whitespace-nowrap border pl-10 pr-4 text-gray-600">
+                <td className="h-10 whitespace-nowrap border pl-10 pr-4 text-gray-600">
                   {variant.title} {variant.sku && `∙ ${variant.sku}`}
                 </td>
 
