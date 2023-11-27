@@ -90,7 +90,7 @@ If you are using an existing Medusa database, you can skip this step.
 
 Migrations are used to create your database schema. Before you can run migrations, add in your `package.json` the following scripts:
 
-```json title=package.json
+```json title="package.json"
 "scripts": {
   //...other scripts
   "product:migrations:run": "medusa-product-migrations-up",
@@ -103,7 +103,7 @@ The first command runs the migrations, and the second command allows you to opti
 <Details>
   <Summary>Seed file</Summary>
 
-  ```js title=seed-data.js
+  ```js title="seed-data.js"
   const productCategoriesData = [
     {
       id: "category-0",
@@ -210,7 +210,7 @@ Next.js uses Webpack for compilation. Since quite a few of the dependencies used
 
 To do that, add the `serverComponentsExternalPackages` option in `next.config.js`:
 
-```js title=next.config.js
+```js title="next.config.js"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -235,7 +235,7 @@ This guide uses Next.js's App Router.
 
 For example, create the file `app/api/products/route.ts` with the following content:
 
-```ts title=app/api/products/route.ts
+```ts title="app/api/products/route.ts"
 import { NextResponse } from "next/server"
 
 import { 
@@ -271,7 +271,7 @@ This section includes some examples of the different functionalities or ways you
 
 ### List Products
 
-```ts title=app/api/products/route.ts
+```ts title="app/api/products/route.ts"
 import { NextResponse } from "next/server"
 
 import { 
@@ -289,7 +289,7 @@ export async function GET(request: Request) {
 
 ### Retrieve Product by Id
 
-```ts title=app/api/product/[id]/route.ts
+```ts title="app/api/product/[id]/route.ts"
 import { NextResponse } from "next/server"
 
 import { 
@@ -313,7 +313,7 @@ export async function GET(
 
 ### Retrieve Product by Handle
 
-```ts title=app/api/product/[handle]/route.ts
+```ts title="app/api/product/[handle]/route.ts"
 import { NextResponse } from "next/server"
 
 import { 
@@ -337,7 +337,7 @@ export async function GET(
 
 ### Retrieve Categories
 
-```ts title=app/api/categories/route.ts
+```ts title="app/api/categories/route.ts"
 import { NextResponse } from "next/server"
 
 import { 
@@ -355,7 +355,7 @@ export async function GET(request: Request) {
 
 ### Retrieve Category by Handle
 
-```ts title=app/api/category/[handle]/route.ts
+```ts title="app/api/category/[handle]/route.ts"
 import { NextResponse } from "next/server"
 
 import { 

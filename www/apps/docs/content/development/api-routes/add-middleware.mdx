@@ -18,7 +18,7 @@ v1.17.2 of `@medusajs/medusa` introduced a new approach to creating middlewares 
 
 ## Basic Implementation
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import type { MiddlewaresConfig } from "@medusajs/medusa"
 import type { 
   MedusaNextFunction, 
@@ -99,7 +99,7 @@ The `resolve`'s value is a function that returns the resource to be registered i
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import type { MiddlewaresConfig } from "@medusajs/medusa"
 import type { 
   MedusaNextFunction, 
@@ -134,7 +134,7 @@ You can then load this new resource within other resources. For example, to load
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/services/custom-service.ts
+```ts title="src/services/custom-service.ts"
 import { TransactionBaseService } from "@medusajs/medusa"
 
 class CustomService extends TransactionBaseService {
