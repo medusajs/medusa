@@ -33,6 +33,7 @@ const isEmail = isEmailImported.default
 
 export type CreateOptions = {
   repoUrl?: string
+  nextRepoUrl?: string
   seed?: boolean
   // commander passed --no-boilerplate as boilerplate
   boilerplate?: boolean
@@ -46,6 +47,7 @@ export type CreateOptions = {
 
 export default async ({
   repoUrl = "",
+  nextRepoUrl = "",
   seed,
   boilerplate,
   skipDb,
@@ -107,6 +109,7 @@ export default async ({
 
   track("CMA_OPTIONS", {
     repoUrl,
+    nextRepoUrl,
     seed,
     boilerplate,
     skipDb,
@@ -147,6 +150,7 @@ export default async ({
   nextjsDirectory = installNextjs
     ? await installNextjsStarter({
         directoryName: projectPath,
+        nextRepoUrl,
         abortController,
         factBoxOptions,
       })
@@ -307,7 +311,17 @@ function showSuccessMessage(
     message: boxen(
       chalk.green(
         // eslint-disable-next-line prettier/prettier
-        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}${inviteToken ? `After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(inviteToken)}${EOL}${EOL}` : ""}${nextjsDirectory?.length ? `The Next.js Starter storefront was installed in the \`${nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}npm run dev${EOL}${EOL}` : ""}Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
+        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}${
+          inviteToken
+            ? `After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(
+                inviteToken
+              )}${EOL}${EOL}`
+            : ""
+        }${
+          nextjsDirectory?.length
+            ? `The Next.js Starter storefront was installed in the \`${nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}npm run dev${EOL}${EOL}`
+            : ""
+        }Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
       ),
       {
         titleAlignment: "center",

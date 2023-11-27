@@ -24,12 +24,14 @@ export async function askForNextjsStarter(): Promise<boolean> {
 
 type InstallOptions = {
   directoryName: string
+  nextRepoUrl?: string
   abortController?: AbortController
   factBoxOptions: FactBoxOptions
 }
 
 export async function installNextjsStarter({
   directoryName,
+  nextRepoUrl,
   abortController,
   factBoxOptions,
 }: InstallOptions): Promise<string> {
@@ -54,7 +56,7 @@ export async function installNextjsStarter({
 
   try {
     await promiseExec(
-      `npx create-next-app -e ${NEXTJS_REPO} ${nextjsDirectory}`,
+      `npx create-next-app -e ${nextRepoUrl || NEXTJS_REPO} ${nextjsDirectory}`,
       {
         signal: abortController?.signal,
         env: {
