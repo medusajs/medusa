@@ -19,7 +19,7 @@ This guide only explains how to override the cart completion strategy. It’s hi
 
 Create a TypeScript or JavaScript file in `src/strategies` of your Medusa backend project with a class that extends the `AbstractCartCompletionStrategy` class:
 
-```ts title=src/strategies/cart-completion.ts
+```ts title="src/strategies/cart-completion.ts"
 import { 
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
@@ -52,7 +52,7 @@ You can use a constructor to access services and resources registered in the dep
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/strategies/cart-completion.ts
+```ts title="src/strategies/cart-completion.ts"
 // ...
 import { IdempotencyKeyService } from "@medusajs/medusa"
 

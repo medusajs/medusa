@@ -62,7 +62,7 @@ Make sure to replace `<YOUR_API_KEY>` with your API Key and `<YOUR_NEWSLETTER_LI
 
 Open `medusa-config.js` and add the new plugin into the `plugins` array:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...,
   {
@@ -123,7 +123,7 @@ To subscribe users to the newsletter without using this API Route or at a specif
 
 Here’s an example of using the `mailchimpService` in an API Route:
 
-```ts title=src/api/store/subscribe/route.ts
+```ts title="src/api/store/subscribe/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,

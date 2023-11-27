@@ -17,7 +17,7 @@ v1.17.2 of `@medusajs/medusa` introduced API Routes to replace Express endpoints
 
 ## Basic Implementation
 
-```ts title=src/api/store/custom/route.ts
+```ts title="src/api/store/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -91,7 +91,7 @@ You can access a path parameter's value in method handlers using the `MedusaRequ
 
 For example:
 
-```ts title=src/api/store/custom/[id]/route.ts
+```ts title="src/api/store/custom/[id]/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -119,7 +119,7 @@ The `cors` middleware, which enables Cross-Origin Resource Sharing (CORS), is au
 
 To add CORS configurations to custom API routes under other path prefixes, or override the CORS configurations added by default, define a [middleware](./add-middleware.mdx) on your API routes and pass it the `cors` middleware. For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import type { 
   MiddlewaresConfig,
 } from "@medusajs/medusa"
@@ -146,7 +146,7 @@ To disable the `cors` middleware for an API Route, export a `CORS` variable in t
 
 For example:
 
-```ts title=src/api/store/custom/route.ts
+```ts title="src/api/store/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -174,7 +174,7 @@ Each of the `body`'s keys are a name of the request body parameters, and its val
 
 For example:
 
-```ts title=src/api/store/custom/route.ts
+```ts title="src/api/store/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -194,7 +194,7 @@ If you want to parse other content types, such as `application/x-www-form-urlenc
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import type { 
   MiddlewaresConfig,
 } from "@medusajs/medusa"
@@ -224,7 +224,7 @@ You can opt out of the default body parser by setting the `bodyParser` property 
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import { MiddlewaresConfig } from "@medusajs/medusa"
 import { raw } from "body-parser"
 
@@ -243,7 +243,7 @@ You can also disable the default `json` body parser for specific HTTP methods us
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import { MiddlewaresConfig } from "@medusajs/medusa"
 import { raw } from "body-parser"
 
@@ -269,7 +269,7 @@ If you expect the request body of an API Route to be larger than the default, yo
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import { MiddlewaresConfig } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
@@ -294,7 +294,7 @@ By default, API routes prefixed by `/store` don't require customer authenticatio
 
 For example:
 
-```ts title=src/api/store/custom/route.ts
+```ts title="src/api/store/custom/route.ts"
 import { CustomerService } from "@medusajs/medusa"
 import type { 
   MedusaRequest, 
@@ -327,7 +327,7 @@ API Routes prefixed by `/store/me`, on the other hand, require customer authenti
 
 If you want to disable authentication requirement on your custom API Route prefixed with `/store/me`, export an `AUTHENTICATE` variable in the route file with its value set to `false`. For example:
 
-```ts title=src/api/store/me/custom/route.ts
+```ts title="src/api/store/me/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -357,7 +357,7 @@ By default, all API Routes prefixed by `/admin` require admin user authenticatio
 
 For example:
 
-```ts title=src/api/admin/custom/route.ts
+```ts title="src/api/admin/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -384,7 +384,7 @@ To disable authentication requirement on an admin API Route, export an `AUTHENTI
 
 For example:
 
-```ts title=src/api/admin/custom/route.ts
+```ts title="src/api/admin/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -418,7 +418,7 @@ To protect API routes that aren't prefixed with `/store` or `/admin`, you can us
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import { 
   authenticate, 
   requireCustomerAuthentication, 
@@ -447,7 +447,7 @@ You can access the configurations exported in `medusa-config.js`, including your
 
 For example:
 
-```ts title=src/api/store/custom/route.ts
+```ts title="src/api/store/custom/route.ts"
 import type { 
   MedusaRequest,
   MedusaResponse,
@@ -562,7 +562,7 @@ To override the default error handler, pass the `errorHandler` property to the [
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import { MiddlewaresConfig } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
@@ -578,7 +578,7 @@ To disable the default error handler, set the `errorHandler` property of the [ex
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import { MiddlewaresConfig } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
@@ -592,7 +592,7 @@ To ensure that errors are still returned in the response when the default error 
 
 For example:
 
-```ts title=src/api/middlewares.ts
+```ts title="src/api/middlewares.ts"
 import { 
   MedusaRequest, 
   MedusaResponse, 
@@ -624,7 +624,7 @@ Posts are represented by a custom entity not covered in this guide. You can refe
 
 :::
 
-```ts title=src/api/store/posts/route.ts
+```ts title="src/api/store/posts/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -659,7 +659,7 @@ Notice that to retrieve an instance of the repository, you need to retrieve firs
 
 :::
 
-```ts title=src/api/store/posts/route.ts
+```ts title="src/api/store/posts/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
