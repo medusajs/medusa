@@ -1,5 +1,11 @@
 # @medusajs/ui
 
+## 2.2.3
+
+### Patch Changes
+
+- [#5692](https://github.com/medusajs/medusa/pull/5692) [`b25b29fe7`](https://github.com/medusajs/medusa/commit/b25b29fe7ba3bc9fca8da7a6b10461437a3e4d2d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui): Update the styling of CodeBlock
+
 ## 2.2.2
 
 ### Patch Changes
