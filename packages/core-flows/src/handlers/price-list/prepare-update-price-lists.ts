@@ -28,6 +28,7 @@ export async function prepareUpdatePriceLists({
 
   const variables = {
     variant_id: variantIds,
+    take: null,
   }
 
   const query = {

@@ -13,8 +13,16 @@ export function buildQuery<T = any, TDto = any>(
   const findOptions: DAL.OptionsQuery<T, any> = {
     populate: deduplicate(config.relations ?? []),
     fields: config.select as string[],
-    limit: config.take ?? 15,
-    offset: config.skip ?? 0,
+    limit:
+      (Number.isSafeInteger(config.take) && config.take! >= 0) ||
+      null === config.take
+        ? config.take ?? undefined
+        : 15,
+    offset:
+      (Number.isSafeInteger(config.skip) && config.skip! >= 0) ||
+      null === config.skip
+        ? config.skip ?? undefined
+        : 0,
   }
 
   if (config.order) {
