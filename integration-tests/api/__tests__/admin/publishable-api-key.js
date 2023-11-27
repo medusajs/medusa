@@ -856,6 +856,34 @@ describe("Publishable API keys", () => {
       expect(response.status).toEqual(400)
     })
 
+    it("should return 400 because the requested product doesn't exist", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: salesChannel1.id }],
+        },
+        adminHeaders
+      )
+
+      const response = await api
+        .get(`/store/products/does-not-exist`, {
+          headers: {
+            "x-medusa-access-token": "test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.status).toEqual(404)
+      expect(response.data.message).toEqual(
+        "Product with id: does-not-exist was not found"
+      )
+    })
+
     it("correctly returns a product if passed PK has no associated SCs", async () => {
       const api = useApi()
 
