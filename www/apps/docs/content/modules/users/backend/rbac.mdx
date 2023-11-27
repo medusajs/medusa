@@ -56,7 +56,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
   Create the file `src/models/role.ts` with the following content:
 
-  ```ts title=src/models/role.ts
+  ```ts title="src/models/role.ts"
   import { 
     BeforeInsert, 
     Column, 
@@ -129,7 +129,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
   Then, create the file `src/repositories/role.ts` with the following content:
 
-  ```ts title=src/repositories/role.ts
+  ```ts title="src/repositories/role.ts"
   import { Role } from "../models/role"
   import { 
     dataSource,
@@ -143,7 +143,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
   Next, create the file `src/models/permission.ts` with the following content:
 
-  ```ts title=src/models/permission.ts
+  ```ts title="src/models/permission.ts"
   import { 
     BeforeInsert, 
     Column, 
@@ -182,7 +182,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
   Then, create the file `src/repositories/permission.ts` with the following content:
 
-  ```ts title=src/repositories/permission.ts
+  ```ts title="src/repositories/permission.ts"
   import { Permission } from "../models/permission"
   import { 
     dataSource,
@@ -198,7 +198,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
   Create the file `src/models/user.ts` with the following content:
 
-  ```ts title=src/models/user.ts
+  ```ts title="src/models/user.ts"
   import { 
     Column,
     Entity,
@@ -228,7 +228,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
   Next, create the file `src/models/store.ts` with the following content:
 
-  ```ts title=src/models/store.ts
+  ```ts title="src/models/store.ts"
   import { Entity, JoinColumn, OneToMany } from "typeorm"
   import {
     // alias the core entity to not cause a naming conflict
@@ -248,7 +248,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
   Optionally, if you’re using TypeScript, create the file `src/index.d.ts` with the following content:
 
-  ```ts title=src/index.d.ts
+  ```ts title="src/index.d.ts"
   import { Role } from "./models/role"
 
   export declare module "@medusajs/medusa/dist/models/user" {
@@ -272,7 +272,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
 <!-- eslint-disable max-len -->
 
-  ```ts title=src/migrations/1693225851284-AddRolesAndPermissions.ts
+  ```ts title="src/migrations/1693225851284-AddRolesAndPermissions.ts"
   import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm"
 
   export class AddRolesAndPermissions1693225851284 implements MigrationInterface {
@@ -352,7 +352,7 @@ Since the Medusa backend uses Express, you can create a middleware and attach it
 
   Create the file `src/api/middlewares.ts` with the following content:
 
-  ```ts title=src/api/middlewares.ts
+  ```ts title="src/api/middlewares.ts"
   import type { 
     MiddlewaresConfig, 
     UserService,
@@ -488,7 +488,7 @@ Furthermore, you may need to extend core services if you need to perform actions
 
   Start by creating the file `src/services/permission.ts` with the following content:
 
-  ```ts title=src/services/permission.ts
+  ```ts title="src/services/permission.ts"
   import { TransactionBaseService } from "@medusajs/medusa"
   import { Permission } from "../models/permission"
   import PermissionRepository from "../repositories/permission"  
@@ -533,7 +533,7 @@ Furthermore, you may need to extend core services if you need to perform actions
 
   Next, create the file `src/services/user.ts` with the following content:
 
-  ```ts title=src/services/user.ts
+  ```ts title="src/services/user.ts"
   import {
     UserService as MedusaUserService, User,
   } from "@medusajs/medusa"
@@ -556,7 +556,7 @@ Furthermore, you may need to extend core services if you need to perform actions
 
   Then, create the file `src/services/role.ts` with the following content:
 
-  ```ts title=src/services/role.ts
+  ```ts title="src/services/role.ts"
   import { TransactionBaseService } from "@medusajs/medusa"
   import { Role } from "../models/role"
   import RoleRepository from "../repositories/role"
@@ -661,7 +661,7 @@ Furthermore, you may need to extend core services if you need to perform actions
 
   Start by creating the file `src/api/admin/roles/route.ts` with the following content:
 
-  ```ts title=src/api/admin/roles/route.ts
+  ```ts title="src/api/admin/roles/route.ts"
   import type { 
     MedusaRequest, 
     MedusaResponse,
@@ -697,7 +697,7 @@ Furthermore, you may need to extend core services if you need to perform actions
 
   Next, create the file `src/api/routes/admin/roles/[id]/user/[user_id]/route.ts` with the following content:
 
-  ```ts title=src/api/routes/admin/roles/[id]/user/[user_id]/route.ts
+  ```ts title="src/api/routes/admin/roles/[id]/user/[user_id]/route.ts"
   import type { 
     MedusaRequest, 
     MedusaResponse,

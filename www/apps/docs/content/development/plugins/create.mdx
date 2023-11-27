@@ -66,7 +66,7 @@ npm install
 
 Then, make sure to remove the plugins and modules you removed from `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 // previously had plugins
 const plugins = []
 
@@ -86,7 +86,7 @@ These changes may already be available in your Medusa project. They're included 
 
 Start by updating your `tsconfig.json` with the following configurations:
 
-```json title=tsconfig.json
+```json title="tsconfig.json"
 {
   "compilerOptions": {
     "target": "es2019",
@@ -127,7 +127,7 @@ The addition of `"jsx": "react-jsx"` specified how should TypeScript transform J
 
 Next, create the file `tsconfig.server.json` with the following content:
 
-```json title=tsconfig.server.json
+```json title="tsconfig.server.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -142,7 +142,7 @@ This is the configuration that will be used to transpile your custom backend cod
 
 Then, create the file `tsconfig.admin.json` with the following content:
 
-```json title=tsconfig.admin.json
+```json title="tsconfig.admin.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -157,7 +157,7 @@ This is the configuration that will be used when transpiling your admin code.
 
 Finally, update the `build` scripts in your project and add a new `prepare` command:
 
-```json title=package.json
+```json title="package.json"
 "scripts": {
   // other scripts...
   "build": "cross-env npm run clean && npm run build:server && npm run build:admin",
@@ -176,7 +176,7 @@ Each of these scripts do the following:
 
 Furthermore, make sure to add `react` to `peerDependencies` along with `react-router-dom` if you're using it:
 
-```json title=package.json
+```json title="package.json"
 "peerDependencies": {
   // other dependencies...
   "react": "^18.2.0",
@@ -330,7 +330,7 @@ Plugins often allow developers that will later use them to provide their own opt
 
 Developers that use your plugin will pass options to your plugin in the `plugins` array in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -346,7 +346,7 @@ In your plugin's services, you can have access to the option in their constructo
 
 For example:
 
-```js title=src/service/my.ts
+```js title="src/service/my.ts"
   // In a service in your plugin
 class MyService extends TransactionBaseService {
   constructor(container, options) {
@@ -370,7 +370,7 @@ All plugins accept an option named `enableUI`. This option is useful mainly if y
 
 A developer using your plugin can pass the `enableUI` option as part of the plugin's options:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -387,7 +387,7 @@ If you're passing your plugin options to third-party services, make sure to omit
 
 For example:
 
-```js title=src/service/test.ts
+```js title="src/service/test.ts"
   // In a service in your plugin
 class MyService extends TransactionBaseService {
   constructor(container, options) {
