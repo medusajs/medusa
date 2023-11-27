@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/types",
-  "version": "1.11.7",
+  "version": "1.11.8",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
