@@ -141,27 +141,17 @@ Provides layer to manipulate product collections.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addProducts
+#### addProducts
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -184,7 +174,7 @@ Provides layer to manipulate product collections.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -200,13 +190,13 @@ Provides layer to manipulate product collections.
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -238,7 +228,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -254,11 +244,11 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates a product collection
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -272,7 +262,7 @@ Creates a product collection
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -288,11 +278,11 @@ Creates a product collection
 
 ___
 
-### delete
+#### delete
 
 Deletes a product collection idempotently
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -306,7 +296,7 @@ Deletes a product collection idempotently
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -322,11 +312,11 @@ Deletes a product collection idempotently
 
 ___
 
-### list
+#### list
 
 Lists product collections
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -367,7 +357,7 @@ Lists product collections
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -383,11 +373,11 @@ Lists product collections
 
 ___
 
-### listAndCount
+#### listAndCount
 
 Lists product collections and add count.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -410,7 +400,7 @@ Lists product collections and add count.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -426,9 +416,9 @@ Lists product collections and add count.
 
 ___
 
-### removeProducts
+#### removeProducts
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -451,7 +441,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -467,11 +457,11 @@ ___
 
 ___
 
-### retrieve
+#### retrieve
 
 Retrieves a product collection by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -494,7 +484,7 @@ Retrieves a product collection by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -510,11 +500,11 @@ Retrieves a product collection by id.
 
 ___
 
-### retrieveByHandle
+#### retrieveByHandle
 
 Retrieves a product collection by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -537,7 +527,7 @@ Retrieves a product collection by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -553,9 +543,9 @@ Retrieves a product collection by id.
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -569,7 +559,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -585,11 +575,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates a product collection
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -612,7 +602,7 @@ Updates a product collection
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -628,9 +618,9 @@ Updates a product collection
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -644,7 +634,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

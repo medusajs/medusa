@@ -20,7 +20,7 @@ This method is used to retrieve a paginated list of product categories based on 
 To retrieve a list of product categories using their IDs:
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -38,7 +38,7 @@ async function retrieveCategories (ids: string[]) {
 To specify relations that should be retrieved within the product categories:
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -58,7 +58,7 @@ async function retrieveCategories (ids: string[]) {
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -80,7 +80,7 @@ async function retrieveCategories (ids: string[], skip: number, take: number) {
 You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -215,17 +215,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
+        "children": []
       },
       {
         "name": "relations",
@@ -247,7 +237,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
       },
       {
         "name": "skip",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
@@ -256,7 +246,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
       },
       {
         "name": "take",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",

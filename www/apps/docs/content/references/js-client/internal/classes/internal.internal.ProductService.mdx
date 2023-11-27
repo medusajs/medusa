@@ -202,31 +202,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addOption
+#### addOption
 
 Adds an option to a product. Options can, for example, be "Size", "Color",
 etc. Will update all the products variants with a dummy value for the newly
 created option. The same option cannot be added more than once.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -249,7 +239,7 @@ created option. The same option cannot be added more than once.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -265,13 +255,13 @@ created option. The same option cannot be added more than once.
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -303,7 +293,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -319,11 +309,11 @@ transaction manager is created.
 
 ___
 
-### count
+#### count
 
 Return the total number of documents in database
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -337,7 +327,7 @@ Return the total number of documents in database
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -353,11 +343,11 @@ Return the total number of documents in database
 
 ___
 
-### create
+#### create
 
 Creates a product.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -371,7 +361,7 @@ Creates a product.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -387,12 +377,12 @@ Creates a product.
 
 ___
 
-### delete
+#### delete
 
 Deletes a product from a given product id. The product's associated
 variants will also be deleted.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -406,7 +396,7 @@ variants will also be deleted.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -422,11 +412,11 @@ variants will also be deleted.
 
 ___
 
-### deleteOption
+#### deleteOption
 
 Delete an option from a product.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -449,7 +439,7 @@ Delete an option from a product.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -465,9 +455,9 @@ Delete an option from a product.
 
 ___
 
-### filterProductsBySalesChannel
+#### filterProductsBySalesChannel
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -499,7 +489,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -515,11 +505,11 @@ ___
 
 ___
 
-### isProductInSalesChannels
+#### isProductInSalesChannels
 
 Check if the product is assigned to at least one of the provided sales channels.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -542,7 +532,7 @@ Check if the product is assigned to at least one of the provided sales channels.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -558,11 +548,11 @@ Check if the product is assigned to at least one of the provided sales channels.
 
 ___
 
-### list
+#### list
 
 Lists products based on the provided parameters.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -585,7 +575,7 @@ Lists products based on the provided parameters.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -601,12 +591,12 @@ Lists products based on the provided parameters.
 
 ___
 
-### listAndCount
+#### listAndCount
 
 Lists products based on the provided parameters and includes the count of
 products that match the query.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -629,7 +619,7 @@ products that match the query.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -645,9 +635,9 @@ products that match the query.
 
 ___
 
-### listTagsByUsage
+#### listTagsByUsage
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -661,7 +651,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -677,9 +667,9 @@ ___
 
 ___
 
-### listTypes
+#### listTypes
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -695,11 +685,11 @@ ___
 
 ___
 
-### prepareListQuery\_
+#### prepareListQuery\_
 
 Temporary method to be used in place we need custom query strategy to prevent typeorm bug
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -722,7 +712,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -768,9 +758,9 @@ Temporary method to be used in place we need custom query strategy to prevent ty
 
 ___
 
-### reorderVariants
+#### reorderVariants
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -793,7 +783,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -809,12 +799,12 @@ ___
 
 ___
 
-### retrieve
+#### retrieve
 
 Gets a product by id.
 Throws in case of DB Error and if product was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -837,7 +827,7 @@ Throws in case of DB Error and if product was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -853,12 +843,12 @@ Throws in case of DB Error and if product was not found.
 
 ___
 
-### retrieveByExternalId
+#### retrieveByExternalId
 
 Gets a product by external id.
 Throws in case of DB Error and if product was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -881,7 +871,7 @@ Throws in case of DB Error and if product was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -897,12 +887,12 @@ Throws in case of DB Error and if product was not found.
 
 ___
 
-### retrieveByHandle
+#### retrieveByHandle
 
 Gets a product by handle.
 Throws in case of DB Error and if product was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -925,7 +915,7 @@ Throws in case of DB Error and if product was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -941,11 +931,11 @@ Throws in case of DB Error and if product was not found.
 
 ___
 
-### retrieveOptionByTitle
+#### retrieveOptionByTitle
 
 Retrieve product's option by title.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -968,7 +958,7 @@ Retrieve product's option by title.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -984,11 +974,11 @@ Retrieve product's option by title.
 
 ___
 
-### retrieveVariants
+#### retrieveVariants
 
 Gets all variants belonging to a product.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1011,7 +1001,7 @@ Gets all variants belonging to a product.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1027,12 +1017,12 @@ Gets all variants belonging to a product.
 
 ___
 
-### retrieve\_
+#### retrieve\_
 
 Gets a product by selector.
 Throws in case of DB Error and if product was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1055,7 +1045,7 @@ Throws in case of DB Error and if product was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1071,9 +1061,9 @@ Throws in case of DB Error and if product was not found.
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1087,7 +1077,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1103,13 +1093,13 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates a product. Product variant updates should use dedicated methods,
 e.g. `addVariant`, etc. The function will throw errors if metadata or
 product variant updates are attempted.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1132,7 +1122,7 @@ product variant updates are attempted.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1148,12 +1138,12 @@ product variant updates are attempted.
 
 ___
 
-### updateOption
+#### updateOption
 
 Updates a product's option. Throws if the call tries to update an option
 not associated with the product. Throws if the updated title already exists.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1185,7 +1175,7 @@ not associated with the product. Throws if the updated title already exists.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1201,11 +1191,11 @@ not associated with the product. Throws if the updated title already exists.
 
 ___
 
-### updateShippingProfile
+#### updateShippingProfile
 
 Assign a product to a profile, if a profile id null is provided then detach the product from the profile
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1228,7 +1218,7 @@ Assign a product to a profile, if a profile id null is provided then detach the 
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1244,9 +1234,9 @@ Assign a product to a profile, if a profile id null is provided then detach the 
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1260,7 +1250,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

@@ -141,31 +141,21 @@ Provides layer to manipulate users.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -197,7 +187,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -213,12 +203,12 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates a user with username being validated.
 Fails if email is not a valid format.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -241,7 +231,7 @@ Fails if email is not a valid format.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -257,11 +247,11 @@ Fails if email is not a valid format.
 
 ___
 
-### delete
+#### delete
 
 Deletes a user from a given user id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -275,7 +265,7 @@ Deletes a user from a given user id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -291,7 +281,7 @@ Deletes a user from a given user id.
 
 ___
 
-### generateResetPasswordToken
+#### generateResetPasswordToken
 
 Generate a JSON Web token, that will be sent to a user, that wishes to
 reset password.
@@ -299,7 +289,7 @@ The token will be signed with the users current password hash as a secret
 a long side a payload with userId and the expiry time for the token, which
 is always 15 minutes.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -313,7 +303,7 @@ is always 15 minutes.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -329,11 +319,11 @@ is always 15 minutes.
 
 ___
 
-### hashPassword\_
+#### hashPassword\_
 
 Hashes a password
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -347,7 +337,7 @@ Hashes a password
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -363,9 +353,9 @@ Hashes a password
 
 ___
 
-### list
+#### list
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -388,7 +378,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -404,12 +394,12 @@ ___
 
 ___
 
-### retrieve
+#### retrieve
 
 Gets a user by id.
 Throws in case of DB Error and if user was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -432,7 +422,7 @@ Throws in case of DB Error and if user was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -448,12 +438,12 @@ Throws in case of DB Error and if user was not found.
 
 ___
 
-### retrieveByApiToken
+#### retrieveByApiToken
 
 Gets a user by api token.
 Throws in case of DB Error and if user was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -476,7 +466,7 @@ Throws in case of DB Error and if user was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -492,12 +482,12 @@ Throws in case of DB Error and if user was not found.
 
 ___
 
-### retrieveByEmail
+#### retrieveByEmail
 
 Gets a user by email.
 Throws in case of DB Error and if user was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -520,7 +510,7 @@ Throws in case of DB Error and if user was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -536,13 +526,13 @@ Throws in case of DB Error and if user was not found.
 
 ___
 
-### setPassword\_
+#### setPassword\_
 
 Sets a password for a user
 Fails if no user exists with userId and if the hashing of the new
 password does not work.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -565,7 +555,7 @@ password does not work.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -581,9 +571,9 @@ password does not work.
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -597,7 +587,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -613,11 +603,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates a user.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -640,7 +630,7 @@ Updates a user.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -656,9 +646,9 @@ Updates a user.
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -672,7 +662,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
