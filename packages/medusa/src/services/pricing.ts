@@ -739,10 +739,12 @@ class PricingService extends TransactionBaseService {
           (pr) => pr.rule_type.rule_attribute === "region_id"
         )?.value
 
+        delete priceSetMoneyAmount.money_amount?.price_set_money_amount
         const moneyAmount = {
           ...priceSetMoneyAmount.money_amount,
           region_id: null as null | string,
-          price_list_id: priceSetMoneyAmount.price_list?.id,
+          price_list_id: priceSetMoneyAmount.price_list?.id ?? null,
+          price_list: priceSetMoneyAmount.price_list ?? null,
         }
 
         if (regionId) {
