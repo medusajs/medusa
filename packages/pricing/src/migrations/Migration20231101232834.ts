@@ -17,7 +17,7 @@ export class Migration20231101232834 extends Migration {
       `ALTER TABLE price_list
           ADD COLUMN IF NOT EXISTS number_rules integer not null default 0`
     )
-    
+
     this.addSql(
       'alter table "price_set_money_amount" drop constraint "price_set_money_amount_price_list_id_foreign";'
     )
@@ -35,10 +35,7 @@ export class Migration20231101232834 extends Migration {
         SET title = name
     `)
 
-    this.addSql(`alter table "price_list"
-        alter column "title" set not null `)
-
-    this.addSql('alter table "price_list" drop column if exists "name";')
+    this.addSql(`alter table "price_list" alter column "title" set not null `)
 
     this.addSql(
       'create index if not exists "IDX_price_list_deleted_at" on "price_list" ("deleted_at");'

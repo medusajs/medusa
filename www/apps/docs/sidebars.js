@@ -641,18 +641,6 @@ module.exports = {
         },
         {
           type: "html",
-          value: "References",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "ref",
-          id: "references/product/interfaces/IProductModuleService",
-          label: "Product Module Interface Reference",
-        },
-        {
-          type: "html",
           value: "How-to",
           customProps: {
             sidebar_is_group_divider: true,
@@ -672,11 +660,6 @@ module.exports = {
           type: "doc",
           id: "modules/products/admin/import-products",
           label: "Admin: Import Products",
-        },
-        {
-          type: "doc",
-          id: "modules/products/serverless-module",
-          label: "Storefront: Serverless Module",
         },
         {
           type: "doc",
@@ -1163,18 +1146,6 @@ module.exports = {
         },
         {
           type: "html",
-          value: "References",
-          customProps: {
-            sidebar_is_group_divider: true,
-          },
-        },
-        {
-          type: "ref",
-          id: "references/pricing/interfaces/IPricingModuleService",
-          label: "Pricing Module Interface Reference",
-        },
-        {
-          type: "html",
           value: "How-to",
           customProps: {
             sidebar_is_group_divider: true,
@@ -1378,6 +1349,29 @@ module.exports = {
       },
       collapsible: false,
       items: [
+        {
+          type: "category",
+          label: "Workflows",
+          items: [
+            {
+              type: "doc",
+              id: "development/workflows/index",
+              label: "Introduction",
+            },
+            {
+              type: "html",
+              value: "References",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "ref",
+              id: "references/workflows/index",
+              label: "API Reference",
+            },
+          ],
+        },
         {
           type: "category",
           label: "Entity",
@@ -1968,6 +1962,14 @@ module.exports = {
           label: "Transaction Orchestrator",
         },
       ],
+    },
+    {
+      type: "ref",
+      label: "Experimental Features",
+      id: "experimental/index",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
     },
   ],
   upgradeGuides: [
@@ -2646,6 +2648,129 @@ module.exports = {
       dirName: "user-guide",
     },
   ],
+  experimentalSidebar: [
+    {
+      type: "ref",
+      id: "development/overview",
+      label: "Back to Medusa Development",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "experimental/index",
+      label: "Experimental",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "beaker",
+      },
+    },
+    {
+      type: "category",
+      label: "Pricing Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/pricing/overview",
+        },
+        {
+          type: "doc",
+          label: "Install in Medusa",
+          id: "experimental/pricing/install-medusa",
+        },
+        {
+          type: "doc",
+          label: "Install in Node.js",
+          id: "experimental/pricing/install-nodejs",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/pricing/examples",
+        },
+        {
+          type: "html",
+          value: "Architecture",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "doc",
+          label: "Pricing Concepts",
+          id: "experimental/pricing/concepts",
+        },
+        {
+          type: "doc",
+          label: "Prices Calculation",
+          id: "experimental/pricing/prices-calculation",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/pricing/interfaces/IPricingModuleService",
+          label: "Interface Reference",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Product Module",
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          label: "Overview",
+          id: "experimental/product/overview",
+        },
+        {
+          type: "doc",
+          label: "Install in Medusa",
+          id: "experimental/product/install-medusa",
+        },
+        {
+          type: "doc",
+          label: "Install in Node.js",
+          id: "experimental/product/install-nodejs",
+        },
+        {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/product/examples",
+        },
+        {
+          type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/product/interfaces/IProductModuleService",
+          label: "Interface Reference",
+        },
+      ],
+    },
+  ],
   servicesSidebar: [
     {
       type: "ref",
@@ -3059,8 +3184,8 @@ module.exports = {
   pricingReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3093,8 +3218,8 @@ module.exports = {
   productReference: [
     {
       type: "ref",
-      id: "modules/overview",
-      label: "Back to Commerce Modules",
+      id: "experimental/index",
+      label: "Back to Experimental Features",
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
@@ -3188,6 +3313,40 @@ module.exports = {
         {
           type: "autogenerated",
           dirName: "references/stock-location/IStockLocationService/methods",
+        },
+      ],
+    },
+  ],
+  workflowsSidebar: [
+    {
+      type: "ref",
+      id: "development/overview",
+      label: "Back to Medusa Development",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/workflows/index",
+      label: "Workflows API Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Functions",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/workflows/functions",
         },
       ],
     },

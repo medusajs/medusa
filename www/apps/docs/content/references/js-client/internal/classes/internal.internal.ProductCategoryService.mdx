@@ -114,29 +114,19 @@ Provides layer to manipulate product categories.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addProducts
+#### addProducts
 
 Add a batch of product to a product category
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -159,7 +149,7 @@ Add a batch of product to a product category
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -175,13 +165,13 @@ Add a batch of product to a product category
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -213,7 +203,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -229,11 +219,11 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates a product category
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -247,7 +237,7 @@ Creates a product category
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -263,11 +253,11 @@ Creates a product category
 
 ___
 
-### delete
+#### delete
 
 Deletes a product category
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -281,7 +271,7 @@ Deletes a product category
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -297,9 +287,9 @@ Deletes a product category
 
 ___
 
-### fetchReorderConditions
+#### fetchReorderConditions
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -331,7 +321,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -347,12 +337,12 @@ ___
 
 ___
 
-### listAndCount
+#### listAndCount
 
 Lists product category based on the provided parameters and includes the count of
 product category that match the query.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -384,7 +374,7 @@ product category that match the query.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -400,9 +390,9 @@ product category that match the query.
 
 ___
 
-### performReordering
+#### performReordering
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -425,7 +415,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -441,11 +431,11 @@ ___
 
 ___
 
-### removeProducts
+#### removeProducts
 
 Remove a batch of product from a product category
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -468,7 +458,7 @@ Remove a batch of product from a product category
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -484,11 +474,11 @@ Remove a batch of product from a product category
 
 ___
 
-### retrieve
+#### retrieve
 
 Retrieves a product category by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -529,7 +519,7 @@ Retrieves a product category by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -545,11 +535,11 @@ Retrieves a product category by id.
 
 ___
 
-### retrieveByHandle
+#### retrieveByHandle
 
 Retrieves a product category by handle.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -590,7 +580,7 @@ Retrieves a product category by handle.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -606,11 +596,11 @@ Retrieves a product category by handle.
 
 ___
 
-### retrieve\_
+#### retrieve\_
 
 A generic retrieve for fining product categories by different attributes.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -642,7 +632,7 @@ A generic retrieve for fining product categories by different attributes.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -658,9 +648,9 @@ A generic retrieve for fining product categories by different attributes.
 
 ___
 
-### shiftSiblings
+#### shiftSiblings
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -683,7 +673,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -699,9 +689,9 @@ ___
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -715,7 +705,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -731,12 +721,12 @@ ___
 
 ___
 
-### transformParentIdToEntity
+#### transformParentIdToEntity
 
 Accepts an input object and transforms product\_category\_id
 into product\_category entity.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -750,7 +740,7 @@ into product\_category entity.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -766,11 +756,11 @@ into product\_category entity.
 
 ___
 
-### update
+#### update
 
 Updates a product category
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -793,7 +783,7 @@ Updates a product category
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -809,9 +799,9 @@ Updates a product category
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -825,7 +815,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

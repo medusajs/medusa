@@ -67,11 +67,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-### [iterator]
+#### [iterator]
 
 `**[iterator]**(): [IterableIterator](IterableIterator.mdx)&#60;number&#62;`
 
-#### Returns
+##### Returns
 
 [IterableIterator](IterableIterator.mdx)&#60;number&#62;
 
@@ -89,13 +89,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ___
 
-### at
+#### at
 
 `**at**(index): undefined \| number`
 
 Returns the item located at the specified index.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -109,7 +109,7 @@ Returns the item located at the specified index.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `undefined` \| `number`
 
@@ -127,7 +127,7 @@ Returns the item located at the specified index.
 
 ___
 
-### compare
+#### compare
 
 `**compare**(target, targetStart?, targetEnd?, sourceStart?, sourceEnd?): 0 \| 1 \| -1`
 
@@ -178,7 +178,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
 
 `ERR_OUT_OF_RANGE` is thrown if `targetStart < 0`, `sourceStart < 0`,`targetEnd > target.byteLength`, or `sourceEnd > source.byteLength`.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -228,7 +228,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `0` \| `1` \| `-1`
 
@@ -250,7 +250,7 @@ v0.11.13
 
 ___
 
-### copy
+#### copy
 
 `**copy**(target, targetStart?, sourceStart?, sourceEnd?): number`
 
@@ -300,7 +300,7 @@ console.log(buf.toString());
 // Prints: efghijghijklmnopqrstuvwxyz
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -341,7 +341,7 @@ console.log(buf.toString());
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -363,14 +363,14 @@ v0.1.90
 
 ___
 
-### copyWithin
+#### copyWithin
 
 `**copyWithin**(target, start, end?): [Buffer](../index.md#buffer)`
 
 Returns the this object after copying a section of the array identified by start and end
 to the same array starting at position target
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -402,7 +402,7 @@ to the same array starting at position target
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -420,7 +420,7 @@ to the same array starting at position target
 
 ___
 
-### entries
+#### entries
 
 `**entries**(): [IterableIterator](IterableIterator.mdx)&#60;[number, number]&#62;`
 
@@ -446,7 +446,7 @@ for (const pair of buf.entries()) {
 //   [5, 114]
 ```
 
-#### Returns
+##### Returns
 
 [IterableIterator](IterableIterator.mdx)&#60;[number, number]&#62;
 
@@ -468,7 +468,7 @@ v1.1.0
 
 ___
 
-### equals
+#### equals
 
 `**equals**(otherBuffer): boolean`
 
@@ -487,7 +487,7 @@ console.log(buf1.equals(buf3));
 // Prints: false
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -501,7 +501,7 @@ console.log(buf1.equals(buf3));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -523,13 +523,13 @@ v0.11.13
 
 ___
 
-### every
+#### every
 
 `**every**(predicate, thisArg?): boolean`
 
 Determines whether all the members of an array satisfy the specified test.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -552,7 +552,7 @@ Determines whether all the members of an array satisfy the specified test.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -570,7 +570,7 @@ Determines whether all the members of an array satisfy the specified test.
 
 ___
 
-### fill
+#### fill
 
 `**fill**(value, offset?, end?, encoding?): [Buffer](../index.md#buffer)`
 
@@ -626,7 +626,7 @@ console.log(buf.fill('zz', 'hex'));
 // Throws an exception.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -667,7 +667,7 @@ console.log(buf.fill('zz', 'hex'));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -689,13 +689,13 @@ v0.5.0
 
 ___
 
-### filter
+#### filter
 
 `**filter**(predicate, thisArg?): Uint8Array`
 
 Returns the elements of an array that meet the condition specified in a callback function.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -718,7 +718,7 @@ Returns the elements of an array that meet the condition specified in a callback
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Uint8Array
 
@@ -736,14 +736,14 @@ Uint8Array
 
 ___
 
-### find
+#### find
 
 `**find**(predicate, thisArg?): undefined \| number`
 
 Returns the value of the first element in the array where predicate is true, and undefined
 otherwise.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -766,7 +766,7 @@ otherwise.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `undefined` \| `number`
 
@@ -784,14 +784,14 @@ otherwise.
 
 ___
 
-### findIndex
+#### findIndex
 
 `**findIndex**(predicate, thisArg?): number`
 
 Returns the index of the first element in the array where predicate is true, and -1
 otherwise.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -814,7 +814,7 @@ otherwise.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -832,12 +832,14 @@ otherwise.
 
 ___
 
-### findLast
+#### findLast
 
 `**findLast**<TypeParameter S>(predicate, thisArg?): undefined \| S`
 
 Returns the value of the last element in the array where predicate is true, and undefined
 otherwise.
+
+##### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -851,7 +853,7 @@ otherwise.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -874,7 +876,7 @@ otherwise.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `undefined` \| `S`
 
@@ -892,7 +894,7 @@ otherwise.
 
 `**findLast**(predicate, thisArg?): undefined \| number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -915,7 +917,7 @@ otherwise.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `undefined` \| `number`
 
@@ -933,14 +935,14 @@ otherwise.
 
 ___
 
-### findLastIndex
+#### findLastIndex
 
 `**findLastIndex**(predicate, thisArg?): number`
 
 Returns the index of the last element in the array where predicate is true, and -1
 otherwise.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -963,7 +965,7 @@ otherwise.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -981,13 +983,13 @@ otherwise.
 
 ___
 
-### forEach
+#### forEach
 
 `**forEach**(callbackfn, thisArg?): void`
 
 Performs the specified action for each element in an array.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1010,7 +1012,7 @@ Performs the specified action for each element in an array.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -1028,7 +1030,7 @@ Performs the specified action for each element in an array.
 
 ___
 
-### includes
+#### includes
 
 `**includes**(value, byteOffset?, encoding?): boolean`
 
@@ -1055,7 +1057,7 @@ console.log(buf.includes('this', 4));
 // Prints: false
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1087,7 +1089,7 @@ console.log(buf.includes('this', 4));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -1109,7 +1111,7 @@ v5.3.0
 
 ___
 
-### indexOf
+#### indexOf
 
 `**indexOf**(value, byteOffset?, encoding?): number`
 
@@ -1175,7 +1177,7 @@ console.log(b.indexOf('b', []));
 If `value` is an empty string or empty `Buffer` and `byteOffset` is less
 than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOffset` is at least `buf.length`, `buf.length` will be returned.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1207,7 +1209,7 @@ than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOf
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -1229,13 +1231,13 @@ v1.5.0
 
 ___
 
-### join
+#### join
 
 `**join**(separator?): string`
 
 Adds all the elements of an array separated by the specified separator string.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1249,7 +1251,7 @@ Adds all the elements of an array separated by the specified separator string.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `string`
 
@@ -1267,7 +1269,7 @@ Adds all the elements of an array separated by the specified separator string.
 
 ___
 
-### keys
+#### keys
 
 `**keys**(): [IterableIterator](IterableIterator.mdx)&#60;number&#62;`
 
@@ -1290,7 +1292,7 @@ for (const key of buf.keys()) {
 //   5
 ```
 
-#### Returns
+##### Returns
 
 [IterableIterator](IterableIterator.mdx)&#60;number&#62;
 
@@ -1312,7 +1314,7 @@ v1.1.0
 
 ___
 
-### lastIndexOf
+#### lastIndexOf
 
 `**lastIndexOf**(value, byteOffset?, encoding?): number`
 
@@ -1377,7 +1379,7 @@ console.log(b.lastIndexOf('b', []));
 
 If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1409,7 +1411,7 @@ If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -1431,14 +1433,14 @@ v6.0.0
 
 ___
 
-### map
+#### map
 
 `**map**(callbackfn, thisArg?): Uint8Array`
 
 Calls a defined callback function on each element of an array, and returns an array that
 contains the results.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1461,7 +1463,7 @@ contains the results.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Uint8Array
 
@@ -1479,7 +1481,7 @@ Uint8Array
 
 ___
 
-### readBigInt64BE
+#### readBigInt64BE
 
 `**readBigInt64BE**(offset?): bigint`
 
@@ -1488,7 +1490,7 @@ Reads a signed, big-endian 64-bit integer from `buf` at the specified `offset`.
 Integers read from a `Buffer` are interpreted as two's complement signed
 values.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1502,7 +1504,7 @@ values.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `bigint`
 
@@ -1524,7 +1526,7 @@ v12.0.0, v10.20.0
 
 ___
 
-### readBigInt64LE
+#### readBigInt64LE
 
 `**readBigInt64LE**(offset?): bigint`
 
@@ -1533,7 +1535,7 @@ Reads a signed, little-endian 64-bit integer from `buf` at the specified`offset`
 Integers read from a `Buffer` are interpreted as two's complement signed
 values.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1547,7 +1549,7 @@ values.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `bigint`
 
@@ -1569,7 +1571,7 @@ v12.0.0, v10.20.0
 
 ___
 
-### readBigUInt64BE
+#### readBigUInt64BE
 
 `**readBigUInt64BE**(offset?): bigint`
 
@@ -1586,7 +1588,7 @@ console.log(buf.readBigUInt64BE(0));
 // Prints: 4294967295n
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1600,7 +1602,7 @@ console.log(buf.readBigUInt64BE(0));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `bigint`
 
@@ -1622,7 +1624,7 @@ v12.0.0, v10.20.0
 
 ___
 
-### readBigUInt64LE
+#### readBigUInt64LE
 
 `**readBigUInt64LE**(offset?): bigint`
 
@@ -1639,7 +1641,7 @@ console.log(buf.readBigUInt64LE(0));
 // Prints: 18446744069414584320n
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1653,7 +1655,7 @@ console.log(buf.readBigUInt64LE(0));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `bigint`
 
@@ -1675,11 +1677,11 @@ v12.0.0, v10.20.0
 
 ___
 
-### readBigUint64BE
+#### readBigUint64BE
 
 `**readBigUint64BE**(offset?): bigint`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1693,7 +1695,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `bigint`
 
@@ -1719,11 +1721,11 @@ v14.10.0, v12.19.0
 
 ___
 
-### readBigUint64LE
+#### readBigUint64LE
 
 `**readBigUint64LE**(offset?): bigint`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1737,7 +1739,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `bigint`
 
@@ -1763,7 +1765,7 @@ v14.10.0, v12.19.0
 
 ___
 
-### readDoubleBE
+#### readDoubleBE
 
 `**readDoubleBE**(offset?): number`
 
@@ -1778,7 +1780,7 @@ console.log(buf.readDoubleBE(0));
 // Prints: 8.20788039913184e-304
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1792,7 +1794,7 @@ console.log(buf.readDoubleBE(0));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -1814,7 +1816,7 @@ v0.11.15
 
 ___
 
-### readDoubleLE
+#### readDoubleLE
 
 `**readDoubleLE**(offset?): number`
 
@@ -1831,7 +1833,7 @@ console.log(buf.readDoubleLE(1));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1845,7 +1847,7 @@ console.log(buf.readDoubleLE(1));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -1867,7 +1869,7 @@ v0.11.15
 
 ___
 
-### readFloatBE
+#### readFloatBE
 
 `**readFloatBE**(offset?): number`
 
@@ -1882,7 +1884,7 @@ console.log(buf.readFloatBE(0));
 // Prints: 2.387939260590663e-38
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1896,7 +1898,7 @@ console.log(buf.readFloatBE(0));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -1918,7 +1920,7 @@ v0.11.15
 
 ___
 
-### readFloatLE
+#### readFloatLE
 
 `**readFloatLE**(offset?): number`
 
@@ -1935,7 +1937,7 @@ console.log(buf.readFloatLE(1));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1949,7 +1951,7 @@ console.log(buf.readFloatLE(1));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -1971,7 +1973,7 @@ v0.11.15
 
 ___
 
-### readInt16BE
+#### readInt16BE
 
 `**readInt16BE**(offset?): number`
 
@@ -1988,7 +1990,7 @@ console.log(buf.readInt16BE(0));
 // Prints: 5
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2002,7 +2004,7 @@ console.log(buf.readInt16BE(0));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2024,7 +2026,7 @@ v0.5.5
 
 ___
 
-### readInt16LE
+#### readInt16LE
 
 `**readInt16LE**(offset?): number`
 
@@ -2043,7 +2045,7 @@ console.log(buf.readInt16LE(1));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2057,7 +2059,7 @@ console.log(buf.readInt16LE(1));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2079,7 +2081,7 @@ v0.5.5
 
 ___
 
-### readInt32BE
+#### readInt32BE
 
 `**readInt32BE**(offset?): number`
 
@@ -2096,7 +2098,7 @@ console.log(buf.readInt32BE(0));
 // Prints: 5
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2110,7 +2112,7 @@ console.log(buf.readInt32BE(0));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2132,7 +2134,7 @@ v0.5.5
 
 ___
 
-### readInt32LE
+#### readInt32LE
 
 `**readInt32LE**(offset?): number`
 
@@ -2151,7 +2153,7 @@ console.log(buf.readInt32LE(1));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2165,7 +2167,7 @@ console.log(buf.readInt32LE(1));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2187,7 +2189,7 @@ v0.5.5
 
 ___
 
-### readInt8
+#### readInt8
 
 `**readInt8**(offset?): number`
 
@@ -2208,7 +2210,7 @@ console.log(buf.readInt8(2));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2222,7 +2224,7 @@ console.log(buf.readInt8(2));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2244,7 +2246,7 @@ v0.5.0
 
 ___
 
-### readIntBE
+#### readIntBE
 
 `**readIntBE**(offset, byteLength): number`
 
@@ -2264,7 +2266,7 @@ console.log(buf.readIntBE(1, 0).toString(16));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2287,7 +2289,7 @@ console.log(buf.readIntBE(1, 0).toString(16));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2309,7 +2311,7 @@ v0.11.15
 
 ___
 
-### readIntLE
+#### readIntLE
 
 `**readIntLE**(offset, byteLength): number`
 
@@ -2325,7 +2327,7 @@ console.log(buf.readIntLE(0, 6).toString(16));
 // Prints: -546f87a9cbee
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2348,7 +2350,7 @@ console.log(buf.readIntLE(0, 6).toString(16));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2370,7 +2372,7 @@ v0.11.15
 
 ___
 
-### readUInt16BE
+#### readUInt16BE
 
 `**readUInt16BE**(offset?): number`
 
@@ -2389,7 +2391,7 @@ console.log(buf.readUInt16BE(1).toString(16));
 // Prints: 3456
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2403,7 +2405,7 @@ console.log(buf.readUInt16BE(1).toString(16));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2425,7 +2427,7 @@ v0.5.5
 
 ___
 
-### readUInt16LE
+#### readUInt16LE
 
 `**readUInt16LE**(offset?): number`
 
@@ -2446,7 +2448,7 @@ console.log(buf.readUInt16LE(2).toString(16));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2460,7 +2462,7 @@ console.log(buf.readUInt16LE(2).toString(16));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2482,7 +2484,7 @@ v0.5.5
 
 ___
 
-### readUInt32BE
+#### readUInt32BE
 
 `**readUInt32BE**(offset?): number`
 
@@ -2499,7 +2501,7 @@ console.log(buf.readUInt32BE(0).toString(16));
 // Prints: 12345678
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2513,7 +2515,7 @@ console.log(buf.readUInt32BE(0).toString(16));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2535,7 +2537,7 @@ v0.5.5
 
 ___
 
-### readUInt32LE
+#### readUInt32LE
 
 `**readUInt32LE**(offset?): number`
 
@@ -2554,7 +2556,7 @@ console.log(buf.readUInt32LE(1).toString(16));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2568,7 +2570,7 @@ console.log(buf.readUInt32LE(1).toString(16));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2590,7 +2592,7 @@ v0.5.5
 
 ___
 
-### readUInt8
+#### readUInt8
 
 `**readUInt8**(offset?): number`
 
@@ -2611,7 +2613,7 @@ console.log(buf.readUInt8(2));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2625,7 +2627,7 @@ console.log(buf.readUInt8(2));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2647,7 +2649,7 @@ v0.5.0
 
 ___
 
-### readUIntBE
+#### readUIntBE
 
 `**readUIntBE**(offset, byteLength): number`
 
@@ -2667,7 +2669,7 @@ console.log(buf.readUIntBE(1, 6).toString(16));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2690,7 +2692,7 @@ console.log(buf.readUIntBE(1, 6).toString(16));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2712,7 +2714,7 @@ v0.11.15
 
 ___
 
-### readUIntLE
+#### readUIntLE
 
 `**readUIntLE**(offset, byteLength): number`
 
@@ -2730,7 +2732,7 @@ console.log(buf.readUIntLE(0, 6).toString(16));
 // Prints: ab9078563412
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2753,7 +2755,7 @@ console.log(buf.readUIntLE(0, 6).toString(16));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2775,11 +2777,11 @@ v0.11.15
 
 ___
 
-### readUint16BE
+#### readUint16BE
 
 `**readUint16BE**(offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2793,7 +2795,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2819,11 +2821,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### readUint16LE
+#### readUint16LE
 
 `**readUint16LE**(offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2837,7 +2839,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2863,11 +2865,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### readUint32BE
+#### readUint32BE
 
 `**readUint32BE**(offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2881,7 +2883,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2907,11 +2909,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### readUint32LE
+#### readUint32LE
 
 `**readUint32LE**(offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2925,7 +2927,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2951,11 +2953,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### readUint8
+#### readUint8
 
 `**readUint8**(offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2969,7 +2971,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -2995,11 +2997,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### readUintBE
+#### readUintBE
 
 `**readUintBE**(offset, byteLength): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3022,7 +3024,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -3048,11 +3050,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### readUintLE
+#### readUintLE
 
 `**readUintLE**(offset, byteLength): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3075,7 +3077,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -3101,7 +3103,7 @@ v14.9.0, v12.19.0
 
 ___
 
-### reduce
+#### reduce
 
 `**reduce**(callbackfn): number`
 
@@ -3109,7 +3111,7 @@ Calls the specified callback function for all the elements in an array. The retu
 the callback function is the accumulated result, and is provided as an argument in the next
 call to the callback function.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3123,7 +3125,7 @@ call to the callback function.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -3141,7 +3143,7 @@ call to the callback function.
 
 `**reduce**(callbackfn, initialValue): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3164,7 +3166,7 @@ call to the callback function.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -3186,6 +3188,8 @@ Calls the specified callback function for all the elements in an array. The retu
 the callback function is the accumulated result, and is provided as an argument in the next
 call to the callback function.
 
+##### Type Parameters
+
 <ParameterTypes parameters={[
   {
     "name": "U",
@@ -3198,7 +3202,7 @@ call to the callback function.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3221,15 +3225,25 @@ call to the callback function.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `U`
 
-<ParameterTypes parameters={[]} />
+<ParameterTypes parameters={[
+  {
+    "name": "U",
+    "type": "`U`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
-### reduceRight
+#### reduceRight
 
 `**reduceRight**(callbackfn): number`
 
@@ -3237,7 +3251,7 @@ Calls the specified callback function for all the elements in an array, in desce
 The return value of the callback function is the accumulated result, and is provided as an
 argument in the next call to the callback function.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3251,7 +3265,7 @@ argument in the next call to the callback function.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -3269,7 +3283,7 @@ argument in the next call to the callback function.
 
 `**reduceRight**(callbackfn, initialValue): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3292,7 +3306,7 @@ argument in the next call to the callback function.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -3314,6 +3328,8 @@ Calls the specified callback function for all the elements in an array, in desce
 The return value of the callback function is the accumulated result, and is provided as an
 argument in the next call to the callback function.
 
+##### Type Parameters
+
 <ParameterTypes parameters={[
   {
     "name": "U",
@@ -3326,7 +3342,7 @@ argument in the next call to the callback function.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3349,19 +3365,29 @@ argument in the next call to the callback function.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `U`
 
-<ParameterTypes parameters={[]} />
+<ParameterTypes parameters={[
+  {
+    "name": "U",
+    "type": "`U`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
-### reverse
+#### reverse
 
 `**reverse**(): [Buffer](../index.md#buffer)`
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -3379,13 +3405,13 @@ ___
 
 ___
 
-### set
+#### set
 
 `**set**(array, offset?): void`
 
 Sets a value or an array of values.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3408,7 +3434,7 @@ Sets a value or an array of values.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -3426,7 +3452,7 @@ Sets a value or an array of values.
 
 ___
 
-### slice
+#### slice
 
 `**slice**(start?, end?): [Buffer](../index.md#buffer)`
 
@@ -3458,7 +3484,7 @@ console.log(buf.toString());
 // Also prints: cuffer (!)
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3481,7 +3507,7 @@ console.log(buf.toString());
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -3507,13 +3533,13 @@ Use `subarray` instead.
 
 ___
 
-### some
+#### some
 
 `**some**(predicate, thisArg?): boolean`
 
 Determines whether the specified callback function returns true for any element of an array.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3536,7 +3562,7 @@ Determines whether the specified callback function returns true for any element 
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -3554,13 +3580,13 @@ Determines whether the specified callback function returns true for any element 
 
 ___
 
-### sort
+#### sort
 
 `**sort**(compareFn?): [Buffer](../index.md#buffer)`
 
 Sorts an array.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3574,7 +3600,7 @@ Sorts an array.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -3592,7 +3618,7 @@ Sorts an array.
 
 ___
 
-### subarray
+#### subarray
 
 `**subarray**(start?, end?): [Buffer](../index.md#buffer)`
 
@@ -3651,7 +3677,7 @@ console.log(buf.subarray(-5, -2).toString());
 // (Equivalent to buf.subarray(1, 4).)
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3674,7 +3700,7 @@ console.log(buf.subarray(-5, -2).toString());
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -3696,7 +3722,7 @@ v3.0.0
 
 ___
 
-### swap16
+#### swap16
 
 `**swap16**(): [Buffer](../index.md#buffer)`
 
@@ -3732,7 +3758,7 @@ const buf = Buffer.from('This is little-endian UTF-16', 'utf16le');
 buf.swap16(); // Convert to big-endian UTF-16 text.
 ```
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -3754,7 +3780,7 @@ v5.10.0
 
 ___
 
-### swap32
+#### swap32
 
 `**swap32**(): [Buffer](../index.md#buffer)`
 
@@ -3780,7 +3806,7 @@ buf2.swap32();
 // Throws ERR_INVALID_BUFFER_SIZE.
 ```
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -3802,7 +3828,7 @@ v5.10.0
 
 ___
 
-### swap64
+#### swap64
 
 `**swap64**(): [Buffer](../index.md#buffer)`
 
@@ -3828,7 +3854,7 @@ buf2.swap64();
 // Throws ERR_INVALID_BUFFER_SIZE.
 ```
 
-#### Returns
+##### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -3850,7 +3876,7 @@ v6.3.0
 
 ___
 
-### toJSON
+#### toJSON
 
 `**toJSON**(): &#123; data: number[] ; type: "Buffer"  &#125;`
 
@@ -3879,7 +3905,7 @@ console.log(copy);
 // Prints: <Buffer 01 02 03 04 05>
 ```
 
-#### Returns
+##### Returns
 
 `object`
 
@@ -3922,13 +3948,13 @@ v0.9.2
 
 ___
 
-### toLocaleString
+#### toLocaleString
 
 `**toLocaleString**(): string`
 
 Converts a number to a string by using the current locale.
 
-#### Returns
+##### Returns
 
 `string`
 
@@ -3946,13 +3972,13 @@ Converts a number to a string by using the current locale.
 
 ___
 
-### toReversed
+#### toReversed
 
 `**toReversed**(): Uint8Array`
 
 Copies the array and returns the copy with the elements in reverse order.
 
-#### Returns
+##### Returns
 
 Uint8Array
 
@@ -3970,13 +3996,13 @@ Uint8Array
 
 ___
 
-### toSorted
+#### toSorted
 
 `**toSorted**(compareFn?): Uint8Array`
 
 Copies and sorts the array.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3990,7 +4016,7 @@ Copies and sorts the array.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Uint8Array
 
@@ -4008,7 +4034,7 @@ Uint8Array
 
 ___
 
-### toString
+#### toString
 
 `**toString**(encoding?, start?, end?): string`
 
@@ -4045,7 +4071,7 @@ console.log(buf2.toString(undefined, 0, 3));
 // Prints: té
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4077,7 +4103,7 @@ console.log(buf2.toString(undefined, 0, 3));
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `string`
 
@@ -4099,13 +4125,13 @@ v0.1.90
 
 ___
 
-### valueOf
+#### valueOf
 
 `**valueOf**(): Uint8Array`
 
 Returns the primitive value of the specified object.
 
-#### Returns
+##### Returns
 
 Uint8Array
 
@@ -4123,7 +4149,7 @@ Uint8Array
 
 ___
 
-### values
+#### values
 
 `**values**(): [IterableIterator](IterableIterator.mdx)&#60;number&#62;`
 
@@ -4158,7 +4184,7 @@ for (const value of buf) {
 //   114
 ```
 
-#### Returns
+##### Returns
 
 [IterableIterator](IterableIterator.mdx)&#60;number&#62;
 
@@ -4180,13 +4206,13 @@ v1.1.0
 
 ___
 
-### with
+#### with
 
 `**with**(index, value): Uint8Array`
 
 Copies the array and inserts the given number at the provided index.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4209,7 +4235,7 @@ Copies the array and inserts the given number at the provided index.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Uint8Array
 
@@ -4227,7 +4253,7 @@ Uint8Array
 
 ___
 
-### write
+#### write
 
 `**write**(string, encoding?): number`
 
@@ -4253,7 +4279,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
 // Prints: 2 bytes : ab
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4276,7 +4302,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4298,7 +4324,7 @@ v0.1.90
 
 `**write**(string, offset, encoding?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4330,7 +4356,7 @@ v0.1.90
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4348,7 +4374,7 @@ v0.1.90
 
 `**write**(string, offset, length, encoding?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4389,7 +4415,7 @@ v0.1.90
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4407,7 +4433,7 @@ v0.1.90
 
 ___
 
-### writeBigInt64BE
+#### writeBigInt64BE
 
 `**writeBigInt64BE**(value, offset?): number`
 
@@ -4426,7 +4452,7 @@ console.log(buf);
 // Prints: <Buffer 01 02 03 04 05 06 07 08>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4449,7 +4475,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4471,7 +4497,7 @@ v12.0.0, v10.20.0
 
 ___
 
-### writeBigInt64LE
+#### writeBigInt64LE
 
 `**writeBigInt64LE**(value, offset?): number`
 
@@ -4490,7 +4516,7 @@ console.log(buf);
 // Prints: <Buffer 08 07 06 05 04 03 02 01>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4513,7 +4539,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4535,7 +4561,7 @@ v12.0.0, v10.20.0
 
 ___
 
-### writeBigUInt64BE
+#### writeBigUInt64BE
 
 `**writeBigUInt64BE**(value, offset?): number`
 
@@ -4554,7 +4580,7 @@ console.log(buf);
 // Prints: <Buffer de ca fa fe ca ce fa de>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4577,7 +4603,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4599,7 +4625,7 @@ v12.0.0, v10.20.0
 
 ___
 
-### writeBigUInt64LE
+#### writeBigUInt64LE
 
 `**writeBigUInt64LE**(value, offset?): number`
 
@@ -4618,7 +4644,7 @@ console.log(buf);
 
 This function is also available under the `writeBigUint64LE` alias.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4641,7 +4667,7 @@ This function is also available under the `writeBigUint64LE` alias.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4663,11 +4689,11 @@ v12.0.0, v10.20.0
 
 ___
 
-### writeBigUint64BE
+#### writeBigUint64BE
 
 `**writeBigUint64BE**(value, offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4690,7 +4716,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4716,11 +4742,11 @@ v14.10.0, v12.19.0
 
 ___
 
-### writeBigUint64LE
+#### writeBigUint64LE
 
 `**writeBigUint64LE**(value, offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4743,7 +4769,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4769,7 +4795,7 @@ v14.10.0, v12.19.0
 
 ___
 
-### writeDoubleBE
+#### writeDoubleBE
 
 `**writeDoubleBE**(value, offset?): number`
 
@@ -4787,7 +4813,7 @@ console.log(buf);
 // Prints: <Buffer 40 5e dd 2f 1a 9f be 77>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4810,7 +4836,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4832,7 +4858,7 @@ v0.11.15
 
 ___
 
-### writeDoubleLE
+#### writeDoubleLE
 
 `**writeDoubleLE**(value, offset?): number`
 
@@ -4850,7 +4876,7 @@ console.log(buf);
 // Prints: <Buffer 77 be 9f 1a 2f dd 5e 40>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4873,7 +4899,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4895,7 +4921,7 @@ v0.11.15
 
 ___
 
-### writeFloatBE
+#### writeFloatBE
 
 `**writeFloatBE**(value, offset?): number`
 
@@ -4913,7 +4939,7 @@ console.log(buf);
 // Prints: <Buffer 4f 4a fe bb>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4936,7 +4962,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -4958,7 +4984,7 @@ v0.11.15
 
 ___
 
-### writeFloatLE
+#### writeFloatLE
 
 `**writeFloatLE**(value, offset?): number`
 
@@ -4976,7 +5002,7 @@ console.log(buf);
 // Prints: <Buffer bb fe 4a 4f>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4999,7 +5025,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5021,7 +5047,7 @@ v0.11.15
 
 ___
 
-### writeInt16BE
+#### writeInt16BE
 
 `**writeInt16BE**(value, offset?): number`
 
@@ -5041,7 +5067,7 @@ console.log(buf);
 // Prints: <Buffer 01 02>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5064,7 +5090,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5086,7 +5112,7 @@ v0.5.5
 
 ___
 
-### writeInt16LE
+#### writeInt16LE
 
 `**writeInt16LE**(value, offset?): number`
 
@@ -5106,7 +5132,7 @@ console.log(buf);
 // Prints: <Buffer 04 03>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5129,7 +5155,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5151,7 +5177,7 @@ v0.5.5
 
 ___
 
-### writeInt32BE
+#### writeInt32BE
 
 `**writeInt32BE**(value, offset?): number`
 
@@ -5171,7 +5197,7 @@ console.log(buf);
 // Prints: <Buffer 01 02 03 04>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5194,7 +5220,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5216,7 +5242,7 @@ v0.5.5
 
 ___
 
-### writeInt32LE
+#### writeInt32LE
 
 `**writeInt32LE**(value, offset?): number`
 
@@ -5236,7 +5262,7 @@ console.log(buf);
 // Prints: <Buffer 08 07 06 05>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5259,7 +5285,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5281,7 +5307,7 @@ v0.5.5
 
 ___
 
-### writeInt8
+#### writeInt8
 
 `**writeInt8**(value, offset?): number`
 
@@ -5303,7 +5329,7 @@ console.log(buf);
 // Prints: <Buffer 02 fe>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5326,7 +5352,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5348,7 +5374,7 @@ v0.5.0
 
 ___
 
-### writeIntBE
+#### writeIntBE
 
 `**writeIntBE**(value, offset, byteLength): number`
 
@@ -5366,7 +5392,7 @@ console.log(buf);
 // Prints: <Buffer 12 34 56 78 90 ab>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5398,7 +5424,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5420,7 +5446,7 @@ v0.11.15
 
 ___
 
-### writeIntLE
+#### writeIntLE
 
 `**writeIntLE**(value, offset, byteLength): number`
 
@@ -5438,7 +5464,7 @@ console.log(buf);
 // Prints: <Buffer ab 90 78 56 34 12>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5470,7 +5496,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5492,7 +5518,7 @@ v0.11.15
 
 ___
 
-### writeUInt16BE
+#### writeUInt16BE
 
 `**writeUInt16BE**(value, offset?): number`
 
@@ -5513,7 +5539,7 @@ console.log(buf);
 // Prints: <Buffer de ad be ef>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5536,7 +5562,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5558,7 +5584,7 @@ v0.5.5
 
 ___
 
-### writeUInt16LE
+#### writeUInt16LE
 
 `**writeUInt16LE**(value, offset?): number`
 
@@ -5579,7 +5605,7 @@ console.log(buf);
 // Prints: <Buffer ad de ef be>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5602,7 +5628,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5624,7 +5650,7 @@ v0.5.5
 
 ___
 
-### writeUInt32BE
+#### writeUInt32BE
 
 `**writeUInt32BE**(value, offset?): number`
 
@@ -5644,7 +5670,7 @@ console.log(buf);
 // Prints: <Buffer fe ed fa ce>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5667,7 +5693,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5689,7 +5715,7 @@ v0.5.5
 
 ___
 
-### writeUInt32LE
+#### writeUInt32LE
 
 `**writeUInt32LE**(value, offset?): number`
 
@@ -5709,7 +5735,7 @@ console.log(buf);
 // Prints: <Buffer ce fa ed fe>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5732,7 +5758,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5754,7 +5780,7 @@ v0.5.5
 
 ___
 
-### writeUInt8
+#### writeUInt8
 
 `**writeUInt8**(value, offset?): number`
 
@@ -5778,7 +5804,7 @@ console.log(buf);
 // Prints: <Buffer 03 04 23 42>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5801,7 +5827,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5823,7 +5849,7 @@ v0.5.0
 
 ___
 
-### writeUIntBE
+#### writeUIntBE
 
 `**writeUIntBE**(value, offset, byteLength): number`
 
@@ -5843,7 +5869,7 @@ console.log(buf);
 // Prints: <Buffer 12 34 56 78 90 ab>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5875,7 +5901,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5897,7 +5923,7 @@ v0.5.5
 
 ___
 
-### writeUIntLE
+#### writeUIntLE
 
 `**writeUIntLE**(value, offset, byteLength): number`
 
@@ -5917,7 +5943,7 @@ console.log(buf);
 // Prints: <Buffer ab 90 78 56 34 12>
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5949,7 +5975,7 @@ console.log(buf);
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -5971,11 +5997,11 @@ v0.5.5
 
 ___
 
-### writeUint16BE
+#### writeUint16BE
 
 `**writeUint16BE**(value, offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5998,7 +6024,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -6024,11 +6050,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### writeUint16LE
+#### writeUint16LE
 
 `**writeUint16LE**(value, offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -6051,7 +6077,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -6077,11 +6103,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### writeUint32BE
+#### writeUint32BE
 
 `**writeUint32BE**(value, offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -6104,7 +6130,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -6130,11 +6156,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### writeUint32LE
+#### writeUint32LE
 
 `**writeUint32LE**(value, offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -6157,7 +6183,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -6183,11 +6209,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### writeUint8
+#### writeUint8
 
 `**writeUint8**(value, offset?): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -6210,7 +6236,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -6236,11 +6262,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### writeUintBE
+#### writeUintBE
 
 `**writeUintBE**(value, offset, byteLength): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -6272,7 +6298,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
@@ -6298,11 +6324,11 @@ v14.9.0, v12.19.0
 
 ___
 
-### writeUintLE
+#### writeUintLE
 
 `**writeUintLE**(value, offset, byteLength): number`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -6334,7 +6360,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `number`
 
