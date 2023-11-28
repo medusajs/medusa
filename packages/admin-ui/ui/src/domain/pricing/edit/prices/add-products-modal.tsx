@@ -571,7 +571,7 @@ const AddProductsModal = ({
                 </span>
               </ProgressTabs.Trigger>
               <ProgressTabs.Trigger
-                disabled={selectedIds.length === 0}
+                disabled={status[Tab.PRODUCTS] !== "completed"}
                 value={Tab.PRICES}
                 className="w-full max-w-[200px]"
                 status={status[Tab.PRICES]}

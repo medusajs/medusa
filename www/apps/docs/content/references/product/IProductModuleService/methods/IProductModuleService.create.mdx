@@ -18,7 +18,7 @@ This method is used to create a product.
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -468,6 +468,15 @@ async function createProduct (title: string) {
             "name": "origin_country",
             "type": "`string`",
             "description": "The origin country of the product variant.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "product_id",
+            "type": "`string`",
+            "description": "The id of the product",
             "optional": true,
             "defaultValue": "",
             "expandable": false,

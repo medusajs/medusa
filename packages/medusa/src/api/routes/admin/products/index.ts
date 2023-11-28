@@ -159,6 +159,18 @@ export const defaultAdminProductRemoteQueryObject = {
     fields: ["title", "handle", "id", "created_at", "updated_at", "deleted_at"],
   },
 
+  categories: {
+    fields: [
+      "id",
+      "name",
+      "description",
+      "handle",
+      "is_active",
+      "is_internal",
+      "parent_category_id",
+    ],
+  },
+
   options: {
     fields: [
       "id",

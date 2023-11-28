@@ -1,5 +1,5 @@
 import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-import { removePriceListProductPrices } from "@medusajs/workflows"
+import { removePriceListProductPrices } from "@medusajs/core-flows"
 import { ArrayNotEmpty, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"

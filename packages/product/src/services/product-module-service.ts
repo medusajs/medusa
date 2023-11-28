@@ -16,6 +16,7 @@ import {
   ProductCategory,
   ProductCollection,
   ProductOption,
+  ProductOptionValue,
   ProductTag,
   ProductType,
   ProductVariant,
@@ -24,6 +25,7 @@ import {
   ProductCategoryService,
   ProductCollectionService,
   ProductOptionService,
+  ProductOptionValueService,
   ProductService,
   ProductTagService,
   ProductTypeService,
@@ -53,6 +55,8 @@ import {
 } from "../types/services/product"
 
 import {
+  arrayDifference,
+  groupBy,
   InjectManager,
   InjectTransactionManager,
   isDefined,
@@ -68,6 +72,10 @@ import {
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
+import {
+  CreateProductOptionValueDTO,
+  UpdateProductOptionValueDTO,
+} from "../types/services/product-option-value"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -79,6 +87,7 @@ type InjectedDependencies = {
   productImageService: ProductImageService<any>
   productTypeService: ProductTypeService<any>
   productOptionService: ProductOptionService<any>
+  productOptionValueService: ProductOptionValueService<any>
   eventBusModuleService?: IEventBusModuleService
 }
 
@@ -90,7 +99,8 @@ export default class ProductModuleService<
   TProductCategory extends ProductCategory = ProductCategory,
   TProductImage extends Image = Image,
   TProductType extends ProductType = ProductType,
-  TProductOption extends ProductOption = ProductOption
+  TProductOption extends ProductOption = ProductOption,
+  TProductOptionValue extends ProductOptionValue = ProductOptionValue
 > implements ProductTypes.IProductModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -108,6 +118,8 @@ export default class ProductModuleService<
   protected readonly productImageService_: ProductImageService<TProductImage>
   protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
+  // eslint-disable-next-line max-len
+  protected readonly productOptionValueService_: ProductOptionValueService<TProductOptionValue>
   protected readonly eventBusModuleService_?: IEventBusModuleService
 
   constructor(
@@ -121,6 +133,7 @@ export default class ProductModuleService<
       productImageService,
       productTypeService,
       productOptionService,
+      productOptionValueService,
       eventBusModuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
@@ -134,6 +147,7 @@ export default class ProductModuleService<
     this.productImageService_ = productImageService
     this.productTypeService_ = productTypeService
     this.productOptionService_ = productOptionService
+    this.productOptionValueService_ = productOptionValueService
     this.eventBusModuleService_ = eventBusModuleService
   }
 
@@ -241,7 +255,9 @@ export default class ProductModuleService<
 
     const productOptions = await this.listOptions(
       { id: productOptionIds },
-      {},
+      {
+        take: null,
+      },
       sharedContext
     )
 
@@ -305,6 +321,131 @@ export default class ProductModuleService<
         data: { id },
       }))
     )
+  }
+
+  @InjectManager("baseRepository_")
+  async updateVariants(
+    data: ProductTypes.UpdateProductVariantOnlyDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductTypes.ProductVariantDTO[]> {
+    const productVariants = await this.updateVariants_(data, sharedContext)
+
+    const updatedVariants = await this.baseRepository_.serialize<
+      ProductTypes.ProductVariantDTO[]
+    >(productVariants, {
+      populate: true,
+    })
+
+    return updatedVariants
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateVariants_(
+    data: ProductTypes.UpdateProductVariantOnlyDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProductVariant[]> {
+    const variantIdsToUpdate = data.map(({ id }) => id)
+    const variants = await this.listVariants(
+      { id: variantIdsToUpdate },
+      { relations: ["options", "options.option"], take: null },
+      sharedContext
+    )
+    const variantsMap = new Map(
+      variants.map((variant) => [variant.id, variant])
+    )
+
+    if (variants.length !== data.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot update non-existing variants with ids: ${arrayDifference(
+          variantIdsToUpdate,
+          [...variantsMap.keys()]
+        ).join(", ")}`
+      )
+    }
+
+    const optionValuesToUpsert: (
+      | CreateProductOptionValueDTO
+      | UpdateProductOptionValueDTO
+    )[] = []
+    const optionsValuesToDelete: string[] = []
+
+    const toUpdate = data.map(({ id, options, ...rest }) => {
+      const variant = variantsMap.get(id)!
+
+      const toUpdate: UpdateProductVariantDTO = {
+        id,
+        product_id: variant.product_id,
+      }
+
+      if (options?.length) {
+        const optionIdToUpdateValueMap = new Map(
+          options.map(({ option, option_id, value }) => {
+            const computedOptionId = option_id ?? option.id ?? option
+            return [computedOptionId, value]
+          })
+        )
+
+        for (const existingOptionValue of variant.options) {
+          if (!optionIdToUpdateValueMap.has(existingOptionValue.option.id)) {
+            optionsValuesToDelete.push(existingOptionValue.id)
+
+            continue
+          }
+
+          optionValuesToUpsert.push({
+            id: existingOptionValue.id,
+            option_id: existingOptionValue.option.id,
+            value: optionIdToUpdateValueMap.get(existingOptionValue.option.id)!,
+          })
+          optionIdToUpdateValueMap.delete(existingOptionValue.option.id)
+        }
+
+        for (const [option_id, value] of optionIdToUpdateValueMap.entries()) {
+          optionValuesToUpsert.push({
+            option_id,
+            value,
+            variant_id: id,
+          })
+        }
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        if (variant[key] !== value) {
+          toUpdate[key] = value
+        }
+      }
+
+      return toUpdate
+    })
+
+    const groups = groupBy(toUpdate, "product_id")
+
+    const [, , productVariants]: [
+      void,
+      TProductOptionValue[],
+      TProductVariant[][]
+    ] = await promiseAll([
+      await this.productOptionValueService_.delete(
+        optionsValuesToDelete,
+        sharedContext
+      ),
+      await this.productOptionValueService_.upsert(
+        optionValuesToUpsert,
+        sharedContext
+      ),
+      await promiseAll(
+        [...groups.entries()].map(async ([product_id, update]) => {
+          return await this.productVariantService_.update(
+            product_id,
+            update.map(({ product_id, ...update }) => update),
+            sharedContext
+          )
+        })
+      ),
+    ])
+
+    return productVariants.flat()
   }
 
   @InjectManager("baseRepository_")
@@ -914,7 +1055,9 @@ export default class ProductModuleService<
     const productIds = data.map((pd) => pd.id)
     const existingProductVariants = await this.productVariantService_.list(
       { product_id: productIds },
-      {},
+      {
+        take: null,
+      },
       sharedContext
     )
 
@@ -1098,7 +1241,11 @@ export default class ProductModuleService<
     if (!productData.thumbnail && productData.images?.length) {
       productData.thumbnail = isString(productData.images[0])
         ? (productData.images[0] as string)
-        : (productData.images[0] as { url: string }).url
+        : (
+            productData.images[0] as {
+              url: string
+            }
+          ).url
     }
 
     if (productData.images?.length) {

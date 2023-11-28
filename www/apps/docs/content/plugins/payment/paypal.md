@@ -62,7 +62,7 @@ Notice that during development it’s highly recommended to set `PAYPAL_SANDBOX`
 
 Then, in `medusa-config.js`, add the PayPal plugin to the `plugins` array with the configurations necessary:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // other plugins...
   {
@@ -138,7 +138,7 @@ Medusa has a Next.js Starter Template that you can easily use with your Medusa b
 
 In your `.env.local` file (or the file you’re using for your environment variables), add the following variable:
 
-```bash title=.env.local
+```bash title=".env.local"
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=<YOUR_CLIENT_ID>
 ```
 

@@ -47,7 +47,7 @@ Before publishing your plugin, make sure you've set the following fields in your
   <TabItem value="without-admin" label="Without Admin Customizations" default>
     Make sure you add the `publish` script to your `scripts` field:
 
-    ```json title=package.json
+    ```json title="package.json"
     "scripts": {
       // other scripts...
       "build": "cross-env npm run clean && tsc -p tsconfig.json",
@@ -64,7 +64,7 @@ Before publishing your plugin, make sure you've set the following fields in your
 
     Then, add the following `prepare` and `build` scripts to your `scripts`
 
-    ```json title=package.json
+    ```json title="package.json"
     "scripts": {
       // other scripts...
       "build:server": "cross-env npm run clean && tsc -p tsconfig.json",
@@ -92,7 +92,7 @@ So, you can ignore files and directories like `src` from the final published NPM
 
 To do that, create the file `.npmignore` with the following content:
 
-```bash title=.npmignore
+```bash title=".npmignore"
 /lib
 node_modules
 .DS_store

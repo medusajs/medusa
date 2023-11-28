@@ -21,7 +21,7 @@ A tax calculation strategy should be defined in a TypeScript or JavaScript file 
 
 For example, you can create the file `src/strategies/tax-calculation.ts` with the following content:
 
-```ts title=src/strategies/tax-calculation.ts
+```ts title="src/strategies/tax-calculation.ts"
 import { 
   ITaxCalculationStrategy,
   LineItem,
@@ -52,7 +52,7 @@ Note that you add a basic implementation of the `calculate` method because it’
 
 You can use a constructor to access services and resources registered in the dependency container using dependency injection. For example:
 
-```ts title=src/strategies/tax-calculation.ts
+```ts title="src/strategies/tax-calculation.ts"
 // ...
 import {
   LineItemService,

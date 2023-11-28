@@ -38,7 +38,7 @@ When the loader is defined in a module, it receives the following parameters:
 
 For example, this loader function resolves the `ProductService` and logs in the console the count of products in the Medusa backend:
 
-```ts title=src/loaders/my-loader.ts
+```ts title="src/loaders/my-loader.ts"
 import { 
   ProductService, 
   ConfigModule,
