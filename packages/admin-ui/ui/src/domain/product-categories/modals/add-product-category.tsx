@@ -1,96 +1,95 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
-import { ProductCategory } from "@medusajs/medusa";
+import { ProductCategory } from "@medusajs/medusa"
 import {
   adminProductCategoryKeys,
   useAdminCreateProductCategory,
-} from "medusa-react";
-import { useTranslation } from "react-i18next";
+} from "medusa-react"
+import { useTranslation } from "react-i18next"
 
-import { useQueryClient } from "@tanstack/react-query";
-import Button from "../../../components/fundamentals/button";
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon";
-import InputField from "../../../components/molecules/input";
-import TextArea from "../../../components/molecules/textarea";
-import FocusModal from "../../../components/molecules/modal/focus-modal";
-import { NextSelect } from "../../../components/molecules/select/next-select";
-import useNotification from "../../../hooks/use-notification";
-import { getErrorMessage } from "../../../utils/error-messages";
-import TreeCrumbs from "../components/tree-crumbs";
+import { useQueryClient } from "@tanstack/react-query"
+import Button from "../../../components/fundamentals/button"
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
+import InputField from "../../../components/molecules/input"
+import TextArea from "../../../components/molecules/textarea"
+import FocusModal from "../../../components/molecules/modal/focus-modal"
+import { NextSelect } from "../../../components/molecules/select/next-select"
+import useNotification from "../../../hooks/use-notification"
+import { getErrorMessage } from "../../../utils/error-messages"
+import TreeCrumbs from "../components/tree-crumbs"
 import MetadataForm, {
   getSubmittableMetadata,
   MetadataFormType,
-} from "../../../components/forms/general/metadata-form";
-import { Controller, useForm } from "react-hook-form";
-import { nestedForm } from "../../../utils/nested-form";
-import { TFunction } from "i18next";
+} from "../../../components/forms/general/metadata-form"
+import { Controller, useForm } from "react-hook-form"
+import { nestedForm } from "../../../utils/nested-form"
+import { TFunction } from "i18next"
+import { getDefaultCategoryValues } from "../utils"
+
+export enum CategoryStatus {
+  Active = "active",
+  Inactive = "inactive",
+}
+
+export enum CategoryVisibility {
+  Public = "public",
+  Private = "private",
+}
 
 const visibilityOptions = (
   t: TFunction<"translation", undefined, "translation">
 ) => [
   {
     label: t("modals-public", "Public"),
-    value: "public",
+    value: CategoryVisibility.Public,
   },
-  { label: t("modals-private", "Private"), value: "private" },
-];
+  { label: t("modals-private", "Private"), value: CategoryVisibility.Private },
+]
 
 const statusOptions = (
   t: TFunction<"translation", undefined, "translation">
 ) => [
-  { label: t("modals-active", "Active"), value: "active" },
-  { label: t("modals-inactive", "Inactive"), value: "inactive" },
-];
+  { label: t("modals-active", "Active"), value: CategoryStatus.Active },
+  { label: t("modals-inactive", "Inactive"), value: CategoryStatus.Inactive },
+]
 
 type CreateProductCategoryProps = {
-  closeModal: () => void;
-  parentCategory?: ProductCategory;
-  categories: ProductCategory[];
-};
+  closeModal: () => void
+  parentCategory?: ProductCategory
+  categories: ProductCategory[]
+}
+
+
+
 
 export type CategoryFormData = {
-  name: string;
-  handle: string | undefined;
-  description: string | undefined;
-  metadata: MetadataFormType;
+  name: string
+  handle: string | undefined
+  description: string | undefined
+  metadata: MetadataFormType
   is_active: {
-    value: "active" | "inactive";
-    label: string;
-  };
+    value: CategoryStatus
+    label: string
+  }
   is_public: {
-    value: "public" | "private";
-    label: string;
-  };
-};
+    value: CategoryVisibility
+    label: string
+  }
+}
 
 /**
  * Focus modal container for creating Publishable Keys.
  */
 function CreateProductCategory(props: CreateProductCategoryProps) {
-  const { t } = useTranslation();
-  const { closeModal, parentCategory, categories } = props;
-  const notification = useNotification();
-  const queryClient = useQueryClient();
+  const { t } = useTranslation()
+  const { closeModal, parentCategory, categories } = props
+  const notification = useNotification()
+  const queryClient = useQueryClient()
 
   const form = useForm<CategoryFormData>({
-    defaultValues: {
-      name: "",
-      handle: "",
-      description: "",
-      metadata: {
-        entries: [],
-      },
-      is_active: {
-        value: "active",
-        label: t("modals-active", "Active") || "Active",
-      },
-      is_public: {
-        value: "public",
-        label: t("modals-public", "Public") || "Public",
-      },
-    },
+    defaultValues: getDefaultCategoryValues(t),
     mode: "onChange",
-  });
+  })
   const {
     register,
     handleSubmit,
@@ -98,16 +97,11 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
     reset,
     control,
     formState: { errors, isDirty, isValid, isSubmitting },
-  } = form;
-  const name = watch("name", "");
-
-  useEffect(() => {
-    console.log(errors);
-    console.log(isSubmitting);
-  }, [errors, isSubmitting]);
+  } = form
+  const name = watch("name", "")
 
   const { mutateAsync: createProductCategory } =
-    useAdminCreateProductCategory();
+    useAdminCreateProductCategory()
 
   const submit = async (data: CategoryFormData) => {
     try {
@@ -115,14 +109,14 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
         name: data.name,
         handle: data.handle,
         description: data.description,
-        is_active: data.is_active.value === "active",
-        is_internal: data.is_public.value === "private",
+        is_active: data.is_active.value === CategoryStatus.Active,
+        is_internal: data.is_public.value === CategoryVisibility.Private,
         parent_category_id: parentCategory?.id ?? null,
         metadata: getSubmittableMetadata(data.metadata),
-      });
+      })
       // TODO: temporary here, investigate why `useAdminCreateProductCategory` doesn't invalidate this
-      await queryClient.invalidateQueries(adminProductCategoryKeys.lists());
-      closeModal();
+      await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
+      closeModal()
       notification(
         t("modals-success", "Success"),
         t(
@@ -130,17 +124,17 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           "Successfully created a category"
         ),
         "success"
-      );
+      )
     } catch (e) {
       const errorMessage =
         getErrorMessage(e) ||
         t(
           "modals-failed-to-create-a-new-category",
           "Failed to create a new category"
-        );
-      notification(t("modals-error", "Error"), errorMessage, "error");
+        )
+      notification(t("modals-error", "Error"), errorMessage, "error")
     }
-  };
+  }
 
   return (
     <FocusModal>
@@ -190,24 +184,24 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           <div className="mb-8 flex justify-between gap-6">
             <InputField
               required
-              label={t("modals-name", "Name") || "Name"}
+              label={t("modals-name", "Name") as string}
               type="string"
               className="w-[338px]"
               placeholder={
                 t(
                   "modals-give-this-category-a-name",
                   "Give this category a name"
-                ) || "Give this category a name"
+                ) as string
               }
               {...register("name", { required: true })}
             />
 
             <InputField
-              label={t("modals-handle", "Handle") || "Handle"}
+              label={t("modals-handle", "Handle") as string}
               type="string"
               className="w-[338px]"
               placeholder={
-                t("modals-custom-handle", "Custom handle") || "Custom handle"
+                t("modals-custom-handle", "Custom handle") as string
               }
               {...register("handle")}
             />
@@ -220,7 +214,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
                 t(
                   "modals-give-this-category-a-description",
                   "Give this category a description"
-                ) || "Give this category a description"
+                ) as string
               }
               {...register("description")}
             />
@@ -236,16 +230,16 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
                   return (
                     <NextSelect
                       {...field}
-                      label={t("modals-status", "Status") || "Status"}
+                      label={t("modals-status", "Status") as string}
                       placeholder="Choose a country"
                       options={statusOptions(t)}
                       value={
                         statusOptions(t)[
-                          field.value?.value === "active" ? 0 : 1
+                          field.value?.value === CategoryStatus.Active ? 0 : 1
                         ]
                       }
                     />
-                  );
+                  )
                 }}
               />
             </div>
@@ -260,17 +254,17 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
                     <NextSelect
                       {...field}
                       label={
-                        t("modals-visibility", "Visibility") || "Visibility"
+                        t("modals-visibility", "Visibility") as string
                       }
                       placeholder="Choose a country"
                       options={visibilityOptions(t)}
                       value={
                         visibilityOptions(t)[
-                          field.value.value === "public" ? 0 : 1
+                          field.value.value === CategoryVisibility.Public ? 0 : 1
                         ]
                       }
                     />
-                  );
+                  )
                 }}
               />
             </div>
@@ -284,7 +278,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
         </div>
       </FocusModal.Main>
     </FocusModal>
-  );
+  )
 }
 
-export default CreateProductCategory;
+export default CreateProductCategory
