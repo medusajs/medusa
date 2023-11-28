@@ -185,17 +185,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
+        "children": []
       },
       {
         "name": "relations",
@@ -217,7 +207,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
       },
       {
         "name": "skip",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
@@ -226,7 +216,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
       },
       {
         "name": "take",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",

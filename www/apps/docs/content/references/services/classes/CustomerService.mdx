@@ -10,11 +10,11 @@ Provides layer to manipulate customers.
 
 ## Constructors
 
-### constructor
+#### constructor
 
 `**new CustomerService**(«destructured»)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -143,33 +143,17 @@ Provides layer to manipulate customers.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-`Protected get**activeManager_**(): EntityManager`
-
-#### Returns
-
-EntityManager
-
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+ `Protected` **activeManager\_**: [object Object]
 
 ## Methods
 
-### addAddress
+#### addAddress
 
 `**addAddress**(customerId, address): Promise&#60;[Customer](Customer.mdx) \| [Address](Address.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -192,7 +176,7 @@ EntityManager
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx) \| [Address](Address.mdx)&#62;
 
@@ -210,13 +194,15 @@ Promise&#60;[Customer](Customer.mdx) \| [Address](Address.mdx)&#62;
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+##### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -239,7 +225,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -271,7 +257,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;TResult&#62;
 
@@ -289,13 +275,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-### count
+#### count
 
 `**count**(): Promise&#60;number&#62;`
 
 Return the total number of documents in database
 
-#### Returns
+##### Returns
 
 Promise&#60;number&#62;
 
@@ -313,7 +299,7 @@ Promise&#60;number&#62;
 
 ___
 
-### create
+#### create
 
 `**create**(customer): Promise&#60;[Customer](Customer.mdx)&#62;`
 
@@ -322,7 +308,7 @@ e.g. to login and view order history, etc. If a password is provided the
 customer will automatically get an account, otherwise the customer is just
 used to hold details of customers.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -336,7 +322,7 @@ used to hold details of customers.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -354,13 +340,13 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-### delete
+#### delete
 
 `**delete**(customerId): Promise&#60;void \| [Customer](Customer.mdx)&#62;`
 
 Deletes a customer from a given customer id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -374,7 +360,7 @@ Deletes a customer from a given customer id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void \| [Customer](Customer.mdx)&#62;
 
@@ -392,7 +378,7 @@ Promise&#60;void \| [Customer](Customer.mdx)&#62;
 
 ___
 
-### generateResetPasswordToken
+#### generateResetPasswordToken
 
 `**generateResetPasswordToken**(customerId): Promise&#60;string&#62;`
 
@@ -402,7 +388,7 @@ The token will be signed with the customer's current password hash as a
 secret a long side a payload with userId and the expiry time for the token,
 which is always 15 minutes.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -416,7 +402,7 @@ which is always 15 minutes.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;string&#62;
 
@@ -434,13 +420,13 @@ Promise&#60;string&#62;
 
 ___
 
-### hashPassword\_
+#### hashPassword\_
 
 `**hashPassword_**(password): Promise&#60;string&#62;`
 
 Hashes a password
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -454,7 +440,7 @@ Hashes a password
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;string&#62;
 
@@ -472,11 +458,11 @@ Promise&#60;string&#62;
 
 ___
 
-### list
+#### list
 
 `**list**(selector?, config?): Promise&#60;[Customer](Customer.mdx)[]&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -499,7 +485,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)[]&#62;
 
@@ -517,11 +503,11 @@ Promise&#60;[Customer](Customer.mdx)[]&#62;
 
 ___
 
-### listAndCount
+#### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[Customer](Customer.mdx)[], number]&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -544,7 +530,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[[Customer](Customer.mdx)[], number]&#62;
 
@@ -562,11 +548,11 @@ Promise&#60;[[Customer](Customer.mdx)[], number]&#62;
 
 ___
 
-### listByEmail
+#### listByEmail
 
 `**listByEmail**(email, config?): Promise&#60;[Customer](Customer.mdx)[]&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -589,7 +575,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)[]&#62;
 
@@ -607,11 +593,11 @@ Promise&#60;[Customer](Customer.mdx)[]&#62;
 
 ___
 
-### removeAddress
+#### removeAddress
 
 `**removeAddress**(customerId, addressId): Promise&#60;void&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -634,7 +620,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void&#62;
 
@@ -652,13 +638,13 @@ Promise&#60;void&#62;
 
 ___
 
-### retrieve
+#### retrieve
 
 `**retrieve**(customerId, config?): Promise&#60;[Customer](Customer.mdx)&#62;`
 
 Gets a customer by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -681,7 +667,7 @@ Gets a customer by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -699,13 +685,13 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-### retrieveByEmail
+#### retrieveByEmail
 
 `**retrieveByEmail**(email, config?): Promise&#60;[Customer](Customer.mdx)&#62;`
 
 Gets a registered customer by email.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -728,7 +714,7 @@ Gets a registered customer by email.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -748,13 +734,13 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-### retrieveByPhone
+#### retrieveByPhone
 
 `**retrieveByPhone**(phone, config?): Promise&#60;[Customer](Customer.mdx)&#62;`
 
 Gets a customer by phone.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -777,7 +763,7 @@ Gets a customer by phone.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -795,11 +781,11 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-### retrieveRegisteredByEmail
+#### retrieveRegisteredByEmail
 
 `**retrieveRegisteredByEmail**(email, config?): Promise&#60;[Customer](Customer.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -822,7 +808,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -840,11 +826,11 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-### retrieveUnregisteredByEmail
+#### retrieveUnregisteredByEmail
 
 `**retrieveUnregisteredByEmail**(email, config?): Promise&#60;[Customer](Customer.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -867,7 +853,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -885,11 +871,11 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-### retrieve\_
+#### retrieve\_
 
 `Private **retrieve_**(selector, config?): Promise&#60;[Customer](Customer.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -912,7 +898,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -930,11 +916,11 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -948,7 +934,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -966,13 +952,13 @@ ___
 
 ___
 
-### update
+#### update
 
 `**update**(customerId, update): Promise&#60;[Customer](Customer.mdx)&#62;`
 
 Updates a customer.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -995,7 +981,7 @@ Updates a customer.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -1013,11 +999,11 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-### updateAddress
+#### updateAddress
 
 `**updateAddress**(customerId, addressId, address): Promise&#60;[Address](Address.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1049,7 +1035,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Address](Address.mdx)&#62;
 
@@ -1067,13 +1053,13 @@ Promise&#60;[Address](Address.mdx)&#62;
 
 ___
 
-### updateBillingAddress\_
+#### updateBillingAddress\_
 
 `**updateBillingAddress_**(customer, addressOrId): Promise&#60;void&#62;`
 
 Updates the customers' billing address.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1096,7 +1082,7 @@ Updates the customers' billing address.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void&#62;
 
@@ -1114,11 +1100,11 @@ Promise&#60;void&#62;
 
 ___
 
-### withTransaction
+#### withTransaction
 
 `**withTransaction**(transactionManager?): [CustomerService](CustomerService.mdx)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1132,7 +1118,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [CustomerService](CustomerService.mdx)
 

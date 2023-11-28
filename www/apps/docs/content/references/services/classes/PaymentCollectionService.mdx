@@ -8,11 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Constructors
 
-### constructor
+#### constructor
 
 `**new PaymentCollectionService**(«destructured»)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -159,35 +159,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-`Protected get**activeManager_**(): EntityManager`
-
-#### Returns
-
-EntityManager
-
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+ `Protected` **activeManager\_**: [object Object]
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+##### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -210,7 +196,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -242,7 +228,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;TResult&#62;
 
@@ -260,13 +246,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-### authorizePaymentSessions
+#### authorizePaymentSessions
 
 `**authorizePaymentSessions**(paymentCollectionId, sessionIds, context?): Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;`
 
 Authorizes the payment sessions of a payment collection.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -298,7 +284,7 @@ Authorizes the payment sessions of a payment collection.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
@@ -316,13 +302,13 @@ Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
 ___
 
-### create
+#### create
 
 `**create**(data): Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;`
 
 Creates a new payment collection.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -336,7 +322,7 @@ Creates a new payment collection.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
@@ -354,13 +340,13 @@ Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
 ___
 
-### delete
+#### delete
 
 `**delete**(paymentCollectionId): Promise&#60;undefined \| [PaymentCollection](PaymentCollection.mdx)&#62;`
 
 Deletes a payment collection.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -374,7 +360,7 @@ Deletes a payment collection.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;undefined \| [PaymentCollection](PaymentCollection.mdx)&#62;
 
@@ -392,11 +378,11 @@ Promise&#60;undefined \| [PaymentCollection](PaymentCollection.mdx)&#62;
 
 ___
 
-### isValidTotalAmount
+#### isValidTotalAmount
 
 `Private **isValidTotalAmount**(total, sessionsInput): boolean`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -419,7 +405,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -437,13 +423,13 @@ ___
 
 ___
 
-### markAsAuthorized
+#### markAsAuthorized
 
 `**markAsAuthorized**(paymentCollectionId): Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;`
 
 Marks a payment collection as authorized bypassing the payment flow.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -457,7 +443,7 @@ Marks a payment collection as authorized bypassing the payment flow.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
@@ -475,13 +461,13 @@ Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
 ___
 
-### refreshPaymentSession
+#### refreshPaymentSession
 
 `**refreshPaymentSession**(paymentCollectionId, sessionId, customerId): Promise&#60;[PaymentSession](PaymentSession.mdx)&#62;`
 
 Removes and recreate a payment session of a payment collection.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -513,7 +499,7 @@ Removes and recreate a payment session of a payment collection.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[PaymentSession](PaymentSession.mdx)&#62;
 
@@ -531,13 +517,13 @@ Promise&#60;[PaymentSession](PaymentSession.mdx)&#62;
 
 ___
 
-### retrieve
+#### retrieve
 
 `**retrieve**(paymentCollectionId, config?): Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;`
 
 Retrieves a payment collection by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -560,7 +546,7 @@ Retrieves a payment collection by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
@@ -578,13 +564,13 @@ Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
 ___
 
-### setPaymentSession
+#### setPaymentSession
 
 `**setPaymentSession**(paymentCollectionId, sessionInput, customerId): Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;`
 
 Manages a single payment sessions of a payment collection.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -616,7 +602,7 @@ Manages a single payment sessions of a payment collection.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
@@ -634,13 +620,13 @@ Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
 ___
 
-### setPaymentSessionsBatch
+#### setPaymentSessionsBatch
 
 `**setPaymentSessionsBatch**(paymentCollectionOrId, sessionsInput, customerId): Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;`
 
 Manages multiple payment sessions of a payment collection.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -672,7 +658,7 @@ Manages multiple payment sessions of a payment collection.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
@@ -690,11 +676,11 @@ Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -708,7 +694,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -726,13 +712,13 @@ ___
 
 ___
 
-### update
+#### update
 
 `**update**(paymentCollectionId, data): Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;`
 
 Updates a payment collection.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -755,7 +741,7 @@ Updates a payment collection.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
@@ -773,11 +759,11 @@ Promise&#60;[PaymentCollection](PaymentCollection.mdx)&#62;
 
 ___
 
-### withTransaction
+#### withTransaction
 
 `**withTransaction**(transactionManager?): [PaymentCollectionService](PaymentCollectionService.mdx)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -791,7 +777,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [PaymentCollectionService](PaymentCollectionService.mdx)
 
