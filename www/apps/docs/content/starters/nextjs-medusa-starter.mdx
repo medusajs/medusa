@@ -265,7 +265,10 @@ Next, change the content of `src/app/(main)/search/actions.ts` to the following:
 ```ts title="src/app/(main)/search/actions.ts"
 "use server"
 
-import { searchClient, SEARCH_INDEX_NAME } from "@lib/search-client"
+import { 
+  searchClient,
+  SEARCH_INDEX_NAME,
+} from "@lib/search-client"
 
 /**
  * Uses MeiliSearch or Algolia to search for a query
