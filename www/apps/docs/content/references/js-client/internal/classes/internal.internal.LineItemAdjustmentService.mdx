@@ -78,31 +78,21 @@ Provides layer to manipulate line item adjustments.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -134,7 +124,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -150,11 +140,11 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates a line item adjustment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -168,7 +158,7 @@ Creates a line item adjustment
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -184,11 +174,11 @@ Creates a line item adjustment
 
 ___
 
-### createAdjustmentForLineItem
+#### createAdjustmentForLineItem
 
 Creates adjustment for a line item
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -211,7 +201,7 @@ Creates adjustment for a line item
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -227,11 +217,11 @@ Creates adjustment for a line item
 
 ___
 
-### createAdjustments
+#### createAdjustments
 
 Creates adjustment for a line item
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -254,7 +244,7 @@ Creates adjustment for a line item
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -270,11 +260,11 @@ Creates adjustment for a line item
 
 ___
 
-### delete
+#### delete
 
 Deletes line item adjustments matching a selector
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -288,7 +278,7 @@ Deletes line item adjustments matching a selector
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -304,11 +294,11 @@ Deletes line item adjustments matching a selector
 
 ___
 
-### generateAdjustments
+#### generateAdjustments
 
 Creates adjustment for a line item
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -340,7 +330,7 @@ Creates adjustment for a line item
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -356,11 +346,11 @@ Creates adjustment for a line item
 
 ___
 
-### list
+#### list
 
 Lists line item adjustments
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -383,7 +373,7 @@ Lists line item adjustments
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -399,11 +389,11 @@ Lists line item adjustments
 
 ___
 
-### retrieve
+#### retrieve
 
 Retrieves a line item adjustment by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -426,7 +416,7 @@ Retrieves a line item adjustment by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -442,9 +432,9 @@ Retrieves a line item adjustment by id.
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -458,7 +448,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -474,11 +464,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Creates a line item adjustment
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -501,7 +491,7 @@ Creates a line item adjustment
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -517,9 +507,9 @@ Creates a line item adjustment
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -533,7 +523,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

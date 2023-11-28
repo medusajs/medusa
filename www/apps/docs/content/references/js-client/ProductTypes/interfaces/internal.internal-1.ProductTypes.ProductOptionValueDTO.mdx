@@ -41,10 +41,10 @@ The product option value's data.
   {
     "name": "option",
     "type": "[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)",
-    "description": "The associated product option.",
+    "description": "The associated product option. It may only be available if the `option` relation is expanded.",
     "optional": false,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   },
   {
@@ -59,10 +59,10 @@ The product option value's data.
   {
     "name": "variant",
     "type": "[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)",
-    "description": "The associated product variant.",
+    "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
     "optional": false,
     "defaultValue": "",
-    "expandable": true,
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -409,27 +409,17 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addShippingMethod
+#### addShippingMethod
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -470,7 +460,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -486,12 +476,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ___
 
-### archive
+#### archive
 
 Archives an order. It only alloved, if the order has been fulfilled
 and payment has been captured.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -505,7 +495,7 @@ and payment has been captured.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -521,13 +511,13 @@ and payment has been captured.
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -559,7 +549,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -575,13 +565,13 @@ transaction manager is created.
 
 ___
 
-### cancel
+#### cancel
 
 Cancels an order.
 Throws if fulfillment process has been initiated.
 Throws if payment process has been initiated.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -595,7 +585,7 @@ Throws if payment process has been initiated.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -611,11 +601,11 @@ Throws if payment process has been initiated.
 
 ___
 
-### cancelFulfillment
+#### cancelFulfillment
 
 Cancels a fulfillment (if related to an order)
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -629,7 +619,7 @@ Cancels a fulfillment (if related to an order)
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -645,11 +635,11 @@ Cancels a fulfillment (if related to an order)
 
 ___
 
-### capturePayment
+#### capturePayment
 
 Captures payment for an order.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -663,7 +653,7 @@ Captures payment for an order.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -679,9 +669,9 @@ Captures payment for an order.
 
 ___
 
-### completeOrder
+#### completeOrder
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -695,7 +685,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -711,11 +701,11 @@ ___
 
 ___
 
-### createFromCart
+#### createFromCart
 
 Creates an order from a cart
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -729,7 +719,7 @@ Creates an order from a cart
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -745,14 +735,14 @@ Creates an order from a cart
 
 ___
 
-### createFulfillment
+#### createFulfillment
 
 Creates fulfillments for an order.
 In a situation where the order has more than one shipping method,
 we need to partition the order items, such that they can be sent
 to their respective fulfillment provider.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -811,7 +801,7 @@ to their respective fulfillment provider.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -827,9 +817,9 @@ to their respective fulfillment provider.
 
 ___
 
-### createGiftCardsFromLineItem\_
+#### createGiftCardsFromLineItem\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -861,7 +851,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -877,11 +867,11 @@ ___
 
 ___
 
-### createRefund
+#### createRefund
 
 Refunds a given amount back to the customer.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -940,7 +930,7 @@ Refunds a given amount back to the customer.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -956,13 +946,13 @@ Refunds a given amount back to the customer.
 
 ___
 
-### createShipment
+#### createShipment
 
 Adds a shipment to the order to indicate that an order has left the
 warehouse. Will ask the fulfillment provider for any documents that may
 have been created in regards to the shipment.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1021,7 +1011,7 @@ have been created in regards to the shipment.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1037,11 +1027,11 @@ have been created in regards to the shipment.
 
 ___
 
-### decorateTotals
+#### decorateTotals
 
 `**decorateTotals**(order, totalsFields?): Promise&#60;[Order](internal.Order.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1064,7 +1054,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1080,7 +1070,7 @@ ___
 
 `**decorateTotals**(order, context?): Promise&#60;[Order](internal.Order.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1103,7 +1093,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1119,9 +1109,9 @@ ___
 
 ___
 
-### decorateTotalsLegacy
+#### decorateTotalsLegacy
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1144,7 +1134,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1160,11 +1150,11 @@ ___
 
 ___
 
-### getFulfillmentItems
+#### getFulfillmentItems
 
 Retrieves the order line items, given an array of items.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1196,7 +1186,7 @@ Retrieves the order line items, given an array of items.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1212,9 +1202,9 @@ Retrieves the order line items, given an array of items.
 
 ___
 
-### list
+#### list
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1237,7 +1227,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1253,9 +1243,9 @@ ___
 
 ___
 
-### listAndCount
+#### listAndCount
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1278,7 +1268,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1294,7 +1284,7 @@ ___
 
 ___
 
-### registerReturnReceived
+#### registerReturnReceived
 
 Handles receiving a return. This will create a
 refund to the customer. If the returned items don't match the requested
@@ -1304,7 +1294,7 @@ returned items are not matching the requested items. Setting the
 allowMismatch argument to true, will process the return, ignoring any
 mismatches.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1336,7 +1326,7 @@ mismatches.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1352,11 +1342,11 @@ mismatches.
 
 ___
 
-### retrieve
+#### retrieve
 
 Gets an order by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1379,7 +1369,7 @@ Gets an order by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1395,11 +1385,11 @@ Gets an order by id.
 
 ___
 
-### retrieveByCartId
+#### retrieveByCartId
 
 Gets an order by cart id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1422,7 +1412,7 @@ Gets an order by cart id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1438,9 +1428,9 @@ Gets an order by cart id.
 
 ___
 
-### retrieveByCartIdWithTotals
+#### retrieveByCartIdWithTotals
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1463,7 +1453,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1479,11 +1469,11 @@ ___
 
 ___
 
-### retrieveByExternalId
+#### retrieveByExternalId
 
 Gets an order by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1506,7 +1496,7 @@ Gets an order by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1522,9 +1512,9 @@ Gets an order by id.
 
 ___
 
-### retrieveLegacy
+#### retrieveLegacy
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1547,7 +1537,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1563,9 +1553,9 @@ ___
 
 ___
 
-### retrieveWithTotals
+#### retrieveWithTotals
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1597,7 +1587,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1613,9 +1603,9 @@ ___
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1629,7 +1619,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1645,9 +1635,9 @@ ___
 
 ___
 
-### transformQueryForTotals
+#### transformQueryForTotals
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1661,7 +1651,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1707,13 +1697,13 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates an order. Metadata updates should
 use dedicated method, e.g. `setMetadata` etc. The function
 will throw errors if metadata updates are attempted.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1736,7 +1726,7 @@ will throw errors if metadata updates are attempted.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1752,11 +1742,11 @@ will throw errors if metadata updates are attempted.
 
 ___
 
-### updateBillingAddress
+#### updateBillingAddress
 
 Updates the order's billing address.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1779,7 +1769,7 @@ Updates the order's billing address.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1795,11 +1785,11 @@ Updates the order's billing address.
 
 ___
 
-### updateShippingAddress
+#### updateShippingAddress
 
 Updates the order's shipping address.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1822,7 +1812,7 @@ Updates the order's shipping address.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1838,14 +1828,14 @@ Updates the order's shipping address.
 
 ___
 
-### validateFulfillmentLineItem
+#### validateFulfillmentLineItem
 
 Checks that a given quantity of a line item can be fulfilled. Fails if the
 fulfillable quantity is lower than the requested fulfillment quantity.
 Fulfillable quantity is calculated by subtracting the already fulfilled
 quantity from the quantity that was originally purchased.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1868,7 +1858,7 @@ quantity from the quantity that was originally purchased.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1884,9 +1874,9 @@ quantity from the quantity that was originally purchased.
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1900,7 +1890,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
