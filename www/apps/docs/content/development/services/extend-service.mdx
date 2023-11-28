@@ -33,7 +33,7 @@ In the file, you can import the original service from the Medusa core, then crea
 
 For example, to extend the Product service:
 
-```ts title=src/services/product.ts
+```ts title="src/services/product.ts"
 import { 
   ProductService as MedusaProductService,
 } from "@medusajs/medusa"
@@ -51,7 +51,7 @@ Within the service, you can add new methods or extend existing ones.
 
 You can also change the lifetime of the service:
 
-```ts title=src/services/product.ts
+```ts title="src/services/product.ts"
 import { Lifetime } from "awilix"
 import { 
   ProductService as MedusaProductService,

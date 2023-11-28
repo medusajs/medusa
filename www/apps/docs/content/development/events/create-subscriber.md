@@ -21,7 +21,7 @@ The subscriber file exports a default handler function, and the subscriber's con
 
 For example:
 
-```ts title=src/subscribers/product-update-handler.ts
+```ts title="src/subscribers/product-update-handler.ts"
 import { 
   ProductService,
   type SubscriberConfig, 
@@ -107,7 +107,7 @@ Within your subscriber, you may need to access the Medusa configuration exported
 
 For example:
 
-```ts title=src/subscribers/product-update-handler.ts
+```ts title="src/subscribers/product-update-handler.ts"
 import { 
   ProductService,
   type SubscriberConfig, 

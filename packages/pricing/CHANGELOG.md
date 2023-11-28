@@ -1,5 +1,26 @@
 # @medusajs/pricing
 
+## 0.1.5
+
+### Patch Changes
+
+- [#5685](https://github.com/medusajs/medusa/pull/5685) [`1e39a95f8`](https://github.com/medusajs/medusa/commit/1e39a95f8a136427d04ea20cd320337af0923e31) Thanks [@riqwan](https://github.com/riqwan)! - fix(workflows, pricing, medusa): update region variants fix + pricing module migration scripts
+
+- [#5664](https://github.com/medusajs/medusa/pull/5664) [`6025c702f`](https://github.com/medusajs/medusa/commit/6025c702f37d43e18af32bd716f33410d95efd19) Thanks [@riqwan](https://github.com/riqwan)! - fix(pricing,types): remove is_dynamic from model + types
+
+- [#5711](https://github.com/medusajs/medusa/pull/5711) [`fc1ef29ed`](https://github.com/medusajs/medusa/commit/fc1ef29ed935e192f0943a2bf4b8fbb05ce6890d) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa,pricing,types): rules only gets updated/deleted upon passing an explicit object
+
+- [#5730](https://github.com/medusajs/medusa/pull/5730) [`2e6b11031`](https://github.com/medusajs/medusa/commit/2e6b1103161a2eb637e69dbd316197434fd0e0db) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa,pricing): fix migrations for existing databases
+
+- [#5709](https://github.com/medusajs/medusa/pull/5709) [`0df1c7d42`](https://github.com/medusajs/medusa/commit/0df1c7d4273545bc717555611b9294a5c222e5ae) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(pricing, types): update pricingModule.calculateprices return type to match actual type
+
+- [#5536](https://github.com/medusajs/medusa/pull/5536) [`dc5750dd6`](https://github.com/medusajs/medusa/commit/dc5750dd665a91d35c0246ba83c7f90ec74907f4) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,types,workflows,utils,product,pricing): PricingModule Integration of PriceLists into Core
+
+- Updated dependencies [[`a39ce125c`](https://github.com/medusajs/medusa/commit/a39ce125cc96f14732d5a6301313d2376484fa23), [`18afe0b9a`](https://github.com/medusajs/medusa/commit/18afe0b9addb33ec2e3b285651b4eb1ef8065845), [`6025c702f`](https://github.com/medusajs/medusa/commit/6025c702f37d43e18af32bd716f33410d95efd19), [`de8f74867`](https://github.com/medusajs/medusa/commit/de8f748674bfd19b3dbadb9695d9080aa91940de), [`fc1ef29ed`](https://github.com/medusajs/medusa/commit/fc1ef29ed935e192f0943a2bf4b8fbb05ce6890d), [`0df1c7d42`](https://github.com/medusajs/medusa/commit/0df1c7d4273545bc717555611b9294a5c222e5ae), [`dc5750dd6`](https://github.com/medusajs/medusa/commit/dc5750dd665a91d35c0246ba83c7f90ec74907f4)]:
+  - @medusajs/types@1.11.8
+  - @medusajs/utils@1.11.1
+  - @medusajs/modules-sdk@1.12.4
+
 ## 0.1.4
 
 ### Patch Changes

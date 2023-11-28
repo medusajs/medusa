@@ -18,7 +18,7 @@ This method is used to update price lists.
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 
@@ -50,7 +50,7 @@ async function updatePriceLists (items: {
     "children": [
       {
         "name": "ends_at",
-        "type": "`string`",
+        "type": "`null` \\| `string`",
         "description": "The price list expires after this date.",
         "optional": true,
         "defaultValue": "",
@@ -86,7 +86,7 @@ async function updatePriceLists (items: {
       },
       {
         "name": "starts_at",
-        "type": "`string`",
+        "type": "`null` \\| `string`",
         "description": "The price list is enabled starting from this date.",
         "optional": true,
         "defaultValue": "",

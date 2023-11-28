@@ -142,7 +142,7 @@ For example, if you're selling the Harry Potter movies, you would have a `Produc
 
   To do that, create the file `src/models/product-media.ts` with the following content:
 
-  ```ts title=src/models/product-media.ts
+  ```ts title="src/models/product-media.ts"
   import { 
     BeforeInsert, 
     Column, 
@@ -272,7 +272,7 @@ Creating an API Route also requires creating a service, which is a class that ty
 
   Before creating the API Routes, you’ll create the `ProductMediaService`. Create the file `src/services/product-media.ts` with the following content:
 
-  ```ts title=src/services/product-media.ts
+  ```ts title="src/services/product-media.ts"
   import { 
     FindConfig,
     ProductVariantService,
@@ -454,7 +454,7 @@ Creating an API Route also requires creating a service, which is a class that ty
 
   You can now create the API Routes. Create the file `src/api/admin/product-media/route.ts` with the following content:
 
-  ```ts title=src/api/admin/product-media/route.ts
+  ```ts title="src/api/admin/product-media/route.ts"
   import type { 
     MedusaRequest, 
     MedusaResponse,
@@ -575,7 +575,7 @@ To add an interface that allows the admin user to upload digital products, you c
 
   You also need to create types for the expected requests and responses of the API Routes you created. This is helpful when using Medusa React’s custom hooks. To do that, create the file `src/types/product-media.ts` with the following content:
 
-  ```ts title=src/types/product-media.ts
+  ```ts title="src/types/product-media.ts"
   import { 
     MediaType, 
     ProductMedia, 
@@ -605,7 +605,7 @@ To add an interface that allows the admin user to upload digital products, you c
 
   You can now create your admin UI route. To do that, create the file `src/admin/routes/product-media/page.tsx` with the following content:
 
-  ```tsx title=src/admin/routes/product-media/page.tsx
+  ```tsx title="src/admin/routes/product-media/page.tsx"
   import { RouteConfig } from "@medusajs/admin"
   import { DocumentText } from "@medusajs/icons"
   import { useAdminCustomQuery } from "medusa-react"
@@ -714,7 +714,7 @@ To add an interface that allows the admin user to upload digital products, you c
 
   In the drawer, you show the Create Digital Product form. To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
 
-  ```tsx title=src/admin/components/product-media/CreateForm/index.tsx
+  ```tsx title="src/admin/components/product-media/CreateForm/index.tsx"
   import { useState } from "react"
   import { MediaType } from "../../../../models/product-media"
   import { 
@@ -952,7 +952,7 @@ Finally, you can send a notification, such as an email, to the customer using th
 
   Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the SendGrid plugin:
       
-  ```ts title=src/subscribers/handle-order.ts
+  ```ts title="src/subscribers/handle-order.ts"
   import { 
     type SubscriberConfig, 
     type SubscriberArgs,
@@ -1055,7 +1055,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Create the file `src/api/store/product-media/route.ts` with the following content:
 
-  ```ts title=src/api/store/product-media/route.ts
+  ```ts title="src/api/store/product-media/route.ts"
   import type { 
     MedusaRequest, 
     MedusaResponse,
@@ -1095,7 +1095,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   First, if you're using TypeScript for your development, create the file `src/types/product-media.ts` with the following content:
 
-  ```ts title=src/types/product-media.ts
+  ```ts title="src/types/product-media.ts"
 
   import { Product } from "@medusajs/medusa"
   import { ProductVariant } from "@medusajs/product"
@@ -1132,7 +1132,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Then, add in `src/lib/data/index.ts` a new function that retrieves the product media of the product variant being viewed:
 
-  ```ts title=src/lib/data/index.ts
+  ```ts title="src/lib/data/index.ts"
   import { 
     DigitalProduct, 
     ProductMedia,
@@ -1165,7 +1165,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   To allow customers to download the file preview without exposing its URL, create a Next.js API route in the file `src/app/api/download/preview/route.ts` with the following content:
 
-  ```ts title=src/app/api/download/preview/route.ts
+  ```ts title="src/app/api/download/preview/route.ts"
   import { NextRequest, NextResponse } from "next/server"
 
   export async function GET(req: NextRequest) {
@@ -1208,7 +1208,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Next, create the preview button in the file `src/modules/products/components/product-media-preview/index.tsx`:
 
-  ```tsx title=src/modules/products/components/product-media-preview/index.tsx
+  ```tsx title="src/modules/products/components/product-media-preview/index.tsx"
   import Button from "@modules/common/components/button"
   import { ProductMedia } from "types/product-media"
 
@@ -1243,7 +1243,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Finally, add the button as one of the product actions defined in `src/modules/products/components/product-actions/index.tsx`. These are the actions shown to the customer in the product details page:
 
-  ```tsx title=src/modules/products/components/product-actions/index.tsx
+  ```tsx title="src/modules/products/components/product-actions/index.tsx"
   // other imports...
   import ProductMediaPreview from "../product-media-preview"
   import { getProductMediaPreviewByVariant } from "@lib/data"
@@ -1315,7 +1315,7 @@ You can change this section to show information relevant to the product. For exa
 
   Next, change the `ProductTabs`, `ProductInfoTab`, and `ShippingInfoTab` components defined in `src/modules/products/components/product-tabs/index.tsx` to the following:
 
-  ```tsx title=src/modules/products/components/product-tabs/index.tsx
+  ```tsx title="src/modules/products/components/product-tabs/index.tsx"
   const ProductTabs = ({ product }: ProductTabsProps) => {
     const tabs = useMemo(() => {
       return [
@@ -1426,7 +1426,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 
 <!-- eslint-skip -->
 
-  ```tsx title=src/lib/context/checkout-context.tsx
+  ```tsx title="src/lib/context/checkout-context.tsx"
   "use client"
 
   import { medusaClient } from "@lib/config"
@@ -1877,7 +1877,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/modules/checkout/components/addresses/index.tsx
+  ```tsx title="src/modules/checkout/components/addresses/index.tsx"
   import { useCheckout } from "@lib/context/checkout-context"
   import Button from "@modules/common/components/button"
   import Spinner from "@modules/common/icons/spinner"
@@ -1949,7 +1949,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 
   Finally, change the shipping details shown in the order confirmation page by replacing the content of `src/modules/order/components/shipping-details/index.tsx` with the following:
 
-  ```tsx title=src/modules/order/components/shipping-details/index.tsx
+  ```tsx title="src/modules/order/components/shipping-details/index.tsx"
   import { Address, ShippingMethod } from "@medusajs/medusa"
 
   type ShippingDetailsProps = {
@@ -2011,7 +2011,7 @@ After the customer purchases the digital product you can show a download button 
 
   Create the file `src/api/store/product-media/download/[variant_id]/route.ts` with the following content:
 
-  ```ts title=src/api/store/product-media/download/route.ts
+  ```ts title="src/api/store/product-media/download/route.ts"
   import type { 
     AbstractFileService, 
     MedusaRequest, 
@@ -2082,7 +2082,7 @@ After the customer purchases the digital product you can show a download button 
 
   Then, add the `requireCustomerAuthentication` middleware to this API Route in `src/api/middlewares.ts`:
 
-  ```ts title=src/api/middlewares.ts
+  ```ts title="src/api/middlewares.ts"
   import { 
     requireCustomerAuthentication, 
     type MiddlewaresConfig, 
@@ -2104,7 +2104,7 @@ After the customer purchases the digital product you can show a download button 
 
   To mask the presigned URL, create a Next.js API route at `src/app/api/download/main/[variant_id]/route.ts` with the following content:
 
-  ```ts title=src/app/api/download/main/[variant_id]/route.ts
+  ```ts title="src/app/api/download/main/[variant_id]/route.ts"
   import { NextRequest, NextResponse } from "next/server"
 
   export async function GET(
@@ -2173,7 +2173,7 @@ After the customer purchases the digital product you can show a download button 
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/modules/order/components/items/index.tsx
+  ```tsx title="src/modules/order/components/items/index.tsx"
   import useEnrichedLineItems from "@lib/hooks/use-enrich-line-items"
   import { LineItem, Region } from "@medusajs/medusa"
   import LineItemOptions from "@modules/common/components/line-item-options"

@@ -25,7 +25,7 @@ Creating a Notification Provider is as simple as creating a TypeScript or JavaS
 
 For example, create the file `src/services/email-sender.ts` with the following content:
 
-```ts title=src/services/email-sender.ts
+```ts title="src/services/email-sender.ts"
 import { AbstractNotificationService } from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
 
@@ -263,7 +263,7 @@ After creating your Notification Provider Service, you must create a [Loader](..
 
 Following the previous example, to make sure the `email-sender` Notification Provider handles the `order.placed` event, create the file `src/loaders/notification.ts` with the following content:
 
-```ts title=src/loaders/notification.ts
+```ts title="src/loaders/notification.ts"
 import { 
   MedusaContainer, 
   NotificationService,

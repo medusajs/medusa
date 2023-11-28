@@ -23,7 +23,7 @@ The `eventBusService.subscribe` method receives the name of the event as a first
 
 For example, here is the `OrderNotifierSubscriber` class created in `src/subscribers/order-notifier.ts`:
 
-```ts title=src/subscribers/order-notifier.ts
+```ts title="src/subscribers/order-notifier.ts"
 class OrderNotifierSubscriber {
   constructor({ eventBusService }) {
     eventBusService.subscribe("order.placed", this.handleOrder)
@@ -99,7 +99,7 @@ You can access any service through the dependencies injected to your subscriberâ
 
 For example:
 
-```ts title=src/subscribers/order-notifier.ts
+```ts title="src/subscribers/order-notifier.ts"
 class OrderNotifierSubscriber {
   constructor({ productService, eventBusService }) {
       this.productService = productService
@@ -115,7 +115,7 @@ class OrderNotifierSubscriber {
 
 You can then use `this.productService` anywhere in your subscriberâ€™s methods. For example:
 
-```ts title=src/subscribers/order-notifier.ts
+```ts title="src/subscribers/order-notifier.ts"
 class OrderNotifierSubscriber {
   // ...
   handleOrder = async (data) => {

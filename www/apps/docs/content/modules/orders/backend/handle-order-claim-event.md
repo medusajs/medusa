@@ -45,7 +45,7 @@ You can learn more about subscribers in the [Subscribers documentation](../../
 
 Create the file `src/subscribers/order-claim.ts` with the following content:
 
-```ts title=src/subscribers/order-claim.ts
+```ts title="src/subscribers/order-claim.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -88,7 +88,7 @@ In this method, you should typically send an email to the customer. You can plac
 
 For example, you can implement this subscriber to send emails using SendGrid:
 
-```ts title=src/subscribers/order-claim.ts
+```ts title="src/subscribers/order-claim.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -129,7 +129,7 @@ If the notification provider you’re using already implements the logic to hand
 
 For example:
 
-```ts title=src/loaders/order-claim.ts
+```ts title="src/loaders/order-claim.ts"
 import { 
   MedusaContainer, 
   NotificationService,
