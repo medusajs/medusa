@@ -5,6 +5,7 @@
     "module": "Node16", 
     "moduleResolution": "node16",
     "outDir": "./dist", 
+    "rootDir": "./src",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,

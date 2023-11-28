@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import { WorkflowManager } from "@medusajs/orchestration"
-import path from "path"
+import * as path from "path"
 import { existsSync, mkdirSync, writeFileSync } from "fs"
 import registerWorkflows from "../utils/register-workflows.js"
 import createDiagram from "../utils/create-diagram.js"
@@ -22,14 +22,14 @@ export default async function (workflowPath: string, options: Options) {
       addTheme: options.theme,
     })
 
+    const workflowPath = path.join(options.output, name)
+    if (!existsSync(workflowPath)) {
+      mkdirSync(workflowPath, { recursive: true })
+    }
+
     switch (options.type) {
       case "docs":
         // write files
-        const workflowPath = path.join(options.output, name)
-        if (!existsSync(workflowPath)) {
-          mkdirSync(workflowPath, { recursive: true })
-        }
-
         writeFileSync(path.join(workflowPath, "diagram.mermaid"), diagram)
         const workflowDefinition = workflowDefinitions.get(workflow.id)
         if (workflowDefinition) {

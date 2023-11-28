@@ -1,6 +1,5 @@
 {
   "name": "workflows-diagram-generator",
-  "private": true,
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/index.ts",
@@ -13,6 +12,10 @@
   },
   "version": "0.0.0",
   "type": "module",
+  "exports": "./dist/index.js",
+  "bin": {
+    "workflow-diagrams-generator": "dist/index.js"
+  },
   "dependencies": {
     "@medusajs/workflows-sdk": "latest",
     "commander": "^11.1.0",

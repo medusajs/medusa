@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command, Option } from "commander"
 import generate from "./commands/generate.js"
 
