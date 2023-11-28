@@ -522,34 +522,5 @@ describe("PriceList Service", () => {
         })
       )
     })
-
-    it("should throw an error when price list prices have invalid rules", async () => {
-      const result = await service
-        .createPriceLists([
-          {
-            title: "test",
-            description: "test",
-            rules: {
-              region_id: ["DE", "DK"],
-            },
-            prices: [
-              {
-                amount: 400,
-                currency_code: "EUR",
-                price_set_id: "price-set-1",
-                rules: {
-                  random_rule: "DE",
-                },
-              },
-            ],
-          },
-        ])
-        .catch((e) => e)
-      console.log("result --  ", result)
-
-      expect(result.message).toBe(
-        "Price List Price's RuleType don't match with PriceList RuleType: random_rule"
-      )
-    })
   })
 })

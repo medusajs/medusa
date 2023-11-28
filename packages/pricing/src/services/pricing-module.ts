@@ -14,12 +14,12 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
-  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
+  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -148,7 +148,7 @@ export default class PricingModuleService<
     )
 
     const pricesSetPricesMap = groupBy(results, "price_set_id")
-    console.log("pricesSetPricesMap - ", pricesSetPricesMap)
+
     const calculatedPrices: PricingTypes.CalculatedPriceSet[] =
       pricingFilters.id.map(
         (priceSetId: string): PricingTypes.CalculatedPriceSet => {
@@ -1392,23 +1392,10 @@ export default class PricingModuleService<
         (pl.prices || []).map((price) => Object.keys(price.rules || {}))
       )
       .flat(2)
+
     const ruleAttributes = data
       .map((priceListData) => Object.keys(priceListData.rules || {}))
       .flat()
-    console.log("ruleAttributes - ", ruleAttributes)
-    // const invalidPriceListPriceRuleAttributes = arrayDifference(
-    //   priceListPriceRuleAttributes,
-    //   ruleAttributes
-    // )
-    //
-    // if (invalidPriceListPriceRuleAttributes.length > 0) {
-    //   throw new MedusaError(
-    //     MedusaError.Types.NOT_FOUND,
-    //     `Price List Price's RuleType don't match with PriceList RuleType: ${invalidPriceListPriceRuleAttributes.join(
-    //       ", "
-    //     )}`
-    //   )
-    // }
 
     const ruleTypes = await this.listRuleTypes(
       {
@@ -1420,7 +1407,7 @@ export default class PricingModuleService<
     const ruleTypeMap: Map<string, RuleTypeDTO> = new Map(
       ruleTypes.map((rt) => [rt.rule_attribute, rt])
     )
-    console.log("ruleTypeMap -- ", ruleTypeMap)
+
     for (const priceListData of data) {
       const { rules = {}, prices = [], ...priceListOnlyData } = priceListData
 
@@ -1441,7 +1428,6 @@ export default class PricingModuleService<
         let ruleType = ruleTypeMap.get(ruleAttribute)
 
         if (!ruleType) {
-          console.log("ruleType ---- ", ruleType)
           ;[ruleType] = await this.createRuleTypes(
             [
               {
