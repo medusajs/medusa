@@ -12,7 +12,7 @@ import {
 } from "./types"
 
 import { EventEmitter } from "events"
-import { promiseAll } from "@medusajs/utils"
+import { OrchestrationUtils, promiseAll } from "@medusajs/utils"
 
 export type TransactionFlow = {
   modelId: string
@@ -367,11 +367,32 @@ export class TransactionOrchestrator extends EventEmitter {
         transaction.getContext()
       )
 
+      const setStepFailure = async (
+        error: Error | any,
+        { endRetry }: { endRetry?: boolean } = {}
+      ) => {
+        return TransactionOrchestrator.setStepFailure(
+          transaction,
+          step,
+          error,
+          endRetry ? 0 : step.definition.maxRetries
+        )
+      }
+
       if (!step.definition.async) {
         execution.push(
           transaction
             .handler(step.definition.action + "", type, payload, transaction)
-            .then(async (response) => {
+            .then(async (response: any) => {
+              // Specific case for steps that return a permanentFailure response and should not be retried
+              if (
+                response?.output?.output?.__type ===
+                OrchestrationUtils.SymbolWorkflowStepPermanentFailureResponse
+              ) {
+                const error = response.output.output.error
+                return await setStepFailure(error, { endRetry: true })
+              }
+
               await TransactionOrchestrator.setStepSuccess(
                 transaction,
                 step,
@@ -379,12 +400,7 @@ export class TransactionOrchestrator extends EventEmitter {
               )
             })
             .catch(async (error) => {
-              await TransactionOrchestrator.setStepFailure(
-                transaction,
-                step,
-                error,
-                step.definition.maxRetries
-              )
+              await setStepFailure(error)
             })
         )
       } else {
@@ -392,13 +408,18 @@ export class TransactionOrchestrator extends EventEmitter {
           transaction.saveCheckpoint().then(async () =>
             transaction
               .handler(step.definition.action + "", type, payload, transaction)
+              .then(async (response: any) => {
+                // Specific case for steps that return a permanentFailure response and should not be retried
+                if (
+                  response?.output?.__type ===
+                  OrchestrationUtils.SymbolWorkflowStepPermanentFailureResponse
+                ) {
+                  const error = response.output.error
+                  return await setStepFailure(error, { endRetry: true })
+                }
+              })
               .catch(async (error) => {
-                await TransactionOrchestrator.setStepFailure(
-                  transaction,
-                  step,
-                  error,
-                  step.definition.maxRetries
-                )
+                await setStepFailure(error)
               })
           )
         )

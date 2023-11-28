@@ -1,12 +1,4 @@
-import {
-  resolveValue,
-  StepResponse,
-  SymbolMedusaWorkflowComposerContext,
-  SymbolWorkflowStep,
-  SymbolWorkflowStepBind,
-  SymbolWorkflowStepResponse,
-  SymbolWorkflowWorkflowData,
-} from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
@@ -16,7 +8,7 @@ import {
 } from "./type"
 import { proxify } from "./helpers/proxy"
 import { TransactionStepsDefinition } from "@medusajs/orchestration"
-import { isString } from "@medusajs/utils"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 
 /**
  * The type of invocation function passed to a step.
@@ -140,12 +132,12 @@ function applyStep<
         )
 
         const stepResponseJSON =
-          stepResponse?.__type === SymbolWorkflowStepResponse
+          stepResponse?.__type === OrchestrationUtils.SymbolWorkflowStepResponse
             ? stepResponse.toJSON()
             : stepResponse
 
         return {
-          __type: SymbolWorkflowWorkflowData,
+          __type: OrchestrationUtils.SymbolWorkflowWorkflowData,
           output: stepResponseJSON,
         }
       },
@@ -159,7 +151,8 @@ function applyStep<
 
             const stepOutput = transactionContext.invoke[stepName]?.output
             const invokeResult =
-              stepOutput?.__type === SymbolWorkflowStepResponse
+              stepOutput?.__type ===
+              OrchestrationUtils.SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&
                   JSON.parse(JSON.stringify(stepOutput.compensateInput))
                 : stepOutput && JSON.parse(JSON.stringify(stepOutput))
@@ -179,7 +172,7 @@ function applyStep<
     this.handlers.set(stepName, handler)
 
     const ret = {
-      __type: SymbolWorkflowStep,
+      __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
     }
 
@@ -270,7 +263,7 @@ export function createStep<
   const returnFn = function (input: {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   }): WorkflowData<TInvokeResultOutput> {
-    if (!global[SymbolMedusaWorkflowComposerContext]) {
+    if (!global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
       )
@@ -278,7 +271,7 @@ export function createStep<
 
     const stepBinder = (
       global[
-        SymbolMedusaWorkflowComposerContext
+        OrchestrationUtils.SymbolMedusaWorkflowComposerContext
       ] as CreateWorkflowComposerContext
     ).stepBinder
 
@@ -298,7 +291,7 @@ export function createStep<
     )
   }
 
-  returnFn.__type = SymbolWorkflowStepBind
+  returnFn.__type = OrchestrationUtils.SymbolWorkflowStepBind
   returnFn.__step__ = stepName
 
   return returnFn as unknown as StepFunction<TInvokeInput, TInvokeResultOutput>
