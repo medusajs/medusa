@@ -14,10 +14,6 @@ import {
   SalesChannelHandlers,
 } from "../../handlers"
 import { exportWorkflow, pipe } from "@medusajs/workflows-sdk"
-import {
-  attachCartToSalesChannel,
-  detachCartFromSalesChannel,
-} from "../../handlers/cart"
 
 enum CreateCartActions {
   setContext = "setContext",
