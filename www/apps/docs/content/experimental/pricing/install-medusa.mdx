@@ -24,6 +24,10 @@ In `medusa-config.js`, add the pricing module to the exported object under the `
 ```js title=medusa-config.js
 module.exports = {
   // ...
+  featureFlags: {
+    // ...
+    medusa_v2: true,
+  },
   modules: {
     // ...
     pricingService: {
@@ -37,10 +41,11 @@ module.exports = {
 
 ## Step 3: Run Migrations
 
-Run the following command to reflect schema changes into your database:
+Run the following commands to reflect schema changes into your database:
 
 ```bash
 npx medusa migrations run
+node node_modules/@medusajs/medusa/dist/scripts/migrate-to-pricing-module.js
 ```
 
 ---
@@ -69,9 +74,10 @@ For example:
       req: MedusaRequest, 
       res: MedusaResponse
     ) {
-      const pricingModuleService = req.scope.resolve(
-        "pricingModuleService"
-      )
+      const pricingModuleService: PricingModuleService = 
+        req.scope.resolve(
+          "pricingModuleService"
+        )
 
       return res.json({
         pricings: pricingModuleService.list()
@@ -97,9 +103,10 @@ For example:
     export default async function handleListPriceSets({ 
       data, eventName, container, pluginOptions 
     }: SubscriberArgs<Customer>) {
-      const pricingModuleService = container.resolve(
-        "pricingModuleService"
-      )
+      const pricingModuleService: PricingModuleService = 
+        container.resolve(
+          "pricingModuleService"
+        )
 
       console.log(await pricingModuleService.list())
     }
@@ -142,23 +149,10 @@ For example:
   </TabItem>
 </Tabs>
 
-:::tip
-
-In the Examples or API Reference guides, you may see an initialization of the pricing module. This is only necessary if you're using the module outside the Medusa backend.
-
-:::
-
 ---
 
-## Up Next
+## Start Development
 
-<DocCard item={{
-    type: 'link',
-    href: '/references/pricing',
-    label: 'Service Interface Reference',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Find a full reference of the module\' service interface\s methods.'
-    }
-  }}
-/>
+You can refer to the [Example Usages documentation page](./examples.mdx) for examples of using the Pricing module.
+
+You can also refer to the [Module Interface Reference](../../references/pricing/interfaces/IPricingModuleService.mdx) for a detailed reference on all available methods.

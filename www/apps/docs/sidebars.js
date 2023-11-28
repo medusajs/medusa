@@ -2752,6 +2752,11 @@ module.exports = {
           id: "experimental/product/install-nodejs",
         },
         {
+          type: "doc",
+          label: "Examples",
+          id: "experimental/product/examples",
+        },
+        {
           type: "html",
           value: "References",
           customProps: {

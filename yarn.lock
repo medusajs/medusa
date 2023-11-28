@@ -7771,6 +7771,7 @@ __metadata:
     "@medusajs/utils": ^1.11.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
+    graphql: ^16.6.0
     jest: ^29.6.3
     knex: 2.4.2
     pg: ^8.11.2
