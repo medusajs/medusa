@@ -3,12 +3,13 @@ import { WorkflowManager } from "@medusajs/orchestration"
 import * as path from "path"
 import { existsSync, mkdirSync, writeFileSync } from "fs"
 import registerWorkflows from "../utils/register-workflows.js"
-import createDiagram from "../utils/create-diagram.js"
+import DiagramBuilder from "../classes/diagram-builder.js"
 
 type Options = {
   output: string
   type: "docs" | "markdown" | "mermaid"
   theme: boolean
+  prettyNames: boolean
 }
 
 export default async function (workflowPath: string, options: Options) {
@@ -16,19 +17,20 @@ export default async function (workflowPath: string, options: Options) {
 
   const registeredWorkflows = WorkflowManager.getWorkflows()
 
-  for (const [name, workflow] of registeredWorkflows) {
-    const diagram = createDiagram({
-      workflow: workflow.flow_,
-      addTheme: options.theme,
-    })
+  const diagramBuilder = new DiagramBuilder(options)
 
-    const workflowPath = path.join(options.output, name)
-    if (!existsSync(workflowPath)) {
-      mkdirSync(workflowPath, { recursive: true })
+  for (const [name, workflow] of registeredWorkflows) {
+    const diagram = diagramBuilder.buildDiagram(workflow.flow_)
+    if (!existsSync(options.output)) {
+      mkdirSync(options.output, { recursive: true })
     }
 
     switch (options.type) {
       case "docs":
+        const workflowPath = path.join(options.output, name)
+        if (!existsSync(workflowPath)) {
+          mkdirSync(workflowPath, { recursive: true })
+        }
         // write files
         writeFileSync(path.join(workflowPath, "diagram.mermaid"), diagram)
         const workflowDefinition = workflowDefinitions.get(workflow.id)

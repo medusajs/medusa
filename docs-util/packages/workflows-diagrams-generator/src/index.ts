@@ -30,6 +30,11 @@ program
       .default("docs")
   )
   .option("--no-theme", "Remove theming from outputted diagrams.", true)
+  .option(
+    "--pretty-names",
+    "Prettify step names. Useful for creating presentational diagrams.",
+    false
+  )
   .action(generate)
 
 program.parse()
