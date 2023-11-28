@@ -75,17 +75,7 @@ async function retrieveStockLocation (id: string) {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
+        "children": []
       },
       {
         "name": "relations",
@@ -107,7 +97,7 @@ async function retrieveStockLocation (id: string) {
       },
       {
         "name": "skip",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
@@ -116,7 +106,7 @@ async function retrieveStockLocation (id: string) {
       },
       {
         "name": "take",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",

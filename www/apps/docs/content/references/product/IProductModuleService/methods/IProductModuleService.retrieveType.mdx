@@ -20,7 +20,7 @@ This method is used to retrieve a product type by its ID.
 A simple example that retrieves a product type by its ID:
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -36,7 +36,7 @@ async function retrieveProductType (id: string) {
 To specify attributes that should be retrieved:
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -78,17 +78,7 @@ async function retrieveProductType (id: string) {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
+        "children": []
       },
       {
         "name": "relations",
@@ -110,7 +100,7 @@ async function retrieveProductType (id: string) {
       },
       {
         "name": "skip",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
@@ -119,7 +109,7 @@ async function retrieveProductType (id: string) {
       },
       {
         "name": "take",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",

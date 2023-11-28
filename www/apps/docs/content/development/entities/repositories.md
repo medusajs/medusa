@@ -22,7 +22,7 @@ If you haven't created a custom repository, you can access the default repositor
 
 For example, to retrieve the default repository of an entity in a service:
 
-```ts title=src/services/post.ts
+```ts title="src/services/post.ts"
 import { Post } from "../models/post"
 
 class PostService extends TransactionBaseService {
@@ -41,7 +41,7 @@ class PostService extends TransactionBaseService {
 
 Another example is retrieving the default repository of an entity in an API Route:
 
-```ts title=src/api/store/custom/route.ts
+```ts title="src/api/store/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -110,7 +110,7 @@ To access a custom repository within an API Route, use the `MedusaRequest` objec
 
 For example:
 
-```ts title=src/store/custom/route.ts
+```ts title="src/store/custom/route.ts"
 import type { 
   MedusaRequest, 
   MedusaResponse,
@@ -141,7 +141,7 @@ As custom repositories are registered in the [dependency container](../fundament
 
 For example:
 
-```ts title=src/services/post.ts
+```ts title="src/services/post.ts"
 import { PostRepository } from "../repositories/post"
 
 class PostService extends TransactionBaseService {
@@ -173,7 +173,7 @@ A subscriber handler function can resolve a repository using the `container` pro
 
 For example:
 
-```ts title=src/subscribers/post-handler.ts
+```ts title="src/subscribers/post-handler.ts"
 import {
   type SubscriberArgs,
 } from "@medusajs/medusa"

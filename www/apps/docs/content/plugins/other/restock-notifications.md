@@ -44,7 +44,7 @@ npm install medusa-plugin-restock-notification
 
 Then, add the plugin into the plugins array exported as part of the Medusa configuration in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // other plugins...
   {
@@ -116,7 +116,7 @@ The SendGrid plugin already listens to and handles the `restock-notification.res
 
 Here's an example of a [subscriber](../../development/events/subscribers.mdx) that listens to the `restock-notification.restocked` event and uses the [SendGrid plugin](../notifications/sendgrid.mdx) to send the subscribed customers an email:
 
-```ts title=src/subscribers/restock-notification.ts
+```ts title="src/subscribers/restock-notification.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,

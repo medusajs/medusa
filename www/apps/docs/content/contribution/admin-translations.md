@@ -43,7 +43,7 @@ Where `<LANGUAGE>` is your language name. For example, `feat/translate-da`.
 
 7\. In `packages/admin-ui/ui/src/i18n/index.ts`, add the new language to the `supportedLanguages` array as an object. The object accepts two properties: `locale` for the ISO 2 character code, and `name` for the name of the language. The name of the language should be the translated name, not the English name. For example:
 
-```ts title=packages/admin-ui/ui/src/i18n/index.ts
+```ts title="packages/admin-ui/ui/src/i18n/index.ts"
 export const supportedLanguages = [
   // other languages...
   {

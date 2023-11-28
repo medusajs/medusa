@@ -157,7 +157,7 @@ NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9001
 
 :::note
 
-The Product Module is currently in beta. You can learn more about it [here](../modules/products/serverless-module.mdx). In addition, the product module in the Next.js storefront can't be used without the Medusa backend at the moment.
+The Product Module is currently in beta. You can learn more about it [here](../experimental/product/install-nodejs.md). In addition, the product module in the Next.js storefront can't be used without the Medusa backend at the moment.
 
 :::
 
@@ -172,7 +172,7 @@ To enable the Product Module, first, make sure to set the following environment 
 
 Then, enable the `productModule` feature flag in `store.config.json`:
 
-```json title=store.config.json
+```json title="store.config.json"
 {
   "features": {
     // other features...
@@ -198,7 +198,7 @@ The Next.js Starter Storefront by default is compatible with MeiliSearch.
 
 To enable or disable the search engine, change the value of the feature in `store.config.json`:
 
-```json title=store.config.json
+```json title="store.config.json"
 {
   "features": {
     "search": false
@@ -269,7 +269,7 @@ Where `<YOUR_APP_ID>` and `<YOUR_SEARCH_API_KEY>` are the Algolia App ID and Alg
 
 Next, change the content of `src/lib/search-client.ts` to the following:
 
-```ts title=src/lib/search-client.ts
+```ts title="src/lib/search-client.ts"
 import algoliasearch from "algoliasearch/lite"
 
 const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || ""
