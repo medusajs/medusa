@@ -24,14 +24,14 @@ export async function POST(request: Request) {
   // RuleType#rule_attribute region_id should already be present in the database
   const priceSet = await pricingService.create([
     {
-      rules: [{ rule_attribute: "region_id" }]
+      rules: [{ rule_attribute: "region_id" }],
       prices: [
         {
           currency_code: body.currency_code,
           amount: body.amount,
           rules: {
-            region_id: body.region_id
-          }
+            region_id: body.region_id,
+          },
         },
       ],
     },
@@ -206,7 +206,7 @@ export async function POST(request: Request) {
       {
         amount: 400,
         currency_code: "EUR",
-        price_set_id: priceSet.id
+        price_set_id: priceSet.id,
       },
     ],
   })
