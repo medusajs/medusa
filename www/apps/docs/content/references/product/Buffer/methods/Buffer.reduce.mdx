@@ -24,17 +24,7 @@ call to the callback function.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -70,17 +60,7 @@ Uint8Array.reduce
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "initialValue",
@@ -119,6 +99,8 @@ Calls the specified callback function for all the elements in an array. The retu
 the callback function is the accumulated result, and is provided as an argument in the next
 call to the callback function.
 
+#### Type Parameters
+
 <ParameterTypes parameters={[
   {
     "name": "U",
@@ -141,17 +123,7 @@ call to the callback function.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `U`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "initialValue",
@@ -168,7 +140,17 @@ call to the callback function.
 
 `U`
 
-<ParameterTypes parameters={[]} />
+<ParameterTypes parameters={[
+  {
+    "name": "U",
+    "type": "`U`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 #### Inherited from
 

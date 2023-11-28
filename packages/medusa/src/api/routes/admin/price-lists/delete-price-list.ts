@@ -1,6 +1,6 @@
 import { WorkflowTypes } from "@medusajs/types"
 import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-import { removePriceLists } from "@medusajs/workflows"
+import { removePriceLists } from "@medusajs/core-flows"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 

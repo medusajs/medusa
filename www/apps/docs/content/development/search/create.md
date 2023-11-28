@@ -35,7 +35,7 @@ You can learn more about services and their naming convention in [this documenta
 
 For example, create the file `src/services/my-search.ts` with the following content:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 import { AbstractSearchService } from "@medusajs/utils"
 
 class MySearchService extends AbstractSearchService {
@@ -101,7 +101,7 @@ For example:
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 // ...
 import { ProductService } from "@medusajs/medusa"
 
@@ -127,7 +127,7 @@ You can access the plugin options in the second parameter passed to the construc
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 // ...
 
 class MySearchService extends AbstractSearchService {
@@ -177,7 +177,7 @@ The method does not require any specific data type to be returned.
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -195,7 +195,7 @@ The method accepts one parameter, which is a string indicating the name of the i
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -221,7 +221,7 @@ The method should return the response of saving the documents in the search engi
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -250,7 +250,7 @@ The method should return the response of saving the documents in the search engi
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -282,7 +282,7 @@ The method should return the response of deleting the document in the search eng
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -306,7 +306,7 @@ The method should return the response of deleting the documents of that index in
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -333,7 +333,7 @@ Although there’s no required data format or type to be returned to the method,
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -366,7 +366,7 @@ The method should return the response of updating the index in the search engine
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 

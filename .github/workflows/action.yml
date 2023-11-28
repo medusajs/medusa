@@ -125,7 +125,6 @@ jobs:
         env:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
-          SPLIT: ${{ steps['split-tests'].outputs['split'] }}
 
   integration-tests-api:
     needs: setup
@@ -186,7 +185,8 @@ jobs:
         run: yarn test:integration:api
         env:
           DB_PASSWORD: postgres
-          SPLIT: ${{ steps['split-tests'].outputs['split'] }}
+          DB_USERNAME: postgres
+
 
   integration-tests-plugins:
     needs: setup
@@ -237,6 +237,7 @@ jobs:
       - name: Run plugin integration tests
         run: yarn test:integration:plugins
         env:
+          DB_USERNAME: postgres
           DB_PASSWORD: postgres
           NODE_OPTIONS: "--max_old_space_size=4096"
 
@@ -286,4 +287,5 @@ jobs:
       - name: Run repository integration tests
         run: yarn test:integration:repositories
         env:
+          DB_USERNAME: postgres
           DB_PASSWORD: postgres

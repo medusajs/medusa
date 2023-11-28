@@ -146,7 +146,7 @@ Where:
 
 Finally, open `medusa-config.js` and add the following new item to the `plugins` array:
 
-```jsx title=medusa-config.js
+```jsx title="medusa-config.js"
 const plugins = [
   // ...
   {

@@ -14,11 +14,8 @@ export class Migration20231101232834 extends Migration {
     )
 
     this.addSql(
-      `ALTER TABLE price_list ADD COLUMN IF NOT EXISTS number_rules integer not null default 0`
-    )
-
-    this.addSql(
-      'alter table "price_list" add column if not exists "title" text not null, add column if not exists "description" text not null, add column if not exists "type" text check ("type" in (\'sale\', \'override\')) not null default \'sale\';'
+      `ALTER TABLE price_list
+          ADD COLUMN IF NOT EXISTS number_rules integer not null default 0`
     )
 
     this.addSql(
@@ -30,8 +27,15 @@ export class Migration20231101232834 extends Migration {
     )
 
     this.addSql(
-      'alter table "price_list" add column if not exists "title" text not null, add column if not exists "description" text not null, add column if not exists "type" text check ("type" in (\'sale\', \'override\')) not null default \'sale\', add column if not exists "created_at" timestamptz not null default now(), add column if not exists "updated_at" timestamptz not null default now(), add column if not exists "deleted_at" timestamptz null;'
+      'alter table "price_list" add column if not exists "title" text, add column if not exists "name" text, add column if not exists "description" text not null, add column if not exists "type" text check ("type" in (\'sale\', \'override\')) not null default \'sale\', add column if not exists "created_at" timestamptz not null default now(), add column if not exists "updated_at" timestamptz not null default now(), add column if not exists "deleted_at" timestamptz null;'
     )
+
+    this.addSql(`
+        UPDATE "price_list"
+        SET title = name
+    `)
+
+    this.addSql(`alter table "price_list" alter column "title" set not null `)
 
     this.addSql(
       'create index if not exists "IDX_price_list_deleted_at" on "price_list" ("deleted_at");'

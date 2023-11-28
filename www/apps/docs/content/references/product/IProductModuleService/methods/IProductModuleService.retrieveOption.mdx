@@ -20,7 +20,7 @@ This method is used to retrieve a product option by its ID.
 A simple example that retrieves a product option by its ID:
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -36,7 +36,7 @@ async function retrieveProductOption (id: string) {
 To specify relations that should be retrieved:
 
 ```ts
-import { 
+import {
   initialize as initializeProductModule,
 } from "@medusajs/product"
 
@@ -78,17 +78,7 @@ async function retrieveProductOption (id: string) {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
+        "children": []
       },
       {
         "name": "relations",
@@ -110,7 +100,7 @@ async function retrieveProductOption (id: string) {
       },
       {
         "name": "skip",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
@@ -119,7 +109,7 @@ async function retrieveProductOption (id: string) {
       },
       {
         "name": "take",
-        "type": "`number`",
+        "type": "`null` \\| `number`",
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",
@@ -550,10 +540,10 @@ async function retrieveProductOption (id: string) {
           {
             "name": "option",
             "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)",
-            "description": "The associated product option.",
+            "description": "The associated product option. It may only be available if the `option` relation is expanded.",
             "optional": false,
             "defaultValue": "",
-            "expandable": true,
+            "expandable": false,
             "children": []
           },
           {
@@ -568,10 +558,10 @@ async function retrieveProductOption (id: string) {
           {
             "name": "variant",
             "type": "[ProductVariantDTO](../../interfaces/ProductVariantDTO.mdx)",
-            "description": "The associated product variant.",
+            "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
             "optional": false,
             "defaultValue": "",
-            "expandable": true,
+            "expandable": false,
             "children": []
           }
         ]

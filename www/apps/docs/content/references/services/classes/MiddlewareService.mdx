@@ -10,7 +10,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 ## Constructors
 
-### constructor
+#### constructor
 
 `**new MiddlewareService**()`
 
@@ -57,13 +57,13 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 ## Methods
 
-### addPostAuthentication
+#### addPostAuthentication
 
 `**addPostAuthentication**(middleware, options): void`
 
 Adds a middleware function to be called after authentication is completed.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -86,7 +86,7 @@ Adds a middleware function to be called after authentication is completed.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -104,13 +104,13 @@ Adds a middleware function to be called after authentication is completed.
 
 ___
 
-### addPreAuthentication
+#### addPreAuthentication
 
 `**addPreAuthentication**(middleware, options): void`
 
 Adds a middleware function to be called before authentication is completed.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -133,7 +133,7 @@ Adds a middleware function to be called before authentication is completed.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -151,13 +151,13 @@ Adds a middleware function to be called before authentication is completed.
 
 ___
 
-### addPreCartCreation
+#### addPreCartCreation
 
 `**addPreCartCreation**(middleware): void`
 
 Adds a middleware function to be called before cart creation
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -171,7 +171,7 @@ Adds a middleware function to be called before cart creation
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -189,11 +189,11 @@ Adds a middleware function to be called before cart creation
 
 ___
 
-### addRouter
+#### addRouter
 
 `**addRouter**(path, router): void`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -216,7 +216,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -234,11 +234,11 @@ ___
 
 ___
 
-### getRouters
+#### getRouters
 
 `**getRouters**(path): Router[]`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -252,7 +252,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Router[]
 
@@ -270,13 +270,13 @@ Router[]
 
 ___
 
-### usePostAuthentication
+#### usePostAuthentication
 
 `**usePostAuthentication**(app): void`
 
 Adds post authentication middleware to an express app.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -290,7 +290,7 @@ Adds post authentication middleware to an express app.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -308,13 +308,13 @@ Adds post authentication middleware to an express app.
 
 ___
 
-### usePreAuthentication
+#### usePreAuthentication
 
 `**usePreAuthentication**(app): void`
 
 Adds pre authentication middleware to an express app.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -328,7 +328,7 @@ Adds pre authentication middleware to an express app.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 
@@ -346,11 +346,11 @@ Adds pre authentication middleware to an express app.
 
 ___
 
-### usePreCartCreation
+#### usePreCartCreation
 
 `**usePreCartCreation**(): RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]`
 
-#### Returns
+##### Returns
 
 RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]
 
@@ -368,13 +368,13 @@ RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&
 
 ___
 
-### validateMiddleware\_
+#### validateMiddleware\_
 
 `**validateMiddleware_**(fn): void`
 
 Validates a middleware function, throws if fn is not of type function.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -388,7 +388,7 @@ Validates a middleware function, throws if fn is not of type function.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `void`
 

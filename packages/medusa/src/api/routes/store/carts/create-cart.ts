@@ -1,4 +1,7 @@
-import { createCart as createCartWorkflow } from "@medusajs/workflows"
+import {
+  createCart as createCartWorkflow,
+  Workflows,
+} from "@medusajs/core-flows"
 import {
   IsArray,
   IsInt,
@@ -7,7 +10,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import {
   CartService,
@@ -18,7 +21,6 @@ import {
 
 import { MedusaContainer } from "@medusajs/modules-sdk"
 import { FlagRouter } from "@medusajs/utils"
-import { Workflows } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
