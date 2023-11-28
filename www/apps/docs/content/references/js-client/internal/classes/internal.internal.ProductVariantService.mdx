@@ -166,25 +166,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addOptionValue
+#### addOptionValue
 
 Adds option value to a variant.
 Fails when product with variant does not exist or
@@ -192,7 +182,7 @@ if that product does not have an option with the given
 option id. Fails if given variant is not found.
 Option value must be of type string or number.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -224,7 +214,7 @@ Option value must be of type string or number.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -240,13 +230,13 @@ Option value must be of type string or number.
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -278,7 +268,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -294,12 +284,12 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates an unpublished product variant. Will validate against parent product
 to ensure that the variant can in fact be created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -322,7 +312,7 @@ to ensure that the variant can in fact be created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -338,12 +328,12 @@ to ensure that the variant can in fact be created.
 
 ___
 
-### delete
+#### delete
 
 Deletes variant or variants.
 Will never fail due to delete being idempotent.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -357,7 +347,7 @@ Will never fail due to delete being idempotent.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -373,12 +363,12 @@ Will never fail due to delete being idempotent.
 
 ___
 
-### deleteOptionValue
+#### deleteOptionValue
 
 Deletes option value from given variant.
 Will never fail due to delete being idempotent.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -401,7 +391,7 @@ Will never fail due to delete being idempotent.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -417,12 +407,12 @@ Will never fail due to delete being idempotent.
 
 ___
 
-### getFreeTextQueryBuilder\_
+#### getFreeTextQueryBuilder\_
 
 Lists variants based on the provided parameters and includes the count of
 variants that match the query.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -454,7 +444,7 @@ variants that match the query.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -470,13 +460,13 @@ variants that match the query.
 
 ___
 
-### getRegionPrice
+#### getRegionPrice
 
 Gets the price specific to a region. If no region specific money amount
 exists the function will try to use a currency price. If no default
 currency price exists the function will throw an error.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -499,7 +489,7 @@ currency price exists the function will throw an error.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -515,11 +505,11 @@ currency price exists the function will throw an error.
 
 ___
 
-### isVariantInSalesChannels
+#### isVariantInSalesChannels
 
 Check if the variant is assigned to at least one of the provided sales channels.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -542,7 +532,7 @@ Check if the variant is assigned to at least one of the provided sales channels.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -558,9 +548,9 @@ Check if the variant is assigned to at least one of the provided sales channels.
 
 ___
 
-### list
+#### list
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -583,7 +573,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -599,9 +589,9 @@ ___
 
 ___
 
-### listAndCount
+#### listAndCount
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -624,7 +614,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -640,11 +630,11 @@ ___
 
 ___
 
-### retrieve
+#### retrieve
 
 Gets a product variant by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -667,7 +657,7 @@ Gets a product variant by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -683,11 +673,11 @@ Gets a product variant by id.
 
 ___
 
-### retrieveBySKU
+#### retrieveBySKU
 
 Gets a product variant by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -710,7 +700,7 @@ Gets a product variant by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -726,9 +716,9 @@ Gets a product variant by id.
 
 ___
 
-### setCurrencyPrice
+#### setCurrencyPrice
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -751,7 +741,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -772,9 +762,9 @@ Sets the default price for the given currency.
 
 ___
 
-### setRegionPrice
+#### setRegionPrice
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -797,7 +787,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -818,9 +808,9 @@ Sets the default price of a specific region
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -834,7 +824,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -850,13 +840,13 @@ ___
 
 ___
 
-### update
+#### update
 
 `**update**(variantData): Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)[]&#62;`
 
 Updates a collection of variant.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -870,7 +860,7 @@ Updates a collection of variant.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -890,7 +880,7 @@ Updates a variant.
 Price updates should use dedicated methods.
 The function will throw, if price updates are attempted.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -913,7 +903,7 @@ The function will throw, if price updates are attempted.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -929,7 +919,7 @@ The function will throw, if price updates are attempted.
 
 `**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -952,7 +942,7 @@ The function will throw, if price updates are attempted.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -968,9 +958,9 @@ The function will throw, if price updates are attempted.
 
 ___
 
-### updateBatch
+#### updateBatch
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -984,7 +974,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1000,12 +990,12 @@ ___
 
 ___
 
-### updateOptionValue
+#### updateOptionValue
 
 Updates variant's option value.
 Option value must be of type string or number.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1037,7 +1027,7 @@ Option value must be of type string or number.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1053,14 +1043,14 @@ Option value must be of type string or number.
 
 ___
 
-### updateVariantPrices
+#### updateVariantPrices
 
 `**updateVariantPrices**(data): Promise&#60;void&#62;`
 
 Updates variant/prices collection.
 Deletes any prices that are not in the update object, and is not associated with a price list.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1074,7 +1064,7 @@ Deletes any prices that are not in the update object, and is not associated with
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1093,7 +1083,7 @@ Deletes any prices that are not in the update object, and is not associated with
 Updates a variant's prices.
 Deletes any prices that are not in the update object, and is not associated with a price list.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1116,7 +1106,7 @@ Deletes any prices that are not in the update object, and is not associated with
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1132,9 +1122,9 @@ Deletes any prices that are not in the update object, and is not associated with
 
 ___
 
-### updateVariantPricesBatch
+#### updateVariantPricesBatch
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1148,7 +1138,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1164,9 +1154,9 @@ ___
 
 ___
 
-### upsertCurrencyPrices
+#### upsertCurrencyPrices
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1180,7 +1170,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1196,9 +1186,9 @@ ___
 
 ___
 
-### upsertRegionPrices
+#### upsertRegionPrices
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1212,7 +1202,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1228,9 +1218,9 @@ ___
 
 ___
 
-### validateVariantsToCreate\_
+#### validateVariantsToCreate\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1253,7 +1243,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1269,9 +1259,9 @@ ___
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1285,7 +1275,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

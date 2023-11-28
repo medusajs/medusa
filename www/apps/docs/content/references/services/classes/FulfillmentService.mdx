@@ -10,11 +10,11 @@ Handles Fulfillments
 
 ## Constructors
 
-### constructor
+#### constructor
 
 `**new FulfillmentService**(«destructured»)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -152,35 +152,21 @@ Handles Fulfillments
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-`Protected get**activeManager_**(): EntityManager`
-
-#### Returns
-
-EntityManager
-
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+ `Protected` **activeManager\_**: [object Object]
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+##### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -203,7 +189,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -235,7 +221,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;TResult&#62;
 
@@ -253,7 +239,7 @@ Promise&#60;TResult&#62;
 
 ___
 
-### cancelFulfillment
+#### cancelFulfillment
 
 `**cancelFulfillment**(fulfillmentOrId): Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;`
 
@@ -261,7 +247,7 @@ Cancels a fulfillment with the fulfillment provider. Will decrement the
 fulfillment\_quantity on the line items associated with the fulfillment.
 Throws if the fulfillment has already been shipped.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -275,7 +261,7 @@ Throws if the fulfillment has already been shipped.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;
 
@@ -293,7 +279,7 @@ Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;
 
 ___
 
-### createFulfillment
+#### createFulfillment
 
 `**createFulfillment**(order, itemsToFulfill, custom?): Promise&#60;[Fulfillment](Fulfillment.mdx)[]&#62;`
 
@@ -302,7 +288,7 @@ If items needs to be fulfilled by different provider, we make
 sure to partition those items, and create fulfillment for
 those partitions.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -334,7 +320,7 @@ those partitions.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Fulfillment](Fulfillment.mdx)[]&#62;
 
@@ -352,14 +338,14 @@ Promise&#60;[Fulfillment](Fulfillment.mdx)[]&#62;
 
 ___
 
-### createShipment
+#### createShipment
 
 `**createShipment**(fulfillmentId, trackingLinks?, config?): Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;`
 
 Creates a shipment by marking a fulfillment as shipped. Adds
 tracking links and potentially more metadata.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -391,7 +377,7 @@ tracking links and potentially more metadata.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;
 
@@ -409,13 +395,13 @@ Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;
 
 ___
 
-### getFulfillmentItems\_
+#### getFulfillmentItems\_
 
 `**getFulfillmentItems_**(order, items): Promise&#60;(null \| [LineItem](LineItem.mdx))[]&#62;`
 
 Retrieves the order line items, given an array of items.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -438,7 +424,7 @@ Retrieves the order line items, given an array of items.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;(null \| [LineItem](LineItem.mdx))[]&#62;
 
@@ -456,11 +442,11 @@ Promise&#60;(null \| [LineItem](LineItem.mdx))[]&#62;
 
 ___
 
-### partitionItems\_
+#### partitionItems\_
 
 `**partitionItems_**(shippingMethods, items): [FulfillmentItemPartition](../types/FulfillmentItemPartition.mdx)[]`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -483,7 +469,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [FulfillmentItemPartition](../types/FulfillmentItemPartition.mdx)[]
 
@@ -501,13 +487,13 @@ ___
 
 ___
 
-### retrieve
+#### retrieve
 
 `**retrieve**(fulfillmentId, config?): Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;`
 
 Retrieves a fulfillment by its id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -530,7 +516,7 @@ Retrieves a fulfillment by its id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;
 
@@ -548,11 +534,11 @@ Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -566,7 +552,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -584,7 +570,7 @@ ___
 
 ___
 
-### validateFulfillmentLineItem\_
+#### validateFulfillmentLineItem\_
 
 `**validateFulfillmentLineItem_**(item, quantity): null \| [LineItem](LineItem.mdx)`
 
@@ -593,7 +579,7 @@ fulfillable quantity is lower than the requested fulfillment quantity.
 Fulfillable quantity is calculated by subtracting the already fulfilled
 quantity from the quantity that was originally purchased.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -616,7 +602,7 @@ quantity from the quantity that was originally purchased.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `null` \| [LineItem](LineItem.mdx)
 
@@ -634,11 +620,11 @@ quantity from the quantity that was originally purchased.
 
 ___
 
-### withTransaction
+#### withTransaction
 
 `**withTransaction**(transactionManager?): [FulfillmentService](FulfillmentService.mdx)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -652,7 +638,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [FulfillmentService](FulfillmentService.mdx)
 

@@ -116,27 +116,17 @@ Provides layer to manipulate profiles.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addProduct
+#### addProduct
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -159,7 +149,7 @@ Provides layer to manipulate profiles.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -179,11 +169,11 @@ use [addProducts](internal.internal.ShippingProfileService.mdx#addproducts) inst
 
 ___
 
-### addProducts
+#### addProducts
 
 Adds a product or an array of products to the profile.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -206,7 +196,7 @@ Adds a product or an array of products to the profile.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -222,12 +212,12 @@ Adds a product or an array of products to the profile.
 
 ___
 
-### addShippingOption
+#### addShippingOption
 
 Adds a shipping option to the profile. The shipping option can be used to
 fulfill the products in the products field.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -250,7 +240,7 @@ fulfill the products in the products field.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -266,13 +256,13 @@ fulfill the products in the products field.
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -304,7 +294,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -320,11 +310,11 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates a new shipping profile.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -338,7 +328,7 @@ Creates a new shipping profile.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -354,11 +344,11 @@ Creates a new shipping profile.
 
 ___
 
-### createDefault
+#### createDefault
 
 Creates a default shipping profile, if this does not already exist.
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -374,12 +364,12 @@ Creates a default shipping profile, if this does not already exist.
 
 ___
 
-### createGiftCardDefault
+#### createGiftCardDefault
 
 Creates a default shipping profile, for gift cards if unless it already
 exists.
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -395,11 +385,11 @@ exists.
 
 ___
 
-### delete
+#### delete
 
 Deletes a profile with a given profile id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -413,7 +403,7 @@ Deletes a profile with a given profile id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -429,12 +419,12 @@ Deletes a profile with a given profile id.
 
 ___
 
-### fetchCartOptions
+#### fetchCartOptions
 
 Finds all the shipping profiles that cover the products in a cart, and
 validates all options that are available for the cart.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -448,7 +438,7 @@ validates all options that are available for the cart.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -464,9 +454,9 @@ validates all options that are available for the cart.
 
 ___
 
-### getMapProfileIdsByProductIds
+#### getMapProfileIdsByProductIds
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -480,7 +470,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -496,11 +486,11 @@ ___
 
 ___
 
-### getProfilesInCart
+#### getProfilesInCart
 
 Returns a list of all the productIds in the cart.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -514,7 +504,7 @@ Returns a list of all the productIds in the cart.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -530,9 +520,9 @@ Returns a list of all the productIds in the cart.
 
 ___
 
-### list
+#### list
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -555,7 +545,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -571,11 +561,11 @@ ___
 
 ___
 
-### removeProducts
+#### removeProducts
 
 Removes a product or an array of products from the profile.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -598,7 +588,7 @@ Removes a product or an array of products from the profile.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -614,12 +604,12 @@ Removes a product or an array of products from the profile.
 
 ___
 
-### retrieve
+#### retrieve
 
 Gets a profile by id.
 Throws in case of DB Error and if profile was not found.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -642,7 +632,7 @@ Throws in case of DB Error and if profile was not found.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -658,9 +648,9 @@ Throws in case of DB Error and if profile was not found.
 
 ___
 
-### retrieveDefault
+#### retrieveDefault
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -676,9 +666,9 @@ ___
 
 ___
 
-### retrieveForProducts
+#### retrieveForProducts
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -692,7 +682,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -708,11 +698,11 @@ ___
 
 ___
 
-### retrieveGiftCardDefault
+#### retrieveGiftCardDefault
 
 Retrieves the default gift card profile
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -728,9 +718,9 @@ Retrieves the default gift card profile
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -744,7 +734,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -760,13 +750,13 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates a profile. Metadata updates and product updates should use
 dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
 will throw errors if metadata or product updates are attempted.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -789,7 +779,7 @@ will throw errors if metadata or product updates are attempted.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -805,9 +795,9 @@ will throw errors if metadata or product updates are attempted.
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -821,7 +811,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

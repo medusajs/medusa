@@ -12,11 +12,11 @@ Provides layer to manipulate discount conditions.
 
 ## Constructors
 
-### constructor
+#### constructor
 
 `**new DiscountConditionService**(«destructured»)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -100,35 +100,21 @@ Provides layer to manipulate discount conditions.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-`Protected get**activeManager_**(): EntityManager`
-
-#### Returns
-
-EntityManager
-
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+ `Protected` **activeManager\_**: [object Object]
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+##### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -151,7 +137,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -183,7 +169,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;TResult&#62;
 
@@ -201,11 +187,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-### delete
+#### delete
 
 `**delete**(discountConditionId): Promise&#60;void \| [DiscountCondition](DiscountCondition.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -219,7 +205,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void \| [DiscountCondition](DiscountCondition.mdx)&#62;
 
@@ -237,11 +223,11 @@ Promise&#60;void \| [DiscountCondition](DiscountCondition.mdx)&#62;
 
 ___
 
-### removeResources
+#### removeResources
 
 `**removeResources**(data): Promise&#60;void&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -255,7 +241,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;void&#62;
 
@@ -273,11 +259,11 @@ Promise&#60;void&#62;
 
 ___
 
-### retrieve
+#### retrieve
 
 `**retrieve**(conditionId, config?): Promise&#60;[DiscountCondition](DiscountCondition.mdx)&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -300,7 +286,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;[DiscountCondition](DiscountCondition.mdx)&#62;
 
@@ -318,11 +304,11 @@ Promise&#60;[DiscountCondition](DiscountCondition.mdx)&#62;
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -336,7 +322,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `boolean`
 
@@ -354,11 +340,11 @@ ___
 
 ___
 
-### upsertCondition
+#### upsertCondition
 
 `**upsertCondition**(data, overrideExisting?): Promise&#60;([DiscountConditionProduct](DiscountConditionProduct.mdx) \| [DiscountConditionProductType](DiscountConditionProductType.mdx) \| [DiscountConditionProductCollection](DiscountConditionProductCollection.mdx) \| [DiscountConditionProductTag](DiscountConditionProductTag.mdx) \| [DiscountConditionCustomerGroup](DiscountConditionCustomerGroup.mdx))[]&#62;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -381,7 +367,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 Promise&#60;([DiscountConditionProduct](DiscountConditionProduct.mdx) \| [DiscountConditionProductType](DiscountConditionProductType.mdx) \| [DiscountConditionProductCollection](DiscountConditionProductCollection.mdx) \| [DiscountConditionProductTag](DiscountConditionProductTag.mdx) \| [DiscountConditionCustomerGroup](DiscountConditionCustomerGroup.mdx))[]&#62;
 
@@ -399,11 +385,11 @@ Promise&#60;([DiscountConditionProduct](DiscountConditionProduct.mdx) \| [Discou
 
 ___
 
-### withTransaction
+#### withTransaction
 
 `**withTransaction**(transactionManager?): [DiscountConditionService](DiscountConditionService.mdx)`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -417,7 +403,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 [DiscountConditionService](DiscountConditionService.mdx)
 
@@ -435,11 +421,11 @@ ___
 
 ___
 
-### resolveConditionType\_
+#### resolveConditionType\_
 
 `Static Protected **resolveConditionType_**(data): undefined \| &#123; resource_ids: (string \| &#123; id: string  &#125;)[] ; type: [DiscountConditionType](../enums/DiscountConditionType.mdx)  &#125;`
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -453,7 +439,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 `undefined` \| ``{ resource_ids: (string \| &#123; id: string  &#125;)[] ; type: [DiscountConditionType](../enums/DiscountConditionType.mdx)  }``
 

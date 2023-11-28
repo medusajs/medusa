@@ -157,31 +157,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -213,7 +203,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -229,11 +219,11 @@ transaction manager is created.
 
 ___
 
-### cancel
+#### cancel
 
 Cancels a return if possible. Returns can be canceled if it has not been received.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -247,7 +237,7 @@ Cancels a return if possible. Returns can be canceled if it has not been receive
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -263,13 +253,13 @@ Cancels a return if possible. Returns can be canceled if it has not been receive
 
 ___
 
-### create
+#### create
 
 Creates a return request for an order, with given items, and a shipping
 method. If no refund amount is provided the refund amount is calculated from
 the return lines and the shipping cost.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -283,7 +273,7 @@ the return lines and the shipping cost.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -299,9 +289,9 @@ the return lines and the shipping cost.
 
 ___
 
-### fulfill
+#### fulfill
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -315,7 +305,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -331,11 +321,11 @@ ___
 
 ___
 
-### getFulfillmentItems
+#### getFulfillmentItems
 
 Retrieves the order line items, given an array of items
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -367,7 +357,7 @@ Retrieves the order line items, given an array of items
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -383,9 +373,9 @@ Retrieves the order line items, given an array of items
 
 ___
 
-### list
+#### list
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -408,7 +398,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -424,9 +414,9 @@ ___
 
 ___
 
-### listAndCount
+#### listAndCount
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -449,7 +439,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -465,7 +455,7 @@ ___
 
 ___
 
-### receive
+#### receive
 
 Registers a previously requested return as received. This will create a
 refund to the customer. If the returned items don't match the requested
@@ -475,7 +465,7 @@ returned items are not matching the requested items. Setting the
 allowMismatch argument to true, will process the return, ignoring any
 mismatches.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -534,7 +524,7 @@ mismatches.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -550,11 +540,11 @@ mismatches.
 
 ___
 
-### retrieve
+#### retrieve
 
 Retrieves a return by its id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -577,7 +567,7 @@ Retrieves a return by its id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -593,9 +583,9 @@ Retrieves a return by its id.
 
 ___
 
-### retrieveBySwap
+#### retrieveBySwap
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -618,7 +608,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -634,9 +624,9 @@ ___
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -650,7 +640,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -666,9 +656,9 @@ ___
 
 ___
 
-### update
+#### update
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -691,7 +681,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -707,13 +697,13 @@ ___
 
 ___
 
-### validateReturnLineItem
+#### validateReturnLineItem
 
 Checks that a given quantity of a line item can be returned. Fails if the
 item is undefined or if the returnable quantity of the item is lower, than
 the quantity that is requested to be returned.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -763,7 +753,7 @@ the quantity that is requested to be returned.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -779,13 +769,13 @@ the quantity that is requested to be returned.
 
 ___
 
-### validateReturnStatuses
+#### validateReturnStatuses
 
 Checks that an order has the statuses necessary to complete a return.
 fulfillment\_status cannot be not\_fulfilled or returned.
 payment\_status must be captured.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -799,7 +789,7 @@ payment\_status must be captured.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -819,9 +809,9 @@ when statuses are not sufficient for returns.
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -835,7 +825,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

@@ -87,29 +87,19 @@ Provides layer to manipulate store settings.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addCurrency
+#### addCurrency
 
 Add a currency to the store
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -123,7 +113,7 @@ Add a currency to the store
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -139,13 +129,13 @@ Add a currency to the store
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -177,7 +167,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -193,11 +183,11 @@ transaction manager is created.
 
 ___
 
-### create
+#### create
 
 Creates a store if it doesn't already exist.
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -213,9 +203,9 @@ Creates a store if it doesn't already exist.
 
 ___
 
-### getDefaultCurrency\_
+#### getDefaultCurrency\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -229,7 +219,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -245,11 +235,11 @@ ___
 
 ___
 
-### removeCurrency
+#### removeCurrency
 
 Removes a currency from the store
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -263,7 +253,7 @@ Removes a currency from the store
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -279,11 +269,11 @@ Removes a currency from the store
 
 ___
 
-### retrieve
+#### retrieve
 
 Retrieve the store settings. There is always a maximum of one store.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -297,7 +287,7 @@ Retrieve the store settings. There is always a maximum of one store.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -313,9 +303,9 @@ Retrieve the store settings. There is always a maximum of one store.
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -329,7 +319,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -345,11 +335,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates a store
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -363,7 +353,7 @@ Updates a store
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -379,9 +369,9 @@ Updates a store
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -395,7 +385,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
