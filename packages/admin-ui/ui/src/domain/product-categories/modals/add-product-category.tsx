@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react"
-
 import { ProductCategory } from "@medusajs/medusa"
 import {
   adminProductCategoryKeys,
@@ -103,7 +101,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
   const { mutateAsync: createProductCategory } =
     useAdminCreateProductCategory()
 
-  const submit = async (data: CategoryFormData) => {
+  const submit = handleSubmit(async (data) => {
     try {
       await createProductCategory({
         name: data.name,
@@ -134,7 +132,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
         )
       notification(t("modals-error", "Error"), errorMessage, "error")
     }
-  }
+  })
 
   return (
     <FocusModal>
@@ -148,7 +146,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
               size="small"
               variant="primary"
               disabled={!isDirty || !isValid || isSubmitting}
-              onClick={handleSubmit(submit)}
+              onClick={submit}
               className="rounded-rounded"
             >
               {t("modals-save-category", "Save category")}
@@ -231,7 +229,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
                     <NextSelect
                       {...field}
                       label={t("modals-status", "Status") as string}
-                      placeholder="Choose a country"
+                      placeholder="Choose status"
                       options={statusOptions(t)}
                       value={
                         statusOptions(t)[
@@ -256,7 +254,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
                       label={
                         t("modals-visibility", "Visibility") as string
                       }
-                      placeholder="Choose a country"
+                      placeholder="Choose visibility"
                       options={visibilityOptions(t)}
                       value={
                         visibilityOptions(t)[
