@@ -1795,7 +1795,7 @@ export default class PricingModuleService<
       ruleTypes.map((rt) => [rt.rule_attribute, rt])
     )
 
-    for (const ruleAttribute of arrayUnique(ruleTypeAttributes)) {
+    for (const ruleAttribute of arrayUnique<string>(ruleTypeAttributes)) {
       let ruleType = ruleTypeMap.get(ruleAttribute)
 
       if (ruleType) {
@@ -1860,7 +1860,9 @@ export default class PricingModuleService<
             ;(await this.createPriceRules([
               {
                 price_set_id: price.price_set_id,
-                rule_type: ruleTypeMap.get(ruleAttribute)!?.id,
+                rule_type:
+                  ruleTypeMap.get(ruleAttribute)!?.id ||
+                  ruleTypeMap.get(ruleAttribute)!,
                 value: ruleValue,
                 price_set_money_amount: psma as any,
               },

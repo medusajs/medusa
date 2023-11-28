@@ -523,4 +523,137 @@ describe("PriceList Service", () => {
       )
     })
   })
+
+  describe("addPriceListPrices", () => {
+    it("should add a price to a priceList successfully", async () => {
+      await service.addPriceListPrices([
+        {
+          priceListId: "price-list-1",
+          prices: [
+            {
+              amount: 123,
+              currency_code: "EUR",
+              price_set_id: "price-set-1",
+            },
+          ],
+        },
+      ])
+
+      const [priceList] = await service.listPriceLists(
+        {
+          id: ["price-list-1"],
+        },
+        {
+          relations: [
+            "price_set_money_amounts.money_amount",
+            "price_set_money_amounts.price_set",
+            "price_set_money_amounts.price_rules",
+            "price_list_rules.price_list_rule_values",
+            "price_list_rules.rule_type",
+          ],
+          select: [
+            "id",
+            "price_set_money_amounts.price_rules.value",
+            "price_set_money_amounts.number_rules",
+            "price_set_money_amounts.money_amount.amount",
+            "price_set_money_amounts.money_amount.currency_code",
+            "price_set_money_amounts.money_amount.price_list_id",
+            "price_list_rules.price_list_rule_values.value",
+            "price_list_rules.rule_type.rule_attribute",
+          ],
+        }
+      )
+
+      expect(priceList).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          price_set_money_amounts: expect.arrayContaining([
+            expect.objectContaining({
+              number_rules: 0,
+              price_list: expect.objectContaining({
+                id: expect.any(String),
+              }),
+              money_amount: expect.objectContaining({
+                amount: 123,
+                currency_code: "EUR",
+              }),
+            }),
+          ]),
+          price_list_rules: [],
+        })
+      )
+    })
+
+    it("should add a price with rules to a priceList successfully", async () => {
+      await service.addPriceListPrices([
+        {
+          priceListId: "price-list-1",
+          prices: [
+            {
+              amount: 123,
+              currency_code: "EUR",
+              price_set_id: "price-set-1",
+              rules: {
+                region_id: "EU",
+              },
+            },
+          ],
+        },
+      ])
+
+      const [priceList] = await service.listPriceLists(
+        {
+          id: ["price-list-1"],
+        },
+        {
+          relations: [
+            "price_set_money_amounts.money_amount",
+            "price_set_money_amounts.price_set",
+            "price_set_money_amounts.price_rules",
+            "price_set_money_amounts.price_rules.rule_type",
+            "price_list_rules.price_list_rule_values",
+            "price_list_rules.rule_type",
+          ],
+          select: [
+            "id",
+            "price_set_money_amounts.price_rules.value",
+            "price_set_money_amounts.price_rules.rule_type.rule_attribute",
+            "price_set_money_amounts.number_rules",
+            "price_set_money_amounts.money_amount.amount",
+            "price_set_money_amounts.money_amount.currency_code",
+            "price_set_money_amounts.money_amount.price_list_id",
+            "price_list_rules.price_list_rule_values.value",
+            "price_list_rules.rule_type.rule_attribute",
+          ],
+        }
+      )
+
+      expect(priceList).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          price_set_money_amounts: expect.arrayContaining([
+            expect.objectContaining({
+              number_rules: 1,
+              price_list: expect.objectContaining({
+                id: expect.any(String),
+              }),
+              price_rules: [
+                expect.objectContaining({
+                  value: "EU",
+                  rule_type: expect.objectContaining({
+                    rule_attribute: "region_id",
+                  }),
+                }),
+              ],
+              money_amount: expect.objectContaining({
+                amount: 123,
+                currency_code: "EUR",
+              }),
+            }),
+          ]),
+          price_list_rules: [],
+        })
+      )
+    })
+  })
 })
