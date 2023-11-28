@@ -21,12 +21,11 @@ import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
 
-const VIEWS = ["orders", "drafts"]
-
 const OrderIndex = () => {
   const view = "orders"
-
+  
   const { t } = useTranslation()
+  const VIEWS = [t("orders"), t("drafts")]
   const { resetInterval } = usePolling()
   const navigate = useNavigate()
   const createBatchJob = useAdminCreateBatchJob()
@@ -52,7 +51,7 @@ const OrderIndex = () => {
         onClick={() => openExportModal()}
       >
         <ExportIcon size={20} />
-        Export Orders
+        {t("Export Orders")}
       </Button>,
     ]
   }, [view])

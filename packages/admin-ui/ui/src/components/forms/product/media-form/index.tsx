@@ -1,6 +1,5 @@
 import clsx from "clsx"
 import { useTranslation } from "react-i18next"
-
 import { useMemo } from "react"
 import {
   Controller,
@@ -16,7 +15,7 @@ import CheckCircleFillIcon from "../../../fundamentals/icons/check-circle-fill-i
 import TrashIcon from "../../../fundamentals/icons/trash-icon"
 import Actionables, { ActionType } from "../../../molecules/actionables"
 
-type ImageType = { selected: boolean } & FormImage
+type ImageType = { selected: boolean; altText: string } & FormImage
 
 export type MediaFormType = {
   images: ImageType[]
@@ -26,8 +25,6 @@ type Props = {
   form: NestedForm<MediaFormType>
 }
 
-
-
 const MediaForm = ({ form }: Props) => {
   const { t } = useTranslation()
   const { control, path, setValue } = form
@@ -36,20 +33,6 @@ const MediaForm = ({ form }: Props) => {
     control: control,
     name: path("images"),
   })
-
-  const handleFilesChosen = (files: File[]) => {
-    if (files.length) {
-      const toAppend = files.map((file) => ({
-        url: URL.createObjectURL(file),
-        name: file.name,
-        size: file.size,
-        nativeFile: file,
-        selected: false,
-      }))
-
-      append(toAppend)
-    }
-  }
 
   const images = useWatch({
     control,
@@ -68,6 +51,22 @@ const MediaForm = ({ form }: Props) => {
 
     return selected
   }, [images])
+
+  const handleFilesChosen = (files: File[]) => {
+    if (files.length) {
+      const toAppend = files.map((file) => ({
+        url: URL.createObjectURL(file),
+        name: file.name,
+        size: file.size,
+        nativeFile: file,
+        selected: false,
+        altText: "",
+      }))
+      console.log(files)
+
+      append( )
+    }
+  }
 
   const handleRemove = () => {
     remove(selected)
@@ -129,7 +128,7 @@ type ImageProps = {
 }
 
 const Image = ({ image, index, form, remove }: ImageProps) => {
-  const { control, path } = form
+  const { control, path, setValue } = form
 
   const actions: ActionType[] = [
     {
@@ -140,54 +139,77 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
     },
   ]
 
+  const handleSaveAltText = () => {
+    // Get the current alt text from the form
+    const altText = form.getValues(`images.${index}.altText`)
+
+    // Update the form with the modified 'altText' for the selected image
+    setValue(path(`images.${index}.altText`), altText)
+
+    console.log(`Alt Text for Image ${index}: ${altText}`)
+  }
+
   return (
     <Controller
       name={path(`images.${index}.selected`)}
       control={control}
-      render={({ field: { value, onChange } }) => {
-        return (
-          <div className="relative">
-            <button
-              className={clsx(
-                "px-base py-xsmall hover:bg-grey-5 rounded-rounded group flex items-center justify-between",
-                {
-                  "bg-grey-5": value,
-                }
-              )}
-              type="button"
-              onClick={() => onChange(!value)}
-            >
-              <div className="gap-x-large flex items-center">
-                <div className="flex h-16 w-16 items-center justify-center">
-                  <img
-                    src={image.url}
-                    alt={image.name || "Uploaded image"}
-                    className="rounded-rounded max-h-[64px] max-w-[64px]"
-                  />
-                </div>
-                <div className="inter-small-regular flex flex-col text-left">
-                  <p>{image.name}</p>
-                  <p className="text-grey-50">
-                    {image.size ? `${(image.size / 1024).toFixed(2)} KB` : ""}
-                  </p>
-                </div>
+      render={({ field: { value, onChange } }) => (
+        <div className="relative">
+          <button
+            className={clsx(
+              "px-base py-xsmall hover:bg-grey-5 rounded-rounded group flex items-center justify-between",
+              {
+                "bg-grey-5": value,
+              }
+            )}
+            type="button"
+            onClick={() => onChange(!value)}
+          >
+            <div className="gap-x-large flex items-center">
+              <div className="flex h-16 w-16 items-center justify-center">
+                <img
+                  src={image.url}
+                  alt={image.name || "Uploaded image"}
+                  className="rounded-rounded max-h-[64px] max-w-[64px]"
+                />
               </div>
-              <div className="gap-x-base flex items-center">
-                <span
-                  className={clsx("hidden", {
-                    "!text-violet-60 !block": value,
-                  })}
-                >
-                  <CheckCircleFillIcon size={24} />
-                </span>
+              <div className="inter-small-regular flex flex-col text-left">
+                <p>{image.name}</p>
+                <p className="text-grey-50">
+                  {image.size ? `${(image.size / 1024).toFixed(2)} KB` : ""}
+                </p>
               </div>
-            </button>
-            <div className="right-base absolute top-0 bottom-0 flex items-center">
-              <Actionables actions={actions} forceDropdown />
             </div>
+            <div className="gap-x-base flex items-center">
+              <span
+                className={clsx("hidden", {
+                  "!text-violet-60 !block": value,
+                })}
+              >
+                <CheckCircleFillIcon size={24} />
+              </span>
+            </div>
+          </button>
+          <div className="right-base absolute top-0 bottom-0 flex items-center">
+            <Actionables actions={actions} forceDropdown />
           </div>
-        )
-      }}
+          <div className="mt-small flex items-center gap-3">
+            <input
+              className="bg-grey-5 border-gray-20 px-small py-xsmall rounded-rounded focus-within:shadow-input focus-within:border-violet-60 flex h-10 w-full flex-1 items-center border"
+              type="text"
+              {...form.control?.register(`images.${index}.altText`)}
+              placeholder="Enter alt text"
+            />
+            <button
+              type="button"
+              className="btn btn-primary btn-small"
+              onClick={handleSaveAltText}
+            >
+              Save Alt Text
+            </button>
+          </div>
+        </div>
+      )}
     />
   )
 }

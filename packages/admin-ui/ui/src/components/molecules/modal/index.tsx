@@ -112,7 +112,7 @@ Modal.Content = ({ children, className }) => {
       className={clsx(
         "overflow-y-auto px-8 pt-6",
         {
-          ["w-largeModal pb-7"]: isLargeModal && width > 800,
+          ["pb-7"]: isLargeModal && width > 800,
           ["pb-5"]: !isLargeModal,
         },
         className

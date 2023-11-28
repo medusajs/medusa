@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import TableViewHeader from "../../components/organisms/custom-table-header"
+import { useTranslation } from "react-i18next"
 
 type P = {
   activeView: "customers" | "groups"
@@ -10,6 +11,7 @@ type P = {
  */
 function CustomersPageTableHeader(props: P) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   return (
     <TableViewHeader
       setActiveView={(v) => {
@@ -19,7 +21,7 @@ function CustomersPageTableHeader(props: P) {
           navigate(`/a/customers/groups`)
         }
       }}
-      views={["customers", "groups"]}
+      views={[t("customers"), t("groups")]}
       activeView={props.activeView}
     />
   )
