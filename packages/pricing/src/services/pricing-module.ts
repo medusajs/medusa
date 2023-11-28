@@ -14,13 +14,13 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
+  arrayUnique,
+  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
-  arrayUnique,
-  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -1835,13 +1835,13 @@ export default class PricingModuleService<
 
       await Promise.all(
         prices.map(async (price) => {
+          const priceRules = price.rules || {}
+          const noOfRules = Object.keys(priceRules).length
+
           const [moneyAmount] = await this.moneyAmountService_.create(
             [price] as unknown as CreateMoneyAmountDTO[],
             sharedContext
           )
-
-          const priceRules = price.rules || {}
-          const noOfRules = Object.keys(priceRules).length
 
           const [psma] = await this.priceSetMoneyAmountService_.create(
             [
@@ -1857,7 +1857,7 @@ export default class PricingModuleService<
           )
 
           for (const [ruleAttribute, ruleValue] of Object.entries(priceRules)) {
-            ;(await this.createPriceRules([
+            await this.createPriceRules([
               {
                 price_set_id: price.price_set_id,
                 rule_type:
@@ -1866,7 +1866,7 @@ export default class PricingModuleService<
                 value: ruleValue,
                 price_set_money_amount: psma as any,
               },
-            ])) as unknown as PricingTypes.CreatePriceRuleDTO[]
+            ])
           }
 
           return psma
