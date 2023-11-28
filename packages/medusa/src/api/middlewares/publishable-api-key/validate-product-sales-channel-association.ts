@@ -33,8 +33,8 @@ async function validateProductSalesChannelAssociation(
         req.params.id,
         salesChannelIds
       )
-    } catch (err) {
-      next(err)
+    } catch (error) {
+      next(error)
     }
 
     if (salesChannelIds.length && !isProductInSalesChannel) {
