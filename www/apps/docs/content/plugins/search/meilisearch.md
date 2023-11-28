@@ -13,7 +13,7 @@ In this document, you’ll learn how to install the [MeiliSearch plugin](https:/
 
 MeiliSearch also provides a pleasant developer experience, as it is extremely intuitive and newcomer-friendly. So, even if you're new to the search engine ecosystem, [their documentation](https://docs.meilisearch.com/) is resourceful enough for everyone to go through and understand.
 
-Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa backend and storefront using MeiliSearch with just a few steps.
+Through Medusa's flexible plugin system, it's possible to add a search engine to your Medusa backend and storefront using MeiliSearch with just a few steps.
 
 ---
 
@@ -27,7 +27,7 @@ It is required to have a Medusa backend installed before starting with this docu
 
 You must install MeiliSearch to use it with Medusa. You can follow [this documentation to install MeiliSearch](https://docs.meilisearch.com/learn/getting_started/quick_start.html#setup-and-installation) either locally or on a cloud.
 
-Furthermore, you should create a master key for your MeiliSearch instance. If you don’t have one created, follow [this guide](https://docs.meilisearch.com/learn/security/master_api_keys.html#protecting-a-meilisearch-instance) to create a master key.
+Furthermore, you should create a master key for your MeiliSearch instance. If you don’t have one created, follow [this guide](https://www.meilisearch.com/docs/learn/security/master_api_keys#protecting-a-meilisearch-instance) to create a master key.
 
 ---
 
@@ -46,9 +46,10 @@ MEILISEARCH_HOST=<YOUR_MEILISEARCH_HOST>
 MEILISEARCH_API_KEY=<YOUR_MASTER_KEY>
 ```
 
-Where `<YOUR_MEILISEARCH_HOST>` is the host of your MeiliSearch instance. By default, if MeiliSearch is installed locally, the host is `http://127.0.0.1:7700`.
+Where:
 
-`<YOUR_MASTER_KEY>` is the master key of your MeiliSearch instance.
+- `<YOUR_MEILISEARCH_HOST>` is the host of your MeiliSearch instance. By default, if MeiliSearch is installed locally, the host is `http://127.0.0.1:7700`.
+- `<YOUR_MASTER_KEY>` is the master key of your MeiliSearch instance.
 
 Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
@@ -90,7 +91,10 @@ const plugins = [
           displayedAttributes,
         },
         primaryKey,
-        transformer,
+        transformer: (product) => ({
+          id: product.id, 
+          // other attributes...
+        }),
       },
     },
     },
@@ -141,10 +145,6 @@ const plugins = [
             ],
           },
           primaryKey: "id",
-          transformer: (product) => ({
-            id: product.id, 
-            // other attributes...
-          }),
         },
       },
     },
