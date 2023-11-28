@@ -75,7 +75,7 @@ export async function listAndCountPriceListPricingModule({
         price_list_id: priceList.id,
         variant_id: productVariant?.id ?? null,
         variant: productVariant ?? null,
-        region_id: rules["region_id"],
+        region_id: rules["region_id"] ?? null,
         rules,
       }
     })
