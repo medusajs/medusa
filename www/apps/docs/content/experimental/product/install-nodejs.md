@@ -193,6 +193,6 @@ module.exports = nextConfig
 
 ## Start Development
 
-You can refer to the [Example Usages documentation page](./examples.md) for examples of using the Product module.
+You can refer to the [Example Usages documentation page](./examples.mdx) for examples of using the Product module.
 
 You can also refer to the [Module Interface Reference](../../references/product/interfaces/IProductModuleService.mdx) for a detailed reference on all available methods.
