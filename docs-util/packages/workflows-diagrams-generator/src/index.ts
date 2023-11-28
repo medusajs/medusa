@@ -22,11 +22,8 @@ program
     "The directory to output the files in."
   )
   .addOption(
-    new Option(
-      "-t, --type <type>",
-      "Type of diagrams to be generated. `docs` generate spec directories having diagrams with associated code. `markdown` prints all diagrams in a single markdown file. `mermaid` prints each diagram in a file having `.mermaid` extension."
-    )
-      .choices(["docs", "markdown", "mermaid"])
+    new Option("-t, --type <type>", "Type of diagrams to be generated.")
+      .choices(["docs", "markdown", "mermaid", "console", "svg", "png", "pdf"])
       .default("docs")
   )
   .option("--no-theme", "Remove theming from outputted diagrams.", true)
