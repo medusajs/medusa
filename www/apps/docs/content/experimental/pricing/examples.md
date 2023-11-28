@@ -21,12 +21,18 @@ export async function POST(request: Request) {
   const pricingService = await initializePricingModule()
   const body = await request.json()
 
+  // A rule type with `rule_attribute=region_id` should 
+  // already be present in the database
   const priceSet = await pricingService.create([
     {
+      rules: [{ rule_attribute: "region_id" }],
       prices: [
         {
           currency_code: body.currency_code,
           amount: body.amount,
+          rules: {
+            region_id: body.region_id,
+          },
         },
       ],
     },
