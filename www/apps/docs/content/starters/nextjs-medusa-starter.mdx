@@ -382,10 +382,11 @@ This is a one way process. Once you opt in to these features and update your dat
 MEDUSA_FF_MEDUSA_V2=true
 ```
 
-Finally, run migrations in your Medusa backend:
+Finally, run migrations in your Medusa backend using the following commands:
 
 ```bash
 npx medusa migrations run
+node node_modules/@medusajs/medusa/dist/scripts/migrate-to-pricing-module.js
 ```
 
 You can now test it out now. Make sure the Medusa backend is running, then start (or restart) your Next.js storefront:
