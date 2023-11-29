@@ -140,7 +140,7 @@ export function getWebpackConfig({
             },
             {
               issuer: /\.[jt]sx?$/,
-              use: ["@svgr/webpack"],
+              use: [require.resolve("@svgr/webpack")],
             },
           ],
           generator: {
@@ -164,7 +164,10 @@ export function getWebpackConfig({
       symlinks: false,
       extensions: [".js", ".jsx", ".ts", ".tsx"],
       mainFields: ["browser", "module", "main"],
-      modules: ["node_modules"],
+      modules: [
+        "node_modules",
+        path.resolve(__dirname, "..", "..", "node_modules"),
+      ],
       fallback: {
         readline: false,
         path: false,
