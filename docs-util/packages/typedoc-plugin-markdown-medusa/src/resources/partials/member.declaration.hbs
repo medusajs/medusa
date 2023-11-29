@@ -12,7 +12,7 @@
 
 {{#if (sectionEnabled "member_declaration_example")}}
 
-{{{example this 4}}}
+{{{example this}}}
 
 {{/if}}
 
@@ -20,7 +20,7 @@
 
 {{#if typeParameters}}
 
-{{{titleLevel 4}}} Type Parameters
+{{{titleLevel}}} Type Parameters
 
 {{#with typeParameters}}
 
@@ -40,7 +40,7 @@
 
 {{#with type.declaration.indexSignature}}
 
-{{titleLevel 4}} Index signature
+{{titleLevel}} Index signature
 
 {{{indexSignatureTitle}}}
 
@@ -58,17 +58,21 @@
 
 {{#if type.declaration.children}}
 
-{{{titleLevel 4}}} Call signature
+{{{titleLevel}}} Call signature
 
 {{else}}
 
-{{{titleLevel 4}}} Type declaration
+{{{titleLevel}}} Type declaration
 
 {{/if}}
 
 {{#each type.declaration.signatures}}
 
-{{> member.signature showSources=false commentLevel=5 }}
+{{incrementCurrentTitleLevel}}
+
+{{> member.signature showSources=false }}
+
+{{decrementCurrentTitleLevel}}
 
 {{/each}}
 
@@ -82,7 +86,7 @@
 
 {{#with type.declaration}}
 
-{{{titleLevel 4}}} Type declaration
+{{{titleLevel}}} Type declaration
 
 {{/with}}
 

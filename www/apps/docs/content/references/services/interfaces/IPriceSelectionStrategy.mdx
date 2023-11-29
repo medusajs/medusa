@@ -8,14 +8,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-#### calculateVariantPrice
+### calculateVariantPrice
 
 `**calculateVariantPrice**(data, context): Promise&#60;Map&#60;string, [PriceSelectionResult](../types/PriceSelectionResult.mdx)&#62;&#62;`
 
 Calculate the original and discount price for a given variant in a set of
 circumstances described in the context.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -38,7 +38,7 @@ circumstances described in the context.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Map&#60;string, [PriceSelectionResult](../types/PriceSelectionResult.mdx)&#62;&#62;
 
@@ -56,13 +56,13 @@ Promise&#60;Map&#60;string, [PriceSelectionResult](../types/PriceSelectionResult
 
 ___
 
-#### onVariantsPricesUpdate
+### onVariantsPricesUpdate
 
 `**onVariantsPricesUpdate**(variantIds): Promise&#60;void&#62;`
 
 Notify price selection strategy that variants prices have been updated.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -76,7 +76,7 @@ Notify price selection strategy that variants prices have been updated.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -94,11 +94,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [IPriceSelectionStrategy](IPriceSelectionStrategy.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -112,7 +112,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [IPriceSelectionStrategy](IPriceSelectionStrategy.mdx)
 

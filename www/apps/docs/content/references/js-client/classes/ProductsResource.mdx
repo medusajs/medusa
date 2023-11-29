@@ -29,9 +29,11 @@ Related Guide: [How to show products in a storefront](https://docs.medusajs.com/
   }
 ]} />
 
+___
+
 ## Methods
 
-#### list
+### list
 
 Retrieves a list of products. The products can be filtered by fields such as `id` or `q` passed in the `query` parameter. The products can also be sorted or paginated.
 This method can also be used to retrieve a product by its handle.
@@ -42,7 +44,7 @@ For accurate and correct pricing of the products based on the customer's context
 Passing `sales_channel_id` ensures retrieving only products available in the specified sales channel.
 You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
 
-##### Example
+#### Example
 
 To list products:
 
@@ -84,7 +86,7 @@ medusa.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -381,7 +383,7 @@ medusa.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -761,7 +763,7 @@ medusa.products
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a Product's details. For accurate and correct pricing of the product based on the customer's context, it's highly recommended to pass fields such as
 `region_id`, `currency_code`, and `cart_id` when available.
@@ -769,7 +771,7 @@ Retrieve a Product's details. For accurate and correct pricing of the product ba
 Passing `sales_channel_id` ensures retrieving only products available in the current sales channel.
 You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -779,7 +781,7 @@ medusa.products.retrieve(productId).then(({ product }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -802,7 +804,7 @@ medusa.products.retrieve(productId).then(({ product }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1155,12 +1157,12 @@ medusa.products.retrieve(productId).then(({ product }) => {
 
 ___
 
-#### search
+### search
 
 Run a search query on products using the search service installed on the Medusa backend. The searching is handled through the search service, so the returned data's
 format depends on the search service you're using.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1174,7 +1176,7 @@ medusa.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1234,7 +1236,7 @@ medusa.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

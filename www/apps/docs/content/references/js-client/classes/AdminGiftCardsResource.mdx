@@ -19,11 +19,11 @@ Related Guide: [How to manage gift cards](https://docs.medusajs.com/modules/gift
 
 ## Methods
 
-#### create
+### create
 
 Create a gift card that can redeemed by its unique code. The Gift Card is only valid within `1` region.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -38,7 +38,7 @@ medusa.admin.giftCards
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -107,7 +107,7 @@ medusa.admin.giftCards
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -279,11 +279,11 @@ medusa.admin.giftCards
 
 ___
 
-#### delete
+### delete
 
 Delete a gift card. Once deleted, it can't be used by customers.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -294,7 +294,7 @@ medusa.admin.giftCards.delete(giftCardId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -317,7 +317,7 @@ medusa.admin.giftCards.delete(giftCardId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -361,11 +361,11 @@ medusa.admin.giftCards.delete(giftCardId).then(({ id, object, deleted }) => {
 
 ___
 
-#### list
+### list
 
 Retrieve a list of gift cards. The gift cards can be filtered by fields such as `q` passed in the `query` parameter. The gift cards can also paginated.
 
-##### Example
+#### Example
 
 To list gift cards:
 
@@ -394,7 +394,7 @@ medusa.admin.giftCards
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -445,7 +445,7 @@ medusa.admin.giftCards
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -644,11 +644,11 @@ medusa.admin.giftCards
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a gift card's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -659,7 +659,7 @@ medusa.admin.giftCards.retrieve(giftCardId).then(({ gift_card }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -682,7 +682,7 @@ medusa.admin.giftCards.retrieve(giftCardId).then(({ gift_card }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -854,11 +854,11 @@ medusa.admin.giftCards.retrieve(giftCardId).then(({ gift_card }) => {
 
 ___
 
-#### update
+### update
 
 Update a gift card's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -873,7 +873,7 @@ medusa.admin.giftCards
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -951,7 +951,7 @@ medusa.admin.giftCards
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

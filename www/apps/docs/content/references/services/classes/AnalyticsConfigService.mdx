@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # AnalyticsConfigService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new AnalyticsConfigService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -94,15 +94,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -110,7 +130,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -133,7 +153,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -165,7 +185,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -183,13 +203,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(userId, data): Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;`
 
 Creates an analytics config.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -212,7 +232,7 @@ Creates an analytics config.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;
 
@@ -230,13 +250,13 @@ Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(userId): Promise&#60;void&#62;`
 
 Deletes an analytics config.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -250,7 +270,7 @@ Deletes an analytics config.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -268,11 +288,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(userId): Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -286,7 +306,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;
 
@@ -304,11 +324,11 @@ Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -322,7 +342,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -340,13 +360,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(userId, update): Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;`
 
 Updates an analytics config. If the config does not exist, it will be created instead.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -369,7 +389,7 @@ Updates an analytics config. If the config does not exist, it will be created in
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;
 
@@ -387,11 +407,11 @@ Promise&#60;[AnalyticsConfig](AnalyticsConfig.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [AnalyticsConfigService](AnalyticsConfigService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -405,7 +425,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [AnalyticsConfigService](AnalyticsConfigService.mdx)
 

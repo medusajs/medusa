@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # NewTotalsService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new NewTotalsService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -103,15 +103,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -119,7 +139,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -142,7 +162,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -174,7 +194,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -192,13 +212,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### getGiftCardTotals
+### getGiftCardTotals
 
 `**getGiftCardTotals**(giftCardableAmount, «destructured»): Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;`
 
 Calculate and return the gift cards totals
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -248,7 +268,7 @@ Calculate and return the gift cards totals
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;
 
@@ -266,13 +286,13 @@ Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;
 
 ___
 
-#### getGiftCardTransactionsTotals
+### getGiftCardTransactionsTotals
 
 `**getGiftCardTransactionsTotals**(«destructured»): &#123; tax_total: number ; total: number  &#125;`
 
 Calculate and return the gift cards totals based on their transactions
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -322,7 +342,7 @@ Calculate and return the gift cards totals based on their transactions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `object`
 
@@ -361,11 +381,11 @@ Calculate and return the gift cards totals based on their transactions
 
 ___
 
-#### getGiftCardableAmount
+### getGiftCardableAmount
 
 `**getGiftCardableAmount**(«destructured»): number`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -424,7 +444,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `number`
 
@@ -442,13 +462,13 @@ ___
 
 ___
 
-#### getLineItemRefund
+### getLineItemRefund
 
 `**getLineItemRefund**(lineItem, «destructured»): number`
 
 Return the amount that can be refund on a line item
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -534,7 +554,7 @@ Return the amount that can be refund on a line item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `number`
 
@@ -552,11 +572,11 @@ Return the amount that can be refund on a line item
 
 ___
 
-#### getLineItemRefundLegacy
+### getLineItemRefundLegacy
 
 `Protected **getLineItemRefundLegacy**(lineItem, «destructured»): number`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -633,7 +653,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `number`
 
@@ -651,13 +671,13 @@ ___
 
 ___
 
-#### getLineItemTotals
+### getLineItemTotals
 
 `**getLineItemTotals**(items, «destructured»): Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotals.mdx);  &#125;&#62;`
 
 Calculate and return the items totals for either the legacy calculation or the new calculation
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -707,7 +727,7 @@ Calculate and return the items totals for either the legacy calculation or the n
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotals.mdx);  &#125;&#62;
 
@@ -725,13 +745,13 @@ Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotal
 
 ___
 
-#### getLineItemTotalsLegacy
+### getLineItemTotalsLegacy
 
 `Protected **getLineItemTotalsLegacy**(item, «destructured»): Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;`
 
 Calculate and return the legacy calculated totals using the tax rate
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -799,7 +819,7 @@ Calculate and return the legacy calculated totals using the tax rate
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;
 
@@ -817,13 +837,13 @@ Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;
 
 ___
 
-#### getLineItemTotals\_
+### getLineItemTotals\_
 
 `Protected **getLineItemTotals_**(item, «destructured»): Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;`
 
 Calculate and return the totals for an item
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -900,7 +920,7 @@ Calculate and return the totals for an item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;
 
@@ -918,13 +938,13 @@ Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;
 
 ___
 
-#### getShippingMethodTotals
+### getShippingMethodTotals
 
 `**getShippingMethodTotals**(shippingMethods, «destructured»): Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/ShippingMethodTotals.mdx);  &#125;&#62;`
 
 Calculate and return the shipping methods totals for either the legacy calculation or the new calculation
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -983,7 +1003,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/ShippingMethodTotals.mdx);  &#125;&#62;
 
@@ -1001,13 +1021,13 @@ Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/S
 
 ___
 
-#### getShippingMethodTotalsLegacy
+### getShippingMethodTotalsLegacy
 
 `Protected **getShippingMethodTotalsLegacy**(shippingMethod, «destructured»): Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;`
 
 Calculate and return the shipping method totals legacy using the tax rate
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1057,7 +1077,7 @@ Calculate and return the shipping method totals legacy using the tax rate
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;
 
@@ -1075,13 +1095,13 @@ Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;
 
 ___
 
-#### getShippingMethodTotals\_
+### getShippingMethodTotals\_
 
 `Protected **getShippingMethodTotals_**(shippingMethod, «destructured»): Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;`
 
 Calculate and return the shipping method totals
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1140,7 +1160,7 @@ Calculate and return the shipping method totals
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;
 
@@ -1158,11 +1178,11 @@ Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1176,7 +1196,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -1194,11 +1214,11 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [NewTotalsService](NewTotalsService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1212,7 +1232,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [NewTotalsService](NewTotalsService.mdx)
 

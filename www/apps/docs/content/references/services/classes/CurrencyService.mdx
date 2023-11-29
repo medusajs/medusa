@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # CurrencyService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new CurrencyService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -121,15 +121,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -137,7 +157,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -160,7 +180,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -192,7 +212,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -210,14 +230,14 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[Currency](Currency.mdx)[], number]&#62;`
 
 Lists currencies based on the provided parameters and includes the count of
 currencies that match the query.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -240,7 +260,7 @@ currencies that match the query.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[Currency](Currency.mdx)[], number]&#62;
 
@@ -258,13 +278,13 @@ Promise&#60;[[Currency](Currency.mdx)[], number]&#62;
 
 ___
 
-#### retrieveByCode
+### retrieveByCode
 
 `**retrieveByCode**(code): Promise&#60;[Currency](Currency.mdx)&#62;`
 
 Return the currency
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -278,7 +298,7 @@ Return the currency
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Currency](Currency.mdx)&#62;
 
@@ -296,11 +316,11 @@ Promise&#60;[Currency](Currency.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -314,7 +334,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -332,13 +352,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(code, data): Promise&#60;undefined \| [Currency](Currency.mdx)&#62;`
 
 Update a currency
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -361,7 +381,7 @@ Update a currency
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;undefined \| [Currency](Currency.mdx)&#62;
 
@@ -379,11 +399,11 @@ Promise&#60;undefined \| [Currency](Currency.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [CurrencyService](CurrencyService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -397,7 +417,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [CurrencyService](CurrencyService.mdx)
 

@@ -18,11 +18,11 @@ Related Guide: [How to manage price lists](https://docs.medusajs.com/modules/pri
 
 ## Methods
 
-#### addPrices
+### addPrices
 
 Add or update a list of prices in a price list.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -43,7 +43,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -158,7 +158,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -313,11 +313,11 @@ medusa.admin.priceLists
 
 ___
 
-#### create
+### create
 
 Create a price list.
 
-##### Example
+#### Example
 
 ```ts
 medusa.admin.priceLists
@@ -338,7 +338,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -547,7 +547,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -702,11 +702,11 @@ medusa.admin.priceLists
 
 ___
 
-#### delete
+### delete
 
 Delete a price list and its associated prices.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -717,7 +717,7 @@ medusa.admin.priceLists.delete(priceListId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -740,7 +740,7 @@ medusa.admin.priceLists.delete(priceListId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -784,11 +784,11 @@ medusa.admin.priceLists.delete(priceListId).then(({ id, object, deleted }) => {
 
 ___
 
-#### deletePrices
+### deletePrices
 
 Delete a list of prices in a price list
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -803,7 +803,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -845,7 +845,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -899,11 +899,11 @@ medusa.admin.priceLists
 
 ___
 
-#### deleteProductPrices
+### deleteProductPrices
 
 Delete all the prices related to a specific product in a price list.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -916,7 +916,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -948,7 +948,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1002,11 +1002,11 @@ medusa.admin.priceLists
 
 ___
 
-#### deleteProductsPrices
+### deleteProductsPrices
 
 Delete all the prices associated with multiple products in a price list.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1021,7 +1021,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1063,7 +1063,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1117,11 +1117,11 @@ medusa.admin.priceLists
 
 ___
 
-#### deleteVariantPrices
+### deleteVariantPrices
 
 Delete all the prices related to a specific product variant in a price list.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1134,7 +1134,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1166,7 +1166,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1220,11 +1220,11 @@ medusa.admin.priceLists
 
 ___
 
-#### list
+### list
 
 Retrieve a list of price lists. The price lists can be filtered by fields such as `q` or `status` passed in the `query` parameter. The price lists can also be sorted or paginated.
 
-##### Example
+#### Example
 
 To list price lists:
 
@@ -1269,7 +1269,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1568,7 +1568,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1750,11 +1750,11 @@ medusa.admin.priceLists
 
 ___
 
-#### listProducts
+### listProducts
 
 Retrieve a price list's products. The products can be filtered by fields such as `q` or `status` passed in the `query` parameter. The products can also be sorted or paginated.
 
-##### Example
+#### Example
 
 To list products in a price list:
 
@@ -1801,7 +1801,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2144,7 +2144,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2524,11 +2524,11 @@ medusa.admin.priceLists
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a price list's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2539,7 +2539,7 @@ medusa.admin.priceLists.retrieve(priceListId).then(({ price_list }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2562,7 +2562,7 @@ medusa.admin.priceLists.retrieve(priceListId).then(({ price_list }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2717,11 +2717,11 @@ medusa.admin.priceLists.retrieve(priceListId).then(({ price_list }) => {
 
 ___
 
-#### update
+### update
 
 Update a price list's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2736,7 +2736,7 @@ medusa.admin.priceLists
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2963,7 +2963,7 @@ medusa.admin.priceLists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

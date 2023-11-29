@@ -18,12 +18,12 @@ Related Guide: [How to edit an order](https://docs.medusajs.com/modules/orders/a
 
 ## Methods
 
-#### addLineItem
+### addLineItem
 
 Create a line item change in the order edit that indicates adding an item in the original order. The item will not be added to the original order until the order edit is
 confirmed.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -39,7 +39,7 @@ medusa.admin.orderEdits
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -99,7 +99,7 @@ medusa.admin.orderEdits
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -397,11 +397,11 @@ medusa.admin.orderEdits
 
 ___
 
-#### cancel
+### cancel
 
 Cancel an order edit.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -412,7 +412,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -435,7 +435,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -733,11 +733,11 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
 
 ___
 
-#### confirm
+### confirm
 
 Confirm an order edit. This will reflect the changes in the order edit on the associated order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -748,7 +748,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -771,7 +771,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1069,11 +1069,11 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
 
 ___
 
-#### create
+### create
 
 Create an order edit.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1084,7 +1084,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1135,7 +1135,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1433,11 +1433,11 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
 
 ___
 
-#### delete
+### delete
 
 Delete an order edit. Only order edits that have the status `created` can be deleted.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1448,7 +1448,7 @@ medusa.admin.orderEdits.delete(orderEditId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1471,7 +1471,7 @@ medusa.admin.orderEdits.delete(orderEditId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1515,11 +1515,11 @@ medusa.admin.orderEdits.delete(orderEditId).then(({ id, object, deleted }) => {
 
 ___
 
-#### deleteItemChange
+### deleteItemChange
 
 Delete a line item change that indicates the addition, deletion, or update of a line item in the original order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1532,7 +1532,7 @@ medusa.admin.orderEdits
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1564,7 +1564,7 @@ medusa.admin.orderEdits
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1618,11 +1618,11 @@ medusa.admin.orderEdits
 
 ___
 
-#### list
+### list
 
 Retrieve a list of order edits. The order edits can be filtered by fields such as `q` or `order_id` passed to the `query` parameter. The order edits can also be paginated.
 
-##### Example
+#### Example
 
 To list order edits:
 
@@ -1667,7 +1667,7 @@ medusa.admin.orderEdits
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1745,7 +1745,7 @@ medusa.admin.orderEdits
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2070,12 +2070,12 @@ medusa.admin.orderEdits
 
 ___
 
-#### removeLineItem
+### removeLineItem
 
 Create a line item change in the order edit that indicates deleting an item in the original order. The item in the original order will not be deleted until the order edit is
 confirmed.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2088,7 +2088,7 @@ medusa.admin.orderEdits
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2120,7 +2120,7 @@ medusa.admin.orderEdits
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2418,12 +2418,12 @@ medusa.admin.orderEdits
 
 ___
 
-#### requestConfirmation
+### requestConfirmation
 
 Request customer confirmation of an order edit. This would emit the event `order-edit.requested` which Notification Providers listen to and send
 a notification to the customer about the order edit.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2435,7 +2435,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2458,7 +2458,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2756,11 +2756,11 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve an order edit's details.
 
-##### Example
+#### Example
 
 A simple example that retrieves an order edit by its ID:
 
@@ -2788,7 +2788,7 @@ medusa.admin.orderEdits
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2839,7 +2839,7 @@ medusa.admin.orderEdits
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3137,11 +3137,11 @@ medusa.admin.orderEdits
 
 ___
 
-#### update
+### update
 
 Update an Order Edit's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3156,7 +3156,7 @@ medusa.admin.orderEdits
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3198,7 +3198,7 @@ medusa.admin.orderEdits
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3496,12 +3496,12 @@ medusa.admin.orderEdits
 
 ___
 
-#### updateLineItem
+### updateLineItem
 
 Create or update a line item change in the order edit that indicates addition, deletion, or update of a line item into an original order. Line item changes
 are only reflected on the original order after the order edit is confirmed.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3516,7 +3516,7 @@ medusa.admin.orderEdits
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3567,7 +3567,7 @@ medusa.admin.orderEdits
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

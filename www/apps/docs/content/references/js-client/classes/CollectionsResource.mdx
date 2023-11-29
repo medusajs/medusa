@@ -15,12 +15,12 @@ Using the methods in this class, you can list or retrieve a collection's details
 
 ## Methods
 
-#### list
+### list
 
 Retrieve a list of product collections. The product collections can be filtered by fields such as `handle` or `created_at` passed in the `query` parameter. 
 The product collections can also be paginated.
 
-##### Example
+#### Example
 
 To list product collections:
 
@@ -47,7 +47,7 @@ medusa.collections
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -190,7 +190,7 @@ medusa.collections
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -326,11 +326,11 @@ medusa.collections
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a product collection's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -340,7 +340,7 @@ medusa.collections.retrieve(collectionId).then(({ collection }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -363,7 +363,7 @@ medusa.collections.retrieve(collectionId).then(({ collection }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

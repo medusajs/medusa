@@ -83,21 +83,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addCustomers
+### addCustomers
 
 Add a batch of customers to a customer group at once
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -120,7 +134,7 @@ Add a batch of customers to a customer group at once
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -136,13 +150,13 @@ Add a batch of customers to a customer group at once
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -174,7 +188,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -190,11 +204,11 @@ transaction manager is created.
 
 ___
 
-#### create
+### create
 
 Creates a customer group with the provided data.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -208,7 +222,7 @@ Creates a customer group with the provided data.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -224,11 +238,11 @@ Creates a customer group with the provided data.
 
 ___
 
-#### delete
+### delete
 
 Remove customer group
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -242,7 +256,7 @@ Remove customer group
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -258,11 +272,11 @@ Remove customer group
 
 ___
 
-#### list
+### list
 
 List customer groups.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -285,7 +299,7 @@ List customer groups.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -301,11 +315,11 @@ List customer groups.
 
 ___
 
-#### listAndCount
+### listAndCount
 
 Retrieve a list of customer groups and total count of records that match the query.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -328,7 +342,7 @@ Retrieve a list of customer groups and total count of records that match the que
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -344,11 +358,11 @@ Retrieve a list of customer groups and total count of records that match the que
 
 ___
 
-#### removeCustomer
+### removeCustomer
 
 Remove list of customers from a customergroup
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -371,7 +385,7 @@ Remove list of customers from a customergroup
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -387,9 +401,9 @@ Remove list of customers from a customergroup
 
 ___
 
-#### retrieve
+### retrieve
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -412,7 +426,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -428,9 +442,9 @@ ___
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -444,7 +458,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -460,11 +474,11 @@ ___
 
 ___
 
-#### update
+### update
 
 Update a customer group.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -487,7 +501,7 @@ Update a customer group.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -503,9 +517,9 @@ Update a customer group.
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -519,7 +533,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
