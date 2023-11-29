@@ -265,19 +265,33 @@ Handles swaps
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### areReturnItemsValid
+### areReturnItemsValid
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -291,7 +305,7 @@ Handles swaps
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -307,13 +321,13 @@ Handles swaps
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -345,7 +359,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -361,13 +375,13 @@ transaction manager is created.
 
 ___
 
-#### cancel
+### cancel
 
 Cancels a given swap if possible. A swap can only be canceled if all
 related returns, fulfillments, and payments have been canceled. If a swap
 is associated with a refund, it cannot be canceled.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -381,7 +395,7 @@ is associated with a refund, it cannot be canceled.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -397,11 +411,11 @@ is associated with a refund, it cannot be canceled.
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
 Cancels a fulfillment (if related to a swap)
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -415,7 +429,7 @@ Cancels a fulfillment (if related to a swap)
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -431,12 +445,12 @@ Cancels a fulfillment (if related to a swap)
 
 ___
 
-#### create
+### create
 
 Creates a swap from an order, with given return items, additional items
 and an optional return shipping method.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -540,7 +554,7 @@ and an optional return shipping method.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -556,14 +570,14 @@ and an optional return shipping method.
 
 ___
 
-#### createCart
+### createCart
 
 Creates a cart from the given swap. The cart can be used to pay
 for differences associated with the swap. The swap represented by the
 swapId must belong to the order. Fails if there is already a cart on the
 swap.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -604,7 +618,7 @@ swap.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -620,12 +634,12 @@ swap.
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
 Fulfills the additional items associated with the swap. Will call the
 fulfillment providers associated with the shipping methods.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -648,7 +662,7 @@ fulfillment providers associated with the shipping methods.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -664,11 +678,11 @@ fulfillment providers associated with the shipping methods.
 
 ___
 
-#### createShipment
+### createShipment
 
 Marks a fulfillment as shipped and attaches tracking numbers.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -709,7 +723,7 @@ Marks a fulfillment as shipped and attaches tracking numbers.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -725,11 +739,11 @@ Marks a fulfillment as shipped and attaches tracking numbers.
 
 ___
 
-#### deleteMetadata
+### deleteMetadata
 
 Dedicated method to delete metadata for a swap.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -752,7 +766,7 @@ Dedicated method to delete metadata for a swap.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -768,11 +782,11 @@ Dedicated method to delete metadata for a swap.
 
 ___
 
-#### list
+### list
 
 List swaps.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -795,7 +809,7 @@ List swaps.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -811,11 +825,11 @@ List swaps.
 
 ___
 
-#### listAndCount
+### listAndCount
 
 List swaps.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -838,7 +852,7 @@ List swaps.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -854,11 +868,11 @@ List swaps.
 
 ___
 
-#### processDifference
+### processDifference
 
 Process difference for the requested swap.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -872,7 +886,7 @@ Process difference for the requested swap.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -888,11 +902,11 @@ Process difference for the requested swap.
 
 ___
 
-#### registerCartCompletion
+### registerCartCompletion
 
 Register a cart completion
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -906,7 +920,7 @@ Register a cart completion
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -922,12 +936,12 @@ Register a cart completion
 
 ___
 
-#### registerReceived
+### registerReceived
 
 Registers the swap return items as received so that they cannot be used
 as a part of other swaps/returns.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -941,7 +955,7 @@ as a part of other swaps/returns.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -957,11 +971,11 @@ as a part of other swaps/returns.
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieves a swap with the given id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -984,7 +998,7 @@ Retrieves a swap with the given id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1000,11 +1014,11 @@ Retrieves a swap with the given id.
 
 ___
 
-#### retrieveByCartId
+### retrieveByCartId
 
 Retrieves a swap based on its associated cart id
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1027,7 +1041,7 @@ Retrieves a swap based on its associated cart id
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1043,9 +1057,9 @@ Retrieves a swap based on its associated cart id
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1059,7 +1073,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1075,11 +1089,11 @@ ___
 
 ___
 
-#### transformQueryForCart
+### transformQueryForCart
 
 Transform find config object for retrieval.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1093,7 +1107,7 @@ Transform find config object for retrieval.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1109,11 +1123,11 @@ Transform find config object for retrieval.
 
 ___
 
-#### update
+### update
 
 Update the swap record.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1136,7 +1150,7 @@ Update the swap record.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1152,9 +1166,9 @@ Update the swap record.
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1168,7 +1182,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

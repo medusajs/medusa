@@ -19,11 +19,11 @@ Related Guide: [How to manage returns](https://docs.medusajs.com/modules/orders/
 
 ## Methods
 
-#### cancel
+### cancel
 
 Registers a return as canceled. The return can be associated with an order, claim, or swap.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -34,7 +34,7 @@ medusa.admin.returns.cancel(returnId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -57,7 +57,7 @@ medusa.admin.returns.cancel(returnId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -598,11 +598,11 @@ medusa.admin.returns.cancel(returnId).then(({ order }) => {
 
 ___
 
-#### list
+### list
 
 Retrieve a list of Returns. The returns can be paginated.
 
-##### Example
+#### Example
 
 To list returns:
 
@@ -631,7 +631,7 @@ medusa.admin.returns
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -673,7 +673,7 @@ medusa.admin.returns
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -908,11 +908,11 @@ medusa.admin.returns
 
 ___
 
-#### receive
+### receive
 
 Mark a return as received. This also updates the status of associated order, claim, or swap accordingly.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -932,7 +932,7 @@ medusa.admin.returns
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1011,7 +1011,7 @@ medusa.admin.returns
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

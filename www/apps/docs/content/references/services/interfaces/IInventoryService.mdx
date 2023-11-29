@@ -8,13 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-#### adjustInventory
+### adjustInventory
 
 `**adjustInventory**(inventoryItemId, locationId, adjustment, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;`
 
 This method is used to adjust the inventory level's stocked quantity. The inventory level is identified by the IDs of its associated inventory item and location.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -38,7 +38,7 @@ async function adjustInventory (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -79,7 +79,7 @@ async function adjustInventory (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
@@ -97,13 +97,13 @@ Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
 ___
 
-#### confirmInventory
+### confirmInventory
 
 `**confirmInventory**(inventoryItemId, locationIds, quantity, context?): Promise&#60;boolean&#62;`
 
 This method is used to confirm whether the specified quantity of an inventory item is available in the specified locations.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -125,7 +125,7 @@ async function confirmInventory (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -166,7 +166,7 @@ async function confirmInventory (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -184,13 +184,13 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### createInventoryItem
+### createInventoryItem
 
 `**createInventoryItem**(input, context?): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;`
 
 This method is used to create an inventory item.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -211,7 +211,7 @@ async function createInventoryItem (item: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -234,7 +234,7 @@ async function createInventoryItem (item: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
@@ -252,13 +252,13 @@ Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
 ___
 
-#### createInventoryItems
+### createInventoryItems
 
 `**createInventoryItems**(input, context?): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;`
 
 This method is used to create inventory items.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -279,7 +279,7 @@ async function createInventoryItems (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -302,7 +302,7 @@ async function createInventoryItems (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;
 
@@ -320,13 +320,13 @@ Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;
 
 ___
 
-#### createInventoryLevel
+### createInventoryLevel
 
 `**createInventoryLevel**(data, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;`
 
 This method is used to create inventory level.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -348,7 +348,7 @@ async function createInventoryLevel (item: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -371,7 +371,7 @@ async function createInventoryLevel (item: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
@@ -389,13 +389,13 @@ Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
 ___
 
-#### createInventoryLevels
+### createInventoryLevels
 
 `**createInventoryLevels**(data, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;`
 
 This method is used to create inventory levels.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -417,7 +417,7 @@ async function createInventoryLevels (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -440,7 +440,7 @@ async function createInventoryLevels (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;
 
@@ -458,13 +458,13 @@ Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;
 
 ___
 
-#### createReservationItem
+### createReservationItem
 
 `**createReservationItem**(input, context?): Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;`
 
 This method is used to create a reservation item.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -486,7 +486,7 @@ async function createReservationItem (item: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -509,7 +509,7 @@ async function createReservationItem (item: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;
 
@@ -527,13 +527,13 @@ Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;
 
 ___
 
-#### createReservationItems
+### createReservationItems
 
 `**createReservationItems**(input, context?): Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;`
 
 This method is used to create reservation items.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -555,7 +555,7 @@ async function createReservationItems (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -578,7 +578,7 @@ async function createReservationItems (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;
 
@@ -596,14 +596,14 @@ Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;
 
 ___
 
-#### deleteInventoryItem
+### deleteInventoryItem
 
 `**deleteInventoryItem**(inventoryItemId, context?): Promise&#60;void&#62;`
 
 This method is used to delete an inventory item or multiple inventory items. The inventory items are only soft deleted and can be restored using the
 [restoreInventoryItem](IInventoryService.mdx#restoreinventoryitem) method.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -621,7 +621,7 @@ async function deleteInventoryItem (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -644,7 +644,7 @@ async function deleteInventoryItem (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -662,13 +662,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteInventoryItemLevelByLocationId
+### deleteInventoryItemLevelByLocationId
 
 `**deleteInventoryItemLevelByLocationId**(locationId, context?): Promise&#60;void&#62;`
 
 This method deletes the inventory item level(s) for the ID(s) of associated location(s).
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -686,7 +686,7 @@ async function deleteInventoryItemLevelByLocationId (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -709,7 +709,7 @@ async function deleteInventoryItemLevelByLocationId (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -727,13 +727,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteInventoryLevel
+### deleteInventoryLevel
 
 `**deleteInventoryLevel**(inventoryItemId, locationId, context?): Promise&#60;void&#62;`
 
 This method is used to delete an inventory level. The inventory level is identified by the IDs of its associated inventory item and location.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -753,7 +753,7 @@ async function deleteInventoryLevel (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -785,7 +785,7 @@ async function deleteInventoryLevel (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -803,13 +803,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteReservationItem
+### deleteReservationItem
 
 `**deleteReservationItem**(reservationItemId, context?): Promise&#60;void&#62;`
 
 This method is used to delete a reservation item or multiple reservation items by their IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -827,7 +827,7 @@ async function deleteReservationItems (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -850,7 +850,7 @@ async function deleteReservationItems (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -868,13 +868,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteReservationItemByLocationId
+### deleteReservationItemByLocationId
 
 `**deleteReservationItemByLocationId**(locationId, context?): Promise&#60;void&#62;`
 
 This method deletes reservation item(s) by the ID(s) of associated location(s).
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -892,7 +892,7 @@ async function deleteReservationItemByLocationId (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -915,7 +915,7 @@ async function deleteReservationItemByLocationId (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -933,13 +933,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteReservationItemsByLineItem
+### deleteReservationItemsByLineItem
 
 `**deleteReservationItemsByLineItem**(lineItemId, context?): Promise&#60;void&#62;`
 
 This method is used to delete the reservation items associated with a line item or multiple line items.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -957,7 +957,7 @@ async function deleteReservationItemsByLineItem (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -980,7 +980,7 @@ async function deleteReservationItemsByLineItem (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -998,13 +998,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### listInventoryItems
+### listInventoryItems
 
 `**listInventoryItems**(selector, config?, context?): Promise&#60;[[InventoryItemDTO](../types/InventoryItemDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of inventory items along with the total count of available inventory items satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of inventory items using their IDs:
 
@@ -1066,7 +1066,7 @@ async function retrieveInventoryItems (ids: string[], skip: number, take: number
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1098,7 +1098,7 @@ async function retrieveInventoryItems (ids: string[], skip: number, take: number
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[InventoryItemDTO](../types/InventoryItemDTO.mdx)[], number]&#62;
 
@@ -1116,13 +1116,13 @@ Promise&#60;[[InventoryItemDTO](../types/InventoryItemDTO.mdx)[], number]&#62;
 
 ___
 
-#### listInventoryLevels
+### listInventoryLevels
 
 `**listInventoryLevels**(selector, config?, context?): Promise&#60;[[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of inventory levels along with the total count of available inventory levels satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of inventory levels using their IDs:
 
@@ -1184,7 +1184,7 @@ async function retrieveInventoryLevels (inventoryItemIds: string[], skip: number
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1216,7 +1216,7 @@ async function retrieveInventoryLevels (inventoryItemIds: string[], skip: number
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[], number]&#62;
 
@@ -1234,13 +1234,13 @@ Promise&#60;[[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[], number]&#62;
 
 ___
 
-#### listReservationItems
+### listReservationItems
 
 `**listReservationItems**(selector, config?, context?): Promise&#60;[[ReservationItemDTO](../types/ReservationItemDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of reservation items along with the total count of available reservation items satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of reservation items using their IDs:
 
@@ -1302,7 +1302,7 @@ async function retrieveReservationItems (ids: string[], skip: number, take: numb
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1334,7 +1334,7 @@ async function retrieveReservationItems (ids: string[], skip: number, take: numb
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[ReservationItemDTO](../types/ReservationItemDTO.mdx)[], number]&#62;
 
@@ -1352,13 +1352,13 @@ Promise&#60;[[ReservationItemDTO](../types/ReservationItemDTO.mdx)[], number]&#6
 
 ___
 
-#### restoreInventoryItem
+### restoreInventoryItem
 
 `**restoreInventoryItem**(inventoryItemId, context?): Promise&#60;void&#62;`
 
 This method is used to restore an inventory item or multiple inventory items that were previously deleted using the [deleteInventoryItem](IInventoryService.mdx#deleteinventoryitem) method.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1376,7 +1376,7 @@ async function restoreInventoryItem (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1399,7 +1399,7 @@ async function restoreInventoryItem (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1417,13 +1417,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### retrieveAvailableQuantity
+### retrieveAvailableQuantity
 
 `**retrieveAvailableQuantity**(inventoryItemId, locationIds, context?): Promise&#60;number&#62;`
 
 This method is used to retrieve the available quantity of an inventory item within the specified locations.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1445,7 +1445,7 @@ async function retrieveAvailableQuantity (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1477,7 +1477,7 @@ async function retrieveAvailableQuantity (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;number&#62;
 
@@ -1495,13 +1495,13 @@ Promise&#60;number&#62;
 
 ___
 
-#### retrieveInventoryItem
+### retrieveInventoryItem
 
 `**retrieveInventoryItem**(inventoryItemId, config?, context?): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;`
 
 This method is used to retrieve an inventory item by its ID
 
-##### Example
+#### Example
 
 A simple example that retrieves a inventory item by its ID:
 
@@ -1537,7 +1537,7 @@ async function retrieveInventoryItem (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1569,7 +1569,7 @@ async function retrieveInventoryItem (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
@@ -1587,13 +1587,13 @@ Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
 ___
 
-#### retrieveInventoryLevel
+### retrieveInventoryLevel
 
 `**retrieveInventoryLevel**(inventoryItemId, locationId, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;`
 
 This method is used to retrieve an inventory level for an inventory item and a location.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1615,7 +1615,7 @@ async function retrieveInventoryLevel (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1647,7 +1647,7 @@ async function retrieveInventoryLevel (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
@@ -1665,13 +1665,13 @@ Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
 ___
 
-#### retrieveReservationItem
+### retrieveReservationItem
 
 `**retrieveReservationItem**(reservationId, context?): Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;`
 
 This method is used to retrieve a reservation item by its ID.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1687,7 +1687,7 @@ async function retrieveReservationItem (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1710,7 +1710,7 @@ async function retrieveReservationItem (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;
 
@@ -1728,13 +1728,13 @@ Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;
 
 ___
 
-#### retrieveReservedQuantity
+### retrieveReservedQuantity
 
 `**retrieveReservedQuantity**(inventoryItemId, locationIds, context?): Promise&#60;number&#62;`
 
 This method is used to retrieve the reserved quantity of an inventory item within the specified locations.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1756,7 +1756,7 @@ async function retrieveReservedQuantity (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1788,7 +1788,7 @@ async function retrieveReservedQuantity (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;number&#62;
 
@@ -1806,13 +1806,13 @@ Promise&#60;number&#62;
 
 ___
 
-#### retrieveStockedQuantity
+### retrieveStockedQuantity
 
 `**retrieveStockedQuantity**(inventoryItemId, locationIds, context?): Promise&#60;number&#62;`
 
 This method is used to retrieve the stocked quantity of an inventory item within the specified locations.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1834,7 +1834,7 @@ async function retrieveStockedQuantity (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1866,7 +1866,7 @@ async function retrieveStockedQuantity (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;number&#62;
 
@@ -1884,13 +1884,13 @@ Promise&#60;number&#62;
 
 ___
 
-#### updateInventoryItem
+### updateInventoryItem
 
 `**updateInventoryItem**(inventoryItemId, input, context?): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;`
 
 This method is used to update an inventory item.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1914,7 +1914,7 @@ async function updateInventoryItem (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1946,7 +1946,7 @@ async function updateInventoryItem (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
@@ -1964,13 +1964,13 @@ Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
 ___
 
-#### updateInventoryLevel
+### updateInventoryLevel
 
 `**updateInventoryLevel**(inventoryItemId, locationId, update, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;`
 
 This method is used to update an inventory level. The inventory level is identified by the IDs of its associated inventory item and location.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1996,7 +1996,7 @@ async function updateInventoryLevel (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2037,7 +2037,7 @@ async function updateInventoryLevel (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
@@ -2055,13 +2055,13 @@ Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
 ___
 
-#### updateInventoryLevels
+### updateInventoryLevels
 
 `**updateInventoryLevels**(updates, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;`
 
 This method is used to update inventory levels. Each inventory level is identified by the IDs of its associated inventory item and location.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -2083,7 +2083,7 @@ async function updateInventoryLevels (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2106,7 +2106,7 @@ async function updateInventoryLevels (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;
 
@@ -2124,13 +2124,13 @@ Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;
 
 ___
 
-#### updateReservationItem
+### updateReservationItem
 
 `**updateReservationItem**(reservationItemId, input, context?): Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;`
 
 This method is used to update a reservation item.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -2154,7 +2154,7 @@ async function updateReservationItem (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2186,7 +2186,7 @@ async function updateReservationItem (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;
 

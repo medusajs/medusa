@@ -17,11 +17,11 @@ Related Guide: [How to use regions in a storefront](https://docs.medusajs.com/mo
 
 ## Methods
 
-#### list
+### list
 
 Retrieve a list of regions. This method is useful to show the customer all available regions to choose from.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -31,7 +31,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -45,7 +45,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -281,11 +281,11 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a Region's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -295,7 +295,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -318,7 +318,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

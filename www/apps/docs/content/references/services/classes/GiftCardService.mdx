@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate gift cards.
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new GiftCardService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate gift cards.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -132,15 +132,35 @@ Provides layer to manipulate gift cards.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -148,7 +168,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -171,7 +191,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -203,7 +223,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -221,13 +241,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(giftCard): Promise&#60;[GiftCard](GiftCard.mdx)&#62;`
 
 Creates a gift card with provided data given that the data is validated.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -241,7 +261,7 @@ Creates a gift card with provided data given that the data is validated.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
@@ -259,11 +279,11 @@ Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
 ___
 
-#### createTransaction
+### createTransaction
 
 `**createTransaction**(data): Promise&#60;string&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -277,7 +297,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;string&#62;
 
@@ -295,13 +315,13 @@ Promise&#60;string&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(giftCardId): Promise&#60;void \| [GiftCard](GiftCard.mdx)&#62;`
 
 Deletes a gift card idempotently
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -315,7 +335,7 @@ Deletes a gift card idempotently
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void \| [GiftCard](GiftCard.mdx)&#62;
 
@@ -333,11 +353,11 @@ Promise&#60;void \| [GiftCard](GiftCard.mdx)&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector?, config?): Promise&#60;[GiftCard](GiftCard.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -360,7 +380,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[GiftCard](GiftCard.mdx)[]&#62;
 
@@ -378,11 +398,11 @@ Promise&#60;[GiftCard](GiftCard.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector?, config?): Promise&#60;[[GiftCard](GiftCard.mdx)[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -405,7 +425,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[GiftCard](GiftCard.mdx)[], number]&#62;
 
@@ -423,13 +443,13 @@ Promise&#60;[[GiftCard](GiftCard.mdx)[], number]&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(giftCardId, config?): Promise&#60;[GiftCard](GiftCard.mdx)&#62;`
 
 Gets a gift card by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -452,7 +472,7 @@ Gets a gift card by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
@@ -470,11 +490,11 @@ Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
 ___
 
-#### retrieveByCode
+### retrieveByCode
 
 `**retrieveByCode**(code, config?): Promise&#60;[GiftCard](GiftCard.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -497,7 +517,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
@@ -515,11 +535,11 @@ Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
 ___
 
-#### retrieve\_
+### retrieve\_
 
 `Protected **retrieve_**(selector, config?): Promise&#60;[GiftCard](GiftCard.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -542,7 +562,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
@@ -560,11 +580,11 @@ Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -578,7 +598,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -596,13 +616,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(giftCardId, update): Promise&#60;[GiftCard](GiftCard.mdx)&#62;`
 
 Updates a giftCard.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -625,7 +645,7 @@ Updates a giftCard.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
@@ -643,11 +663,11 @@ Promise&#60;[GiftCard](GiftCard.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [GiftCardService](GiftCardService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -661,7 +681,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [GiftCardService](GiftCardService.mdx)
 
@@ -679,13 +699,13 @@ ___
 
 ___
 
-#### generateCode
+### generateCode
 
 `Static **generateCode**(): string`
 
 Generates a 16 character gift card code
 
-##### Returns
+#### Returns
 
 `string`
 
@@ -703,14 +723,14 @@ Generates a 16 character gift card code
 
 ___
 
-#### resolveTaxRate
+### resolveTaxRate
 
 `Static Protected **resolveTaxRate**(giftCardTaxRate, region): null \| number`
 
 The tax\_rate of the giftcard can depend on whether regions tax gift cards, an input
 provided by the user or the tax rate. Based on these conditions, tax\_rate changes.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -733,7 +753,7 @@ provided by the user or the tax rate. Based on these conditions, tax\_rate chang
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `null` \| `number`
 

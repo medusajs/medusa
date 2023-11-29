@@ -119,21 +119,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addProducts
+### addProducts
 
 Add a batch of product to a sales channel
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -156,7 +170,7 @@ Add a batch of product to a sales channel
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -172,13 +186,13 @@ Add a batch of product to a sales channel
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -210,7 +224,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -226,14 +240,14 @@ transaction manager is created.
 
 ___
 
-#### create
+### create
 
 Creates a SalesChannel
 
  This feature is under development and may change in the future.
 To use this feature please enable the corresponding feature flag in your medusa backend project.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -247,7 +261,7 @@ To use this feature please enable the corresponding feature flag in your medusa 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -263,11 +277,11 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 ___
 
-#### createDefault
+### createDefault
 
 Creates a default sales channel, if this does not already exist.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -283,13 +297,13 @@ Creates a default sales channel, if this does not already exist.
 
 ___
 
-#### delete
+### delete
 
 Deletes a sales channel from
  This feature is under development and may change in the future.
 To use this feature please enable the corresponding feature flag in your medusa backend project.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -303,7 +317,7 @@ To use this feature please enable the corresponding feature flag in your medusa 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -319,12 +333,12 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 ___
 
-#### listAndCount
+### listAndCount
 
 Lists sales channels based on the provided parameters and includes the count of
 sales channels that match the query.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -347,7 +361,7 @@ sales channels that match the query.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -363,11 +377,11 @@ sales channels that match the query.
 
 ___
 
-#### listProductIdsBySalesChannelIds
+### listProductIdsBySalesChannelIds
 
 List all product ids that belongs to the sales channels ids
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -381,7 +395,7 @@ List all product ids that belongs to the sales channels ids
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -397,11 +411,11 @@ List all product ids that belongs to the sales channels ids
 
 ___
 
-#### removeProducts
+### removeProducts
 
 Remove a batch of product from a sales channel
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -424,7 +438,7 @@ Remove a batch of product from a sales channel
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -440,11 +454,11 @@ Remove a batch of product from a sales channel
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a SalesChannel by id
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -467,7 +481,7 @@ Retrieve a SalesChannel by id
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -483,11 +497,11 @@ Retrieve a SalesChannel by id
 
 ___
 
-#### retrieveByName
+### retrieveByName
 
 Find a sales channel by name.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -510,7 +524,7 @@ Find a sales channel by name.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -526,11 +540,11 @@ Find a sales channel by name.
 
 ___
 
-#### retrieveDefault
+### retrieveDefault
 
 Retrieves the default sales channel.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -546,11 +560,11 @@ Retrieves the default sales channel.
 
 ___
 
-#### retrieve\_
+### retrieve\_
 
 A generic retrieve used to find a sales channel by different attributes.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -573,7 +587,7 @@ A generic retrieve used to find a sales channel by different attributes.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -589,9 +603,9 @@ A generic retrieve used to find a sales channel by different attributes.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -605,7 +619,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -621,9 +635,9 @@ ___
 
 ___
 
-#### update
+### update
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -646,7 +660,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -662,9 +676,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -678,7 +692,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -65,11 +65,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Methods
 
-#### [iterator]
+### [iterator]
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -85,13 +87,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ___
 
-#### at
+### at
 
 Takes an integer value and returns the item at that index,
 allowing for positive and negative integers.
 Negative integers count back from the last item in the array.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -105,7 +107,7 @@ Negative integers count back from the last item in the array.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -121,7 +123,7 @@ Negative integers count back from the last item in the array.
 
 ___
 
-#### compare
+### compare
 
 Compares `buf` with `target` and returns a number indicating whether `buf`comes before, after, or is the same as `target` in sort order.
 Comparison is based on the actual sequence of bytes in each `Buffer`.
@@ -170,7 +172,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
 
 `ERR_OUT_OF_RANGE` is thrown if `targetStart < 0`, `sourceStart < 0`,`targetEnd > target.byteLength`, or `sourceEnd > source.byteLength`.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -220,7 +222,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -240,7 +242,7 @@ v0.11.13
 
 ___
 
-#### copy
+### copy
 
 Copies data from a region of `buf` to a region in `target`, even if the `target`memory region overlaps with `buf`.
 
@@ -288,7 +290,7 @@ console.log(buf.toString());
 // Prints: efghijghijklmnopqrstuvwxyz
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -329,7 +331,7 @@ console.log(buf.toString());
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -349,12 +351,12 @@ v0.1.90
 
 ___
 
-#### copyWithin
+### copyWithin
 
 Returns the this object after copying a section of the array identified by start and end
 to the same array starting at position target
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -386,7 +388,7 @@ to the same array starting at position target
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -402,7 +404,7 @@ to the same array starting at position target
 
 ___
 
-#### entries
+### entries
 
 Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) of `[index, byte]` pairs from the contents
 of `buf`.
@@ -426,7 +428,7 @@ for (const pair of buf.entries()) {
 //   [5, 114]
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -446,7 +448,7 @@ v1.1.0
 
 ___
 
-#### equals
+### equals
 
 Returns `true` if both `buf` and `otherBuffer` have exactly the same bytes,`false` otherwise. Equivalent to `buf.compare(otherBuffer) === 0`.
 
@@ -463,7 +465,7 @@ console.log(buf1.equals(buf3));
 // Prints: false
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -477,7 +479,7 @@ console.log(buf1.equals(buf3));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -497,11 +499,11 @@ v0.11.13
 
 ___
 
-#### every
+### every
 
 Determines whether all the members of an array satisfy the specified test.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -524,7 +526,7 @@ Determines whether all the members of an array satisfy the specified test.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -540,7 +542,7 @@ Determines whether all the members of an array satisfy the specified test.
 
 ___
 
-#### fill
+### fill
 
 Fills `buf` with the specified `value`. If the `offset` and `end` are not given,
 the entire `buf` will be filled:
@@ -594,7 +596,7 @@ console.log(buf.fill('zz', 'hex'));
 // Throws an exception.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -635,7 +637,7 @@ console.log(buf.fill('zz', 'hex'));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -655,11 +657,11 @@ v0.5.0
 
 ___
 
-#### filter
+### filter
 
 Returns the elements of an array that meet the condition specified in a callback function.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -682,7 +684,7 @@ Returns the elements of an array that meet the condition specified in a callback
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -698,12 +700,12 @@ Returns the elements of an array that meet the condition specified in a callback
 
 ___
 
-#### find
+### find
 
 Returns the value of the first element in the array where predicate is true, and undefined
 otherwise.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -726,7 +728,7 @@ otherwise.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -742,12 +744,12 @@ otherwise.
 
 ___
 
-#### findIndex
+### findIndex
 
 Returns the index of the first element in the array where predicate is true, and -1
 otherwise.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -770,7 +772,7 @@ otherwise.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -786,11 +788,11 @@ otherwise.
 
 ___
 
-#### forEach
+### forEach
 
 Performs the specified action for each element in an array.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -813,7 +815,7 @@ Performs the specified action for each element in an array.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -829,7 +831,7 @@ Performs the specified action for each element in an array.
 
 ___
 
-#### includes
+### includes
 
 Equivalent to `buf.indexOf() !== -1`.
 
@@ -854,7 +856,7 @@ console.log(buf.includes('this', 4));
 // Prints: false
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -886,7 +888,7 @@ console.log(buf.includes('this', 4));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -906,7 +908,7 @@ v5.3.0
 
 ___
 
-#### indexOf
+### indexOf
 
 If `value` is:
 
@@ -970,7 +972,7 @@ console.log(b.indexOf('b', []));
 If `value` is an empty string or empty `Buffer` and `byteOffset` is less
 than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOffset` is at least `buf.length`, `buf.length` will be returned.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1002,7 +1004,7 @@ than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOf
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1022,11 +1024,11 @@ v1.5.0
 
 ___
 
-#### join
+### join
 
 Adds all the elements of an array separated by the specified separator string.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1040,7 +1042,7 @@ Adds all the elements of an array separated by the specified separator string.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1056,7 +1058,7 @@ Adds all the elements of an array separated by the specified separator string.
 
 ___
 
-#### keys
+### keys
 
 Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) of `buf` keys (indices).
 
@@ -1077,7 +1079,7 @@ for (const key of buf.keys()) {
 //   5
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1097,7 +1099,7 @@ v1.1.0
 
 ___
 
-#### lastIndexOf
+### lastIndexOf
 
 Identical to `buf.indexOf()`, except the last occurrence of `value` is found
 rather than the first occurrence.
@@ -1160,7 +1162,7 @@ console.log(b.lastIndexOf('b', []));
 
 If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1192,7 +1194,7 @@ If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1212,12 +1214,12 @@ v6.0.0
 
 ___
 
-#### map
+### map
 
 Calls a defined callback function on each element of an array, and returns an array that
 contains the results.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1240,7 +1242,7 @@ contains the results.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1256,14 +1258,14 @@ contains the results.
 
 ___
 
-#### readBigInt64BE
+### readBigInt64BE
 
 Reads a signed, big-endian 64-bit integer from `buf` at the specified `offset`.
 
 Integers read from a `Buffer` are interpreted as two's complement signed
 values.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1277,7 +1279,7 @@ values.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1297,14 +1299,14 @@ v12.0.0, v10.20.0
 
 ___
 
-#### readBigInt64LE
+### readBigInt64LE
 
 Reads a signed, little-endian 64-bit integer from `buf` at the specified`offset`.
 
 Integers read from a `Buffer` are interpreted as two's complement signed
 values.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1318,7 +1320,7 @@ values.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1338,7 +1340,7 @@ v12.0.0, v10.20.0
 
 ___
 
-#### readBigUInt64BE
+### readBigUInt64BE
 
 Reads an unsigned, big-endian 64-bit integer from `buf` at the specified`offset`.
 
@@ -1353,7 +1355,7 @@ console.log(buf.readBigUInt64BE(0));
 // Prints: 4294967295n
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1367,7 +1369,7 @@ console.log(buf.readBigUInt64BE(0));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1387,7 +1389,7 @@ v12.0.0, v10.20.0
 
 ___
 
-#### readBigUInt64LE
+### readBigUInt64LE
 
 Reads an unsigned, little-endian 64-bit integer from `buf` at the specified`offset`.
 
@@ -1402,7 +1404,7 @@ console.log(buf.readBigUInt64LE(0));
 // Prints: 18446744069414584320n
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1416,7 +1418,7 @@ console.log(buf.readBigUInt64LE(0));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1436,9 +1438,9 @@ v12.0.0, v10.20.0
 
 ___
 
-#### readBigUint64BE
+### readBigUint64BE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1452,7 +1454,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1476,9 +1478,9 @@ v14.10.0, v12.19.0
 
 ___
 
-#### readBigUint64LE
+### readBigUint64LE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1492,7 +1494,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1516,7 +1518,7 @@ v14.10.0, v12.19.0
 
 ___
 
-#### readDoubleBE
+### readDoubleBE
 
 Reads a 64-bit, big-endian double from `buf` at the specified `offset`.
 
@@ -1529,7 +1531,7 @@ console.log(buf.readDoubleBE(0));
 // Prints: 8.20788039913184e-304
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1543,7 +1545,7 @@ console.log(buf.readDoubleBE(0));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1563,7 +1565,7 @@ v0.11.15
 
 ___
 
-#### readDoubleLE
+### readDoubleLE
 
 Reads a 64-bit, little-endian double from `buf` at the specified `offset`.
 
@@ -1578,7 +1580,7 @@ console.log(buf.readDoubleLE(1));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1592,7 +1594,7 @@ console.log(buf.readDoubleLE(1));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1612,7 +1614,7 @@ v0.11.15
 
 ___
 
-#### readFloatBE
+### readFloatBE
 
 Reads a 32-bit, big-endian float from `buf` at the specified `offset`.
 
@@ -1625,7 +1627,7 @@ console.log(buf.readFloatBE(0));
 // Prints: 2.387939260590663e-38
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1639,7 +1641,7 @@ console.log(buf.readFloatBE(0));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1659,7 +1661,7 @@ v0.11.15
 
 ___
 
-#### readFloatLE
+### readFloatLE
 
 Reads a 32-bit, little-endian float from `buf` at the specified `offset`.
 
@@ -1674,7 +1676,7 @@ console.log(buf.readFloatLE(1));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1688,7 +1690,7 @@ console.log(buf.readFloatLE(1));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1708,7 +1710,7 @@ v0.11.15
 
 ___
 
-#### readInt16BE
+### readInt16BE
 
 Reads a signed, big-endian 16-bit integer from `buf` at the specified `offset`.
 
@@ -1723,7 +1725,7 @@ console.log(buf.readInt16BE(0));
 // Prints: 5
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1737,7 +1739,7 @@ console.log(buf.readInt16BE(0));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1757,7 +1759,7 @@ v0.5.5
 
 ___
 
-#### readInt16LE
+### readInt16LE
 
 Reads a signed, little-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -1774,7 +1776,7 @@ console.log(buf.readInt16LE(1));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1788,7 +1790,7 @@ console.log(buf.readInt16LE(1));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1808,7 +1810,7 @@ v0.5.5
 
 ___
 
-#### readInt32BE
+### readInt32BE
 
 Reads a signed, big-endian 32-bit integer from `buf` at the specified `offset`.
 
@@ -1823,7 +1825,7 @@ console.log(buf.readInt32BE(0));
 // Prints: 5
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1837,7 +1839,7 @@ console.log(buf.readInt32BE(0));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1857,7 +1859,7 @@ v0.5.5
 
 ___
 
-#### readInt32LE
+### readInt32LE
 
 Reads a signed, little-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -1874,7 +1876,7 @@ console.log(buf.readInt32LE(1));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1888,7 +1890,7 @@ console.log(buf.readInt32LE(1));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1908,7 +1910,7 @@ v0.5.5
 
 ___
 
-#### readInt8
+### readInt8
 
 Reads a signed 8-bit integer from `buf` at the specified `offset`.
 
@@ -1927,7 +1929,7 @@ console.log(buf.readInt8(2));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1941,7 +1943,7 @@ console.log(buf.readInt8(2));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1961,7 +1963,7 @@ v0.5.0
 
 ___
 
-#### readIntBE
+### readIntBE
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as a big-endian, two's complement signed value
 supporting up to 48 bits of accuracy.
@@ -1979,7 +1981,7 @@ console.log(buf.readIntBE(1, 0).toString(16));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2002,7 +2004,7 @@ console.log(buf.readIntBE(1, 0).toString(16));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2022,7 +2024,7 @@ v0.11.15
 
 ___
 
-#### readIntLE
+### readIntLE
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as a little-endian, two's complement signed value
 supporting up to 48 bits of accuracy.
@@ -2036,7 +2038,7 @@ console.log(buf.readIntLE(0, 6).toString(16));
 // Prints: -546f87a9cbee
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2059,7 +2061,7 @@ console.log(buf.readIntLE(0, 6).toString(16));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2079,7 +2081,7 @@ v0.11.15
 
 ___
 
-#### readUInt16BE
+### readUInt16BE
 
 Reads an unsigned, big-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -2096,7 +2098,7 @@ console.log(buf.readUInt16BE(1).toString(16));
 // Prints: 3456
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2110,7 +2112,7 @@ console.log(buf.readUInt16BE(1).toString(16));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2130,7 +2132,7 @@ v0.5.5
 
 ___
 
-#### readUInt16LE
+### readUInt16LE
 
 Reads an unsigned, little-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -2149,7 +2151,7 @@ console.log(buf.readUInt16LE(2).toString(16));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2163,7 +2165,7 @@ console.log(buf.readUInt16LE(2).toString(16));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2183,7 +2185,7 @@ v0.5.5
 
 ___
 
-#### readUInt32BE
+### readUInt32BE
 
 Reads an unsigned, big-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -2198,7 +2200,7 @@ console.log(buf.readUInt32BE(0).toString(16));
 // Prints: 12345678
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2212,7 +2214,7 @@ console.log(buf.readUInt32BE(0).toString(16));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2232,7 +2234,7 @@ v0.5.5
 
 ___
 
-#### readUInt32LE
+### readUInt32LE
 
 Reads an unsigned, little-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -2249,7 +2251,7 @@ console.log(buf.readUInt32LE(1).toString(16));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2263,7 +2265,7 @@ console.log(buf.readUInt32LE(1).toString(16));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2283,7 +2285,7 @@ v0.5.5
 
 ___
 
-#### readUInt8
+### readUInt8
 
 Reads an unsigned 8-bit integer from `buf` at the specified `offset`.
 
@@ -2302,7 +2304,7 @@ console.log(buf.readUInt8(2));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2316,7 +2318,7 @@ console.log(buf.readUInt8(2));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2336,7 +2338,7 @@ v0.5.0
 
 ___
 
-#### readUIntBE
+### readUIntBE
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as an unsigned big-endian integer supporting
 up to 48 bits of accuracy.
@@ -2354,7 +2356,7 @@ console.log(buf.readUIntBE(1, 6).toString(16));
 // Throws ERR_OUT_OF_RANGE.
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2377,7 +2379,7 @@ console.log(buf.readUIntBE(1, 6).toString(16));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2397,7 +2399,7 @@ v0.11.15
 
 ___
 
-#### readUIntLE
+### readUIntLE
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as an unsigned, little-endian integer supporting
 up to 48 bits of accuracy.
@@ -2413,7 +2415,7 @@ console.log(buf.readUIntLE(0, 6).toString(16));
 // Prints: ab9078563412
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2436,7 +2438,7 @@ console.log(buf.readUIntLE(0, 6).toString(16));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2456,9 +2458,9 @@ v0.11.15
 
 ___
 
-#### readUint16BE
+### readUint16BE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2472,7 +2474,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2496,9 +2498,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### readUint16LE
+### readUint16LE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2512,7 +2514,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2536,9 +2538,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### readUint32BE
+### readUint32BE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2552,7 +2554,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2576,9 +2578,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### readUint32LE
+### readUint32LE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2592,7 +2594,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2616,9 +2618,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### readUint8
+### readUint8
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2632,7 +2634,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2656,9 +2658,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### readUintBE
+### readUintBE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2681,7 +2683,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2705,9 +2707,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### readUintLE
+### readUintLE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2730,7 +2732,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2754,7 +2756,7 @@ v14.9.0, v12.19.0
 
 ___
 
-#### reduce
+### reduce
 
 `**reduce**(callbackfn): number`
 
@@ -2762,7 +2764,7 @@ Calls the specified callback function for all the elements in an array. The retu
 the callback function is the accumulated result, and is provided as an argument in the next
 call to the callback function.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2776,7 +2778,7 @@ call to the callback function.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2792,7 +2794,7 @@ call to the callback function.
 
 `**reduce**(callbackfn, initialValue): number`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2815,7 +2817,7 @@ call to the callback function.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2835,7 +2837,7 @@ Calls the specified callback function for all the elements in an array. The retu
 the callback function is the accumulated result, and is provided as an argument in the next
 call to the callback function.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2858,7 +2860,7 @@ call to the callback function.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2874,7 +2876,7 @@ call to the callback function.
 
 ___
 
-#### reduceRight
+### reduceRight
 
 `**reduceRight**(callbackfn): number`
 
@@ -2882,7 +2884,7 @@ Calls the specified callback function for all the elements in an array, in desce
 The return value of the callback function is the accumulated result, and is provided as an
 argument in the next call to the callback function.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2896,7 +2898,7 @@ argument in the next call to the callback function.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2912,7 +2914,7 @@ argument in the next call to the callback function.
 
 `**reduceRight**(callbackfn, initialValue): number`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2935,7 +2937,7 @@ argument in the next call to the callback function.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2955,7 +2957,7 @@ Calls the specified callback function for all the elements in an array, in desce
 The return value of the callback function is the accumulated result, and is provided as an
 argument in the next call to the callback function.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2978,7 +2980,7 @@ argument in the next call to the callback function.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2994,9 +2996,9 @@ argument in the next call to the callback function.
 
 ___
 
-#### reverse
+### reverse
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3012,11 +3014,11 @@ ___
 
 ___
 
-#### set
+### set
 
 Sets a value or an array of values.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3039,7 +3041,7 @@ Sets a value or an array of values.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3055,7 +3057,7 @@ Sets a value or an array of values.
 
 ___
 
-#### slice
+### slice
 
 Returns a new `Buffer` that references the same memory as the original, but
 offset and cropped by the `start` and `end` indices.
@@ -3085,7 +3087,7 @@ console.log(buf.toString());
 // Also prints: cuffer (!)
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3108,7 +3110,7 @@ console.log(buf.toString());
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3132,11 +3134,11 @@ Use `subarray` instead.
 
 ___
 
-#### some
+### some
 
 Determines whether the specified callback function returns true for any element of an array.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3159,7 +3161,7 @@ Determines whether the specified callback function returns true for any element 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3175,11 +3177,11 @@ Determines whether the specified callback function returns true for any element 
 
 ___
 
-#### sort
+### sort
 
 Sorts an array.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3193,7 +3195,7 @@ Sorts an array.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3209,7 +3211,7 @@ Sorts an array.
 
 ___
 
-#### subarray
+### subarray
 
 Returns a new `Buffer` that references the same memory as the original, but
 offset and cropped by the `start` and `end` indices.
@@ -3266,7 +3268,7 @@ console.log(buf.subarray(-5, -2).toString());
 // (Equivalent to buf.subarray(1, 4).)
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3289,7 +3291,7 @@ console.log(buf.subarray(-5, -2).toString());
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3309,7 +3311,7 @@ v3.0.0
 
 ___
 
-#### swap16
+### swap16
 
 Interprets `buf` as an array of unsigned 16-bit integers and swaps the
 byte order \_in-place\_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 2.
@@ -3343,7 +3345,7 @@ const buf = Buffer.from('This is little-endian UTF-16', 'utf16le');
 buf.swap16(); // Convert to big-endian UTF-16 text.
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3363,7 +3365,7 @@ v5.10.0
 
 ___
 
-#### swap32
+### swap32
 
 Interprets `buf` as an array of unsigned 32-bit integers and swaps the
 byte order \_in-place\_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 4.
@@ -3387,7 +3389,7 @@ buf2.swap32();
 // Throws ERR_INVALID_BUFFER_SIZE.
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3407,7 +3409,7 @@ v5.10.0
 
 ___
 
-#### swap64
+### swap64
 
 Interprets `buf` as an array of 64-bit numbers and swaps byte order \_in-place\_.
 Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 8.
@@ -3431,7 +3433,7 @@ buf2.swap64();
 // Throws ERR_INVALID_BUFFER_SIZE.
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3451,7 +3453,7 @@ v6.3.0
 
 ___
 
-#### toJSON
+### toJSON
 
 Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/JSON/stringify) implicitly calls
 this function when stringifying a `Buffer` instance.
@@ -3478,7 +3480,7 @@ console.log(copy);
 // Prints: <Buffer 01 02 03 04 05>
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3519,11 +3521,11 @@ v0.9.2
 
 ___
 
-#### toLocaleString
+### toLocaleString
 
 Converts a number to a string by using the current locale.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3539,7 +3541,7 @@ Converts a number to a string by using the current locale.
 
 ___
 
-#### toString
+### toString
 
 Decodes `buf` to a string according to the specified character encoding in`encoding`. `start` and `end` may be passed to decode only a subset of `buf`.
 
@@ -3574,7 +3576,7 @@ console.log(buf2.toString(undefined, 0, 3));
 // Prints: té
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3606,7 +3608,7 @@ console.log(buf2.toString(undefined, 0, 3));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3626,11 +3628,11 @@ v0.1.90
 
 ___
 
-#### valueOf
+### valueOf
 
 Returns the primitive value of the specified object.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3646,7 +3648,7 @@ Returns the primitive value of the specified object.
 
 ___
 
-#### values
+### values
 
 Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) for `buf` values (bytes). This function is
 called automatically when a `Buffer` is used in a `for..of` statement.
@@ -3679,7 +3681,7 @@ for (const value of buf) {
 //   114
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3699,7 +3701,7 @@ v1.1.0
 
 ___
 
-#### write
+### write
 
 `**write**(string, encoding?): number`
 
@@ -3725,7 +3727,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
 // Prints: 2 bytes : ab
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3748,7 +3750,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3768,7 +3770,7 @@ v0.1.90
 
 `**write**(string, offset, encoding?): number`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3800,7 +3802,7 @@ v0.1.90
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3816,7 +3818,7 @@ v0.1.90
 
 `**write**(string, offset, length, encoding?): number`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3857,7 +3859,7 @@ v0.1.90
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3873,7 +3875,7 @@ v0.1.90
 
 ___
 
-#### writeBigInt64BE
+### writeBigInt64BE
 
 Writes `value` to `buf` at the specified `offset` as big-endian.
 
@@ -3890,7 +3892,7 @@ console.log(buf);
 // Prints: <Buffer 01 02 03 04 05 06 07 08>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3913,7 +3915,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3933,7 +3935,7 @@ v12.0.0, v10.20.0
 
 ___
 
-#### writeBigInt64LE
+### writeBigInt64LE
 
 Writes `value` to `buf` at the specified `offset` as little-endian.
 
@@ -3950,7 +3952,7 @@ console.log(buf);
 // Prints: <Buffer 08 07 06 05 04 03 02 01>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3973,7 +3975,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3993,7 +3995,7 @@ v12.0.0, v10.20.0
 
 ___
 
-#### writeBigUInt64BE
+### writeBigUInt64BE
 
 Writes `value` to `buf` at the specified `offset` as big-endian.
 
@@ -4010,7 +4012,7 @@ console.log(buf);
 // Prints: <Buffer de ca fa fe ca ce fa de>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4033,7 +4035,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4053,7 +4055,7 @@ v12.0.0, v10.20.0
 
 ___
 
-#### writeBigUInt64LE
+### writeBigUInt64LE
 
 Writes `value` to `buf` at the specified `offset` as little-endian
 
@@ -4070,7 +4072,7 @@ console.log(buf);
 
 This function is also available under the `writeBigUint64LE` alias.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4093,7 +4095,7 @@ This function is also available under the `writeBigUint64LE` alias.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4113,9 +4115,9 @@ v12.0.0, v10.20.0
 
 ___
 
-#### writeBigUint64BE
+### writeBigUint64BE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4138,7 +4140,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4162,9 +4164,9 @@ v14.10.0, v12.19.0
 
 ___
 
-#### writeBigUint64LE
+### writeBigUint64LE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4187,7 +4189,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4211,7 +4213,7 @@ v14.10.0, v12.19.0
 
 ___
 
-#### writeDoubleBE
+### writeDoubleBE
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a JavaScript number. Behavior is undefined when `value` is anything
 other than a JavaScript number.
@@ -4227,7 +4229,7 @@ console.log(buf);
 // Prints: <Buffer 40 5e dd 2f 1a 9f be 77>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4250,7 +4252,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4270,7 +4272,7 @@ v0.11.15
 
 ___
 
-#### writeDoubleLE
+### writeDoubleLE
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a JavaScript number. Behavior is undefined when `value` is anything
 other than a JavaScript number.
@@ -4286,7 +4288,7 @@ console.log(buf);
 // Prints: <Buffer 77 be 9f 1a 2f dd 5e 40>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4309,7 +4311,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4329,7 +4331,7 @@ v0.11.15
 
 ___
 
-#### writeFloatBE
+### writeFloatBE
 
 Writes `value` to `buf` at the specified `offset` as big-endian. Behavior is
 undefined when `value` is anything other than a JavaScript number.
@@ -4345,7 +4347,7 @@ console.log(buf);
 // Prints: <Buffer 4f 4a fe bb>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4368,7 +4370,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4388,7 +4390,7 @@ v0.11.15
 
 ___
 
-#### writeFloatLE
+### writeFloatLE
 
 Writes `value` to `buf` at the specified `offset` as little-endian. Behavior is
 undefined when `value` is anything other than a JavaScript number.
@@ -4404,7 +4406,7 @@ console.log(buf);
 // Prints: <Buffer bb fe 4a 4f>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4427,7 +4429,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4447,7 +4449,7 @@ v0.11.15
 
 ___
 
-#### writeInt16BE
+### writeInt16BE
 
 Writes `value` to `buf` at the specified `offset` as big-endian.  The `value`must be a valid signed 16-bit integer. Behavior is undefined when `value` is
 anything other than a signed 16-bit integer.
@@ -4465,7 +4467,7 @@ console.log(buf);
 // Prints: <Buffer 01 02>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4488,7 +4490,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4508,7 +4510,7 @@ v0.5.5
 
 ___
 
-#### writeInt16LE
+### writeInt16LE
 
 Writes `value` to `buf` at the specified `offset` as little-endian.  The `value`must be a valid signed 16-bit integer. Behavior is undefined when `value` is
 anything other than a signed 16-bit integer.
@@ -4526,7 +4528,7 @@ console.log(buf);
 // Prints: <Buffer 04 03>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4549,7 +4551,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4569,7 +4571,7 @@ v0.5.5
 
 ___
 
-#### writeInt32BE
+### writeInt32BE
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid signed 32-bit integer. Behavior is undefined when `value` is
 anything other than a signed 32-bit integer.
@@ -4587,7 +4589,7 @@ console.log(buf);
 // Prints: <Buffer 01 02 03 04>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4610,7 +4612,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4630,7 +4632,7 @@ v0.5.5
 
 ___
 
-#### writeInt32LE
+### writeInt32LE
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid signed 32-bit integer. Behavior is undefined when `value` is
 anything other than a signed 32-bit integer.
@@ -4648,7 +4650,7 @@ console.log(buf);
 // Prints: <Buffer 08 07 06 05>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4671,7 +4673,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4691,7 +4693,7 @@ v0.5.5
 
 ___
 
-#### writeInt8
+### writeInt8
 
 Writes `value` to `buf` at the specified `offset`. `value` must be a valid
 signed 8-bit integer. Behavior is undefined when `value` is anything other than
@@ -4711,7 +4713,7 @@ console.log(buf);
 // Prints: <Buffer 02 fe>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4734,7 +4736,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4754,7 +4756,7 @@ v0.5.0
 
 ___
 
-#### writeIntBE
+### writeIntBE
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as big-endian. Supports up to 48 bits of accuracy. Behavior is undefined when`value` is anything other than a
 signed integer.
@@ -4770,7 +4772,7 @@ console.log(buf);
 // Prints: <Buffer 12 34 56 78 90 ab>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4802,7 +4804,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4822,7 +4824,7 @@ v0.11.15
 
 ___
 
-#### writeIntLE
+### writeIntLE
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as little-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than a signed integer.
@@ -4838,7 +4840,7 @@ console.log(buf);
 // Prints: <Buffer ab 90 78 56 34 12>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4870,7 +4872,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4890,7 +4892,7 @@ v0.11.15
 
 ___
 
-#### writeUInt16BE
+### writeUInt16BE
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid unsigned 16-bit integer. Behavior is undefined when `value`is anything other than an
 unsigned 16-bit integer.
@@ -4909,7 +4911,7 @@ console.log(buf);
 // Prints: <Buffer de ad be ef>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4932,7 +4934,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4952,7 +4954,7 @@ v0.5.5
 
 ___
 
-#### writeUInt16LE
+### writeUInt16LE
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid unsigned 16-bit integer. Behavior is undefined when `value` is
 anything other than an unsigned 16-bit integer.
@@ -4971,7 +4973,7 @@ console.log(buf);
 // Prints: <Buffer ad de ef be>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4994,7 +4996,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5014,7 +5016,7 @@ v0.5.5
 
 ___
 
-#### writeUInt32BE
+### writeUInt32BE
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid unsigned 32-bit integer. Behavior is undefined when `value`is anything other than an
 unsigned 32-bit integer.
@@ -5032,7 +5034,7 @@ console.log(buf);
 // Prints: <Buffer fe ed fa ce>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5055,7 +5057,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5075,7 +5077,7 @@ v0.5.5
 
 ___
 
-#### writeUInt32LE
+### writeUInt32LE
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid unsigned 32-bit integer. Behavior is undefined when `value` is
 anything other than an unsigned 32-bit integer.
@@ -5093,7 +5095,7 @@ console.log(buf);
 // Prints: <Buffer ce fa ed fe>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5116,7 +5118,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5136,7 +5138,7 @@ v0.5.5
 
 ___
 
-#### writeUInt8
+### writeUInt8
 
 Writes `value` to `buf` at the specified `offset`. `value` must be a
 valid unsigned 8-bit integer. Behavior is undefined when `value` is anything
@@ -5158,7 +5160,7 @@ console.log(buf);
 // Prints: <Buffer 03 04 23 42>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5181,7 +5183,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5201,7 +5203,7 @@ v0.5.0
 
 ___
 
-#### writeUIntBE
+### writeUIntBE
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as big-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than an unsigned integer.
@@ -5219,7 +5221,7 @@ console.log(buf);
 // Prints: <Buffer 12 34 56 78 90 ab>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5251,7 +5253,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5271,7 +5273,7 @@ v0.5.5
 
 ___
 
-#### writeUIntLE
+### writeUIntLE
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as little-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than an unsigned integer.
@@ -5289,7 +5291,7 @@ console.log(buf);
 // Prints: <Buffer ab 90 78 56 34 12>
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5321,7 +5323,7 @@ console.log(buf);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5341,9 +5343,9 @@ v0.5.5
 
 ___
 
-#### writeUint16BE
+### writeUint16BE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5366,7 +5368,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5390,9 +5392,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### writeUint16LE
+### writeUint16LE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5415,7 +5417,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5439,9 +5441,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### writeUint32BE
+### writeUint32BE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5464,7 +5466,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5488,9 +5490,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### writeUint32LE
+### writeUint32LE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5513,7 +5515,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5537,9 +5539,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### writeUint8
+### writeUint8
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5562,7 +5564,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5586,9 +5588,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### writeUintBE
+### writeUintBE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5620,7 +5622,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5644,9 +5646,9 @@ v14.9.0, v12.19.0
 
 ___
 
-#### writeUintLE
+### writeUintLE
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5678,7 +5680,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

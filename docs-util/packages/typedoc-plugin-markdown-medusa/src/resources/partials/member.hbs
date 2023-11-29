@@ -2,7 +2,9 @@
 
 {{#if name}}
 
-{{titleLevel 4}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
+{{titleLevel}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
+
+{{incrementCurrentTitleLevel}}
 
 {{/if}}
 
@@ -14,7 +16,7 @@
 
 {{#each signatures}}
 
-{{> member.signature showSources=true commentLevel=../commentLevel }}
+{{> member.signature showSources=true }}
 
 {{/each}}
 
@@ -58,4 +60,14 @@
 {{#unless hasOwnDocument}}
 ___
 {{/unless}}
+{{/unless}}
+
+{{#unless hasOwnDocument}}
+
+{{#if name}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
 {{/unless}}

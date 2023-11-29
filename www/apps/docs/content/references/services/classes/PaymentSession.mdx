@@ -8,13 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new PaymentSession**()`
 
 A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.
+
+___
 
 ## Properties
 
@@ -138,13 +138,15 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
   }
 ]} />
 
+___
+
 ## Methods
 
-#### beforeInsert
+### beforeInsert
 
 `Private **beforeInsert**(): void`
 
-##### Returns
+#### Returns
 
 `void`
 

@@ -14,11 +14,11 @@ All methods in this class require [customer authentication](AuthResource.mdx#aut
 
 ## Methods
 
-#### addAddress
+### addAddress
 
 Add an address to the logged-in customer's saved addresses.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -43,7 +43,7 @@ medusa.customers.addresses
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -176,7 +176,7 @@ medusa.customers.addresses
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -348,11 +348,11 @@ medusa.customers.addresses
 
 ___
 
-#### deleteAddress
+### deleteAddress
 
 Delete an address of the logged-in customer.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -363,7 +363,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -386,7 +386,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -558,11 +558,11 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
 
 ___
 
-#### updateAddress
+### updateAddress
 
 Update an address of the logged-in customer.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -577,7 +577,7 @@ medusa.customers.addresses
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -709,7 +709,7 @@ medusa.customers.addresses
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

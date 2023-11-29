@@ -18,11 +18,11 @@ Related Guide: [How to manage tax rates](https://docs.medusajs.com/modules/taxes
 
 ## Methods
 
-#### addProductTypes
+### addProductTypes
 
 Add product types to a tax rate.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -37,7 +37,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -107,7 +107,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -279,11 +279,11 @@ medusa.admin.taxRates
 
 ___
 
-#### addProducts
+### addProducts
 
 Add products to a tax rate.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -298,7 +298,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -368,7 +368,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -540,11 +540,11 @@ medusa.admin.taxRates
 
 ___
 
-#### addShippingOptions
+### addShippingOptions
 
 Add shipping options to a tax rate.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -559,7 +559,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -629,7 +629,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -801,11 +801,11 @@ medusa.admin.taxRates
 
 ___
 
-#### create
+### create
 
 Create a tax rate.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -822,7 +822,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -937,7 +937,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1109,11 +1109,11 @@ medusa.admin.taxRates
 
 ___
 
-#### delete
+### delete
 
 Delete a tax rate. Resources associated with the tax rate, such as products or product types, are not deleted.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1124,7 +1124,7 @@ medusa.admin.taxRates.delete(taxRateId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1147,7 +1147,7 @@ medusa.admin.taxRates.delete(taxRateId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1191,11 +1191,11 @@ medusa.admin.taxRates.delete(taxRateId).then(({ id, object, deleted }) => {
 
 ___
 
-#### list
+### list
 
 Retrieve a list of tax rates. The tax rates can be filtered by fields such as `name` or `rate` passed in the `query` parameter. The tax rates can also be paginated.
 
-##### Example
+#### Example
 
 To list tax rates:
 
@@ -1240,7 +1240,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1336,7 +1336,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1535,11 +1535,11 @@ medusa.admin.taxRates
 
 ___
 
-#### removeProductTypes
+### removeProductTypes
 
 Remove product types from a tax rate. This only removes the association between the product types and the tax rate. It does not delete the product types.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1554,7 +1554,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1624,7 +1624,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1796,11 +1796,11 @@ medusa.admin.taxRates
 
 ___
 
-#### removeProducts
+### removeProducts
 
 Remove products from a tax rate. This only removes the association between the products and the tax rate. It does not delete the products.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1815,7 +1815,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1885,7 +1885,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2057,11 +2057,11 @@ medusa.admin.taxRates
 
 ___
 
-#### removeShippingOptions
+### removeShippingOptions
 
 Remove shipping options from a tax rate. This only removes the association between the shipping options and the tax rate. It does not delete the shipping options.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2076,7 +2076,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2146,7 +2146,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2318,11 +2318,11 @@ medusa.admin.taxRates
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a tax rate's details.
 
-##### Example
+#### Example
 
 A simple example that retrieves a tax rate by its ID:
 
@@ -2350,7 +2350,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2401,7 +2401,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2573,11 +2573,11 @@ medusa.admin.taxRates
 
 ___
 
-#### update
+### update
 
 Update a tax rate's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2592,7 +2592,7 @@ medusa.admin.taxRates
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2716,7 +2716,7 @@ medusa.admin.taxRates
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
