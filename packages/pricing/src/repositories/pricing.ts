@@ -126,17 +126,17 @@ export class PricingRepository
         })
         .andWhere(function () {
           this.andWhere(function () {
-            this.andWhere(function () {
-              for (const [key, value] of Object.entries(context)) {
-                this.orWhere({
-                  "plrt.rule_attribute": key,
-                })
-                this.whereIn("plrv.value", [value])
-              }
+            for (const [key, value] of Object.entries(context)) {
+              this.orWhere({
+                "plrt.rule_attribute": key,
+              })
+              this.whereIn("plrv.value", [value])
+            }
 
-              this.orWhere("pl.number_rules", "=", 0)
-            })
+            this.orWhere("pl.number_rules", "=", 0)
+          })
 
+          this.andWhere(function () {
             this.andWhere(function () {
               for (const [key, value] of Object.entries(context)) {
                 this.orWhere({
@@ -144,10 +144,9 @@ export class PricingRepository
                   "pr.value": value,
                 })
               }
-
               this.andWhere("psma1.number_rules", ">", 0)
-              this.orWhere("psma1.number_rules", "=", 0)
             })
+            this.orWhere("psma1.number_rules", "=", 0)
           })
         })
     })
