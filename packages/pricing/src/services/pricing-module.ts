@@ -1428,7 +1428,9 @@ export default class PricingModuleService<
     const priceListsToCreate: PricingTypes.CreatePriceListDTO[] = []
 
     for (const priceListData of data) {
-      const { rules = {}, ...priceListOnlyData } = priceListData
+      const { rules = {}, 
+      prices = [],
+      ...priceListOnlyData } = priceListData
 
       priceListsToCreate.push({
         ...priceListOnlyData,
@@ -1586,9 +1588,17 @@ export default class PricingModuleService<
     )
 
     for (const priceListData of data) {
-      const { rules, ...priceListOnlyData } = priceListData
-      const updatePriceListData = {
+      const { rules, starts_at, ends_at, ...priceListOnlyData } = priceListData
+      const updatePriceListData: any = {
         ...priceListOnlyData,
+      }
+
+      if (starts_at) {
+        updatePriceListData.starts_at = starts_at!.toISOString()
+      }
+
+      if (ends_at) {
+        updatePriceListData.ends_at = ends_at!.toISOString()
       }
 
       if (typeof rules === "object") {

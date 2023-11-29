@@ -1,32 +1,18 @@
-import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
-import {
-  FlagRouter,
-  MedusaV2Flag,
-  PriceListStatus,
-  PriceListType,
-} from "@medusajs/utils"
-import { createPriceLists } from "@medusajs/core-flows"
-import { Type } from "class-transformer"
-import {
-  IsArray,
-  IsBoolean,
-  IsEnum,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { Request } from "express"
-import { EntityManager } from "typeorm"
-import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import { PriceList } from "../../../../models"
-import PriceListService from "../../../../services/price-list"
-import {
-  AdminPriceListPricesCreateReq,
-  CreatePriceListInput,
-} from "../../../../types/price-list"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { getPriceListPricingModule } from "./modules-queries"
+import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types";
+import { FlagRouter, MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils";
+import { createPriceLists } from "@medusajs/core-flows";
+import { Transform, Type } from "class-transformer";
+import { IsArray, IsBoolean, IsDateString, IsEnum, IsOptional, IsString, ValidateNested } from "class-validator";
+import { Request } from "express";
+import { EntityManager } from "typeorm";
+import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from ".";
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing";
+import { PriceList } from "../../../../models";
+import PriceListService from "../../../../services/price-list";
+import { AdminPriceListPricesCreateReq, CreatePriceListInput } from "../../../../types/price-list";
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
+import { getPriceListPricingModule } from "./modules-queries";
+import { transformDate } from "../../../../utils/validators/date-transform";
 
 /**
  * @oas [post] /admin/price-lists
@@ -263,9 +249,13 @@ export class AdminPostPriceListsPriceListReq {
   description: string
 
   @IsOptional()
+  @IsDateString()
+  @Transform(transformDate)
   starts_at?: Date
 
   @IsOptional()
+  @IsDateString()
+  @Transform(transformDate)
   ends_at?: Date
 
   @IsOptional()

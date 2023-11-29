@@ -1,9 +1,9 @@
 import { Context, DAL, UpdatePriceListDTO } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceList } from "@models"
@@ -112,16 +112,16 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
           `PriceList with id "${priceListData.id}" not found`
         )
       }
-
-      if (!!priceListData.starts_at) {
-        priceListData.starts_at = new Date(
-          priceListData.starts_at
-        ).toISOString()
-      }
-
-      if (!!priceListData.ends_at) {
-        priceListData.ends_at = new Date(priceListData.ends_at).toISOString()
-      }
+      //
+      // if (!!priceListData.starts_at) {
+      //   priceListData.starts_at = new Date(
+      //     priceListData.starts_at
+      //   ).toISOString()
+      // }
+      //
+      // if (!!priceListData.ends_at) {
+      //   priceListData.ends_at = new Date(priceListData.ends_at).toISOString()
+      // }
 
       return manager.assign(existingPriceList, priceListData)
     })

@@ -105,6 +105,7 @@ describe("POST /admin/price-lists", () => {
       type: "override",
       customer_groups: [{ id: "customer-group-1" }],
       status: "active",
+      starts_at: new Date(),
       prices: [
         {
           amount: 400,
