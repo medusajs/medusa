@@ -17,12 +17,12 @@ The notification's type, such as an email or SMS, is determined by the notificat
 
 ## Methods
 
-#### list
+### list
 
 Retrieve a list of notifications. The notifications can be filtered by fields such as `event_name` or `resource_type` passed in the `query` parameter.
 The notifications can also be paginated.
 
-##### Example
+#### Example
 
 To list notifications:
 
@@ -67,7 +67,7 @@ medusa.admin.notifications
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -172,7 +172,7 @@ medusa.admin.notifications
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -371,11 +371,11 @@ medusa.admin.notifications
 
 ___
 
-#### resend
+### resend
 
 Resend a previously sent notifications, with the same data but optionally to a different address.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -386,7 +386,7 @@ medusa.admin.notifications.resend(notificationId).then(({ notification }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -428,7 +428,7 @@ medusa.admin.notifications.resend(notificationId).then(({ notification }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -9,7 +9,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 A [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) encapsulates immutable, raw data that can be safely shared across
 multiple worker threads.
 
-#### Since
+## Since
 
 v15.7.0, v14.18.0
 
@@ -36,14 +36,16 @@ v15.7.0, v14.18.0
   }
 ]} />
 
+___
+
 ## Methods
 
-#### arrayBuffer
+### arrayBuffer
 
 Returns a promise that fulfills with an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/ArrayBuffer) containing a copy of
 the `Blob` data.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -63,12 +65,12 @@ v15.7.0, v14.18.0
 
 ___
 
-#### slice
+### slice
 
 Creates and returns a new `Blob` containing a subset of this `Blob` objects
 data. The original `Blob` is not altered.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -100,7 +102,7 @@ data. The original `Blob` is not altered.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -120,11 +122,11 @@ v15.7.0, v14.18.0
 
 ___
 
-#### stream
+### stream
 
 Returns a new `ReadableStream` that allows the content of the `Blob` to be read.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -144,12 +146,12 @@ v16.7.0
 
 ___
 
-#### text
+### text
 
 Returns a promise that fulfills with the contents of the `Blob` decoded as a
 UTF-8 string.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

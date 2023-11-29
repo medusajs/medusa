@@ -19,11 +19,11 @@ Related Guide: [How to manage regions](https://docs.medusajs.com/modules/regions
 
 ## Methods
 
-#### addCountry
+### addCountry
 
 Add a country to the list of countries in a region.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -38,7 +38,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -80,7 +80,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -289,11 +289,11 @@ medusa.admin.regions
 
 ___
 
-#### addFulfillmentProvider
+### addFulfillmentProvider
 
 Add a fulfillment provider to the list of fulfullment providers in a region.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -308,7 +308,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -350,7 +350,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -559,11 +559,11 @@ medusa.admin.regions
 
 ___
 
-#### addPaymentProvider
+### addPaymentProvider
 
 Add a payment provider to the list of payment providers in a region.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -578,7 +578,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -620,7 +620,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -829,11 +829,11 @@ medusa.admin.regions
 
 ___
 
-#### create
+### create
 
 Create a region.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -853,7 +853,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -959,7 +959,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1168,11 +1168,11 @@ medusa.admin.regions
 
 ___
 
-#### delete
+### delete
 
 Delete a region. Associated resources, such as providers or currencies are not deleted. Associated tax rates are deleted.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1183,7 +1183,7 @@ medusa.admin.regions.delete(regionId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1206,7 +1206,7 @@ medusa.admin.regions.delete(regionId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1250,11 +1250,11 @@ medusa.admin.regions.delete(regionId).then(({ id, object, deleted }) => {
 
 ___
 
-#### deleteCountry
+### deleteCountry
 
 Delete a country from the list of countries in a region. The country will still be available in the system, and it can be used in other regions.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1265,7 +1265,7 @@ medusa.admin.regions.deleteCountry(regionId, "dk").then(({ region }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1297,7 +1297,7 @@ medusa.admin.regions.deleteCountry(regionId, "dk").then(({ region }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1506,11 +1506,11 @@ medusa.admin.regions.deleteCountry(regionId, "dk").then(({ region }) => {
 
 ___
 
-#### deleteFulfillmentProvider
+### deleteFulfillmentProvider
 
 Delete a fulfillment provider from a region. The fulfillment provider will still be available for usage in other regions.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1523,7 +1523,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1555,7 +1555,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1764,11 +1764,11 @@ medusa.admin.regions
 
 ___
 
-#### deletePaymentProvider
+### deletePaymentProvider
 
 Delete a payment provider from a region. The payment provider will still be available for usage in other regions.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1781,7 +1781,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1813,7 +1813,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2022,11 +2022,11 @@ medusa.admin.regions
 
 ___
 
-#### list
+### list
 
 Retrieve a list of Regions. The regions can be filtered by fields such as `created_at` passed in the `query` parameter. The regions can also be paginated.
 
-##### Example
+#### Example
 
 To list regions:
 
@@ -2055,7 +2055,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2235,7 +2235,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2471,11 +2471,11 @@ medusa.admin.regions
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a region's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2486,7 +2486,7 @@ medusa.admin.regions.retrieve(regionId).then(({ region }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2509,7 +2509,7 @@ medusa.admin.regions.retrieve(regionId).then(({ region }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2718,11 +2718,11 @@ medusa.admin.regions.retrieve(regionId).then(({ region }) => {
 
 ___
 
-#### retrieveFulfillmentOptions
+### retrieveFulfillmentOptions
 
 Retrieve a list of fulfillment options available in a region.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2735,7 +2735,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2758,7 +2758,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2784,11 +2784,11 @@ medusa.admin.regions
 
 ___
 
-#### update
+### update
 
 Update a region's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2803,7 +2803,7 @@ medusa.admin.regions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2945,7 +2945,7 @@ medusa.admin.regions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -17,12 +17,12 @@ Admins can manage the store and its details or configurations.
 
 ## Methods
 
-#### addCurrency
+### addCurrency
 
 Add a currency code to the available currencies in a store. This doesn't create new currencies, as currencies are defined within the Medusa backend. 
 To create a currency, you can [create a migration](https://docs.medusajs.com/development/entities/migrations/create) that inserts the currency into the database.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -33,7 +33,7 @@ medusa.admin.store.addCurrency("eur").then(({ store }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -56,7 +56,7 @@ medusa.admin.store.addCurrency("eur").then(({ store }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -219,11 +219,11 @@ medusa.admin.store.addCurrency("eur").then(({ store }) => {
 
 ___
 
-#### deleteCurrency
+### deleteCurrency
 
 Delete a currency code from the available currencies in a store. This doesn't completely delete the currency and it can be added again later to the store.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -234,7 +234,7 @@ medusa.admin.store.deleteCurrency("eur").then(({ store }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -257,7 +257,7 @@ medusa.admin.store.deleteCurrency("eur").then(({ store }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -420,11 +420,11 @@ medusa.admin.store.deleteCurrency("eur").then(({ store }) => {
 
 ___
 
-#### listPaymentProviders
+### listPaymentProviders
 
 Retrieve a list of available payment providers in a store.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -435,7 +435,7 @@ medusa.admin.store.listPaymentProviders().then(({ payment_providers }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -449,7 +449,7 @@ medusa.admin.store.listPaymentProviders().then(({ payment_providers }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -504,11 +504,11 @@ medusa.admin.store.listPaymentProviders().then(({ payment_providers }) => {
 
 ___
 
-#### listTaxProviders
+### listTaxProviders
 
 Retrieve a list of available tax providers in a store.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -519,7 +519,7 @@ medusa.admin.store.listTaxProviders().then(({ tax_providers }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -533,7 +533,7 @@ medusa.admin.store.listTaxProviders().then(({ tax_providers }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -588,11 +588,11 @@ medusa.admin.store.listTaxProviders().then(({ tax_providers }) => {
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve the store's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -603,7 +603,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -617,7 +617,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -816,11 +816,11 @@ medusa.admin.store.retrieve().then(({ store }) => {
 
 ___
 
-#### update
+### update
 
 Update the store's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -835,7 +835,7 @@ medusa.admin.store
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -922,7 +922,7 @@ medusa.admin.store
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -112,23 +112,37 @@ Provides layer to manipulate gift cards.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -160,7 +174,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -176,11 +190,11 @@ transaction manager is created.
 
 ___
 
-#### create
+### create
 
 Creates a gift card with provided data given that the data is validated.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -194,7 +208,7 @@ Creates a gift card with provided data given that the data is validated.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -210,9 +224,9 @@ Creates a gift card with provided data given that the data is validated.
 
 ___
 
-#### createTransaction
+### createTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -226,7 +240,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -242,11 +256,11 @@ ___
 
 ___
 
-#### delete
+### delete
 
 Deletes a gift card idempotently
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -260,7 +274,7 @@ Deletes a gift card idempotently
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -276,9 +290,9 @@ Deletes a gift card idempotently
 
 ___
 
-#### list
+### list
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -301,7 +315,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -317,9 +331,9 @@ ___
 
 ___
 
-#### listAndCount
+### listAndCount
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -342,7 +356,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -358,11 +372,11 @@ ___
 
 ___
 
-#### retrieve
+### retrieve
 
 Gets a gift card by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -385,7 +399,7 @@ Gets a gift card by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -401,9 +415,9 @@ Gets a gift card by id.
 
 ___
 
-#### retrieveByCode
+### retrieveByCode
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -426,7 +440,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -442,9 +456,9 @@ ___
 
 ___
 
-#### retrieve\_
+### retrieve\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -467,7 +481,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -483,9 +497,9 @@ ___
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -499,7 +513,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -515,11 +529,11 @@ ___
 
 ___
 
-#### update
+### update
 
 Updates a giftCard.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -542,7 +556,7 @@ Updates a giftCard.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -558,9 +572,9 @@ Updates a giftCard.
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -574,7 +588,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -590,11 +604,11 @@ ___
 
 ___
 
-#### generateCode
+### generateCode
 
 Generates a 16 character gift card code
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -610,12 +624,12 @@ Generates a 16 character gift card code
 
 ___
 
-#### resolveTaxRate
+### resolveTaxRate
 
 The tax\_rate of the giftcard can depend on whether regions tax gift cards, an input
 provided by the user or the tax rate. Based on these conditions, tax\_rate changes.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -638,7 +652,7 @@ provided by the user or the tax rate. Based on these conditions, tax\_rate chang
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -8,13 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-#### create
+### create
 
 `**create**(input, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
 
 This method is used to create a stock location.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -32,7 +32,7 @@ async function createStockLocation (name: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -55,7 +55,7 @@ async function createStockLocation (name: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
 
@@ -73,13 +73,13 @@ Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(id, context?): Promise&#60;void&#62;`
 
 This method is used to delete a stock location.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -93,7 +93,7 @@ async function deleteStockLocation (id:string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -116,7 +116,7 @@ async function deleteStockLocation (id:string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -134,13 +134,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of stock locations based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of stock locations using their IDs:
 
@@ -202,7 +202,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -234,7 +234,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;
 
@@ -252,13 +252,13 @@ Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?, context?): Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of stock locations along with the total count of available stock locations satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of stock locations using their IDs:
 
@@ -320,7 +320,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -352,7 +352,7 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;
 
@@ -370,13 +370,13 @@ Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(id, config?, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
 
 This method is used to retrieve a stock location by its ID
 
-##### Example
+#### Example
 
 A simple example that retrieves a inventory item by its ID:
 
@@ -412,7 +412,7 @@ async function retrieveStockLocation (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -444,7 +444,7 @@ async function retrieveStockLocation (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
 
@@ -462,13 +462,13 @@ Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
 
 ___
 
-#### update
+### update
 
 `**update**(id, input, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
 
 This method is used to update a stock location.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -486,7 +486,7 @@ async function updateStockLocation (id:string, name: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -518,7 +518,7 @@ async function updateStockLocation (id:string, name: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
 

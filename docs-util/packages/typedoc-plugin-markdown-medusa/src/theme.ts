@@ -54,6 +54,7 @@ export class MarkdownTheme extends Theme {
   reflection?: DeclarationReflection
   location!: string
   anchorMap: Record<string, string[]> = {}
+  currentTitleLevel = 1
 
   static URL_PREFIX = /^(http|ftp)s?:\/\//
 
@@ -355,6 +356,8 @@ export class MarkdownTheme extends Theme {
    * @param page  An event object describing the current render operation.
    */
   protected onBeginPage(page: PageEvent) {
+    // reset header level counter
+    this.currentTitleLevel = 1
     this.location = page.url
     this.reflection =
       page.model instanceof DeclarationReflection ? page.model : undefined
@@ -401,6 +404,10 @@ export class MarkdownTheme extends Theme {
 
   get globalsFile() {
     return `modules.${this.mdxOutput ? "mdx" : "md"}`
+  }
+
+  setCurrentTitleLevel(value: number) {
+    this.currentTitleLevel = value
   }
 
   getFormattingOptionsForLocation(): FormattingOptionType {

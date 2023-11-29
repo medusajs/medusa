@@ -6,7 +6,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Writable
 
-#### Since
+## Since
 
 v0.9.4
 
@@ -150,11 +150,13 @@ v0.9.4
   }
 ]} />
 
+___
+
 ## Methods
 
-#### [captureRejectionSymbol]
+### [captureRejectionSymbol]
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -186,7 +188,7 @@ v0.9.4
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -202,9 +204,9 @@ v0.9.4
 
 ___
 
-#### \_construct
+### \_construct
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -218,7 +220,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -234,9 +236,9 @@ ___
 
 ___
 
-#### \_destroy
+### \_destroy
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -259,7 +261,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -275,9 +277,9 @@ ___
 
 ___
 
-#### \_final
+### \_final
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -291,7 +293,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -307,9 +309,9 @@ ___
 
 ___
 
-#### \_write
+### \_write
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -341,7 +343,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -357,9 +359,9 @@ ___
 
 ___
 
-#### \_writev
+### \_writev
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -382,7 +384,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -398,7 +400,7 @@ ___
 
 ___
 
-#### addListener
+### addListener
 
 `**addListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
@@ -411,7 +413,7 @@ The defined events on documents including:
 5. pipe
 6. unpipe
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -434,7 +436,7 @@ The defined events on documents including:
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -450,7 +452,7 @@ The defined events on documents including:
 
 `**addListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -473,7 +475,7 @@ The defined events on documents including:
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -489,7 +491,7 @@ The defined events on documents including:
 
 `**addListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -512,7 +514,7 @@ The defined events on documents including:
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -528,7 +530,7 @@ The defined events on documents including:
 
 `**addListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -551,7 +553,7 @@ The defined events on documents including:
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -567,7 +569,7 @@ The defined events on documents including:
 
 `**addListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -590,7 +592,7 @@ The defined events on documents including:
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -606,7 +608,7 @@ The defined events on documents including:
 
 `**addListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -629,7 +631,7 @@ The defined events on documents including:
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -645,7 +647,7 @@ The defined events on documents including:
 
 `**addListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -668,7 +670,7 @@ The defined events on documents including:
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -684,9 +686,9 @@ The defined events on documents including:
 
 ___
 
-#### compose
+### compose
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -718,7 +720,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -734,7 +736,7 @@ ___
 
 ___
 
-#### cork
+### cork
 
 The `writable.cork()` method forces all written data to be buffered in memory.
 The buffered data will be flushed when either the [uncork](../../internal/classes/internal.WritableBase.mdx#uncork) or [end](../../internal/classes/internal.WritableBase.mdx#end) methods are called.
@@ -748,7 +750,7 @@ to be processed. However, use of `writable.cork()` without implementing`writable
 
 See also: `writable.uncork()`, `writable._writev()`.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -768,7 +770,7 @@ v0.11.2
 
 ___
 
-#### destroy
+### destroy
 
 Destroy the stream. Optionally emit an `'error'` event, and emit a `'close'`event (unless `emitClose` is set to `false`). After this call, the writable
 stream has ended and subsequent calls to `write()` or `end()` will result in
@@ -783,7 +785,7 @@ further errors except from `_destroy()` may be emitted as `'error'`.
 Implementors should not override this method,
 but instead implement `writable._destroy()`.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -797,7 +799,7 @@ but instead implement `writable._destroy()`.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -817,7 +819,7 @@ v8.0.0
 
 ___
 
-#### emit
+### emit
 
 `**emit**(event): boolean`
 
@@ -859,7 +861,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 // event with parameters 1, 2, 3, 4, 5 in third listener
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -873,7 +875,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -893,7 +895,7 @@ v0.1.26
 
 `**emit**(event): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -907,7 +909,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -923,7 +925,7 @@ v0.1.26
 
 `**emit**(event, err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -946,7 +948,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -962,7 +964,7 @@ v0.1.26
 
 `**emit**(event): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -976,7 +978,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -992,7 +994,7 @@ v0.1.26
 
 `**emit**(event, src): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1015,7 +1017,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1031,7 +1033,7 @@ v0.1.26
 
 `**emit**(event, src): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1054,7 +1056,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1070,7 +1072,7 @@ v0.1.26
 
 `**emit**(event, ...args): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1093,7 +1095,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1109,7 +1111,7 @@ v0.1.26
 
 ___
 
-#### end
+### end
 
 `**end**(cb?): [Writable](internal.internal-3.Writable.mdx)`
 
@@ -1129,7 +1131,7 @@ file.end('world!');
 // Writing more now is not allowed!
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1143,7 +1145,7 @@ file.end('world!');
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1163,7 +1165,7 @@ v0.9.4
 
 `**end**(chunk, cb?): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1186,7 +1188,7 @@ v0.9.4
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1202,7 +1204,7 @@ v0.9.4
 
 `**end**(chunk, encoding, cb?): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1234,7 +1236,7 @@ v0.9.4
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1250,7 +1252,7 @@ v0.9.4
 
 ___
 
-#### eventNames
+### eventNames
 
 Returns an array listing the events for which the emitter has registered
 listeners. The values in the array are strings or `Symbol`s.
@@ -1269,7 +1271,7 @@ console.log(myEE.eventNames());
 // Prints: [ 'foo', 'bar', Symbol(symbol) ]
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1289,12 +1291,12 @@ v6.0.0
 
 ___
 
-#### getMaxListeners
+### getMaxListeners
 
 Returns the current max listener value for the `EventEmitter` which is either
 set by `emitter.setMaxListeners(n)` or defaults to [defaultMaxListeners](internal.internal-3.Writable.mdx#defaultmaxlisteners).
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1314,13 +1316,13 @@ v1.0.0
 
 ___
 
-#### listenerCount
+### listenerCount
 
 Returns the number of listeners listening for the event named `eventName`.
 If `listener` is provided, it will return how many times the listener is found
 in the list of the listeners of the event.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1343,7 +1345,7 @@ in the list of the listeners of the event.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1363,7 +1365,7 @@ v3.2.0
 
 ___
 
-#### listeners
+### listeners
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -1375,7 +1377,7 @@ console.log(util.inspect(server.listeners('connection')));
 // Prints: [ [Function] ]
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1389,7 +1391,7 @@ console.log(util.inspect(server.listeners('connection')));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1409,11 +1411,11 @@ v0.1.26
 
 ___
 
-#### off
+### off
 
 Alias for `emitter.removeListener()`.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1436,7 +1438,7 @@ Alias for `emitter.removeListener()`.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1456,7 +1458,7 @@ v10.0.0
 
 ___
 
-#### on
+### on
 
 `**on**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
@@ -1487,7 +1489,7 @@ myEE.emit('foo');
 //   a
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1510,7 +1512,7 @@ myEE.emit('foo');
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1530,7 +1532,7 @@ v0.1.101
 
 `**on**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1553,7 +1555,7 @@ v0.1.101
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1569,7 +1571,7 @@ v0.1.101
 
 `**on**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1592,7 +1594,7 @@ v0.1.101
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1608,7 +1610,7 @@ v0.1.101
 
 `**on**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1631,7 +1633,7 @@ v0.1.101
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1647,7 +1649,7 @@ v0.1.101
 
 `**on**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1670,7 +1672,7 @@ v0.1.101
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1686,7 +1688,7 @@ v0.1.101
 
 `**on**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1709,7 +1711,7 @@ v0.1.101
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1725,7 +1727,7 @@ v0.1.101
 
 `**on**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1748,7 +1750,7 @@ v0.1.101
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1764,7 +1766,7 @@ v0.1.101
 
 ___
 
-#### once
+### once
 
 `**once**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
@@ -1793,7 +1795,7 @@ myEE.emit('foo');
 //   a
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1816,7 +1818,7 @@ myEE.emit('foo');
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1836,7 +1838,7 @@ v0.3.0
 
 `**once**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1859,7 +1861,7 @@ v0.3.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1875,7 +1877,7 @@ v0.3.0
 
 `**once**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1898,7 +1900,7 @@ v0.3.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1914,7 +1916,7 @@ v0.3.0
 
 `**once**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1937,7 +1939,7 @@ v0.3.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1953,7 +1955,7 @@ v0.3.0
 
 `**once**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1976,7 +1978,7 @@ v0.3.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1992,7 +1994,7 @@ v0.3.0
 
 `**once**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2015,7 +2017,7 @@ v0.3.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2031,7 +2033,7 @@ v0.3.0
 
 `**once**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2054,7 +2056,7 @@ v0.3.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2070,9 +2072,9 @@ v0.3.0
 
 ___
 
-#### pipe
+### pipe
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2104,7 +2106,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2120,7 +2122,7 @@ ___
 
 ___
 
-#### prependListener
+### prependListener
 
 `**prependListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
@@ -2137,7 +2139,7 @@ server.prependListener('connection', (stream) => {
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2160,7 +2162,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2180,7 +2182,7 @@ v6.0.0
 
 `**prependListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2203,7 +2205,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2219,7 +2221,7 @@ v6.0.0
 
 `**prependListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2242,7 +2244,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2258,7 +2260,7 @@ v6.0.0
 
 `**prependListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2281,7 +2283,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2297,7 +2299,7 @@ v6.0.0
 
 `**prependListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2320,7 +2322,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2336,7 +2338,7 @@ v6.0.0
 
 `**prependListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2359,7 +2361,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2375,7 +2377,7 @@ v6.0.0
 
 `**prependListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2398,7 +2400,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2414,7 +2416,7 @@ v6.0.0
 
 ___
 
-#### prependOnceListener
+### prependOnceListener
 
 `**prependOnceListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
@@ -2429,7 +2431,7 @@ server.prependOnceListener('connection', (stream) => {
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2452,7 +2454,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2472,7 +2474,7 @@ v6.0.0
 
 `**prependOnceListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2495,7 +2497,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2511,7 +2513,7 @@ v6.0.0
 
 `**prependOnceListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2534,7 +2536,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2550,7 +2552,7 @@ v6.0.0
 
 `**prependOnceListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2573,7 +2575,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2589,7 +2591,7 @@ v6.0.0
 
 `**prependOnceListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2612,7 +2614,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2628,7 +2630,7 @@ v6.0.0
 
 `**prependOnceListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2651,7 +2653,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2667,7 +2669,7 @@ v6.0.0
 
 `**prependOnceListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2690,7 +2692,7 @@ v6.0.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2706,7 +2708,7 @@ v6.0.0
 
 ___
 
-#### rawListeners
+### rawListeners
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -2736,7 +2738,7 @@ newListeners[0]();
 emitter.emit('log');
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2750,7 +2752,7 @@ emitter.emit('log');
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2770,7 +2772,7 @@ v9.4.0
 
 ___
 
-#### removeAllListeners
+### removeAllListeners
 
 Removes all listeners, or those of the specified `eventName`.
 
@@ -2780,7 +2782,7 @@ component or module (e.g. sockets or file streams).
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2794,7 +2796,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2814,7 +2816,7 @@ v0.1.26
 
 ___
 
-#### removeListener
+### removeListener
 
 `**removeListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
@@ -2898,7 +2900,7 @@ ee.emit('ping');
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2921,7 +2923,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2941,7 +2943,7 @@ v0.1.26
 
 `**removeListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2964,7 +2966,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2980,7 +2982,7 @@ v0.1.26
 
 `**removeListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3003,7 +3005,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3019,7 +3021,7 @@ v0.1.26
 
 `**removeListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3042,7 +3044,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3058,7 +3060,7 @@ v0.1.26
 
 `**removeListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3081,7 +3083,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3097,7 +3099,7 @@ v0.1.26
 
 `**removeListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3120,7 +3122,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3136,7 +3138,7 @@ v0.1.26
 
 `**removeListener**(event, listener): [Writable](internal.internal-3.Writable.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3159,7 +3161,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3175,11 +3177,11 @@ v0.1.26
 
 ___
 
-#### setDefaultEncoding
+### setDefaultEncoding
 
 The `writable.setDefaultEncoding()` method sets the default `encoding` for a `Writable` stream.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3193,7 +3195,7 @@ The `writable.setDefaultEncoding()` method sets the default `encoding` for a `Wr
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3213,7 +3215,7 @@ v0.11.15
 
 ___
 
-#### setMaxListeners
+### setMaxListeners
 
 By default `EventEmitter`s will print a warning if more than `10` listeners are
 added for a particular event. This is a useful default that helps finding
@@ -3222,7 +3224,7 @@ modified for this specific `EventEmitter` instance. The value can be set to`Infi
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3236,7 +3238,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3256,7 +3258,7 @@ v0.3.5
 
 ___
 
-#### uncork
+### uncork
 
 The `writable.uncork()` method flushes all data buffered since [cork](../../internal/classes/internal.WritableBase.mdx#cork) was called.
 
@@ -3289,7 +3291,7 @@ process.nextTick(() => {
 
 See also: `writable.cork()`.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3309,7 +3311,7 @@ v0.11.2
 
 ___
 
-#### write
+### write
 
 `**write**(chunk, callback?): boolean`
 
@@ -3362,7 +3364,7 @@ write('hello', () => {
 
 A `Writable` stream in object mode will always ignore the `encoding` argument.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3385,7 +3387,7 @@ A `Writable` stream in object mode will always ignore the `encoding` argument.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3405,7 +3407,7 @@ v0.9.4
 
 `**write**(chunk, encoding, callback?): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3437,7 +3439,7 @@ v0.9.4
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3453,7 +3455,7 @@ v0.9.4
 
 ___
 
-#### addAbortListener
+### addAbortListener
 
 Listens once to the `abort` event on the provided `signal`.
 
@@ -3485,7 +3487,7 @@ function example(signal) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3508,7 +3510,7 @@ function example(signal) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3528,11 +3530,11 @@ v20.5.0
 
 ___
 
-#### fromWeb
+### fromWeb
 
 A utility method for creating a `Writable` from a web `WritableStream`.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3555,7 +3557,7 @@ A utility method for creating a `Writable` from a web `WritableStream`.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3575,7 +3577,7 @@ v17.0.0
 
 ___
 
-#### getEventListeners
+### getEventListeners
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -3602,7 +3604,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3625,7 +3627,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3645,7 +3647,7 @@ v15.2.0, v14.17.0
 
 ___
 
-#### getMaxListeners
+### getMaxListeners
 
 Returns the currently set max amount of listeners.
 
@@ -3673,7 +3675,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3687,7 +3689,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3707,7 +3709,7 @@ v19.9.0
 
 ___
 
-#### listenerCount
+### listenerCount
 
 A class method that returns the number of listeners for the given `eventName`registered on the given `emitter`.
 
@@ -3721,7 +3723,7 @@ console.log(listenerCount(myEmitter, 'event'));
 // Prints: 2
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3744,7 +3746,7 @@ console.log(listenerCount(myEmitter, 'event'));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3768,7 +3770,7 @@ Since v3.2.0 - Use `listenerCount` instead.
 
 ___
 
-#### on
+### on
 
 ```js
 import { on, EventEmitter } from 'node:events';
@@ -3825,7 +3827,7 @@ const ac = new AbortController();
 process.nextTick(() => ac.abort());
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3857,7 +3859,7 @@ process.nextTick(() => ac.abort());
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3877,7 +3879,7 @@ v13.6.0, v12.16.0
 
 ___
 
-#### once
+### once
 
 `Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
@@ -3958,7 +3960,7 @@ ac.abort(); // Abort waiting for the event
 ee.emit('foo'); // Prints: Waiting for the event was canceled!
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3990,7 +3992,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4010,7 +4012,7 @@ v11.13.0, v10.16.0
 
 `Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4042,7 +4044,7 @@ v11.13.0, v10.16.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4058,7 +4060,7 @@ v11.13.0, v10.16.0
 
 ___
 
-#### setMaxListeners
+### setMaxListeners
 
 ```js
 import { setMaxListeners, EventEmitter } from 'node:events';
@@ -4069,7 +4071,7 @@ const emitter = new EventEmitter();
 setMaxListeners(5, target, emitter);
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4092,7 +4094,7 @@ setMaxListeners(5, target, emitter);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4112,11 +4114,11 @@ v15.4.0
 
 ___
 
-#### toWeb
+### toWeb
 
 A utility method for creating a web `WritableStream` from a `Writable`.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4130,7 +4132,7 @@ A utility method for creating a web `WritableStream` from a `Writable`.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

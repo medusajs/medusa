@@ -109,7 +109,7 @@ export function reflectionComponentFormatter(
       ? getType(reflection.type, "object")
       : getReflectionType(reflection, "object", true),
     description: comments
-      ? stripLineBreaks(Handlebars.helpers.comments(comments, true, false))
+      ? Handlebars.helpers.comments(comments, true, false)
       : "",
     optional,
     defaultValue,
@@ -230,8 +230,8 @@ export function getDefaultValue(
     parameter.defaultValue !== "..."
     ? `${parameter.defaultValue}`
     : defaultComment
-    ? defaultComment.content.map((content) => stripCode(content.text)).join()
-    : null
+      ? defaultComment.content.map((content) => stripCode(content.text)).join()
+      : null
 }
 
 export function hasDefaultValues(parameters: ReflectionParameterType[]) {

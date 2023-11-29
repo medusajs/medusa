@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # LineItemService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new LineItemService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -166,15 +166,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -182,7 +202,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -205,7 +225,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -237,7 +257,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -255,11 +275,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### cloneTo
+### cloneTo
 
 `**cloneTo**(ids, data?, options?): Promise&#60;[LineItem](LineItem.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -300,7 +320,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
@@ -318,13 +338,13 @@ Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
 ___
 
-#### create
+### create
 
 `**create**<TypeParameter T, TypeParameter TResult>(data): Promise&#60;TResult&#62;`
 
 Create a line item
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -347,7 +367,7 @@ Create a line item
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -361,7 +381,7 @@ Create a line item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -379,14 +399,14 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### createReturnLines
+### createReturnLines
 
 `**createReturnLines**(returnId, cartId): Promise&#60;[LineItem](LineItem.mdx)[]&#62;`
 
 Creates return line items for a given cart based on the return items in a
 return.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -409,7 +429,7 @@ return.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
@@ -427,13 +447,13 @@ Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
 ___
 
-#### createTaxLine
+### createTaxLine
 
 `**createTaxLine**(args): [LineItemTaxLine](LineItemTaxLine.mdx)`
 
 Create a line item tax line.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -447,7 +467,7 @@ Create a line item tax line.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [LineItemTaxLine](LineItemTaxLine.mdx)
 
@@ -465,13 +485,13 @@ Create a line item tax line.
 
 ___
 
-#### delete
+### delete
 
 `**delete**(id): Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;`
 
 Deletes a line item.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -485,7 +505,7 @@ Deletes a line item.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;
 
@@ -503,11 +523,11 @@ Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;
 
 ___
 
-#### deleteWithTaxLines
+### deleteWithTaxLines
 
 `**deleteWithTaxLines**(id): Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -521,7 +541,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;undefined \| null \| [LineItem](LineItem.mdx)&#62;
 
@@ -544,13 +564,13 @@ Deletes a line item with the tax lines.
 
 ___
 
-#### generate
+### generate
 
 `**generate**<TypeParameter T, TypeParameter TResult>(variantIdOrData, regionIdOrContext, quantity?, context?): Promise&#60;TResult&#62;`
 
 Generate a single or multiple line item without persisting the data into the db
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -573,7 +593,7 @@ Generate a single or multiple line item without persisting the data into the db
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -614,7 +634,7 @@ Generate a single or multiple line item without persisting the data into the db
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -632,11 +652,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### generateLineItem
+### generateLineItem
 
 `Protected **generateLineItem**(variant, quantity, context): Promise&#60;[LineItem](LineItem.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -740,7 +760,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItem](LineItem.mdx)&#62;
 
@@ -758,11 +778,11 @@ Promise&#60;[LineItem](LineItem.mdx)&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[LineItem](LineItem.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -785,7 +805,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
@@ -803,13 +823,13 @@ Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(id, config?): Promise&#60;[LineItem](LineItem.mdx)&#62;`
 
 Retrieves a line item by its id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -832,7 +852,7 @@ Retrieves a line item by its id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItem](LineItem.mdx)&#62;
 
@@ -850,11 +870,11 @@ Promise&#60;[LineItem](LineItem.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -868,7 +888,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -886,13 +906,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(idOrSelector, data): Promise&#60;[LineItem](LineItem.mdx)[]&#62;`
 
 Updates a line item
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -915,7 +935,7 @@ Updates a line item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
@@ -933,11 +953,11 @@ Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
 ___
 
-#### validateGenerateArguments
+### validateGenerateArguments
 
 `Protected **validateGenerateArguments**<TypeParameter T, TypeParameter TResult>(variantIdOrData, regionIdOrContext, quantity?): void`
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -960,7 +980,7 @@ ___
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -992,7 +1012,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `void`
 
@@ -1010,11 +1030,11 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [LineItemService](LineItemService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1028,7 +1048,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [LineItemService](LineItemService.mdx)
 

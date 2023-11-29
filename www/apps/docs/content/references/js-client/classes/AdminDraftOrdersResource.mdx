@@ -18,11 +18,11 @@ Related Guide: [How to manage draft orders](https://docs.medusajs.com/modules/or
 
 ## Methods
 
-#### addLineItem
+### addLineItem
 
 Create a Line Item in the Draft Order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -37,7 +37,7 @@ medusa.admin.draftOrders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -115,7 +115,7 @@ medusa.admin.draftOrders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -278,11 +278,11 @@ medusa.admin.draftOrders
 
 ___
 
-#### create
+### create
 
 Create a Draft Order. A draft order is not transformed into an order until payment is captured.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -308,7 +308,7 @@ medusa.admin.draftOrders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -515,7 +515,7 @@ medusa.admin.draftOrders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -678,11 +678,11 @@ medusa.admin.draftOrders
 
 ___
 
-#### delete
+### delete
 
 Delete a Draft Order
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -695,7 +695,7 @@ medusa.admin.draftOrders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -718,7 +718,7 @@ medusa.admin.draftOrders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -762,11 +762,11 @@ medusa.admin.draftOrders
 
 ___
 
-#### list
+### list
 
 Retrieve an list of Draft Orders. The draft orders can be filtered by parameters such as `query`. The draft orders can also paginated.
 
-##### Example
+#### Example
 
 To list draft orders:
 
@@ -797,7 +797,7 @@ medusa.admin.draftOrders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -848,7 +848,7 @@ medusa.admin.draftOrders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1038,12 +1038,12 @@ medusa.admin.draftOrders
 
 ___
 
-#### markPaid
+### markPaid
 
 Capture the draft order's payment. This will also set the draft order's status to `completed` and create an order from the draft order. The payment is captured through Medusa's system payment,
 which is manual payment that isn't integrated with any third-party payment provider. It is assumed that the payment capturing is handled manually by the admin.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1054,7 +1054,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1077,7 +1077,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1618,11 +1618,11 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
 
 ___
 
-#### removeLineItem
+### removeLineItem
 
 Delete a Line Item from a Draft Order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1635,7 +1635,7 @@ medusa.admin.draftOrders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1667,7 +1667,7 @@ medusa.admin.draftOrders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1830,11 +1830,11 @@ medusa.admin.draftOrders
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a Draft Order's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1845,7 +1845,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1868,7 +1868,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2031,11 +2031,11 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
 
 ___
 
-#### update
+### update
 
 Update a Draft Order's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2050,7 +2050,7 @@ medusa.admin.draftOrders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2165,7 +2165,7 @@ medusa.admin.draftOrders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2328,11 +2328,11 @@ medusa.admin.draftOrders
 
 ___
 
-#### updateLineItem
+### updateLineItem
 
 Update a Line Item in a Draft Order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2347,7 +2347,7 @@ medusa.admin.draftOrders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2425,7 +2425,7 @@ medusa.admin.draftOrders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
