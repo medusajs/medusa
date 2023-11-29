@@ -33,8 +33,8 @@ interface MedusaProviderProps {
    */
   publishableApiKey?: string
   /**
-   * Number of retries to perform before failing a request
-   * @default 0
+   * Number of times to retry a request if it fails
+   * @default 3
    */
   maxRetries?: number
   customHeaders?: Record<string, any>
@@ -46,7 +46,7 @@ export const MedusaProvider = ({
   apiKey,
   publishableApiKey,
   customHeaders,
-  maxRetries = 0,
+  maxRetries = 3,
   children,
 }: MedusaProviderProps) => {
   const medusaClient = new Medusa({
