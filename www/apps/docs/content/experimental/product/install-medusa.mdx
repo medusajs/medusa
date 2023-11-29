@@ -69,9 +69,10 @@ For example:
       req: MedusaRequest, 
       res: MedusaResponse
     ) {
-      const productModuleService = req.scope.resolve(
-        "productModuleService"
-      )
+      const productModuleService: ProductModuleService = 
+        req.scope.resolve(
+          "productModuleService"
+        )
 
       return res.json({
         products: productModuleService.list()
@@ -97,9 +98,10 @@ For example:
     export default async function handleListProducts({ 
       data, eventName, container, pluginOptions 
     }: SubscriberArgs<Customer>) {
-      const productModuleService = container.resolve(
-        "productModuleService"
-      )
+      const productModuleService: ProductModuleService = 
+        container.resolve(
+          "productModuleService"
+        )
 
       console.log(await productModuleService.list())
     }
@@ -142,23 +144,10 @@ For example:
   </TabItem>
 </Tabs>
 
-:::tip
-
-In the Examples or API Reference guides, you may see an initialization of the product module. This is only necessary if you're using the module outside the Medusa backend.
-
-:::
-
 ---
 
-## Up Next
+## Start Development
 
-<DocCard item={{
-    type: 'link',
-    href: '/references/product',
-    label: 'Service Interface Reference',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Find a full reference of the module\' service interface\s methods.'
-    }
-  }}
-/>
+You can refer to the [Example Usages documentation page](./examples.mdx) for examples of using the Product module.
+
+You can also refer to the [Module Interface Reference](../../references/product/interfaces/IProductModuleService.mdx) for a detailed reference on all available methods.

@@ -260,6 +260,7 @@ module.exports = {
         fade: "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))",
         "fade-dark":
           "linear-gradient(to top, rgba(27, 27, 31, 1), rgba(27, 27, 31, 0))",
+        diagrams: "url('/img/diagrams-bg.png')",
       }),
       screens: {
         xs: "576px",

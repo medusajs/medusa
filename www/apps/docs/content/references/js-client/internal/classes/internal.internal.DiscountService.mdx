@@ -170,29 +170,19 @@ Provides layer to manipulate discounts.
 
 ## Accessors
 
-### activeManager\_
+#### activeManager\_
 
-#### Returns
+#### Inherited from
 
-<ParameterTypes parameters={[
-  {
-    "name": "EntityManager",
-    "type": "EntityManager",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
 
 ## Methods
 
-### addRegion
+#### addRegion
 
 Adds a region to the discount regions array.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -215,7 +205,7 @@ Adds a region to the discount regions array.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -231,13 +221,13 @@ Adds a region to the discount regions array.
 
 ___
 
-### atomicPhase\_
+#### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -269,7 +259,7 @@ transaction manager is created.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -285,9 +275,9 @@ transaction manager is created.
 
 ___
 
-### calculateDiscountForLineItem
+#### calculateDiscountForLineItem
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -319,7 +309,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -335,9 +325,9 @@ ___
 
 ___
 
-### canApplyForCustomer
+#### canApplyForCustomer
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -360,7 +350,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -376,12 +366,12 @@ ___
 
 ___
 
-### create
+#### create
 
 Creates a discount with provided data given that the data is validated.
 Normalizes discount code to uppercase.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -395,7 +385,7 @@ Normalizes discount code to uppercase.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -411,11 +401,11 @@ Normalizes discount code to uppercase.
 
 ___
 
-### createDynamicCode
+#### createDynamicCode
 
 Creates a dynamic code for a discount id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -438,7 +428,7 @@ Creates a dynamic code for a discount id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -454,11 +444,11 @@ Creates a dynamic code for a discount id.
 
 ___
 
-### delete
+#### delete
 
 Deletes a discount idempotently
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -472,7 +462,7 @@ Deletes a discount idempotently
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -488,11 +478,11 @@ Deletes a discount idempotently
 
 ___
 
-### deleteDynamicCode
+#### deleteDynamicCode
 
 Deletes a dynamic code for a discount id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -515,7 +505,7 @@ Deletes a dynamic code for a discount id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -531,9 +521,9 @@ Deletes a dynamic code for a discount id.
 
 ___
 
-### hasCustomersGroupCondition
+#### hasCustomersGroupCondition
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -547,7 +537,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -563,9 +553,9 @@ ___
 
 ___
 
-### hasExpired
+#### hasExpired
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -579,7 +569,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -595,9 +585,9 @@ ___
 
 ___
 
-### hasNotStarted
+#### hasNotStarted
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -611,7 +601,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -627,9 +617,9 @@ ___
 
 ___
 
-### hasReachedLimit
+#### hasReachedLimit
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -643,7 +633,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -659,9 +649,9 @@ ___
 
 ___
 
-### isDisabled
+#### isDisabled
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -675,7 +665,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -691,9 +681,9 @@ ___
 
 ___
 
-### isValidForRegion
+#### isValidForRegion
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -716,7 +706,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -732,9 +722,9 @@ ___
 
 ___
 
-### list
+#### list
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -757,7 +747,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -773,9 +763,9 @@ ___
 
 ___
 
-### listAndCount
+#### listAndCount
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -798,7 +788,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -814,11 +804,11 @@ ___
 
 ___
 
-### listByCodes
+#### listByCodes
 
 List all the discounts corresponding to the given codes
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -841,7 +831,7 @@ List all the discounts corresponding to the given codes
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -857,11 +847,11 @@ List all the discounts corresponding to the given codes
 
 ___
 
-### removeRegion
+#### removeRegion
 
 Removes a region from the discount regions array.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -884,7 +874,7 @@ Removes a region from the discount regions array.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -900,11 +890,11 @@ Removes a region from the discount regions array.
 
 ___
 
-### retrieve
+#### retrieve
 
 Gets a discount by id.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -927,7 +917,7 @@ Gets a discount by id.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -943,11 +933,11 @@ Gets a discount by id.
 
 ___
 
-### retrieveByCode
+#### retrieveByCode
 
 Gets the discount by discount code.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -970,7 +960,7 @@ Gets the discount by discount code.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -986,9 +976,9 @@ Gets the discount by discount code.
 
 ___
 
-### shouldRetryTransaction\_
+#### shouldRetryTransaction\_
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1002,7 +992,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1018,11 +1008,11 @@ ___
 
 ___
 
-### update
+#### update
 
 Updates a discount.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1045,7 +1035,7 @@ Updates a discount.
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1061,9 +1051,9 @@ Updates a discount.
 
 ___
 
-### validateDiscountForCartOrThrow
+#### validateDiscountForCartOrThrow
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1086,7 +1076,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1102,9 +1092,9 @@ ___
 
 ___
 
-### validateDiscountForProduct
+#### validateDiscountForProduct
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1127,7 +1117,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1143,11 +1133,11 @@ ___
 
 ___
 
-### validateDiscountRule\_
+#### validateDiscountRule\_
 
 Creates a discount rule with provided data given that the data is validated.
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1161,15 +1151,25 @@ Creates a discount rule with provided data given that the data is validated.
   }
 ]} />
 
-#### Returns
+##### Returns
 
-<ParameterTypes parameters={[]} />
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`T`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the create operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
-### withTransaction
+#### withTransaction
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1183,7 +1183,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {

@@ -8,11 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-### create
+#### create
 
 This method is used to create a product.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -32,7 +32,7 @@ async function createProduct (title: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -55,7 +55,7 @@ async function createProduct (title: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -71,11 +71,11 @@ async function createProduct (title: string) {
 
 ___
 
-### createCategory
+#### createCategory
 
 This method is used to create a product category.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -94,7 +94,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -117,7 +117,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -133,11 +133,11 @@ async function createCategory (name: string, parent_category_id: string | null) 
 
 ___
 
-### createCollections
+#### createCollections
 
 This method is used to create product collections.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -157,7 +157,7 @@ async function createCollection (title: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -180,7 +180,7 @@ async function createCollection (title: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -196,11 +196,11 @@ async function createCollection (title: string) {
 
 ___
 
-### createOptions
+#### createOptions
 
 This method is used to create product options.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -221,7 +221,7 @@ async function createProductOption (title: string, productId: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -244,7 +244,7 @@ async function createProductOption (title: string, productId: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -260,11 +260,11 @@ async function createProductOption (title: string, productId: string) {
 
 ___
 
-### createTags
+#### createTags
 
 This method is used to create product tags.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -284,7 +284,7 @@ async function createProductTags (values: string[]) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -307,7 +307,7 @@ async function createProductTags (values: string[]) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -323,11 +323,11 @@ async function createProductTags (values: string[]) {
 
 ___
 
-### createTypes
+#### createTypes
 
 This method is used to create a product type.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -347,7 +347,7 @@ async function createProductType (value: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -370,7 +370,7 @@ async function createProductType (value: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -386,11 +386,52 @@ async function createProductType (value: string) {
 
 ___
 
-### delete
+#### createVariants
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[CreateProductVariantDTO](internal.internal-1.ProductTypes.CreateProductVariantDTO.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+#### delete
 
 This method is used to delete products. Unlike the [softDelete](internal.internal-1.ProductTypes.IProductModuleService.mdx#softdelete) method, this method will completely remove the products and they can no longer be accessed or retrieved.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -404,7 +445,7 @@ async function deleteProducts (ids: string[]) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -427,7 +468,7 @@ async function deleteProducts (ids: string[]) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -443,11 +484,11 @@ async function deleteProducts (ids: string[]) {
 
 ___
 
-### deleteCategory
+#### deleteCategory
 
 This method is used to delete a product category by its ID.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -461,7 +502,7 @@ async function deleteCategory (id: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -484,7 +525,7 @@ async function deleteCategory (id: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -500,11 +541,11 @@ async function deleteCategory (id: string) {
 
 ___
 
-### deleteCollections
+#### deleteCollections
 
 This method is used to delete collections by their ID.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -518,7 +559,7 @@ async function deleteCollection (ids: string[]) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -541,7 +582,7 @@ async function deleteCollection (ids: string[]) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -557,11 +598,11 @@ async function deleteCollection (ids: string[]) {
 
 ___
 
-### deleteOptions
+#### deleteOptions
 
 This method is used to delete a product option.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -575,7 +616,7 @@ async function deleteProductOptions (ids: string[]) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -598,7 +639,7 @@ async function deleteProductOptions (ids: string[]) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -614,11 +655,11 @@ async function deleteProductOptions (ids: string[]) {
 
 ___
 
-### deleteTags
+#### deleteTags
 
 This method is used to delete product tags by their ID.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -633,7 +674,7 @@ async function deleteProductTags (ids: string[]) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -656,7 +697,7 @@ async function deleteProductTags (ids: string[]) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -672,11 +713,11 @@ async function deleteProductTags (ids: string[]) {
 
 ___
 
-### deleteTypes
+#### deleteTypes
 
 This method is used to delete a product type.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -690,7 +731,7 @@ async function deleteProductTypes (ids: string[]) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -713,7 +754,7 @@ async function deleteProductTypes (ids: string[]) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -729,11 +770,68 @@ async function deleteProductTypes (ids: string[]) {
 
 ___
 
-### list
+#### deleteVariants
+
+This method is used to delete ProductVariant. This method will completely remove the ProductVariant and they can no longer be accessed or retrieved.
+
+##### Example
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+async function deleteProducts (ids: string[]) {
+  const productModule = await initializeProductModule()
+
+  await productModule.deleteVariants(ids)
+}
+```
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productVariantIds",
+    "type": "`string`[]",
+    "description": "The IDs of the ProductVariant to be deleted.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves when the ProductVariant are successfully deleted.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+#### list
 
 This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
 
-#### Example
+##### Example
 
 To retrieve a list of products using their IDs:
 
@@ -824,7 +922,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -856,7 +954,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -872,11 +970,11 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 
 ___
 
-### listAndCount
+#### listAndCount
 
 This method is used to retrieve a paginated list of products along with the total count of available products satisfying the provided filters.
 
-#### Example
+##### Example
 
 To retrieve a list of products using their IDs:
 
@@ -967,7 +1065,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -999,7 +1097,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1015,11 +1113,11 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 
 ___
 
-### listAndCountCategories
+#### listAndCountCategories
 
 This method is used to retrieve a paginated list of product categories along with the total count of available product categories satisfying the provided filters.
 
-#### Example
+##### Example
 
 To retrieve a list of product categories using their IDs:
 
@@ -1110,7 +1208,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1142,7 +1240,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1158,11 +1256,11 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 
 ___
 
-### listAndCountCollections
+#### listAndCountCollections
 
 This method is used to retrieve a paginated list of product collections along with the total count of available product collections satisfying the provided filters.
 
-#### Example
+##### Example
 
 To retrieve a list of product collections using their IDs:
 
@@ -1253,7 +1351,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1285,7 +1383,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1301,11 +1399,11 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 
 ___
 
-### listAndCountOptions
+#### listAndCountOptions
 
 This method is used to retrieve a paginated list of product options along with the total count of available product options satisfying the provided filters.
 
-#### Example
+##### Example
 
 To retrieve a list of product options using their IDs:
 
@@ -1396,7 +1494,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1428,7 +1526,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1444,11 +1542,11 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 
 ___
 
-### listAndCountTags
+#### listAndCountTags
 
 This method is used to retrieve a paginated list of product tags along with the total count of available product tags satisfying the provided filters.
 
-#### Example
+##### Example
 
 To retrieve a list of product tags using their IDs:
 
@@ -1539,7 +1637,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1571,7 +1669,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1587,11 +1685,11 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 
 ___
 
-### listAndCountTypes
+#### listAndCountTypes
 
 This method is used to retrieve a paginated list of product types along with the total count of available product types satisfying the provided filters.
 
-#### Example
+##### Example
 
 To retrieve a list of product types using their IDs:
 
@@ -1682,7 +1780,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1714,7 +1812,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1730,11 +1828,11 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 
 ___
 
-### listAndCountVariants
+#### listAndCountVariants
 
 This method is used to retrieve a paginated list of product variants along with the total count of available product variants satisfying the provided filters.
 
-#### Example
+##### Example
 
 To retrieve a list of product variants using their IDs:
 
@@ -1825,7 +1923,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1857,7 +1955,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1873,11 +1971,11 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 
 ___
 
-### listCategories
+#### listCategories
 
 This method is used to retrieve a paginated list of product categories based on optional filters and configuration.
 
-#### Example
+##### Example
 
 To retrieve a list of product categories using their IDs:
 
@@ -1968,7 +2066,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2000,7 +2098,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2016,11 +2114,11 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 
 ___
 
-### listCollections
+#### listCollections
 
 This method is used to retrieve a paginated list of product collections based on optional filters and configuration.
 
-#### Example
+##### Example
 
 To retrieve a list of product collections using their IDs:
 
@@ -2111,7 +2209,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2143,7 +2241,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2159,11 +2257,11 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 
 ___
 
-### listOptions
+#### listOptions
 
 This method is used to retrieve a paginated list of product options based on optional filters and configuration.
 
-#### Example
+##### Example
 
 To retrieve a list of product options using their IDs:
 
@@ -2254,7 +2352,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2286,7 +2384,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2302,11 +2400,11 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 
 ___
 
-### listTags
+#### listTags
 
 This method is used to retrieve a paginated list of tags based on optional filters and configuration.
 
-#### Example
+##### Example
 
 To retrieve a list of product tags using their IDs:
 
@@ -2397,7 +2495,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2429,7 +2527,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2445,11 +2543,11 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 
 ___
 
-### listTypes
+#### listTypes
 
 This method is used to retrieve a paginated list of product types based on optional filters and configuration.
 
-#### Example
+##### Example
 
 To retrieve a list of product types using their IDs:
 
@@ -2540,7 +2638,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2572,7 +2670,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2588,11 +2686,11 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 
 ___
 
-### listVariants
+#### listVariants
 
 This method is used to retrieve a paginated list of product variants based on optional filters and configuration.
 
-#### Example
+##### Example
 
 To retrieve a list of product variants using their IDs:
 
@@ -2683,7 +2781,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2715,7 +2813,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2731,11 +2829,11 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 
 ___
 
-### restore
+#### restore
 
 This method is used to restore products which were deleted using the [softDelete](internal.internal-1.ProductTypes.IProductModuleService.mdx#softdelete) method.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -2753,7 +2851,7 @@ async function restoreProducts (ids: string[]) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2785,7 +2883,7 @@ async function restoreProducts (ids: string[]) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2801,9 +2899,9 @@ async function restoreProducts (ids: string[]) {
 
 ___
 
-### restoreVariants
+#### restoreVariants
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2835,7 +2933,7 @@ ___
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2851,11 +2949,11 @@ ___
 
 ___
 
-### retrieve
+#### retrieve
 
 This method is used to retrieve a product by its ID
 
-#### Example
+##### Example
 
 A simple example that retrieves a product by its ID:
 
@@ -2891,7 +2989,7 @@ async function retrieveProduct (id: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2923,7 +3021,7 @@ async function retrieveProduct (id: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2939,11 +3037,11 @@ async function retrieveProduct (id: string) {
 
 ___
 
-### retrieveCategory
+#### retrieveCategory
 
 This method is used to retrieve a product category by its ID.
 
-#### Example
+##### Example
 
 A simple example that retrieves a product category by its ID:
 
@@ -2979,7 +3077,7 @@ async function retrieveCategory (id: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3011,7 +3109,7 @@ async function retrieveCategory (id: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3027,11 +3125,11 @@ async function retrieveCategory (id: string) {
 
 ___
 
-### retrieveCollection
+#### retrieveCollection
 
 This method is used to retrieve a product collection by its ID.
 
-#### Example
+##### Example
 
 A simple example that retrieves a product collection by its ID:
 
@@ -3067,7 +3165,7 @@ async function retrieveCollection (id: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3099,7 +3197,7 @@ async function retrieveCollection (id: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3115,11 +3213,11 @@ async function retrieveCollection (id: string) {
 
 ___
 
-### retrieveOption
+#### retrieveOption
 
 This method is used to retrieve a product option by its ID.
 
-#### Example
+##### Example
 
 A simple example that retrieves a product option by its ID:
 
@@ -3155,7 +3253,7 @@ async function retrieveProductOption (id: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3187,7 +3285,7 @@ async function retrieveProductOption (id: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3203,11 +3301,11 @@ async function retrieveProductOption (id: string) {
 
 ___
 
-### retrieveTag
+#### retrieveTag
 
 This method is used to retrieve a tag by its ID.
 
-#### Example
+##### Example
 
 A simple example that retrieves a product tag by its ID:
 
@@ -3243,7 +3341,7 @@ async function retrieveProductTag (tagId: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3275,7 +3373,7 @@ async function retrieveProductTag (tagId: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3291,11 +3389,11 @@ async function retrieveProductTag (tagId: string) {
 
 ___
 
-### retrieveType
+#### retrieveType
 
 This method is used to retrieve a product type by its ID.
 
-#### Example
+##### Example
 
 A simple example that retrieves a product type by its ID:
 
@@ -3331,7 +3429,7 @@ async function retrieveProductType (id: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3363,7 +3461,7 @@ async function retrieveProductType (id: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3379,11 +3477,11 @@ async function retrieveProductType (id: string) {
 
 ___
 
-### retrieveVariant
+#### retrieveVariant
 
 This method is used to retrieve a product variant by its ID.
 
-#### Example
+##### Example
 
 A simple example that retrieves a product variant by its ID:
 
@@ -3419,7 +3517,7 @@ async function retrieveProductVariant (id: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3451,7 +3549,7 @@ async function retrieveProductVariant (id: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3467,13 +3565,13 @@ async function retrieveProductVariant (id: string) {
 
 ___
 
-### softDelete
+#### softDelete
 
 This method is used to delete products. Unlike the [delete](internal.internal-1.ProductTypes.IProductModuleService.mdx#delete) method, this method won't completely remove the product. It can still be accessed or retrieved using methods like [retrieve](internal.internal-1.ProductTypes.IProductModuleService.mdx#retrieve) if you pass the `withDeleted` property to the `config` object parameter.
 
 The soft-deleted products can be restored using the [restore](internal.internal-1.ProductTypes.IProductModuleService.mdx#restore) method.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -3489,7 +3587,7 @@ async function deleteProducts (ids: string[]) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3521,7 +3619,7 @@ async function deleteProducts (ids: string[]) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3537,11 +3635,11 @@ async function deleteProducts (ids: string[]) {
 
 ___
 
-### update
+#### update
 
 This method is used to update a product.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -3562,7 +3660,7 @@ async function updateProduct (id: string, title: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3585,7 +3683,7 @@ async function updateProduct (id: string, title: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3601,11 +3699,11 @@ async function updateProduct (id: string, title: string) {
 
 ___
 
-### updateCategory
+#### updateCategory
 
 This method is used to update a product category by its ID.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -3623,7 +3721,7 @@ async function updateCategory (id: string, name: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3655,7 +3753,7 @@ async function updateCategory (id: string, name: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3671,11 +3769,11 @@ async function updateCategory (id: string, name: string) {
 
 ___
 
-### updateCollections
+#### updateCollections
 
 This method is used to update existing product collections.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -3696,7 +3794,7 @@ async function updateCollection (id: string, title: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3719,7 +3817,7 @@ async function updateCollection (id: string, title: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3735,11 +3833,11 @@ async function updateCollection (id: string, title: string) {
 
 ___
 
-### updateOptions
+#### updateOptions
 
 This method is used to update existing product options.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -3760,7 +3858,7 @@ async function updateProductOption (id: string, title: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3783,7 +3881,7 @@ async function updateProductOption (id: string, title: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3799,11 +3897,11 @@ async function updateProductOption (id: string, title: string) {
 
 ___
 
-### updateTags
+#### updateTags
 
 This method is used to update existing product tags.
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -3824,7 +3922,7 @@ async function updateProductTag (id: string, value: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3847,7 +3945,7 @@ async function updateProductTag (id: string, value: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3863,11 +3961,11 @@ async function updateProductTag (id: string, value: string) {
 
 ___
 
-### updateTypes
+#### updateTypes
 
 This method is used to update a product type
 
-#### Example
+##### Example
 
 ```ts
 import {
@@ -3888,7 +3986,7 @@ async function updateProductType (id: string, value: string) {
 }
 ```
 
-#### Parameters
+##### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3911,7 +4009,7 @@ async function updateProductType (id: string, value: string) {
   }
 ]} />
 
-#### Returns
+##### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3920,6 +4018,47 @@ async function updateProductType (id: string, value: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product types.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+#### updateVariants
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[UpdateProductVariantDTO](internal.internal-1.ProductTypes.UpdateProductVariantDTO.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
     "expandable": false,
     "children": []
   }
