@@ -288,7 +288,6 @@ export default class PricingModuleService<
       { id: priceSets.filter((p) => !!p).map((p) => p!.id) },
       {
         relations: ["rule_types", "money_amounts", "price_rules"],
-        take: null,
       },
       sharedContext
     )
@@ -465,7 +464,7 @@ export default class PricingModuleService<
   ): Promise<TPriceSet[]> {
     const priceSets = await this.priceSetService_.list(
       { id: inputs.map((d) => d.priceSetId) },
-      { relations: ["rule_types"], take: null },
+      { relations: ["rule_types"] },
       sharedContext
     )
 
@@ -565,7 +564,7 @@ export default class PricingModuleService<
 
     return (await this.list(
       { id: input.map((d) => d.priceSetId) },
-      { relations: ["money_amounts"], take: null },
+      { relations: ["money_amounts"] },
       sharedContext
     )) as unknown as PricingTypes.PriceSetDTO[] | PricingTypes.PriceSetDTO
   }
@@ -577,7 +576,7 @@ export default class PricingModuleService<
   ) {
     const priceSets = await this.list(
       { id: input.map((d) => d.priceSetId) },
-      { relations: ["rule_types"], take: null },
+      { relations: ["rule_types"] },
       sharedContext
     )
 
@@ -683,7 +682,6 @@ export default class PricingModuleService<
       {
         id: data.map((d) => d.id),
       },
-      { take: null },
       sharedContext
     )
     const priceSetIds = priceSets.map((ps) => ps.id)
@@ -1542,7 +1540,7 @@ export default class PricingModuleService<
 
     const existingPriceLists = await this.listPriceLists(
       { id: priceListIds },
-      { relations: ["price_list_rules"], take: null },
+      { relations: ["price_list_rules"] },
       sharedContext
     )
 
@@ -1554,7 +1552,6 @@ export default class PricingModuleService<
       {
         id: priceListRuleIds,
       },
-      { take: null },
       sharedContext
     )
 
@@ -1842,7 +1839,6 @@ export default class PricingModuleService<
 
     const priceLists = await this.listPriceLists(
       { id: priceListIds },
-      { take: null },
       sharedContext
     )
 
@@ -1921,7 +1917,6 @@ export default class PricingModuleService<
       { id: data.map((d) => d.priceListId) },
       {
         relations: ["price_list_rules", "price_list_rules.rule_type"],
-        take: null,
       },
       sharedContext
     )
@@ -2061,7 +2056,6 @@ export default class PricingModuleService<
       { id: data.map((d) => d.priceListId) },
       {
         relations: ["price_list_rules", "price_list_rules.rule_type"],
-        take: null,
       },
       sharedContext
     )

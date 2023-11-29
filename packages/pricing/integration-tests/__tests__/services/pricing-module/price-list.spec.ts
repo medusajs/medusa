@@ -35,7 +35,7 @@ describe("PriceList Service", () => {
   })
 
   describe("list", () => {
-    it("list priceLists", async () => {
+    it("should list priceLists", async () => {
       const priceListResult = await service.listPriceLists()
 
       expect(priceListResult).toEqual([
@@ -48,7 +48,7 @@ describe("PriceList Service", () => {
       ])
     })
 
-    it("list pricelists by id", async () => {
+    it("should list pricelists by id", async () => {
       const priceListResult = await service.listPriceLists({
         id: ["price-list-1"],
       })
@@ -58,6 +58,27 @@ describe("PriceList Service", () => {
           id: "price-list-1",
         }),
       ])
+    })
+
+    it("should list 16 price lists without take", async () => {
+      const priceLists = Array(16)
+        .fill(1)
+        .map((_, i) => {
+          return {
+            id: `price-list-${i + 2}`,
+            title: "Price List 2",
+            description: "test",
+            number_rules: 0,
+          }
+        })
+
+      await createPriceLists(testManager, priceLists)
+
+      const priceListResult = await service.listPriceLists({
+        id: priceLists.map(({ id }) => id),
+      })
+
+      expect(priceListResult).toHaveLength(16)
     })
   })
 
