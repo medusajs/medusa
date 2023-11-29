@@ -1492,18 +1492,18 @@ export default class PricingModuleService<
             sharedContext
           )
 
-        for (const [ruleAttribute, ruleValue] of Object.entries(priceRules)) {
-          ;(await this.createPriceRules([
-            {
+        await this.createPriceRules(
+          Object.entries(priceRules).map(([ruleAttribute, ruleValue]) => {
+            return {
               price_set_id: priceSetId,
               rule_type:
                 ruleTypeMap.get(ruleAttribute)!?.id ||
                 ruleTypeMap.get(ruleAttribute)!,
               value: ruleValue,
               price_set_money_amount: priceSetMoneyAmount as any,
-            },
-          ])) as unknown as PricingTypes.CreatePriceRuleDTO[]
-        }
+            }
+          })
+        )
       }
     }
 
