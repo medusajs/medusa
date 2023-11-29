@@ -42,7 +42,7 @@ medusa.admin.giftCards.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostGiftCardsReq](../../internal/classes/js_client.internal.AdminPostGiftCardsReq.mdx)",
+    "type": "[AdminPostGiftCardsReq](../../medusa/classes/medusa.AdminPostGiftCardsReq.mdx)",
     "description": "The gift card to be created.",
     "optional": false,
     "defaultValue": "",
@@ -111,168 +111,12 @@ medusa.admin.giftCards.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminGiftCardsRes](../../internal/types/js_client.internal.AdminGiftCardsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminGiftCardsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the gift card's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminGiftCardsRes",
-        "type": "`object`",
-        "description": "The gift card's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "gift_card",
-            "type": "[GiftCard](../../internal/classes/js_client.internal.GiftCard-1.mdx)",
-            "description": "A gift card's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "balance",
-                "type": "`number`",
-                "description": "The remaining value on the Gift Card.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "code",
-                "type": "`string`",
-                "description": "The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "ends_at",
-                "type": "`Date`",
-                "description": "The time at which the Gift Card can no longer be used.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The gift card's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "order",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)",
-                "description": "The details of the order that the gift card was purchased in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "order_id",
-                "type": "`string`",
-                "description": "The ID of the order that the gift card was purchased in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "region",
-                "type": "[Region](../../internal/classes/js_client.internal.Region.mdx)",
-                "description": "The details of the region this gift card is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "region_id",
-                "type": "`string`",
-                "description": "The ID of the region this gift card is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_rate",
-                "type": "`null` \\| `number`",
-                "description": "The gift card's tax rate that will be applied on calculating totals",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`number`",
-                "description": "The value that the Gift Card represents.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -322,40 +166,12 @@ medusa.admin.giftCards.delete(giftCardId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[DeleteResponse](../../internal/interfaces/js_client.internal.DeleteResponse.mdx)&#62;",
+    "type": "ResponsePromise&#60;DeleteResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "deleted",
-        "type": "`boolean`",
-        "description": "Whether the item was deleted successfully.",
-        "optional": false,
-        "defaultValue": "true",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of the deleted item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "object",
-        "type": "`string`",
-        "description": "The type of the deleted item.",
-        "optional": false,
-        "defaultValue": "product-collection",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -399,7 +215,7 @@ medusa.admin.giftCards.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetGiftCardsParams](../../internal/classes/js_client.internal.AdminGetGiftCardsParams.mdx)",
+    "type": "[AdminGetGiftCardsParams](../../medusa/classes/medusa.AdminGetGiftCardsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved gift cards.",
     "optional": true,
     "defaultValue": "",
@@ -450,195 +266,12 @@ medusa.admin.giftCards.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminGiftCardsListRes](../../internal/types/js_client.internal.AdminGiftCardsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminGiftCardsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of gift cards with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminGiftCardsListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ gift_cards: [GiftCard](../../internal/classes/js_client.internal.GiftCard-1.mdx)[]  }``",
-        "description": "The list of gift cards with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "gift_cards",
-            "type": "[GiftCard](../../internal/classes/js_client.internal.GiftCard-1.mdx)[]",
-            "description": "The list of gift cards.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "balance",
-                "type": "`number`",
-                "description": "The remaining value on the Gift Card.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "code",
-                "type": "`string`",
-                "description": "The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "ends_at",
-                "type": "`Date`",
-                "description": "The time at which the Gift Card can no longer be used.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The gift card's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "order",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)",
-                "description": "The details of the order that the gift card was purchased in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "order_id",
-                "type": "`string`",
-                "description": "The ID of the order that the gift card was purchased in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "region",
-                "type": "[Region](../../internal/classes/js_client.internal.Region.mdx)",
-                "description": "The details of the region this gift card is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "region_id",
-                "type": "`string`",
-                "description": "The ID of the region this gift card is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_rate",
-                "type": "`null` \\| `number`",
-                "description": "The gift card's tax rate that will be applied on calculating totals",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`number`",
-                "description": "The value that the Gift Card represents.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -688,168 +321,12 @@ medusa.admin.giftCards.retrieve(giftCardId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminGiftCardsRes](../../internal/types/js_client.internal.AdminGiftCardsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminGiftCardsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the gift card's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminGiftCardsRes",
-        "type": "`object`",
-        "description": "The gift card's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "gift_card",
-            "type": "[GiftCard](../../internal/classes/js_client.internal.GiftCard-1.mdx)",
-            "description": "A gift card's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "balance",
-                "type": "`number`",
-                "description": "The remaining value on the Gift Card.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "code",
-                "type": "`string`",
-                "description": "The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "ends_at",
-                "type": "`Date`",
-                "description": "The time at which the Gift Card can no longer be used.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The gift card's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "order",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)",
-                "description": "The details of the order that the gift card was purchased in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "order_id",
-                "type": "`string`",
-                "description": "The ID of the order that the gift card was purchased in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "region",
-                "type": "[Region](../../internal/classes/js_client.internal.Region.mdx)",
-                "description": "The details of the region this gift card is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "region_id",
-                "type": "`string`",
-                "description": "The ID of the region this gift card is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_rate",
-                "type": "`null` \\| `number`",
-                "description": "The gift card's tax rate that will be applied on calculating totals",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`number`",
-                "description": "The value that the Gift Card represents.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -887,7 +364,7 @@ medusa.admin.giftCards.update(giftCardId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostGiftCardsGiftCardReq](../../internal/classes/js_client.internal.AdminPostGiftCardsGiftCardReq.mdx)",
+    "type": "[AdminPostGiftCardsGiftCardReq](../../medusa/classes/medusa.AdminPostGiftCardsGiftCardReq.mdx)",
     "description": "The attributes to update in the gift card.",
     "optional": false,
     "defaultValue": "",
@@ -956,167 +433,11 @@ medusa.admin.giftCards.update(giftCardId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminGiftCardsRes](../../internal/types/js_client.internal.AdminGiftCardsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminGiftCardsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the gift card's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminGiftCardsRes",
-        "type": "`object`",
-        "description": "The gift card's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "gift_card",
-            "type": "[GiftCard](../../internal/classes/js_client.internal.GiftCard-1.mdx)",
-            "description": "A gift card's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "balance",
-                "type": "`number`",
-                "description": "The remaining value on the Gift Card.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "code",
-                "type": "`string`",
-                "description": "The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "ends_at",
-                "type": "`Date`",
-                "description": "The time at which the Gift Card can no longer be used.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The gift card's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "order",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)",
-                "description": "The details of the order that the gift card was purchased in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "order_id",
-                "type": "`string`",
-                "description": "The ID of the order that the gift card was purchased in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "region",
-                "type": "[Region](../../internal/classes/js_client.internal.Region.mdx)",
-                "description": "The details of the region this gift card is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "region_id",
-                "type": "`string`",
-                "description": "The ID of the region this gift card is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_rate",
-                "type": "`null` \\| `number`",
-                "description": "The gift card's tax rate that will be applied on calculating totals",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`number`",
-                "description": "The value that the Gift Card represents.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

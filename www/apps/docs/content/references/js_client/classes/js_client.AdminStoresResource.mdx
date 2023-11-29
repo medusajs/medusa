@@ -62,159 +62,12 @@ medusa.admin.store.addCurrency("eur")
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminStoresRes](../../internal/types/js_client.internal.AdminStoresRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminStoresRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminStoresRes",
-        "type": "`object`",
-        "description": "The store's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "store",
-            "type": "[Store](../../internal/classes/js_client.internal.Store.mdx)",
-            "description": "Store details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "currencies",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)[]",
-                "description": "The details of the enabled currencies in the store.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_currency",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)",
-                "description": "The details of the store's default currency.",
-                "optional": false,
-                "defaultValue": "usd",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_currency_code",
-                "type": "`string`",
-                "description": "The three character currency code that is the default of the store.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "default_location_id",
-                "type": "`string`",
-                "description": "The location ID the store is associated with.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "default_sales_channel",
-                "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-                "description": "The details of the store's default sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_sales_channel_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the store's default sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The store's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "invite_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Invite links from",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the Store - this may be displayed to the Customer.",
-                "optional": false,
-                "defaultValue": "Medusa Store",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "payment_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "swap_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -264,159 +117,12 @@ medusa.admin.store.deleteCurrency("eur")
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminStoresRes](../../internal/types/js_client.internal.AdminStoresRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminStoresRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminStoresRes",
-        "type": "`object`",
-        "description": "The store's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "store",
-            "type": "[Store](../../internal/classes/js_client.internal.Store.mdx)",
-            "description": "Store details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "currencies",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)[]",
-                "description": "The details of the enabled currencies in the store.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_currency",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)",
-                "description": "The details of the store's default currency.",
-                "optional": false,
-                "defaultValue": "usd",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_currency_code",
-                "type": "`string`",
-                "description": "The three character currency code that is the default of the store.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "default_location_id",
-                "type": "`string`",
-                "description": "The location ID the store is associated with.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "default_sales_channel",
-                "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-                "description": "The details of the store's default sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_sales_channel_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the store's default sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The store's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "invite_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Invite links from",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the Store - this may be displayed to the Customer.",
-                "optional": false,
-                "defaultValue": "Medusa Store",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "payment_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "swap_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -457,51 +163,12 @@ medusa.admin.store.listPaymentProviders()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPaymentProvidersList](../../internal/types/js_client.internal.AdminPaymentProvidersList.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPaymentProvidersList&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of payment providers.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPaymentProvidersList",
-        "type": "`object`",
-        "description": "The list of payment providers in a store.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "payment_providers",
-            "type": "[PaymentProvider](../../internal/classes/js_client.internal.PaymentProvider.mdx)[]",
-            "description": "An array of payment providers details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The ID of the payment provider as given by the payment service.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_installed",
-                "type": "`boolean`",
-                "description": "Whether the payment service is installed in the current version. If a payment service is no longer installed, the `is\\_installed` attribute is set to `false`.",
-                "optional": false,
-                "defaultValue": "true",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -542,51 +209,12 @@ medusa.admin.store.listTaxProviders()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminTaxProvidersList](../../internal/types/js_client.internal.AdminTaxProvidersList.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminTaxProvidersList&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of tax providers.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminTaxProvidersList",
-        "type": "`object`",
-        "description": "The list of tax providers in a store.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "tax_providers",
-            "type": "[TaxProvider](../../internal/classes/js_client.internal.TaxProvider.mdx)[]",
-            "description": "An array of tax providers details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The ID of the tax provider as given by the tax service.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_installed",
-                "type": "`boolean`",
-                "description": "Whether the tax service is installed in the current version. If a tax service is no longer installed, the `is\\_installed` attribute is set to `false`.",
-                "optional": false,
-                "defaultValue": "true",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -627,195 +255,12 @@ medusa.admin.store.retrieve()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminExtendedStoresRes](../../internal/types/js_client.internal.AdminExtendedStoresRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminExtendedStoresRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminExtendedStoresRes",
-        "type": "`object`",
-        "description": "The store's details with additional details like payment and tax providers.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "store",
-            "type": "[ExtendedStoreDTO](../../internal/types/js_client.internal.ExtendedStoreDTO.mdx)",
-            "description": "Store details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "currencies",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)[]",
-                "description": "The details of the enabled currencies in the store.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_currency",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)",
-                "description": "The details of the store's default currency.",
-                "optional": false,
-                "defaultValue": "usd",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_currency_code",
-                "type": "`string`",
-                "description": "The three character currency code that is the default of the store.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "default_location_id",
-                "type": "`string`",
-                "description": "The location ID the store is associated with.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "default_sales_channel",
-                "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-                "description": "The details of the store's default sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_sales_channel_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the store's default sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The store's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "invite_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Invite links from",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the Store - this may be displayed to the Customer.",
-                "optional": false,
-                "defaultValue": "Medusa Store",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "payment_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "swap_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "feature_flags",
-                "type": "[FeatureFlagsResponse](../../internal/types/js_client.internal.FeatureFlagsResponse.mdx)",
-                "description": "The feature flags enabled in the store's backend.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "fulfillment_providers",
-                "type": "[FulfillmentProvider](../../internal/classes/js_client.internal.internal.FulfillmentProvider.mdx)[]",
-                "description": "The store's fulfillment providers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "modules",
-                "type": "[ModulesResponse](../../internal/types/js_client.internal.ModulesResponse.mdx)",
-                "description": "The modules installed in the store's backend.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "payment_providers",
-                "type": "[PaymentProvider](../../internal/classes/js_client.internal.PaymentProvider.mdx)[]",
-                "description": "The store's payment providers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -844,7 +289,7 @@ medusa.admin.store.update({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostStoreReq](../../internal/classes/js_client.internal.AdminPostStoreReq.mdx)",
+    "type": "[AdminPostStoreReq](../../medusa/classes/medusa.AdminPostStoreReq.mdx)",
     "description": "The attributes to update in the store.",
     "optional": false,
     "defaultValue": "",
@@ -931,158 +376,11 @@ medusa.admin.store.update({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminStoresRes](../../internal/types/js_client.internal.AdminStoresRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminStoresRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminStoresRes",
-        "type": "`object`",
-        "description": "The store's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "store",
-            "type": "[Store](../../internal/classes/js_client.internal.Store.mdx)",
-            "description": "Store details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "currencies",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)[]",
-                "description": "The details of the enabled currencies in the store.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_currency",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)",
-                "description": "The details of the store's default currency.",
-                "optional": false,
-                "defaultValue": "usd",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_currency_code",
-                "type": "`string`",
-                "description": "The three character currency code that is the default of the store.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "default_location_id",
-                "type": "`string`",
-                "description": "The location ID the store is associated with.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "default_sales_channel",
-                "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-                "description": "The details of the store's default sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "default_sales_channel_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the store's default sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The store's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "invite_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Invite links from",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the Store - this may be displayed to the Customer.",
-                "optional": false,
-                "defaultValue": "Medusa Store",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "payment_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "swap_link_template",
-                "type": "`null` \\| `string`",
-                "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

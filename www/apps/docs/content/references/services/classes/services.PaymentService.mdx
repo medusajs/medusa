@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-22.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-41.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ ___
   },
   {
     "name": "paymentRepository_",
-    "type": "Repository&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "Repository&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -264,7 +264,7 @@ Captures a payment.
 <ParameterTypes parameters={[
   {
     "name": "paymentOrId",
-    "type": "`string` \\| [Payment](services.Payment.mdx)",
+    "type": "`string` \\| [Payment](../../entities/classes/entities.Payment.mdx)",
     "description": "the id or the class instance of the payment",
     "optional": false,
     "defaultValue": "",
@@ -278,7 +278,7 @@ Captures a payment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment captured.",
@@ -298,7 +298,7 @@ Created a new payment.
 <ParameterTypes parameters={[
   {
     "name": "paymentInput",
-    "type": "[PaymentDataInput](../types/services.PaymentDataInput.mdx)",
+    "type": "[PaymentDataInput](../../medusa/types/medusa.PaymentDataInput.mdx)",
     "description": "info to create the payment",
     "optional": false,
     "defaultValue": "",
@@ -312,7 +312,7 @@ Created a new payment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment created.",
@@ -332,7 +332,7 @@ refunds a payment.
 <ParameterTypes parameters={[
   {
     "name": "paymentOrId",
-    "type": "`string` \\| [Payment](services.Payment.mdx)",
+    "type": "`string` \\| [Payment](../../entities/classes/entities.Payment.mdx)",
     "description": "the id or the class instance of the payment",
     "optional": false,
     "defaultValue": "",
@@ -373,7 +373,7 @@ refunds a payment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Refund](services.Refund.mdx)&#62;",
+    "type": "Promise&#60;[Refund](../../entities/classes/entities.Refund.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the refund created.",
@@ -402,7 +402,7 @@ Retrieves a payment by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "description": "the config to retrieve the payment",
     "optional": false,
     "defaultValue": "{}",
@@ -416,7 +416,7 @@ Retrieves a payment by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment.",
@@ -434,7 +434,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -509,7 +509,7 @@ Updates a payment in order to link it to an order or a swap.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment updated.",
@@ -541,7 +541,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-22.mdx)) => [PaymentService](services.PaymentService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-41.mdx)) => [PaymentService](services.PaymentService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -604,7 +604,7 @@ ___
   },
   {
     "name": "paymentRepository_",
-    "type": "Repository&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "Repository&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -649,7 +649,7 @@ ___
   },
   {
     "name": "capture",
-    "type": "(`paymentOrId`: `string` \\| [Payment](services.Payment.mdx)) => Promise&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "(`paymentOrId`: `string` \\| [Payment](../../entities/classes/entities.Payment.mdx)) => Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -658,7 +658,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`paymentInput`: [PaymentDataInput](../types/services.PaymentDataInput.mdx)) => Promise&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "(`paymentInput`: [PaymentDataInput](../../medusa/types/medusa.PaymentDataInput.mdx)) => Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -667,7 +667,7 @@ ___
   },
   {
     "name": "refund",
-    "type": "(`paymentOrId`: `string` \\| [Payment](services.Payment.mdx), `amount`: `number`, `reason`: `string`, `note?`: `string`) => Promise&#60;[Refund](services.Refund.mdx)&#62;",
+    "type": "(`paymentOrId`: `string` \\| [Payment](../../entities/classes/entities.Payment.mdx), `amount`: `number`, `reason`: `string`, `note?`: `string`) => Promise&#60;[Refund](../../entities/classes/entities.Refund.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -676,7 +676,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`paymentId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Payment](services.Payment.mdx)&#62;) => Promise&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "(`paymentId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;) => Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -694,7 +694,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`paymentId`: `string`, `data`: ``{ order_id?: string ; swap_id?: string  }``) => Promise&#60;[Payment](services.Payment.mdx)&#62;",
+    "type": "(`paymentId`: `string`, `data`: ``{ order_id?: string ; swap_id?: string  }``) => Promise&#60;[Payment](../../entities/classes/entities.Payment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

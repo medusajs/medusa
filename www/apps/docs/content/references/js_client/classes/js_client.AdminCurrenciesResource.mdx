@@ -57,7 +57,7 @@ medusa.admin.currencies.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetCurrenciesParams](../../internal/classes/js_client.internal.AdminGetCurrenciesParams.mdx)",
+    "type": "[AdminGetCurrenciesParams](../../medusa/classes/medusa.AdminGetCurrenciesParams.mdx)",
     "description": "Filters and pagination configurations to apply on retrieved currencies.",
     "optional": true,
     "defaultValue": "",
@@ -127,106 +127,12 @@ medusa.admin.currencies.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCurrenciesListRes](../../internal/types/js_client.internal.AdminCurrenciesListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCurrenciesListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of currencies with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCurrenciesListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ currencies: [Currency](../../internal/classes/js_client.internal.Currency.mdx)[]  }``",
-        "description": "List of currencies with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "currencies",
-            "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)[]",
-            "description": "An array of currency details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "code",
-                "type": "`string`",
-                "description": "The 3 character ISO code for the currency.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "includes_tax",
-                "type": "`boolean`",
-                "description": "Whether the currency prices include tax",
-                "optional": true,
-                "defaultValue": "false",
-                "expandable": false,
-                "featureFlag": "tax_inclusive_pricing",
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The written name of the currency",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "symbol",
-                "type": "`string`",
-                "description": "The symbol used to indicate the currency.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "symbol_native",
-                "type": "`string`",
-                "description": "The native symbol used to indicate the currency.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -264,7 +170,7 @@ medusa.admin.currencies.update(code, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostCurrenciesCurrencyReq](../../internal/classes/js_client.internal.AdminPostCurrenciesCurrencyReq.mdx)",
+    "type": "[AdminPostCurrenciesCurrencyReq](../../medusa/classes/medusa.AdminPostCurrenciesCurrencyReq.mdx)",
     "description": "The attributes to update in the currency.",
     "optional": false,
     "defaultValue": "",
@@ -298,78 +204,11 @@ medusa.admin.currencies.update(code, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCurrenciesRes](../../internal/types/js_client.internal.AdminCurrenciesRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCurrenciesRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the currency's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCurrenciesRes",
-        "type": "`object`",
-        "description": "A currency's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "currency",
-            "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)",
-            "description": "Currency details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "code",
-                "type": "`string`",
-                "description": "The 3 character ISO code for the currency.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "includes_tax",
-                "type": "`boolean`",
-                "description": "Whether the currency prices include tax",
-                "optional": true,
-                "defaultValue": "false",
-                "expandable": false,
-                "featureFlag": "tax_inclusive_pricing",
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The written name of the currency",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "symbol",
-                "type": "`string`",
-                "description": "The symbol used to indicate the currency.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "symbol_native",
-                "type": "`string`",
-                "description": "The native symbol used to indicate the currency.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

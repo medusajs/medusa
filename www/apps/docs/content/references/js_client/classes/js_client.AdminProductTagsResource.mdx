@@ -55,7 +55,7 @@ medusa.admin.productTags.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetProductTagsParams](../../internal/classes/js_client.internal.AdminGetProductTagsParams.mdx)",
+    "type": "[AdminGetProductTagsParams](../../medusa/classes/medusa.AdminGetProductTagsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved product tags.",
     "optional": true,
     "defaultValue": "",
@@ -63,7 +63,7 @@ medusa.admin.productTags.list({
     "children": [
       {
         "name": "created_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product tags' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -118,7 +118,7 @@ medusa.admin.productTags.list({
       },
       {
         "name": "id",
-        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../internal/classes/js_client.internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../medusa/classes/medusa.StringComparisonOperator.mdx)",
         "description": "IDs to filter product tags by.",
         "optional": true,
         "defaultValue": "",
@@ -163,7 +163,7 @@ medusa.admin.productTags.list({
       },
       {
         "name": "updated_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product tags' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -209,7 +209,7 @@ medusa.admin.productTags.list({
       },
       {
         "name": "value",
-        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../internal/classes/js_client.internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../medusa/classes/medusa.StringComparisonOperator.mdx)",
         "description": "Values to search product tags by.",
         "optional": true,
         "defaultValue": "",
@@ -225,113 +225,11 @@ medusa.admin.productTags.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminProductTagsListRes](../../internal/types/js_client.internal.AdminProductTagsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminProductTagsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product tags with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminProductTagsListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ product_tags: [ProductTag](../../internal/classes/js_client.internal.ProductTag.mdx)[]  }``",
-        "description": "The list of product tags with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "product_tags",
-            "type": "[ProductTag](../../internal/classes/js_client.internal.ProductTag.mdx)[]",
-            "description": "An array of product tag details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product tag's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`string`",
-                "description": "The value that the Product Tag represents",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

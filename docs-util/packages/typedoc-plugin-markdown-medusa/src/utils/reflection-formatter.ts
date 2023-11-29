@@ -106,8 +106,17 @@ export function reflectionComponentFormatter(
   const componentItem: Parameter = {
     name: reflection.name,
     type: reflection.type
-      ? getType(reflection.type, "object")
-      : getReflectionType(reflection, "object", true),
+      ? getType({
+          reflectionType: reflection.type,
+          collapse: "object",
+          project: reflection.project,
+        })
+      : getReflectionType({
+          reflectionType: reflection,
+          collapse: "object",
+          wrapBackticks: true,
+          project: reflection.project,
+        }),
     description: comments
       ? Handlebars.helpers.comments(comments, true, false)
       : "",
@@ -170,7 +179,11 @@ export function reflectionTableFormatter(
   row.push(
     parameter.type
       ? Handlebars.helpers.type.call(parameter.type, "object")
-      : getReflectionType(parameter, "object", true)
+      : getReflectionType({
+          reflectionType: parameter,
+          collapse: "object",
+          wrapBackticks: true,
+        })
   )
 
   if (showDefaults) {

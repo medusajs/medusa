@@ -1,11 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path")
 const globalTypedocOptions = require("./_base")
-const { globSync } = require("glob")
-
-const entries = globSync(
-  path.join(__dirname, "..", "..", "typedoc-json-output", "*.json")
-)
 
 const baseSectionsOptions = {
   member_sources_definedIn: false,
@@ -31,13 +26,15 @@ const modulesSectionsOptions = {
 const modulesOptions = {
   sections: modulesSectionsOptions,
   expandMembers: true,
-  useTsLinkResolution: false,
+  // useTsLinkResolution: false,
 }
 
 /** @type {import('typedoc').TypeDocOptions} */
 module.exports = {
   ...globalTypedocOptions,
-  entryPoints: entries,
+  entryPoints: [
+    path.join(__dirname, "..", "..", "typedoc-json-output", "*.json"),
+  ],
   entryPointStrategy: "merge",
   entryDocument: "_index.mdx",
   out: path.join(
@@ -54,6 +51,8 @@ module.exports = {
   name: "references",
   indexTitle: "Medusa References",
   plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-markdown-medusa"],
+  excludeReferences: true,
+  excludeNotDocumented: true,
   hideInPageTOC: true,
   hideBreadcrumbs: true,
   objectLiteralTypeDeclarationStyle: "component",

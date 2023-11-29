@@ -15,7 +15,7 @@ Provides layer to manipulate profiles.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-37.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-35.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ ___
   },
   {
     "name": "methodRepository_",
-    "type": "Repository&#60;[ShippingMethod](services.ShippingMethod.mdx)&#62;",
+    "type": "Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ ___
   },
   {
     "name": "optionRepository_",
-    "type": "Repository&#60;[ShippingOption](services.ShippingOption.mdx)&#62; & ``{ upsertShippingProfile: Method upsertShippingProfile  }``",
+    "type": "Repository&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ ___
   },
   {
     "name": "requirementRepository_",
-    "type": "Repository&#60;[ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)&#62;",
+    "type": "Repository&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -163,7 +163,7 @@ is allowed.
   },
   {
     "name": "requirement",
-    "type": "[ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)",
+    "type": "[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)",
     "description": "the requirement for the option.",
     "optional": false,
     "defaultValue": "",
@@ -177,7 +177,7 @@ is allowed.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of update",
@@ -276,7 +276,7 @@ defaults to false.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateShippingOptionInput](../types/services.CreateShippingOptionInput.mdx)",
+    "type": "[CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx)",
     "description": "the data to create shipping options",
     "optional": false,
     "defaultValue": "",
@@ -290,7 +290,7 @@ defaults to false.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the create operation",
@@ -328,7 +328,7 @@ Creates a shipping method for a given cart.
   },
   {
     "name": "config",
-    "type": "[CreateShippingMethodDto](../types/services.CreateShippingMethodDto.mdx)",
+    "type": "[CreateShippingMethodDto](../../medusa/types/medusa.CreateShippingMethodDto.mdx)",
     "description": "the cart to create the shipping method for.",
     "optional": false,
     "defaultValue": "",
@@ -342,7 +342,7 @@ Creates a shipping method for a given cart.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingMethod](services.ShippingMethod.mdx)&#62;",
+    "type": "Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting shipping method.",
@@ -376,7 +376,7 @@ Deletes a profile with a given profile id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;void \\| [ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "Promise&#60;void \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation.",
@@ -396,7 +396,7 @@ Removes a given shipping method
 <ParameterTypes parameters={[
   {
     "name": "shippingMethods",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx) \\| [ShippingMethod](services.ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]",
     "description": "the shipping method to remove",
     "optional": false,
     "defaultValue": "",
@@ -410,7 +410,7 @@ Removes a given shipping method
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingMethod](services.ShippingMethod.mdx)[]&#62;",
+    "type": "Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "removed shipping methods",
@@ -432,7 +432,7 @@ price type "calculated".
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[ShippingOption](services.ShippingOption.mdx)",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)",
     "description": "the shipping option to retrieve the price\n  for.",
     "optional": false,
     "defaultValue": "",
@@ -450,7 +450,7 @@ price type "calculated".
   },
   {
     "name": "cart",
-    "type": "`undefined` \\| [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "`undefined` \\| [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the context in which the price should be\n  retrieved.",
     "optional": false,
     "defaultValue": "",
@@ -482,7 +482,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -491,7 +491,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "config object",
     "optional": false,
     "defaultValue": "",
@@ -505,7 +505,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingOption](services.ShippingOption.mdx)[]&#62;",
+    "type": "Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -523,7 +523,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -532,7 +532,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "config object",
     "optional": false,
     "defaultValue": "",
@@ -546,7 +546,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[ShippingOption](services.ShippingOption.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -580,7 +580,7 @@ Removes a requirement from a shipping option
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;void \\| [ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)&#62;",
+    "type": "Promise&#60;void \\| [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of update",
@@ -610,7 +610,7 @@ Throws in case of DB Error and if profile was not found.
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "the options to get a profile",
     "optional": false,
     "defaultValue": "{}",
@@ -624,7 +624,7 @@ Throws in case of DB Error and if profile was not found.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the profile document.",
@@ -642,7 +642,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -687,7 +687,7 @@ will throw errors if metadata or product updates are attempted.
   },
   {
     "name": "update",
-    "type": "[UpdateShippingOptionInput](../types/services.UpdateShippingOptionInput.mdx)",
+    "type": "[UpdateShippingOptionInput](../../medusa/types/medusa.UpdateShippingOptionInput.mdx)",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -701,7 +701,7 @@ will throw errors if metadata or product updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -731,7 +731,7 @@ and its methods should be copied to an order/swap entity.
   },
   {
     "name": "update",
-    "type": "[ShippingMethodUpdate](../types/services.ShippingMethodUpdate.mdx)",
+    "type": "[ShippingMethodUpdate](../../medusa/types/medusa.ShippingMethodUpdate.mdx)",
     "description": "the values to update the method with",
     "optional": false,
     "defaultValue": "",
@@ -745,7 +745,7 @@ and its methods should be copied to an order/swap entity.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| [ShippingMethod](services.ShippingMethod.mdx)&#62;",
+    "type": "Promise&#60;undefined \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting shipping method",
@@ -786,7 +786,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingOption](services.ShippingOption.mdx)[]&#62;",
+    "type": "Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated shipping options",
@@ -804,7 +804,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[ShippingOption](services.ShippingOption.mdx) \\| [CreateShippingOptionInput](../types/services.CreateShippingOptionInput.mdx)",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx) \\| [CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -813,7 +813,7 @@ ___
   },
   {
     "name": "priceInput",
-    "type": "[ValidatePriceTypeAndAmountInput](../types/services.ValidatePriceTypeAndAmountInput.mdx)",
+    "type": "[ValidatePriceTypeAndAmountInput](../../medusa/types/medusa.ValidatePriceTypeAndAmountInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -827,7 +827,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[CreateShippingOptionInput](../types/services.CreateShippingOptionInput.mdx) \\| Omit&#60;[ShippingOption](services.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;",
+    "type": "Promise&#60;[CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx) \\| Omit&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -849,7 +849,7 @@ match, or when the shipping option requirements are not satisfied.
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[ShippingOption](services.ShippingOption.mdx)",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)",
     "description": "the option object to check",
     "optional": false,
     "defaultValue": "",
@@ -858,7 +858,7 @@ match, or when the shipping option requirements are not satisfied.
   },
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart object to check against",
     "optional": false,
     "defaultValue": "",
@@ -872,7 +872,7 @@ match, or when the shipping option requirements are not satisfied.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;null \\| [ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "Promise&#60;null \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the validated shipping option",
@@ -892,7 +892,7 @@ Validates a shipping option price
 <ParameterTypes parameters={[
   {
     "name": "priceType",
-    "type": "[ShippingOptionPriceType](../enums/services.ShippingOptionPriceType.mdx)",
+    "type": "[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)",
     "description": "the price to validate",
     "optional": false,
     "defaultValue": "",
@@ -901,7 +901,7 @@ Validates a shipping option price
   },
   {
     "name": "option",
-    "type": "[ShippingOption](services.ShippingOption.mdx)",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)",
     "description": "the option to validate against",
     "optional": false,
     "defaultValue": "",
@@ -915,7 +915,7 @@ Validates a shipping option price
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingOptionPriceType](../enums/services.ShippingOptionPriceType.mdx)&#62;",
+    "type": "Promise&#60;[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the validated price",
@@ -935,7 +935,7 @@ Validates a requirement
 <ParameterTypes parameters={[
   {
     "name": "requirement",
-    "type": "[ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)",
+    "type": "[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)",
     "description": "the requirement to validate",
     "optional": false,
     "defaultValue": "",
@@ -958,7 +958,7 @@ Validates a requirement
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)&#62;",
+    "type": "Promise&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a validated shipping requirement",
@@ -990,7 +990,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-37.mdx)) => [ShippingOptionService](services.ShippingOptionService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-35.mdx)) => [ShippingOptionService](services.ShippingOptionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1026,7 +1026,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1044,7 +1044,7 @@ ___
   },
   {
     "name": "methodRepository_",
-    "type": "Repository&#60;[ShippingMethod](services.ShippingMethod.mdx)&#62;",
+    "type": "Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1053,7 +1053,7 @@ ___
   },
   {
     "name": "optionRepository_",
-    "type": "Repository&#60;[ShippingOption](services.ShippingOption.mdx)&#62; & ``{ upsertShippingProfile: Method upsertShippingProfile  }``",
+    "type": "Repository&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1080,7 +1080,7 @@ ___
   },
   {
     "name": "requirementRepository_",
-    "type": "Repository&#60;[ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)&#62;",
+    "type": "Repository&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1107,7 +1107,7 @@ ___
   },
   {
     "name": "addRequirement",
-    "type": "(`optionId`: `string`, `requirement`: [ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)) => Promise&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "(`optionId`: `string`, `requirement`: [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1125,7 +1125,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`data`: [CreateShippingOptionInput](../types/services.CreateShippingOptionInput.mdx)) => Promise&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "(`data`: [CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx)) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1134,7 +1134,7 @@ ___
   },
   {
     "name": "createShippingMethod",
-    "type": "(`optionId`: `string`, `data`: `Record<string, unknown>`, `config`: [CreateShippingMethodDto](../types/services.CreateShippingMethodDto.mdx)) => Promise&#60;[ShippingMethod](services.ShippingMethod.mdx)&#62;",
+    "type": "(`optionId`: `string`, `data`: `Record<string, unknown>`, `config`: [CreateShippingMethodDto](../../medusa/types/medusa.CreateShippingMethodDto.mdx)) => Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1143,7 +1143,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`optionId`: `string`) => Promise&#60;void \\| [ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "(`optionId`: `string`) => Promise&#60;void \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1152,7 +1152,7 @@ ___
   },
   {
     "name": "deleteShippingMethods",
-    "type": "(`shippingMethods`: [ShippingMethod](services.ShippingMethod.mdx) \\| [ShippingMethod](services.ShippingMethod.mdx)[]) => Promise&#60;[ShippingMethod](services.ShippingMethod.mdx)[]&#62;",
+    "type": "(`shippingMethods`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]) => Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1161,7 +1161,7 @@ ___
   },
   {
     "name": "getPrice_",
-    "type": "(`option`: [ShippingOption](services.ShippingOption.mdx), `data`: `Record<string, unknown>`, `cart`: `undefined` \\| [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)) => Promise&#60;number&#62;",
+    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx), `data`: `Record<string, unknown>`, `cart`: `undefined` \\| [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1170,7 +1170,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;) => Promise&#60;[ShippingOption](services.ShippingOption.mdx)[]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1179,7 +1179,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;) => Promise&#60;[[ShippingOption](services.ShippingOption.mdx)[], number]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;) => Promise&#60;[[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1188,7 +1188,7 @@ ___
   },
   {
     "name": "removeRequirement",
-    "type": "(`requirementId`: `any`) => Promise&#60;void \\| [ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)&#62;",
+    "type": "(`requirementId`: `any`) => Promise&#60;void \\| [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1197,7 +1197,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`optionId`: `any`, `options`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ShippingOption](services.ShippingOption.mdx)&#62;) => Promise&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "(`optionId`: `any`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1215,7 +1215,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`optionId`: `string`, `update`: [UpdateShippingOptionInput](../types/services.UpdateShippingOptionInput.mdx)) => Promise&#60;[ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "(`optionId`: `string`, `update`: [UpdateShippingOptionInput](../../medusa/types/medusa.UpdateShippingOptionInput.mdx)) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1224,7 +1224,7 @@ ___
   },
   {
     "name": "updateShippingMethod",
-    "type": "(`id`: `string`, `update`: [ShippingMethodUpdate](../types/services.ShippingMethodUpdate.mdx)) => Promise&#60;undefined \\| [ShippingMethod](services.ShippingMethod.mdx)&#62;",
+    "type": "(`id`: `string`, `update`: [ShippingMethodUpdate](../../medusa/types/medusa.ShippingMethodUpdate.mdx)) => Promise&#60;undefined \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1233,7 +1233,7 @@ ___
   },
   {
     "name": "updateShippingProfile",
-    "type": "(`optionIds`: `string` \\| `string`[], `profileId`: `string`) => Promise&#60;[ShippingOption](services.ShippingOption.mdx)[]&#62;",
+    "type": "(`optionIds`: `string` \\| `string`[], `profileId`: `string`) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1242,7 +1242,7 @@ ___
   },
   {
     "name": "validateAndMutatePrice",
-    "type": "(`option`: [ShippingOption](services.ShippingOption.mdx) \\| [CreateShippingOptionInput](../types/services.CreateShippingOptionInput.mdx), `priceInput`: [ValidatePriceTypeAndAmountInput](../types/services.ValidatePriceTypeAndAmountInput.mdx)) => Promise&#60;[CreateShippingOptionInput](../types/services.CreateShippingOptionInput.mdx) \\| Omit&#60;[ShippingOption](services.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;",
+    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx) \\| [CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx), `priceInput`: [ValidatePriceTypeAndAmountInput](../../medusa/types/medusa.ValidatePriceTypeAndAmountInput.mdx)) => Promise&#60;[CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx) \\| Omit&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1251,7 +1251,7 @@ ___
   },
   {
     "name": "validateCartOption",
-    "type": "(`option`: [ShippingOption](services.ShippingOption.mdx), `cart`: [Cart](services.Cart.mdx)) => Promise&#60;null \\| [ShippingOption](services.ShippingOption.mdx)&#62;",
+    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx), `cart`: [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;null \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1260,7 +1260,7 @@ ___
   },
   {
     "name": "validatePriceType_",
-    "type": "(`priceType`: [ShippingOptionPriceType](../enums/services.ShippingOptionPriceType.mdx), `option`: [ShippingOption](services.ShippingOption.mdx)) => Promise&#60;[ShippingOptionPriceType](../enums/services.ShippingOptionPriceType.mdx)&#62;",
+    "type": "(`priceType`: [ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx), `option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)) => Promise&#60;[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1269,7 +1269,7 @@ ___
   },
   {
     "name": "validateRequirement_",
-    "type": "(`requirement`: [ShippingOptionRequirement](services.ShippingOptionRequirement.mdx), `optionId`: `undefined` \\| `string`) => Promise&#60;[ShippingOptionRequirement](services.ShippingOptionRequirement.mdx)&#62;",
+    "type": "(`requirement`: [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx), `optionId`: `undefined` \\| `string`) => Promise&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

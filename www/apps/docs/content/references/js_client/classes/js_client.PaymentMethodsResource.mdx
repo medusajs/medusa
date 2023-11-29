@@ -50,50 +50,11 @@ medusa.customers.paymentMethods.list()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersListPaymentMethodsRes](../../internal/types/js_client.internal.StoreCustomersListPaymentMethodsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersListPaymentMethodsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's payment methods.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersListPaymentMethodsRes",
-        "type": "`object`",
-        "description": "The payment method's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "payment_methods",
-            "type": "``{ data: object ; provider_id: string  }``[]",
-            "description": "The details of the saved payment methods.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "data",
-                "type": "`object`",
-                "description": "The data needed for the Payment Provider to use the saved payment method.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "provider_id",
-                "type": "`string`",
-                "description": "The ID of the Payment Provider where the payment method is saved.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

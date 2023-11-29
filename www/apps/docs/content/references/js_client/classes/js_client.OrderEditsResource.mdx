@@ -60,32 +60,12 @@ medusa.orderEdits.complete(orderEditId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreOrderEditsRes](../../internal/types/js_client.internal.StoreOrderEditsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreOrderEditsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreOrderEditsRes",
-        "type": "`object`",
-        "description": "The order edit's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "order_edit",
-            "type": "Omit&#60;[OrderEdit](../../internal/classes/js_client.internal.OrderEdit.mdx), \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;",
-            "description": "Order edit details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -120,7 +100,7 @@ medusa.orderEdits.decline(orderEditId)
   },
   {
     "name": "payload",
-    "type": "[StorePostOrderEditsOrderEditDecline](../../internal/classes/js_client.internal.StorePostOrderEditsOrderEditDecline.mdx)",
+    "type": "[StorePostOrderEditsOrderEditDecline](../../medusa/classes/medusa.StorePostOrderEditsOrderEditDecline.mdx)",
     "description": "The decline details.",
     "optional": false,
     "defaultValue": "",
@@ -153,32 +133,12 @@ medusa.orderEdits.decline(orderEditId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreOrderEditsRes](../../internal/types/js_client.internal.StoreOrderEditsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreOrderEditsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreOrderEditsRes",
-        "type": "`object`",
-        "description": "The order edit's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "order_edit",
-            "type": "Omit&#60;[OrderEdit](../../internal/classes/js_client.internal.OrderEdit.mdx), \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;",
-            "description": "Order edit details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -227,31 +187,11 @@ medusa.orderEdits.retrieve(orderEditId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreOrderEditsRes](../../internal/types/js_client.internal.StoreOrderEditsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreOrderEditsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreOrderEditsRes",
-        "type": "`object`",
-        "description": "The order edit's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "order_edit",
-            "type": "Omit&#60;[OrderEdit](../../internal/classes/js_client.internal.OrderEdit.mdx), \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;",
-            "description": "Order edit details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

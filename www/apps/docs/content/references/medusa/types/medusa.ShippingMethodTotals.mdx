@@ -1,0 +1,155 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ShippingMethodTotals
+
+ **ShippingMethodTotals**: `Object`
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "original_tax_total",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "original_total",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "price",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "subtotal",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_lines",
+    "type": "[ShippingMethodTaxLine](../classes/medusa.ShippingMethodTaxLine.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "code",
+        "type": "`null` \\| `string`",
+        "description": "A code to identify the tax type by",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The line item tax line's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "A human friendly name for the tax",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rate",
+        "type": "`number`",
+        "description": "The numeric rate to charge tax by",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_method",
+        "type": "[ShippingMethod](../classes/medusa.ShippingMethod.mdx)",
+        "description": "The details of the associated shipping method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "shipping_method_id",
+        "type": "`string`",
+        "description": "The ID of the line item",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "tax_total",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "total",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

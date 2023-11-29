@@ -30,8 +30,18 @@ export function returnReflectionComponentFormatter({
   level = 1,
   maxLevel,
 }: ReturnReflectionComponentFormatterParams): Parameter[] {
-  const typeName = getType(reflectionType, "object", false, true)
-  const type = getType(reflectionType, "object")
+  const typeName = getType({
+    reflectionType,
+    collapse: "object",
+    wrapBackticks: false,
+    hideLink: true,
+    project,
+  })
+  const type = getType({
+    reflectionType: reflectionType,
+    collapse: "object",
+    project,
+  })
   const componentItem: Parameter[] = []
   const canRetrieveChildren = level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   if (reflectionType.type === "reference") {
@@ -57,8 +67,8 @@ export function returnReflectionComponentFormatter({
       const typeArgs = reflectionType.typeArguments
         ? reflectionType.typeArguments
         : "typeParameters" in reflectionType
-        ? (reflectionType.typeParameters as TypeParameterReflection[])
-        : undefined
+          ? (reflectionType.typeParameters as TypeParameterReflection[])
+          : undefined
       if (
         typeArgs &&
         !isOnlyVoid(typeArgs as unknown as SomeType[]) &&

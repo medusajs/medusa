@@ -47,7 +47,7 @@ medusa.customers.addresses.addAddress({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[StorePostCustomersCustomerAddressesReq](../../internal/classes/js_client.internal.StorePostCustomersCustomerAddressesReq.mdx)",
+    "type": "[StorePostCustomersCustomerAddressesReq](../../medusa/classes/medusa.StorePostCustomersCustomerAddressesReq.mdx)",
     "description": "The address to add.",
     "optional": false,
     "defaultValue": "",
@@ -55,7 +55,7 @@ medusa.customers.addresses.addAddress({
     "children": [
       {
         "name": "address",
-        "type": "[AddressCreatePayload](../../internal/classes/js_client.internal.AddressCreatePayload.mdx)",
+        "type": "[AddressCreatePayload](../../medusa/classes/medusa.AddressCreatePayload.mdx)",
         "description": "The Address to add to the Customer's saved addresses.",
         "optional": false,
         "defaultValue": "",
@@ -180,32 +180,12 @@ medusa.customers.addresses.addAddress({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../../internal/types/js_client.internal.StoreCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "Omit&#60;[Customer](../../internal/classes/js_client.internal.Customer.mdx), \"password_hash\"&#62;",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -255,32 +235,12 @@ medusa.customers.addresses.deleteAddress(addressId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../../internal/types/js_client.internal.StoreCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "Omit&#60;[Customer](../../internal/classes/js_client.internal.Customer.mdx), \"password_hash\"&#62;",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -318,7 +278,7 @@ medusa.customers.addresses.updateAddress(addressId, {
   },
   {
     "name": "payload",
-    "type": "[StorePostCustomersCustomerAddressesAddressReq](../../internal/classes/js_client.internal.StorePostCustomersCustomerAddressesAddressReq.mdx)",
+    "type": "[StorePostCustomersCustomerAddressesAddressReq](../../medusa/classes/medusa.StorePostCustomersCustomerAddressesAddressReq.mdx)",
     "description": "The attributes to update in the address.",
     "optional": false,
     "defaultValue": "",
@@ -441,31 +401,11 @@ medusa.customers.addresses.updateAddress(addressId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../../internal/types/js_client.internal.StoreCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "Omit&#60;[Customer](../../internal/classes/js_client.internal.Customer.mdx), \"password_hash\"&#62;",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

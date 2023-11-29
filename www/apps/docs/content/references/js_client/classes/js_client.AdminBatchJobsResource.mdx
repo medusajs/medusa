@@ -63,186 +63,12 @@ medusa.admin.batchJobs.cancel(batchJobId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminBatchJobRes](../../internal/types/js_client.internal.AdminBatchJobRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminBatchJobRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the batch job's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminBatchJobRes",
-        "type": "`object`",
-        "description": "The batch job's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "batch_job",
-            "type": "[BatchJob](../../internal/classes/js_client.internal.BatchJob.mdx)",
-            "description": "Batch job details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "canceled_at",
-                "type": "`Date`",
-                "description": "The date of the concellation.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "completed_at",
-                "type": "`Date`",
-                "description": "The date of the completion.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "confirmed_at",
-                "type": "`Date`",
-                "description": "The date when the confirmation has been done.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "context",
-                "type": "`Record<string, unknown>`",
-                "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by_user",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "dry_run",
-                "type": "`boolean`",
-                "description": "Specify if the job must apply the modifications or not.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failed_at",
-                "type": "`Date`",
-                "description": "The date when the job failed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The unique identifier for the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "pre_processed_at",
-                "type": "`Date`",
-                "description": "The date from which the job has been pre-processed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "processing_at",
-                "type": "`Date`",
-                "description": "The date the job is processing at.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "result",
-                "type": "``{ advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../../internal/types/js_client.internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../../internal/types/js_client.internal.internal.BatchJobResultStatDescriptor.mdx)[]  }`` & `Record<string, unknown>`",
-                "description": "The result of the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "status",
-                "type": "[BatchJobStatus](../../internal/enums/js_client.internal.internal.BatchJobStatus.mdx)",
-                "description": "The status of the batch job.",
-                "optional": false,
-                "defaultValue": "created",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "type",
-                "type": "`string`",
-                "description": "The type of batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was last updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -292,186 +118,12 @@ medusa.admin.batchJobs.confirm(batchJobId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminBatchJobRes](../../internal/types/js_client.internal.AdminBatchJobRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminBatchJobRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the batch job's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminBatchJobRes",
-        "type": "`object`",
-        "description": "The batch job's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "batch_job",
-            "type": "[BatchJob](../../internal/classes/js_client.internal.BatchJob.mdx)",
-            "description": "Batch job details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "canceled_at",
-                "type": "`Date`",
-                "description": "The date of the concellation.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "completed_at",
-                "type": "`Date`",
-                "description": "The date of the completion.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "confirmed_at",
-                "type": "`Date`",
-                "description": "The date when the confirmation has been done.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "context",
-                "type": "`Record<string, unknown>`",
-                "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by_user",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "dry_run",
-                "type": "`boolean`",
-                "description": "Specify if the job must apply the modifications or not.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failed_at",
-                "type": "`Date`",
-                "description": "The date when the job failed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The unique identifier for the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "pre_processed_at",
-                "type": "`Date`",
-                "description": "The date from which the job has been pre-processed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "processing_at",
-                "type": "`Date`",
-                "description": "The date the job is processing at.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "result",
-                "type": "``{ advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../../internal/types/js_client.internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../../internal/types/js_client.internal.internal.BatchJobResultStatDescriptor.mdx)[]  }`` & `Record<string, unknown>`",
-                "description": "The result of the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "status",
-                "type": "[BatchJobStatus](../../internal/enums/js_client.internal.internal.BatchJobStatus.mdx)",
-                "description": "The status of the batch job.",
-                "optional": false,
-                "defaultValue": "created",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "type",
-                "type": "`string`",
-                "description": "The type of batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was last updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -502,7 +154,7 @@ medusa.admin.batchJobs.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostBatchesReq](../../internal/classes/js_client.internal.AdminPostBatchesReq.mdx)",
+    "type": "[AdminPostBatchesReq](../../medusa/classes/medusa.AdminPostBatchesReq.mdx)",
     "description": "The data of the batch job to create.",
     "optional": false,
     "defaultValue": "",
@@ -553,186 +205,12 @@ medusa.admin.batchJobs.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminBatchJobRes](../../internal/types/js_client.internal.AdminBatchJobRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminBatchJobRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the batch job's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminBatchJobRes",
-        "type": "`object`",
-        "description": "The batch job's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "batch_job",
-            "type": "[BatchJob](../../internal/classes/js_client.internal.BatchJob.mdx)",
-            "description": "Batch job details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "canceled_at",
-                "type": "`Date`",
-                "description": "The date of the concellation.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "completed_at",
-                "type": "`Date`",
-                "description": "The date of the completion.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "confirmed_at",
-                "type": "`Date`",
-                "description": "The date when the confirmation has been done.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "context",
-                "type": "`Record<string, unknown>`",
-                "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by_user",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "dry_run",
-                "type": "`boolean`",
-                "description": "Specify if the job must apply the modifications or not.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failed_at",
-                "type": "`Date`",
-                "description": "The date when the job failed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The unique identifier for the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "pre_processed_at",
-                "type": "`Date`",
-                "description": "The date from which the job has been pre-processed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "processing_at",
-                "type": "`Date`",
-                "description": "The date the job is processing at.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "result",
-                "type": "``{ advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../../internal/types/js_client.internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../../internal/types/js_client.internal.internal.BatchJobResultStatDescriptor.mdx)[]  }`` & `Record<string, unknown>`",
-                "description": "The result of the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "status",
-                "type": "[BatchJobStatus](../../internal/enums/js_client.internal.internal.BatchJobStatus.mdx)",
-                "description": "The status of the batch job.",
-                "optional": false,
-                "defaultValue": "created",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "type",
-                "type": "`string`",
-                "description": "The type of batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was last updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -791,7 +269,7 @@ medusa.admin.batchJobs.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetBatchParams](../../internal/classes/js_client.internal.AdminGetBatchParams.mdx)",
+    "type": "[AdminGetBatchParams](../../medusa/classes/medusa.AdminGetBatchParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved batch jobs.",
     "optional": true,
     "defaultValue": "",
@@ -799,7 +277,7 @@ medusa.admin.batchJobs.list({
     "children": [
       {
         "name": "canceled_at",
-        "type": "`null` \\| [DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "`null` \\| [DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `canceled_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -808,7 +286,7 @@ medusa.admin.batchJobs.list({
       },
       {
         "name": "completed_at",
-        "type": "`null` \\| [DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "`null` \\| [DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `completed_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -817,7 +295,7 @@ medusa.admin.batchJobs.list({
       },
       {
         "name": "confirmed_at",
-        "type": "`null` \\| [DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "`null` \\| [DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `confirmed_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -826,7 +304,7 @@ medusa.admin.batchJobs.list({
       },
       {
         "name": "created_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -881,7 +359,7 @@ medusa.admin.batchJobs.list({
       },
       {
         "name": "failed_at",
-        "type": "`null` \\| [DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "`null` \\| [DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `failed_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -911,7 +389,7 @@ medusa.admin.batchJobs.list({
         "type": "`number`",
         "description": "Limit the number of items returned in the list.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "10",
         "expandable": false,
         "children": []
       },
@@ -920,7 +398,7 @@ medusa.admin.batchJobs.list({
         "type": "`number`",
         "description": "The number of items to skip when retrieving a list.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "0",
         "expandable": false,
         "children": []
       },
@@ -935,7 +413,7 @@ medusa.admin.batchJobs.list({
       },
       {
         "name": "pre_processed_at",
-        "type": "`null` \\| [DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "`null` \\| [DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `pre_processed_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -953,7 +431,7 @@ medusa.admin.batchJobs.list({
       },
       {
         "name": "updated_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -1015,213 +493,12 @@ medusa.admin.batchJobs.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminBatchJobListRes](../../internal/types/js_client.internal.AdminBatchJobListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminBatchJobListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of batch jobs with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminBatchJobListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ batch_jobs: [BatchJob](../../internal/classes/js_client.internal.BatchJob.mdx)[]  }``",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "batch_jobs",
-            "type": "[BatchJob](../../internal/classes/js_client.internal.BatchJob.mdx)[]",
-            "description": "An array of batch job details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "canceled_at",
-                "type": "`Date`",
-                "description": "The date of the concellation.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "completed_at",
-                "type": "`Date`",
-                "description": "The date of the completion.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "confirmed_at",
-                "type": "`Date`",
-                "description": "The date when the confirmation has been done.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "context",
-                "type": "`Record<string, unknown>`",
-                "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by_user",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "dry_run",
-                "type": "`boolean`",
-                "description": "Specify if the job must apply the modifications or not.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failed_at",
-                "type": "`Date`",
-                "description": "The date when the job failed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The unique identifier for the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "pre_processed_at",
-                "type": "`Date`",
-                "description": "The date from which the job has been pre-processed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "processing_at",
-                "type": "`Date`",
-                "description": "The date the job is processing at.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "result",
-                "type": "``{ advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../../internal/types/js_client.internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../../internal/types/js_client.internal.internal.BatchJobResultStatDescriptor.mdx)[]  }`` & `Record<string, unknown>`",
-                "description": "The result of the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "status",
-                "type": "[BatchJobStatus](../../internal/enums/js_client.internal.internal.BatchJobStatus.mdx)",
-                "description": "The status of the batch job.",
-                "optional": false,
-                "defaultValue": "created",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "type",
-                "type": "`string`",
-                "description": "The type of batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was last updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1271,185 +548,11 @@ medusa.admin.batchJobs.retrieve(batchJobId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminBatchJobRes](../../internal/types/js_client.internal.AdminBatchJobRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminBatchJobRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the batch job's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminBatchJobRes",
-        "type": "`object`",
-        "description": "The batch job's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "batch_job",
-            "type": "[BatchJob](../../internal/classes/js_client.internal.BatchJob.mdx)",
-            "description": "Batch job details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "canceled_at",
-                "type": "`Date`",
-                "description": "The date of the concellation.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "completed_at",
-                "type": "`Date`",
-                "description": "The date of the completion.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "confirmed_at",
-                "type": "`Date`",
-                "description": "The date when the confirmation has been done.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "context",
-                "type": "`Record<string, unknown>`",
-                "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by_user",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "dry_run",
-                "type": "`boolean`",
-                "description": "Specify if the job must apply the modifications or not.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failed_at",
-                "type": "`Date`",
-                "description": "The date when the job failed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The unique identifier for the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "pre_processed_at",
-                "type": "`Date`",
-                "description": "The date from which the job has been pre-processed.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "processing_at",
-                "type": "`Date`",
-                "description": "The date the job is processing at.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "result",
-                "type": "``{ advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../../internal/types/js_client.internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../../internal/types/js_client.internal.internal.BatchJobResultStatDescriptor.mdx)[]  }`` & `Record<string, unknown>`",
-                "description": "The result of the batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "status",
-                "type": "[BatchJobStatus](../../internal/enums/js_client.internal.internal.BatchJobStatus.mdx)",
-                "description": "The status of the batch job.",
-                "optional": false,
-                "defaultValue": "created",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "type",
-                "type": "`string`",
-                "description": "The type of batch job.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was last updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

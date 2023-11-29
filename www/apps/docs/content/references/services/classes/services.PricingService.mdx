@@ -15,7 +15,7 @@ Allows retrieval of prices.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-25.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-23.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ ___
   },
   {
     "name": "featureFlagRouter",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ ___
   },
   {
     "name": "priceSelectionStrategy",
-    "type": "[IPriceSelectionStrategy](../interfaces/services.IPriceSelectionStrategy.mdx)",
+    "type": "[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -149,7 +149,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "addPriceListPrices",
-    "type": "(`data`: [AddPriceListPricesDTO](../interfaces/services.AddPriceListPricesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)[]&#62;",
+    "type": "(`data`: [AddPriceListPricesDTO](../../medusa/interfaces/medusa.AddPriceListPricesDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -158,7 +158,7 @@ ___
   },
   {
     "name": "addPrices",
-    "type": "(`data`: [AddPricesDTO](../interfaces/services.AddPricesDTO.mdx), `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)&#62;(`data`: [AddPricesDTO](../interfaces/services.AddPricesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)[]&#62;",
+    "type": "(`data`: [AddPricesDTO](../../medusa/interfaces/medusa.AddPricesDTO.mdx), `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)&#62;(`data`: [AddPricesDTO](../../medusa/interfaces/medusa.AddPricesDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -167,7 +167,7 @@ ___
   },
   {
     "name": "addRules",
-    "type": "(`data`: [AddRulesDTO](../interfaces/services.AddRulesDTO.mdx), `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)&#62;(`data`: [AddRulesDTO](../interfaces/services.AddRulesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)[]&#62;",
+    "type": "(`data`: [AddRulesDTO](../../medusa/interfaces/medusa.AddRulesDTO.mdx), `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)&#62;(`data`: [AddRulesDTO](../../medusa/interfaces/medusa.AddRulesDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -176,7 +176,7 @@ ___
   },
   {
     "name": "calculatePrices",
-    "type": "(`filters`: [PricingFilters](../interfaces/services.PricingFilters.mdx), `context?`: [PricingContext](../interfaces/services.PricingContext.mdx), `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[CalculatedPriceSet](../interfaces/services.CalculatedPriceSet.mdx)[]&#62;",
+    "type": "(`filters`: [PricingFilters](../../medusa/interfaces/medusa.PricingFilters.mdx), `context?`: [PricingContext](../../medusa/interfaces/medusa.PricingContext.mdx), `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[CalculatedPriceSet](../../medusa/interfaces/medusa.CalculatedPriceSet.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -185,7 +185,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`data`: [CreatePriceSetDTO](../interfaces/services.CreatePriceSetDTO.mdx), `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)&#62;(`data`: [CreatePriceSetDTO](../interfaces/services.CreatePriceSetDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)[]&#62;",
+    "type": "(`data`: [CreatePriceSetDTO](../../medusa/interfaces/medusa.CreatePriceSetDTO.mdx), `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)&#62;(`data`: [CreatePriceSetDTO](../../medusa/interfaces/medusa.CreatePriceSetDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -194,7 +194,7 @@ ___
   },
   {
     "name": "createCurrencies",
-    "type": "(`data`: [CreateCurrencyDTO](../interfaces/services.CreateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[CurrencyDTO](../interfaces/services.CurrencyDTO.mdx)[]&#62;",
+    "type": "(`data`: [CreateCurrencyDTO](../../medusa/interfaces/medusa.CreateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[CurrencyDTO](../../medusa/interfaces/medusa.CurrencyDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -203,7 +203,7 @@ ___
   },
   {
     "name": "createMoneyAmounts",
-    "type": "(`data`: [CreateMoneyAmountDTO](../interfaces/services.CreateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../interfaces/services.MoneyAmountDTO.mdx)[]&#62;",
+    "type": "(`data`: [CreateMoneyAmountDTO](../../medusa/interfaces/medusa.CreateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../medusa/interfaces/medusa.MoneyAmountDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -212,7 +212,7 @@ ___
   },
   {
     "name": "createPriceListRules",
-    "type": "(`data`: [CreatePriceListRuleDTO](../interfaces/services.CreatePriceListRuleDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../interfaces/services.PriceListRuleDTO.mdx)[]&#62;",
+    "type": "(`data`: [CreatePriceListRuleDTO](../../medusa/interfaces/medusa.CreatePriceListRuleDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../../medusa/interfaces/medusa.PriceListRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -221,7 +221,7 @@ ___
   },
   {
     "name": "createPriceLists",
-    "type": "(`data`: [CreatePriceListDTO](../interfaces/services.CreatePriceListDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)[]&#62;",
+    "type": "(`data`: [CreatePriceListDTO](../../medusa/interfaces/medusa.CreatePriceListDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -230,7 +230,7 @@ ___
   },
   {
     "name": "createPriceRules",
-    "type": "(`data`: [CreatePriceRuleDTO](../interfaces/services.CreatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceRuleDTO](../interfaces/services.PriceRuleDTO.mdx)[]&#62;",
+    "type": "(`data`: [CreatePriceRuleDTO](../../medusa/interfaces/medusa.CreatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../medusa/interfaces/medusa.PriceRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -239,7 +239,7 @@ ___
   },
   {
     "name": "createPriceSetMoneyAmountRules",
-    "type": "(`data`: [CreatePriceSetMoneyAmountRulesDTO](../interfaces/services.CreatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/services.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
+    "type": "(`data`: [CreatePriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.CreatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -248,7 +248,7 @@ ___
   },
   {
     "name": "createRuleTypes",
-    "type": "(`data`: [CreateRuleTypeDTO](../interfaces/services.CreateRuleTypeDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[RuleTypeDTO](../interfaces/services.RuleTypeDTO.mdx)[]&#62;",
+    "type": "(`data`: [CreateRuleTypeDTO](../../medusa/interfaces/medusa.CreateRuleTypeDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../medusa/interfaces/medusa.RuleTypeDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -257,7 +257,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -266,7 +266,7 @@ ___
   },
   {
     "name": "deleteCurrencies",
-    "type": "(`currencyCodes`: `string`[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`currencyCodes`: `string`[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -275,7 +275,7 @@ ___
   },
   {
     "name": "deleteMoneyAmounts",
-    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -284,7 +284,7 @@ ___
   },
   {
     "name": "deletePriceListRules",
-    "type": "(`priceListRuleIds`: `string`[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`priceListRuleIds`: `string`[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -293,7 +293,7 @@ ___
   },
   {
     "name": "deletePriceLists",
-    "type": "(`priceListIds`: `string`[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`priceListIds`: `string`[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -302,7 +302,7 @@ ___
   },
   {
     "name": "deletePriceRules",
-    "type": "(`priceRuleIds`: `string`[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`priceRuleIds`: `string`[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -311,7 +311,7 @@ ___
   },
   {
     "name": "deletePriceSetMoneyAmountRules",
-    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -320,7 +320,7 @@ ___
   },
   {
     "name": "deleteRuleTypes",
-    "type": "(`ruleTypeIds`: `string`[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`ruleTypeIds`: `string`[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -329,7 +329,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`filters?`: [FilterablePriceSetProps](../interfaces/services.FilterablePriceSetProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterablePriceSetProps](../../medusa/interfaces/medusa.FilterablePriceSetProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -338,7 +338,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`filters?`: [FilterablePriceSetProps](../interfaces/services.FilterablePriceSetProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterablePriceSetProps](../../medusa/interfaces/medusa.FilterablePriceSetProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -347,7 +347,7 @@ ___
   },
   {
     "name": "listAndCountCurrencies",
-    "type": "(`filters?`: [FilterableCurrencyProps](../interfaces/services.FilterableCurrencyProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[CurrencyDTO](../interfaces/services.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[CurrencyDTO](../interfaces/services.CurrencyDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterableCurrencyProps](../../medusa/interfaces/medusa.FilterableCurrencyProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[CurrencyDTO](../../medusa/interfaces/medusa.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[CurrencyDTO](../../medusa/interfaces/medusa.CurrencyDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -356,7 +356,7 @@ ___
   },
   {
     "name": "listAndCountMoneyAmounts",
-    "type": "(`filters?`: [FilterableMoneyAmountProps](../interfaces/services.FilterableMoneyAmountProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../interfaces/services.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[MoneyAmountDTO](../interfaces/services.MoneyAmountDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterableMoneyAmountProps](../../medusa/interfaces/medusa.FilterableMoneyAmountProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../../medusa/interfaces/medusa.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[MoneyAmountDTO](../../medusa/interfaces/medusa.MoneyAmountDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -365,7 +365,7 @@ ___
   },
   {
     "name": "listAndCountPriceListRules",
-    "type": "(`filters?`: [FilterablePriceListRuleProps](../interfaces/services.FilterablePriceListRuleProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../interfaces/services.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[PriceListRuleDTO](../interfaces/services.PriceListRuleDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterablePriceListRuleProps](../../medusa/interfaces/medusa.FilterablePriceListRuleProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../../medusa/interfaces/medusa.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceListRuleDTO](../../medusa/interfaces/medusa.PriceListRuleDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -374,7 +374,7 @@ ___
   },
   {
     "name": "listAndCountPriceLists",
-    "type": "(`filters?`: [FilterablePriceListProps](../interfaces/services.FilterablePriceListProps-1.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[PriceListDTO](../interfaces/services.PriceListDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterablePriceListProps](../../medusa/interfaces/medusa.FilterablePriceListProps-1.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -383,7 +383,7 @@ ___
   },
   {
     "name": "listAndCountPriceRules",
-    "type": "(`filters?`: [FilterablePriceRuleProps](../interfaces/services.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceRuleDTO](../interfaces/services.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[PriceRuleDTO](../interfaces/services.PriceRuleDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterablePriceRuleProps](../../medusa/interfaces/medusa.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceRuleDTO](../../medusa/interfaces/medusa.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceRuleDTO](../../medusa/interfaces/medusa.PriceRuleDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -392,7 +392,7 @@ ___
   },
   {
     "name": "listAndCountPriceSetMoneyAmountRules",
-    "type": "(`filters?`: [FilterablePriceSetMoneyAmountRulesProps](../interfaces/services.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/services.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[PriceSetMoneyAmountRulesDTO](../interfaces/services.PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountRulesProps](../../medusa/interfaces/medusa.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -401,7 +401,7 @@ ___
   },
   {
     "name": "listAndCountPriceSetMoneyAmounts",
-    "type": "(`filters?`: [FilterablePriceSetMoneyAmountProps](../interfaces/services.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountDTO](../interfaces/services.PriceSetMoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[PriceSetMoneyAmountDTO](../interfaces/services.PriceSetMoneyAmountDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountProps](../../medusa/interfaces/medusa.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceSetMoneyAmountDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -410,7 +410,7 @@ ___
   },
   {
     "name": "listAndCountRuleTypes",
-    "type": "(`filters?`: [FilterableRuleTypeProps](../interfaces/services.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[RuleTypeDTO](../interfaces/services.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[[RuleTypeDTO](../interfaces/services.RuleTypeDTO.mdx)[], number]&#62;",
+    "type": "(`filters?`: [FilterableRuleTypeProps](../../medusa/interfaces/medusa.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[RuleTypeDTO](../../medusa/interfaces/medusa.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[[RuleTypeDTO](../../medusa/interfaces/medusa.RuleTypeDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -419,7 +419,7 @@ ___
   },
   {
     "name": "listCurrencies",
-    "type": "(`filters?`: [FilterableCurrencyProps](../interfaces/services.FilterableCurrencyProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[CurrencyDTO](../interfaces/services.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[CurrencyDTO](../interfaces/services.CurrencyDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterableCurrencyProps](../../medusa/interfaces/medusa.FilterableCurrencyProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[CurrencyDTO](../../medusa/interfaces/medusa.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[CurrencyDTO](../../medusa/interfaces/medusa.CurrencyDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -428,7 +428,7 @@ ___
   },
   {
     "name": "listMoneyAmounts",
-    "type": "(`filters?`: [FilterableMoneyAmountProps](../interfaces/services.FilterableMoneyAmountProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../interfaces/services.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../interfaces/services.MoneyAmountDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterableMoneyAmountProps](../../medusa/interfaces/medusa.FilterableMoneyAmountProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../../medusa/interfaces/medusa.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../medusa/interfaces/medusa.MoneyAmountDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -437,7 +437,7 @@ ___
   },
   {
     "name": "listPriceListRules",
-    "type": "(`filters?`: [FilterablePriceListRuleProps](../interfaces/services.FilterablePriceListRuleProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../interfaces/services.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../interfaces/services.PriceListRuleDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterablePriceListRuleProps](../../medusa/interfaces/medusa.FilterablePriceListRuleProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../../medusa/interfaces/medusa.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../../medusa/interfaces/medusa.PriceListRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -446,7 +446,7 @@ ___
   },
   {
     "name": "listPriceLists",
-    "type": "(`filters?`: [FilterablePriceListProps](../interfaces/services.FilterablePriceListProps-1.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterablePriceListProps](../../medusa/interfaces/medusa.FilterablePriceListProps-1.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -455,7 +455,7 @@ ___
   },
   {
     "name": "listPriceRules",
-    "type": "(`filters?`: [FilterablePriceRuleProps](../interfaces/services.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceRuleDTO](../interfaces/services.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceRuleDTO](../interfaces/services.PriceRuleDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterablePriceRuleProps](../../medusa/interfaces/medusa.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceRuleDTO](../../medusa/interfaces/medusa.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../medusa/interfaces/medusa.PriceRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -464,7 +464,7 @@ ___
   },
   {
     "name": "listPriceSetMoneyAmountRules",
-    "type": "(`filters?`: [FilterablePriceSetMoneyAmountRulesProps](../interfaces/services.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/services.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/services.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountRulesProps](../../medusa/interfaces/medusa.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -473,7 +473,7 @@ ___
   },
   {
     "name": "listPriceSetMoneyAmounts",
-    "type": "(`filters?`: [FilterablePriceSetMoneyAmountProps](../interfaces/services.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountDTO](../interfaces/services.PriceSetMoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountDTO](../interfaces/services.PriceSetMoneyAmountDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountProps](../../medusa/interfaces/medusa.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -482,7 +482,7 @@ ___
   },
   {
     "name": "listRuleTypes",
-    "type": "(`filters?`: [FilterableRuleTypeProps](../interfaces/services.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[RuleTypeDTO](../interfaces/services.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[RuleTypeDTO](../interfaces/services.RuleTypeDTO.mdx)[]&#62;",
+    "type": "(`filters?`: [FilterableRuleTypeProps](../../medusa/interfaces/medusa.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[RuleTypeDTO](../../medusa/interfaces/medusa.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../medusa/interfaces/medusa.RuleTypeDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -491,7 +491,7 @@ ___
   },
   {
     "name": "removePriceListRules",
-    "type": "(`data`: [RemovePriceListRulesDTO](../interfaces/services.RemovePriceListRulesDTO.mdx), `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)&#62;",
+    "type": "(`data`: [RemovePriceListRulesDTO](../../medusa/interfaces/medusa.RemovePriceListRulesDTO.mdx), `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -500,7 +500,7 @@ ___
   },
   {
     "name": "removeRules",
-    "type": "(`data`: [RemovePriceSetRulesDTO](../interfaces/services.RemovePriceSetRulesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;void&#62;",
+    "type": "(`data`: [RemovePriceSetRulesDTO](../../medusa/interfaces/medusa.RemovePriceSetRulesDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -509,7 +509,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/services.PriceSetDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../../medusa/interfaces/medusa.PriceSetDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -518,7 +518,7 @@ ___
   },
   {
     "name": "retrieveCurrency",
-    "type": "(`code`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[CurrencyDTO](../interfaces/services.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[CurrencyDTO](../interfaces/services.CurrencyDTO.mdx)&#62;",
+    "type": "(`code`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[CurrencyDTO](../../medusa/interfaces/medusa.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[CurrencyDTO](../../medusa/interfaces/medusa.CurrencyDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -527,7 +527,7 @@ ___
   },
   {
     "name": "retrieveMoneyAmount",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../interfaces/services.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../interfaces/services.MoneyAmountDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../../medusa/interfaces/medusa.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../medusa/interfaces/medusa.MoneyAmountDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -536,7 +536,7 @@ ___
   },
   {
     "name": "retrievePriceList",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -545,7 +545,7 @@ ___
   },
   {
     "name": "retrievePriceListRule",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../interfaces/services.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../interfaces/services.PriceListRuleDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../../medusa/interfaces/medusa.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../../medusa/interfaces/medusa.PriceListRuleDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -554,7 +554,7 @@ ___
   },
   {
     "name": "retrievePriceRule",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceRuleDTO](../interfaces/services.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceRuleDTO](../interfaces/services.PriceRuleDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceRuleDTO](../../medusa/interfaces/medusa.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../medusa/interfaces/medusa.PriceRuleDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -563,7 +563,7 @@ ___
   },
   {
     "name": "retrievePriceSetMoneyAmountRules",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/services.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/services.PriceSetMoneyAmountRulesDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -572,7 +572,7 @@ ___
   },
   {
     "name": "retrieveRuleType",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[RuleTypeDTO](../interfaces/services.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[RuleTypeDTO](../interfaces/services.RuleTypeDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[RuleTypeDTO](../../medusa/interfaces/medusa.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../medusa/interfaces/medusa.RuleTypeDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -581,7 +581,7 @@ ___
   },
   {
     "name": "setPriceListRules",
-    "type": "(`data`: [SetPriceListRulesDTO](../interfaces/services.SetPriceListRulesDTO.mdx), `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)&#62;",
+    "type": "(`data`: [SetPriceListRulesDTO](../../medusa/interfaces/medusa.SetPriceListRulesDTO.mdx), `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -590,7 +590,7 @@ ___
   },
   {
     "name": "updateCurrencies",
-    "type": "(`data`: [UpdateCurrencyDTO](../interfaces/services.UpdateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[CurrencyDTO](../interfaces/services.CurrencyDTO.mdx)[]&#62;",
+    "type": "(`data`: [UpdateCurrencyDTO](../../medusa/interfaces/medusa.UpdateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[CurrencyDTO](../../medusa/interfaces/medusa.CurrencyDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -599,7 +599,7 @@ ___
   },
   {
     "name": "updateMoneyAmounts",
-    "type": "(`data`: [UpdateMoneyAmountDTO](../interfaces/services.UpdateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../interfaces/services.MoneyAmountDTO.mdx)[]&#62;",
+    "type": "(`data`: [UpdateMoneyAmountDTO](../../medusa/interfaces/medusa.UpdateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../medusa/interfaces/medusa.MoneyAmountDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -608,7 +608,7 @@ ___
   },
   {
     "name": "updatePriceListRules",
-    "type": "(`data`: [UpdatePriceListRuleDTO](../interfaces/services.UpdatePriceListRuleDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../interfaces/services.PriceListRuleDTO.mdx)[]&#62;",
+    "type": "(`data`: [UpdatePriceListRuleDTO](../../medusa/interfaces/medusa.UpdatePriceListRuleDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../../medusa/interfaces/medusa.PriceListRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -617,7 +617,7 @@ ___
   },
   {
     "name": "updatePriceLists",
-    "type": "(`data`: [UpdatePriceListDTO](../interfaces/services.UpdatePriceListDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/services.PriceListDTO.mdx)[]&#62;",
+    "type": "(`data`: [UpdatePriceListDTO](../../medusa/interfaces/medusa.UpdatePriceListDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../../medusa/interfaces/medusa.PriceListDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -626,7 +626,7 @@ ___
   },
   {
     "name": "updatePriceRules",
-    "type": "(`data`: [UpdatePriceRuleDTO](../interfaces/services.UpdatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceRuleDTO](../interfaces/services.PriceRuleDTO.mdx)[]&#62;",
+    "type": "(`data`: [UpdatePriceRuleDTO](../../medusa/interfaces/medusa.UpdatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../medusa/interfaces/medusa.PriceRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -635,7 +635,7 @@ ___
   },
   {
     "name": "updatePriceSetMoneyAmountRules",
-    "type": "(`data`: [UpdatePriceSetMoneyAmountRulesDTO](../interfaces/services.UpdatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/services.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
+    "type": "(`data`: [UpdatePriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.UpdatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../../medusa/interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -644,7 +644,7 @@ ___
   },
   {
     "name": "updateRuleTypes",
-    "type": "(`data`: [UpdateRuleTypeDTO](../interfaces/services.UpdateRuleTypeDTO.mdx)[], `sharedContext?`: [Context](../interfaces/services.Context.mdx)) => Promise&#60;[RuleTypeDTO](../interfaces/services.RuleTypeDTO.mdx)[]&#62;",
+    "type": "(`data`: [UpdateRuleTypeDTO](../../medusa/interfaces/medusa.UpdateRuleTypeDTO.mdx)[], `sharedContext?`: [Context](../../medusa/interfaces/medusa.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../medusa/interfaces/medusa.RuleTypeDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -662,7 +662,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "RemoteQueryFunction",
-    "type": "(`query`: `string` \\| [RemoteJoinerQuery](../interfaces/services.RemoteJoinerQuery.mdx) \\| `object`, `variables?`: `Record<string, unknown>`) => Promise&#60;any&#62; \\| `null`",
+    "type": "(`query`: `string` \\| [RemoteJoinerQuery](../../medusa/interfaces/medusa.RemoteJoinerQuery.mdx) \\| `object`, `variables?`: `Record<string, unknown>`) => Promise&#60;any&#62; \\| `null`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -761,7 +761,7 @@ Gets the prices for a product variant
 <ParameterTypes parameters={[
   {
     "name": "variantPricing",
-    "type": "[ProductVariantPricing](../types/services.ProductVariantPricing.mdx)",
+    "type": "[ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)",
     "description": "the prices retrieved from a variant",
     "optional": false,
     "defaultValue": "",
@@ -770,7 +770,7 @@ Gets the prices for a product variant
   },
   {
     "name": "productRates",
-    "type": "[TaxServiceRate](../types/services.TaxServiceRate.mdx)[]",
+    "type": "[TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]",
     "description": "the tax rates that the product has applied",
     "optional": false,
     "defaultValue": "",
@@ -805,7 +805,7 @@ selection.
 <ParameterTypes parameters={[
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -819,7 +819,7 @@ selection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PricingContext](../types/services.PricingContext-1.mdx)&#62;",
+    "type": "Promise&#60;[PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The pricing context",
@@ -851,7 +851,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;Map&#60;string, [MoneyAmount](services.MoneyAmount.mdx)[]&#62;&#62;",
+    "type": "Promise&#60;Map&#60;string, [MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -872,7 +872,7 @@ be fetched.
 <ParameterTypes parameters={[
   {
     "name": "product",
-    "type": "Pick&#60;[Product](services.Product.mdx), \"id\" \\| \"variants\"&#62;",
+    "type": "Pick&#60;[Product](../../entities/classes/entities.Product.mdx), \"id\" \\| \"variants\"&#62;",
     "description": "the product to get pricing for.",
     "optional": false,
     "defaultValue": "",
@@ -881,7 +881,7 @@ be fetched.
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -895,7 +895,7 @@ be fetched.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;Record&#60;string, [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;&#62;",
+    "type": "Promise&#60;Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A map of variant ids to their corresponding prices",
@@ -924,7 +924,7 @@ Gets all the variant prices for a product by the product id
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -938,7 +938,7 @@ Gets all the variant prices for a product by the product id
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;Record&#60;string, [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;&#62;",
+    "type": "Promise&#60;Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A map of variant ids to their corresponding prices",
@@ -956,7 +956,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "``{ productId: string ; variants: [ProductVariant](services.ProductVariant.mdx)[]  }``[]",
+    "type": "`object`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -965,7 +965,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[PricingContext](../types/services.PricingContext-1.mdx)",
+    "type": "[PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -979,7 +979,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;Map&#60;string, Record&#60;string, [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;&#62;&#62;",
+    "type": "Promise&#60;Map&#60;string, Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -999,7 +999,7 @@ Gets the prices for a product variant.
 <ParameterTypes parameters={[
   {
     "name": "variant",
-    "type": "Pick&#60;[ProductVariant](services.ProductVariant.mdx), \"id\" \\| \"product_id\"&#62;",
+    "type": "Pick&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx), \"id\" \\| \"product_id\"&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1008,7 +1008,7 @@ Gets the prices for a product variant.
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx) \\| [PricingContext](../types/services.PricingContext-1.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -1022,7 +1022,7 @@ Gets the prices for a product variant.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;",
+    "type": "Promise&#60;[ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The product variant prices",
@@ -1051,7 +1051,7 @@ Gets the prices for a product variant by a variant id.
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx) \\| [PricingContext](../types/services.PricingContext-1.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -1065,7 +1065,7 @@ Gets the prices for a product variant by a variant id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;",
+    "type": "Promise&#60;[ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The product variant prices",
@@ -1087,7 +1087,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "variantPriceData",
-    "type": "``{ quantity?: number ; variantId: string  }``[]",
+    "type": "`object`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1096,7 +1096,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[PricingContext](../types/services.PricingContext-1.mdx)",
+    "type": "[PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1128,7 +1128,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "``{ quantity?: number ; variantId: string  }``[]",
+    "type": "`object`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1137,7 +1137,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[PricingContext](../types/services.PricingContext-1.mdx)",
+    "type": "[PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1151,7 +1151,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;Map&#60;string, [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;&#62;",
+    "type": "Promise&#60;Map&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1171,7 +1171,7 @@ Gets the prices for a collection of variants.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "``{ quantity?: number ; variantId: string  }``[]",
+    "type": "`object`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1180,7 +1180,7 @@ Gets the prices for a collection of variants.
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx) \\| [PricingContext](../types/services.PricingContext-1.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -1194,7 +1194,7 @@ Gets the prices for a collection of variants.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;&#123; [variant_id: string]: [ProductVariantPricing](../types/services.ProductVariantPricing.mdx);  &#125;&#62;",
+    "type": "Promise&#60;object&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The product variant prices",
@@ -1214,7 +1214,7 @@ Gets the prices for a shipping option.
 <ParameterTypes parameters={[
   {
     "name": "shippingOption",
-    "type": "[ShippingOption](services.ShippingOption.mdx)",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)",
     "description": "the shipping option to get prices for",
     "optional": false,
     "defaultValue": "",
@@ -1223,7 +1223,7 @@ Gets the prices for a shipping option.
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx) \\| [PricingContext](../types/services.PricingContext-1.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -1237,7 +1237,7 @@ Gets the prices for a shipping option.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PricedShippingOption](../types/services.PricedShippingOption.mdx)&#62;",
+    "type": "Promise&#60;[PricedShippingOption](../../medusa/types/medusa.PricedShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The shipping option prices",
@@ -1255,7 +1255,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "products",
-    "type": "[Product](services.Product.mdx)[]",
+    "type": "[Product](../../entities/classes/entities.Product.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1269,7 +1269,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;([Product](services.Product.mdx) \\| [PricedProduct](../types/services.PricedProduct.mdx))[]&#62;",
+    "type": "Promise&#60;([Product](../../entities/classes/entities.Product.mdx) \\| [PricedProduct](../../medusa/types/medusa.PricedProduct.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1287,7 +1287,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "variants",
-    "type": "[ProductVariant](services.ProductVariant.mdx)[]",
+    "type": "[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1296,7 +1296,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1310,7 +1310,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PricedVariant](../types/services.PricedVariant.mdx)[]&#62;",
+    "type": "Promise&#60;[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1330,7 +1330,7 @@ Set additional prices on a list of products.
 <ParameterTypes parameters={[
   {
     "name": "products",
-    "type": "[Product](services.Product.mdx)[]",
+    "type": "[Product](../../entities/classes/entities.Product.mdx)[]",
     "description": "list of products on which to set additional prices",
     "optional": false,
     "defaultValue": "",
@@ -1339,7 +1339,7 @@ Set additional prices on a list of products.
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "{}",
@@ -1353,7 +1353,7 @@ Set additional prices on a list of products.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;([Product](services.Product.mdx) \\| [PricedProduct](../types/services.PricedProduct.mdx))[]&#62;",
+    "type": "Promise&#60;([Product](../../entities/classes/entities.Product.mdx) \\| [PricedProduct](../../medusa/types/medusa.PricedProduct.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A list of products with variants decorated with prices",
@@ -1373,7 +1373,7 @@ Set additional prices on a list of shipping options.
 <ParameterTypes parameters={[
   {
     "name": "shippingOptions",
-    "type": "[ShippingOption](services.ShippingOption.mdx)[]",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]",
     "description": "list of shipping options on which to set additional prices",
     "optional": false,
     "defaultValue": "",
@@ -1382,7 +1382,7 @@ Set additional prices on a list of shipping options.
   },
   {
     "name": "context",
-    "type": "Omit&#60;[PriceSelectionContext](../types/services.PriceSelectionContext.mdx), \"region_id\"&#62;",
+    "type": "Omit&#60;[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx), \"region_id\"&#62;",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "{}",
@@ -1396,7 +1396,7 @@ Set additional prices on a list of shipping options.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PricedShippingOption](../types/services.PricedShippingOption.mdx)[]&#62;",
+    "type": "Promise&#60;[PricedShippingOption](../../medusa/types/medusa.PricedShippingOption.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A list of shipping options with prices",
@@ -1416,7 +1416,7 @@ Set additional prices on a list of product variants.
 <ParameterTypes parameters={[
   {
     "name": "variants",
-    "type": "[ProductVariant](services.ProductVariant.mdx)[]",
+    "type": "[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1425,7 +1425,7 @@ Set additional prices on a list of product variants.
   },
   {
     "name": "context",
-    "type": "[PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "{}",
@@ -1439,7 +1439,7 @@ Set additional prices on a list of product variants.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PricedVariant](../types/services.PricedVariant.mdx)[]&#62;",
+    "type": "Promise&#60;[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A list of products with variants decorated with prices",
@@ -1457,7 +1457,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1503,7 +1503,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-25.mdx)) => [PricingService](services.PricingService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-23.mdx)) => [PricingService](services.PricingService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1548,7 +1548,7 @@ ___
   },
   {
     "name": "featureFlagRouter",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1566,7 +1566,7 @@ ___
   },
   {
     "name": "priceSelectionStrategy",
-    "type": "[IPriceSelectionStrategy](../interfaces/services.IPriceSelectionStrategy.mdx)",
+    "type": "[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1647,7 +1647,7 @@ ___
   },
   {
     "name": "calculateTaxes",
-    "type": "(`variantPricing`: [ProductVariantPricing](../types/services.ProductVariantPricing.mdx), `productRates`: [TaxServiceRate](../types/services.TaxServiceRate.mdx)[]) => [TaxedPricing](../types/services.TaxedPricing.mdx)",
+    "type": "(`variantPricing`: [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx), `productRates`: [TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]) => [TaxedPricing](../../medusa/types/medusa.TaxedPricing.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1656,7 +1656,7 @@ ___
   },
   {
     "name": "collectPricingContext",
-    "type": "(`context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;[PricingContext](../types/services.PricingContext-1.mdx)&#62;",
+    "type": "(`context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1665,7 +1665,7 @@ ___
   },
   {
     "name": "getPricingModuleVariantMoneyAmounts",
-    "type": "(`variantIds`: `string`[]) => Promise&#60;Map&#60;string, [MoneyAmount](services.MoneyAmount.mdx)[]&#62;&#62;",
+    "type": "(`variantIds`: `string`[]) => Promise&#60;Map&#60;string, [MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1674,7 +1674,7 @@ ___
   },
   {
     "name": "getProductPricing",
-    "type": "(`product`: Pick&#60;[Product](services.Product.mdx), \"id\" \\| \"variants\"&#62;, `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;Record&#60;string, [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;&#62;",
+    "type": "(`product`: Pick&#60;[Product](../../entities/classes/entities.Product.mdx), \"id\" \\| \"variants\"&#62;, `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1683,7 +1683,7 @@ ___
   },
   {
     "name": "getProductPricingById",
-    "type": "(`productId`: `string`, `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;Record&#60;string, [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;&#62;",
+    "type": "(`productId`: `string`, `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1692,7 +1692,7 @@ ___
   },
   {
     "name": "getProductPricing_",
-    "type": "(`data`: ``{ productId: string ; variants: [ProductVariant](services.ProductVariant.mdx)[]  }``[], `context`: [PricingContext](../types/services.PricingContext-1.mdx)) => Promise&#60;Map&#60;string, Record&#60;string, [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;&#62;&#62;",
+    "type": "(`data`: ``{ productId: string ; variants: [ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]  }``[], `context`: [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)) => Promise&#60;Map&#60;string, Record&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1701,7 +1701,7 @@ ___
   },
   {
     "name": "getProductVariantPricing",
-    "type": "(`variant`: Pick&#60;[ProductVariant](services.ProductVariant.mdx), \"id\" \\| \"product_id\"&#62;, `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx) \\| [PricingContext](../types/services.PricingContext-1.mdx)) => Promise&#60;[ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;",
+    "type": "(`variant`: Pick&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx), \"id\" \\| \"product_id\"&#62;, `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)) => Promise&#60;[ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1710,7 +1710,7 @@ ___
   },
   {
     "name": "getProductVariantPricingById",
-    "type": "(`variantId`: `string`, `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx) \\| [PricingContext](../types/services.PricingContext-1.mdx)) => Promise&#60;[ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;",
+    "type": "(`variantId`: `string`, `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)) => Promise&#60;[ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1719,7 +1719,7 @@ ___
   },
   {
     "name": "getProductVariantPricingModulePricing_",
-    "type": "(`variantPriceData`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PricingContext](../types/services.PricingContext-1.mdx)) => Promise&#60;Map&#60;any, any&#62;&#62;",
+    "type": "(`variantPriceData`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)) => Promise&#60;Map&#60;any, any&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1728,7 +1728,7 @@ ___
   },
   {
     "name": "getProductVariantPricing_",
-    "type": "(`data`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PricingContext](../types/services.PricingContext-1.mdx)) => Promise&#60;Map&#60;string, [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)&#62;&#62;",
+    "type": "(`data`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)) => Promise&#60;Map&#60;string, [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1737,7 +1737,7 @@ ___
   },
   {
     "name": "getProductVariantsPricing",
-    "type": "(`data`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx) \\| [PricingContext](../types/services.PricingContext-1.mdx)) => Promise&#60;&#123; [variant_id: string]: [ProductVariantPricing](../types/services.ProductVariantPricing.mdx);  &#125;&#62;",
+    "type": "(`data`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)) => Promise&#60;&#123; [variant_id: string]: [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx);  &#125;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1746,7 +1746,7 @@ ___
   },
   {
     "name": "getShippingOptionPricing",
-    "type": "(`shippingOption`: [ShippingOption](services.ShippingOption.mdx), `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx) \\| [PricingContext](../types/services.PricingContext-1.mdx)) => Promise&#60;[PricedShippingOption](../types/services.PricedShippingOption.mdx)&#62;",
+    "type": "(`shippingOption`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx), `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../../medusa/types/medusa.PricingContext-1.mdx)) => Promise&#60;[PricedShippingOption](../../medusa/types/medusa.PricedShippingOption.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1755,7 +1755,7 @@ ___
   },
   {
     "name": "setAdminProductPricing",
-    "type": "(`products`: [Product](services.Product.mdx)[]) => Promise&#60;([Product](services.Product.mdx) \\| [PricedProduct](../types/services.PricedProduct.mdx))[]&#62;",
+    "type": "(`products`: [Product](../../entities/classes/entities.Product.mdx)[]) => Promise&#60;([Product](../../entities/classes/entities.Product.mdx) \\| [PricedProduct](../../medusa/types/medusa.PricedProduct.mdx))[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1764,7 +1764,7 @@ ___
   },
   {
     "name": "setAdminVariantPricing",
-    "type": "(`variants`: [ProductVariant](services.ProductVariant.mdx)[], `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;[PricedVariant](../types/services.PricedVariant.mdx)[]&#62;",
+    "type": "(`variants`: [ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[], `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1773,7 +1773,7 @@ ___
   },
   {
     "name": "setProductPrices",
-    "type": "(`products`: [Product](services.Product.mdx)[], `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;([Product](services.Product.mdx) \\| [PricedProduct](../types/services.PricedProduct.mdx))[]&#62;",
+    "type": "(`products`: [Product](../../entities/classes/entities.Product.mdx)[], `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;([Product](../../entities/classes/entities.Product.mdx) \\| [PricedProduct](../../medusa/types/medusa.PricedProduct.mdx))[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1782,7 +1782,7 @@ ___
   },
   {
     "name": "setShippingOptionPrices",
-    "type": "(`shippingOptions`: [ShippingOption](services.ShippingOption.mdx)[], `context`: Omit&#60;[PriceSelectionContext](../types/services.PriceSelectionContext.mdx), \"region_id\"&#62;) => Promise&#60;[PricedShippingOption](../types/services.PricedShippingOption.mdx)[]&#62;",
+    "type": "(`shippingOptions`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[], `context`: Omit&#60;[PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx), \"region_id\"&#62;) => Promise&#60;[PricedShippingOption](../../medusa/types/medusa.PricedShippingOption.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1791,7 +1791,7 @@ ___
   },
   {
     "name": "setVariantPrices",
-    "type": "(`variants`: [ProductVariant](services.ProductVariant.mdx)[], `context`: [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;[PricedVariant](../types/services.PricedVariant.mdx)[]&#62;",
+    "type": "(`variants`: [ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[], `context`: [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -56,7 +56,7 @@ ___
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](services.Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
+    "type": "Repository&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ ___
   },
   {
     "name": "moneyAmountRepository_",
-    "type": "Repository&#60;[MoneyAmount](services.MoneyAmount.mdx)&#62; & ``{ addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  }``",
+    "type": "Repository&#60;[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ ___
   },
   {
     "name": "priceSelectionStrategy_",
-    "type": "[IPriceSelectionStrategy](../interfaces/services.IPriceSelectionStrategy.mdx)",
+    "type": "[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ ___
   },
   {
     "name": "productOptionValueRepository_",
-    "type": "Repository&#60;[ProductOptionValue](services.ProductOptionValue.mdx)&#62;",
+    "type": "Repository&#60;[ProductOptionValue](../../entities/classes/entities.ProductOptionValue.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -110,7 +110,7 @@ ___
   },
   {
     "name": "productRepository_",
-    "type": "Repository&#60;[Product](services.Product.mdx)&#62; & ``{ _applyCategoriesQuery: Method _applyCategoriesQuery ; _findWithRelations: Method _findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  }``",
+    "type": "Repository&#60;[Product](../../entities/classes/entities.Product.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -119,7 +119,7 @@ ___
   },
   {
     "name": "productVariantRepository_",
-    "type": "Repository&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "Repository&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -241,7 +241,7 @@ Option value must be of type string or number.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductOptionValue](services.ProductOptionValue.mdx)&#62;",
+    "type": "Promise&#60;[ProductOptionValue](../../entities/classes/entities.ProductOptionValue.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation.",
@@ -339,7 +339,7 @@ to ensure that the variant can in fact be created.
 <ParameterTypes parameters={[
   {
     "name": "TVariants",
-    "type": "[CreateProductVariantInput](../types/services.CreateProductVariantInput.mdx) \\| [CreateProductVariantInput](../types/services.CreateProductVariantInput.mdx)[]",
+    "type": "[CreateProductVariantInput](../../medusa/types/medusa.CreateProductVariantInput.mdx) \\| [CreateProductVariantInput](../../medusa/types/medusa.CreateProductVariantInput.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -362,7 +362,7 @@ to ensure that the variant can in fact be created.
 <ParameterTypes parameters={[
   {
     "name": "productOrProductId",
-    "type": "`string` \\| [Product](services.Product.mdx)",
+    "type": "`string` \\| [Product](../../entities/classes/entities.Product.mdx)",
     "description": "the product the variant will be added to",
     "optional": false,
     "defaultValue": "",
@@ -371,7 +371,7 @@ to ensure that the variant can in fact be created.
   },
   {
     "name": "variants",
-    "type": "[CreateProductVariantInput](../types/services.CreateProductVariantInput.mdx) \\| [CreateProductVariantInput](../types/services.CreateProductVariantInput.mdx)[]",
+    "type": "[CreateProductVariantInput](../../medusa/types/medusa.CreateProductVariantInput.mdx) \\| [CreateProductVariantInput](../../medusa/types/medusa.CreateProductVariantInput.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -485,7 +485,7 @@ variants that match the query.
 <ParameterTypes parameters={[
   {
     "name": "variantRepo",
-    "type": "Repository&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "Repository&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "the variant repository",
     "optional": false,
     "defaultValue": "",
@@ -494,7 +494,7 @@ variants that match the query.
   },
   {
     "name": "query",
-    "type": "[FindWithRelationsOptions](../types/services.FindWithRelationsOptions.mdx)",
+    "type": "[FindWithRelationsOptions](../../medusa/types/medusa.FindWithRelationsOptions.mdx)",
     "description": "object that defines the scope for what should be returned",
     "optional": false,
     "defaultValue": "",
@@ -517,7 +517,7 @@ variants that match the query.
 <ParameterTypes parameters={[
   {
     "name": "SelectQueryBuilder",
-    "type": "SelectQueryBuilder&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "SelectQueryBuilder&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array containing the products as the first element and the total\n  count of products that matches the query as the second element.",
@@ -548,7 +548,7 @@ currency price exists the function will throw an error.
   },
   {
     "name": "context",
-    "type": "[GetRegionPriceContext](../types/services.GetRegionPriceContext.mdx)",
+    "type": "[GetRegionPriceContext](../../medusa/types/medusa.GetRegionPriceContext.mdx)",
     "description": "context for getting region price",
     "optional": false,
     "defaultValue": "",
@@ -623,7 +623,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableProductVariantProps](services.FilterableProductVariantProps.mdx)",
+    "type": "[FilterableProductVariantProps](../../medusa/classes/medusa.FilterableProductVariantProps.mdx)",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -632,7 +632,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ProductVariant](services.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62; & [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "query config object for variant retrieval",
     "optional": false,
     "defaultValue": "",
@@ -646,7 +646,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariant](services.ProductVariant.mdx)[]&#62;",
+    "type": "Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -664,7 +664,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableProductVariantProps](services.FilterableProductVariantProps.mdx)",
+    "type": "[FilterableProductVariantProps](../../medusa/classes/medusa.FilterableProductVariantProps.mdx)",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -673,7 +673,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ProductVariant](services.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62; & [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "query config object for variant retrieval",
     "optional": false,
     "defaultValue": "",
@@ -687,7 +687,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[ProductVariant](services.ProductVariant.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -716,7 +716,7 @@ Gets a product variant by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ProductVariant](services.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62; & [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "query config object for variant retrieval.",
     "optional": false,
     "defaultValue": "",
@@ -730,7 +730,7 @@ Gets a product variant by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product document.",
@@ -759,7 +759,7 @@ Gets a product variant by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ProductVariant](services.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62; & [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)",
     "description": "query config object for variant retrieval.",
     "optional": false,
     "defaultValue": "",
@@ -773,7 +773,7 @@ Gets a product variant by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product document.",
@@ -800,7 +800,7 @@ ___
   },
   {
     "name": "price",
-    "type": "[ProductVariantPrice](../types/services.ProductVariantPrice.mdx)",
+    "type": "[ProductVariantPrice](../../medusa/types/medusa.ProductVariantPrice.mdx)",
     "description": "the price for the variant",
     "optional": false,
     "defaultValue": "",
@@ -814,7 +814,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[MoneyAmount](services.MoneyAmount.mdx)&#62;",
+    "type": "Promise&#60;[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -846,7 +846,7 @@ ___
   },
   {
     "name": "price",
-    "type": "[ProductVariantPrice](../types/services.ProductVariantPrice.mdx)",
+    "type": "[ProductVariantPrice](../../medusa/types/medusa.ProductVariantPrice.mdx)",
     "description": "the price for the variant.",
     "optional": false,
     "defaultValue": "",
@@ -860,7 +860,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[MoneyAmount](services.MoneyAmount.mdx)&#62;",
+    "type": "Promise&#60;[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -883,7 +883,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -910,7 +910,7 @@ ___
 
 ### update
 
-`**update**(variantData): Promise&#60;[ProductVariant](services.ProductVariant.mdx)[]&#62;`
+`**update**(variantData): Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;`
 
 Updates a collection of variant.
 
@@ -919,7 +919,7 @@ Updates a collection of variant.
 <ParameterTypes parameters={[
   {
     "name": "variantData",
-    "type": "``{ updateData: [UpdateProductVariantInput](../types/services.UpdateProductVariantInput.mdx) ; variant: [ProductVariant](services.ProductVariant.mdx)  }``[]",
+    "type": "`object`[]",
     "description": "a collection of variant and the data to update.",
     "optional": false,
     "defaultValue": "",
@@ -933,7 +933,7 @@ Updates a collection of variant.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariant](services.ProductVariant.mdx)[]&#62;",
+    "type": "Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -942,7 +942,7 @@ Updates a collection of variant.
   }
 ]} />
 
-`**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;`
+`**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;`
 
 Updates a variant.
 Price updates should use dedicated methods.
@@ -953,7 +953,7 @@ The function will throw, if price updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "variantOrVariantId",
-    "type": "`string` \\| Partial&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "`string` \\| Partial&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "variant or id of a variant.",
     "optional": false,
     "defaultValue": "",
@@ -962,7 +962,7 @@ The function will throw, if price updates are attempted.
   },
   {
     "name": "update",
-    "type": "[UpdateProductVariantInput](../types/services.UpdateProductVariantInput.mdx)",
+    "type": "[UpdateProductVariantInput](../../medusa/types/medusa.UpdateProductVariantInput.mdx)",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -976,7 +976,7 @@ The function will throw, if price updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -985,14 +985,14 @@ The function will throw, if price updates are attempted.
   }
 ]} />
 
-`**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;`
+`**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "variantOrVariantId",
-    "type": "`string` \\| Partial&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "`string` \\| Partial&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1001,7 +1001,7 @@ The function will throw, if price updates are attempted.
   },
   {
     "name": "update",
-    "type": "[UpdateProductVariantInput](../types/services.UpdateProductVariantInput.mdx)",
+    "type": "[UpdateProductVariantInput](../../medusa/types/medusa.UpdateProductVariantInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1015,7 +1015,7 @@ The function will throw, if price updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1033,7 +1033,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "variantData",
-    "type": "[UpdateProductVariantData](../types/services.UpdateProductVariantData.mdx)[]",
+    "type": "[UpdateProductVariantData](../../medusa/types/medusa.UpdateProductVariantData.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1047,7 +1047,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductVariant](services.ProductVariant.mdx)[]&#62;",
+    "type": "Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1100,7 +1100,7 @@ Option value must be of type string or number.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ProductOptionValue](services.ProductOptionValue.mdx)&#62;",
+    "type": "Promise&#60;[ProductOptionValue](../../entities/classes/entities.ProductOptionValue.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation.",
@@ -1123,7 +1123,7 @@ Deletes any prices that are not in the update object, and is not associated with
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[UpdateVariantPricesData](../types/services.UpdateVariantPricesData.mdx)[]",
+    "type": "[UpdateVariantPricesData](../../medusa/types/medusa.UpdateVariantPricesData.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1165,7 +1165,7 @@ Deletes any prices that are not in the update object, and is not associated with
   },
   {
     "name": "prices",
-    "type": "[ProductVariantPrice](../types/services.ProductVariantPrice.mdx)[]",
+    "type": "[ProductVariantPrice](../../medusa/types/medusa.ProductVariantPrice.mdx)[]",
     "description": "the update prices",
     "optional": false,
     "defaultValue": "",
@@ -1197,7 +1197,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[UpdateVariantPricesData](../types/services.UpdateVariantPricesData.mdx)[]",
+    "type": "[UpdateVariantPricesData](../../medusa/types/medusa.UpdateVariantPricesData.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1229,7 +1229,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "``{ price: [WithRequiredProperty](../types/services.WithRequiredProperty.mdx)&#60;[ProductVariantPrice](../types/services.ProductVariantPrice.mdx), \"currency_code\"&#62; ; variantId: string  }``[]",
+    "type": "`object`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1261,7 +1261,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[UpdateVariantRegionPriceData](../types/services.UpdateVariantRegionPriceData.mdx)[]",
+    "type": "[UpdateVariantRegionPriceData](../../medusa/types/medusa.UpdateVariantRegionPriceData.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1293,8 +1293,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "product",
-    "type": "[Product](services.Product.mdx)",
-    "description": "A product is a saleable item that holds general information such as name or description. It must include at least one Product Variant, where each product variant defines different options to purchase the product with (for example, different sizes or colors). The prices and inventory of the product are defined on the variant level.",
+    "type": "[Product](../../entities/classes/entities.Product.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1302,7 +1302,7 @@ ___
   },
   {
     "name": "variants",
-    "type": "[CreateProductVariantInput](../types/services.CreateProductVariantInput.mdx)[]",
+    "type": "[CreateProductVariantInput](../../medusa/types/medusa.CreateProductVariantInput.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1384,7 +1384,7 @@ ___
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](services.Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
+    "type": "Repository&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1411,7 +1411,7 @@ ___
   },
   {
     "name": "moneyAmountRepository_",
-    "type": "Repository&#60;[MoneyAmount](services.MoneyAmount.mdx)&#62; & ``{ addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  }``",
+    "type": "Repository&#60;[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1420,7 +1420,7 @@ ___
   },
   {
     "name": "priceSelectionStrategy_",
-    "type": "[IPriceSelectionStrategy](../interfaces/services.IPriceSelectionStrategy.mdx)",
+    "type": "[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1429,7 +1429,7 @@ ___
   },
   {
     "name": "productOptionValueRepository_",
-    "type": "Repository&#60;[ProductOptionValue](services.ProductOptionValue.mdx)&#62;",
+    "type": "Repository&#60;[ProductOptionValue](../../entities/classes/entities.ProductOptionValue.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1438,7 +1438,7 @@ ___
   },
   {
     "name": "productRepository_",
-    "type": "Repository&#60;[Product](services.Product.mdx)&#62; & ``{ _applyCategoriesQuery: Method _applyCategoriesQuery ; _findWithRelations: Method _findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  }``",
+    "type": "Repository&#60;[Product](../../entities/classes/entities.Product.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1447,7 +1447,7 @@ ___
   },
   {
     "name": "productVariantRepository_",
-    "type": "Repository&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "Repository&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1492,7 +1492,7 @@ ___
   },
   {
     "name": "addOptionValue",
-    "type": "(`variantId`: `string`, `optionId`: `string`, `optionValue`: `string`) => Promise&#60;[ProductOptionValue](services.ProductOptionValue.mdx)&#62;",
+    "type": "(`variantId`: `string`, `optionId`: `string`, `optionValue`: `string`) => Promise&#60;[ProductOptionValue](../../entities/classes/entities.ProductOptionValue.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1510,7 +1510,7 @@ ___
   },
   {
     "name": "create",
-    "type": "`<TVariants, TOutput>`(`productOrProductId`: `string` \\| [Product](services.Product.mdx), `variants`: [CreateProductVariantInput](../types/services.CreateProductVariantInput.mdx) \\| [CreateProductVariantInput](../types/services.CreateProductVariantInput.mdx)[]) => Promise&#60;TOutput&#62;",
+    "type": "`<TVariants, TOutput>`(`productOrProductId`: `string` \\| [Product](../../entities/classes/entities.Product.mdx), `variants`: [CreateProductVariantInput](../../medusa/types/medusa.CreateProductVariantInput.mdx) \\| [CreateProductVariantInput](../../medusa/types/medusa.CreateProductVariantInput.mdx)[]) => Promise&#60;TOutput&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1537,7 +1537,7 @@ ___
   },
   {
     "name": "getFreeTextQueryBuilder_",
-    "type": "(`variantRepo`: Repository&#60;[ProductVariant](services.ProductVariant.mdx)&#62;, `query`: [FindWithRelationsOptions](../types/services.FindWithRelationsOptions.mdx), `q?`: `string`) => SelectQueryBuilder&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "(`variantRepo`: Repository&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;, `query`: [FindWithRelationsOptions](../../medusa/types/medusa.FindWithRelationsOptions.mdx), `q?`: `string`) => SelectQueryBuilder&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1546,7 +1546,7 @@ ___
   },
   {
     "name": "getRegionPrice",
-    "type": "(`variantId`: `string`, `context`: [GetRegionPriceContext](../types/services.GetRegionPriceContext.mdx)) => Promise&#60;null \\| number&#62;",
+    "type": "(`variantId`: `string`, `context`: [GetRegionPriceContext](../../medusa/types/medusa.GetRegionPriceContext.mdx)) => Promise&#60;null \\| number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1564,7 +1564,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [FilterableProductVariantProps](services.FilterableProductVariantProps.mdx), `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ProductVariant](services.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;[ProductVariant](services.ProductVariant.mdx)[]&#62;",
+    "type": "(`selector`: [FilterableProductVariantProps](../../medusa/classes/medusa.FilterableProductVariantProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62; & [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1573,7 +1573,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [FilterableProductVariantProps](services.FilterableProductVariantProps.mdx), `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ProductVariant](services.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;[[ProductVariant](services.ProductVariant.mdx)[], number]&#62;",
+    "type": "(`selector`: [FilterableProductVariantProps](../../medusa/classes/medusa.FilterableProductVariantProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62; & [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1582,7 +1582,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`variantId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ProductVariant](services.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "(`variantId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62; & [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1591,7 +1591,7 @@ ___
   },
   {
     "name": "retrieveBySKU",
-    "type": "(`sku`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ProductVariant](services.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/services.PriceSelectionContext.mdx)) => Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "(`sku`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62; & [PriceSelectionContext](../../medusa/types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1600,7 +1600,7 @@ ___
   },
   {
     "name": "setCurrencyPrice",
-    "type": "(`variantId`: `string`, `price`: [ProductVariantPrice](../types/services.ProductVariantPrice.mdx)) => Promise&#60;[MoneyAmount](services.MoneyAmount.mdx)&#62;",
+    "type": "(`variantId`: `string`, `price`: [ProductVariantPrice](../../medusa/types/medusa.ProductVariantPrice.mdx)) => Promise&#60;[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1609,7 +1609,7 @@ ___
   },
   {
     "name": "setRegionPrice",
-    "type": "(`variantId`: `string`, `price`: [ProductVariantPrice](../types/services.ProductVariantPrice.mdx)) => Promise&#60;[MoneyAmount](services.MoneyAmount.mdx)&#62;",
+    "type": "(`variantId`: `string`, `price`: [ProductVariantPrice](../../medusa/types/medusa.ProductVariantPrice.mdx)) => Promise&#60;[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1627,7 +1627,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`variantData`: ``{ updateData: [UpdateProductVariantInput](../types/services.UpdateProductVariantInput.mdx) ; variant: [ProductVariant](services.ProductVariant.mdx)  }``[]) => Promise&#60;[ProductVariant](services.ProductVariant.mdx)[]&#62;(`variantOrVariantId`: `string` \\| Partial&#60;[ProductVariant](services.ProductVariant.mdx)&#62;, `update`: [UpdateProductVariantInput](../types/services.UpdateProductVariantInput.mdx)) => Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;(`variantOrVariantId`: `string` \\| Partial&#60;[ProductVariant](services.ProductVariant.mdx)&#62;, `update`: [UpdateProductVariantInput](../types/services.UpdateProductVariantInput.mdx)) => Promise&#60;[ProductVariant](services.ProductVariant.mdx)&#62;",
+    "type": "(`variantData`: ``{ updateData: [UpdateProductVariantInput](../../medusa/types/medusa.UpdateProductVariantInput.mdx) ; variant: [ProductVariant](../../entities/classes/entities.ProductVariant.mdx)  }``[]) => Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;(`variantOrVariantId`: `string` \\| Partial&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;, `update`: [UpdateProductVariantInput](../../medusa/types/medusa.UpdateProductVariantInput.mdx)) => Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;(`variantOrVariantId`: `string` \\| Partial&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;, `update`: [UpdateProductVariantInput](../../medusa/types/medusa.UpdateProductVariantInput.mdx)) => Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1636,7 +1636,7 @@ ___
   },
   {
     "name": "updateBatch",
-    "type": "(`variantData`: [UpdateProductVariantData](../types/services.UpdateProductVariantData.mdx)[]) => Promise&#60;[ProductVariant](services.ProductVariant.mdx)[]&#62;",
+    "type": "(`variantData`: [UpdateProductVariantData](../../medusa/types/medusa.UpdateProductVariantData.mdx)[]) => Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1645,7 +1645,7 @@ ___
   },
   {
     "name": "updateOptionValue",
-    "type": "(`variantId`: `string`, `optionId`: `string`, `optionValue`: `string`) => Promise&#60;[ProductOptionValue](services.ProductOptionValue.mdx)&#62;",
+    "type": "(`variantId`: `string`, `optionId`: `string`, `optionValue`: `string`) => Promise&#60;[ProductOptionValue](../../entities/classes/entities.ProductOptionValue.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1654,7 +1654,7 @@ ___
   },
   {
     "name": "updateVariantPrices",
-    "type": "(`data`: [UpdateVariantPricesData](../types/services.UpdateVariantPricesData.mdx)[]) => Promise&#60;void&#62;(`variantId`: `string`, `prices`: [ProductVariantPrice](../types/services.ProductVariantPrice.mdx)[]) => Promise&#60;void&#62;",
+    "type": "(`data`: [UpdateVariantPricesData](../../medusa/types/medusa.UpdateVariantPricesData.mdx)[]) => Promise&#60;void&#62;(`variantId`: `string`, `prices`: [ProductVariantPrice](../../medusa/types/medusa.ProductVariantPrice.mdx)[]) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1663,7 +1663,7 @@ ___
   },
   {
     "name": "updateVariantPricesBatch",
-    "type": "(`data`: [UpdateVariantPricesData](../types/services.UpdateVariantPricesData.mdx)[]) => Promise&#60;void&#62;",
+    "type": "(`data`: [UpdateVariantPricesData](../../medusa/types/medusa.UpdateVariantPricesData.mdx)[]) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1672,7 +1672,7 @@ ___
   },
   {
     "name": "upsertCurrencyPrices",
-    "type": "(`data`: ``{ price: [WithRequiredProperty](../types/services.WithRequiredProperty.mdx)&#60;[ProductVariantPrice](../types/services.ProductVariantPrice.mdx), \"currency_code\"&#62; ; variantId: string  }``[]) => Promise&#60;void&#62;",
+    "type": "(`data`: ``{ price: [WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[ProductVariantPrice](../../medusa/types/medusa.ProductVariantPrice.mdx), \"currency_code\"&#62; ; variantId: string  }``[]) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1681,7 +1681,7 @@ ___
   },
   {
     "name": "upsertRegionPrices",
-    "type": "(`data`: [UpdateVariantRegionPriceData](../types/services.UpdateVariantRegionPriceData.mdx)[]) => Promise&#60;void&#62;",
+    "type": "(`data`: [UpdateVariantRegionPriceData](../../medusa/types/medusa.UpdateVariantRegionPriceData.mdx)[]) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1690,7 +1690,7 @@ ___
   },
   {
     "name": "validateVariantsToCreate_",
-    "type": "(`product`: [Product](services.Product.mdx), `variants`: [CreateProductVariantInput](../types/services.CreateProductVariantInput.mdx)[]) => `void`",
+    "type": "(`product`: [Product](../../entities/classes/entities.Product.mdx), `variants`: [CreateProductVariantInput](../../medusa/types/medusa.CreateProductVariantInput.mdx)[]) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",

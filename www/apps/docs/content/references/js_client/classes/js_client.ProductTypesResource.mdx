@@ -53,7 +53,7 @@ medusa.productTypes.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[StoreGetProductTypesParams](../../internal/classes/js_client.internal.StoreGetProductTypesParams.mdx)",
+    "type": "[StoreGetProductTypesParams](../../medusa/classes/medusa.StoreGetProductTypesParams.mdx)",
     "description": "Filters and pagination configurations to apply on retrieved product types.",
     "optional": true,
     "defaultValue": "",
@@ -61,7 +61,7 @@ medusa.productTypes.list({
     "children": [
       {
         "name": "created_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product types' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -116,7 +116,7 @@ medusa.productTypes.list({
       },
       {
         "name": "id",
-        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../internal/classes/js_client.internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../medusa/classes/medusa.StringComparisonOperator.mdx)",
         "description": "IDs to filter product types by.",
         "optional": true,
         "defaultValue": "",
@@ -161,7 +161,7 @@ medusa.productTypes.list({
       },
       {
         "name": "updated_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product types' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -207,7 +207,7 @@ medusa.productTypes.list({
       },
       {
         "name": "value",
-        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../internal/classes/js_client.internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../medusa/classes/medusa.StringComparisonOperator.mdx)",
         "description": "Values to filter product types by.",
         "optional": true,
         "defaultValue": "",
@@ -232,113 +232,11 @@ medusa.productTypes.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreProductTypesListRes](../../internal/types/js_client.internal.StoreProductTypesListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreProductTypesListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product types with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreProductTypesListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ product_types: [ProductType](../../internal/classes/js_client.internal.ProductType.mdx)[]  }``",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "product_types",
-            "type": "[ProductType](../../internal/classes/js_client.internal.ProductType.mdx)[]",
-            "description": "An array of product types details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product type's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`string`",
-                "description": "The value that the Product Type represents.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

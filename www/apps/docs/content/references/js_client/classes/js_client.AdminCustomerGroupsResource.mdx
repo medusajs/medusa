@@ -37,7 +37,7 @@ Add a list of customers to a customer group.
   },
   {
     "name": "payload",
-    "type": "[AdminPostCustomerGroupsGroupCustomersBatchReq](../../internal/classes/js_client.internal.AdminPostCustomerGroupsGroupCustomersBatchReq.mdx)",
+    "type": "[AdminPostCustomerGroupsGroupCustomersBatchReq](../../medusa/classes/medusa.AdminPostCustomerGroupsGroupCustomersBatchReq.mdx)",
     "description": "The customers to add to the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -45,7 +45,7 @@ Add a list of customers to a customer group.
     "children": [
       {
         "name": "customer_ids",
-        "type": "[CustomerGroupsBatchCustomer](../../internal/classes/js_client.internal.CustomerGroupsBatchCustomer.mdx)[]",
+        "type": "[CustomerGroupsBatchCustomer](../../medusa/classes/medusa.CustomerGroupsBatchCustomer.mdx)[]",
         "description": "The ids of the customers to add",
         "optional": false,
         "defaultValue": "",
@@ -80,105 +80,12 @@ Add a list of customers to a customer group.
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../../internal/types/js_client.internal.AdminCustomerGroupsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomerGroupsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomerGroupsRes",
-        "type": "`object`",
-        "description": "The customer group's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer_group",
-            "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)",
-            "description": "Customer group details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "customers",
-                "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)[]",
-                "description": "The details of the customers that belong to the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer group's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the customer group",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "price_lists",
-                "type": "[PriceList](../../internal/classes/js_client.internal.PriceList.mdx)[]",
-                "description": "The price lists that are associated with the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -207,7 +114,7 @@ medusa.admin.customerGroups.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostCustomerGroupsReq](../../internal/classes/js_client.internal.AdminPostCustomerGroupsReq.mdx)",
+    "type": "[AdminPostCustomerGroupsReq](../../medusa/classes/medusa.AdminPostCustomerGroupsReq.mdx)",
     "description": "The data of the customer group to create.",
     "optional": false,
     "defaultValue": "",
@@ -249,105 +156,12 @@ medusa.admin.customerGroups.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../../internal/types/js_client.internal.AdminCustomerGroupsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomerGroupsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomerGroupsRes",
-        "type": "`object`",
-        "description": "The customer group's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer_group",
-            "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)",
-            "description": "Customer group details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "customers",
-                "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)[]",
-                "description": "The details of the customers that belong to the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer group's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the customer group",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "price_lists",
-                "type": "[PriceList](../../internal/classes/js_client.internal.PriceList.mdx)[]",
-                "description": "The price lists that are associated with the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -397,40 +211,12 @@ medusa.admin.customerGroups.delete(customerGroupId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[DeleteResponse](../../internal/interfaces/js_client.internal.DeleteResponse.mdx)&#62;",
+    "type": "ResponsePromise&#60;DeleteResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "deleted",
-        "type": "`boolean`",
-        "description": "Whether the item was deleted successfully.",
-        "optional": false,
-        "defaultValue": "true",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of the deleted item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "object",
-        "type": "`string`",
-        "description": "The type of the deleted item.",
-        "optional": false,
-        "defaultValue": "product-collection",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -489,7 +275,7 @@ medusa.admin.customerGroups.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetCustomerGroupsParams](../../internal/classes/js_client.internal.AdminGetCustomerGroupsParams.mdx)",
+    "type": "[AdminGetCustomerGroupsParams](../../medusa/classes/medusa.AdminGetCustomerGroupsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved customer groups.",
     "optional": true,
     "defaultValue": "",
@@ -497,7 +283,7 @@ medusa.admin.customerGroups.list({
     "children": [
       {
         "name": "created_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the customer groups' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -561,7 +347,7 @@ medusa.admin.customerGroups.list({
       },
       {
         "name": "id",
-        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../internal/classes/js_client.internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../../medusa/classes/medusa.StringComparisonOperator.mdx)",
         "description": "IDs to filter customer groups by.",
         "optional": true,
         "defaultValue": "",
@@ -573,7 +359,7 @@ medusa.admin.customerGroups.list({
         "type": "`number`",
         "description": "Limit the number of items returned in the list.",
         "optional": true,
-        "defaultValue": "",
+        "defaultValue": "10",
         "expandable": false,
         "children": []
       },
@@ -591,7 +377,7 @@ medusa.admin.customerGroups.list({
         "type": "`number`",
         "description": "The number of items to skip when retrieving a list.",
         "optional": true,
-        "defaultValue": "",
+        "defaultValue": "0",
         "expandable": false,
         "children": []
       },
@@ -615,7 +401,7 @@ medusa.admin.customerGroups.list({
       },
       {
         "name": "updated_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the customer groups' `update_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -677,132 +463,12 @@ medusa.admin.customerGroups.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsListRes](../../internal/types/js_client.internal.AdminCustomerGroupsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomerGroupsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of customer groups with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomerGroupsListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ customer_groups: [CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)[]  }``",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "customer_groups",
-            "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)[]",
-            "description": "An array of customer group details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "customers",
-                "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)[]",
-                "description": "The details of the customers that belong to the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer group's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the customer group",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "price_lists",
-                "type": "[PriceList](../../internal/classes/js_client.internal.PriceList.mdx)[]",
-                "description": "The price lists that are associated with the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -838,7 +504,7 @@ medusa.admin.customerGroups.listCustomers(customerGroupId)
   },
   {
     "name": "query",
-    "type": "[AdminGetCustomersParams](../../internal/classes/js_client.internal.AdminGetCustomersParams.mdx)",
+    "type": "[AdminGetCustomersParams](../../medusa/classes/medusa.AdminGetCustomersParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved customers.",
     "optional": true,
     "defaultValue": "",
@@ -916,195 +582,12 @@ medusa.admin.customerGroups.listCustomers(customerGroupId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomersListRes](../../internal/types/js_client.internal.AdminCustomersListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomersListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of customers with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomersListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ customers: [Customer](../../internal/classes/js_client.internal.Customer.mdx)[]  }``",
-        "description": "The list of customers with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "customers",
-            "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)[]",
-            "description": "An array of customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "billing_address",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)",
-                "description": "The details of the billing address associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "billing_address_id",
-                "type": "`null` \\| `string`",
-                "description": "The customer's billing address ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "email",
-                "type": "`string`",
-                "description": "The customer's email",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "first_name",
-                "type": "`string`",
-                "description": "The customer's first name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "groups",
-                "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)[]",
-                "description": "The customer groups the customer belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "has_account",
-                "type": "`boolean`",
-                "description": "Whether the customer has an account or not",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "last_name",
-                "type": "`string`",
-                "description": "The customer's last name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "orders",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)[]",
-                "description": "The details of the orders this customer placed.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "phone",
-                "type": "`string`",
-                "description": "The customer's phone number",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_addresses",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)[]",
-                "description": "The details of the shipping addresses associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1146,7 +629,7 @@ medusa.admin.customerGroups.removeCustomers(customerGroupId, {
   },
   {
     "name": "payload",
-    "type": "[AdminDeleteCustomerGroupsGroupCustomerBatchReq](../../internal/classes/js_client.internal.AdminDeleteCustomerGroupsGroupCustomerBatchReq.mdx)",
+    "type": "[AdminDeleteCustomerGroupsGroupCustomerBatchReq](../../medusa/classes/medusa.AdminDeleteCustomerGroupsGroupCustomerBatchReq.mdx)",
     "description": "The customers to remove from the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -1154,7 +637,7 @@ medusa.admin.customerGroups.removeCustomers(customerGroupId, {
     "children": [
       {
         "name": "customer_ids",
-        "type": "[CustomerGroupsBatchCustomer](../../internal/classes/js_client.internal.CustomerGroupsBatchCustomer.mdx)[]",
+        "type": "[CustomerGroupsBatchCustomer](../../medusa/classes/medusa.CustomerGroupsBatchCustomer.mdx)[]",
         "description": "The ids of the customers to remove",
         "optional": false,
         "defaultValue": "",
@@ -1189,105 +672,12 @@ medusa.admin.customerGroups.removeCustomers(customerGroupId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../../internal/types/js_client.internal.AdminCustomerGroupsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomerGroupsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomerGroupsRes",
-        "type": "`object`",
-        "description": "The customer group's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer_group",
-            "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)",
-            "description": "Customer group details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "customers",
-                "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)[]",
-                "description": "The details of the customers that belong to the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer group's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the customer group",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "price_lists",
-                "type": "[PriceList](../../internal/classes/js_client.internal.PriceList.mdx)[]",
-                "description": "The price lists that are associated with the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1323,7 +713,7 @@ medusa.admin.customerGroups.retrieve(customerGroupId)
   },
   {
     "name": "query",
-    "type": "[AdminGetCustomerGroupsGroupParams](../../internal/classes/js_client.internal.AdminGetCustomerGroupsGroupParams.mdx)",
+    "type": "[AdminGetCustomerGroupsGroupParams](../../medusa/classes/medusa.AdminGetCustomerGroupsGroupParams.mdx)",
     "description": "Configurations to apply on the retrieved customer group.",
     "optional": true,
     "defaultValue": "",
@@ -1365,105 +755,12 @@ medusa.admin.customerGroups.retrieve(customerGroupId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../../internal/types/js_client.internal.AdminCustomerGroupsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomerGroupsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomerGroupsRes",
-        "type": "`object`",
-        "description": "The customer group's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer_group",
-            "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)",
-            "description": "Customer group details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "customers",
-                "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)[]",
-                "description": "The details of the customers that belong to the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer group's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the customer group",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "price_lists",
-                "type": "[PriceList](../../internal/classes/js_client.internal.PriceList.mdx)[]",
-                "description": "The price lists that are associated with the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1487,7 +784,7 @@ Update a customer group's details.
   },
   {
     "name": "payload",
-    "type": "[AdminPostCustomerGroupsGroupReq](../../internal/classes/js_client.internal.AdminPostCustomerGroupsGroupReq.mdx)",
+    "type": "[AdminPostCustomerGroupsGroupReq](../../medusa/classes/medusa.AdminPostCustomerGroupsGroupReq.mdx)",
     "description": "The attributes to update in the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -1529,104 +826,11 @@ Update a customer group's details.
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../../internal/types/js_client.internal.AdminCustomerGroupsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomerGroupsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomerGroupsRes",
-        "type": "`object`",
-        "description": "The customer group's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer_group",
-            "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)",
-            "description": "Customer group details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "customers",
-                "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)[]",
-                "description": "The details of the customers that belong to the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer group's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the customer group",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "price_lists",
-                "type": "[PriceList](../../internal/classes/js_client.internal.PriceList.mdx)[]",
-                "description": "The price lists that are associated with the customer group.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

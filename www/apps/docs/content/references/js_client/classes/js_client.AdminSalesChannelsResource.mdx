@@ -51,7 +51,7 @@ medusa.admin.salesChannels.addLocation(salesChannelId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostSalesChannelsChannelStockLocationsReq](../../internal/classes/js_client.internal.AdminPostSalesChannelsChannelStockLocationsReq.mdx)",
+    "type": "[AdminPostSalesChannelsChannelStockLocationsReq](../../medusa/classes/medusa.AdminPostSalesChannelsChannelStockLocationsReq.mdx)",
     "description": "The stock location to associate with the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -84,114 +84,12 @@ medusa.admin.salesChannels.addLocation(salesChannelId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../../internal/types/js_client.internal.AdminSalesChannelsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminSalesChannelsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminSalesChannelsRes",
-        "type": "`object`",
-        "description": "The sales channel's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "sales_channel",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-            "description": "Sales Channel's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -233,7 +131,7 @@ medusa.admin.salesChannels.addProducts(salesChannelId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostSalesChannelsChannelProductsBatchReq](../../internal/classes/js_client.internal.AdminPostSalesChannelsChannelProductsBatchReq.mdx)",
+    "type": "[AdminPostSalesChannelsChannelProductsBatchReq](../../medusa/classes/medusa.AdminPostSalesChannelsChannelProductsBatchReq.mdx)",
     "description": "The products to add to the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -241,7 +139,7 @@ medusa.admin.salesChannels.addProducts(salesChannelId, {
     "children": [
       {
         "name": "product_ids",
-        "type": "[ProductBatchSalesChannel](../../internal/classes/js_client.internal.ProductBatchSalesChannel.mdx)[]",
+        "type": "[ProductBatchSalesChannel](../../medusa/classes/medusa.ProductBatchSalesChannel.mdx)[]",
         "description": "The IDs of the products to add to the Sales Channel",
         "optional": false,
         "defaultValue": "",
@@ -276,114 +174,12 @@ medusa.admin.salesChannels.addProducts(salesChannelId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../../internal/types/js_client.internal.AdminSalesChannelsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminSalesChannelsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminSalesChannelsRes",
-        "type": "`object`",
-        "description": "The sales channel's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "sales_channel",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-            "description": "Sales Channel's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -413,7 +209,7 @@ medusa.admin.salesChannels.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostSalesChannelsReq](../../internal/classes/js_client.internal.AdminPostSalesChannelsReq.mdx)",
+    "type": "[AdminPostSalesChannelsReq](../../medusa/classes/medusa.AdminPostSalesChannelsReq.mdx)",
     "description": "The sales channel to create.",
     "optional": false,
     "defaultValue": "",
@@ -464,114 +260,12 @@ medusa.admin.salesChannels.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../../internal/types/js_client.internal.AdminSalesChannelsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminSalesChannelsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminSalesChannelsRes",
-        "type": "`object`",
-        "description": "The sales channel's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "sales_channel",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-            "description": "Sales Channel's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -621,40 +315,12 @@ medusa.admin.salesChannels.delete(salesChannelId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[DeleteResponse](../../internal/interfaces/js_client.internal.DeleteResponse.mdx)&#62;",
+    "type": "ResponsePromise&#60;DeleteResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "deleted",
-        "type": "`boolean`",
-        "description": "Whether the item was deleted successfully.",
-        "optional": false,
-        "defaultValue": "true",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of the deleted item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "object",
-        "type": "`string`",
-        "description": "The type of the deleted item.",
-        "optional": false,
-        "defaultValue": "product-collection",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -713,7 +379,7 @@ medusa.admin.salesChannels.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetSalesChannelsParams](../../internal/classes/js_client.internal.AdminGetSalesChannelsParams.mdx)",
+    "type": "[AdminGetSalesChannelsParams](../../medusa/classes/medusa.AdminGetSalesChannelsParams.mdx)",
     "description": "Filters and pagination configurations applied on the retrieved sales channels.",
     "optional": true,
     "defaultValue": "",
@@ -721,7 +387,7 @@ medusa.admin.salesChannels.list({
     "children": [
       {
         "name": "created_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on sales channels' `created_at` field.",
         "optional": true,
         "defaultValue": "",
@@ -767,7 +433,7 @@ medusa.admin.salesChannels.list({
       },
       {
         "name": "deleted_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on sales channels' `deleted_at` field.",
         "optional": true,
         "defaultValue": "",
@@ -894,7 +560,7 @@ medusa.admin.salesChannels.list({
       },
       {
         "name": "updated_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on sales channels' `updated_at` field.",
         "optional": true,
         "defaultValue": "",
@@ -956,141 +622,12 @@ medusa.admin.salesChannels.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsListRes](../../internal/types/js_client.internal.AdminSalesChannelsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminSalesChannelsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of sales channels with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminSalesChannelsListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ sales_channels: [SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)[]  }``",
-        "description": "The list of sales channels with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "sales_channels",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)[]",
-            "description": "An array of sales channels details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1128,7 +665,7 @@ medusa.admin.salesChannels.removeLocation(salesChannelId, {
   },
   {
     "name": "payload",
-    "type": "[AdminDeleteSalesChannelsChannelStockLocationsReq](../../internal/classes/js_client.internal.AdminDeleteSalesChannelsChannelStockLocationsReq.mdx)",
+    "type": "[AdminDeleteSalesChannelsChannelStockLocationsReq](../../medusa/classes/medusa.AdminDeleteSalesChannelsChannelStockLocationsReq.mdx)",
     "description": "The stock location to remove from the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -1161,114 +698,12 @@ medusa.admin.salesChannels.removeLocation(salesChannelId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../../internal/types/js_client.internal.AdminSalesChannelsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminSalesChannelsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminSalesChannelsRes",
-        "type": "`object`",
-        "description": "The sales channel's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "sales_channel",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-            "description": "Sales Channel's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1310,7 +745,7 @@ medusa.admin.salesChannels.removeProducts(salesChannelId, {
   },
   {
     "name": "payload",
-    "type": "[AdminDeleteSalesChannelsChannelProductsBatchReq](../../internal/classes/js_client.internal.AdminDeleteSalesChannelsChannelProductsBatchReq.mdx)",
+    "type": "[AdminDeleteSalesChannelsChannelProductsBatchReq](../../medusa/classes/medusa.AdminDeleteSalesChannelsChannelProductsBatchReq.mdx)",
     "description": "The products to remove from the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -1318,7 +753,7 @@ medusa.admin.salesChannels.removeProducts(salesChannelId, {
     "children": [
       {
         "name": "product_ids",
-        "type": "[ProductBatchSalesChannel](../../internal/classes/js_client.internal.ProductBatchSalesChannel.mdx)[]",
+        "type": "[ProductBatchSalesChannel](../../medusa/classes/medusa.ProductBatchSalesChannel.mdx)[]",
         "description": "The IDs of the products to remove from the Sales Channel.",
         "optional": false,
         "defaultValue": "",
@@ -1353,114 +788,12 @@ medusa.admin.salesChannels.removeProducts(salesChannelId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../../internal/types/js_client.internal.AdminSalesChannelsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminSalesChannelsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminSalesChannelsRes",
-        "type": "`object`",
-        "description": "The sales channel's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "sales_channel",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-            "description": "Sales Channel's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1510,114 +843,12 @@ medusa.admin.salesChannels.retrieve(salesChannelId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../../internal/types/js_client.internal.AdminSalesChannelsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminSalesChannelsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminSalesChannelsRes",
-        "type": "`object`",
-        "description": "The sales channel's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "sales_channel",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-            "description": "Sales Channel's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1655,7 +886,7 @@ medusa.admin.salesChannels.update(salesChannelId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostSalesChannelsSalesChannelReq](../../internal/classes/js_client.internal.AdminPostSalesChannelsSalesChannelReq.mdx)",
+    "type": "[AdminPostSalesChannelsSalesChannelReq](../../medusa/classes/medusa.AdminPostSalesChannelsSalesChannelReq.mdx)",
     "description": "The attributes to update in the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -1706,113 +937,11 @@ medusa.admin.salesChannels.update(salesChannelId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../../internal/types/js_client.internal.AdminSalesChannelsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminSalesChannelsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminSalesChannelsRes",
-        "type": "`object`",
-        "description": "The sales channel's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "sales_channel",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-            "description": "Sales Channel's details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

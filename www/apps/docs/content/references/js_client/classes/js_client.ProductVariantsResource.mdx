@@ -73,7 +73,7 @@ medusa.product.variants.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[StoreGetVariantsParams](../../internal/classes/js_client.internal.StoreGetVariantsParams.mdx)",
+    "type": "[StoreGetVariantsParams](../../medusa/classes/medusa.StoreGetVariantsParams.mdx)",
     "description": "Filters and pagination configurations applied on the retrieved product variants.",
     "optional": true,
     "defaultValue": "",
@@ -135,7 +135,7 @@ medusa.product.variants.list({
       },
       {
         "name": "inventory_quantity",
-        "type": "`number` \\| [NumericalComparisonOperator](../../internal/classes/js_client.internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../../medusa/classes/medusa.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply on the product variants' `inventory_quantity` field.",
         "optional": true,
         "defaultValue": "",
@@ -205,134 +205,12 @@ medusa.product.variants.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreVariantsListRes](../../internal/types/js_client.internal.StoreVariantsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreVariantsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product variants.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreVariantsListRes",
-        "type": "`object`",
-        "description": "The list of product variants.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "variants",
-            "type": "[PricedVariant](../../internal/types/js_client.internal.PricedVariant.mdx)[]",
-            "description": "An array of product variant descriptions.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "calculated_price",
-                "type": "`number` \\| `null`",
-                "description": "The lowest price among the retrieved prices.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculated_price_includes_tax",
-                "type": "`boolean` \\| `null`",
-                "description": "Whether the `calculated_price` field includes taxes.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "featureFlag": "tax_inclusive_pricing",
-                "children": []
-              },
-              {
-                "name": "calculated_price_type",
-                "type": "`string` \\| `null`",
-                "description": "Either `default` if the `calculated_price` is the original price, or the type of the price list applied, if any.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "original_price",
-                "type": "`number` \\| `null`",
-                "description": "The original price of the variant.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "original_price_includes_tax",
-                "type": "`boolean` \\| `null`",
-                "description": "Whether the `original_price` field includes taxes.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "featureFlag": "tax_inclusive_pricing",
-                "children": []
-              },
-              {
-                "name": "prices",
-                "type": "[MoneyAmount](../../internal/classes/js_client.internal.internal.MoneyAmount.mdx)[]",
-                "description": "The list of prices.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculated_price_incl_tax",
-                "type": "`number` \\| `null`",
-                "description": "The price after applying the tax amount on the calculated price.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculated_tax",
-                "type": "`number` \\| `null`",
-                "description": "The tax amount applied to the calculated price.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "original_price_incl_tax",
-                "type": "`number` \\| `null`",
-                "description": "The price after applying the tax amount on the original price.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "original_tax",
-                "type": "`number` \\| `null`",
-                "description": "The tax amount applied to the original price.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_rates",
-                "type": "[TaxServiceRate](../../internal/types/js_client.internal.TaxServiceRate.mdx)[] \\| `null`",
-                "description": "The list of tax rates.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -386,133 +264,11 @@ medusa.product.variants.retrieve(productVariantId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreVariantsRes](../../internal/types/js_client.internal.StoreVariantsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreVariantsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product variant's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreVariantsRes",
-        "type": "`object`",
-        "description": "The product variant's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "variant",
-            "type": "[PricedVariant](../../internal/types/js_client.internal.PricedVariant.mdx)",
-            "description": "Product variant description.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "calculated_price",
-                "type": "`number` \\| `null`",
-                "description": "The lowest price among the retrieved prices.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculated_price_includes_tax",
-                "type": "`boolean` \\| `null`",
-                "description": "Whether the `calculated_price` field includes taxes.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "featureFlag": "tax_inclusive_pricing",
-                "children": []
-              },
-              {
-                "name": "calculated_price_type",
-                "type": "`string` \\| `null`",
-                "description": "Either `default` if the `calculated_price` is the original price, or the type of the price list applied, if any.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "original_price",
-                "type": "`number` \\| `null`",
-                "description": "The original price of the variant.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "original_price_includes_tax",
-                "type": "`boolean` \\| `null`",
-                "description": "Whether the `original_price` field includes taxes.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "featureFlag": "tax_inclusive_pricing",
-                "children": []
-              },
-              {
-                "name": "prices",
-                "type": "[MoneyAmount](../../internal/classes/js_client.internal.internal.MoneyAmount.mdx)[]",
-                "description": "The list of prices.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculated_price_incl_tax",
-                "type": "`number` \\| `null`",
-                "description": "The price after applying the tax amount on the calculated price.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculated_tax",
-                "type": "`number` \\| `null`",
-                "description": "The tax amount applied to the calculated price.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "original_price_incl_tax",
-                "type": "`number` \\| `null`",
-                "description": "The price after applying the tax amount on the original price.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "original_tax",
-                "type": "`number` \\| `null`",
-                "description": "The tax amount applied to the original price.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_rates",
-                "type": "[TaxServiceRate](../../internal/types/js_client.internal.TaxServiceRate.mdx)[] \\| `null`",
-                "description": "The list of tax rates.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

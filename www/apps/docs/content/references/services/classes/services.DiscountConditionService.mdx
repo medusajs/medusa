@@ -17,7 +17,7 @@ Provides layer to manipulate discount conditions.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-8.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-8.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -60,7 +60,7 @@ ___
   },
   {
     "name": "discountConditionRepository_",
-    "type": "Repository&#60;[DiscountCondition](services.DiscountCondition.mdx)&#62; & ``{ addConditionResources: Method addConditionResources ; canApplyForCustomer: Method canApplyForCustomer ; findOneWithDiscount: Method findOneWithDiscount ; getJoinTableResourceIdentifiers: Method getJoinTableResourceIdentifiers ; isValidForProduct: Method isValidForProduct ; queryConditionTable: Method queryConditionTable ; removeConditionResources: Method removeConditionResources  }``",
+    "type": "Repository&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -208,7 +208,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;void \\| [DiscountCondition](services.DiscountCondition.mdx)&#62;",
+    "type": "Promise&#60;void \\| [DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -226,7 +226,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "Omit&#60;[DiscountConditionInput](../types/services.DiscountConditionInput.mdx), \"id\"&#62; & ``{ id: string  }``",
+    "type": "Omit&#60;[DiscountConditionInput](../../medusa/types/medusa.DiscountConditionInput.mdx), \"id\"&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -267,7 +267,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[DiscountCondition](services.DiscountCondition.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -281,7 +281,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[DiscountCondition](services.DiscountCondition.mdx)&#62;",
+    "type": "Promise&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -299,7 +299,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -331,7 +331,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[DiscountConditionInput](../types/services.DiscountConditionInput.mdx)",
+    "type": "[DiscountConditionInput](../../medusa/types/medusa.DiscountConditionInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -354,7 +354,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;([DiscountConditionProduct](services.DiscountConditionProduct.mdx) \\| [DiscountConditionProductType](services.DiscountConditionProductType.mdx) \\| [DiscountConditionProductCollection](services.DiscountConditionProductCollection.mdx) \\| [DiscountConditionProductTag](services.DiscountConditionProductTag.mdx) \\| [DiscountConditionCustomerGroup](services.DiscountConditionCustomerGroup.mdx))[]&#62;",
+    "type": "Promise&#60;([DiscountConditionProduct](../../entities/classes/entities.DiscountConditionProduct.mdx) \\| [DiscountConditionProductType](../../entities/classes/entities.DiscountConditionProductType.mdx) \\| [DiscountConditionProductCollection](../../entities/classes/entities.DiscountConditionProductCollection.mdx) \\| [DiscountConditionProductTag](../../entities/classes/entities.DiscountConditionProductTag.mdx) \\| [DiscountConditionCustomerGroup](../../entities/classes/entities.DiscountConditionCustomerGroup.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -386,7 +386,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-8.mdx)) => [DiscountConditionService](services.DiscountConditionService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-8.mdx)) => [DiscountConditionService](services.DiscountConditionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -422,7 +422,7 @@ ___
   },
   {
     "name": "discountConditionRepository_",
-    "type": "Repository&#60;[DiscountCondition](services.DiscountCondition.mdx)&#62; & ``{ addConditionResources: Method addConditionResources ; canApplyForCustomer: Method canApplyForCustomer ; findOneWithDiscount: Method findOneWithDiscount ; getJoinTableResourceIdentifiers: Method getJoinTableResourceIdentifiers ; isValidForProduct: Method isValidForProduct ; queryConditionTable: Method queryConditionTable ; removeConditionResources: Method removeConditionResources  }``",
+    "type": "Repository&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -476,7 +476,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`discountConditionId`: `string`) => Promise&#60;void \\| [DiscountCondition](services.DiscountCondition.mdx)&#62;",
+    "type": "(`discountConditionId`: `string`) => Promise&#60;void \\| [DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -485,7 +485,7 @@ ___
   },
   {
     "name": "removeResources",
-    "type": "(`data`: Omit&#60;[DiscountConditionInput](../types/services.DiscountConditionInput.mdx), \"id\"&#62; & ``{ id: string  }``) => Promise&#60;void&#62;",
+    "type": "(`data`: Omit&#60;[DiscountConditionInput](../../medusa/types/medusa.DiscountConditionInput.mdx), \"id\"&#62; & ``{ id: string  }``) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -494,7 +494,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`conditionId`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[DiscountCondition](services.DiscountCondition.mdx)&#62;) => Promise&#60;[DiscountCondition](services.DiscountCondition.mdx)&#62;",
+    "type": "(`conditionId`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;) => Promise&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -512,7 +512,7 @@ ___
   },
   {
     "name": "upsertCondition",
-    "type": "(`data`: [DiscountConditionInput](../types/services.DiscountConditionInput.mdx), `overrideExisting`: `boolean`) => Promise&#60;([DiscountConditionProduct](services.DiscountConditionProduct.mdx) \\| [DiscountConditionProductType](services.DiscountConditionProductType.mdx) \\| [DiscountConditionProductCollection](services.DiscountConditionProductCollection.mdx) \\| [DiscountConditionProductTag](services.DiscountConditionProductTag.mdx) \\| [DiscountConditionCustomerGroup](services.DiscountConditionCustomerGroup.mdx))[]&#62;",
+    "type": "(`data`: [DiscountConditionInput](../../medusa/types/medusa.DiscountConditionInput.mdx), `overrideExisting`: `boolean`) => Promise&#60;([DiscountConditionProduct](../../entities/classes/entities.DiscountConditionProduct.mdx) \\| [DiscountConditionProductType](../../entities/classes/entities.DiscountConditionProductType.mdx) \\| [DiscountConditionProductCollection](../../entities/classes/entities.DiscountConditionProductCollection.mdx) \\| [DiscountConditionProductTag](../../entities/classes/entities.DiscountConditionProductTag.mdx) \\| [DiscountConditionCustomerGroup](../../entities/classes/entities.DiscountConditionCustomerGroup.mdx))[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -530,7 +530,7 @@ ___
   },
   {
     "name": "resolveConditionType_",
-    "type": "(`data`: [DiscountConditionInput](../types/services.DiscountConditionInput.mdx)) => `undefined` \\| ``{ resource_ids: (string \\| &#123; id: string  &#125;)[] ; type: [DiscountConditionType](../enums/services.DiscountConditionType.mdx)  }``",
+    "type": "(`data`: [DiscountConditionInput](../../medusa/types/medusa.DiscountConditionInput.mdx)) => `undefined` \\| ``{ resource_ids: (string \\| &#123; id: string  &#125;)[] ; type: [DiscountConditionType](../../entities/enums/entities.DiscountConditionType.mdx)  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -548,7 +548,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[DiscountConditionInput](../types/services.DiscountConditionInput.mdx)",
+    "type": "[DiscountConditionInput](../../medusa/types/medusa.DiscountConditionInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -561,8 +561,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "undefined \\| &#123; resource_ids: (string \\| &#123; id: string  &#125;)[] ; type: DiscountConditionType  &#125;",
-    "type": "`undefined` \\| ``{ resource_ids: (string \\| &#123; id: string  &#125;)[] ; type: [DiscountConditionType](../enums/services.DiscountConditionType.mdx)  }``",
+    "name": "undefined \\| object",
+    "type": "`undefined` \\| `object`",
     "optional": true,
     "defaultValue": "",
     "description": "",

@@ -44,7 +44,7 @@ medusa.carts.lineItems.create(cart_id, {
   },
   {
     "name": "payload",
-    "type": "[StorePostCartsCartLineItemsReq](../../internal/classes/js_client.internal.StorePostCartsCartLineItemsReq.mdx)",
+    "type": "[StorePostCartsCartLineItemsReq](../../medusa/classes/medusa.StorePostCartsCartLineItemsReq.mdx)",
     "description": "The line item to be created.",
     "optional": false,
     "defaultValue": "",
@@ -95,32 +95,12 @@ medusa.carts.lineItems.create(cart_id, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../../internal/types/js_client.internal.StoreCartsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCartsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the associated cart's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCartsRes",
-        "type": "`object`",
-        "description": "The cart's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "cart",
-            "type": "Omit&#60;[Cart](../../internal/classes/js_client.internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
-            "description": "Cart details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -178,32 +158,12 @@ medusa.carts.lineItems.delete(cartId, lineId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../../internal/types/js_client.internal.StoreCartsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCartsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the associated cart's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCartsRes",
-        "type": "`object`",
-        "description": "The cart's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "cart",
-            "type": "Omit&#60;[Cart](../../internal/classes/js_client.internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
-            "description": "Cart details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -249,7 +209,7 @@ medusa.carts.lineItems.update(cartId, lineId, {
   },
   {
     "name": "payload",
-    "type": "[StorePostCartsCartLineItemsItemReq](../../internal/classes/js_client.internal.StorePostCartsCartLineItemsItemReq.mdx)",
+    "type": "[StorePostCartsCartLineItemsItemReq](../../medusa/classes/medusa.StorePostCartsCartLineItemsItemReq.mdx)",
     "description": "The data to update in the line item.",
     "optional": false,
     "defaultValue": "",
@@ -291,31 +251,11 @@ medusa.carts.lineItems.update(cartId, lineId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../../internal/types/js_client.internal.StoreCartsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCartsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the associated cart's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCartsRes",
-        "type": "`object`",
-        "description": "The cart's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "cart",
-            "type": "Omit&#60;[Cart](../../internal/classes/js_client.internal.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
-            "description": "Cart details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-14.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-13.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ ___
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](services.Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
+    "type": "Repository&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ ___
   },
   {
     "name": "itemTaxLineRepo_",
-    "type": "Repository&#60;[LineItemTaxLine](services.LineItemTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
+    "type": "Repository&#60;[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ ___
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](services.LineItem.mdx)&#62; & ``{ findByReturn: Method findByReturn  }``",
+    "type": "Repository&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -271,7 +271,7 @@ ___
   },
   {
     "name": "data",
-    "type": "DeepPartial&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "DeepPartial&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -303,7 +303,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -404,7 +404,7 @@ return.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created line items",
@@ -424,7 +424,7 @@ Create a line item tax line.
 <ParameterTypes parameters={[
   {
     "name": "args",
-    "type": "DeepPartial&#60;[LineItemTaxLine](services.LineItemTaxLine.mdx)&#62;",
+    "type": "DeepPartial&#60;[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)&#62;",
     "description": "tax line partial passed to the repo create method",
     "optional": false,
     "defaultValue": "",
@@ -438,7 +438,7 @@ Create a line item tax line.
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "() => [LineItemTaxLine](services.LineItemTaxLine.mdx)",
+    "type": "() => [LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -474,7 +474,7 @@ Create a line item tax line.
   },
   {
     "name": "item",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "The details of the line item.",
     "optional": false,
     "defaultValue": "",
@@ -562,7 +562,7 @@ Deletes a line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| null \\| [LineItem](services.LineItem.mdx)&#62;",
+    "type": "Promise&#60;undefined \\| null \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -594,7 +594,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| null \\| [LineItem](services.LineItem.mdx)&#62;",
+    "type": "Promise&#60;undefined \\| null \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -651,7 +651,7 @@ Generate a single or multiple line item without persisting the data into the db
   },
   {
     "name": "regionIdOrContext",
-    "type": "`T` extends `string` ? `string` : [GenerateLineItemContext](../types/services.GenerateLineItemContext.mdx)",
+    "type": "`T` extends `string` ? `string` : [GenerateLineItemContext](../../medusa/types/medusa.GenerateLineItemContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -669,7 +669,7 @@ Generate a single or multiple line item without persisting the data into the db
   },
   {
     "name": "context",
-    "type": "[GenerateLineItemContext](../types/services.GenerateLineItemContext.mdx)",
+    "type": "[GenerateLineItemContext](../../medusa/types/medusa.GenerateLineItemContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -791,7 +791,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[GenerateLineItemContext](../types/services.GenerateLineItemContext.mdx) & ``{ variantPricing: [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)  }``",
+    "type": "[GenerateLineItemContext](../../medusa/types/medusa.GenerateLineItemContext.mdx) & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -805,7 +805,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -823,7 +823,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -832,7 +832,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -846,7 +846,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -889,7 +889,7 @@ Retrieves a line item by its id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item",
@@ -907,7 +907,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -941,7 +941,7 @@ Updates a line item
 <ParameterTypes parameters={[
   {
     "name": "idOrSelector",
-    "type": "`string` \\| [Selector](../types/services.Selector.mdx)&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "`string` \\| [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "the id or selector of the line item(s) to update",
     "optional": false,
     "defaultValue": "",
@@ -950,7 +950,7 @@ Updates a line item
   },
   {
     "name": "data",
-    "type": "Partial&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "Partial&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "the properties to update the line item(s)",
     "optional": false,
     "defaultValue": "",
@@ -964,7 +964,7 @@ Updates a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated line item(s)",
@@ -1014,7 +1014,7 @@ ___
   },
   {
     "name": "regionIdOrContext",
-    "type": "`T` extends `string` ? `string` : [GenerateLineItemContext](../types/services.GenerateLineItemContext.mdx)",
+    "type": "`T` extends `string` ? `string` : [GenerateLineItemContext](../../medusa/types/medusa.GenerateLineItemContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1069,7 +1069,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-14.mdx)) => [LineItemService](services.LineItemService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-13.mdx)) => [LineItemService](services.LineItemService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1105,7 +1105,7 @@ ___
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](services.Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
+    "type": "Repository&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1114,7 +1114,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1123,7 +1123,7 @@ ___
   },
   {
     "name": "itemTaxLineRepo_",
-    "type": "Repository&#60;[LineItemTaxLine](services.LineItemTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
+    "type": "Repository&#60;[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1141,7 +1141,7 @@ ___
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](services.LineItem.mdx)&#62; & ``{ findByReturn: Method findByReturn  }``",
+    "type": "Repository&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1231,7 +1231,7 @@ ___
   },
   {
     "name": "cloneTo",
-    "type": "(`ids`: `string` \\| `string`[], `data`: DeepPartial&#60;[LineItem](services.LineItem.mdx)&#62;, `options`: ``{ setOriginalLineItemId?: boolean  }``) => Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "(`ids`: `string` \\| `string`[], `data`: DeepPartial&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;, `options`: ``{ setOriginalLineItemId?: boolean  }``) => Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1249,7 +1249,7 @@ ___
   },
   {
     "name": "createReturnLines",
-    "type": "(`returnId`: `string`, `cartId`: `string`) => Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "(`returnId`: `string`, `cartId`: `string`) => Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1258,7 +1258,7 @@ ___
   },
   {
     "name": "createTaxLine",
-    "type": "(`args`: DeepPartial&#60;[LineItemTaxLine](services.LineItemTaxLine.mdx)&#62;) => [LineItemTaxLine](services.LineItemTaxLine.mdx)",
+    "type": "(`args`: DeepPartial&#60;[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)&#62;) => [LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1267,7 +1267,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`id`: `string`) => Promise&#60;undefined \\| null \\| [LineItem](services.LineItem.mdx)&#62;",
+    "type": "(`id`: `string`) => Promise&#60;undefined \\| null \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1276,7 +1276,7 @@ ___
   },
   {
     "name": "deleteWithTaxLines",
-    "type": "(`id`: `string`) => Promise&#60;undefined \\| null \\| [LineItem](services.LineItem.mdx)&#62;",
+    "type": "(`id`: `string`) => Promise&#60;undefined \\| null \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1285,7 +1285,7 @@ ___
   },
   {
     "name": "generate",
-    "type": "`<T, TResult>`(`variantIdOrData`: `T`, `regionIdOrContext`: `T` extends `string` ? `string` : [GenerateLineItemContext](../types/services.GenerateLineItemContext.mdx), `quantity?`: `number`, `context`: [GenerateLineItemContext](../types/services.GenerateLineItemContext.mdx)) => Promise&#60;TResult&#62;",
+    "type": "`<T, TResult>`(`variantIdOrData`: `T`, `regionIdOrContext`: `T` extends `string` ? `string` : [GenerateLineItemContext](../../medusa/types/medusa.GenerateLineItemContext.mdx), `quantity?`: `number`, `context`: [GenerateLineItemContext](../../medusa/types/medusa.GenerateLineItemContext.mdx)) => Promise&#60;TResult&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1294,7 +1294,7 @@ ___
   },
   {
     "name": "generateLineItem",
-    "type": "(`variant`: ``{ id: string ; product: &#123; discountable: boolean ; is_giftcard: boolean ; thumbnail: null \\| string ; title: string  &#125; ; product_id: string ; title: string  }``, `quantity`: `number`, `context`: [GenerateLineItemContext](../types/services.GenerateLineItemContext.mdx) & ``{ variantPricing: [ProductVariantPricing](../types/services.ProductVariantPricing.mdx)  }``) => Promise&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "(`variant`: ``{ id: string ; product: &#123; discountable: boolean ; is_giftcard: boolean ; thumbnail: null \\| string ; title: string  &#125; ; product_id: string ; title: string  }``, `quantity`: `number`, `context`: [GenerateLineItemContext](../../medusa/types/medusa.GenerateLineItemContext.mdx) & ``{ variantPricing: [ProductVariantPricing](../../medusa/types/medusa.ProductVariantPricing.mdx)  }``) => Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1303,7 +1303,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[LineItem](services.LineItem.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[LineItem](services.LineItem.mdx)&#62;) => Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;) => Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1312,7 +1312,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config`: ``{}``) => Promise&#60;[LineItem](services.LineItem.mdx)&#62;",
+    "type": "(`id`: `string`, `config`: ``{}``) => Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1330,7 +1330,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`idOrSelector`: `string` \\| [Selector](../types/services.Selector.mdx)&#60;[LineItem](services.LineItem.mdx)&#62;, `data`: Partial&#60;[LineItem](services.LineItem.mdx)&#62;) => Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "(`idOrSelector`: `string` \\| [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;, `data`: Partial&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62;) => Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1339,7 +1339,7 @@ ___
   },
   {
     "name": "validateGenerateArguments",
-    "type": "`<T, TResult>`(`variantIdOrData`: `string` \\| `T`, `regionIdOrContext`: `T` extends `string` ? `string` : [GenerateLineItemContext](../types/services.GenerateLineItemContext.mdx), `quantity?`: `number`) => `void`",
+    "type": "`<T, TResult>`(`variantIdOrData`: `string` \\| `T`, `regionIdOrContext`: `T` extends `string` ? `string` : [GenerateLineItemContext](../../medusa/types/medusa.GenerateLineItemContext.mdx), `quantity?`: `number`) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -1,0 +1,146 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# GenerateLineItemContext
+
+ **GenerateLineItemContext**: `Object`
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart",
+    "type": "[CalculationContextData](medusa.CalculationContextData.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "claims",
+        "type": "[ClaimOrder](../classes/medusa.ClaimOrder.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer",
+        "type": "[Customer](../classes/medusa.Customer.mdx)",
+        "description": "A customer can make purchases in your store and manage their profile.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discounts",
+        "type": "[Discount](../classes/medusa.Discount.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[LineItem](../classes/medusa.LineItem.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region",
+        "type": "[Region](../classes/medusa.Region.mdx)",
+        "description": "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_address",
+        "type": "[Address](../classes/medusa.Address.mdx) \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_methods",
+        "type": "[ShippingMethod](../classes/medusa.ShippingMethod.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "swaps",
+        "type": "[Swap](../classes/medusa.Swap.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customer_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "includes_tax",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order_edit_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "region_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "unit_price",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

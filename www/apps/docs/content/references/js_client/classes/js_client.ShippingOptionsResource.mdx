@@ -36,7 +36,7 @@ medusa.shippingOptions.list()
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[StoreGetShippingOptionsParams](../../internal/classes/js_client.internal.StoreGetShippingOptionsParams.mdx)",
+    "type": "[StoreGetShippingOptionsParams](../../medusa/classes/medusa.StoreGetShippingOptionsParams.mdx)",
     "description": "The filters to apply on the shipping options.",
     "optional": true,
     "defaultValue": "",
@@ -87,60 +87,12 @@ medusa.shippingOptions.list()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreShippingOptionsListRes](../../internal/types/js_client.internal.StoreShippingOptionsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreShippingOptionsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of shipping options.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreShippingOptionsListRes",
-        "type": "`object`",
-        "description": "The list of shipping options.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "shipping_options",
-            "type": "[PricedShippingOption](../../internal/types/js_client.internal.PricedShippingOption.mdx)[]",
-            "description": "An array of shipping options details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "price_incl_tax",
-                "type": "`number` \\| `null`",
-                "description": "Price including taxes",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_amount",
-                "type": "`number`",
-                "description": "The taxes applied.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_rates",
-                "type": "[TaxServiceRate](../../internal/types/js_client.internal.TaxServiceRate.mdx)[] \\| `null`",
-                "description": "An array of applied tax rates",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -189,59 +141,11 @@ medusa.shippingOptions.listCartOptions(cartId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreShippingOptionsListRes](../../internal/types/js_client.internal.StoreShippingOptionsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreShippingOptionsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of shipping options.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreShippingOptionsListRes",
-        "type": "`object`",
-        "description": "The list of shipping options.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "shipping_options",
-            "type": "[PricedShippingOption](../../internal/types/js_client.internal.PricedShippingOption.mdx)[]",
-            "description": "An array of shipping options details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "price_incl_tax",
-                "type": "`number` \\| `null`",
-                "description": "Price including taxes",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_amount",
-                "type": "`number`",
-                "description": "The taxes applied.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_rates",
-                "type": "[TaxServiceRate](../../internal/types/js_client.internal.TaxServiceRate.mdx)[] \\| `null`",
-                "description": "An array of applied tax rates",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

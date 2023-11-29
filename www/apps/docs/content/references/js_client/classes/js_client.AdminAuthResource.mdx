@@ -42,7 +42,7 @@ medusa.admin.AdminAuthResource.createSession({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostAuthReq](../../internal/classes/js_client.internal.AdminPostAuthReq.mdx)",
+    "type": "[AdminPostAuthReq](../../medusa/classes/medusa.AdminPostAuthReq.mdx)",
     "description": "The credentials of the user.",
     "optional": false,
     "defaultValue": "",
@@ -84,32 +84,12 @@ medusa.admin.AdminAuthResource.createSession({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminAuthRes](../../internal/types/js_client.internal.AdminAuthRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminAuthRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminAuthRes",
-        "type": "`object`",
-        "description": "The user's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "user",
-            "type": "Omit&#60;[User](../../internal/classes/js_client.internal.User.mdx), \"password_hash\"&#62;",
-            "description": "User details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -148,7 +128,7 @@ medusa.admin.auth.deleteSession()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;void&#62;",
+    "type": "ResponsePromise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when user is logged out successfully.",
@@ -194,32 +174,12 @@ medusa.admin.auth.getSession()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminAuthRes](../../internal/types/js_client.internal.AdminAuthRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminAuthRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the logged-in user's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminAuthRes",
-        "type": "`object`",
-        "description": "The user's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "user",
-            "type": "Omit&#60;[User](../../internal/classes/js_client.internal.User.mdx), \"password_hash\"&#62;",
-            "description": "User details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -248,7 +208,7 @@ medusa.admin.auth.getToken({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostAuthReq](../../internal/classes/js_client.internal.AdminPostAuthReq.mdx)",
+    "type": "[AdminPostAuthReq](../../medusa/classes/medusa.AdminPostAuthReq.mdx)",
     "description": "The credentials of the user.",
     "optional": false,
     "defaultValue": "",
@@ -290,31 +250,11 @@ medusa.admin.auth.getToken({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminBearerAuthRes](../../internal/types/js_client.internal.AdminBearerAuthRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminBearerAuthRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the access token of the user, if they're authenticated successfully.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminBearerAuthRes",
-        "type": "`object`",
-        "description": "The access token of the user, if they're authenticated successfully.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "access_token",
-            "type": "`string`",
-            "description": "Access token that can be used to send authenticated requests.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

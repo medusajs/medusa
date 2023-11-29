@@ -1,0 +1,609 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PriceListConstructorProps
+
+ **PriceListConstructorProps**: `Object`
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "customerGroupService",
+    "type": "[CustomerGroupService](../classes/medusa.CustomerGroupService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customerGroupRepository_",
+        "type": "Repository&#60;[CustomerGroup](../classes/medusa.CustomerGroup.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customerService_",
+        "type": "[CustomerService](../classes/medusa.CustomerService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "featureFlagRouter",
+    "type": "[FlagRouter](../classes/medusa.FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "flags",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "moneyAmountRepository",
+    "type": "typeof [MoneyAmountRepository](../../modules/medusa.mdx#moneyamountrepository)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceListRepository",
+    "type": "typeof [PriceListRepository](../../modules/medusa.mdx#pricelistrepository)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productService",
+    "type": "[ProductService](../classes/medusa.ProductService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[EventBusService](../classes/medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](../classes/medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "imageRepository_",
+        "type": "Repository&#60;[Image](../classes/medusa.Image.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryRepository_",
+        "type": "TreeRepository&#60;[ProductCategory](../classes/medusa.ProductCategory.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productOptionRepository_",
+        "type": "Repository&#60;[ProductOption](../classes/medusa.ProductOption.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productRepository_",
+        "type": "Repository&#60;[Product](../classes/medusa.Product.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productTagRepository_",
+        "type": "Repository&#60;[ProductTag](../classes/medusa.ProductTag.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productTypeRepository_",
+        "type": "Repository&#60;[ProductType](../classes/medusa.ProductType.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantRepository_",
+        "type": "Repository&#60;[ProductVariant](../classes/medusa.ProductVariant.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantService_",
+        "type": "[ProductVariantService](../classes/medusa.ProductVariantService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "searchService_",
+        "type": "[SearchService](../classes/medusa.SearchService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "IndexName",
+        "type": "`\"products\"`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "productVariantRepository",
+    "type": "typeof [ProductVariantRepository](../../modules/medusa.mdx#productvariantrepository)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantService",
+    "type": "[ProductVariantService](../classes/medusa.ProductVariantService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cartRepository_",
+        "type": "Repository&#60;[Cart](../classes/medusa.Cart.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[EventBusService](../classes/medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "moneyAmountRepository_",
+        "type": "Repository&#60;[MoneyAmount](../classes/medusa.MoneyAmount.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "priceSelectionStrategy_",
+        "type": "[IPriceSelectionStrategy](../interfaces/medusa.IPriceSelectionStrategy.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productOptionValueRepository_",
+        "type": "Repository&#60;[ProductOptionValue](../classes/medusa.ProductOptionValue.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productRepository_",
+        "type": "Repository&#60;[Product](../classes/medusa.Product.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantRepository_",
+        "type": "Repository&#60;[ProductVariant](../classes/medusa.ProductVariant.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionService_",
+        "type": "[RegionService](../classes/medusa.RegionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "regionService",
+    "type": "[RegionService](../classes/medusa.RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "countryRepository_",
+        "type": "Repository&#60;[Country](../classes/medusa.Country.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currencyRepository_",
+        "type": "Repository&#60;[Currency](../classes/medusa.Currency.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[EventBusService](../classes/medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](../classes/medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderRepository_",
+        "type": "Repository&#60;[FulfillmentProvider](../classes/medusa.FulfillmentProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderService_",
+        "type": "[FulfillmentProviderService](../classes/medusa.FulfillmentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentProviderRepository_",
+        "type": "Repository&#60;[PaymentProvider](../classes/medusa.PaymentProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentProviderService_",
+        "type": "[PaymentProviderService](../classes/medusa.PaymentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionRepository_",
+        "type": "Repository&#60;[Region](../classes/medusa.Region.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "storeService_",
+        "type": "[StoreService](../classes/medusa.StoreService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderRepository_",
+        "type": "Repository&#60;[TaxProvider](../classes/medusa.TaxProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

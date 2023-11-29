@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-23.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-21.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ ___
   },
   {
     "name": "paymentCollectionRepository_",
-    "type": "Repository&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62; & ``{ getPaymentCollectionIdByPaymentId: Method getPaymentCollectionIdByPaymentId ; getPaymentCollectionIdBySessionId: Method getPaymentCollectionIdBySessionId  }``",
+    "type": "Repository&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -287,7 +287,7 @@ Authorizes the payment sessions of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection and its payment session.",
@@ -307,7 +307,7 @@ Creates a new payment collection.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreatePaymentCollectionInput](../types/services.CreatePaymentCollectionInput.mdx)",
+    "type": "[CreatePaymentCollectionInput](../../medusa/types/medusa.CreatePaymentCollectionInput.mdx)",
     "description": "info to create the payment collection",
     "optional": false,
     "defaultValue": "",
@@ -321,7 +321,7 @@ Creates a new payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection created.",
@@ -355,7 +355,7 @@ Deletes a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| [PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "Promise&#60;undefined \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection removed.",
@@ -382,7 +382,7 @@ ___
   },
   {
     "name": "sessionsInput",
-    "type": "[PaymentCollectionsSessionsBatchInput](../types/services.PaymentCollectionsSessionsBatchInput.mdx)[]",
+    "type": "[PaymentCollectionsSessionsBatchInput](../../medusa/types/medusa.PaymentCollectionsSessionsBatchInput.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -430,7 +430,7 @@ Marks a payment collection as authorized bypassing the payment flow.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment session authorized.",
@@ -482,7 +482,7 @@ Removes and recreate a payment session of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PaymentSession](services.PaymentSession.mdx)&#62;",
+    "type": "Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the new payment session created.",
@@ -511,7 +511,7 @@ Retrieves a payment collection by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "the config to retrieve the payment collection",
     "optional": false,
     "defaultValue": "{}",
@@ -525,7 +525,7 @@ Retrieves a payment collection by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection.",
@@ -554,7 +554,7 @@ Manages a single payment sessions of a payment collection.
   },
   {
     "name": "sessionInput",
-    "type": "[PaymentCollectionsSessionsInput](../types/services.PaymentCollectionsSessionsInput.mdx)",
+    "type": "[PaymentCollectionsSessionsInput](../../medusa/types/medusa.PaymentCollectionsSessionsInput.mdx)",
     "description": "object containing payment session info",
     "optional": false,
     "defaultValue": "",
@@ -577,7 +577,7 @@ Manages a single payment sessions of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection and its payment session.",
@@ -597,7 +597,7 @@ Manages multiple payment sessions of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "paymentCollectionOrId",
-    "type": "`string` \\| [PaymentCollection](services.PaymentCollection.mdx)",
+    "type": "`string` \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)",
     "description": "the id of the payment collection",
     "optional": false,
     "defaultValue": "",
@@ -606,7 +606,7 @@ Manages multiple payment sessions of a payment collection.
   },
   {
     "name": "sessionsInput",
-    "type": "[PaymentCollectionsSessionsBatchInput](../types/services.PaymentCollectionsSessionsBatchInput.mdx)[]",
+    "type": "[PaymentCollectionsSessionsBatchInput](../../medusa/types/medusa.PaymentCollectionsSessionsBatchInput.mdx)[]",
     "description": "array containing payment session info",
     "optional": false,
     "defaultValue": "",
@@ -629,7 +629,7 @@ Manages multiple payment sessions of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection and its payment sessions.",
@@ -647,7 +647,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -690,7 +690,7 @@ Updates a payment collection.
   },
   {
     "name": "data",
-    "type": "DeepPartial&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "DeepPartial&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "info to be updated",
     "optional": false,
     "defaultValue": "",
@@ -704,7 +704,7 @@ Updates a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection updated.",
@@ -736,7 +736,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-23.mdx)) => [PaymentCollectionService](services.PaymentCollectionService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-21.mdx)) => [PaymentCollectionService](services.PaymentCollectionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -799,7 +799,7 @@ ___
   },
   {
     "name": "paymentCollectionRepository_",
-    "type": "Repository&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62; & ``{ getPaymentCollectionIdByPaymentId: Method getPaymentCollectionIdByPaymentId ; getPaymentCollectionIdBySessionId: Method getPaymentCollectionIdBySessionId  }``",
+    "type": "Repository&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -853,7 +853,7 @@ ___
   },
   {
     "name": "authorizePaymentSessions",
-    "type": "(`paymentCollectionId`: `string`, `sessionIds`: `string`[], `context`: `Record<string, unknown>`) => Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "(`paymentCollectionId`: `string`, `sessionIds`: `string`[], `context`: `Record<string, unknown>`) => Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -862,7 +862,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`data`: [CreatePaymentCollectionInput](../types/services.CreatePaymentCollectionInput.mdx)) => Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "(`data`: [CreatePaymentCollectionInput](../../medusa/types/medusa.CreatePaymentCollectionInput.mdx)) => Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -871,7 +871,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`paymentCollectionId`: `string`) => Promise&#60;undefined \\| [PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "(`paymentCollectionId`: `string`) => Promise&#60;undefined \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -880,7 +880,7 @@ ___
   },
   {
     "name": "isValidTotalAmount",
-    "type": "(`total`: `number`, `sessionsInput`: [PaymentCollectionsSessionsBatchInput](../types/services.PaymentCollectionsSessionsBatchInput.mdx)[]) => `boolean`",
+    "type": "(`total`: `number`, `sessionsInput`: [PaymentCollectionsSessionsBatchInput](../../medusa/types/medusa.PaymentCollectionsSessionsBatchInput.mdx)[]) => `boolean`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -889,7 +889,7 @@ ___
   },
   {
     "name": "markAsAuthorized",
-    "type": "(`paymentCollectionId`: `string`) => Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "(`paymentCollectionId`: `string`) => Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -898,7 +898,7 @@ ___
   },
   {
     "name": "refreshPaymentSession",
-    "type": "(`paymentCollectionId`: `string`, `sessionId`: `string`, `customerId`: `string`) => Promise&#60;[PaymentSession](services.PaymentSession.mdx)&#62;",
+    "type": "(`paymentCollectionId`: `string`, `sessionId`: `string`, `customerId`: `string`) => Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -907,7 +907,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`paymentCollectionId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;) => Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "(`paymentCollectionId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;) => Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -916,7 +916,7 @@ ___
   },
   {
     "name": "setPaymentSession",
-    "type": "(`paymentCollectionId`: `string`, `sessionInput`: [PaymentCollectionsSessionsInput](../types/services.PaymentCollectionsSessionsInput.mdx), `customerId`: `string`) => Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "(`paymentCollectionId`: `string`, `sessionInput`: [PaymentCollectionsSessionsInput](../../medusa/types/medusa.PaymentCollectionsSessionsInput.mdx), `customerId`: `string`) => Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -925,7 +925,7 @@ ___
   },
   {
     "name": "setPaymentSessionsBatch",
-    "type": "(`paymentCollectionOrId`: `string` \\| [PaymentCollection](services.PaymentCollection.mdx), `sessionsInput`: [PaymentCollectionsSessionsBatchInput](../types/services.PaymentCollectionsSessionsBatchInput.mdx)[], `customerId`: `string`) => Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "(`paymentCollectionOrId`: `string` \\| [PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx), `sessionsInput`: [PaymentCollectionsSessionsBatchInput](../../medusa/types/medusa.PaymentCollectionsSessionsBatchInput.mdx)[], `customerId`: `string`) => Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -943,7 +943,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`paymentCollectionId`: `string`, `data`: DeepPartial&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;) => Promise&#60;[PaymentCollection](services.PaymentCollection.mdx)&#62;",
+    "type": "(`paymentCollectionId`: `string`, `data`: DeepPartial&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;) => Promise&#60;[PaymentCollection](../../entities/classes/entities.PaymentCollection.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

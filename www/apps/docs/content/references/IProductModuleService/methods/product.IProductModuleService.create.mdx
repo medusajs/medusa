@@ -48,7 +48,7 @@ async function createProduct (title: string) {
     "children": [
       {
         "name": "categories",
-        "type": "``{ id: string  }``[]",
+        "type": "`object`[]",
         "description": "The product categories to associate with the product.",
         "optional": true,
         "defaultValue": "",
@@ -111,7 +111,7 @@ async function createProduct (title: string) {
       },
       {
         "name": "images",
-        "type": "`string`[] \\| ``{ id?: string ; url: string  }``[]",
+        "type": "`string`[] \\| `object`[]",
         "description": "The product's images. If an array of strings is supplied, each string will be a URL and a `ProductImage` will be created\nand associated with the product. If an array of objects is supplied, you can pass along the ID of an existing `ProductImage`.",
         "optional": true,
         "defaultValue": "",

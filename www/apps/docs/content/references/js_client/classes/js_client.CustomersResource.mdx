@@ -67,7 +67,7 @@ medusa.customers.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[StorePostCustomersReq](../../internal/classes/js_client.internal.StorePostCustomersReq.mdx)",
+    "type": "[StorePostCustomersReq](../../medusa/classes/medusa.StorePostCustomersReq.mdx)",
     "description": "The details of the customer to be created.",
     "optional": false,
     "defaultValue": "",
@@ -136,32 +136,12 @@ medusa.customers.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../../internal/types/js_client.internal.StoreCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the created customer's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "Omit&#60;[Customer](../../internal/classes/js_client.internal.Customer.mdx), \"password_hash\"&#62;",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -193,7 +173,7 @@ medusa.customers.generatePasswordToken({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[StorePostCustomersCustomerPasswordTokenReq](../../internal/classes/js_client.internal.StorePostCustomersCustomerPasswordTokenReq.mdx)",
+    "type": "[StorePostCustomersCustomerPasswordTokenReq](../../medusa/classes/medusa.StorePostCustomersCustomerPasswordTokenReq.mdx)",
     "description": "The necessary details to create the reset password token.",
     "optional": false,
     "defaultValue": "",
@@ -223,17 +203,7 @@ medusa.customers.generatePasswordToken({
 
 #### Returns
 
-<ParameterTypes parameters={[
-  {
-    "name": "ResponsePromise",
-    "type": "Promise&#60;[Response](../../internal/types/js_client.internal.Response.mdx)&#60;T&#62;&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[]} />
 
 ___
 
@@ -259,7 +229,7 @@ medusa.customers.listOrders()
 <ParameterTypes parameters={[
   {
     "name": "params",
-    "type": "[StoreGetCustomersCustomerOrdersParams](../../internal/classes/js_client.internal.StoreGetCustomersCustomerOrdersParams.mdx)",
+    "type": "[StoreGetCustomersCustomerOrdersParams](../../medusa/classes/medusa.StoreGetCustomersCustomerOrdersParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved orders.",
     "optional": true,
     "defaultValue": "",
@@ -267,7 +237,7 @@ medusa.customers.listOrders()
     "children": [
       {
         "name": "canceled_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the orders' `canceled_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -322,7 +292,7 @@ medusa.customers.listOrders()
       },
       {
         "name": "created_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the orders' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -413,7 +383,7 @@ medusa.customers.listOrders()
       },
       {
         "name": "fulfillment_status",
-        "type": "[FulfillmentStatus](../../internal/enums/js_client.internal.FulfillmentStatus.mdx)[]",
+        "type": "[FulfillmentStatus](../../medusa/enums/medusa.FulfillmentStatus.mdx)[]",
         "description": "Fulfillment statuses to filter orders by.",
         "optional": true,
         "defaultValue": "",
@@ -531,7 +501,7 @@ medusa.customers.listOrders()
       },
       {
         "name": "payment_status",
-        "type": "[PaymentStatus](../../internal/enums/js_client.internal.PaymentStatus.mdx)[]",
+        "type": "[PaymentStatus](../../medusa/enums/medusa.PaymentStatus.mdx)[]",
         "description": "Payment statuses to filter orders by.",
         "optional": true,
         "defaultValue": "",
@@ -622,7 +592,7 @@ medusa.customers.listOrders()
       },
       {
         "name": "status",
-        "type": "[OrderStatus](../../internal/enums/js_client.internal.OrderStatus.mdx)[]",
+        "type": "[OrderStatus](../../medusa/enums/medusa.OrderStatus.mdx)[]",
         "description": "Statuses to filter orders by.",
         "optional": true,
         "defaultValue": "",
@@ -649,7 +619,7 @@ medusa.customers.listOrders()
           {
             "name": "COMPLETED",
             "type": "`\"completed\"`",
-            "description": "The order is completed, meaning that\nthe items have been fulfilled and the payment\nhas been captured.",
+            "description": "The order is completed, meaning that \nthe items have been fulfilled and the payment\nhas been captured.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -686,7 +656,7 @@ medusa.customers.listOrders()
       },
       {
         "name": "updated_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the orders' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -748,564 +718,12 @@ medusa.customers.listOrders()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersListOrdersRes](../../internal/types/js_client.internal.StoreCustomersListOrdersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersListOrdersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of orders with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersListOrdersRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ orders: [Order](../../internal/classes/js_client.internal.Order.mdx)[]  }``",
-        "description": "The list of the customer's orders with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "orders",
-            "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)[]",
-            "description": "An array of orders details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "billing_address",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)",
-                "description": "The details of the billing address associated with the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "billing_address_id",
-                "type": "`string`",
-                "description": "The ID of the billing address associated with the order",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "canceled_at",
-                "type": "`Date`",
-                "description": "The date the order was canceled on.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "cart",
-                "type": "[Cart](../../internal/classes/js_client.internal.Cart.mdx)",
-                "description": "The details of the cart associated with the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "cart_id",
-                "type": "`string`",
-                "description": "The ID of the cart associated with the order",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "claims",
-                "type": "[ClaimOrder](../../internal/classes/js_client.internal.ClaimOrder.mdx)[]",
-                "description": "The details of the claims created for the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "currency",
-                "type": "[Currency](../../internal/classes/js_client.internal.Currency.mdx)",
-                "description": "The details of the currency used in the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "currency_code",
-                "type": "`string`",
-                "description": "The 3 character currency code that is used in the order",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "customer",
-                "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)",
-                "description": "The details of the customer associated with the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "customer_id",
-                "type": "`string`",
-                "description": "The ID of the customer associated with the order",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "discount_total",
-                "type": "`number`",
-                "description": "The total of discount rounded",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "discounts",
-                "type": "[Discount](../../internal/classes/js_client.internal.Discount-1.mdx)[]",
-                "description": "The details of the discounts applied on the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "display_id",
-                "type": "`number`",
-                "description": "The order's display ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "draft_order",
-                "type": "[DraftOrder](../../internal/classes/js_client.internal.DraftOrder.mdx)",
-                "description": "The details of the draft order this order was created from.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "draft_order_id",
-                "type": "`string`",
-                "description": "The ID of the draft order this order was created from.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "edits",
-                "type": "[OrderEdit](../../internal/classes/js_client.internal.OrderEdit.mdx)[]",
-                "description": "The details of the order edits done on the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "email",
-                "type": "`string`",
-                "description": "The email associated with the order",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "external_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of an external order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "fulfillment_status",
-                "type": "[FulfillmentStatus](../../internal/enums/js_client.internal.FulfillmentStatus.mdx)",
-                "description": "The order's fulfillment status",
-                "optional": false,
-                "defaultValue": "not_fulfilled",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "fulfillments",
-                "type": "[Fulfillment](../../internal/classes/js_client.internal.Fulfillment.mdx)[]",
-                "description": "The details of the fulfillments created for the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "gift_card_tax_total",
-                "type": "`number`",
-                "description": "The total of gift cards with taxes",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "gift_card_total",
-                "type": "`number`",
-                "description": "The total of gift cards",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "gift_card_transactions",
-                "type": "[GiftCardTransaction](../../internal/classes/js_client.internal.GiftCardTransaction.mdx)[]",
-                "description": "The gift card transactions made in the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "gift_cards",
-                "type": "[GiftCard](../../internal/classes/js_client.internal.GiftCard-1.mdx)[]",
-                "description": "The details of the gift card used in the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The order's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "idempotency_key",
-                "type": "`string`",
-                "description": "Randomly generated key used to continue the processing of the order in case of failure.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "item_tax_total",
-                "type": "`null` \\| `number`",
-                "description": "The tax total applied on items",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "items",
-                "type": "[LineItem](../../internal/classes/js_client.internal.LineItem.mdx)[]",
-                "description": "The details of the line items that belong to the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "no_notification",
-                "type": "`boolean`",
-                "description": "Flag for describing whether or not notifications related to this should be send.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "paid_total",
-                "type": "`number`",
-                "description": "The total amount paid",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "payment_status",
-                "type": "[PaymentStatus](../../internal/enums/js_client.internal.PaymentStatus.mdx)",
-                "description": "The order's payment status",
-                "optional": false,
-                "defaultValue": "not_paid",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "payments",
-                "type": "[Payment](../../internal/classes/js_client.internal.Payment.mdx)[]",
-                "description": "The details of the payments used in the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "raw_discount_total",
-                "type": "`number`",
-                "description": "The total of discount",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "refundable_amount",
-                "type": "`number`",
-                "description": "The amount that can be refunded",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "refunded_total",
-                "type": "`number`",
-                "description": "The total amount refunded if the order is returned.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "refunds",
-                "type": "[Refund](../../internal/classes/js_client.internal.Refund.mdx)[]",
-                "description": "The details of the refunds created for the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "region",
-                "type": "[Region](../../internal/classes/js_client.internal.Region.mdx)",
-                "description": "The details of the region this order was created in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "region_id",
-                "type": "`string`",
-                "description": "The ID of the region this order was created in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "returnable_items",
-                "type": "[LineItem](../../internal/classes/js_client.internal.LineItem.mdx)[]",
-                "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "returns",
-                "type": "[Return](../../internal/classes/js_client.internal.Return.mdx)[]",
-                "description": "The details of the returns created for the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "sales_channel",
-                "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)",
-                "description": "The details of the sales channel this order belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "sales_channel_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the sales channel this order belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_address",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)",
-                "description": "The details of the shipping address associated with the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "shipping_address_id",
-                "type": "`string`",
-                "description": "The ID of the shipping address associated with the order",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_methods",
-                "type": "[ShippingMethod](../../internal/classes/js_client.internal.ShippingMethod-4.mdx)[]",
-                "description": "The details of the shipping methods used in the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "shipping_tax_total",
-                "type": "`null` \\| `number`",
-                "description": "The tax total applied on shipping",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_total",
-                "type": "`number`",
-                "description": "The total of shipping",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "status",
-                "type": "[OrderStatus](../../internal/enums/js_client.internal.OrderStatus.mdx)",
-                "description": "The order's status",
-                "optional": false,
-                "defaultValue": "pending",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "subtotal",
-                "type": "`number`",
-                "description": "The subtotal of the order",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "swaps",
-                "type": "[Swap](../../internal/classes/js_client.internal.Swap.mdx)[]",
-                "description": "The details of the swaps created for the order.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "tax_rate",
-                "type": "`null` \\| `number`",
-                "description": "The order's tax rate",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tax_total",
-                "type": "`null` \\| `number`",
-                "description": "The total of tax",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "total",
-                "type": "`number`",
-                "description": "The total amount of the order",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1336,7 +754,7 @@ medusa.customers.resetPassword({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[StorePostCustomersResetPasswordReq](../../internal/classes/js_client.internal.StorePostCustomersResetPasswordReq.mdx)",
+    "type": "[StorePostCustomersResetPasswordReq](../../medusa/classes/medusa.StorePostCustomersResetPasswordReq.mdx)",
     "description": "The necessary details to reset the password.",
     "optional": false,
     "defaultValue": "",
@@ -1387,32 +805,12 @@ medusa.customers.resetPassword({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../../internal/types/js_client.internal.StoreCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "Omit&#60;[Customer](../../internal/classes/js_client.internal.Customer.mdx), \"password_hash\"&#62;",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1453,32 +851,12 @@ medusa.customers.retrieve()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../../internal/types/js_client.internal.StoreCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the logged-in customer's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "Omit&#60;[Customer](../../internal/classes/js_client.internal.Customer.mdx), \"password_hash\"&#62;",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1507,7 +885,7 @@ medusa.customers.update({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[StorePostCustomersCustomerReq](../../internal/classes/js_client.internal.StorePostCustomersCustomerReq.mdx)",
+    "type": "[StorePostCustomersCustomerReq](../../medusa/classes/medusa.StorePostCustomersCustomerReq.mdx)",
     "description": "The attributes to update in the logged-in customer.",
     "optional": false,
     "defaultValue": "",
@@ -1515,7 +893,7 @@ medusa.customers.update({
     "children": [
       {
         "name": "billing_address",
-        "type": "`string` \\| [AddressPayload](../../internal/classes/js_client.internal.AddressPayload.mdx)",
+        "type": "`string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx)",
         "description": "The address to be used for billing purposes.",
         "optional": true,
         "defaultValue": "",
@@ -1594,31 +972,11 @@ medusa.customers.update({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../../internal/types/js_client.internal.StoreCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the logged-in customer's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "Omit&#60;[Customer](../../internal/classes/js_client.internal.Customer.mdx), \"password_hash\"&#62;",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

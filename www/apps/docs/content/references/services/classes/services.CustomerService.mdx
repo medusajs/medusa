@@ -15,7 +15,7 @@ Provides layer to manipulate customers.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-7.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-7.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ ___
   },
   {
     "name": "addressRepository_",
-    "type": "Repository&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ ___
   },
   {
     "name": "customerRepository_",
-    "type": "Repository&#60;[Customer](services.Customer.mdx)&#62; & ``{ listAndCount: Method listAndCount  }``",
+    "type": "Repository&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -169,8 +169,8 @@ ___
   },
   {
     "name": "address",
-    "type": "[AddressCreatePayload](services.AddressCreatePayload.mdx)",
-    "description": "Address fields used when creating an address.",
+    "type": "[AddressCreatePayload](../../medusa/classes/medusa.AddressCreatePayload.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -183,7 +183,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx) \\| [Address](services.Address.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx) \\| [Address](../../entities/classes/entities.Address.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -303,7 +303,7 @@ used to hold details of customers.
 <ParameterTypes parameters={[
   {
     "name": "customer",
-    "type": "[CreateCustomerInput](../types/services.CreateCustomerInput.mdx)",
+    "type": "[CreateCustomerInput](../../medusa/types/medusa.CreateCustomerInput.mdx)",
     "description": "the customer to create",
     "optional": false,
     "defaultValue": "",
@@ -317,7 +317,7 @@ used to hold details of customers.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of create",
@@ -351,7 +351,7 @@ Deletes a customer from a given customer id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;void \\| [Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;void \\| [Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation.",
@@ -441,7 +441,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[Customer](services.Customer.mdx)&#62; & ``{ groups?: string[] ; q?: string  }``",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -450,7 +450,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "",
@@ -464,7 +464,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)[]&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -482,7 +482,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[Customer](services.Customer.mdx)&#62; & ``{ groups?: string[] ; q?: string  }``",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -491,7 +491,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "",
@@ -505,7 +505,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[Customer](services.Customer.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[Customer](../../entities/classes/entities.Customer.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -532,7 +532,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -546,7 +546,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)[]&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -616,7 +616,7 @@ Gets a customer by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "{}",
@@ -630,7 +630,7 @@ Gets a customer by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -659,7 +659,7 @@ Gets a registered customer by email.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "{}",
@@ -673,7 +673,7 @@ Gets a registered customer by email.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -704,7 +704,7 @@ Gets a customer by phone.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "{}",
@@ -718,7 +718,7 @@ Gets a customer by phone.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -745,7 +745,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -759,7 +759,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -786,7 +786,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -800,7 +800,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -818,7 +818,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -827,7 +827,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -841,7 +841,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -859,7 +859,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -902,7 +902,7 @@ Updates a customer.
   },
   {
     "name": "update",
-    "type": "[UpdateCustomerInput](../types/services.UpdateCustomerInput.mdx)",
+    "type": "[UpdateCustomerInput](../../medusa/types/medusa.UpdateCustomerInput.mdx)",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -916,7 +916,7 @@ Updates a customer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -952,7 +952,7 @@ ___
   },
   {
     "name": "address",
-    "type": "[StorePostCustomersCustomerAddressesAddressReq](services.StorePostCustomersCustomerAddressesAddressReq.mdx)",
+    "type": "[StorePostCustomersCustomerAddressesAddressReq](../../medusa/classes/medusa.StorePostCustomersCustomerAddressesAddressReq.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -966,7 +966,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Promise&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -986,7 +986,7 @@ Updates the customers' billing address.
 <ParameterTypes parameters={[
   {
     "name": "customer",
-    "type": "[Customer](services.Customer.mdx)",
+    "type": "[Customer](../../entities/classes/entities.Customer.mdx)",
     "description": "the Customer to update",
     "optional": false,
     "defaultValue": "",
@@ -995,7 +995,7 @@ Updates the customers' billing address.
   },
   {
     "name": "addressOrId",
-    "type": "`undefined` \\| `string` \\| DeepPartial&#60;[Address](services.Address.mdx)&#62;",
+    "type": "`undefined` \\| `string` \\| DeepPartial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "the value to set the billing address to",
     "optional": false,
     "defaultValue": "",
@@ -1041,7 +1041,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-7.mdx)) => [CustomerService](services.CustomerService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-7.mdx)) => [CustomerService](services.CustomerService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1077,7 +1077,7 @@ ___
   },
   {
     "name": "addressRepository_",
-    "type": "Repository&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1086,7 +1086,7 @@ ___
   },
   {
     "name": "customerRepository_",
-    "type": "Repository&#60;[Customer](services.Customer.mdx)&#62; & ``{ listAndCount: Method listAndCount  }``",
+    "type": "Repository&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1140,7 +1140,7 @@ ___
   },
   {
     "name": "addAddress",
-    "type": "(`customerId`: `string`, `address`: [AddressCreatePayload](services.AddressCreatePayload.mdx)) => Promise&#60;[Customer](services.Customer.mdx) \\| [Address](services.Address.mdx)&#62;",
+    "type": "(`customerId`: `string`, `address`: [AddressCreatePayload](../../medusa/classes/medusa.AddressCreatePayload.mdx)) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx) \\| [Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1167,7 +1167,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`customer`: [CreateCustomerInput](../types/services.CreateCustomerInput.mdx)) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`customer`: [CreateCustomerInput](../../medusa/types/medusa.CreateCustomerInput.mdx)) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1176,7 +1176,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`customerId`: `string`) => Promise&#60;void \\| [Customer](services.Customer.mdx)&#62;",
+    "type": "(`customerId`: `string`) => Promise&#60;void \\| [Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1203,7 +1203,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[Customer](services.Customer.mdx)&#62; & ``{ groups?: string[] ; q?: string  }``, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[Customer](services.Customer.mdx)[]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & ``{ groups?: string[] ; q?: string  }``, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1212,7 +1212,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[Customer](services.Customer.mdx)&#62; & ``{ groups?: string[] ; q?: string  }``, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[[Customer](services.Customer.mdx)[], number]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & ``{ groups?: string[] ; q?: string  }``, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[[Customer](../../entities/classes/entities.Customer.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1221,7 +1221,7 @@ ___
   },
   {
     "name": "listByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[Customer](services.Customer.mdx)[]&#62;",
+    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1239,7 +1239,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`customerId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`customerId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1248,7 +1248,7 @@ ___
   },
   {
     "name": "retrieveByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1257,7 +1257,7 @@ ___
   },
   {
     "name": "retrieveByPhone",
-    "type": "(`phone`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`phone`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1266,7 +1266,7 @@ ___
   },
   {
     "name": "retrieveRegisteredByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1275,7 +1275,7 @@ ___
   },
   {
     "name": "retrieveUnregisteredByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1284,7 +1284,7 @@ ___
   },
   {
     "name": "retrieve_",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[Customer](services.Customer.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Customer](services.Customer.mdx)&#62;) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1302,7 +1302,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`customerId`: `string`, `update`: [UpdateCustomerInput](../types/services.UpdateCustomerInput.mdx)) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`customerId`: `string`, `update`: [UpdateCustomerInput](../../medusa/types/medusa.UpdateCustomerInput.mdx)) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1311,7 +1311,7 @@ ___
   },
   {
     "name": "updateAddress",
-    "type": "(`customerId`: `string`, `addressId`: `string`, `address`: [StorePostCustomersCustomerAddressesAddressReq](services.StorePostCustomersCustomerAddressesAddressReq.mdx)) => Promise&#60;[Address](services.Address.mdx)&#62;",
+    "type": "(`customerId`: `string`, `addressId`: `string`, `address`: [StorePostCustomersCustomerAddressesAddressReq](../../medusa/classes/medusa.StorePostCustomersCustomerAddressesAddressReq.mdx)) => Promise&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1320,7 +1320,7 @@ ___
   },
   {
     "name": "updateBillingAddress_",
-    "type": "(`customer`: [Customer](services.Customer.mdx), `addressOrId`: `undefined` \\| `string` \\| DeepPartial&#60;[Address](services.Address.mdx)&#62;) => Promise&#60;void&#62;",
+    "type": "(`customer`: [Customer](../../entities/classes/entities.Customer.mdx), `addressOrId`: `undefined` \\| `string` \\| DeepPartial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

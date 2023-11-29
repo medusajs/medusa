@@ -41,7 +41,7 @@ medusa.admin.notes.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostNotesReq](../../internal/classes/js_client.internal.AdminPostNotesReq.mdx)",
+    "type": "[AdminPostNotesReq](../../medusa/classes/medusa.AdminPostNotesReq.mdx)",
     "description": "The note to be created.",
     "optional": false,
     "defaultValue": "",
@@ -92,123 +92,12 @@ medusa.admin.notes.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminNotesRes](../../internal/types/js_client.internal.AdminNotesRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminNotesRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the note's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminNotesRes",
-        "type": "`object`",
-        "description": "The note's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "note",
-            "type": "[Note](../../internal/classes/js_client.internal.Note.mdx)",
-            "description": "Note details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "author",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "author_id",
-                "type": "`string`",
-                "description": "The ID of the user that created the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The note's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "resource_id",
-                "type": "`string`",
-                "description": "The ID of the resource that the Note refers to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "resource_type",
-                "type": "`string`",
-                "description": "The type of resource that the Note refers to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`string`",
-                "description": "The contents of the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -258,40 +147,12 @@ medusa.admin.notes.delete(noteId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[DeleteResponse](../../internal/interfaces/js_client.internal.DeleteResponse.mdx)&#62;",
+    "type": "ResponsePromise&#60;DeleteResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "deleted",
-        "type": "`boolean`",
-        "description": "Whether the item was deleted successfully.",
-        "optional": false,
-        "defaultValue": "true",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of the deleted item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "object",
-        "type": "`string`",
-        "description": "The type of the deleted item.",
-        "optional": false,
-        "defaultValue": "product-collection",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -335,7 +196,7 @@ medusa.admin.notes.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetNotesParams](../../internal/classes/js_client.internal.AdminGetNotesParams.mdx)",
+    "type": "[AdminGetNotesParams](../../medusa/classes/medusa.AdminGetNotesParams.mdx)",
     "description": "Filters and pagination configurations applied on retrieved notes.",
     "optional": true,
     "defaultValue": "",
@@ -386,150 +247,12 @@ medusa.admin.notes.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminNotesListRes](../../internal/types/js_client.internal.AdminNotesListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminNotesListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of notes with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminNotesListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ notes: [Note](../../internal/classes/js_client.internal.Note.mdx)[]  }``",
-        "description": "The list of notes with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "notes",
-            "type": "[Note](../../internal/classes/js_client.internal.Note.mdx)[]",
-            "description": "An array of notes",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "author",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "author_id",
-                "type": "`string`",
-                "description": "The ID of the user that created the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The note's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "resource_id",
-                "type": "`string`",
-                "description": "The ID of the resource that the Note refers to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "resource_type",
-                "type": "`string`",
-                "description": "The type of resource that the Note refers to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`string`",
-                "description": "The contents of the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -579,123 +302,12 @@ medusa.admin.notes.retrieve(noteId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminNotesRes](../../internal/types/js_client.internal.AdminNotesRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminNotesRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the note's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminNotesRes",
-        "type": "`object`",
-        "description": "The note's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "note",
-            "type": "[Note](../../internal/classes/js_client.internal.Note.mdx)",
-            "description": "Note details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "author",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "author_id",
-                "type": "`string`",
-                "description": "The ID of the user that created the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The note's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "resource_id",
-                "type": "`string`",
-                "description": "The ID of the resource that the Note refers to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "resource_type",
-                "type": "`string`",
-                "description": "The type of resource that the Note refers to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`string`",
-                "description": "The contents of the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -733,7 +345,7 @@ medusa.admin.notes.update(noteId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostNotesNoteReq](../../internal/classes/js_client.internal.AdminPostNotesNoteReq.mdx)",
+    "type": "[AdminPostNotesNoteReq](../../medusa/classes/medusa.AdminPostNotesNoteReq.mdx)",
     "description": "The attributes to update in the note.",
     "optional": false,
     "defaultValue": "",
@@ -766,122 +378,11 @@ medusa.admin.notes.update(noteId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminNotesRes](../../internal/types/js_client.internal.AdminNotesRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminNotesRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the note's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminNotesRes",
-        "type": "`object`",
-        "description": "The note's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "note",
-            "type": "[Note](../../internal/classes/js_client.internal.Note.mdx)",
-            "description": "Note details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "author",
-                "type": "[User](../../internal/classes/js_client.internal.User.mdx)",
-                "description": "The details of the user that created the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "author_id",
-                "type": "`string`",
-                "description": "The ID of the user that created the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The note's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "resource_id",
-                "type": "`string`",
-                "description": "The ID of the resource that the Note refers to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "resource_type",
-                "type": "`string`",
-                "description": "The type of resource that the Note refers to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`string`",
-                "description": "The contents of the note.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

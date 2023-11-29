@@ -1,0 +1,3452 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FulfillmentService
+
+Handles Fulfillments
+
+## constructor
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[InjectedDependencies](../types/medusa.InjectedDependencies-40.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "fulfillmentProviderService",
+        "type": "[FulfillmentProviderService](medusa.FulfillmentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentRepository",
+        "type": "typeof [FulfillmentRepository](../../modules/medusa.mdx#fulfillmentrepository)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "lineItemRepository",
+        "type": "typeof [LineItemRepository](../../modules/medusa.mdx#lineitemrepository)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "lineItemService",
+        "type": "[LineItemService](medusa.LineItemService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantInventoryService",
+        "type": "[ProductVariantInventoryService](medusa.ProductVariantInventoryService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shippingProfileService",
+        "type": "[ShippingProfileService](medusa.ShippingProfileService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "totalsService",
+        "type": "[TotalsService](medusa.TotalsService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "trackingLinkRepository",
+        "type": "typeof [TrackingLinkRepository](../../modules/medusa.mdx#trackinglinkrepository)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentProviderService_",
+    "type": "[FulfillmentProviderService](medusa.FulfillmentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "container_",
+        "type": "[FulfillmentProviderContainer](../types/medusa.FulfillmentProviderContainer.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderRepository_",
+        "type": "Repository&#60;[FulfillmentProvider](medusa.FulfillmentProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "fulfillmentRepository_",
+    "type": "Repository&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemRepository_",
+    "type": "Repository&#60;[LineItem](medusa.LineItem.mdx)&#62; & `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemService_",
+    "type": "[LineItemService](medusa.LineItemService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cartRepository_",
+        "type": "Repository&#60;[Cart](medusa.Cart.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "itemTaxLineRepo_",
+        "type": "Repository&#60;[LineItemTaxLine](medusa.LineItemTaxLine.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "lineItemAdjustmentService_",
+        "type": "[LineItemAdjustmentService](medusa.LineItemAdjustmentService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "lineItemRepository_",
+        "type": "Repository&#60;[LineItem](medusa.LineItem.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "pricingService_",
+        "type": "[PricingService](medusa.PricingService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productService_",
+        "type": "[ProductService](medusa.ProductService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantService_",
+        "type": "[ProductVariantService](medusa.ProductVariantService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionService_",
+        "type": "[RegionService](medusa.RegionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderService_",
+        "type": "[TaxProviderService](medusa.TaxProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantInventoryService_",
+    "type": "[ProductVariantInventoryService](medusa.ProductVariantInventoryService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBusService_",
+        "type": "[IEventBusService](../interfaces/medusa.IEventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantService_",
+        "type": "[ProductVariantService](medusa.ProductVariantService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "salesChannelInventoryService_",
+        "type": "[SalesChannelInventoryService](medusa.SalesChannelInventoryService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "salesChannelLocationService_",
+        "type": "[SalesChannelLocationService](medusa.SalesChannelLocationService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "shippingProfileService_",
+    "type": "[ShippingProfileService](medusa.ShippingProfileService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customShippingOptionService_",
+        "type": "[CustomShippingOptionService](medusa.CustomShippingOptionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productRepository_",
+        "type": "Repository&#60;[Product](medusa.Product.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productService_",
+        "type": "[ProductService](medusa.ProductService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shippingOptionService_",
+        "type": "[ShippingOptionService](medusa.ShippingOptionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shippingProfileRepository_",
+        "type": "Repository&#60;[ShippingProfile](medusa.ShippingProfile.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "totalsService_",
+    "type": "[TotalsService](medusa.TotalsService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "newTotalsService_",
+        "type": "[NewTotalsService](medusa.NewTotalsService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxCalculationStrategy_",
+        "type": "[ITaxCalculationStrategy](../interfaces/medusa.ITaxCalculationStrategy.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderService_",
+        "type": "[TaxProviderService](medusa.TaxProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "trackingLinkRepository_",
+    "type": "Repository&#60;[TrackingLink](medusa.TrackingLink.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[]} />
+
+___
+
+## Methods
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;TResult&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": [
+      {
+        "name": "TResult",
+        "type": "`TResult`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### cancelFulfillment
+
+Cancels a fulfillment with the fulfillment provider. Will decrement the
+fulfillment\_quantity on the line items associated with the fulfillment.
+Throws if the fulfillment has already been shipped.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentOrId",
+    "type": "`string` \\| [Fulfillment](medusa.Fulfillment.mdx)",
+    "description": "the fulfillment object or id.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the save operation",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [Fulfillment](medusa.Fulfillment.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "canceled_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the Fulfillment was canceled.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "claim_order",
+        "type": "[ClaimOrder](medusa.ClaimOrder.mdx)",
+        "description": "The details of the claim that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "claim_order_id",
+        "type": "`string`",
+        "description": "The ID of the Claim that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "data",
+        "type": "`Record<string, unknown>`",
+        "description": "This contains all the data necessary for the Fulfillment provider to handle the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The fulfillment's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "idempotency_key",
+        "type": "`string`",
+        "description": "Randomly generated key used to continue the completion of the fulfillment in case of failure.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[FulfillmentItem](medusa.FulfillmentItem.mdx)[]",
+        "description": "The Fulfillment Items in the Fulfillment. These hold information about how many of each Line Item has been fulfilled.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "location_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the stock location the fulfillment will be shipped from",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "no_notification",
+        "type": "`boolean`",
+        "description": "Flag for describing whether or not notifications related to this should be sent.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "order",
+        "type": "[Order](medusa.Order.mdx)",
+        "description": "The details of the order that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "order_id",
+        "type": "`string`",
+        "description": "The ID of the Order that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "provider",
+        "type": "[FulfillmentProvider](medusa.FulfillmentProvider.mdx)",
+        "description": "The details of the fulfillment provider responsible for handling the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the Fulfillment Provider responsible for handling the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipped_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the Fulfillment was shipped.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "swap",
+        "type": "[Swap](medusa.Swap.mdx)",
+        "description": "The details of the swap that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "swap_id",
+        "type": "`string`",
+        "description": "The ID of the Swap that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tracking_links",
+        "type": "[TrackingLink](medusa.TrackingLink.mdx)[]",
+        "description": "The Tracking Links that can be used to track the status of the Fulfillment. These will usually be provided by the Fulfillment Provider.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "tracking_numbers",
+        "type": "`string`[]",
+        "description": "The tracking numbers that can be used to track the status of the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### createFulfillment
+
+Creates an order fulfillment
+If items needs to be fulfilled by different provider, we make
+sure to partition those items, and create fulfillment for
+those partitions.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[CreateFulfillmentOrder](../types/medusa.CreateFulfillmentOrder.mdx)",
+    "description": "order to create fulfillment for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "billing_address",
+        "type": "[Address](medusa.Address.mdx)",
+        "description": "An address is used across the Medusa backend within other schemas and object types. For example, a customer's billing and shipping addresses both use the Address entity.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discounts",
+        "type": "[Discount](medusa.Discount.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "display_id",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_claim",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_swap",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[LineItem](medusa.LineItem.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "no_notification",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "payments",
+        "type": "[Payment](medusa.Payment.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region",
+        "type": "[Region](medusa.Region.mdx)",
+        "description": "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_methods",
+        "type": "[ShippingMethod](medusa.ShippingMethod.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rate",
+        "type": "`number` \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "itemsToFulfill",
+    "type": "[FulFillmentItemType](../types/medusa.FulFillmentItemType.mdx)[]",
+    "description": "the items in the order to fulfill",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "item_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "custom",
+    "type": "Partial&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "description": "potential custom values to add",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[Fulfillment](medusa.Fulfillment.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the created fulfillments",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Fulfillment[]",
+        "type": "[Fulfillment](medusa.Fulfillment.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### createShipment
+
+Creates a shipment by marking a fulfillment as shipped. Adds
+tracking links and potentially more metadata.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentId",
+    "type": "`string`",
+    "description": "the fulfillment to ship",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "trackingLinks",
+    "type": "`object`[]",
+    "description": "tracking links for the shipment",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "tracking_number",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "config",
+    "type": "[CreateShipmentConfig](../types/medusa.CreateShipmentConfig.mdx)",
+    "description": "potential configuration settings, such as no\\_notification and metadata",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "location_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "no_notification",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the shipped fulfillment",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [Fulfillment](medusa.Fulfillment.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "canceled_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the Fulfillment was canceled.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "claim_order",
+        "type": "[ClaimOrder](medusa.ClaimOrder.mdx)",
+        "description": "The details of the claim that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "claim_order_id",
+        "type": "`string`",
+        "description": "The ID of the Claim that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "data",
+        "type": "`Record<string, unknown>`",
+        "description": "This contains all the data necessary for the Fulfillment provider to handle the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The fulfillment's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "idempotency_key",
+        "type": "`string`",
+        "description": "Randomly generated key used to continue the completion of the fulfillment in case of failure.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[FulfillmentItem](medusa.FulfillmentItem.mdx)[]",
+        "description": "The Fulfillment Items in the Fulfillment. These hold information about how many of each Line Item has been fulfilled.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "location_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the stock location the fulfillment will be shipped from",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "no_notification",
+        "type": "`boolean`",
+        "description": "Flag for describing whether or not notifications related to this should be sent.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "order",
+        "type": "[Order](medusa.Order.mdx)",
+        "description": "The details of the order that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "order_id",
+        "type": "`string`",
+        "description": "The ID of the Order that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "provider",
+        "type": "[FulfillmentProvider](medusa.FulfillmentProvider.mdx)",
+        "description": "The details of the fulfillment provider responsible for handling the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the Fulfillment Provider responsible for handling the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipped_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the Fulfillment was shipped.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "swap",
+        "type": "[Swap](medusa.Swap.mdx)",
+        "description": "The details of the swap that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "swap_id",
+        "type": "`string`",
+        "description": "The ID of the Swap that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tracking_links",
+        "type": "[TrackingLink](medusa.TrackingLink.mdx)[]",
+        "description": "The Tracking Links that can be used to track the status of the Fulfillment. These will usually be provided by the Fulfillment Provider.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "tracking_numbers",
+        "type": "`string`[]",
+        "description": "The tracking numbers that can be used to track the status of the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getFulfillmentItems\_
+
+Retrieves the order line items, given an array of items.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[CreateFulfillmentOrder](../types/medusa.CreateFulfillmentOrder.mdx)",
+    "description": "the order to get line items from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "billing_address",
+        "type": "[Address](medusa.Address.mdx)",
+        "description": "An address is used across the Medusa backend within other schemas and object types. For example, a customer's billing and shipping addresses both use the Address entity.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discounts",
+        "type": "[Discount](medusa.Discount.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "display_id",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_claim",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_swap",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[LineItem](medusa.LineItem.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "no_notification",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "payments",
+        "type": "[Payment](medusa.Payment.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region",
+        "type": "[Region](medusa.Region.mdx)",
+        "description": "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_methods",
+        "type": "[ShippingMethod](medusa.ShippingMethod.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rate",
+        "type": "`number` \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "items",
+    "type": "[FulFillmentItemType](../types/medusa.FulFillmentItemType.mdx)[]",
+    "description": "the items to get",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "item_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;(null \\| [LineItem](medusa.LineItem.mdx))[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the line items generated by the transformer.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "(null \\| LineItem)[]",
+        "type": "(`null` \\| [LineItem](medusa.LineItem.mdx))[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### partitionItems\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "shippingMethods",
+    "type": "[ShippingMethod](medusa.ShippingMethod.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "cart",
+        "type": "[Cart](medusa.Cart.mdx)",
+        "description": "The details of the cart that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "The ID of the cart that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "claim_order",
+        "type": "[ClaimOrder](medusa.ClaimOrder.mdx)",
+        "description": "The details of the claim that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "claim_order_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the claim that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "data",
+        "type": "`Record<string, unknown>`",
+        "description": "Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The shipping method's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "includes_tax",
+        "type": "`boolean`",
+        "description": "Whether the shipping method price include tax",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
+        "children": []
+      },
+      {
+        "name": "order",
+        "type": "[Order](medusa.Order.mdx)",
+        "description": "The details of the order that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "order_id",
+        "type": "`string`",
+        "description": "The ID of the order that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price",
+        "type": "`number`",
+        "description": "The amount to charge for the Shipping Method. The currency of the price is defined by the Region that the Order that the Shipping Method belongs to is a part of.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "return_id",
+        "type": "`string`",
+        "description": "The ID of the return that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "return_order",
+        "type": "[Return](medusa.Return.mdx)",
+        "description": "The details of the return that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "shipping_option",
+        "type": "[ShippingOption](medusa.ShippingOption.mdx)",
+        "description": "The details of the shipping option the method was created from.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "shipping_option_id",
+        "type": "`string`",
+        "description": "The ID of the Shipping Option that the Shipping Method is built from.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "subtotal",
+        "type": "`number`",
+        "description": "The subtotal of the shipping",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "swap",
+        "type": "[Swap](medusa.Swap.mdx)",
+        "description": "The details of the swap that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "swap_id",
+        "type": "`string`",
+        "description": "The ID of the swap that the shipping method is used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_lines",
+        "type": "[ShippingMethodTaxLine](medusa.ShippingMethodTaxLine.mdx)[]",
+        "description": "The details of the tax lines applied on the shipping method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "tax_total",
+        "type": "`number`",
+        "description": "The total of tax",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "total",
+        "type": "`number`",
+        "description": "The total amount of the shipping",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "items",
+    "type": "[LineItem](medusa.LineItem.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "adjustments",
+        "type": "[LineItemAdjustment](medusa.LineItemAdjustment.mdx)[]",
+        "description": "The details of the item's adjustments, which are available when a discount is applied on the item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "allow_discounts",
+        "type": "`boolean`",
+        "description": "Flag to indicate if the Line Item should be included when doing discount calculations.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cart",
+        "type": "[Cart](medusa.Cart.mdx)",
+        "description": "The details of the cart that the line item may belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "The ID of the cart that the line item may belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "claim_order",
+        "type": "[ClaimOrder](medusa.ClaimOrder.mdx)",
+        "description": "The details of the claim that the line item may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "claim_order_id",
+        "type": "`string`",
+        "description": "The ID of the claim that the line item may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`null` \\| `string`",
+        "description": "A more detailed description of the contents of the Line Item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discount_total",
+        "type": "`null` \\| `number`",
+        "description": "The total of discount of the line item rounded",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfilled_quantity",
+        "type": "`null` \\| `number`",
+        "description": "The quantity of the Line Item that has been fulfilled.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "gift_card_total",
+        "type": "`null` \\| `number`",
+        "description": "The total of the gift card of the line item",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "has_shipping",
+        "type": "`null` \\| `boolean`",
+        "description": "Flag to indicate if the Line Item has fulfillment associated with it.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The line item's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "includes_tax",
+        "type": "`boolean`",
+        "description": "Indicates if the line item unit\\_price include tax",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
+        "children": []
+      },
+      {
+        "name": "is_giftcard",
+        "type": "`boolean`",
+        "description": "Flag to indicate if the Line Item is a Gift Card.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_return",
+        "type": "`boolean`",
+        "description": "Is the item being returned",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "order",
+        "type": "[Order](medusa.Order.mdx)",
+        "description": "The details of the order that the line item may belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "order_edit",
+        "type": "`null` \\| [OrderEdit](medusa.OrderEdit.mdx)",
+        "description": "The details of the order edit.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "order_edit_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the order edit that the item may belong to.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "order_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the order that the line item may belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "original_item_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the original line item. This is useful if the line item belongs to a resource that references an order, such as a return or an order edit.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "original_tax_total",
+        "type": "`null` \\| `number`",
+        "description": "The original tax total amount of the line item",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "original_total",
+        "type": "`null` \\| `number`",
+        "description": "The original total amount of the line item",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_id",
+        "type": "`null` \\| `string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "The quantity of the content in the Line Item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "raw_discount_total",
+        "type": "`null` \\| `number`",
+        "description": "The total of discount of the line item",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "refundable",
+        "type": "`null` \\| `number`",
+        "description": "The amount that can be refunded from the given Line Item. Takes taxes and discounts into consideration.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "returned_quantity",
+        "type": "`null` \\| `number`",
+        "description": "The quantity of the Line Item that has been returned.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipped_quantity",
+        "type": "`null` \\| `number`",
+        "description": "The quantity of the Line Item that has been shipped.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "should_merge",
+        "type": "`boolean`",
+        "description": "Flag to indicate if new Line Items with the same variant should be merged or added as an additional Line Item.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "subtotal",
+        "type": "`null` \\| `number`",
+        "description": "The subtotal of the line item",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "swap",
+        "type": "[Swap](medusa.Swap.mdx)",
+        "description": "The details of the swap that the line item may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "swap_id",
+        "type": "`string`",
+        "description": "The ID of the swap that the line item may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_lines",
+        "type": "[LineItemTaxLine](medusa.LineItemTaxLine.mdx)[]",
+        "description": "The details of the item's tax lines.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "tax_total",
+        "type": "`null` \\| `number`",
+        "description": "The total of tax of the line item",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "thumbnail",
+        "type": "`null` \\| `string`",
+        "description": "A URL string to a small image of the contents of the Line Item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "The title of the Line Item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "total",
+        "type": "`null` \\| `number`",
+        "description": "The total amount of the line item",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "unit_price",
+        "type": "`number`",
+        "description": "The price of one unit of the content in the Line Item. This should be in the currency defined by the Cart/Order/Swap/Claim that the Line Item belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variant",
+        "type": "[ProductVariant](medusa.ProductVariant.mdx)",
+        "description": "The details of the product variant that this item was created from.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "variant_id",
+        "type": "`null` \\| `string`",
+        "description": "The id of the Product Variant contained in the Line Item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "FulfillmentItemPartition[]",
+    "type": "[FulfillmentItemPartition](../types/medusa.FulfillmentItemPartition.mdx)[]",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "FulfillmentItemPartition",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieves a fulfillment by its id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentId",
+    "type": "`string`",
+    "description": "the id of the fulfillment to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "description": "optional values to include with fulfillmentRepository query",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "order",
+        "type": "`object`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "relations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "select",
+        "type": "keyof `Entity`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "skip",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "take",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the fulfillment",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [Fulfillment](medusa.Fulfillment.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "canceled_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the Fulfillment was canceled.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "claim_order",
+        "type": "[ClaimOrder](medusa.ClaimOrder.mdx)",
+        "description": "The details of the claim that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "claim_order_id",
+        "type": "`string`",
+        "description": "The ID of the Claim that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "data",
+        "type": "`Record<string, unknown>`",
+        "description": "This contains all the data necessary for the Fulfillment provider to handle the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The fulfillment's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "idempotency_key",
+        "type": "`string`",
+        "description": "Randomly generated key used to continue the completion of the fulfillment in case of failure.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[FulfillmentItem](medusa.FulfillmentItem.mdx)[]",
+        "description": "The Fulfillment Items in the Fulfillment. These hold information about how many of each Line Item has been fulfilled.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "location_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the stock location the fulfillment will be shipped from",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "no_notification",
+        "type": "`boolean`",
+        "description": "Flag for describing whether or not notifications related to this should be sent.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "order",
+        "type": "[Order](medusa.Order.mdx)",
+        "description": "The details of the order that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "order_id",
+        "type": "`string`",
+        "description": "The ID of the Order that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "provider",
+        "type": "[FulfillmentProvider](medusa.FulfillmentProvider.mdx)",
+        "description": "The details of the fulfillment provider responsible for handling the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the Fulfillment Provider responsible for handling the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipped_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the Fulfillment was shipped.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "swap",
+        "type": "[Swap](medusa.Swap.mdx)",
+        "description": "The details of the swap that the fulfillment may belong to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "swap_id",
+        "type": "`string`",
+        "description": "The ID of the Swap that the Fulfillment belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tracking_links",
+        "type": "[TrackingLink](medusa.TrackingLink.mdx)[]",
+        "description": "The Tracking Links that can be used to track the status of the Fulfillment. These will usually be provided by the Fulfillment Provider.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "tracking_numbers",
+        "type": "`string`[]",
+        "description": "The tracking numbers that can be used to track the status of the fulfillment.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "`Record<string, unknown>` \\| `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateFulfillmentLineItem\_
+
+Checks that a given quantity of a line item can be fulfilled. Fails if the
+fulfillable quantity is lower than the requested fulfillment quantity.
+Fulfillable quantity is calculated by subtracting the already fulfilled
+quantity from the quantity that was originally purchased.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "item",
+    "type": "`undefined` \\| [LineItem](medusa.LineItem.mdx)",
+    "description": "the line item to check has sufficient fulfillable\n  quantity.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "the quantity that is requested to be fulfilled.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "null \\| LineItem",
+    "type": "`null` \\| [LineItem](medusa.LineItem.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "a line item that has the requested fulfillment quantity\n  set.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "constructor",
+    "type": "(`__namedParameters`: [InjectedDependencies](../types/medusa.InjectedDependencies-40.mdx)) => [FulfillmentService](medusa.FulfillmentService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__configModule__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentProviderService_",
+    "type": "[FulfillmentProviderService](medusa.FulfillmentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "container_",
+        "type": "[FulfillmentProviderContainer](../types/medusa.FulfillmentProviderContainer.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderRepository_",
+        "type": "Repository&#60;[FulfillmentProvider](medusa.FulfillmentProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "fulfillmentRepository_",
+    "type": "Repository&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemRepository_",
+    "type": "Repository&#60;[LineItem](medusa.LineItem.mdx)&#62; & `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemService_",
+    "type": "[LineItemService](medusa.LineItemService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cartRepository_",
+        "type": "Repository&#60;[Cart](medusa.Cart.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "itemTaxLineRepo_",
+        "type": "Repository&#60;[LineItemTaxLine](medusa.LineItemTaxLine.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "lineItemAdjustmentService_",
+        "type": "[LineItemAdjustmentService](medusa.LineItemAdjustmentService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "lineItemRepository_",
+        "type": "Repository&#60;[LineItem](medusa.LineItem.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "pricingService_",
+        "type": "[PricingService](medusa.PricingService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productService_",
+        "type": "[ProductService](medusa.ProductService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantService_",
+        "type": "[ProductVariantService](medusa.ProductVariantService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionService_",
+        "type": "[RegionService](medusa.RegionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderService_",
+        "type": "[TaxProviderService](medusa.TaxProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantInventoryService_",
+    "type": "[ProductVariantInventoryService](medusa.ProductVariantInventoryService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBusService_",
+        "type": "[IEventBusService](../interfaces/medusa.IEventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantService_",
+        "type": "[ProductVariantService](medusa.ProductVariantService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "salesChannelInventoryService_",
+        "type": "[SalesChannelInventoryService](medusa.SalesChannelInventoryService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "salesChannelLocationService_",
+        "type": "[SalesChannelLocationService](medusa.SalesChannelLocationService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "shippingProfileService_",
+    "type": "[ShippingProfileService](medusa.ShippingProfileService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customShippingOptionService_",
+        "type": "[CustomShippingOptionService](medusa.CustomShippingOptionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productRepository_",
+        "type": "Repository&#60;[Product](medusa.Product.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productService_",
+        "type": "[ProductService](medusa.ProductService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shippingOptionService_",
+        "type": "[ShippingOptionService](medusa.ShippingOptionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shippingProfileRepository_",
+        "type": "Repository&#60;[ShippingProfile](medusa.ShippingProfile.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "totalsService_",
+    "type": "[TotalsService](medusa.TotalsService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "newTotalsService_",
+        "type": "[NewTotalsService](medusa.NewTotalsService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxCalculationStrategy_",
+        "type": "[ITaxCalculationStrategy](../interfaces/medusa.ITaxCalculationStrategy.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderService_",
+        "type": "[TaxProviderService](medusa.TaxProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "trackingLinkRepository_",
+    "type": "Repository&#60;[TrackingLink](medusa.TrackingLink.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "activeManager_",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "atomicPhase_",
+    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cancelFulfillment",
+    "type": "(`fulfillmentOrId`: `string` \\| [Fulfillment](medusa.Fulfillment.mdx)) => Promise&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createFulfillment",
+    "type": "(`order`: [CreateFulfillmentOrder](../types/medusa.CreateFulfillmentOrder.mdx), `itemsToFulfill`: [FulFillmentItemType](../types/medusa.FulFillmentItemType.mdx)[], `custom`: Partial&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;) => Promise&#60;[Fulfillment](medusa.Fulfillment.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createShipment",
+    "type": "(`fulfillmentId`: `string`, `trackingLinks?`: ``{ tracking_number: string  }``[], `config`: [CreateShipmentConfig](../types/medusa.CreateShipmentConfig.mdx)) => Promise&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getFulfillmentItems_",
+    "type": "(`order`: [CreateFulfillmentOrder](../types/medusa.CreateFulfillmentOrder.mdx), `items`: [FulFillmentItemType](../types/medusa.FulFillmentItemType.mdx)[]) => Promise&#60;(null \\| [LineItem](medusa.LineItem.mdx))[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "partitionItems_",
+    "type": "(`shippingMethods`: [ShippingMethod](medusa.ShippingMethod.mdx)[], `items`: [LineItem](medusa.LineItem.mdx)[]) => [FulfillmentItemPartition](../types/medusa.FulfillmentItemPartition.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieve",
+    "type": "(`fulfillmentId`: `string`, `config`: [FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;) => Promise&#60;[Fulfillment](medusa.Fulfillment.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shouldRetryTransaction_",
+    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "validateFulfillmentLineItem_",
+    "type": "(`item`: `undefined` \\| [LineItem](medusa.LineItem.mdx), `quantity`: `number`) => `null` \\| [LineItem](medusa.LineItem.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "withTransaction",
+    "type": "(`transactionManager?`: `EntityManager`) => [FulfillmentService](medusa.FulfillmentService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

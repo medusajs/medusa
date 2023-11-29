@@ -90,7 +90,7 @@ medusa.products.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[StoreGetProductsParams](../../internal/classes/js_client.internal.StoreGetProductsParams.mdx)",
+    "type": "[StoreGetProductsParams](../../medusa/classes/medusa.StoreGetProductsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved products.",
     "optional": true,
     "defaultValue": "",
@@ -125,7 +125,7 @@ medusa.products.list({
       },
       {
         "name": "created_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the products' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -325,7 +325,7 @@ medusa.products.list({
       },
       {
         "name": "updated_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the products' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -387,69 +387,12 @@ medusa.products.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreProductsListRes](../../internal/types/js_client.internal.StoreProductsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreProductsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of products with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreProductsListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ products: [PricedProduct](../../internal/types/js_client.internal.PricedProduct.mdx)[]  }``",
-        "description": "The list of products with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "products",
-            "type": "[PricedProduct](../../internal/types/js_client.internal.PricedProduct.mdx)[]",
-            "description": "An array of products details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "variants",
-                "type": "[PricedVariant](../../internal/types/js_client.internal.PricedVariant.mdx)[]",
-                "description": "The product variants and their prices.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -502,42 +445,12 @@ medusa.products.retrieve(productId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreProductsRes](../../internal/types/js_client.internal.StoreProductsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreProductsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreProductsRes",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "product",
-            "type": "[PricedProduct](../../internal/types/js_client.internal.PricedProduct.mdx)",
-            "description": "Product details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "variants",
-                "type": "[PricedVariant](../../internal/types/js_client.internal.PricedVariant.mdx)[]",
-                "description": "The product variants and their prices.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -566,7 +479,7 @@ medusa.products.search({
 <ParameterTypes parameters={[
   {
     "name": "searchOptions",
-    "type": "[StorePostSearchReq](../../internal/classes/js_client.internal.StorePostSearchReq.mdx)",
+    "type": "[StorePostSearchReq](../../medusa/classes/medusa.StorePostSearchReq.mdx)",
     "description": "Fields to search products.",
     "optional": false,
     "defaultValue": "",
@@ -626,31 +539,11 @@ medusa.products.search({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StorePostSearchRes](../../internal/types/js_client.internal.StorePostSearchRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StorePostSearchRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of search results. The format of the items depends on the search engine installed on the Medusa backend.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StorePostSearchRes",
-        "type": "``{ hits: unknown[]  }`` & `Record<string, unknown>`",
-        "description": "The list of search results.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "hits",
-            "type": "`unknown`[]",
-            "description": "Array of search results. The format of the items depends on the search engine installed on the Medusa backend.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

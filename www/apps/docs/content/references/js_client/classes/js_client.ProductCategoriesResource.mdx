@@ -90,7 +90,7 @@ medusa.productCategories.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[StoreGetProductCategoriesParams](../../internal/classes/js_client.internal.StoreGetProductCategoriesParams.mdx)",
+    "type": "[StoreGetProductCategoriesParams](../../medusa/classes/medusa.StoreGetProductCategoriesParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved product categories.",
     "optional": true,
     "defaultValue": "",
@@ -137,7 +137,7 @@ medusa.productCategories.list({
         "type": "`number`",
         "description": "Limit the number of product categories returned in the list. Default is `100`.",
         "optional": true,
-        "defaultValue": "",
+        "defaultValue": "20",
         "expandable": false,
         "children": []
       },
@@ -186,186 +186,12 @@ medusa.productCategories.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreGetProductCategoriesRes](../../internal/types/js_client.internal.StoreGetProductCategoriesRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreGetProductCategoriesRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product categories with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreGetProductCategoriesRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ product_categories: [ProductCategory](../../internal/classes/js_client.internal.ProductCategory.mdx)[]  }``",
-        "description": "The list of product categories with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "product_categories",
-            "type": "[ProductCategory](../../internal/classes/js_client.internal.ProductCategory.mdx)[]",
-            "description": "An array of product categories details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "category_children",
-                "type": "[ProductCategory](../../internal/classes/js_client.internal.ProductCategory.mdx)[]",
-                "description": "The details of the category's children.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`string`",
-                "description": "The product category's description.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "handle",
-                "type": "`string`",
-                "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product category's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_active",
-                "type": "`Boolean`",
-                "description": "A flag to make product category visible/hidden in the store front",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_internal",
-                "type": "`Boolean`",
-                "description": "A flag to make product category an internal category for admins",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The product category's name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "parent_category",
-                "type": "`null` \\| [ProductCategory](../../internal/classes/js_client.internal.ProductCategory.mdx)",
-                "description": "The details of the parent of this category.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "parent_category_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the parent category.",
-                "optional": false,
-                "defaultValue": "null",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[Product](../../internal/classes/js_client.internal.Product.mdx)[]",
-                "description": "The details of the products that belong to this category.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "rank",
-                "type": "`number`",
-                "description": "An integer that depicts the rank of category in a tree node",
-                "optional": false,
-                "defaultValue": "0",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -417,7 +243,7 @@ medusa.productCategories.retrieve(productCategoryId, {
   },
   {
     "name": "query",
-    "type": "[StoreGetProductCategoriesCategoryParams](../../internal/classes/js_client.internal.StoreGetProductCategoriesCategoryParams.mdx)",
+    "type": "[StoreGetProductCategoriesCategoryParams](../../medusa/classes/medusa.StoreGetProductCategoriesCategoryParams.mdx)",
     "description": "Configurations to apply on the retrieved product categories.",
     "optional": true,
     "defaultValue": "",
@@ -459,158 +285,11 @@ medusa.productCategories.retrieve(productCategoryId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreGetProductCategoriesCategoryRes](../../internal/types/js_client.internal.StoreGetProductCategoriesCategoryRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreGetProductCategoriesCategoryRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product category's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreGetProductCategoriesCategoryRes",
-        "type": "`object`",
-        "description": "The product category's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "product_category",
-            "type": "[ProductCategory](../../internal/classes/js_client.internal.ProductCategory.mdx)",
-            "description": "Product category details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "category_children",
-                "type": "[ProductCategory](../../internal/classes/js_client.internal.ProductCategory.mdx)[]",
-                "description": "The details of the category's children.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`string`",
-                "description": "The product category's description.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "handle",
-                "type": "`string`",
-                "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product category's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_active",
-                "type": "`Boolean`",
-                "description": "A flag to make product category visible/hidden in the store front",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_internal",
-                "type": "`Boolean`",
-                "description": "A flag to make product category an internal category for admins",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The product category's name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "parent_category",
-                "type": "`null` \\| [ProductCategory](../../internal/classes/js_client.internal.ProductCategory.mdx)",
-                "description": "The details of the parent of this category.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "parent_category_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the parent category.",
-                "optional": false,
-                "defaultValue": "null",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[Product](../../internal/classes/js_client.internal.Product.mdx)[]",
-                "description": "The details of the products that belong to this category.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "rank",
-                "type": "`number`",
-                "description": "An integer that depicts the rank of category in a tree node",
-                "optional": false,
-                "defaultValue": "0",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

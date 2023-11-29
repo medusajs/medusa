@@ -15,7 +15,7 @@ Helps retrieve fulfillment providers
 <ParameterTypes parameters={[
   {
     "name": "container",
-    "type": "[FulfillmentProviderContainer](../types/services.FulfillmentProviderContainer.mdx)",
+    "type": "[FulfillmentProviderContainer](../../medusa/types/medusa.FulfillmentProviderContainer.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ ___
   },
   {
     "name": "container_",
-    "type": "[FulfillmentProviderContainer](../types/services.FulfillmentProviderContainer.mdx)",
+    "type": "[FulfillmentProviderContainer](../../medusa/types/medusa.FulfillmentProviderContainer.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ ___
   },
   {
     "name": "fulfillmentProviderRepository_",
-    "type": "Repository&#60;[FulfillmentProvider](services.FulfillmentProvider.mdx)&#62;",
+    "type": "Repository&#60;[FulfillmentProvider](../../entities/classes/entities.FulfillmentProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -192,8 +192,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[ShippingOption](services.ShippingOption.mdx)",
-    "description": "A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -210,7 +210,7 @@ ___
   },
   {
     "name": "cart",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -242,7 +242,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[CalculateOptionPriceInput](../types/services.CalculateOptionPriceInput.mdx)",
+    "type": "[CalculateOptionPriceInput](../../medusa/types/medusa.CalculateOptionPriceInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -274,8 +274,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "fulfillment",
-    "type": "[Fulfillment](services.Fulfillment.mdx)",
-    "description": "A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns.",
+    "type": "[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -288,7 +288,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Fulfillment](services.Fulfillment.mdx)&#62;",
+    "type": "Promise&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -306,8 +306,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "method",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx)",
-    "description": "A Shipping Method represents a way in which an Order or Return can be shipped. Shipping Methods are created from a Shipping Option, but may contain additional details that can be necessary for the Fulfillment Provider to handle the shipment. If the shipping method is created for a return, it may be associated with a claim or a swap that the return is part of.",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -315,7 +315,7 @@ ___
   },
   {
     "name": "items",
-    "type": "[LineItem](services.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -324,7 +324,7 @@ ___
   },
   {
     "name": "order",
-    "type": "[CreateFulfillmentOrder](../types/services.CreateFulfillmentOrder.mdx)",
+    "type": "[CreateFulfillmentOrder](../../medusa/types/medusa.CreateFulfillmentOrder.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -333,7 +333,7 @@ ___
   },
   {
     "name": "fulfillment",
-    "type": "Omit&#60;[Fulfillment](services.Fulfillment.mdx), \"beforeInsert\"&#62;",
+    "type": "Omit&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx), \"beforeInsert\"&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -365,7 +365,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "returnOrder",
-    "type": "[CreateReturnType](../types/services.CreateReturnType.mdx)",
+    "type": "[CreateReturnType](../../medusa/types/medusa.CreateReturnType.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -397,7 +397,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[FulfillmentProvider](services.FulfillmentProvider.mdx)[]&#62;",
+    "type": "Promise&#60;[FulfillmentProvider](../../entities/classes/entities.FulfillmentProvider.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -429,7 +429,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[FulfillmentOptions](../types/services.FulfillmentOptions.mdx)[]&#62;",
+    "type": "Promise&#60;[FulfillmentOptions](../../medusa/types/medusa.FulfillmentOptions.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -563,7 +563,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -595,8 +595,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[ShippingOption](services.ShippingOption.mdx)",
-    "description": "A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -613,7 +613,7 @@ ___
   },
   {
     "name": "cart",
-    "type": "`Record<string, unknown>` \\| [Cart](services.Cart.mdx)",
+    "type": "`Record<string, unknown>` \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -645,8 +645,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[ShippingOption](services.ShippingOption.mdx)",
-    "description": "A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -691,7 +691,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`container`: [FulfillmentProviderContainer](../types/services.FulfillmentProviderContainer.mdx)) => [FulfillmentProviderService](services.FulfillmentProviderService.mdx)",
+    "type": "(`container`: [FulfillmentProviderContainer](../../medusa/types/medusa.FulfillmentProviderContainer.mdx)) => [FulfillmentProviderService](services.FulfillmentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -727,7 +727,7 @@ ___
   },
   {
     "name": "container_",
-    "type": "[FulfillmentProviderContainer](../types/services.FulfillmentProviderContainer.mdx)",
+    "type": "[FulfillmentProviderContainer](../../medusa/types/medusa.FulfillmentProviderContainer.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -736,7 +736,7 @@ ___
   },
   {
     "name": "fulfillmentProviderRepository_",
-    "type": "Repository&#60;[FulfillmentProvider](services.FulfillmentProvider.mdx)&#62;",
+    "type": "Repository&#60;[FulfillmentProvider](../../entities/classes/entities.FulfillmentProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -781,7 +781,7 @@ ___
   },
   {
     "name": "calculatePrice",
-    "type": "(`option`: [ShippingOption](services.ShippingOption.mdx), `data`: `Record<string, unknown>`, `cart?`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)) => Promise&#60;number&#62;",
+    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx), `data`: `Record<string, unknown>`, `cart?`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -790,7 +790,7 @@ ___
   },
   {
     "name": "canCalculate",
-    "type": "(`option`: [CalculateOptionPriceInput](../types/services.CalculateOptionPriceInput.mdx)) => Promise&#60;boolean&#62;",
+    "type": "(`option`: [CalculateOptionPriceInput](../../medusa/types/medusa.CalculateOptionPriceInput.mdx)) => Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -799,7 +799,7 @@ ___
   },
   {
     "name": "cancelFulfillment",
-    "type": "(`fulfillment`: [Fulfillment](services.Fulfillment.mdx)) => Promise&#60;[Fulfillment](services.Fulfillment.mdx)&#62;",
+    "type": "(`fulfillment`: [Fulfillment](../../entities/classes/entities.Fulfillment.mdx)) => Promise&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -808,7 +808,7 @@ ___
   },
   {
     "name": "createFulfillment",
-    "type": "(`method`: [ShippingMethod](services.ShippingMethod.mdx), `items`: [LineItem](services.LineItem.mdx)[], `order`: [CreateFulfillmentOrder](../types/services.CreateFulfillmentOrder.mdx), `fulfillment`: Omit&#60;[Fulfillment](services.Fulfillment.mdx), \"beforeInsert\"&#62;) => Promise&#60;Record&#60;string, unknown&#62;&#62;",
+    "type": "(`method`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx), `items`: [LineItem](../../entities/classes/entities.LineItem.mdx)[], `order`: [CreateFulfillmentOrder](../../medusa/types/medusa.CreateFulfillmentOrder.mdx), `fulfillment`: Omit&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx), \"beforeInsert\"&#62;) => Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -817,7 +817,7 @@ ___
   },
   {
     "name": "createReturn",
-    "type": "(`returnOrder`: [CreateReturnType](../types/services.CreateReturnType.mdx)) => Promise&#60;Record&#60;string, unknown&#62;&#62;",
+    "type": "(`returnOrder`: [CreateReturnType](../../medusa/types/medusa.CreateReturnType.mdx)) => Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -826,7 +826,7 @@ ___
   },
   {
     "name": "list",
-    "type": "() => Promise&#60;[FulfillmentProvider](services.FulfillmentProvider.mdx)[]&#62;",
+    "type": "() => Promise&#60;[FulfillmentProvider](../../entities/classes/entities.FulfillmentProvider.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -835,7 +835,7 @@ ___
   },
   {
     "name": "listFulfillmentOptions",
-    "type": "(`providerIds`: `string`[]) => Promise&#60;[FulfillmentOptions](../types/services.FulfillmentOptions.mdx)[]&#62;",
+    "type": "(`providerIds`: `string`[]) => Promise&#60;[FulfillmentOptions](../../medusa/types/medusa.FulfillmentOptions.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -880,7 +880,7 @@ ___
   },
   {
     "name": "validateFulfillmentData",
-    "type": "(`option`: [ShippingOption](services.ShippingOption.mdx), `data`: `Record<string, unknown>`, `cart`: `Record<string, unknown>` \\| [Cart](services.Cart.mdx)) => Promise&#60;Record&#60;string, unknown&#62;&#62;",
+    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx), `data`: `Record<string, unknown>`, `cart`: `Record<string, unknown>` \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -889,7 +889,7 @@ ___
   },
   {
     "name": "validateOption",
-    "type": "(`option`: [ShippingOption](services.ShippingOption.mdx)) => Promise&#60;boolean&#62;",
+    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)) => Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

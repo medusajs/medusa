@@ -43,7 +43,7 @@ medusa.admin.stockLocations.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostStockLocationsReq](../../internal/classes/js_client.internal.AdminPostStockLocationsReq.mdx)",
+    "type": "[AdminPostStockLocationsReq](../../medusa/classes/medusa.AdminPostStockLocationsReq.mdx)",
     "description": "The stock location to be created.",
     "optional": false,
     "defaultValue": "",
@@ -51,7 +51,7 @@ medusa.admin.stockLocations.create({
     "children": [
       {
         "name": "address",
-        "type": "[StockLocationAddress](../../internal/classes/js_client.internal.StockLocationAddress.mdx)",
+        "type": "[StockLocationAddress](../../medusa/classes/medusa.StockLocationAddress.mdx)",
         "description": "A new stock location address to create and associate with the stock location. Only required if `address\\_id` is not provided.",
         "optional": true,
         "defaultValue": "",
@@ -176,114 +176,12 @@ medusa.admin.stockLocations.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminStockLocationsRes](../../internal/types/js_client.internal.AdminStockLocationsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminStockLocationsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminStockLocationsRes",
-        "type": "`object`",
-        "description": "The stock location's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "stock_location",
-            "type": "[StockLocationExpandedDTO](../../internal/types/js_client.internal.StockLocationExpandedDTO.mdx)",
-            "description": "Stock location details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "address",
-                "type": "[StockLocationAddressDTO](../../StockLocationTypes/types/js_client.internal.internal-1.StockLocationTypes.StockLocationAddressDTO.mdx)",
-                "description": "The Address of the Stock Location",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "address_id",
-                "type": "`string`",
-                "description": "Stock location address' ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`string` \\| `Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`string` \\| `Date` \\| `null`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The stock location's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>` \\| `null`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the stock location",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`string` \\| `Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "sales_channels",
-                "type": "`any`[]",
-                "description": "The associated sales channels.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -333,7 +231,7 @@ medusa.admin.stockLocations.delete(stockLocationId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[DeleteResponse](../../internal/types/js_client.internal.DeleteResponse-1.mdx)&#62;",
+    "type": "ResponsePromise&#60;[DeleteResponse](../../medusa/types/medusa.DeleteResponse-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -436,7 +334,7 @@ medusa.admin.stockLocations.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetStockLocationsParams](../../internal/classes/js_client.internal.AdminGetStockLocationsParams.mdx)",
+    "type": "[AdminGetStockLocationsParams](../../medusa/classes/medusa.AdminGetStockLocationsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved stock locations.",
     "optional": true,
     "defaultValue": "",
@@ -532,141 +430,12 @@ medusa.admin.stockLocations.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminStockLocationsListRes](../../internal/types/js_client.internal.AdminStockLocationsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminStockLocationsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of stock locations with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminStockLocationsListRes",
-        "type": "[PaginatedResponse](../../internal/types/js_client.internal.PaginatedResponse-1.mdx) & ``{ stock_locations: [StockLocationExpandedDTO](../../internal/types/js_client.internal.StockLocationExpandedDTO.mdx)[]  }``",
-        "description": "The list of stock locations with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "stock_locations",
-            "type": "[StockLocationExpandedDTO](../../internal/types/js_client.internal.StockLocationExpandedDTO.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "address",
-                "type": "[StockLocationAddressDTO](../../StockLocationTypes/types/js_client.internal.internal-1.StockLocationTypes.StockLocationAddressDTO.mdx)",
-                "description": "The Address of the Stock Location",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "address_id",
-                "type": "`string`",
-                "description": "Stock location address' ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`string` \\| `Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`string` \\| `Date` \\| `null`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The stock location's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>` \\| `null`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the stock location",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`string` \\| `Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "sales_channels",
-                "type": "`any`[]",
-                "description": "The associated sales channels.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -716,114 +485,12 @@ medusa.admin.stockLocations.retrieve(stockLocationId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminStockLocationsRes](../../internal/types/js_client.internal.AdminStockLocationsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminStockLocationsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminStockLocationsRes",
-        "type": "`object`",
-        "description": "The stock location's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "stock_location",
-            "type": "[StockLocationExpandedDTO](../../internal/types/js_client.internal.StockLocationExpandedDTO.mdx)",
-            "description": "Stock location details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "address",
-                "type": "[StockLocationAddressDTO](../../StockLocationTypes/types/js_client.internal.internal-1.StockLocationTypes.StockLocationAddressDTO.mdx)",
-                "description": "The Address of the Stock Location",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "address_id",
-                "type": "`string`",
-                "description": "Stock location address' ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`string` \\| `Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`string` \\| `Date` \\| `null`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The stock location's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>` \\| `null`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the stock location",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`string` \\| `Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "sales_channels",
-                "type": "`any`[]",
-                "description": "The associated sales channels.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -861,7 +528,7 @@ medusa.admin.stockLocations.update(stockLocationId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostStockLocationsLocationReq](../../internal/classes/js_client.internal.AdminPostStockLocationsLocationReq.mdx)",
+    "type": "[AdminPostStockLocationsLocationReq](../../medusa/classes/medusa.AdminPostStockLocationsLocationReq.mdx)",
     "description": "The attributes to be updated in the stock location.",
     "optional": false,
     "defaultValue": "",
@@ -869,7 +536,7 @@ medusa.admin.stockLocations.update(stockLocationId, {
     "children": [
       {
         "name": "address",
-        "type": "[StockLocationAddress](../../internal/classes/js_client.internal.StockLocationAddress-1.mdx)",
+        "type": "[StockLocationAddress](../../medusa/classes/medusa.StockLocationAddress-1.mdx)",
         "description": "The data of an associated address to create or update.",
         "optional": true,
         "defaultValue": "",
@@ -994,113 +661,11 @@ medusa.admin.stockLocations.update(stockLocationId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminStockLocationsRes](../../internal/types/js_client.internal.AdminStockLocationsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminStockLocationsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminStockLocationsRes",
-        "type": "`object`",
-        "description": "The stock location's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "stock_location",
-            "type": "[StockLocationExpandedDTO](../../internal/types/js_client.internal.StockLocationExpandedDTO.mdx)",
-            "description": "Stock location details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "address",
-                "type": "[StockLocationAddressDTO](../../StockLocationTypes/types/js_client.internal.internal-1.StockLocationTypes.StockLocationAddressDTO.mdx)",
-                "description": "The Address of the Stock Location",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "address_id",
-                "type": "`string`",
-                "description": "Stock location address' ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`string` \\| `Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`string` \\| `Date` \\| `null`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The stock location's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>` \\| `null`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the stock location",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`string` \\| `Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "sales_channels",
-                "type": "`any`[]",
-                "description": "The associated sales channels.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

@@ -34,13 +34,15 @@ referenceNames.forEach((name) => {
     })
     totalCount = files.length
     files.forEach((file) => generateReference(file))
+  } else if (name === "merge") {
+    runMerger()
   } else {
     totalCount = 1
     generateReference(`${name}.js`)
   }
 })
 
-function generateReference(referenceName: string) {
+export function generateReference(referenceName: string) {
   const configPathName = path.join(basePath, referenceName)
 
   // check if the config file exists
@@ -59,13 +61,10 @@ function generateReference(referenceName: string) {
   typedocProcess.stdout?.on("data", (chunk: string) => {
     formatColoredLog(colorLog, referenceName, chunk.trim())
   })
-  typedocProcess.on("exit", () => {
+  typedocProcess.on("exit", (code) => {
     generatedCount++
-    if (generatedCount >= totalCount && !ranMerger) {
-      // run merger
-      console.log(chalk.bgBlueBright("\n\nRunning Merger\n\n"))
-      ranMerger = true
-      generateReference("_merger.js")
+    if (generatedCount >= totalCount && !ranMerger && code !== 1) {
+      runMerger()
     }
   })
   typedocProcess.stderr?.on("data", (chunk: string) => {
@@ -92,4 +91,11 @@ function formatColoredLog(
   message: string
 ) {
   console.log(`${chalkInstance(title)} -> ${message}`)
+}
+
+function runMerger() {
+  // run merger
+  console.log(chalk.bgBlueBright("\n\nRunning Merger\n\n"))
+  ranMerger = true
+  generateReference("_merger.js")
 }

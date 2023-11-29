@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-3.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-3.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ ___
   },
   {
     "name": "addressRepository_",
-    "type": "Repository&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ ___
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](services.Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
+    "type": "Repository&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -110,7 +110,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -137,7 +137,7 @@ ___
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](services.LineItem.mdx)&#62; & ``{ findByReturn: Method findByReturn  }``",
+    "type": "Repository&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -182,7 +182,7 @@ ___
   },
   {
     "name": "paymentSessionRepository_",
-    "type": "Repository&#60;[PaymentSession](services.PaymentSession.mdx)&#62;",
+    "type": "Repository&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -191,7 +191,7 @@ ___
   },
   {
     "name": "priceSelectionStrategy_",
-    "type": "[IPriceSelectionStrategy](../interfaces/services.IPriceSelectionStrategy.mdx)",
+    "type": "[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -254,7 +254,7 @@ ___
   },
   {
     "name": "shippingMethodRepository_",
-    "type": "Repository&#60;[ShippingMethod](services.ShippingMethod.mdx)&#62;",
+    "type": "Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -385,7 +385,7 @@ Adds a line item to the cart.
   },
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "the line item to add.",
     "optional": false,
     "defaultValue": "",
@@ -451,7 +451,7 @@ to have has\_shipping to false. Finally, the adjustments will be updated.
   },
   {
     "name": "lineItems",
-    "type": "[LineItem](services.LineItem.mdx) \\| [LineItem](services.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "the line items to add.",
     "optional": false,
     "defaultValue": "",
@@ -507,7 +507,7 @@ shop.
 <ParameterTypes parameters={[
   {
     "name": "cartOrId",
-    "type": "`string` \\| [Cart](services.Cart.mdx)",
+    "type": "`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the id of the cart to add shipping method to",
     "optional": false,
     "defaultValue": "",
@@ -539,7 +539,7 @@ shop.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -562,7 +562,7 @@ if a free shipping was present, we set shipping methods to original amount
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart to adjust free shipping for",
     "optional": false,
     "defaultValue": "",
@@ -608,7 +608,7 @@ Throws if discount regions does not include the cart region
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart to update",
     "optional": false,
     "defaultValue": "",
@@ -654,7 +654,7 @@ Throws if discount regions does not include the cart region
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart to update",
     "optional": false,
     "defaultValue": "",
@@ -695,8 +695,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
-    "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -828,7 +828,7 @@ set the payment on the cart.
   },
   {
     "name": "context",
-    "type": "`Record<string, unknown>` & ``{ cart_id: string  }``",
+    "type": "`Record<string, unknown>` & `object`",
     "description": "object containing whatever is relevant for\n   authorizing the payment with the payment provider. As an example,\n   this could be IP address or similar for fraud handling.",
     "optional": false,
     "defaultValue": "",
@@ -842,7 +842,7 @@ set the payment on the cart.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting cart",
@@ -862,7 +862,7 @@ Creates a cart.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CartCreateProps](../types/services.CartCreateProps.mdx)",
+    "type": "[CartCreateProps](../../medusa/types/medusa.CartCreateProps.mdx)",
     "description": "the data to create the cart with",
     "optional": false,
     "defaultValue": "",
@@ -876,7 +876,7 @@ Creates a cart.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the create operation",
@@ -910,7 +910,7 @@ Creates or fetches a user based on an email.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resultign customer object",
@@ -928,7 +928,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cartOrId",
-    "type": "`string` \\| [Cart](services.Cart.mdx)",
+    "type": "`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -960,8 +960,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
-    "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -969,7 +969,7 @@ ___
   },
   {
     "name": "totalsConfig",
-    "type": "[TotalsConfig](../types/services.TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -983,7 +983,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[WithRequiredProperty](../types/services.WithRequiredProperty.mdx)&#60;[Cart](services.Cart.mdx), \"total\"&#62;&#62;",
+    "type": "Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1001,7 +1001,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1010,7 +1010,7 @@ ___
   },
   {
     "name": "totalsToSelect",
-    "type": "[TotalField](../types/services.TotalField.mdx)[]",
+    "type": "[TotalField](../../medusa/types/medusa.TotalField.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1019,7 +1019,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[TotalsConfig](../types/services.TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1033,7 +1033,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1071,7 +1071,7 @@ Deletes a cart from the database. Completed carts cannot be deleted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the deleted cart or undefined if the cart was not found.",
@@ -1167,7 +1167,7 @@ throws if custom options is not empty and no shipping option corresponds to opti
 <ParameterTypes parameters={[
   {
     "name": "cartCustomShippingOptions",
-    "type": "[CustomShippingOption](services.CustomShippingOption.mdx)[]",
+    "type": "[CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)[]",
     "description": "the cart's custom shipping options",
     "optional": false,
     "defaultValue": "",
@@ -1190,7 +1190,7 @@ throws if custom options is not empty and no shipping option corresponds to opti
 <ParameterTypes parameters={[
   {
     "name": "undefined \\| CustomShippingOption",
-    "type": "`undefined` \\| [CustomShippingOption](services.CustomShippingOption.mdx)",
+    "type": "`undefined` \\| [CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)",
     "optional": true,
     "defaultValue": "",
     "description": "custom shipping option",
@@ -1208,7 +1208,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1254,7 +1254,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[SalesChannel](services.SalesChannel.mdx)&#62;",
+    "type": "Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1272,7 +1272,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableCartProps](services.FilterableCartProps.mdx)",
+    "type": "[FilterableCartProps](../../medusa/classes/medusa.FilterableCartProps.mdx)",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -1281,7 +1281,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "config object",
     "optional": false,
     "defaultValue": "{}",
@@ -1295,7 +1295,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)[]&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -1315,7 +1315,7 @@ Remove the cart line item that does not belongs to the newly assigned sales chan
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "The cart being updated",
     "optional": false,
     "defaultValue": "",
@@ -1356,8 +1356,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
-    "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1456,7 +1456,7 @@ Removes a discount based on a discount code.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting cart",
@@ -1499,7 +1499,7 @@ Removes a line item from the cart.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1528,7 +1528,7 @@ Gets a cart by id.
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "the options to get a cart",
     "optional": false,
     "defaultValue": "{}",
@@ -1537,7 +1537,7 @@ Gets a cart by id.
   },
   {
     "name": "totalsConfig",
-    "type": "[TotalsConfig](../types/services.TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1551,7 +1551,7 @@ Gets a cart by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the cart document.",
@@ -1578,7 +1578,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1587,7 +1587,7 @@ ___
   },
   {
     "name": "totalsConfig",
-    "type": "[TotalsConfig](../types/services.TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1601,7 +1601,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1630,7 +1630,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1639,7 +1639,7 @@ ___
   },
   {
     "name": "totalsConfig",
-    "type": "[TotalsConfig](../types/services.TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1653,7 +1653,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[WithRequiredProperty](../types/services.WithRequiredProperty.mdx)&#60;[Cart](services.Cart.mdx), \"total\"&#62;&#62;",
+    "type": "Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1707,7 +1707,7 @@ others metadata fields, setMetadata is provided.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the updated result.",
@@ -1774,7 +1774,7 @@ that are not available for the cart's region.
 <ParameterTypes parameters={[
   {
     "name": "cartOrCartId",
-    "type": "`string` \\| [Cart](services.Cart.mdx)",
+    "type": "`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the id of the cart to set payment session for",
     "optional": false,
     "defaultValue": "",
@@ -1808,7 +1808,7 @@ Set's the region of a cart.
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart to set region on",
     "optional": false,
     "defaultValue": "",
@@ -1858,7 +1858,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1890,7 +1890,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1903,8 +1903,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "FindConfig&#60;Cart&#62; & &#123; totalsToSelect: TotalField[]  &#125;",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62; & ``{ totalsToSelect: [TotalField](../types/services.TotalField.mdx)[]  }``",
+    "name": "FindConfig&#60;Cart&#62; & object",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`",
     "optional": true,
     "defaultValue": "",
     "description": "",
@@ -1922,7 +1922,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cartOrId",
-    "type": "`string` \\| [Cart](services.Cart.mdx)",
+    "type": "`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1931,7 +1931,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[CartUpdateProps](../types/services.CartUpdateProps.mdx)",
+    "type": "[CartUpdateProps](../../medusa/types/medusa.CartUpdateProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1945,7 +1945,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1965,7 +1965,7 @@ Updates the cart's billing address.
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart to update",
     "optional": false,
     "defaultValue": "",
@@ -1974,7 +1974,7 @@ Updates the cart's billing address.
   },
   {
     "name": "addressOrId",
-    "type": "`string` \\| [AddressPayload](services.AddressPayload.mdx) \\| Partial&#60;[Address](services.Address.mdx)&#62;",
+    "type": "`string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx) \\| Partial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "the value to set the billing address to",
     "optional": false,
     "defaultValue": "",
@@ -1983,7 +1983,7 @@ Updates the cart's billing address.
   },
   {
     "name": "addrRepo",
-    "type": "Repository&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "the repository to use for address updates",
     "optional": false,
     "defaultValue": "",
@@ -2017,7 +2017,7 @@ Sets the customer id of a cart
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart to add email to",
     "optional": false,
     "defaultValue": "",
@@ -2078,7 +2078,7 @@ Updates a cart's existing line item.
   },
   {
     "name": "update",
-    "type": "[LineItemUpdate](../types/services.LineItemUpdate.mdx)",
+    "type": "[LineItemUpdate](../../medusa/types/medusa.LineItemUpdate.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2092,7 +2092,7 @@ Updates a cart's existing line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -2135,7 +2135,7 @@ Updates the currently selected payment session.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting cart",
@@ -2155,7 +2155,7 @@ Updates the cart's shipping address.
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart to update",
     "optional": false,
     "defaultValue": "",
@@ -2164,7 +2164,7 @@ Updates the cart's shipping address.
   },
   {
     "name": "addressOrId",
-    "type": "`string` \\| [AddressPayload](services.AddressPayload.mdx) \\| Partial&#60;[Address](services.Address.mdx)&#62;",
+    "type": "`string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx) \\| Partial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "the value to set the shipping address to",
     "optional": false,
     "defaultValue": "",
@@ -2173,7 +2173,7 @@ Updates the cart's shipping address.
   },
   {
     "name": "addrRepo",
-    "type": "Repository&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "the repository to use for address updates",
     "optional": false,
     "defaultValue": "",
@@ -2205,8 +2205,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
-    "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -2275,7 +2275,7 @@ Check if line item's variant belongs to the cart's sales channel.
   },
   {
     "name": "lineItem",
-    "type": "[LineItemValidateData](../types/services.LineItemValidateData.mdx)",
+    "type": "[LineItemValidateData](../../medusa/types/medusa.LineItemValidateData.mdx)",
     "description": "the line item being added",
     "optional": false,
     "defaultValue": "",
@@ -2311,7 +2311,7 @@ shipping methods.
 <ParameterTypes parameters={[
   {
     "name": "shippingMethods",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]",
     "description": "the set of shipping methods to check from",
     "optional": false,
     "defaultValue": "",
@@ -2366,7 +2366,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-3.mdx)) => [CartService](services.CartService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-3.mdx)) => [CartService](services.CartService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2402,7 +2402,7 @@ ___
   },
   {
     "name": "addressRepository_",
-    "type": "Repository&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2411,7 +2411,7 @@ ___
   },
   {
     "name": "cartRepository_",
-    "type": "Repository&#60;[Cart](services.Cart.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
+    "type": "Repository&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2456,7 +2456,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2483,7 +2483,7 @@ ___
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](services.LineItem.mdx)&#62; & ``{ findByReturn: Method findByReturn  }``",
+    "type": "Repository&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2528,7 +2528,7 @@ ___
   },
   {
     "name": "paymentSessionRepository_",
-    "type": "Repository&#60;[PaymentSession](services.PaymentSession.mdx)&#62;",
+    "type": "Repository&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2537,7 +2537,7 @@ ___
   },
   {
     "name": "priceSelectionStrategy_",
-    "type": "[IPriceSelectionStrategy](../interfaces/services.IPriceSelectionStrategy.mdx)",
+    "type": "[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2600,7 +2600,7 @@ ___
   },
   {
     "name": "shippingMethodRepository_",
-    "type": "Repository&#60;[ShippingMethod](services.ShippingMethod.mdx)&#62;",
+    "type": "Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2681,7 +2681,7 @@ ___
   },
   {
     "name": "addLineItem",
-    "type": "(`cartId`: `string`, `lineItem`: [LineItem](services.LineItem.mdx), `config`: ``{ validateSalesChannels: boolean = true }``) => Promise&#60;void&#62;",
+    "type": "(`cartId`: `string`, `lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `config`: ``{ validateSalesChannels: boolean = true }``) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2690,7 +2690,7 @@ ___
   },
   {
     "name": "addOrUpdateLineItems",
-    "type": "(`cartId`: `string`, `lineItems`: [LineItem](services.LineItem.mdx) \\| [LineItem](services.LineItem.mdx)[], `config`: ``{ validateSalesChannels: boolean = true }``) => Promise&#60;void&#62;",
+    "type": "(`cartId`: `string`, `lineItems`: [LineItem](../../entities/classes/entities.LineItem.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[], `config`: ``{ validateSalesChannels: boolean = true }``) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2699,7 +2699,7 @@ ___
   },
   {
     "name": "addShippingMethod",
-    "type": "(`cartOrId`: `string` \\| [Cart](services.Cart.mdx), `optionId`: `string`, `data`: `Record<string, unknown>`) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartOrId`: `string` \\| [Cart](../../entities/classes/entities.Cart.mdx), `optionId`: `string`, `data`: `Record<string, unknown>`) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2708,7 +2708,7 @@ ___
   },
   {
     "name": "adjustFreeShipping_",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `shouldAdd`: `boolean`) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `shouldAdd`: `boolean`) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2717,7 +2717,7 @@ ___
   },
   {
     "name": "applyDiscount",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `discountCode`: `string`) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `discountCode`: `string`) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2726,7 +2726,7 @@ ___
   },
   {
     "name": "applyDiscounts",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `discountCodes`: `string`[]) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `discountCodes`: `string`[]) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2735,7 +2735,7 @@ ___
   },
   {
     "name": "applyGiftCard_",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `code`: `string`) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `code`: `string`) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2753,7 +2753,7 @@ ___
   },
   {
     "name": "authorizePayment",
-    "type": "(`cartId`: `string`, `context`: `Record<string, unknown>` & ``{ cart_id: string  }``) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`, `context`: `Record<string, unknown>` & ``{ cart_id: string  }``) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2762,7 +2762,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`data`: [CartCreateProps](../types/services.CartCreateProps.mdx)) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`data`: [CartCreateProps](../../medusa/types/medusa.CartCreateProps.mdx)) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2771,7 +2771,7 @@ ___
   },
   {
     "name": "createOrFetchGuestCustomerFromEmail_",
-    "type": "(`email`: `string`) => Promise&#60;[Customer](services.Customer.mdx)&#62;",
+    "type": "(`email`: `string`) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2780,7 +2780,7 @@ ___
   },
   {
     "name": "createTaxLines",
-    "type": "(`cartOrId`: `string` \\| [Cart](services.Cart.mdx)) => Promise&#60;void&#62;",
+    "type": "(`cartOrId`: `string` \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2789,7 +2789,7 @@ ___
   },
   {
     "name": "decorateTotals",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `totalsConfig`: [TotalsConfig](../types/services.TotalsConfig.mdx)) => Promise&#60;[WithRequiredProperty](../types/services.WithRequiredProperty.mdx)&#60;[Cart](services.Cart.mdx), \"total\"&#62;&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `totalsConfig`: [TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)) => Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2798,7 +2798,7 @@ ___
   },
   {
     "name": "decorateTotals_",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `totalsToSelect`: [TotalField](../types/services.TotalField.mdx)[], `options`: [TotalsConfig](../types/services.TotalsConfig.mdx)) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `totalsToSelect`: [TotalField](../../medusa/types/medusa.TotalField.mdx)[], `options`: [TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2807,7 +2807,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`cartId`: `string`) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2834,7 +2834,7 @@ ___
   },
   {
     "name": "findCustomShippingOption",
-    "type": "(`cartCustomShippingOptions`: [CustomShippingOption](services.CustomShippingOption.mdx)[], `optionId`: `string`) => `undefined` \\| [CustomShippingOption](services.CustomShippingOption.mdx)",
+    "type": "(`cartCustomShippingOptions`: [CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)[], `optionId`: `string`) => `undefined` \\| [CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2843,7 +2843,7 @@ ___
   },
   {
     "name": "getTotalsRelations",
-    "type": "(`config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;) => `string`[]",
+    "type": "(`config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;) => `string`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2852,7 +2852,7 @@ ___
   },
   {
     "name": "getValidatedSalesChannel",
-    "type": "(`salesChannelId?`: `string`) => Promise&#60;[SalesChannel](services.SalesChannel.mdx)&#62;",
+    "type": "(`salesChannelId?`: `string`) => Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2861,7 +2861,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [FilterableCartProps](services.FilterableCartProps.mdx), `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;) => Promise&#60;[Cart](services.Cart.mdx)[]&#62;",
+    "type": "(`selector`: [FilterableCartProps](../../medusa/classes/medusa.FilterableCartProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2870,7 +2870,7 @@ ___
   },
   {
     "name": "onSalesChannelChange",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `newSalesChannelId`: `string`) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `newSalesChannelId`: `string`) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2879,7 +2879,7 @@ ___
   },
   {
     "name": "refreshAdjustments_",
-    "type": "(`cart`: [Cart](services.Cart.mdx)) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2897,7 +2897,7 @@ ___
   },
   {
     "name": "removeDiscount",
-    "type": "(`cartId`: `string`, `discountCode`: `string`) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`, `discountCode`: `string`) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2906,7 +2906,7 @@ ___
   },
   {
     "name": "removeLineItem",
-    "type": "(`cartId`: `string`, `lineItemId`: `string`) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`, `lineItemId`: `string`) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2915,7 +2915,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`cartId`: `string`, `options`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;, `totalsConfig`: [TotalsConfig](../types/services.TotalsConfig.mdx)) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;, `totalsConfig`: [TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2924,7 +2924,7 @@ ___
   },
   {
     "name": "retrieveLegacy",
-    "type": "(`cartId`: `string`, `options`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;, `totalsConfig`: [TotalsConfig](../types/services.TotalsConfig.mdx)) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;, `totalsConfig`: [TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2933,7 +2933,7 @@ ___
   },
   {
     "name": "retrieveWithTotals",
-    "type": "(`cartId`: `string`, `options`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;, `totalsConfig`: [TotalsConfig](../types/services.TotalsConfig.mdx)) => Promise&#60;[WithRequiredProperty](../types/services.WithRequiredProperty.mdx)&#60;[Cart](services.Cart.mdx), \"total\"&#62;&#62;",
+    "type": "(`cartId`: `string`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;, `totalsConfig`: [TotalsConfig](../../medusa/types/medusa.TotalsConfig.mdx)) => Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2942,7 +2942,7 @@ ___
   },
   {
     "name": "setMetadata",
-    "type": "(`cartId`: `string`, `key`: `string`, `value`: `string` \\| `number`) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`, `key`: `string`, `value`: `string` \\| `number`) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2960,7 +2960,7 @@ ___
   },
   {
     "name": "setPaymentSessions",
-    "type": "(`cartOrCartId`: `string` \\| [Cart](services.Cart.mdx)) => Promise&#60;void&#62;",
+    "type": "(`cartOrCartId`: `string` \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2969,7 +2969,7 @@ ___
   },
   {
     "name": "setRegion_",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `regionId`: `string`, `countryCode`: `null` \\| `string`) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `regionId`: `string`, `countryCode`: `null` \\| `string`) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2987,7 +2987,7 @@ ___
   },
   {
     "name": "transformQueryForTotals_",
-    "type": "(`config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62;) => [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Cart](services.Cart.mdx)&#62; & ``{ totalsToSelect: [TotalField](../types/services.TotalField.mdx)[]  }``",
+    "type": "(`config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;) => [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & ``{ totalsToSelect: [TotalField](../../medusa/types/medusa.TotalField.mdx)[]  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2996,7 +2996,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`cartOrId`: `string` \\| [Cart](services.Cart.mdx), `data`: [CartUpdateProps](../types/services.CartUpdateProps.mdx)) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartOrId`: `string` \\| [Cart](../../entities/classes/entities.Cart.mdx), `data`: [CartUpdateProps](../../medusa/types/medusa.CartUpdateProps.mdx)) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3005,7 +3005,7 @@ ___
   },
   {
     "name": "updateBillingAddress_",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `addressOrId`: `string` \\| [AddressPayload](services.AddressPayload.mdx) \\| Partial&#60;[Address](services.Address.mdx)&#62;, `addrRepo`: Repository&#60;[Address](services.Address.mdx)&#62;) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `addressOrId`: `string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx) \\| Partial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;, `addrRepo`: Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3014,7 +3014,7 @@ ___
   },
   {
     "name": "updateCustomerId_",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `customerId`: `string`) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `customerId`: `string`) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3023,7 +3023,7 @@ ___
   },
   {
     "name": "updateLineItem",
-    "type": "(`cartId`: `string`, `lineItemId`: `string`, `update`: [LineItemUpdate](../types/services.LineItemUpdate.mdx)) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`, `lineItemId`: `string`, `update`: [LineItemUpdate](../../medusa/types/medusa.LineItemUpdate.mdx)) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3032,7 +3032,7 @@ ___
   },
   {
     "name": "updatePaymentSession",
-    "type": "(`cartId`: `string`, `update`: `Record<string, unknown>`) => Promise&#60;[Cart](services.Cart.mdx)&#62;",
+    "type": "(`cartId`: `string`, `update`: `Record<string, unknown>`) => Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3041,7 +3041,7 @@ ___
   },
   {
     "name": "updateShippingAddress_",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `addressOrId`: `string` \\| [AddressPayload](services.AddressPayload.mdx) \\| Partial&#60;[Address](services.Address.mdx)&#62;, `addrRepo`: Repository&#60;[Address](services.Address.mdx)&#62;) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `addressOrId`: `string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx) \\| Partial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;, `addrRepo`: Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3050,7 +3050,7 @@ ___
   },
   {
     "name": "updateUnitPrices_",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `regionId?`: `string`, `customer_id?`: `string`) => Promise&#60;void&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `regionId?`: `string`, `customer_id?`: `string`) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3059,7 +3059,7 @@ ___
   },
   {
     "name": "validateLineItem",
-    "type": "(`sales_channel_id`: ``{ sales_channel_id: null \\| string  }``, `lineItem`: [LineItemValidateData](../types/services.LineItemValidateData.mdx)) => Promise&#60;boolean&#62;",
+    "type": "(`sales_channel_id`: ``{ sales_channel_id: null \\| string  }``, `lineItem`: [LineItemValidateData](../../medusa/types/medusa.LineItemValidateData.mdx)) => Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3068,7 +3068,7 @@ ___
   },
   {
     "name": "validateLineItemShipping_",
-    "type": "(`shippingMethods`: [ShippingMethod](services.ShippingMethod.mdx)[], `lineItemShippingProfiledId`: `string`) => `boolean`",
+    "type": "(`shippingMethods`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[], `lineItemShippingProfiledId`: `string`) => `boolean`",
     "description": "",
     "optional": false,
     "defaultValue": "",

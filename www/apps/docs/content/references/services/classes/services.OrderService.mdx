@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-19.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-18.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ ___
   },
   {
     "name": "addressRepository_",
-    "type": "Repository&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -110,7 +110,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -146,7 +146,7 @@ ___
   },
   {
     "name": "inventoryService_",
-    "type": "[IInventoryService](../interfaces/services.IInventoryService.mdx)",
+    "type": "[IInventoryService](../../medusa/interfaces/medusa.IInventoryService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -182,7 +182,7 @@ ___
   },
   {
     "name": "orderRepository_",
-    "type": "Repository&#60;[Order](services.Order.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
+    "type": "Repository&#60;[Order](../../entities/classes/entities.Order.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -464,7 +464,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[CreateShippingMethodDto](../types/services.CreateShippingMethodDto.mdx)",
+    "type": "[CreateShippingMethodDto](../../medusa/types/medusa.CreateShippingMethodDto.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -478,7 +478,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -513,7 +513,7 @@ and payment has been captured.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -626,7 +626,7 @@ Throws if payment process has been initiated.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -660,7 +660,7 @@ Cancels a fulfillment (if related to an order)
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated order",
@@ -694,7 +694,7 @@ Captures payment for an order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -726,7 +726,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -746,7 +746,7 @@ Creates an order from a cart
 <ParameterTypes parameters={[
   {
     "name": "cartOrId",
-    "type": "`string` \\| [Cart](services.Cart.mdx)",
+    "type": "`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -760,7 +760,7 @@ Creates an order from a cart
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the creation result.",
@@ -792,7 +792,7 @@ to their respective fulfillment provider.
   },
   {
     "name": "itemsToFulfill",
-    "type": "[FulFillmentItemType](../types/services.FulFillmentItemType.mdx)[]",
+    "type": "[FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[]",
     "description": "items to fulfil.",
     "optional": false,
     "defaultValue": "",
@@ -842,7 +842,7 @@ to their respective fulfillment provider.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -860,8 +860,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
-    "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -869,8 +869,8 @@ ___
   },
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
-    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -892,7 +892,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise&#60;GiftCard&#62;[]",
-    "type": "Promise&#60;[GiftCard](services.GiftCard.mdx)&#62;[]",
+    "type": "Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;[]",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -971,7 +971,7 @@ Refunds a given amount back to the customer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the refund operation.",
@@ -1011,7 +1011,7 @@ have been created in regards to the shipment.
   },
   {
     "name": "trackingLinks",
-    "type": "[TrackingLink](services.TrackingLink.mdx)[]",
+    "type": "[TrackingLink](../../entities/classes/entities.TrackingLink.mdx)[]",
     "description": "array of tracking numbers associated with the shipment",
     "optional": true,
     "defaultValue": "",
@@ -1052,7 +1052,7 @@ have been created in regards to the shipment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting order following the update.",
@@ -1065,7 +1065,7 @@ ___
 
 ### decorateTotals
 
-`**decorateTotals**(order, totalsFields?): Promise&#60;[Order](services.Order.mdx)&#62;`
+`**decorateTotals**(order, totalsFields?): Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;`
 
 Calculate and attach the different total fields on the object
 
@@ -1074,7 +1074,7 @@ Calculate and attach the different total fields on the object
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1097,7 +1097,7 @@ Calculate and attach the different total fields on the object
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1106,7 +1106,7 @@ Calculate and attach the different total fields on the object
   }
 ]} />
 
-`**decorateTotals**(order, context?): Promise&#60;[Order](services.Order.mdx)&#62;`
+`**decorateTotals**(order, context?): Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;`
 
 Calculate and attach the different total fields on the object
 
@@ -1115,7 +1115,7 @@ Calculate and attach the different total fields on the object
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1124,7 +1124,7 @@ Calculate and attach the different total fields on the object
   },
   {
     "name": "context",
-    "type": "[TotalsContext](../types/services.TotalsContext.mdx)",
+    "type": "[TotalsContext](../../medusa/types/medusa.TotalsContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1138,7 +1138,7 @@ Calculate and attach the different total fields on the object
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1156,8 +1156,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
-    "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1179,7 +1179,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1199,7 +1199,7 @@ Retrieves the order line items, given an array of items.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "the order to get line items from",
     "optional": false,
     "defaultValue": "",
@@ -1208,7 +1208,7 @@ Retrieves the order line items, given an array of items.
   },
   {
     "name": "items",
-    "type": "[FulFillmentItemType](../types/services.FulFillmentItemType.mdx)[]",
+    "type": "[FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[]",
     "description": "the items to get",
     "optional": false,
     "defaultValue": "",
@@ -1217,7 +1217,7 @@ Retrieves the order line items, given an array of items.
   },
   {
     "name": "transformer",
-    "type": "(`item`: `undefined` \\| [LineItem](services.LineItem.mdx), `quantity`: `number`) => `unknown`",
+    "type": "(`item`: `undefined` \\| [LineItem](../../entities/classes/entities.LineItem.mdx), `quantity`: `number`) => `unknown`",
     "description": "a function to apply to each of the items\n   retrieved from the order, should return a line item. If the transformer\n   returns an undefined value the line item will be filtered from the\n   returned array.",
     "optional": false,
     "defaultValue": "",
@@ -1231,7 +1231,7 @@ Retrieves the order line items, given an array of items.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line items generated by the transformer.",
@@ -1249,7 +1249,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1281,7 +1281,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -1290,7 +1290,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -1304,7 +1304,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)[]&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -1322,7 +1322,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[QuerySelector](../types/services.QuerySelector.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[QuerySelector](../../medusa/types/medusa.QuerySelector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -1331,7 +1331,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -1345,7 +1345,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[Order](services.Order.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[Order](../../entities/classes/entities.Order.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -1380,7 +1380,7 @@ mismatches.
   },
   {
     "name": "receivedReturn",
-    "type": "[Return](services.Return.mdx)",
+    "type": "[Return](../../entities/classes/entities.Return.mdx)",
     "description": "the received return",
     "optional": false,
     "defaultValue": "",
@@ -1403,7 +1403,7 @@ mismatches.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1432,7 +1432,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "config of order to retrieve",
     "optional": false,
     "defaultValue": "{}",
@@ -1446,7 +1446,7 @@ Gets an order by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1475,7 +1475,7 @@ Gets an order by cart id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "the config to be used to find order",
     "optional": false,
     "defaultValue": "{}",
@@ -1489,7 +1489,7 @@ Gets an order by cart id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1516,7 +1516,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1530,7 +1530,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1559,7 +1559,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "query config to get order by",
     "optional": false,
     "defaultValue": "{}",
@@ -1573,7 +1573,7 @@ Gets an order by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1591,7 +1591,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "orderIdOrSelector",
-    "type": "`string` \\| [Selector](../types/services.Selector.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "`string` \\| [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1600,7 +1600,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1614,7 +1614,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1641,7 +1641,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1650,7 +1650,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[TotalsContext](../types/services.TotalsContext.mdx)",
+    "type": "[TotalsContext](../../medusa/types/medusa.TotalsContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1664,7 +1664,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1682,7 +1682,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1714,7 +1714,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1749,7 +1749,7 @@ ___
   },
   {
     "name": "select",
-    "type": "`undefined` \\| keyof [Order](services.Order.mdx)[]",
+    "type": "`undefined` \\| keyof [Order](../../entities/classes/entities.Order.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1758,7 +1758,7 @@ ___
   },
   {
     "name": "totalsToSelect",
-    "type": "`undefined` \\| keyof [Order](services.Order.mdx)[]",
+    "type": "`undefined` \\| keyof [Order](../../entities/classes/entities.Order.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1789,7 +1789,7 @@ will throw errors if metadata updates are attempted.
   },
   {
     "name": "update",
-    "type": "[UpdateOrderInput](../types/services.UpdateOrderInput.mdx)",
+    "type": "[UpdateOrderInput](../../medusa/types/medusa.UpdateOrderInput.mdx)",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -1803,7 +1803,7 @@ will throw errors if metadata updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -1823,7 +1823,7 @@ Updates the order's billing address.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "the order to update",
     "optional": false,
     "defaultValue": "",
@@ -1832,7 +1832,7 @@ Updates the order's billing address.
   },
   {
     "name": "address",
-    "type": "[Address](services.Address.mdx)",
+    "type": "[Address](../../entities/classes/entities.Address.mdx)",
     "description": "the value to set the billing address to",
     "optional": false,
     "defaultValue": "",
@@ -1866,7 +1866,7 @@ Updates the order's shipping address.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "the order to update",
     "optional": false,
     "defaultValue": "",
@@ -1875,7 +1875,7 @@ Updates the order's shipping address.
   },
   {
     "name": "address",
-    "type": "[Address](services.Address.mdx)",
+    "type": "[Address](../../entities/classes/entities.Address.mdx)",
     "description": "the value to set the shipping address to",
     "optional": false,
     "defaultValue": "",
@@ -1912,7 +1912,7 @@ quantity from the quantity that was originally purchased.
 <ParameterTypes parameters={[
   {
     "name": "item",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "the line item to check has sufficient fulfillable\n  quantity.",
     "optional": false,
     "defaultValue": "",
@@ -1935,7 +1935,7 @@ quantity from the quantity that was originally purchased.
 <ParameterTypes parameters={[
   {
     "name": "null \\| LineItem",
-    "type": "`null` \\| [LineItem](services.LineItem.mdx)",
+    "type": "`null` \\| [LineItem](../../entities/classes/entities.LineItem.mdx)",
     "optional": true,
     "defaultValue": "",
     "description": "a line item that has the requested fulfillment quantity\n  set.",
@@ -1967,7 +1967,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-19.mdx)) => [OrderService](services.OrderService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-18.mdx)) => [OrderService](services.OrderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2003,7 +2003,7 @@ ___
   },
   {
     "name": "addressRepository_",
-    "type": "Repository&#60;[Address](services.Address.mdx)&#62;",
+    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2057,7 +2057,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2093,7 +2093,7 @@ ___
   },
   {
     "name": "inventoryService_",
-    "type": "[IInventoryService](../interfaces/services.IInventoryService.mdx)",
+    "type": "[IInventoryService](../../medusa/interfaces/medusa.IInventoryService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2129,7 +2129,7 @@ ___
   },
   {
     "name": "orderRepository_",
-    "type": "Repository&#60;[Order](services.Order.mdx)&#62; & ``{ findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  }``",
+    "type": "Repository&#60;[Order](../../entities/classes/entities.Order.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2228,7 +2228,7 @@ ___
   },
   {
     "name": "addShippingMethod",
-    "type": "(`orderId`: `string`, `optionId`: `string`, `data?`: `Record<string, unknown>`, `config`: [CreateShippingMethodDto](../types/services.CreateShippingMethodDto.mdx)) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`, `optionId`: `string`, `data?`: `Record<string, unknown>`, `config`: [CreateShippingMethodDto](../../medusa/types/medusa.CreateShippingMethodDto.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2237,7 +2237,7 @@ ___
   },
   {
     "name": "archive",
-    "type": "(`orderId`: `string`) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2255,7 +2255,7 @@ ___
   },
   {
     "name": "cancel",
-    "type": "(`orderId`: `string`) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2264,7 +2264,7 @@ ___
   },
   {
     "name": "cancelFulfillment",
-    "type": "(`fulfillmentId`: `string`) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`fulfillmentId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2273,7 +2273,7 @@ ___
   },
   {
     "name": "capturePayment",
-    "type": "(`orderId`: `string`) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2282,7 +2282,7 @@ ___
   },
   {
     "name": "completeOrder",
-    "type": "(`orderId`: `string`) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2291,7 +2291,7 @@ ___
   },
   {
     "name": "createFromCart",
-    "type": "(`cartOrId`: `string` \\| [Cart](services.Cart.mdx)) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`cartOrId`: `string` \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2300,7 +2300,7 @@ ___
   },
   {
     "name": "createFulfillment",
-    "type": "(`orderId`: `string`, `itemsToFulfill`: [FulFillmentItemType](../types/services.FulFillmentItemType.mdx)[], `config`: ``{ location_id?: string ; metadata?: Record&#60;string, unknown&#62; ; no_notification?: boolean  }``) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`, `itemsToFulfill`: [FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[], `config`: ``{ location_id?: string ; metadata?: Record&#60;string, unknown&#62; ; no_notification?: boolean  }``) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2309,7 +2309,7 @@ ___
   },
   {
     "name": "createGiftCardsFromLineItem_",
-    "type": "(`order`: [Order](services.Order.mdx), `lineItem`: [LineItem](services.LineItem.mdx), `manager`: `EntityManager`) => Promise&#60;[GiftCard](services.GiftCard.mdx)&#62;[]",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `manager`: `EntityManager`) => Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2318,7 +2318,7 @@ ___
   },
   {
     "name": "createRefund",
-    "type": "(`orderId`: `string`, `refundAmount`: `number`, `reason`: `string`, `note?`: `string`, `config`: ``{ no_notification?: boolean  }``) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`, `refundAmount`: `number`, `reason`: `string`, `note?`: `string`, `config`: ``{ no_notification?: boolean  }``) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2327,7 +2327,7 @@ ___
   },
   {
     "name": "createShipment",
-    "type": "(`orderId`: `string`, `fulfillmentId`: `string`, `trackingLinks?`: [TrackingLink](services.TrackingLink.mdx)[], `config`: ``{ metadata: Record&#60;string, unknown&#62; ; no_notification?: boolean  }``) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`, `fulfillmentId`: `string`, `trackingLinks?`: [TrackingLink](../../entities/classes/entities.TrackingLink.mdx)[], `config`: ``{ metadata: Record&#60;string, unknown&#62; ; no_notification?: boolean  }``) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2336,7 +2336,7 @@ ___
   },
   {
     "name": "decorateTotals",
-    "type": "(`order`: [Order](services.Order.mdx), `totalsFields?`: `string`[]) => Promise&#60;[Order](services.Order.mdx)&#62;(`order`: [Order](services.Order.mdx), `context?`: [TotalsContext](../types/services.TotalsContext.mdx)) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `totalsFields?`: `string`[]) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;(`order`: [Order](../../entities/classes/entities.Order.mdx), `context?`: [TotalsContext](../../medusa/types/medusa.TotalsContext.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2345,7 +2345,7 @@ ___
   },
   {
     "name": "decorateTotalsLegacy",
-    "type": "(`order`: [Order](services.Order.mdx), `totalsFields`: `string`[]) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `totalsFields`: `string`[]) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2354,7 +2354,7 @@ ___
   },
   {
     "name": "getFulfillmentItems",
-    "type": "(`order`: [Order](services.Order.mdx), `items`: [FulFillmentItemType](../types/services.FulFillmentItemType.mdx)[], `transformer`: (`item`: `undefined` \\| [LineItem](services.LineItem.mdx), `quantity`: `number`) => `unknown`) => Promise&#60;[LineItem](services.LineItem.mdx)[]&#62;",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `items`: [FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[], `transformer`: (`item`: `undefined` \\| [LineItem](../../entities/classes/entities.LineItem.mdx), `quantity`: `number`) => `unknown`) => Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2363,7 +2363,7 @@ ___
   },
   {
     "name": "getTotalsRelations",
-    "type": "(`config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => `string`[]",
+    "type": "(`config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => `string`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2372,7 +2372,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[Order](services.Order.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => Promise&#60;[Order](services.Order.mdx)[]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2381,7 +2381,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [QuerySelector](../types/services.QuerySelector.mdx)&#60;[Order](services.Order.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => Promise&#60;[[Order](services.Order.mdx)[], number]&#62;",
+    "type": "(`selector`: [QuerySelector](../../medusa/types/medusa.QuerySelector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[[Order](../../entities/classes/entities.Order.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2390,7 +2390,7 @@ ___
   },
   {
     "name": "registerReturnReceived",
-    "type": "(`orderId`: `string`, `receivedReturn`: [Return](services.Return.mdx), `customRefundAmount?`: `number`) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`, `receivedReturn`: [Return](../../entities/classes/entities.Return.mdx), `customRefundAmount?`: `number`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2399,7 +2399,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`orderId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2408,7 +2408,7 @@ ___
   },
   {
     "name": "retrieveByCartId",
-    "type": "(`cartId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`cartId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2417,7 +2417,7 @@ ___
   },
   {
     "name": "retrieveByCartIdWithTotals",
-    "type": "(`cartId`: `string`, `options`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`cartId`: `string`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2426,7 +2426,7 @@ ___
   },
   {
     "name": "retrieveByExternalId",
-    "type": "(`externalId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`externalId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2435,7 +2435,7 @@ ___
   },
   {
     "name": "retrieveLegacy",
-    "type": "(`orderIdOrSelector`: `string` \\| [Selector](../types/services.Selector.mdx)&#60;[Order](services.Order.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderIdOrSelector`: `string` \\| [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2444,7 +2444,7 @@ ___
   },
   {
     "name": "retrieveWithTotals",
-    "type": "(`orderId`: `string`, `options`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;, `context`: [TotalsContext](../types/services.TotalsContext.mdx)) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;, `context`: [TotalsContext](../../medusa/types/medusa.TotalsContext.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2462,7 +2462,7 @@ ___
   },
   {
     "name": "transformQueryForTotals",
-    "type": "(`config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Order](services.Order.mdx)&#62;) => ``{ relations: undefined \\| string[] ; select: undefined \\| keyof [Order](services.Order.mdx)[] ; totalsToSelect: undefined \\| keyof [Order](services.Order.mdx)[]  }``",
+    "type": "(`config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => ``{ relations: undefined \\| string[] ; select: undefined \\| keyof [Order](../../entities/classes/entities.Order.mdx)[] ; totalsToSelect: undefined \\| keyof [Order](../../entities/classes/entities.Order.mdx)[]  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2471,7 +2471,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`orderId`: `string`, `update`: [UpdateOrderInput](../types/services.UpdateOrderInput.mdx)) => Promise&#60;[Order](services.Order.mdx)&#62;",
+    "type": "(`orderId`: `string`, `update`: [UpdateOrderInput](../../medusa/types/medusa.UpdateOrderInput.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2480,7 +2480,7 @@ ___
   },
   {
     "name": "updateBillingAddress",
-    "type": "(`order`: [Order](services.Order.mdx), `address`: [Address](services.Address.mdx)) => Promise&#60;void&#62;",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `address`: [Address](../../entities/classes/entities.Address.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2489,7 +2489,7 @@ ___
   },
   {
     "name": "updateShippingAddress",
-    "type": "(`order`: [Order](services.Order.mdx), `address`: [Address](services.Address.mdx)) => Promise&#60;void&#62;",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `address`: [Address](../../entities/classes/entities.Address.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2498,7 +2498,7 @@ ___
   },
   {
     "name": "validateFulfillmentLineItem",
-    "type": "(`item`: [LineItem](services.LineItem.mdx), `quantity`: `number`) => `null` \\| [LineItem](services.LineItem.mdx)",
+    "type": "(`item`: [LineItem](../../entities/classes/entities.LineItem.mdx), `quantity`: `number`) => `null` \\| [LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",

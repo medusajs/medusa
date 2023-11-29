@@ -1,16 +1,23 @@
 import { DeclarationReflection, ProjectReflection, SomeType } from "typedoc"
 import { getProjectChild } from "./get-project-child"
 
+const MAX_LEVEL = 3
+
 export function getTypeChildren(
   reflectionType: SomeType,
-  project: ProjectReflection | undefined
+  project: ProjectReflection | undefined,
+  level = 1
 ): DeclarationReflection[] {
   let children: DeclarationReflection[] = []
+
+  if (level > MAX_LEVEL) {
+    return children
+  }
 
   switch (reflectionType.type) {
     case "intersection":
       reflectionType.types.forEach((intersectionType) => {
-        children.push(...getTypeChildren(intersectionType, project))
+        children.push(...getTypeChildren(intersectionType, project, level + 1))
       })
       break
     case "reference":
@@ -19,8 +26,8 @@ export function getTypeChildren(
         reflectionType.reflection && "children" in reflectionType.reflection
           ? reflectionType.reflection
           : project
-          ? getProjectChild(project, reflectionType.name)
-          : undefined
+            ? getProjectChild(project, reflectionType.name)
+            : undefined
 
       if (referencedReflection instanceof DeclarationReflection) {
         if (referencedReflection.children) {
@@ -37,22 +44,29 @@ export function getTypeChildren(
                     if (childItem.type === "literal") {
                       removeChild(childItem.value?.toString(), children)
                     } else {
-                      getTypeChildren(childItem, project).forEach((child) => {
-                        removeChild(child.name, children)
-                      })
+                      getTypeChildren(childItem, project, level + 1).forEach(
+                        (child) => {
+                          removeChild(child.name, children)
+                        }
+                      )
                     }
                   })
               }
             } else {
               const typeArgumentChildren = getTypeChildren(
                 typeArgument,
-                project
+                project,
+                level + 1
               )
               children.push(...typeArgumentChildren)
             }
           })
         } else if (referencedReflection.type) {
-          children = getTypeChildren(referencedReflection.type, project)
+          children = getTypeChildren(
+            referencedReflection.type,
+            project,
+            level + 1
+          )
         }
       }
       break
@@ -62,7 +76,7 @@ export function getTypeChildren(
       ]
       break
     case "array":
-      children = getTypeChildren(reflectionType.elementType, project)
+      children = getTypeChildren(reflectionType.elementType, project, level + 1)
   }
 
   return filterChildren(children)

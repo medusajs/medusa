@@ -88,7 +88,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "optionData",
-    "type": "[ShippingOptionData](../types/fulfillment.ShippingOptionData.mdx)",
+    "type": "[ShippingOptionData](../../medusa/types/medusa.ShippingOptionData.mdx)",
     "description": "The `data` object of the selected shipping option.",
     "optional": false,
     "defaultValue": "",
@@ -97,7 +97,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "data",
-    "type": "[FulfillmentProviderData](../types/fulfillment.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "A `data` object that is different based on the context it's used in:\n\n1. If the price is being calculated for the list of shipping options available for a cart, it's the `data` object of the shipping option.\n2. If the price is being calculated when the shipping method is being created, it's the data returned by the [validateFulfillmentData](fulfillment.FulfillmentService.mdx#validatefulfillmentdata) method used during the shipping method creation.\n3. If the price is being calculated while calculating the cart's totals, it will be the data object of the cart's shipping method.",
     "optional": false,
     "defaultValue": "",
@@ -106,7 +106,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "cart",
-    "type": "[Cart](../classes/fulfillment.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "Either the Cart or the Order object.",
     "optional": false,
     "defaultValue": "",
@@ -114,7 +114,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
     "children": [
       {
         "name": "billing_address",
-        "type": "[Address](../classes/fulfillment.Address.mdx)",
+        "type": "[Address](../../entities/classes/entities.Address.mdx)",
         "description": "The details of the billing address associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -159,7 +159,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "customer",
-        "type": "[Customer](../classes/fulfillment.Customer.mdx)",
+        "type": "[Customer](../../entities/classes/entities.Customer.mdx)",
         "description": "The details of the customer the cart belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -195,7 +195,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "discounts",
-        "type": "[Discount](../classes/fulfillment.Discount.mdx)[]",
+        "type": "[Discount](../../entities/classes/entities.Discount.mdx)[]",
         "description": "An array of details of all discounts applied to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -231,7 +231,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "gift_cards",
-        "type": "[GiftCard](../classes/fulfillment.GiftCard.mdx)[]",
+        "type": "[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]",
         "description": "An array of details of all gift cards applied to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -267,7 +267,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "items",
-        "type": "[LineItem](../classes/fulfillment.LineItem.mdx)[]",
+        "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
         "description": "The line items added to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -294,7 +294,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "payment",
-        "type": "[Payment](../classes/fulfillment.Payment.mdx)",
+        "type": "[Payment](../../entities/classes/entities.Payment.mdx)",
         "description": "The details of the payment associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -321,7 +321,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "payment_session",
-        "type": "`null` \\| [PaymentSession](../classes/fulfillment.PaymentSession.mdx)",
+        "type": "`null` \\| [PaymentSession](../../entities/classes/entities.PaymentSession.mdx)",
         "description": "The details of the selected payment session in the cart.",
         "optional": false,
         "defaultValue": "",
@@ -330,7 +330,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "payment_sessions",
-        "type": "[PaymentSession](../classes/fulfillment.PaymentSession.mdx)[]",
+        "type": "[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)[]",
         "description": "The details of all payment sessions created on the cart.",
         "optional": false,
         "defaultValue": "",
@@ -366,7 +366,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "region",
-        "type": "[Region](../classes/fulfillment.Region.mdx)",
+        "type": "[Region](../../entities/classes/entities.Region.mdx)",
         "description": "The details of the region associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -384,7 +384,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "sales_channel",
-        "type": "[SalesChannel](../classes/fulfillment.SalesChannel.mdx)",
+        "type": "[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)",
         "description": "The details of the sales channel associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -402,7 +402,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "shipping_address",
-        "type": "`null` \\| [Address](../classes/fulfillment.Address.mdx)",
+        "type": "`null` \\| [Address](../../entities/classes/entities.Address.mdx)",
         "description": "The details of the shipping address associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -420,7 +420,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "shipping_methods",
-        "type": "[ShippingMethod](../classes/fulfillment.ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods added to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -474,7 +474,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "type",
-        "type": "[CartType](../enums/fulfillment.CartType.mdx)",
+        "type": "[CartType](../../entities/enums/entities.CartType.mdx)",
         "description": "The cart's type.",
         "optional": false,
         "defaultValue": "default",
@@ -542,7 +542,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[ShippingOptionData](../types/fulfillment.ShippingOptionData.mdx)",
+    "type": "[ShippingOptionData](../../medusa/types/medusa.ShippingOptionData.mdx)",
     "description": "The `data` object of the shipping option being created. You can use this data to determine whether the shipping option should be calculated or not.\nThis is useful if the fulfillment provider you are integrating has both flat rate and dynamically priced fulfillment options.",
     "optional": false,
     "defaultValue": "",
@@ -601,7 +601,7 @@ class MyFulfillmentService extends FulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "fulfillmentData",
-    "type": "[FulfillmentProviderData](../types/fulfillment.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "The `data` attribute of the fulfillment being canceled",
     "optional": false,
     "defaultValue": "",
@@ -665,7 +665,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[ShippingMethodData](../types/fulfillment.ShippingMethodData.mdx)",
+    "type": "[ShippingMethodData](../../medusa/types/medusa.ShippingMethodData.mdx)",
     "description": "The `data` object of the shipping method associated with the resource, such as the order.\nYou can use it to access the data specific to the shipping option. This is based on your implementation of previous methods.",
     "optional": false,
     "defaultValue": "",
@@ -674,7 +674,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "items",
-    "type": "[LineItem](../classes/fulfillment.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "The line items in the order to be fulfilled. The admin can choose all or some of the items to fulfill.",
     "optional": false,
     "defaultValue": "",
@@ -682,7 +682,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
     "children": [
       {
         "name": "adjustments",
-        "type": "[LineItemAdjustment](../classes/fulfillment.LineItemAdjustment.mdx)[]",
+        "type": "[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]",
         "description": "The details of the item's adjustments, which are available when a discount is applied on the item.",
         "optional": false,
         "defaultValue": "",
@@ -700,7 +700,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "cart",
-        "type": "[Cart](../classes/fulfillment.Cart.mdx)",
+        "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
         "description": "The details of the cart that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -718,7 +718,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "claim_order",
-        "type": "[ClaimOrder](../classes/fulfillment.ClaimOrder.mdx)",
+        "type": "[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)",
         "description": "The details of the claim that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -836,7 +836,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "order",
-        "type": "[Order](../classes/fulfillment.Order.mdx)",
+        "type": "[Order](../../entities/classes/entities.Order.mdx)",
         "description": "The details of the order that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -845,7 +845,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "order_edit",
-        "type": "`null` \\| [OrderEdit](../classes/fulfillment.OrderEdit.mdx)",
+        "type": "`null` \\| [OrderEdit](../../entities/classes/entities.OrderEdit.mdx)",
         "description": "The details of the order edit.",
         "optional": true,
         "defaultValue": "",
@@ -971,7 +971,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "swap",
-        "type": "[Swap](../classes/fulfillment.Swap.mdx)",
+        "type": "[Swap](../../entities/classes/entities.Swap.mdx)",
         "description": "The details of the swap that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -989,7 +989,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "tax_lines",
-        "type": "[LineItemTaxLine](../classes/fulfillment.LineItemTaxLine.mdx)[]",
+        "type": "[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]",
         "description": "The details of the item's tax lines.",
         "optional": false,
         "defaultValue": "",
@@ -1052,7 +1052,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "variant",
-        "type": "[ProductVariant](../classes/fulfillment.ProductVariant.mdx)",
+        "type": "[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)",
         "description": "The details of the product variant that this item was created from.",
         "optional": false,
         "defaultValue": "",
@@ -1072,7 +1072,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "order",
-    "type": "[Order](../classes/fulfillment.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "The details of the created resource, which is either an order, a claim, or a swap:\n- If the resource the fulfillment is being created for is a claim, the `is_claim` property in the object will be `true`.\n- If the resource the fulfillment is being created for is a swap, the `is_swap` property in the object will be `true`.\n- Otherwise, the resource is an order.",
     "optional": false,
     "defaultValue": "",
@@ -1080,7 +1080,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
     "children": [
       {
         "name": "billing_address",
-        "type": "[Address](../classes/fulfillment.Address.mdx)",
+        "type": "[Address](../../entities/classes/entities.Address.mdx)",
         "description": "The details of the billing address associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -1107,7 +1107,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "cart",
-        "type": "[Cart](../classes/fulfillment.Cart.mdx)",
+        "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
         "description": "The details of the cart associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -1125,7 +1125,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "claims",
-        "type": "[ClaimOrder](../classes/fulfillment.ClaimOrder.mdx)[]",
+        "type": "[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[]",
         "description": "The details of the claims created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -1143,7 +1143,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "currency",
-        "type": "[Currency](../classes/fulfillment.Currency.mdx)",
+        "type": "[Currency](../../entities/classes/entities.Currency.mdx)",
         "description": "The details of the currency used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -1161,7 +1161,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "customer",
-        "type": "[Customer](../classes/fulfillment.Customer.mdx)",
+        "type": "[Customer](../../entities/classes/entities.Customer.mdx)",
         "description": "The details of the customer associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -1188,7 +1188,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "discounts",
-        "type": "[Discount](../classes/fulfillment.Discount.mdx)[]",
+        "type": "[Discount](../../entities/classes/entities.Discount.mdx)[]",
         "description": "The details of the discounts applied on the order.",
         "optional": false,
         "defaultValue": "",
@@ -1206,7 +1206,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "draft_order",
-        "type": "[DraftOrder](../classes/fulfillment.DraftOrder.mdx)",
+        "type": "[DraftOrder](../../entities/classes/entities.DraftOrder.mdx)",
         "description": "The details of the draft order this order was created from.",
         "optional": false,
         "defaultValue": "",
@@ -1224,7 +1224,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "edits",
-        "type": "[OrderEdit](../classes/fulfillment.OrderEdit.mdx)[]",
+        "type": "[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)[]",
         "description": "The details of the order edits done on the order.",
         "optional": false,
         "defaultValue": "",
@@ -1251,7 +1251,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "fulfillment_status",
-        "type": "[FulfillmentStatus](../enums/fulfillment.FulfillmentStatus.mdx)",
+        "type": "[FulfillmentStatus](../../entities/enums/entities.FulfillmentStatus.mdx)",
         "description": "The order's fulfillment status",
         "optional": false,
         "defaultValue": "not_fulfilled",
@@ -1260,7 +1260,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "fulfillments",
-        "type": "[Fulfillment](../classes/fulfillment.Fulfillment.mdx)[]",
+        "type": "[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)[]",
         "description": "The details of the fulfillments created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -1287,7 +1287,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "gift_card_transactions",
-        "type": "[GiftCardTransaction](../classes/fulfillment.GiftCardTransaction.mdx)[]",
+        "type": "[GiftCardTransaction](../../entities/classes/entities.GiftCardTransaction.mdx)[]",
         "description": "The gift card transactions made in the order.",
         "optional": false,
         "defaultValue": "",
@@ -1296,7 +1296,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "gift_cards",
-        "type": "[GiftCard](../classes/fulfillment.GiftCard.mdx)[]",
+        "type": "[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]",
         "description": "The details of the gift card used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -1332,7 +1332,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "items",
-        "type": "[LineItem](../classes/fulfillment.LineItem.mdx)[]",
+        "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
         "description": "The details of the line items that belong to the order.",
         "optional": false,
         "defaultValue": "",
@@ -1377,7 +1377,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "payment_status",
-        "type": "[PaymentStatus](../enums/fulfillment.PaymentStatus.mdx)",
+        "type": "[PaymentStatus](../../entities/enums/entities.PaymentStatus.mdx)",
         "description": "The order's payment status",
         "optional": false,
         "defaultValue": "not_paid",
@@ -1386,7 +1386,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "payments",
-        "type": "[Payment](../classes/fulfillment.Payment.mdx)[]",
+        "type": "[Payment](../../entities/classes/entities.Payment.mdx)[]",
         "description": "The details of the payments used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -1422,7 +1422,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "refunds",
-        "type": "[Refund](../classes/fulfillment.Refund.mdx)[]",
+        "type": "[Refund](../../entities/classes/entities.Refund.mdx)[]",
         "description": "The details of the refunds created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -1431,7 +1431,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "region",
-        "type": "[Region](../classes/fulfillment.Region.mdx)",
+        "type": "[Region](../../entities/classes/entities.Region.mdx)",
         "description": "The details of the region this order was created in.",
         "optional": false,
         "defaultValue": "",
@@ -1449,7 +1449,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "returnable_items",
-        "type": "[LineItem](../classes/fulfillment.LineItem.mdx)[]",
+        "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
         "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
         "optional": true,
         "defaultValue": "",
@@ -1458,7 +1458,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "returns",
-        "type": "[Return](../classes/fulfillment.Return.mdx)[]",
+        "type": "[Return](../../entities/classes/entities.Return.mdx)[]",
         "description": "The details of the returns created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -1467,7 +1467,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "sales_channel",
-        "type": "[SalesChannel](../classes/fulfillment.SalesChannel.mdx)",
+        "type": "[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)",
         "description": "The details of the sales channel this order belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -1485,7 +1485,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "shipping_address",
-        "type": "[Address](../classes/fulfillment.Address.mdx)",
+        "type": "[Address](../../entities/classes/entities.Address.mdx)",
         "description": "The details of the shipping address associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -1503,7 +1503,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "shipping_methods",
-        "type": "[ShippingMethod](../classes/fulfillment.ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -1530,7 +1530,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "status",
-        "type": "[OrderStatus](../enums/fulfillment.OrderStatus.mdx)",
+        "type": "[OrderStatus](../../entities/enums/entities.OrderStatus.mdx)",
         "description": "The order's status",
         "optional": false,
         "defaultValue": "pending",
@@ -1548,7 +1548,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "swaps",
-        "type": "[Swap](../classes/fulfillment.Swap.mdx)[]",
+        "type": "[Swap](../../entities/classes/entities.Swap.mdx)[]",
         "description": "The details of the swaps created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -1595,7 +1595,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "fulfillment",
-    "type": "[Fulfillment](../classes/fulfillment.Fulfillment.mdx)",
+    "type": "[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)",
     "description": "The fulfillment being created.",
     "optional": false,
     "defaultValue": "",
@@ -1612,7 +1612,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "claim_order",
-        "type": "[ClaimOrder](../classes/fulfillment.ClaimOrder.mdx)",
+        "type": "[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)",
         "description": "The details of the claim that the fulfillment may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -1666,7 +1666,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "items",
-        "type": "[FulfillmentItem](../classes/fulfillment.FulfillmentItem.mdx)[]",
+        "type": "[FulfillmentItem](../../entities/classes/entities.FulfillmentItem.mdx)[]",
         "description": "The Fulfillment Items in the Fulfillment. These hold information about how many of each Line Item has been fulfilled.",
         "optional": false,
         "defaultValue": "",
@@ -1702,7 +1702,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "order",
-        "type": "[Order](../classes/fulfillment.Order.mdx)",
+        "type": "[Order](../../entities/classes/entities.Order.mdx)",
         "description": "The details of the order that the fulfillment may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -1720,7 +1720,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "provider",
-        "type": "[FulfillmentProvider](../classes/fulfillment.FulfillmentProvider.mdx)",
+        "type": "[FulfillmentProvider](../../entities/classes/entities.FulfillmentProvider.mdx)",
         "description": "The details of the fulfillment provider responsible for handling the fulfillment.",
         "optional": false,
         "defaultValue": "",
@@ -1747,7 +1747,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "swap",
-        "type": "[Swap](../classes/fulfillment.Swap.mdx)",
+        "type": "[Swap](../../entities/classes/entities.Swap.mdx)",
         "description": "The details of the swap that the fulfillment may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -1765,7 +1765,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "tracking_links",
-        "type": "[TrackingLink](../classes/fulfillment.TrackingLink.mdx)[]",
+        "type": "[TrackingLink](../../entities/classes/entities.TrackingLink.mdx)[]",
         "description": "The Tracking Links that can be used to track the status of the Fulfillment. These will usually be provided by the Fulfillment Provider.",
         "optional": false,
         "defaultValue": "",
@@ -1799,7 +1799,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[FulfillmentProviderData](../types/fulfillment.FulfillmentProviderData.mdx)&#62;",
+    "type": "Promise&#60;[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The data that will be stored in the `data` attribute of the created fulfillment.",
@@ -1847,7 +1847,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "returnOrder",
-    "type": "[CreateReturnType](../types/fulfillment.CreateReturnType.mdx)",
+    "type": "[CreateReturnType](../../medusa/types/medusa.CreateReturnType.mdx)",
     "description": "the return that the fulfillment is being created for.",
     "optional": false,
     "defaultValue": "",
@@ -1906,7 +1906,7 @@ class MyFulfillmentService extends FulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[FulfillmentProviderData](../types/fulfillment.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "The `data` attribute of the fulfillment that you're retrieving the documents for.",
     "optional": false,
     "defaultValue": "",
@@ -2134,7 +2134,7 @@ class MyFulfillmentService extends FulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "fulfillmentData",
-    "type": "[FulfillmentProviderData](../types/fulfillment.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "The `data` attribute of the order's fulfillment.",
     "optional": false,
     "defaultValue": "",
@@ -2214,7 +2214,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "optionData",
-    "type": "[ShippingOptionData](../types/fulfillment.ShippingOptionData.mdx)",
+    "type": "[ShippingOptionData](../../medusa/types/medusa.ShippingOptionData.mdx)",
     "description": "The data object of the shipping option selected when creating the shipping method.",
     "optional": false,
     "defaultValue": "",
@@ -2223,7 +2223,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "data",
-    "type": "[FulfillmentProviderData](../types/fulfillment.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "The `data` object passed in the body of the request.",
     "optional": false,
     "defaultValue": "",
@@ -2232,7 +2232,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "cart",
-    "type": "[Cart](../classes/fulfillment.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "The customer's cart details. It may be empty if the shipping method isn't associated with a cart, such as when it's associated with a claim.",
     "optional": false,
     "defaultValue": "",
@@ -2240,7 +2240,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
     "children": [
       {
         "name": "billing_address",
-        "type": "[Address](../classes/fulfillment.Address.mdx)",
+        "type": "[Address](../../entities/classes/entities.Address.mdx)",
         "description": "The details of the billing address associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2285,7 +2285,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "customer",
-        "type": "[Customer](../classes/fulfillment.Customer.mdx)",
+        "type": "[Customer](../../entities/classes/entities.Customer.mdx)",
         "description": "The details of the customer the cart belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -2321,7 +2321,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "discounts",
-        "type": "[Discount](../classes/fulfillment.Discount.mdx)[]",
+        "type": "[Discount](../../entities/classes/entities.Discount.mdx)[]",
         "description": "An array of details of all discounts applied to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2357,7 +2357,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "gift_cards",
-        "type": "[GiftCard](../classes/fulfillment.GiftCard.mdx)[]",
+        "type": "[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]",
         "description": "An array of details of all gift cards applied to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2393,7 +2393,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "items",
-        "type": "[LineItem](../classes/fulfillment.LineItem.mdx)[]",
+        "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
         "description": "The line items added to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2420,7 +2420,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "payment",
-        "type": "[Payment](../classes/fulfillment.Payment.mdx)",
+        "type": "[Payment](../../entities/classes/entities.Payment.mdx)",
         "description": "The details of the payment associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2447,7 +2447,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "payment_session",
-        "type": "`null` \\| [PaymentSession](../classes/fulfillment.PaymentSession.mdx)",
+        "type": "`null` \\| [PaymentSession](../../entities/classes/entities.PaymentSession.mdx)",
         "description": "The details of the selected payment session in the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2456,7 +2456,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "payment_sessions",
-        "type": "[PaymentSession](../classes/fulfillment.PaymentSession.mdx)[]",
+        "type": "[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)[]",
         "description": "The details of all payment sessions created on the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2492,7 +2492,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "region",
-        "type": "[Region](../classes/fulfillment.Region.mdx)",
+        "type": "[Region](../../entities/classes/entities.Region.mdx)",
         "description": "The details of the region associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2510,7 +2510,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "sales_channel",
-        "type": "[SalesChannel](../classes/fulfillment.SalesChannel.mdx)",
+        "type": "[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)",
         "description": "The details of the sales channel associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2528,7 +2528,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "shipping_address",
-        "type": "`null` \\| [Address](../classes/fulfillment.Address.mdx)",
+        "type": "`null` \\| [Address](../../entities/classes/entities.Address.mdx)",
         "description": "The details of the shipping address associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2546,7 +2546,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "shipping_methods",
-        "type": "[ShippingMethod](../classes/fulfillment.ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods added to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -2600,7 +2600,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
       },
       {
         "name": "type",
-        "type": "[CartType](../enums/fulfillment.CartType.mdx)",
+        "type": "[CartType](../../entities/enums/entities.CartType.mdx)",
         "description": "The cart's type.",
         "optional": false,
         "defaultValue": "default",
@@ -2670,7 +2670,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[ShippingOptionData](../types/fulfillment.ShippingOptionData.mdx)",
+    "type": "[ShippingOptionData](../../medusa/types/medusa.ShippingOptionData.mdx)",
     "description": "the data object that is sent in the body of the request, basically, the data object of the shipping option. You can use this data to validate the shipping option before it is saved.",
     "optional": false,
     "defaultValue": "",

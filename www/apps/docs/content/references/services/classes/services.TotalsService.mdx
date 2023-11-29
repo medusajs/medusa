@@ -17,7 +17,7 @@ A service that calculates total and subtotals for orders, carts etc..
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[TotalsServiceProps](../types/services.TotalsServiceProps.mdx)",
+    "type": "[TotalsServiceProps](../../medusa/types/medusa.TotalsServiceProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -60,7 +60,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -87,7 +87,7 @@ ___
   },
   {
     "name": "taxCalculationStrategy_",
-    "type": "[ITaxCalculationStrategy](../interfaces/services.ITaxCalculationStrategy.mdx)",
+    "type": "[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -214,7 +214,7 @@ Calculates either fixed or percentage discount of a variant
 <ParameterTypes parameters={[
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "id of line item",
     "optional": false,
     "defaultValue": "",
@@ -250,7 +250,7 @@ Calculates either fixed or percentage discount of a variant
   },
   {
     "name": "discountType",
-    "type": "[DiscountRuleType](../enums/services.DiscountRuleType.mdx)",
+    "type": "[DiscountRuleType](../../entities/enums/entities.DiscountRuleType.mdx)",
     "description": "the type of discount (fixed or percentage)",
     "optional": false,
     "defaultValue": "",
@@ -292,7 +292,7 @@ alongside the variant on which the discount was applied.
 <ParameterTypes parameters={[
   {
     "name": "discount",
-    "type": "[Discount](services.Discount.mdx)",
+    "type": "[Discount](../../entities/classes/entities.Discount.mdx)",
     "description": "the discount to which we do the calculation",
     "optional": false,
     "defaultValue": "",
@@ -301,7 +301,7 @@ alongside the variant on which the discount was applied.
   },
   {
     "name": "cart",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart to calculate discounts for",
     "optional": false,
     "defaultValue": "",
@@ -315,7 +315,7 @@ alongside the variant on which the discount was applied.
 <ParameterTypes parameters={[
   {
     "name": "LineDiscount[]",
-    "type": "[LineDiscount](../types/services.LineDiscount.mdx)[]",
+    "type": "[LineDiscount](../../medusa/types/medusa.LineDiscount.mdx)[]",
     "optional": false,
     "defaultValue": "",
     "description": "array of triples of lineitem, variant and applied discount",
@@ -346,7 +346,7 @@ applies to a specific line item.
   },
   {
     "name": "orderOrCart.claims",
-    "type": "[ClaimOrder](services.ClaimOrder.mdx)[]",
+    "type": "[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -355,7 +355,7 @@ applies to a specific line item.
   },
   {
     "name": "orderOrCart.discounts",
-    "type": "[Discount](services.Discount.mdx)[]",
+    "type": "[Discount](../../entities/classes/entities.Discount.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -364,7 +364,7 @@ applies to a specific line item.
   },
   {
     "name": "orderOrCart.items",
-    "type": "[LineItem](services.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -373,7 +373,7 @@ applies to a specific line item.
   },
   {
     "name": "orderOrCart.swaps",
-    "type": "[Swap](services.Swap.mdx)[]",
+    "type": "[Swap](../../entities/classes/entities.Swap.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -382,7 +382,7 @@ applies to a specific line item.
   },
   {
     "name": "options",
-    "type": "[AllocationMapOptions](../types/services.AllocationMapOptions.mdx)",
+    "type": "[AllocationMapOptions](../../medusa/types/medusa.AllocationMapOptions.mdx)",
     "description": "controls what should be included in allocation map",
     "optional": false,
     "defaultValue": "{}",
@@ -396,7 +396,7 @@ applies to a specific line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineAllocationsMap](../types/services.LineAllocationsMap.mdx)&#62;",
+    "type": "Promise&#60;[LineAllocationsMap](../../medusa/types/medusa.LineAllocationsMap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the allocation map for the line items in the cart or order.",
@@ -416,7 +416,7 @@ Prepares the calculation context for a tax total calculation.
 <ParameterTypes parameters={[
   {
     "name": "calculationContextData",
-    "type": "[CalculationContextData](../types/services.CalculationContextData.mdx)",
+    "type": "[CalculationContextData](../../medusa/types/medusa.CalculationContextData.mdx)",
     "description": "the calculationContextData to get the calculation context for",
     "optional": false,
     "defaultValue": "",
@@ -425,7 +425,7 @@ Prepares the calculation context for a tax total calculation.
   },
   {
     "name": "options",
-    "type": "[CalculationContextOptions](../types/services.CalculationContextOptions.mdx)",
+    "type": "[CalculationContextOptions](../../medusa/types/medusa.CalculationContextOptions.mdx)",
     "description": "options to gather context by",
     "optional": false,
     "defaultValue": "{}",
@@ -439,7 +439,7 @@ Prepares the calculation context for a tax total calculation.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)&#62;",
+    "type": "Promise&#60;[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax calculation context",
@@ -460,7 +460,7 @@ discount types. If discounts aren't present or invalid returns 0.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart or order to calculate discounts for",
     "optional": false,
     "defaultValue": "",
@@ -494,7 +494,7 @@ Gets the gift card amount on a cart or order.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart or order to get gift card amount for",
     "optional": false,
     "defaultValue": "",
@@ -526,7 +526,7 @@ Gets the gift card amount on a cart or order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
+    "type": "Promise&#60;object&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the gift card amount applied to the cart or order",
@@ -547,7 +547,7 @@ cards are taxable this amount should exclude taxes.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart or order to get gift card amount for",
     "optional": false,
     "defaultValue": "",
@@ -590,7 +590,7 @@ Returns the discount amount allocated to the line items of an order.
   },
   {
     "name": "cartOrOrder.claims",
-    "type": "[ClaimOrder](services.ClaimOrder.mdx)[]",
+    "type": "[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -599,7 +599,7 @@ Returns the discount amount allocated to the line items of an order.
   },
   {
     "name": "cartOrOrder.items",
-    "type": "[LineItem](services.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -608,7 +608,7 @@ Returns the discount amount allocated to the line items of an order.
   },
   {
     "name": "cartOrOrder.swaps",
-    "type": "[Swap](services.Swap.mdx)[]",
+    "type": "[Swap](../../entities/classes/entities.Swap.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -617,7 +617,7 @@ Returns the discount amount allocated to the line items of an order.
   },
   {
     "name": "discount",
-    "type": "[Discount](services.Discount.mdx)",
+    "type": "[Discount](../../entities/classes/entities.Discount.mdx)",
     "description": "the discount to use as context for the calculation",
     "optional": true,
     "defaultValue": "",
@@ -631,7 +631,7 @@ Returns the discount amount allocated to the line items of an order.
 <ParameterTypes parameters={[
   {
     "name": "LineDiscountAmount[]",
-    "type": "[LineDiscountAmount](../types/services.LineDiscountAmount.mdx)[]",
+    "type": "[LineDiscountAmount](../../medusa/types/medusa.LineDiscountAmount.mdx)[]",
     "optional": false,
     "defaultValue": "",
     "description": "the allocations that the discount has on the items in the cart or\n  order",
@@ -649,7 +649,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -681,8 +681,8 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
-    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -690,8 +690,8 @@ ___
   },
   {
     "name": "discount",
-    "type": "[Discount](services.Discount.mdx)",
-    "description": "A discount can be applied to a cart for promotional purposes.",
+    "type": "[Discount](../../entities/classes/entities.Discount.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -724,7 +724,7 @@ The amount that can be refunded for a given line item.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "order to use as context for the calculation",
     "optional": false,
     "defaultValue": "",
@@ -733,7 +733,7 @@ The amount that can be refunded for a given line item.
   },
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "the line item to calculate the refund amount for.",
     "optional": false,
     "defaultValue": "",
@@ -768,7 +768,7 @@ taxes into account. This can be controlled through the options.
 <ParameterTypes parameters={[
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "the line item to calculate a total for",
     "optional": false,
     "defaultValue": "",
@@ -777,7 +777,7 @@ taxes into account. This can be controlled through the options.
   },
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart or order to use as context for the calculation",
     "optional": false,
     "defaultValue": "",
@@ -786,7 +786,7 @@ taxes into account. This can be controlled through the options.
   },
   {
     "name": "options",
-    "type": "[GetLineItemTotalOptions](../types/services.GetLineItemTotalOptions.mdx)",
+    "type": "[GetLineItemTotalOptions](../../medusa/types/medusa.GetLineItemTotalOptions.mdx)",
     "description": "the options to use for the calculation",
     "optional": false,
     "defaultValue": "{}",
@@ -822,7 +822,7 @@ applied to a line item and the amount of tax applied to a line item.
 <ParameterTypes parameters={[
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "the line item to calculate totals for",
     "optional": false,
     "defaultValue": "",
@@ -831,7 +831,7 @@ applied to a line item and the amount of tax applied to a line item.
   },
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart or order to use as context for the calculation",
     "optional": false,
     "defaultValue": "",
@@ -840,7 +840,7 @@ applied to a line item and the amount of tax applied to a line item.
   },
   {
     "name": "options",
-    "type": "[LineItemTotalsOptions](../types/services.LineItemTotalsOptions.mdx)",
+    "type": "[LineItemTotalsOptions](../../medusa/types/medusa.LineItemTotalsOptions.mdx)",
     "description": "the options to evaluate the line item totals for",
     "optional": false,
     "defaultValue": "{}",
@@ -854,7 +854,7 @@ applied to a line item and the amount of tax applied to a line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemTotals](../types/services.LineItemTotals-1.mdx)&#62;",
+    "type": "Promise&#60;[LineItemTotals](../../medusa/types/medusa.LineItemTotals-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the breakdown of the line item totals",
@@ -874,7 +874,7 @@ Gets the total payments made on an order
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "the order to calculate paid amount for",
     "optional": false,
     "defaultValue": "",
@@ -910,7 +910,7 @@ apply the discount again before refunding them.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "cart or order to calculate subtotal for",
     "optional": false,
     "defaultValue": "",
@@ -919,7 +919,7 @@ apply the discount again before refunding them.
   },
   {
     "name": "lineItems",
-    "type": "[LineItem](services.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "the line items to calculate refund total for",
     "optional": false,
     "defaultValue": "",
@@ -953,7 +953,7 @@ Gets the total refund amount for an order.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "the order to get total refund amount for.",
     "optional": false,
     "defaultValue": "",
@@ -988,7 +988,7 @@ already provided.
 <ParameterTypes parameters={[
   {
     "name": "shippingMethod",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx)",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)",
     "description": "the shipping method to get totals breakdown for.",
     "optional": false,
     "defaultValue": "",
@@ -997,7 +997,7 @@ already provided.
   },
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart or order to use as context for the breakdown",
     "optional": false,
     "defaultValue": "",
@@ -1006,7 +1006,7 @@ already provided.
   },
   {
     "name": "opts",
-    "type": "[GetShippingMethodTotalsOptions](../types/services.GetShippingMethodTotalsOptions.mdx)",
+    "type": "[GetShippingMethodTotalsOptions](../../medusa/types/medusa.GetShippingMethodTotalsOptions.mdx)",
     "description": "options for what should be included",
     "optional": false,
     "defaultValue": "{}",
@@ -1020,7 +1020,7 @@ already provided.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingMethodTotals](../types/services.ShippingMethodTotals-1.mdx)&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../../medusa/types/medusa.ShippingMethodTotals-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that breaks down the totals for the shipping method",
@@ -1040,7 +1040,7 @@ Calculates shipping total
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "cart or order to calculate subtotal for",
     "optional": false,
     "defaultValue": "",
@@ -1074,7 +1074,7 @@ Calculates subtotal of a given cart or order.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "cart or order to calculate subtotal for",
     "optional": false,
     "defaultValue": "",
@@ -1083,7 +1083,7 @@ Calculates subtotal of a given cart or order.
   },
   {
     "name": "opts",
-    "type": "[SubtotalOptions](../types/services.SubtotalOptions.mdx)",
+    "type": "[SubtotalOptions](../../medusa/types/medusa.SubtotalOptions.mdx)",
     "description": "options",
     "optional": false,
     "defaultValue": "{}",
@@ -1118,7 +1118,7 @@ difference.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[Order](services.Order.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx)",
     "description": "the order to calculate swap total for",
     "optional": false,
     "defaultValue": "",
@@ -1153,7 +1153,7 @@ Currently based on the Danish tax system
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "cart or order to calculate tax total for",
     "optional": false,
     "defaultValue": "",
@@ -1196,7 +1196,7 @@ Calculates total of a given cart or order.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)",
+    "type": "[Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "object to calculate total for",
     "optional": false,
     "defaultValue": "",
@@ -1205,7 +1205,7 @@ Calculates total of a given cart or order.
   },
   {
     "name": "options",
-    "type": "[GetTotalsOptions](../types/services.GetTotalsOptions.mdx)",
+    "type": "[GetTotalsOptions](../../medusa/types/medusa.GetTotalsOptions.mdx)",
     "description": "options to calculate by",
     "optional": false,
     "defaultValue": "{}",
@@ -1271,7 +1271,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1317,7 +1317,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [TotalsServiceProps](../types/services.TotalsServiceProps.mdx)) => [TotalsService](services.TotalsService.mdx)",
+    "type": "(`__namedParameters`: [TotalsServiceProps](../../medusa/types/medusa.TotalsServiceProps.mdx)) => [TotalsService](services.TotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1353,7 +1353,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1380,7 +1380,7 @@ ___
   },
   {
     "name": "taxCalculationStrategy_",
-    "type": "[ITaxCalculationStrategy](../interfaces/services.ITaxCalculationStrategy.mdx)",
+    "type": "[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1425,7 +1425,7 @@ ___
   },
   {
     "name": "calculateDiscount_",
-    "type": "(`lineItem`: [LineItem](services.LineItem.mdx), `variant`: `string`, `variantPrice`: `number`, `value`: `number`, `discountType`: [DiscountRuleType](../enums/services.DiscountRuleType.mdx)) => [LineDiscount](../types/services.LineDiscount.mdx)",
+    "type": "(`lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `variant`: `string`, `variantPrice`: `number`, `value`: `number`, `discountType`: [DiscountRuleType](../../entities/enums/entities.DiscountRuleType.mdx)) => [LineDiscount](../../medusa/types/medusa.LineDiscount.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1434,7 +1434,7 @@ ___
   },
   {
     "name": "getAllocationItemDiscounts",
-    "type": "(`discount`: [Discount](services.Discount.mdx), `cart`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)) => [LineDiscount](../types/services.LineDiscount.mdx)[]",
+    "type": "(`discount`: [Discount](../../entities/classes/entities.Discount.mdx), `cart`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)) => [LineDiscount](../../medusa/types/medusa.LineDiscount.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1443,7 +1443,7 @@ ___
   },
   {
     "name": "getAllocationMap",
-    "type": "(`orderOrCart`: ``{ claims?: [ClaimOrder](services.ClaimOrder.mdx)[] ; discounts?: [Discount](services.Discount.mdx)[] ; items: [LineItem](services.LineItem.mdx)[] ; swaps?: [Swap](services.Swap.mdx)[]  }``, `options`: [AllocationMapOptions](../types/services.AllocationMapOptions.mdx)) => Promise&#60;[LineAllocationsMap](../types/services.LineAllocationsMap.mdx)&#62;",
+    "type": "(`orderOrCart`: ``{ claims?: [ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[] ; discounts?: [Discount](../../entities/classes/entities.Discount.mdx)[] ; items: [LineItem](../../entities/classes/entities.LineItem.mdx)[] ; swaps?: [Swap](../../entities/classes/entities.Swap.mdx)[]  }``, `options`: [AllocationMapOptions](../../medusa/types/medusa.AllocationMapOptions.mdx)) => Promise&#60;[LineAllocationsMap](../../medusa/types/medusa.LineAllocationsMap.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1452,7 +1452,7 @@ ___
   },
   {
     "name": "getCalculationContext",
-    "type": "(`calculationContextData`: [CalculationContextData](../types/services.CalculationContextData.mdx), `options`: [CalculationContextOptions](../types/services.CalculationContextOptions.mdx)) => Promise&#60;[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)&#62;",
+    "type": "(`calculationContextData`: [CalculationContextData](../../medusa/types/medusa.CalculationContextData.mdx), `options`: [CalculationContextOptions](../../medusa/types/medusa.CalculationContextOptions.mdx)) => Promise&#60;[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1461,7 +1461,7 @@ ___
   },
   {
     "name": "getDiscountTotal",
-    "type": "(`cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)) => Promise&#60;number&#62;",
+    "type": "(`cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1470,7 +1470,7 @@ ___
   },
   {
     "name": "getGiftCardTotal",
-    "type": "(`cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx), `opts`: ``{ gift_cardable?: number  }``) => Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
+    "type": "(`cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx), `opts`: ``{ gift_cardable?: number  }``) => Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1479,7 +1479,7 @@ ___
   },
   {
     "name": "getGiftCardableAmount",
-    "type": "(`cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)) => Promise&#60;number&#62;",
+    "type": "(`cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1488,7 +1488,7 @@ ___
   },
   {
     "name": "getLineDiscounts",
-    "type": "(`cartOrOrder`: ``{ claims?: [ClaimOrder](services.ClaimOrder.mdx)[] ; items: [LineItem](services.LineItem.mdx)[] ; swaps?: [Swap](services.Swap.mdx)[]  }``, `discount?`: [Discount](services.Discount.mdx)) => [LineDiscountAmount](../types/services.LineDiscountAmount.mdx)[]",
+    "type": "(`cartOrOrder`: ``{ claims?: [ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[] ; items: [LineItem](../../entities/classes/entities.LineItem.mdx)[] ; swaps?: [Swap](../../entities/classes/entities.Swap.mdx)[]  }``, `discount?`: [Discount](../../entities/classes/entities.Discount.mdx)) => [LineDiscountAmount](../../medusa/types/medusa.LineDiscountAmount.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1497,7 +1497,7 @@ ___
   },
   {
     "name": "getLineItemAdjustmentsTotal",
-    "type": "(`cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)) => `number`",
+    "type": "(`cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1506,7 +1506,7 @@ ___
   },
   {
     "name": "getLineItemDiscountAdjustment",
-    "type": "(`lineItem`: [LineItem](services.LineItem.mdx), `discount`: [Discount](services.Discount.mdx)) => `number`",
+    "type": "(`lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `discount`: [Discount](../../entities/classes/entities.Discount.mdx)) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1515,7 +1515,7 @@ ___
   },
   {
     "name": "getLineItemRefund",
-    "type": "(`order`: [Order](services.Order.mdx), `lineItem`: [LineItem](services.LineItem.mdx)) => Promise&#60;number&#62;",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1524,7 +1524,7 @@ ___
   },
   {
     "name": "getLineItemTotal",
-    "type": "(`lineItem`: [LineItem](services.LineItem.mdx), `cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx), `options`: [GetLineItemTotalOptions](../types/services.GetLineItemTotalOptions.mdx)) => Promise&#60;number&#62;",
+    "type": "(`lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx), `options`: [GetLineItemTotalOptions](../../medusa/types/medusa.GetLineItemTotalOptions.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1533,7 +1533,7 @@ ___
   },
   {
     "name": "getLineItemTotals",
-    "type": "(`lineItem`: [LineItem](services.LineItem.mdx), `cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx), `options`: [LineItemTotalsOptions](../types/services.LineItemTotalsOptions.mdx)) => Promise&#60;[LineItemTotals](../types/services.LineItemTotals-1.mdx)&#62;",
+    "type": "(`lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx), `options`: [LineItemTotalsOptions](../../medusa/types/medusa.LineItemTotalsOptions.mdx)) => Promise&#60;[LineItemTotals](../../medusa/types/medusa.LineItemTotals-1.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1542,7 +1542,7 @@ ___
   },
   {
     "name": "getPaidTotal",
-    "type": "(`order`: [Order](services.Order.mdx)) => `number`",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx)) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1551,7 +1551,7 @@ ___
   },
   {
     "name": "getRefundTotal",
-    "type": "(`order`: [Order](services.Order.mdx), `lineItems`: [LineItem](services.LineItem.mdx)[]) => Promise&#60;number&#62;",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `lineItems`: [LineItem](../../entities/classes/entities.LineItem.mdx)[]) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1560,7 +1560,7 @@ ___
   },
   {
     "name": "getRefundedTotal",
-    "type": "(`order`: [Order](services.Order.mdx)) => `number`",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx)) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1569,7 +1569,7 @@ ___
   },
   {
     "name": "getShippingMethodTotals",
-    "type": "(`shippingMethod`: [ShippingMethod](services.ShippingMethod.mdx), `cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx), `opts`: [GetShippingMethodTotalsOptions](../types/services.GetShippingMethodTotalsOptions.mdx)) => Promise&#60;[ShippingMethodTotals](../types/services.ShippingMethodTotals-1.mdx)&#62;",
+    "type": "(`shippingMethod`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx), `cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx), `opts`: [GetShippingMethodTotalsOptions](../../medusa/types/medusa.GetShippingMethodTotalsOptions.mdx)) => Promise&#60;[ShippingMethodTotals](../../medusa/types/medusa.ShippingMethodTotals-1.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1578,7 +1578,7 @@ ___
   },
   {
     "name": "getShippingTotal",
-    "type": "(`cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx)) => Promise&#60;number&#62;",
+    "type": "(`cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1587,7 +1587,7 @@ ___
   },
   {
     "name": "getSubtotal",
-    "type": "(`cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx), `opts`: [SubtotalOptions](../types/services.SubtotalOptions.mdx)) => Promise&#60;number&#62;",
+    "type": "(`cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx), `opts`: [SubtotalOptions](../../medusa/types/medusa.SubtotalOptions.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1596,7 +1596,7 @@ ___
   },
   {
     "name": "getSwapTotal",
-    "type": "(`order`: [Order](services.Order.mdx)) => `number`",
+    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx)) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1605,7 +1605,7 @@ ___
   },
   {
     "name": "getTaxTotal",
-    "type": "(`cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx), `forceTaxes`: `boolean`) => Promise&#60;null \\| number&#62;",
+    "type": "(`cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx), `forceTaxes`: `boolean`) => Promise&#60;null \\| number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1614,7 +1614,7 @@ ___
   },
   {
     "name": "getTotal",
-    "type": "(`cartOrOrder`: [Order](services.Order.mdx) \\| [Cart](services.Cart.mdx), `options`: [GetTotalsOptions](../types/services.GetTotalsOptions.mdx)) => Promise&#60;number&#62;",
+    "type": "(`cartOrOrder`: [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx), `options`: [GetTotalsOptions](../../medusa/types/medusa.GetTotalsOptions.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

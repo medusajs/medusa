@@ -100,7 +100,7 @@ export const createProductStep = createStep(
   },
   {
     "name": "invokeFn",
-    "type": "[InvokeFn](../types/workflows.InvokeFn.mdx)&#60;TInvokeInput, TInvokeResultOutput, TInvokeResultCompensateInput&#62;",
+    "type": "InvokeFn&#60;TInvokeInput, TInvokeResultOutput, TInvokeResultCompensateInput&#62;",
     "description": "An invocation function that will be executed when the workflow is executed. The function must return an instance of [StepResponse](../classes/workflows.StepResponse.mdx). The constructor of [StepResponse](../classes/workflows.StepResponse.mdx)\naccepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.",
     "optional": false,
     "defaultValue": "",
@@ -109,7 +109,7 @@ export const createProductStep = createStep(
   },
   {
     "name": "compensateFn",
-    "type": "[CompensateFn](../types/workflows.CompensateFn.mdx)&#60;TInvokeResultCompensateInput&#62;",
+    "type": "CompensateFn&#60;TInvokeResultCompensateInput&#62;",
     "description": "A compensation function that's executed if an error occurs in the workflow. It's used to roll-back actions when errors occur.\nIt accepts as a parameter the second argument passed to the constructor of the [StepResponse](../classes/workflows.StepResponse.mdx) instance returned by the invocation function. If the\ninvocation function doesn't pass the second argument to `StepResponse` constructor, the compensation function receives the first argument\npassed to the `StepResponse` constructor instead.",
     "optional": true,
     "defaultValue": "",

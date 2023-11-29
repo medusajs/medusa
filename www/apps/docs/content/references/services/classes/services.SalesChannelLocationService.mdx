@@ -15,7 +15,7 @@ Service for managing the stock locations of sales channels
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-35.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-33.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ ___
   },
   {
     "name": "eventBusService_",
-    "type": "[IEventBusService](../interfaces/services.IEventBusService.mdx)",
+    "type": "[IEventBusService](../../medusa/interfaces/medusa.IEventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -113,7 +113,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "create",
-    "type": "(`input`: [CreateStockLocationInput](../types/services.CreateStockLocationInput.mdx), `context?`: [SharedContext](../interfaces/services.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/services.StockLocationDTO.mdx)&#62;",
+    "type": "(`input`: [CreateStockLocationInput](../../medusa/types/medusa.CreateStockLocationInput.mdx), `context?`: [SharedContext](../../medusa/interfaces/medusa.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../../medusa/types/medusa.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -122,7 +122,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`id`: `string`, `context?`: [SharedContext](../interfaces/services.SharedContext.mdx)) => Promise&#60;void&#62;",
+    "type": "(`id`: `string`, `context?`: [SharedContext](../../medusa/interfaces/medusa.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -131,7 +131,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [FilterableStockLocationProps](../interfaces/services.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[StockLocationDTO](../types/services.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../interfaces/services.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/services.StockLocationDTO.mdx)[]&#62;",
+    "type": "(`selector`: [FilterableStockLocationProps](../../medusa/interfaces/medusa.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[StockLocationDTO](../../medusa/types/medusa.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../medusa/interfaces/medusa.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../../medusa/types/medusa.StockLocationDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -140,7 +140,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [FilterableStockLocationProps](../interfaces/services.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[StockLocationDTO](../types/services.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../interfaces/services.SharedContext.mdx)) => Promise&#60;[[StockLocationDTO](../types/services.StockLocationDTO.mdx)[], number]&#62;",
+    "type": "(`selector`: [FilterableStockLocationProps](../../medusa/interfaces/medusa.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[StockLocationDTO](../../medusa/types/medusa.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../medusa/interfaces/medusa.SharedContext.mdx)) => Promise&#60;[[StockLocationDTO](../../medusa/types/medusa.StockLocationDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -149,7 +149,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/services.FindConfig-1.mdx)&#60;[StockLocationDTO](../types/services.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../interfaces/services.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/services.StockLocationDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig-1.mdx)&#60;[StockLocationDTO](../../medusa/types/medusa.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../medusa/interfaces/medusa.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../../medusa/types/medusa.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -158,7 +158,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../types/services.UpdateStockLocationInput.mdx), `context?`: [SharedContext](../interfaces/services.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/services.StockLocationDTO.mdx)&#62;",
+    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../../medusa/types/medusa.UpdateStockLocationInput.mdx), `context?`: [SharedContext](../../medusa/interfaces/medusa.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../../medusa/types/medusa.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -409,7 +409,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -455,7 +455,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-35.mdx)) => [SalesChannelLocationService](services.SalesChannelLocationService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-33.mdx)) => [SalesChannelLocationService](services.SalesChannelLocationService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -491,7 +491,7 @@ ___
   },
   {
     "name": "eventBusService_",
-    "type": "[IEventBusService](../interfaces/services.IEventBusService.mdx)",
+    "type": "[IEventBusService](../../medusa/interfaces/medusa.IEventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",

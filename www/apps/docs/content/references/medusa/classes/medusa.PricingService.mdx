@@ -1,0 +1,5246 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PricingService
+
+Allows retrieval of prices.
+
+## constructor
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[InjectedDependencies](../types/medusa.InjectedDependencies-23.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "customerService",
+        "type": "[CustomerService](medusa.CustomerService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "priceSelectionStrategy",
+        "type": "[IPriceSelectionStrategy](../interfaces/medusa.IPriceSelectionStrategy.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "pricingModuleService",
+        "type": "[IPricingModuleService](../interfaces/medusa.IPricingModuleService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantService",
+        "type": "[ProductVariantService](medusa.ProductVariantService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionService",
+        "type": "[RegionService](medusa.RegionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "remoteQuery",
+        "type": "[RemoteQueryFunction](../types/medusa.RemoteQueryFunction.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderService",
+        "type": "[TaxProviderService](medusa.TaxProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerService_",
+    "type": "[CustomerService](medusa.CustomerService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "addressRepository_",
+        "type": "Repository&#60;[Address](medusa.Address.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customerRepository_",
+        "type": "Repository&#60;[Customer](medusa.Customer.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBusService_",
+        "type": "[EventBusService](medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "featureFlagRouter",
+    "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "flags",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceSelectionStrategy",
+    "type": "[IPriceSelectionStrategy](../interfaces/medusa.IPriceSelectionStrategy.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantService",
+    "type": "[ProductVariantService](medusa.ProductVariantService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cartRepository_",
+        "type": "Repository&#60;[Cart](medusa.Cart.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[EventBusService](medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "moneyAmountRepository_",
+        "type": "Repository&#60;[MoneyAmount](medusa.MoneyAmount.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "priceSelectionStrategy_",
+        "type": "[IPriceSelectionStrategy](../interfaces/medusa.IPriceSelectionStrategy.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productOptionValueRepository_",
+        "type": "Repository&#60;[ProductOptionValue](medusa.ProductOptionValue.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productRepository_",
+        "type": "Repository&#60;[Product](medusa.Product.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantRepository_",
+        "type": "Repository&#60;[ProductVariant](medusa.ProductVariant.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionService_",
+        "type": "[RegionService](medusa.RegionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "regionService",
+    "type": "[RegionService](medusa.RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "countryRepository_",
+        "type": "Repository&#60;[Country](medusa.Country.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currencyRepository_",
+        "type": "Repository&#60;[Currency](medusa.Currency.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[EventBusService](medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderRepository_",
+        "type": "Repository&#60;[FulfillmentProvider](medusa.FulfillmentProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderService_",
+        "type": "[FulfillmentProviderService](medusa.FulfillmentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentProviderRepository_",
+        "type": "Repository&#60;[PaymentProvider](medusa.PaymentProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentProviderService_",
+        "type": "[PaymentProviderService](medusa.PaymentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionRepository_",
+        "type": "Repository&#60;[Region](medusa.Region.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "storeService_",
+        "type": "[StoreService](medusa.StoreService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderRepository_",
+        "type": "Repository&#60;[TaxProvider](medusa.TaxProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "taxProviderService",
+    "type": "[TaxProviderService](medusa.TaxProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cacheService_",
+        "type": "[ICacheService](../interfaces/medusa.ICacheService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "container_",
+        "type": "AwilixContainer&#60;any&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[IEventBusService](../interfaces/medusa.IEventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "smTaxLineRepo_",
+        "type": "Repository&#60;[ShippingMethodTaxLine](medusa.ShippingMethodTaxLine.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxLineRepo_",
+        "type": "Repository&#60;[LineItemTaxLine](medusa.LineItemTaxLine.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderRepo_",
+        "type": "Repository&#60;[TaxProvider](medusa.TaxProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxRateService_",
+        "type": "[TaxRateService](medusa.TaxRateService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[]} />
+
+___
+
+### pricingModuleService
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "addPriceListPrices",
+    "type": "(`data`: [AddPriceListPricesDTO](../interfaces/medusa.AddPriceListPricesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "addPrices",
+    "type": "(`data`: [AddPricesDTO](../interfaces/medusa.AddPricesDTO.mdx), `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)&#62;(`data`: [AddPricesDTO](../interfaces/medusa.AddPricesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "addRules",
+    "type": "(`data`: [AddRulesDTO](../interfaces/medusa.AddRulesDTO.mdx), `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)&#62;(`data`: [AddRulesDTO](../interfaces/medusa.AddRulesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculatePrices",
+    "type": "(`filters`: [PricingFilters](../interfaces/medusa.PricingFilters.mdx), `context?`: [PricingContext](../interfaces/medusa.PricingContext.mdx), `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[CalculatedPriceSet](../interfaces/medusa.CalculatedPriceSet.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "create",
+    "type": "(`data`: [CreatePriceSetDTO](../interfaces/medusa.CreatePriceSetDTO.mdx), `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)&#62;(`data`: [CreatePriceSetDTO](../interfaces/medusa.CreatePriceSetDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createCurrencies",
+    "type": "(`data`: [CreateCurrencyDTO](../interfaces/medusa.CreateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[CurrencyDTO](../interfaces/medusa.CurrencyDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createMoneyAmounts",
+    "type": "(`data`: [CreateMoneyAmountDTO](../interfaces/medusa.CreateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../interfaces/medusa.MoneyAmountDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createPriceListRules",
+    "type": "(`data`: [CreatePriceListRuleDTO](../interfaces/medusa.CreatePriceListRuleDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../interfaces/medusa.PriceListRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createPriceLists",
+    "type": "(`data`: [CreatePriceListDTO](../interfaces/medusa.CreatePriceListDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createPriceRules",
+    "type": "(`data`: [CreatePriceRuleDTO](../interfaces/medusa.CreatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceRuleDTO](../interfaces/medusa.PriceRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createPriceSetMoneyAmountRules",
+    "type": "(`data`: [CreatePriceSetMoneyAmountRulesDTO](../interfaces/medusa.CreatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createRuleTypes",
+    "type": "(`data`: [CreateRuleTypeDTO](../interfaces/medusa.CreateRuleTypeDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[RuleTypeDTO](../interfaces/medusa.RuleTypeDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "delete",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteCurrencies",
+    "type": "(`currencyCodes`: `string`[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteMoneyAmounts",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePriceListRules",
+    "type": "(`priceListRuleIds`: `string`[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePriceLists",
+    "type": "(`priceListIds`: `string`[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePriceRules",
+    "type": "(`priceRuleIds`: `string`[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePriceSetMoneyAmountRules",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteRuleTypes",
+    "type": "(`ruleTypeIds`: `string`[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "list",
+    "type": "(`filters?`: [FilterablePriceSetProps](../interfaces/medusa.FilterablePriceSetProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCount",
+    "type": "(`filters?`: [FilterablePriceSetProps](../interfaces/medusa.FilterablePriceSetProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountCurrencies",
+    "type": "(`filters?`: [FilterableCurrencyProps](../interfaces/medusa.FilterableCurrencyProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[CurrencyDTO](../interfaces/medusa.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[CurrencyDTO](../interfaces/medusa.CurrencyDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountMoneyAmounts",
+    "type": "(`filters?`: [FilterableMoneyAmountProps](../interfaces/medusa.FilterableMoneyAmountProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../interfaces/medusa.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[MoneyAmountDTO](../interfaces/medusa.MoneyAmountDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceListRules",
+    "type": "(`filters?`: [FilterablePriceListRuleProps](../interfaces/medusa.FilterablePriceListRuleProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../interfaces/medusa.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceListRuleDTO](../interfaces/medusa.PriceListRuleDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceLists",
+    "type": "(`filters?`: [FilterablePriceListProps](../interfaces/medusa.FilterablePriceListProps-1.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceRules",
+    "type": "(`filters?`: [FilterablePriceRuleProps](../interfaces/medusa.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceRuleDTO](../interfaces/medusa.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceRuleDTO](../interfaces/medusa.PriceRuleDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceSetMoneyAmountRules",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountRulesProps](../interfaces/medusa.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceSetMoneyAmountRulesDTO](../interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceSetMoneyAmounts",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountProps](../interfaces/medusa.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountDTO](../interfaces/medusa.PriceSetMoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[PriceSetMoneyAmountDTO](../interfaces/medusa.PriceSetMoneyAmountDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountRuleTypes",
+    "type": "(`filters?`: [FilterableRuleTypeProps](../interfaces/medusa.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[RuleTypeDTO](../interfaces/medusa.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[[RuleTypeDTO](../interfaces/medusa.RuleTypeDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listCurrencies",
+    "type": "(`filters?`: [FilterableCurrencyProps](../interfaces/medusa.FilterableCurrencyProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[CurrencyDTO](../interfaces/medusa.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[CurrencyDTO](../interfaces/medusa.CurrencyDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listMoneyAmounts",
+    "type": "(`filters?`: [FilterableMoneyAmountProps](../interfaces/medusa.FilterableMoneyAmountProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../interfaces/medusa.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../interfaces/medusa.MoneyAmountDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceListRules",
+    "type": "(`filters?`: [FilterablePriceListRuleProps](../interfaces/medusa.FilterablePriceListRuleProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../interfaces/medusa.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../interfaces/medusa.PriceListRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceLists",
+    "type": "(`filters?`: [FilterablePriceListProps](../interfaces/medusa.FilterablePriceListProps-1.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceRules",
+    "type": "(`filters?`: [FilterablePriceRuleProps](../interfaces/medusa.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceRuleDTO](../interfaces/medusa.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceRuleDTO](../interfaces/medusa.PriceRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceSetMoneyAmountRules",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountRulesProps](../interfaces/medusa.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceSetMoneyAmounts",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountProps](../interfaces/medusa.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountDTO](../interfaces/medusa.PriceSetMoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountDTO](../interfaces/medusa.PriceSetMoneyAmountDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listRuleTypes",
+    "type": "(`filters?`: [FilterableRuleTypeProps](../interfaces/medusa.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[RuleTypeDTO](../interfaces/medusa.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[RuleTypeDTO](../interfaces/medusa.RuleTypeDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removePriceListRules",
+    "type": "(`data`: [RemovePriceListRulesDTO](../interfaces/medusa.RemovePriceListRulesDTO.mdx), `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removeRules",
+    "type": "(`data`: [RemovePriceSetRulesDTO](../interfaces/medusa.RemovePriceSetRulesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieve",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetDTO](../interfaces/medusa.PriceSetDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveCurrency",
+    "type": "(`code`: `string`, `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[CurrencyDTO](../interfaces/medusa.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[CurrencyDTO](../interfaces/medusa.CurrencyDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveMoneyAmount",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[MoneyAmountDTO](../interfaces/medusa.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../interfaces/medusa.MoneyAmountDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrievePriceList",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrievePriceListRule",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceListRuleDTO](../interfaces/medusa.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../interfaces/medusa.PriceListRuleDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrievePriceRule",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceRuleDTO](../interfaces/medusa.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceRuleDTO](../interfaces/medusa.PriceRuleDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrievePriceSetMoneyAmountRules",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveRuleType",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/medusa.FindConfig-1.mdx)&#60;[RuleTypeDTO](../interfaces/medusa.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[RuleTypeDTO](../interfaces/medusa.RuleTypeDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "setPriceListRules",
+    "type": "(`data`: [SetPriceListRulesDTO](../interfaces/medusa.SetPriceListRulesDTO.mdx), `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateCurrencies",
+    "type": "(`data`: [UpdateCurrencyDTO](../interfaces/medusa.UpdateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[CurrencyDTO](../interfaces/medusa.CurrencyDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateMoneyAmounts",
+    "type": "(`data`: [UpdateMoneyAmountDTO](../interfaces/medusa.UpdateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../interfaces/medusa.MoneyAmountDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePriceListRules",
+    "type": "(`data`: [UpdatePriceListRuleDTO](../interfaces/medusa.UpdatePriceListRuleDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../interfaces/medusa.PriceListRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePriceLists",
+    "type": "(`data`: [UpdatePriceListDTO](../interfaces/medusa.UpdatePriceListDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceListDTO](../interfaces/medusa.PriceListDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePriceRules",
+    "type": "(`data`: [UpdatePriceRuleDTO](../interfaces/medusa.UpdatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceRuleDTO](../interfaces/medusa.PriceRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePriceSetMoneyAmountRules",
+    "type": "(`data`: [UpdatePriceSetMoneyAmountRulesDTO](../interfaces/medusa.UpdatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../interfaces/medusa.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateRuleTypes",
+    "type": "(`data`: [UpdateRuleTypeDTO](../interfaces/medusa.UpdateRuleTypeDTO.mdx)[], `sharedContext?`: [Context](../interfaces/medusa.Context.mdx)) => Promise&#60;[RuleTypeDTO](../interfaces/medusa.RuleTypeDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### remoteQuery
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "RemoteQueryFunction",
+    "type": "(`query`: `string` \\| [RemoteJoinerQuery](../interfaces/medusa.RemoteJoinerQuery.mdx) \\| `object`, `variables?`: `Record<string, unknown>`) => Promise&#60;any&#62; \\| `null`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Methods
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;TResult&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": [
+      {
+        "name": "TResult",
+        "type": "`TResult`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### calculateTaxes
+
+Gets the prices for a product variant
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantPricing",
+    "type": "[ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)",
+    "description": "the prices retrieved from a variant",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "calculated_price",
+        "type": "`number` \\| `null`",
+        "description": "The lowest price among the retrieved prices.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "calculated_price_includes_tax",
+        "type": "`boolean` \\| `null`",
+        "description": "Whether the `calculated_price` field includes taxes.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
+        "children": []
+      },
+      {
+        "name": "calculated_price_type",
+        "type": "`string` \\| `null`",
+        "description": "Either `default` if the `calculated_price` is the original price, or the type of the price list applied, if any.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "original_price",
+        "type": "`number` \\| `null`",
+        "description": "The original price of the variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "original_price_includes_tax",
+        "type": "`boolean` \\| `null`",
+        "description": "Whether the `original_price` field includes taxes.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
+        "children": []
+      },
+      {
+        "name": "prices",
+        "type": "[MoneyAmount](medusa.MoneyAmount.mdx)[]",
+        "description": "The list of prices.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "productRates",
+    "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+    "description": "the tax rates that the product has applied",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "code",
+        "type": "`string` \\| `null`",
+        "description": "The tax rate's code.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The tax rate's name.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rate",
+        "type": "`number` \\| `null`",
+        "description": "The tax rate.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "TaxedPricing",
+    "type": "`object`",
+    "description": "Pricing fields related to taxes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "calculated_price_incl_tax",
+        "type": "`number` \\| `null`",
+        "description": "The price after applying the tax amount on the calculated price.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "calculated_tax",
+        "type": "`number` \\| `null`",
+        "description": "The tax amount applied to the calculated price.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "original_price_incl_tax",
+        "type": "`number` \\| `null`",
+        "description": "The price after applying the tax amount on the original price.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "original_tax",
+        "type": "`number` \\| `null`",
+        "description": "The tax amount applied to the original price.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[] \\| `null`",
+        "description": "The list of tax rates.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### collectPricingContext
+
+Collects additional information necessary for completing the price
+selection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ignore_cache",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "include_discount_prices",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PricingContext](../types/medusa.PricingContext-1.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The pricing context",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PricingContext",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getPricingModuleVariantMoneyAmounts
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantIds",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Map&#60;string, [MoneyAmount](medusa.MoneyAmount.mdx)[]&#62;&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Map",
+        "type": "Map&#60;string, [MoneyAmount](medusa.MoneyAmount.mdx)[]&#62;",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getProductPricing
+
+Gets all the variant prices for a product. All the product's variants will
+be fetched.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "product",
+    "type": "Pick&#60;[Product](medusa.Product.mdx), \"id\" \\| \"variants\"&#62;",
+    "description": "the product to get pricing for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ignore_cache",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "include_discount_prices",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Record&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A map of variant ids to their corresponding prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Record",
+        "type": "`Record<string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)>`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getProductPricingById
+
+Gets all the variant prices for a product by the product id
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "the id of the product to get prices for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ignore_cache",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "include_discount_prices",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Record&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A map of variant ids to their corresponding prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Record",
+        "type": "`Record<string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)>`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getProductPricing\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`object`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "productId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variants",
+        "type": "[ProductVariant](medusa.ProductVariant.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PricingContext](../types/medusa.PricingContext-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "automatic_taxes",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price_selection",
+        "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rate",
+        "type": "`number` \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Map&#60;string, Record&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Map",
+        "type": "Map&#60;string, Record&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getProductVariantPricing
+
+Gets the prices for a product variant.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variant",
+    "type": "Pick&#60;[ProductVariant](medusa.ProductVariant.mdx), \"id\" \\| \"product_id\"&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../types/medusa.PricingContext-1.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The product variant prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "ProductVariantPricing",
+        "type": "`object` & [TaxedPricing](../types/medusa.TaxedPricing.mdx)",
+        "description": "Pricing fields for product variants.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getProductVariantPricingById
+
+Gets the prices for a product variant by a variant id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the id of the variant to get prices for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../types/medusa.PricingContext-1.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The product variant prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "ProductVariantPricing",
+        "type": "`object` & [TaxedPricing](../types/medusa.TaxedPricing.mdx)",
+        "description": "Pricing fields for product variants.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Deprecated
+
+Use [getProductVariantsPricing](medusa.PricingService.mdx#getproductvariantspricing) instead.
+
+___
+
+### getProductVariantPricingModulePricing\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantPriceData",
+    "type": "`object`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variantId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PricingContext](../types/medusa.PricingContext-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "automatic_taxes",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price_selection",
+        "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rate",
+        "type": "`number` \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Map&#60;any, any&#62;&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Map",
+        "type": "Map&#60;any, any&#62;",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getProductVariantPricing\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`object`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variantId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PricingContext](../types/medusa.PricingContext-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "automatic_taxes",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price_selection",
+        "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rate",
+        "type": "`number` \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Map&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Map",
+        "type": "Map&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getProductVariantsPricing
+
+Gets the prices for a collection of variants.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`object`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variantId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../types/medusa.PricingContext-1.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;object&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The product variant prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "object",
+        "type": "`object`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getShippingOptionPricing
+
+Gets the prices for a shipping option.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "shippingOption",
+    "type": "[ShippingOption](medusa.ShippingOption.mdx)",
+    "description": "the shipping option to get prices for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "admin_only",
+        "type": "`boolean`",
+        "description": "Flag to indicate if the Shipping Option usage is restricted to admin users.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "amount",
+        "type": "`null` \\| `number`",
+        "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "data",
+        "type": "`Record<string, unknown>`",
+        "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "`null` \\| `Date`",
+        "description": "The date with timezone at which the resource was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The shipping option's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "includes_tax",
+        "type": "`boolean`",
+        "description": "Whether the shipping option price include tax",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
+        "children": []
+      },
+      {
+        "name": "is_return",
+        "type": "`boolean`",
+        "description": "Flag to indicate if the Shipping Option can be used for Return shipments.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name given to the Shipping Option - this may be displayed to the Customer.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price_type",
+        "type": "[ShippingOptionPriceType](../enums/medusa.ShippingOptionPriceType.mdx)",
+        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "profile",
+        "type": "[ShippingProfile](medusa.ShippingProfile.mdx)",
+        "description": "The details of the shipping profile that the shipping option belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "profile_id",
+        "type": "`string`",
+        "description": "The ID of the Shipping Profile that the shipping option belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "provider",
+        "type": "[FulfillmentProvider](medusa.FulfillmentProvider.mdx)",
+        "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region",
+        "type": "[Region](medusa.Region.mdx)",
+        "description": "The details of the region this shipping option can be used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "The ID of the region this shipping option can be used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "requirements",
+        "type": "[ShippingOptionRequirement](medusa.ShippingOptionRequirement.mdx)[]",
+        "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../types/medusa.PricingContext-1.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PricedShippingOption](../types/medusa.PricedShippingOption.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The shipping option prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PricedShippingOption",
+        "type": "Partial&#60;[ShippingOption](medusa.ShippingOption.mdx)&#62; & [ShippingOptionPricing](../types/medusa.ShippingOptionPricing.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### setAdminProductPricing
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "products",
+    "type": "[Product](medusa.Product.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "categories",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the product categories that this product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "featureFlag": "product_categories",
+        "children": []
+      },
+      {
+        "name": "collection",
+        "type": "[ProductCollection](medusa.ProductCollection.mdx)",
+        "description": "The details of the product collection that the product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "collection_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the product collection that the product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "`null` \\| `Date`",
+        "description": "The date with timezone at which the resource was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`null` \\| `string`",
+        "description": "A short description of the Product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discountable",
+        "type": "`boolean`",
+        "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "external_id",
+        "type": "`null` \\| `string`",
+        "description": "The external ID of the product",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`null` \\| `string`",
+        "description": "A unique identifier for the Product (e.g. for slug structure).",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "height",
+        "type": "`null` \\| `number`",
+        "description": "The height of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "hs_code",
+        "type": "`null` \\| `string`",
+        "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "images",
+        "type": "[Image](medusa.Image.mdx)[]",
+        "description": "The details of the product's images.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "is_giftcard",
+        "type": "`boolean`",
+        "description": "Whether the Product represents a Gift Card. Products that represent Gift Cards will automatically generate a redeemable Gift Card code once they are purchased.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "length",
+        "type": "`null` \\| `number`",
+        "description": "The length of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "material",
+        "type": "`null` \\| `string`",
+        "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`null` \\| `Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "mid_code",
+        "type": "`null` \\| `string`",
+        "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "options",
+        "type": "[ProductOption](medusa.ProductOption.mdx)[]",
+        "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "origin_country",
+        "type": "`null` \\| `string`",
+        "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "profile",
+        "type": "[ShippingProfile](medusa.ShippingProfile.mdx)",
+        "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "profile_id",
+        "type": "`string`",
+        "description": "The ID of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "profiles",
+        "type": "[ShippingProfile](medusa.ShippingProfile.mdx)[]",
+        "description": "Available if the relation `profiles` is expanded.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "sales_channels",
+        "type": "[SalesChannel](medusa.SalesChannel.mdx)[]",
+        "description": "The details of the sales channels this product is available in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "status",
+        "type": "[ProductStatus](../enums/medusa.ProductStatus.mdx)",
+        "description": "The status of the product",
+        "optional": false,
+        "defaultValue": "draft",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "subtitle",
+        "type": "`null` \\| `string`",
+        "description": "An optional subtitle that can be used to further specify the Product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tags",
+        "type": "[ProductTag](medusa.ProductTag.mdx)[]",
+        "description": "The details of the product tags used in this product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "thumbnail",
+        "type": "`null` \\| `string`",
+        "description": "A URL to an image file that can be used to identify the Product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "A title that can be displayed for easy identification of the Product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "type",
+        "type": "[ProductType](medusa.ProductType.mdx)",
+        "description": "The details of the product type that the product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "type_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the product type that the product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variants",
+        "type": "[ProductVariant](medusa.ProductVariant.mdx)[]",
+        "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "weight",
+        "type": "`null` \\| `number`",
+        "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "width",
+        "type": "`null` \\| `number`",
+        "description": "The width of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;([Product](medusa.Product.mdx) \\| [PricedProduct](../types/medusa.PricedProduct.mdx))[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "(Product \\| PricedProduct)[]",
+        "type": "([Product](medusa.Product.mdx) \\| [PricedProduct](../types/medusa.PricedProduct.mdx))[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### setAdminVariantPricing
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variants",
+    "type": "[ProductVariant](medusa.ProductVariant.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allow_backorder",
+        "type": "`boolean`",
+        "description": "Whether the Product Variant should be purchasable when `inventory\\_quantity` is 0.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "barcode",
+        "type": "`null` \\| `string`",
+        "description": "A generic field for a GTIN number that can be used to identify the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "`null` \\| `Date`",
+        "description": "The date with timezone at which the resource was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ean",
+        "type": "`null` \\| `string`",
+        "description": "An EAN barcode number that can be used to identify the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "height",
+        "type": "`null` \\| `number`",
+        "description": "The height of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "hs_code",
+        "type": "`null` \\| `string`",
+        "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product variant's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "inventory_items",
+        "type": "[ProductVariantInventoryItem](medusa.ProductVariantInventoryItem.mdx)[]",
+        "description": "The details inventory items of the product variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "inventory_quantity",
+        "type": "`number`",
+        "description": "The current quantity of the item that is stocked.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "length",
+        "type": "`null` \\| `number`",
+        "description": "The length of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manage_inventory",
+        "type": "`boolean`",
+        "description": "Whether Medusa should manage inventory for the Product Variant.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "material",
+        "type": "`null` \\| `string`",
+        "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`null` \\| `Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "mid_code",
+        "type": "`null` \\| `string`",
+        "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "options",
+        "type": "[ProductOptionValue](medusa.ProductOptionValue.mdx)[]",
+        "description": "The details of the product options that this product variant defines values for.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "origin_country",
+        "type": "`null` \\| `string`",
+        "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "prices",
+        "type": "[MoneyAmount](medusa.MoneyAmount.mdx)[]",
+        "description": "The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "product",
+        "type": "[Product](medusa.Product.mdx)",
+        "description": "The details of the product that the product variant belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "product_id",
+        "type": "`string`",
+        "description": "The ID of the product that the product variant belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "purchasable",
+        "type": "`boolean`",
+        "description": "Only used with the inventory modules.\nA boolean value indicating whether the Product Variant is purchasable.\nA variant is purchasable if:\n  - inventory is not managed\n  - it has no inventory items\n  - it is in stock\n  - it is backorderable.\n",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "sku",
+        "type": "`null` \\| `string`",
+        "description": "The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "A title that can be displayed for easy identification of the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "upc",
+        "type": "`null` \\| `string`",
+        "description": "A UPC barcode number that can be used to identify the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variant_rank",
+        "type": "`null` \\| `number`",
+        "description": "The ranking of this variant",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "weight",
+        "type": "`null` \\| `number`",
+        "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "width",
+        "type": "`null` \\| `number`",
+        "description": "The width of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ignore_cache",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "include_discount_prices",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PricedVariant](../types/medusa.PricedVariant.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PricedVariant[]",
+        "type": "[PricedVariant](../types/medusa.PricedVariant.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### setProductPrices
+
+Set additional prices on a list of products.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "products",
+    "type": "[Product](medusa.Product.mdx)[]",
+    "description": "list of products on which to set additional prices",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "categories",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the product categories that this product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "featureFlag": "product_categories",
+        "children": []
+      },
+      {
+        "name": "collection",
+        "type": "[ProductCollection](medusa.ProductCollection.mdx)",
+        "description": "The details of the product collection that the product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "collection_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the product collection that the product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "`null` \\| `Date`",
+        "description": "The date with timezone at which the resource was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`null` \\| `string`",
+        "description": "A short description of the Product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discountable",
+        "type": "`boolean`",
+        "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "external_id",
+        "type": "`null` \\| `string`",
+        "description": "The external ID of the product",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`null` \\| `string`",
+        "description": "A unique identifier for the Product (e.g. for slug structure).",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "height",
+        "type": "`null` \\| `number`",
+        "description": "The height of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "hs_code",
+        "type": "`null` \\| `string`",
+        "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "images",
+        "type": "[Image](medusa.Image.mdx)[]",
+        "description": "The details of the product's images.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "is_giftcard",
+        "type": "`boolean`",
+        "description": "Whether the Product represents a Gift Card. Products that represent Gift Cards will automatically generate a redeemable Gift Card code once they are purchased.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "length",
+        "type": "`null` \\| `number`",
+        "description": "The length of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "material",
+        "type": "`null` \\| `string`",
+        "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`null` \\| `Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "mid_code",
+        "type": "`null` \\| `string`",
+        "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "options",
+        "type": "[ProductOption](medusa.ProductOption.mdx)[]",
+        "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "origin_country",
+        "type": "`null` \\| `string`",
+        "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "profile",
+        "type": "[ShippingProfile](medusa.ShippingProfile.mdx)",
+        "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "profile_id",
+        "type": "`string`",
+        "description": "The ID of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "profiles",
+        "type": "[ShippingProfile](medusa.ShippingProfile.mdx)[]",
+        "description": "Available if the relation `profiles` is expanded.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "sales_channels",
+        "type": "[SalesChannel](medusa.SalesChannel.mdx)[]",
+        "description": "The details of the sales channels this product is available in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "status",
+        "type": "[ProductStatus](../enums/medusa.ProductStatus.mdx)",
+        "description": "The status of the product",
+        "optional": false,
+        "defaultValue": "draft",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "subtitle",
+        "type": "`null` \\| `string`",
+        "description": "An optional subtitle that can be used to further specify the Product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tags",
+        "type": "[ProductTag](medusa.ProductTag.mdx)[]",
+        "description": "The details of the product tags used in this product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "thumbnail",
+        "type": "`null` \\| `string`",
+        "description": "A URL to an image file that can be used to identify the Product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "A title that can be displayed for easy identification of the Product.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "type",
+        "type": "[ProductType](medusa.ProductType.mdx)",
+        "description": "The details of the product type that the product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "type_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the product type that the product belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variants",
+        "type": "[ProductVariant](medusa.ProductVariant.mdx)[]",
+        "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "weight",
+        "type": "`null` \\| `number`",
+        "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "width",
+        "type": "`null` \\| `number`",
+        "description": "The width of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ignore_cache",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "include_discount_prices",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;([Product](medusa.Product.mdx) \\| [PricedProduct](../types/medusa.PricedProduct.mdx))[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A list of products with variants decorated with prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "(Product \\| PricedProduct)[]",
+        "type": "([Product](medusa.Product.mdx) \\| [PricedProduct](../types/medusa.PricedProduct.mdx))[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### setShippingOptionPrices
+
+Set additional prices on a list of shipping options.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "shippingOptions",
+    "type": "[ShippingOption](medusa.ShippingOption.mdx)[]",
+    "description": "list of shipping options on which to set additional prices",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "admin_only",
+        "type": "`boolean`",
+        "description": "Flag to indicate if the Shipping Option usage is restricted to admin users.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "amount",
+        "type": "`null` \\| `number`",
+        "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "data",
+        "type": "`Record<string, unknown>`",
+        "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "`null` \\| `Date`",
+        "description": "The date with timezone at which the resource was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The shipping option's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "includes_tax",
+        "type": "`boolean`",
+        "description": "Whether the shipping option price include tax",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
+        "children": []
+      },
+      {
+        "name": "is_return",
+        "type": "`boolean`",
+        "description": "Flag to indicate if the Shipping Option can be used for Return shipments.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name given to the Shipping Option - this may be displayed to the Customer.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price_type",
+        "type": "[ShippingOptionPriceType](../enums/medusa.ShippingOptionPriceType.mdx)",
+        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "profile",
+        "type": "[ShippingProfile](medusa.ShippingProfile.mdx)",
+        "description": "The details of the shipping profile that the shipping option belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "profile_id",
+        "type": "`string`",
+        "description": "The ID of the Shipping Profile that the shipping option belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "provider",
+        "type": "[FulfillmentProvider](medusa.FulfillmentProvider.mdx)",
+        "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region",
+        "type": "[Region](medusa.Region.mdx)",
+        "description": "The details of the region this shipping option can be used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "The ID of the region this shipping option can be used in.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "requirements",
+        "type": "[ShippingOptionRequirement](medusa.ShippingOptionRequirement.mdx)[]",
+        "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "Omit&#60;[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx), \"region_id\"&#62;",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PricedShippingOption](../types/medusa.PricedShippingOption.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A list of shipping options with prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PricedShippingOption[]",
+        "type": "[PricedShippingOption](../types/medusa.PricedShippingOption.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### setVariantPrices
+
+Set additional prices on a list of product variants.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variants",
+    "type": "[ProductVariant](medusa.ProductVariant.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allow_backorder",
+        "type": "`boolean`",
+        "description": "Whether the Product Variant should be purchasable when `inventory\\_quantity` is 0.",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "barcode",
+        "type": "`null` \\| `string`",
+        "description": "A generic field for a GTIN number that can be used to identify the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "`null` \\| `Date`",
+        "description": "The date with timezone at which the resource was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ean",
+        "type": "`null` \\| `string`",
+        "description": "An EAN barcode number that can be used to identify the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "height",
+        "type": "`null` \\| `number`",
+        "description": "The height of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "hs_code",
+        "type": "`null` \\| `string`",
+        "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product variant's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "inventory_items",
+        "type": "[ProductVariantInventoryItem](medusa.ProductVariantInventoryItem.mdx)[]",
+        "description": "The details inventory items of the product variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "inventory_quantity",
+        "type": "`number`",
+        "description": "The current quantity of the item that is stocked.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "length",
+        "type": "`null` \\| `number`",
+        "description": "The length of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manage_inventory",
+        "type": "`boolean`",
+        "description": "Whether Medusa should manage inventory for the Product Variant.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "material",
+        "type": "`null` \\| `string`",
+        "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`null` \\| `Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "mid_code",
+        "type": "`null` \\| `string`",
+        "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "options",
+        "type": "[ProductOptionValue](medusa.ProductOptionValue.mdx)[]",
+        "description": "The details of the product options that this product variant defines values for.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "origin_country",
+        "type": "`null` \\| `string`",
+        "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "prices",
+        "type": "[MoneyAmount](medusa.MoneyAmount.mdx)[]",
+        "description": "The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "product",
+        "type": "[Product](medusa.Product.mdx)",
+        "description": "The details of the product that the product variant belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "product_id",
+        "type": "`string`",
+        "description": "The ID of the product that the product variant belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "purchasable",
+        "type": "`boolean`",
+        "description": "Only used with the inventory modules.\nA boolean value indicating whether the Product Variant is purchasable.\nA variant is purchasable if:\n  - inventory is not managed\n  - it has no inventory items\n  - it is in stock\n  - it is backorderable.\n",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "sku",
+        "type": "`null` \\| `string`",
+        "description": "The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "A title that can be displayed for easy identification of the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "upc",
+        "type": "`null` \\| `string`",
+        "description": "A UPC barcode number that can be used to identify the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variant_rank",
+        "type": "`null` \\| `number`",
+        "description": "The ranking of this variant",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "weight",
+        "type": "`null` \\| `number`",
+        "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "width",
+        "type": "`null` \\| `number`",
+        "description": "The width of the Product Variant. May be used in shipping rate calculations.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ignore_cache",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "include_discount_prices",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PricedVariant](../types/medusa.PricedVariant.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A list of products with variants decorated with prices",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PricedVariant[]",
+        "type": "[PricedVariant](../types/medusa.PricedVariant.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "`Record<string, unknown>` \\| `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "constructor",
+    "type": "(`__namedParameters`: [InjectedDependencies](../types/medusa.InjectedDependencies-23.mdx)) => [PricingService](medusa.PricingService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__configModule__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerService_",
+    "type": "[CustomerService](medusa.CustomerService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "addressRepository_",
+        "type": "Repository&#60;[Address](medusa.Address.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customerRepository_",
+        "type": "Repository&#60;[Customer](medusa.Customer.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBusService_",
+        "type": "[EventBusService](medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "featureFlagRouter",
+    "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "flags",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceSelectionStrategy",
+    "type": "[IPriceSelectionStrategy](../interfaces/medusa.IPriceSelectionStrategy.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantService",
+    "type": "[ProductVariantService](medusa.ProductVariantService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cartRepository_",
+        "type": "Repository&#60;[Cart](medusa.Cart.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[EventBusService](medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "moneyAmountRepository_",
+        "type": "Repository&#60;[MoneyAmount](medusa.MoneyAmount.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "priceSelectionStrategy_",
+        "type": "[IPriceSelectionStrategy](../interfaces/medusa.IPriceSelectionStrategy.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productOptionValueRepository_",
+        "type": "Repository&#60;[ProductOptionValue](medusa.ProductOptionValue.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productRepository_",
+        "type": "Repository&#60;[Product](medusa.Product.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantRepository_",
+        "type": "Repository&#60;[ProductVariant](medusa.ProductVariant.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionService_",
+        "type": "[RegionService](medusa.RegionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "regionService",
+    "type": "[RegionService](medusa.RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "countryRepository_",
+        "type": "Repository&#60;[Country](medusa.Country.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currencyRepository_",
+        "type": "Repository&#60;[Currency](medusa.Currency.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[EventBusService](medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[FlagRouter](medusa.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderRepository_",
+        "type": "Repository&#60;[FulfillmentProvider](medusa.FulfillmentProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderService_",
+        "type": "[FulfillmentProviderService](medusa.FulfillmentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentProviderRepository_",
+        "type": "Repository&#60;[PaymentProvider](medusa.PaymentProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentProviderService_",
+        "type": "[PaymentProviderService](medusa.PaymentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionRepository_",
+        "type": "Repository&#60;[Region](medusa.Region.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "storeService_",
+        "type": "[StoreService](medusa.StoreService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderRepository_",
+        "type": "Repository&#60;[TaxProvider](medusa.TaxProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "taxProviderService",
+    "type": "[TaxProviderService](medusa.TaxProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cacheService_",
+        "type": "[ICacheService](../interfaces/medusa.ICacheService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "container_",
+        "type": "AwilixContainer&#60;any&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[IEventBusService](../interfaces/medusa.IEventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "smTaxLineRepo_",
+        "type": "Repository&#60;[ShippingMethodTaxLine](medusa.ShippingMethodTaxLine.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxLineRepo_",
+        "type": "Repository&#60;[LineItemTaxLine](medusa.LineItemTaxLine.mdx)&#62; & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderRepo_",
+        "type": "Repository&#60;[TaxProvider](medusa.TaxProvider.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxRateService_",
+        "type": "[TaxRateService](medusa.TaxRateService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "activeManager_",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "pricingModuleService",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "remoteQuery",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "atomicPhase_",
+    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculateTaxes",
+    "type": "(`variantPricing`: [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx), `productRates`: [TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]) => [TaxedPricing](../types/medusa.TaxedPricing.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "collectPricingContext",
+    "type": "(`context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[PricingContext](../types/medusa.PricingContext-1.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getPricingModuleVariantMoneyAmounts",
+    "type": "(`variantIds`: `string`[]) => Promise&#60;Map&#60;string, [MoneyAmount](medusa.MoneyAmount.mdx)[]&#62;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getProductPricing",
+    "type": "(`product`: Pick&#60;[Product](medusa.Product.mdx), \"id\" \\| \"variants\"&#62;, `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)) => Promise&#60;Record&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getProductPricingById",
+    "type": "(`productId`: `string`, `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)) => Promise&#60;Record&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getProductPricing_",
+    "type": "(`data`: ``{ productId: string ; variants: [ProductVariant](medusa.ProductVariant.mdx)[]  }``[], `context`: [PricingContext](../types/medusa.PricingContext-1.mdx)) => Promise&#60;Map&#60;string, Record&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getProductVariantPricing",
+    "type": "(`variant`: Pick&#60;[ProductVariant](medusa.ProductVariant.mdx), \"id\" \\| \"product_id\"&#62;, `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../types/medusa.PricingContext-1.mdx)) => Promise&#60;[ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getProductVariantPricingById",
+    "type": "(`variantId`: `string`, `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../types/medusa.PricingContext-1.mdx)) => Promise&#60;[ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getProductVariantPricingModulePricing_",
+    "type": "(`variantPriceData`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PricingContext](../types/medusa.PricingContext-1.mdx)) => Promise&#60;Map&#60;any, any&#62;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getProductVariantPricing_",
+    "type": "(`data`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PricingContext](../types/medusa.PricingContext-1.mdx)) => Promise&#60;Map&#60;string, [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx)&#62;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getProductVariantsPricing",
+    "type": "(`data`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../types/medusa.PricingContext-1.mdx)) => Promise&#60;&#123; [variant_id: string]: [ProductVariantPricing](../types/medusa.ProductVariantPricing.mdx);  &#125;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getShippingOptionPricing",
+    "type": "(`shippingOption`: [ShippingOption](medusa.ShippingOption.mdx), `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx) \\| [PricingContext](../types/medusa.PricingContext-1.mdx)) => Promise&#60;[PricedShippingOption](../types/medusa.PricedShippingOption.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "setAdminProductPricing",
+    "type": "(`products`: [Product](medusa.Product.mdx)[]) => Promise&#60;([Product](medusa.Product.mdx) \\| [PricedProduct](../types/medusa.PricedProduct.mdx))[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "setAdminVariantPricing",
+    "type": "(`variants`: [ProductVariant](medusa.ProductVariant.mdx)[], `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[PricedVariant](../types/medusa.PricedVariant.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "setProductPrices",
+    "type": "(`products`: [Product](medusa.Product.mdx)[], `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)) => Promise&#60;([Product](medusa.Product.mdx) \\| [PricedProduct](../types/medusa.PricedProduct.mdx))[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "setShippingOptionPrices",
+    "type": "(`shippingOptions`: [ShippingOption](medusa.ShippingOption.mdx)[], `context`: Omit&#60;[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx), \"region_id\"&#62;) => Promise&#60;[PricedShippingOption](../types/medusa.PricedShippingOption.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "setVariantPrices",
+    "type": "(`variants`: [ProductVariant](medusa.ProductVariant.mdx)[], `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)) => Promise&#60;[PricedVariant](../types/medusa.PricedVariant.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shouldRetryTransaction_",
+    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "withTransaction",
+    "type": "(`transactionManager?`: `EntityManager`) => [PricingService](medusa.PricingService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

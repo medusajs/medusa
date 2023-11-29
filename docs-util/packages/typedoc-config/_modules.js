@@ -8,5 +8,6 @@ module.exports = (options) => {
     tsConfigName: "types.json",
     entryPointStrategy: "expand",
     plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-rename-defaults"],
+    enableInternalResolve: true,
   })
 }

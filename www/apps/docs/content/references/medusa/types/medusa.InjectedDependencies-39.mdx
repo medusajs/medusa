@@ -1,0 +1,56 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# InjectedDependencies
+
+ **InjectedDependencies**: `Object`
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "configModule",
+    "type": "[ConfigModule](medusa.ConfigModule.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "featureFlags",
+        "type": "`Record<string, boolean \\| string>`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "modules",
+        "type": "`Record<string, boolean \\| Partial&#60;[InternalModuleDeclaration](medusa.InternalModuleDeclaration.mdx) \\| [ExternalModuleDeclaration](medusa.ExternalModuleDeclaration.mdx)&#62;>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "plugins",
+        "type": "(`object` \\| `string`)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "projectConfig",
+        "type": "[ProjectConfigOptions](medusa.ProjectConfigOptions.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

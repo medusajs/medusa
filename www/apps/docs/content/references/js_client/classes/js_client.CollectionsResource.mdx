@@ -52,7 +52,7 @@ medusa.collections.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[StoreGetCollectionsParams](../../internal/classes/js_client.internal.StoreGetCollectionsParams.mdx)",
+    "type": "[StoreGetCollectionsParams](../../medusa/classes/medusa.StoreGetCollectionsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved product collections.",
     "optional": true,
     "defaultValue": "",
@@ -60,7 +60,7 @@ medusa.collections.list({
     "children": [
       {
         "name": "created_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product collections' `created_at` date",
         "optional": true,
         "defaultValue": "",
@@ -133,7 +133,7 @@ medusa.collections.list({
       },
       {
         "name": "updated_at",
-        "type": "[DateComparisonOperator](../../internal/classes/js_client.internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../../medusa/classes/medusa.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product collections' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -195,132 +195,12 @@ medusa.collections.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCollectionsListRes](../../internal/types/js_client.internal.StoreCollectionsListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCollectionsListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product collections with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCollectionsListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ collections: [ProductCollection](../../internal/classes/js_client.internal.ProductCollection.mdx)[]  }``",
-        "description": "The list of product collections with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "collections",
-            "type": "[ProductCollection](../../internal/classes/js_client.internal.ProductCollection.mdx)[]",
-            "description": "An array of product collections details",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "handle",
-                "type": "`string`",
-                "description": "A unique string that identifies the Product Collection - can for example be used in slug structures.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product collection's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[Product](../../internal/classes/js_client.internal.Product.mdx)[]",
-                "description": "The details of the products that belong to this product collection.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The title that the Product Collection is identified by.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -369,104 +249,11 @@ medusa.collections.retrieve(collectionId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreCollectionsRes](../../internal/types/js_client.internal.StoreCollectionsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreCollectionsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the collection's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreCollectionsRes",
-        "type": "`object`",
-        "description": "The details of the product collection.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "collection",
-            "type": "[ProductCollection](../../internal/classes/js_client.internal.ProductCollection.mdx)",
-            "description": "Product collection details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "handle",
-                "type": "`string`",
-                "description": "A unique string that identifies the Product Collection - can for example be used in slug structures.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product collection's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[Product](../../internal/classes/js_client.internal.Product.mdx)[]",
-                "description": "The details of the products that belong to this product collection.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The title that the Product Collection is identified by.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

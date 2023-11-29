@@ -42,7 +42,7 @@ medusa.admin.users.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminCreateUserPayload](../../internal/types/js_client.internal.AdminCreateUserPayload.mdx)",
+    "type": "`AdminCreateUserPayload`",
     "description": "The user to create.",
     "optional": false,
     "defaultValue": "",
@@ -65,32 +65,12 @@ medusa.admin.users.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminUserRes](../../internal/types/js_client.internal.AdminUserRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminUserRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminUserRes",
-        "type": "`object`",
-        "description": "The user's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "user",
-            "type": "Omit&#60;[User](../../internal/classes/js_client.internal.User.mdx), \"password_hash\"&#62;",
-            "description": "User details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -140,40 +120,12 @@ medusa.admin.users.delete(userId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[DeleteResponse](../../internal/interfaces/js_client.internal.DeleteResponse.mdx)&#62;",
+    "type": "ResponsePromise&#60;DeleteResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "deleted",
-        "type": "`boolean`",
-        "description": "Whether the item was deleted successfully.",
-        "optional": false,
-        "defaultValue": "true",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of the deleted item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "object",
-        "type": "`string`",
-        "description": "The type of the deleted item.",
-        "optional": false,
-        "defaultValue": "product-collection",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -214,32 +166,12 @@ medusa.admin.users.list()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminUsersListRes](../../internal/types/js_client.internal.AdminUsersListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminUsersListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of users.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminUsersListRes",
-        "type": "`object`",
-        "description": "The list of users.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "users",
-            "type": "Omit&#60;[User](../../internal/classes/js_client.internal.User.mdx), \"password_hash\"&#62;[]",
-            "description": "An array of users details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -270,7 +202,7 @@ medusa.admin.users.resetPassword({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminResetPasswordRequest](../../internal/classes/js_client.internal.AdminResetPasswordRequest.mdx)",
+    "type": "[AdminResetPasswordRequest](../../medusa/classes/medusa.AdminResetPasswordRequest.mdx)",
     "description": "The reset details.",
     "optional": false,
     "defaultValue": "",
@@ -321,32 +253,12 @@ medusa.admin.users.resetPassword({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminUserRes](../../internal/types/js_client.internal.AdminUserRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminUserRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminUserRes",
-        "type": "`object`",
-        "description": "The user's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "user",
-            "type": "Omit&#60;[User](../../internal/classes/js_client.internal.User.mdx), \"password_hash\"&#62;",
-            "description": "User details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -396,32 +308,12 @@ medusa.admin.users.retrieve(userId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminUserRes](../../internal/types/js_client.internal.AdminUserRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminUserRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminUserRes",
-        "type": "`object`",
-        "description": "The user's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "user",
-            "type": "Omit&#60;[User](../../internal/classes/js_client.internal.User.mdx), \"password_hash\"&#62;",
-            "description": "User details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -455,7 +347,7 @@ medusa.admin.users.sendResetPasswordToken({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminResetPasswordTokenRequest](../../internal/classes/js_client.internal.AdminResetPasswordTokenRequest.mdx)",
+    "type": "[AdminResetPasswordTokenRequest](../../medusa/classes/medusa.AdminResetPasswordTokenRequest.mdx)",
     "description": "The user's reset details.",
     "optional": false,
     "defaultValue": "",
@@ -488,7 +380,7 @@ medusa.admin.users.sendResetPasswordToken({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;void&#62;",
+    "type": "ResponsePromise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the token is generated successfully.",
@@ -531,22 +423,12 @@ medusa.admin.users.update(userId, {
   },
   {
     "name": "payload",
-    "type": "[AdminUpdateUserPayload](../../internal/types/js_client.internal.AdminUpdateUserPayload.mdx)",
+    "type": "`AdminUpdateUserPayload`",
     "description": "The attributes to update in the user.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "role",
-        "type": "[UpdateUserRoles](../../internal/types/js_client.internal.UpdateUserRoles.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "customHeaders",
@@ -564,31 +446,11 @@ medusa.admin.users.update(userId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminUserRes](../../internal/types/js_client.internal.AdminUserRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminUserRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminUserRes",
-        "type": "`object`",
-        "description": "The user's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "user",
-            "type": "Omit&#60;[User](../../internal/classes/js_client.internal.User.mdx), \"password_hash\"&#62;",
-            "description": "User details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

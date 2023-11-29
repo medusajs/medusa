@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-15.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-14.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ ___
   },
   {
     "name": "taxCalculationStrategy_",
-    "type": "[ITaxCalculationStrategy](../interfaces/services.ITaxCalculationStrategy.mdx)",
+    "type": "[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -219,7 +219,7 @@ Calculate and return the gift cards totals
   },
   {
     "name": "__namedParameters.giftCardTransactions",
-    "type": "[GiftCardTransaction](../types/services.GiftCardTransaction-1.mdx)[]",
+    "type": "[GiftCardTransaction](../../medusa/types/medusa.GiftCardTransaction-1.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -228,7 +228,7 @@ Calculate and return the gift cards totals
   },
   {
     "name": "__namedParameters.giftCards",
-    "type": "[GiftCard](services.GiftCard.mdx)[]",
+    "type": "[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -237,8 +237,8 @@ Calculate and return the gift cards totals
   },
   {
     "name": "__namedParameters.region",
-    "type": "[Region](services.Region.mdx)",
-    "description": "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
+    "type": "[Region](../../entities/classes/entities.Region.mdx)",
+    "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -251,7 +251,7 @@ Calculate and return the gift cards totals
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
+    "type": "Promise&#60;object&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -280,7 +280,7 @@ Calculate and return the gift cards totals based on their transactions
   },
   {
     "name": "__namedParameters.giftCardTransactions",
-    "type": "[GiftCardTransaction](../types/services.GiftCardTransaction-1.mdx)[]",
+    "type": "[GiftCardTransaction](../../medusa/types/medusa.GiftCardTransaction-1.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -475,7 +475,7 @@ Return the amount that can be refund on a line item
   },
   {
     "name": "lineItem.tax_lines",
-    "type": "[LineItemTaxLine](services.LineItemTaxLine.mdx)[]",
+    "type": "[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -502,7 +502,7 @@ Return the amount that can be refund on a line item
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -597,7 +597,7 @@ ___
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -640,7 +640,7 @@ Calculate and return the items totals for either the legacy calculation or the n
 <ParameterTypes parameters={[
   {
     "name": "items",
-    "type": "[LineItem](services.LineItem.mdx) \\| [LineItem](services.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -658,7 +658,7 @@ Calculate and return the items totals for either the legacy calculation or the n
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -690,7 +690,7 @@ Calculate and return the items totals for either the legacy calculation or the n
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/services.LineItemTotals.mdx);  &#125;&#62;",
+    "type": "Promise&#60;object&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -710,7 +710,7 @@ Calculate and return the legacy calculated totals using the tax rate
 <ParameterTypes parameters={[
   {
     "name": "item",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -728,7 +728,7 @@ Calculate and return the legacy calculated totals using the tax rate
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -746,7 +746,7 @@ Calculate and return the legacy calculated totals using the tax rate
   },
   {
     "name": "__namedParameters.lineItemAllocation.discount",
-    "type": "[DiscountAllocation](../types/services.DiscountAllocation.mdx)",
+    "type": "[DiscountAllocation](../../medusa/types/medusa.DiscountAllocation.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -755,7 +755,7 @@ Calculate and return the legacy calculated totals using the tax rate
   },
   {
     "name": "__namedParameters.lineItemAllocation.gift_card",
-    "type": "[GiftCardAllocation](../types/services.GiftCardAllocation.mdx)",
+    "type": "[GiftCardAllocation](../../medusa/types/medusa.GiftCardAllocation.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -778,7 +778,7 @@ Calculate and return the legacy calculated totals using the tax rate
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemTotals](../types/services.LineItemTotals.mdx)&#62;",
+    "type": "Promise&#60;[LineItemTotals](../../medusa/types/medusa.LineItemTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -798,7 +798,7 @@ Calculate and return the totals for an item
 <ParameterTypes parameters={[
   {
     "name": "item",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -816,7 +816,7 @@ Calculate and return the totals for an item
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -843,7 +843,7 @@ Calculate and return the totals for an item
   },
   {
     "name": "__namedParameters.lineItemAllocation.discount",
-    "type": "[DiscountAllocation](../types/services.DiscountAllocation.mdx)",
+    "type": "[DiscountAllocation](../../medusa/types/medusa.DiscountAllocation.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -852,7 +852,7 @@ Calculate and return the totals for an item
   },
   {
     "name": "__namedParameters.lineItemAllocation.gift_card",
-    "type": "[GiftCardAllocation](../types/services.GiftCardAllocation.mdx)",
+    "type": "[GiftCardAllocation](../../medusa/types/medusa.GiftCardAllocation.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -861,7 +861,7 @@ Calculate and return the totals for an item
   },
   {
     "name": "__namedParameters.taxLines",
-    "type": "[LineItemTaxLine](services.LineItemTaxLine.mdx)[]",
+    "type": "[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -875,7 +875,7 @@ Calculate and return the totals for an item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemTotals](../types/services.LineItemTotals.mdx)&#62;",
+    "type": "Promise&#60;[LineItemTotals](../../medusa/types/medusa.LineItemTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -895,7 +895,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
 <ParameterTypes parameters={[
   {
     "name": "shippingMethods",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx) \\| [ShippingMethod](services.ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -913,7 +913,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -922,7 +922,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
   },
   {
     "name": "__namedParameters.discounts",
-    "type": "[Discount](services.Discount.mdx)[]",
+    "type": "[Discount](../../entities/classes/entities.Discount.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -954,7 +954,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/services.ShippingMethodTotals.mdx);  &#125;&#62;",
+    "type": "Promise&#60;object&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -974,7 +974,7 @@ Calculate and return the shipping method totals legacy using the tax rate
 <ParameterTypes parameters={[
   {
     "name": "shippingMethod",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx)",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -992,7 +992,7 @@ Calculate and return the shipping method totals legacy using the tax rate
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1001,7 +1001,7 @@ Calculate and return the shipping method totals legacy using the tax rate
   },
   {
     "name": "__namedParameters.discounts",
-    "type": "[Discount](services.Discount.mdx)[]",
+    "type": "[Discount](../../entities/classes/entities.Discount.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1024,7 +1024,7 @@ Calculate and return the shipping method totals legacy using the tax rate
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingMethodTotals](../types/services.ShippingMethodTotals.mdx)&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../../medusa/types/medusa.ShippingMethodTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1044,7 +1044,7 @@ Calculate and return the shipping method totals
 <ParameterTypes parameters={[
   {
     "name": "shippingMethod",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx)",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1062,7 +1062,7 @@ Calculate and return the shipping method totals
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1071,7 +1071,7 @@ Calculate and return the shipping method totals
   },
   {
     "name": "__namedParameters.discounts",
-    "type": "[Discount](services.Discount.mdx)[]",
+    "type": "[Discount](../../entities/classes/entities.Discount.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1089,7 +1089,7 @@ Calculate and return the shipping method totals
   },
   {
     "name": "__namedParameters.taxLines",
-    "type": "[ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx)[]",
+    "type": "[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1103,7 +1103,7 @@ Calculate and return the shipping method totals
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingMethodTotals](../types/services.ShippingMethodTotals.mdx)&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../../medusa/types/medusa.ShippingMethodTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1121,7 +1121,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1167,7 +1167,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-15.mdx)) => [NewTotalsService](services.NewTotalsService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-14.mdx)) => [NewTotalsService](services.NewTotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1203,7 +1203,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](services.FlagRouter.mdx)",
+    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1221,7 +1221,7 @@ ___
   },
   {
     "name": "taxCalculationStrategy_",
-    "type": "[ITaxCalculationStrategy](../interfaces/services.ITaxCalculationStrategy.mdx)",
+    "type": "[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1266,7 +1266,7 @@ ___
   },
   {
     "name": "getGiftCardTotals",
-    "type": "(`giftCardableAmount`: `number`, `__namedParameters`: ``{ giftCardTransactions?: [GiftCardTransaction](../types/services.GiftCardTransaction-1.mdx)[] ; giftCards?: [GiftCard](services.GiftCard.mdx)[] ; region: [Region](services.Region.mdx)  }``) => Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
+    "type": "(`giftCardableAmount`: `number`, `__namedParameters`: ``{ giftCardTransactions?: [GiftCardTransaction](../../medusa/types/medusa.GiftCardTransaction-1.mdx)[] ; giftCards?: [GiftCard](../../entities/classes/entities.GiftCard.mdx)[] ; region: [Region](../../entities/classes/entities.Region.mdx)  }``) => Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1275,7 +1275,7 @@ ___
   },
   {
     "name": "getGiftCardTransactionsTotals",
-    "type": "(`__namedParameters`: ``{ giftCardTransactions: [GiftCardTransaction](../types/services.GiftCardTransaction-1.mdx)[] ; region: &#123; gift_cards_taxable: boolean ; tax_rate: number  &#125;  }``) => ``{ tax_total: number ; total: number  }``",
+    "type": "(`__namedParameters`: ``{ giftCardTransactions: [GiftCardTransaction](../../medusa/types/medusa.GiftCardTransaction-1.mdx)[] ; region: &#123; gift_cards_taxable: boolean ; tax_rate: number  &#125;  }``) => ``{ tax_total: number ; total: number  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1293,7 +1293,7 @@ ___
   },
   {
     "name": "getLineItemRefund",
-    "type": "(`lineItem`: ``{ id: string ; includes_tax: boolean ; quantity: number ; tax_lines: [LineItemTaxLine](services.LineItemTaxLine.mdx)[] ; unit_price: number  }``, `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx) ; taxRate?: null \\| number  }``) => `number`",
+    "type": "(`lineItem`: ``{ id: string ; includes_tax: boolean ; quantity: number ; tax_lines: [LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[] ; unit_price: number  }``, `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx) ; taxRate?: null \\| number  }``) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1302,7 +1302,7 @@ ___
   },
   {
     "name": "getLineItemRefundLegacy",
-    "type": "(`lineItem`: ``{ id: string ; includes_tax: boolean ; quantity: number ; unit_price: number  }``, `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx) ; taxRate: number  }``) => `number`",
+    "type": "(`lineItem`: ``{ id: string ; includes_tax: boolean ; quantity: number ; unit_price: number  }``, `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx) ; taxRate: number  }``) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1311,7 +1311,7 @@ ___
   },
   {
     "name": "getLineItemTotals",
-    "type": "(`items`: [LineItem](services.LineItem.mdx) \\| [LineItem](services.LineItem.mdx)[], `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx) ; includeTax?: boolean ; taxRate?: null \\| number  }``) => Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/services.LineItemTotals.mdx);  &#125;&#62;",
+    "type": "(`items`: [LineItem](../../entities/classes/entities.LineItem.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[], `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx) ; includeTax?: boolean ; taxRate?: null \\| number  }``) => Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../../medusa/types/medusa.LineItemTotals.mdx);  &#125;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1320,7 +1320,7 @@ ___
   },
   {
     "name": "getLineItemTotalsLegacy",
-    "type": "(`item`: [LineItem](services.LineItem.mdx), `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx) ; lineItemAllocation: &#123; discount?: [DiscountAllocation](../types/services.DiscountAllocation.mdx) ; gift_card?: [GiftCardAllocation](../types/services.GiftCardAllocation.mdx)  &#125; ; taxRate: number  }``) => Promise&#60;[LineItemTotals](../types/services.LineItemTotals.mdx)&#62;",
+    "type": "(`item`: [LineItem](../../entities/classes/entities.LineItem.mdx), `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx) ; lineItemAllocation: &#123; discount?: [DiscountAllocation](../../medusa/types/medusa.DiscountAllocation.mdx) ; gift_card?: [GiftCardAllocation](../../medusa/types/medusa.GiftCardAllocation.mdx)  &#125; ; taxRate: number  }``) => Promise&#60;[LineItemTotals](../../medusa/types/medusa.LineItemTotals.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1329,7 +1329,7 @@ ___
   },
   {
     "name": "getLineItemTotals_",
-    "type": "(`item`: [LineItem](services.LineItem.mdx), `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx) ; includeTax?: boolean ; lineItemAllocation: &#123; discount?: [DiscountAllocation](../types/services.DiscountAllocation.mdx) ; gift_card?: [GiftCardAllocation](../types/services.GiftCardAllocation.mdx)  &#125; ; taxLines?: [LineItemTaxLine](services.LineItemTaxLine.mdx)[]  }``) => Promise&#60;[LineItemTotals](../types/services.LineItemTotals.mdx)&#62;",
+    "type": "(`item`: [LineItem](../../entities/classes/entities.LineItem.mdx), `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx) ; includeTax?: boolean ; lineItemAllocation: &#123; discount?: [DiscountAllocation](../../medusa/types/medusa.DiscountAllocation.mdx) ; gift_card?: [GiftCardAllocation](../../medusa/types/medusa.GiftCardAllocation.mdx)  &#125; ; taxLines?: [LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]  }``) => Promise&#60;[LineItemTotals](../../medusa/types/medusa.LineItemTotals.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1338,7 +1338,7 @@ ___
   },
   {
     "name": "getShippingMethodTotals",
-    "type": "(`shippingMethods`: [ShippingMethod](services.ShippingMethod.mdx) \\| [ShippingMethod](services.ShippingMethod.mdx)[], `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx) ; discounts?: [Discount](services.Discount.mdx)[] ; includeTax?: boolean ; taxRate?: null \\| number  }``) => Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/services.ShippingMethodTotals.mdx);  &#125;&#62;",
+    "type": "(`shippingMethods`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[], `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx) ; discounts?: [Discount](../../entities/classes/entities.Discount.mdx)[] ; includeTax?: boolean ; taxRate?: null \\| number  }``) => Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../../medusa/types/medusa.ShippingMethodTotals.mdx);  &#125;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1347,7 +1347,7 @@ ___
   },
   {
     "name": "getShippingMethodTotalsLegacy",
-    "type": "(`shippingMethod`: [ShippingMethod](services.ShippingMethod.mdx), `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx) ; discounts?: [Discount](services.Discount.mdx)[] ; taxRate: number  }``) => Promise&#60;[ShippingMethodTotals](../types/services.ShippingMethodTotals.mdx)&#62;",
+    "type": "(`shippingMethod`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx), `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx) ; discounts?: [Discount](../../entities/classes/entities.Discount.mdx)[] ; taxRate: number  }``) => Promise&#60;[ShippingMethodTotals](../../medusa/types/medusa.ShippingMethodTotals.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1356,7 +1356,7 @@ ___
   },
   {
     "name": "getShippingMethodTotals_",
-    "type": "(`shippingMethod`: [ShippingMethod](services.ShippingMethod.mdx), `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx) ; discounts?: [Discount](services.Discount.mdx)[] ; includeTax?: boolean ; taxLines?: [ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx)[]  }``) => Promise&#60;[ShippingMethodTotals](../types/services.ShippingMethodTotals.mdx)&#62;",
+    "type": "(`shippingMethod`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx), `__namedParameters`: ``{ calculationContext: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx) ; discounts?: [Discount](../../entities/classes/entities.Discount.mdx)[] ; includeTax?: boolean ; taxLines?: [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]  }``) => Promise&#60;[ShippingMethodTotals](../../medusa/types/medusa.ShippingMethodTotals.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

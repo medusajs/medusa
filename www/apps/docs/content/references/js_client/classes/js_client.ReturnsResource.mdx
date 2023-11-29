@@ -44,7 +44,7 @@ medusa.returns.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[StorePostReturnsReq](../../internal/classes/js_client.internal.StorePostReturnsReq.mdx)",
+    "type": "[StorePostReturnsReq](../../medusa/classes/medusa.StorePostReturnsReq.mdx)",
     "description": "The data of the return to be created.",
     "optional": false,
     "defaultValue": "",
@@ -52,7 +52,7 @@ medusa.returns.create({
     "children": [
       {
         "name": "items",
-        "type": "[Item](../../internal/classes/js_client.internal.Item-1.mdx)[]",
+        "type": "[Item](../../medusa/classes/medusa.Item-6.mdx)[]",
         "description": "The items to include in the return.",
         "optional": false,
         "defaultValue": "",
@@ -107,7 +107,7 @@ medusa.returns.create({
       },
       {
         "name": "return_shipping",
-        "type": "[ReturnShipping](../../internal/classes/js_client.internal.ReturnShipping.mdx)",
+        "type": "[ReturnShipping](../../medusa/classes/medusa.ReturnShipping-3.mdx)",
         "description": "The return shipping method used to return the items. If provided, a fulfillment is automatically created for the return.",
         "optional": true,
         "defaultValue": "",
@@ -142,203 +142,11 @@ medusa.returns.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[StoreReturnsRes](../../internal/types/js_client.internal.StoreReturnsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;StoreReturnsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the return's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "StoreReturnsRes",
-        "type": "`object`",
-        "description": "The return's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "return",
-            "type": "[Return](../../internal/classes/js_client.internal.Return.mdx)",
-            "description": "Return details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "claim_order",
-                "type": "[ClaimOrder](../../internal/classes/js_client.internal.ClaimOrder.mdx)",
-                "description": "The details of the claim that the return may belong to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "claim_order_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the claim that the return may belong to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The return's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "idempotency_key",
-                "type": "`null` \\| `string`",
-                "description": "Randomly generated key used to continue the completion of the return in case of failure.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "items",
-                "type": "[ReturnItem](../../internal/classes/js_client.internal.internal.ReturnItem.mdx)[]",
-                "description": "The details of the items that the customer is returning.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "location_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the stock location the return will be added back.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "no_notification",
-                "type": "`null` \\| `boolean`",
-                "description": "When set to true, no notification will be sent related to this return.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "order",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)",
-                "description": "The details of the order that the return was created for.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "order_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the order that the return was created for.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "received_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the return was received.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "refund_amount",
-                "type": "`number`",
-                "description": "The amount that should be refunded as a result of the return.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_data",
-                "type": "`Record<string, unknown>`",
-                "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_method",
-                "type": "[ShippingMethod](../../internal/classes/js_client.internal.ShippingMethod-4.mdx)",
-                "description": "The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "status",
-                "type": "[ReturnStatus](../../internal/enums/js_client.internal.internal.ReturnStatus.mdx)",
-                "description": "Status of the Return.",
-                "optional": false,
-                "defaultValue": "requested",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "swap",
-                "type": "[Swap](../../internal/classes/js_client.internal.Swap.mdx)",
-                "description": "The details of the swap that the return may belong to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "swap_id",
-                "type": "`null` \\| `string`",
-                "description": "The ID of the swap that the return may belong to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

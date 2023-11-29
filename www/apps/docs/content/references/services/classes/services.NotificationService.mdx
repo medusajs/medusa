@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "container",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-17.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-16.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ ___
   },
   {
     "name": "container_",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-17.mdx) & ``{}``",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-16.mdx) & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ ___
   },
   {
     "name": "logger_",
-    "type": "[Logger](../types/services.Logger-1.mdx)",
+    "type": "[Logger](../../medusa/types/medusa.Logger-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ ___
   },
   {
     "name": "notificationProviderRepository_",
-    "type": "Repository&#60;[NotificationProvider](services.NotificationProvider.mdx)&#62;",
+    "type": "Repository&#60;[NotificationProvider](../../medusa/classes/medusa.NotificationProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ ___
   },
   {
     "name": "notificationRepository_",
-    "type": "Repository&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "Repository&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -253,7 +253,7 @@ order to allow for resends. Will log any errors that are encountered.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| void \\| [Notification](services.Notification.mdx)[]&#62;",
+    "type": "Promise&#60;undefined \\| void \\| [Notification](../../entities/classes/entities.Notification.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of notification subscribed",
@@ -273,7 +273,7 @@ Retrieves a list of notifications.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "the params to select the notifications by.",
     "optional": false,
     "defaultValue": "",
@@ -282,7 +282,7 @@ Retrieves a list of notifications.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": false,
     "defaultValue": "",
@@ -296,7 +296,7 @@ Retrieves a list of notifications.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Notification](services.Notification.mdx)[]&#62;",
+    "type": "Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notifications that satisfy the query.",
@@ -316,7 +316,7 @@ Retrieves a list of notifications and total count.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "the params to select the notifications by.",
     "optional": false,
     "defaultValue": "",
@@ -325,7 +325,7 @@ Retrieves a list of notifications and total count.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": false,
     "defaultValue": "",
@@ -339,7 +339,7 @@ Retrieves a list of notifications and total count.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[Notification](services.Notification.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[Notification](../../entities/classes/entities.Notification.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notifications that satisfy the query as well as the count.",
@@ -438,7 +438,7 @@ underlying provider's resendNotification method.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "any configuration that might override the previous\n send",
     "optional": false,
     "defaultValue": "{}",
@@ -452,7 +452,7 @@ underlying provider's resendNotification method.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created notification",
@@ -481,7 +481,7 @@ Retrieves a notification with a given id
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": false,
     "defaultValue": "{}",
@@ -495,7 +495,7 @@ Retrieves a notification with a given id
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notification",
@@ -530,7 +530,7 @@ resolution fails.
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__container__`: `any`, `__configModule__?`: `Record<string, unknown>`, `__moduleDeclaration__?`: `Record<string, unknown>`) => [AbstractNotificationService](services.AbstractNotificationService.mdx)",
+    "type": "(`__container__`: `any`, `__configModule__?`: `Record<string, unknown>`, `__moduleDeclaration__?`: `Record<string, unknown>`) => [AbstractNotificationService](../../medusa/classes/medusa.AbstractNotificationService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -620,7 +620,7 @@ resolution fails.
   },
   {
     "name": "resendNotification",
-    "type": "(`notification`: `unknown`, `config`: `unknown`, `attachmentGenerator`: `unknown`) => Promise&#60;[ReturnedData](../types/services.ReturnedData.mdx)&#62;",
+    "type": "(`notification`: `unknown`, `config`: `unknown`, `attachmentGenerator`: `unknown`) => Promise&#60;[ReturnedData](../../medusa/types/medusa.ReturnedData.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -629,7 +629,7 @@ resolution fails.
   },
   {
     "name": "sendNotification",
-    "type": "(`event`: `string`, `data`: `unknown`, `attachmentGenerator`: `unknown`) => Promise&#60;[ReturnedData](../types/services.ReturnedData.mdx)&#62;",
+    "type": "(`event`: `string`, `data`: `unknown`, `attachmentGenerator`: `unknown`) => Promise&#60;[ReturnedData](../../medusa/types/medusa.ReturnedData.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -647,7 +647,7 @@ resolution fails.
   },
   {
     "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [AbstractNotificationService](services.AbstractNotificationService.mdx)",
+    "type": "(`transactionManager?`: `EntityManager`) => [AbstractNotificationService](../../medusa/classes/medusa.AbstractNotificationService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -700,7 +700,7 @@ method. Persists the Notification in the database.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;undefined \\| [Notification](services.Notification.mdx)&#62;",
+    "type": "Promise&#60;undefined \\| [Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created notification",
@@ -718,7 +718,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -807,7 +807,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`container`: [InjectedDependencies](../types/services.InjectedDependencies-17.mdx)) => [NotificationService](services.NotificationService.mdx)",
+    "type": "(`container`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-16.mdx)) => [NotificationService](services.NotificationService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -852,7 +852,7 @@ ___
   },
   {
     "name": "container_",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-17.mdx) & ``{}``",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-16.mdx) & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -861,7 +861,7 @@ ___
   },
   {
     "name": "logger_",
-    "type": "[Logger](../types/services.Logger-1.mdx)",
+    "type": "[Logger](../../medusa/types/medusa.Logger-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -879,7 +879,7 @@ ___
   },
   {
     "name": "notificationProviderRepository_",
-    "type": "Repository&#60;[NotificationProvider](services.NotificationProvider.mdx)&#62;",
+    "type": "Repository&#60;[NotificationProvider](../../medusa/classes/medusa.NotificationProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -888,7 +888,7 @@ ___
   },
   {
     "name": "notificationRepository_",
-    "type": "Repository&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "Repository&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -933,7 +933,7 @@ ___
   },
   {
     "name": "handleEvent",
-    "type": "(`eventName`: `string`, `data`: `Record<string, unknown>`) => Promise&#60;undefined \\| void \\| [Notification](services.Notification.mdx)[]&#62;",
+    "type": "(`eventName`: `string`, `data`: `Record<string, unknown>`) => Promise&#60;undefined \\| void \\| [Notification](../../entities/classes/entities.Notification.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -942,7 +942,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[Notification](services.Notification.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Notification](services.Notification.mdx)&#62;) => Promise&#60;[Notification](services.Notification.mdx)[]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;) => Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -951,7 +951,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[Notification](services.Notification.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Notification](services.Notification.mdx)&#62;) => Promise&#60;[[Notification](services.Notification.mdx)[], number]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;) => Promise&#60;[[Notification](../../entities/classes/entities.Notification.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -978,7 +978,7 @@ ___
   },
   {
     "name": "resend",
-    "type": "(`id`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Notification](services.Notification.mdx)&#62;) => Promise&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "(`id`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;) => Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -987,7 +987,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Notification](services.Notification.mdx)&#62;) => Promise&#60;[Notification](services.Notification.mdx)&#62;",
+    "type": "(`id`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;) => Promise&#60;[Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -996,7 +996,7 @@ ___
   },
   {
     "name": "retrieveProvider_",
-    "type": "(`id`: `string`) => [AbstractNotificationService](services.AbstractNotificationService.mdx)",
+    "type": "(`id`: `string`) => [AbstractNotificationService](../../medusa/classes/medusa.AbstractNotificationService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1005,7 +1005,7 @@ ___
   },
   {
     "name": "send",
-    "type": "(`event`: `string`, `eventData`: `Record<string, unknown>`, `providerId`: `string`) => Promise&#60;undefined \\| [Notification](services.Notification.mdx)&#62;",
+    "type": "(`event`: `string`, `eventData`: `Record<string, unknown>`, `providerId`: `string`) => Promise&#60;undefined \\| [Notification](../../entities/classes/entities.Notification.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

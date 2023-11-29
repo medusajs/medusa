@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../types/services.InjectedDependencies-16.mdx)",
+    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-15.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ ___
   },
   {
     "name": "noteRepository_",
-    "type": "Repository&#60;[Note](services.Note.mdx)&#62;",
+    "type": "Repository&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -228,7 +228,7 @@ Creates a note associated with a given author
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateNoteInput](../interfaces/services.CreateNoteInput.mdx)",
+    "type": "[CreateNoteInput](../../medusa/interfaces/medusa.CreateNoteInput.mdx)",
     "description": "the note to create",
     "optional": false,
     "defaultValue": "",
@@ -260,7 +260,7 @@ Creates a note associated with a given author
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Note](services.Note.mdx)&#62;",
+    "type": "Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the creation result",
@@ -314,7 +314,7 @@ Fetches all notes related to the given selector
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[Note](services.Note.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -323,7 +323,7 @@ Fetches all notes related to the given selector
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Note](services.Note.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "the configuration used to find the objects. contains relations, skip, and take.",
     "optional": false,
     "defaultValue": "",
@@ -337,7 +337,7 @@ Fetches all notes related to the given selector
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Note](services.Note.mdx)[]&#62;",
+    "type": "Promise&#60;[Note](../../entities/classes/entities.Note.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "notes related to the given search.",
@@ -357,7 +357,7 @@ Fetches all notes related to the given selector
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[Note](services.Note.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -366,7 +366,7 @@ Fetches all notes related to the given selector
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Note](services.Note.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "the configuration used to find the objects. contains relations, skip, and take.",
     "optional": false,
     "defaultValue": "",
@@ -380,7 +380,7 @@ Fetches all notes related to the given selector
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[[Note](services.Note.mdx)[], number]&#62;",
+    "type": "Promise&#60;[[Note](../../entities/classes/entities.Note.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "notes related to the given search.",
@@ -409,7 +409,7 @@ Retrieves a specific note.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Note](services.Note.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "any options needed to query for the result.",
     "optional": false,
     "defaultValue": "{}",
@@ -423,7 +423,7 @@ Retrieves a specific note.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Note](services.Note.mdx)&#62;",
+    "type": "Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "which resolves to the requested note.",
@@ -441,7 +441,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -498,7 +498,7 @@ Updates a given note with a new value
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[Note](services.Note.mdx)&#62;",
+    "type": "Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the updated element",
@@ -530,7 +530,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../types/services.InjectedDependencies-16.mdx)) => [NoteService](services.NoteService.mdx)",
+    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-15.mdx)) => [NoteService](services.NoteService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -584,7 +584,7 @@ ___
   },
   {
     "name": "noteRepository_",
-    "type": "Repository&#60;[Note](services.Note.mdx)&#62;",
+    "type": "Repository&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -629,7 +629,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`data`: [CreateNoteInput](../interfaces/services.CreateNoteInput.mdx), `config`: ``{ metadata: Record&#60;string, unknown&#62;  }``) => Promise&#60;[Note](services.Note.mdx)&#62;",
+    "type": "(`data`: [CreateNoteInput](../../medusa/interfaces/medusa.CreateNoteInput.mdx), `config`: ``{ metadata: Record&#60;string, unknown&#62;  }``) => Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -647,7 +647,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[Note](services.Note.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Note](services.Note.mdx)&#62;) => Promise&#60;[Note](services.Note.mdx)[]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;) => Promise&#60;[Note](../../entities/classes/entities.Note.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -656,7 +656,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[Note](services.Note.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Note](services.Note.mdx)&#62;) => Promise&#60;[[Note](services.Note.mdx)[], number]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;) => Promise&#60;[[Note](../../entities/classes/entities.Note.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -665,7 +665,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`noteId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[Note](services.Note.mdx)&#62;) => Promise&#60;[Note](services.Note.mdx)&#62;",
+    "type": "(`noteId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;) => Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -683,7 +683,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`noteId`: `string`, `value`: `string`) => Promise&#60;[Note](services.Note.mdx)&#62;",
+    "type": "(`noteId`: `string`, `value`: `string`) => Promise&#60;[Note](../../entities/classes/entities.Note.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

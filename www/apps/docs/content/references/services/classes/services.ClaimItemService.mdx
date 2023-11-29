@@ -56,7 +56,7 @@ ___
   },
   {
     "name": "claimImageRepository_",
-    "type": "Repository&#60;[ClaimImage](services.ClaimImage.mdx)&#62;",
+    "type": "Repository&#60;[ClaimImage](../../entities/classes/entities.ClaimImage.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ ___
   },
   {
     "name": "claimItemRepository_",
-    "type": "Repository&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "Repository&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ ___
   },
   {
     "name": "claimTagRepository_",
-    "type": "Repository&#60;[ClaimTag](services.ClaimTag.mdx)&#62;",
+    "type": "Repository&#60;[ClaimTag](../../entities/classes/entities.ClaimTag.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -253,7 +253,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateClaimItemInput](../types/services.CreateClaimItemInput.mdx)",
+    "type": "[CreateClaimItemInput](../../medusa/types/medusa.CreateClaimItemInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -267,7 +267,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "Promise&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -285,7 +285,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/services.Selector.mdx)&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -294,7 +294,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "description": "the config object for find",
     "optional": false,
     "defaultValue": "",
@@ -308,7 +308,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ClaimItem](services.ClaimItem.mdx)[]&#62;",
+    "type": "Promise&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -337,7 +337,7 @@ Gets a claim item by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "description": "configuration for the find operation",
     "optional": false,
     "defaultValue": "{}",
@@ -351,7 +351,7 @@ Gets a claim item by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "Promise&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the ClaimItem",
@@ -369,7 +369,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -424,7 +424,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "Promise&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -492,7 +492,7 @@ ___
   },
   {
     "name": "claimImageRepository_",
-    "type": "Repository&#60;[ClaimImage](services.ClaimImage.mdx)&#62;",
+    "type": "Repository&#60;[ClaimImage](../../entities/classes/entities.ClaimImage.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -501,7 +501,7 @@ ___
   },
   {
     "name": "claimItemRepository_",
-    "type": "Repository&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "Repository&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -510,7 +510,7 @@ ___
   },
   {
     "name": "claimTagRepository_",
-    "type": "Repository&#60;[ClaimTag](services.ClaimTag.mdx)&#62;",
+    "type": "Repository&#60;[ClaimTag](../../entities/classes/entities.ClaimTag.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -582,7 +582,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`data`: [CreateClaimItemInput](../types/services.CreateClaimItemInput.mdx)) => Promise&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "(`data`: [CreateClaimItemInput](../../medusa/types/medusa.CreateClaimItemInput.mdx)) => Promise&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -591,7 +591,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [Selector](../types/services.Selector.mdx)&#60;[ClaimItem](services.ClaimItem.mdx)&#62;, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ClaimItem](services.ClaimItem.mdx)&#62;) => Promise&#60;[ClaimItem](services.ClaimItem.mdx)[]&#62;",
+    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;) => Promise&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -600,7 +600,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`claimItemId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[ClaimItem](services.ClaimItem.mdx)&#62;) => Promise&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "(`claimItemId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;) => Promise&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -618,7 +618,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`id`: `any`, `data`: `any`) => Promise&#60;[ClaimItem](services.ClaimItem.mdx)&#62;",
+    "type": "(`id`: `any`, `data`: `any`) => Promise&#60;[ClaimItem](../../entities/classes/entities.ClaimItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

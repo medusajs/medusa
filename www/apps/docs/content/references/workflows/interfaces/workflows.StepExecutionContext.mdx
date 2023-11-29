@@ -11,7 +11,7 @@ The step's context.
 <ParameterTypes parameters={[
   {
     "name": "container",
-    "type": "[MedusaContainer](../types/workflows.MedusaContainer.mdx)",
+    "type": "[MedusaContainer](../../medusa/types/medusa.MedusaContainer-1.mdx)",
     "description": "The container used to access resources, such as services, in the step.",
     "optional": false,
     "defaultValue": "",
@@ -19,7 +19,7 @@ The step's context.
     "children": [
       {
         "name": "createScope",
-        "type": "() => [MedusaContainer](../types/workflows.MedusaContainer.mdx)",
+        "type": "() => [MedusaContainer](../../medusa/types/medusa.MedusaContainer-1.mdx)",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -28,7 +28,7 @@ The step's context.
       },
       {
         "name": "registerAdd",
-        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../types/workflows.MedusaContainer.mdx)",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../../medusa/types/medusa.MedusaContainer-1.mdx)",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -39,8 +39,8 @@ The step's context.
   },
   {
     "name": "context",
-    "type": "[Context](workflows.Context.mdx)",
-    "description": "A shared context object that is used to share resources between the application and the module.",
+    "type": "[Context](../../medusa/interfaces/medusa.Context.mdx)",
+    "description": "{@inheritDoc Context}",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -94,75 +94,11 @@ The step's context.
   },
   {
     "name": "metadata",
-    "type": "[TransactionMetadata](../types/workflows.TransactionMetadata.mdx)",
+    "type": "`TransactionMetadata`",
     "description": "Metadata passed in the input.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "action",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "action_type",
-        "type": "[TransactionHandlerType](../enums/workflows.TransactionHandlerType.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "attempt",
-        "type": "`number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "idempotency_key",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "model_id",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "reply_to_topic",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "timestamp",
-        "type": "`number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

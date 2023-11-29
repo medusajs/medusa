@@ -27,7 +27,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "extends",
-    "type": "``{ relationship: [JoinerRelationship](../types/product.JoinerRelationship.mdx) ; serviceName: string  }``[]",
+    "type": "`object`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -55,7 +55,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "fieldAlias",
-    "type": "`Record<string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;>`",
+    "type": "`Record<string, string \\| object>`",
     "description": "alias for deeper nested relationships (e.g. &#123; 'price': 'prices.calculated\\_price\\_set.amount' &#125;)",
     "optional": true,
     "defaultValue": "",

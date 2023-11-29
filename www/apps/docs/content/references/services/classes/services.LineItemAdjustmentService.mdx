@@ -15,7 +15,7 @@ Provides layer to manipulate line item adjustments.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[LineItemAdjustmentServiceProps](../types/services.LineItemAdjustmentServiceProps.mdx)",
+    "type": "[LineItemAdjustmentServiceProps](../../medusa/types/medusa.LineItemAdjustmentServiceProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ ___
   },
   {
     "name": "lineItemAdjustmentRepo_",
-    "type": "Repository&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "Repository&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -194,7 +194,7 @@ Creates a line item adjustment
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "Partial&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "Partial&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "the line item adjustment to create",
     "optional": false,
     "defaultValue": "",
@@ -208,7 +208,7 @@ Creates a line item adjustment
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "line item adjustment",
@@ -228,7 +228,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart object holding discounts",
     "optional": false,
     "defaultValue": "",
@@ -237,7 +237,7 @@ Creates adjustment for a line item
   },
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "the line item for which a line item adjustment might be created",
     "optional": false,
     "defaultValue": "",
@@ -251,7 +251,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)[]&#62;",
+    "type": "Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a line item adjustment or undefined if no adjustment was created",
@@ -271,7 +271,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[Cart](services.Cart.mdx)",
+    "type": "[Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart object holding discounts",
     "optional": false,
     "defaultValue": "",
@@ -280,7 +280,7 @@ Creates adjustment for a line item
   },
   {
     "name": "lineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "the line item for which a line item adjustment might be created",
     "optional": true,
     "defaultValue": "",
@@ -294,7 +294,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)[] \\| [LineItemAdjustment](services.LineItemAdjustment.mdx)[][]&#62;",
+    "type": "Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[] \\| [LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[][]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "if a lineItem was given, returns a line item adjustment or undefined if no adjustment was created\notherwise returns an array of line item adjustments for each line item in the cart",
@@ -314,7 +314,7 @@ Deletes line item adjustments matching a selector
 <ParameterTypes parameters={[
   {
     "name": "selectorOrIds",
-    "type": "`string` \\| `string`[] \\| [FilterableLineItemAdjustmentProps](services.FilterableLineItemAdjustmentProps.mdx) & ``{ discount_id?: FindOperator&#60;null \\| string&#62;  }``",
+    "type": "`string` \\| `string`[] \\| [FilterableLineItemAdjustmentProps](../../medusa/classes/medusa.FilterableLineItemAdjustmentProps.mdx) & `object`",
     "description": "the query object for find or the line item adjustment id",
     "optional": false,
     "defaultValue": "",
@@ -348,7 +348,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "calculationContextData",
-    "type": "[CalculationContextData](../types/services.CalculationContextData.mdx)",
+    "type": "[CalculationContextData](../../medusa/types/medusa.CalculationContextData.mdx)",
     "description": "the calculationContextData object holding discounts",
     "optional": false,
     "defaultValue": "",
@@ -357,7 +357,7 @@ Creates adjustment for a line item
   },
   {
     "name": "generatedLineItem",
-    "type": "[LineItem](services.LineItem.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
     "description": "the line item for which a line item adjustment might be created",
     "optional": false,
     "defaultValue": "",
@@ -366,7 +366,7 @@ Creates adjustment for a line item
   },
   {
     "name": "context",
-    "type": "[AdjustmentContext](../types/services.AdjustmentContext.mdx)",
+    "type": "[AdjustmentContext](../../medusa/types/medusa.AdjustmentContext.mdx)",
     "description": "the line item for which a line item adjustment might be created",
     "optional": false,
     "defaultValue": "",
@@ -380,7 +380,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[GeneratedAdjustment](../types/services.GeneratedAdjustment.mdx)[]&#62;",
+    "type": "Promise&#60;[GeneratedAdjustment](../../medusa/types/medusa.GeneratedAdjustment.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a line item adjustment or undefined if no adjustment was created",
@@ -400,7 +400,7 @@ Lists line item adjustments
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableLineItemAdjustmentProps](services.FilterableLineItemAdjustmentProps.mdx)",
+    "type": "[FilterableLineItemAdjustmentProps](../../medusa/classes/medusa.FilterableLineItemAdjustmentProps.mdx)",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -409,7 +409,7 @@ Lists line item adjustments
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -423,7 +423,7 @@ Lists line item adjustments
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)[]&#62;",
+    "type": "Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -452,7 +452,7 @@ Retrieves a line item adjustment by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/services.FindConfig.mdx)&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "the config to retrieve the line item adjustment by",
     "optional": false,
     "defaultValue": "{}",
@@ -466,7 +466,7 @@ Retrieves a line item adjustment by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item adjustment.",
@@ -484,7 +484,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -527,7 +527,7 @@ Creates a line item adjustment
   },
   {
     "name": "data",
-    "type": "Partial&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "Partial&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "the line item adjustment to create",
     "optional": false,
     "defaultValue": "",
@@ -541,7 +541,7 @@ Creates a line item adjustment
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "line item adjustment",
@@ -573,7 +573,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "constructor",
-    "type": "(`__namedParameters`: [LineItemAdjustmentServiceProps](../types/services.LineItemAdjustmentServiceProps.mdx)) => [LineItemAdjustmentService](services.LineItemAdjustmentService.mdx)",
+    "type": "(`__namedParameters`: [LineItemAdjustmentServiceProps](../../medusa/types/medusa.LineItemAdjustmentServiceProps.mdx)) => [LineItemAdjustmentService](services.LineItemAdjustmentService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -618,7 +618,7 @@ ___
   },
   {
     "name": "lineItemAdjustmentRepo_",
-    "type": "Repository&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "Repository&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -663,7 +663,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`data`: Partial&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;) => Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "(`data`: Partial&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;) => Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -672,7 +672,7 @@ ___
   },
   {
     "name": "createAdjustmentForLineItem",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `lineItem`: [LineItem](services.LineItem.mdx)) => Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)[]&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx)) => Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -681,7 +681,7 @@ ___
   },
   {
     "name": "createAdjustments",
-    "type": "(`cart`: [Cart](services.Cart.mdx), `lineItem?`: [LineItem](services.LineItem.mdx)) => Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)[] \\| [LineItemAdjustment](services.LineItemAdjustment.mdx)[][]&#62;",
+    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `lineItem?`: [LineItem](../../entities/classes/entities.LineItem.mdx)) => Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[] \\| [LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[][]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -690,7 +690,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`selectorOrIds`: `string` \\| `string`[] \\| [FilterableLineItemAdjustmentProps](services.FilterableLineItemAdjustmentProps.mdx) & ``{ discount_id?: FindOperator&#60;null \\| string&#62;  }``) => Promise&#60;void&#62;",
+    "type": "(`selectorOrIds`: `string` \\| `string`[] \\| [FilterableLineItemAdjustmentProps](../../medusa/classes/medusa.FilterableLineItemAdjustmentProps.mdx) & ``{ discount_id?: FindOperator&#60;null \\| string&#62;  }``) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -699,7 +699,7 @@ ___
   },
   {
     "name": "generateAdjustments",
-    "type": "(`calculationContextData`: [CalculationContextData](../types/services.CalculationContextData.mdx), `generatedLineItem`: [LineItem](services.LineItem.mdx), `context`: [AdjustmentContext](../types/services.AdjustmentContext.mdx)) => Promise&#60;[GeneratedAdjustment](../types/services.GeneratedAdjustment.mdx)[]&#62;",
+    "type": "(`calculationContextData`: [CalculationContextData](../../medusa/types/medusa.CalculationContextData.mdx), `generatedLineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `context`: [AdjustmentContext](../../medusa/types/medusa.AdjustmentContext.mdx)) => Promise&#60;[GeneratedAdjustment](../../medusa/types/medusa.GeneratedAdjustment.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -708,7 +708,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [FilterableLineItemAdjustmentProps](services.FilterableLineItemAdjustmentProps.mdx), `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;) => Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)[]&#62;",
+    "type": "(`selector`: [FilterableLineItemAdjustmentProps](../../medusa/classes/medusa.FilterableLineItemAdjustmentProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;) => Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -717,7 +717,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`lineItemAdjustmentId`: `string`, `config`: [FindConfig](../interfaces/services.FindConfig.mdx)&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;) => Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "(`lineItemAdjustmentId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;) => Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -735,7 +735,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`id`: `string`, `data`: Partial&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;) => Promise&#60;[LineItemAdjustment](services.LineItemAdjustment.mdx)&#62;",
+    "type": "(`id`: `string`, `data`: Partial&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;) => Promise&#60;[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

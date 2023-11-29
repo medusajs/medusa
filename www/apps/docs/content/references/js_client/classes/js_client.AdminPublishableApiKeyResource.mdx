@@ -57,7 +57,7 @@ medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostPublishableApiKeySalesChannelsBatchReq](../../internal/classes/js_client.internal.AdminPostPublishableApiKeySalesChannelsBatchReq.mdx)",
+    "type": "[AdminPostPublishableApiKeySalesChannelsBatchReq](../../medusa/classes/medusa.AdminPostPublishableApiKeySalesChannelsBatchReq.mdx)",
     "description": "The sales channels to add.",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId, {
     "children": [
       {
         "name": "sales_channel_ids",
-        "type": "[ProductBatchSalesChannel](../../internal/classes/js_client.internal.ProductBatchSalesChannel.mdx)[]",
+        "type": "[ProductBatchSalesChannel](../../medusa/classes/medusa.ProductBatchSalesChannel.mdx)[]",
         "description": "The IDs of the sales channels to add to the publishable API key",
         "optional": false,
         "defaultValue": "",
@@ -100,96 +100,12 @@ medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../../internal/types/js_client.internal.AdminPublishableApiKeysRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPublishableApiKeysRes",
-        "type": "`object`",
-        "description": "The publishable API key's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "publishable_api_key",
-            "type": "[PublishableApiKey](../../internal/classes/js_client.internal.PublishableApiKey.mdx)",
-            "description": "Publishable API key details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The key's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the key was revoked.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that revoked the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The key's title.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -218,7 +134,7 @@ medusa.admin.publishableApiKeys.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostPublishableApiKeysReq](../../internal/classes/js_client.internal.AdminPostPublishableApiKeysReq.mdx)",
+    "type": "[AdminPostPublishableApiKeysReq](../../medusa/classes/medusa.AdminPostPublishableApiKeysReq.mdx)",
     "description": "The publishable API key to be created.",
     "optional": false,
     "defaultValue": "",
@@ -251,96 +167,12 @@ medusa.admin.publishableApiKeys.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../../internal/types/js_client.internal.AdminPublishableApiKeysRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPublishableApiKeysRes",
-        "type": "`object`",
-        "description": "The publishable API key's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "publishable_api_key",
-            "type": "[PublishableApiKey](../../internal/classes/js_client.internal.PublishableApiKey.mdx)",
-            "description": "Publishable API key details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The key's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the key was revoked.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that revoked the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The key's title.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -390,40 +222,12 @@ medusa.admin.publishableApiKeys.delete(publishableApiKeyId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[DeleteResponse](../../internal/interfaces/js_client.internal.DeleteResponse.mdx)&#62;",
+    "type": "ResponsePromise&#60;DeleteResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the delete operation's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "deleted",
-        "type": "`boolean`",
-        "description": "Whether the item was deleted successfully.",
-        "optional": false,
-        "defaultValue": "true",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of the deleted item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "object",
-        "type": "`string`",
-        "description": "The type of the deleted item.",
-        "optional": false,
-        "defaultValue": "product-collection",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -465,7 +269,7 @@ medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId, {
   },
   {
     "name": "payload",
-    "type": "[AdminDeletePublishableApiKeySalesChannelsBatchReq](../../internal/classes/js_client.internal.AdminDeletePublishableApiKeySalesChannelsBatchReq.mdx)",
+    "type": "[AdminDeletePublishableApiKeySalesChannelsBatchReq](../../medusa/classes/medusa.AdminDeletePublishableApiKeySalesChannelsBatchReq.mdx)",
     "description": "The sales channels to delete from the publishable API key.",
     "optional": false,
     "defaultValue": "",
@@ -473,7 +277,7 @@ medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId, {
     "children": [
       {
         "name": "sales_channel_ids",
-        "type": "[ProductBatchSalesChannel](../../internal/classes/js_client.internal.ProductBatchSalesChannel.mdx)[]",
+        "type": "[ProductBatchSalesChannel](../../medusa/classes/medusa.ProductBatchSalesChannel.mdx)[]",
         "description": "The IDs of the sales channels to remove from the publishable API key",
         "optional": false,
         "defaultValue": "",
@@ -508,96 +312,12 @@ medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../../internal/types/js_client.internal.AdminPublishableApiKeysRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPublishableApiKeysRes",
-        "type": "`object`",
-        "description": "The publishable API key's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "publishable_api_key",
-            "type": "[PublishableApiKey](../../internal/classes/js_client.internal.PublishableApiKey.mdx)",
-            "description": "Publishable API key details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The key's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the key was revoked.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that revoked the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The key's title.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -641,7 +361,7 @@ medusa.admin.publishableApiKeys.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[GetPublishableApiKeysParams](../../internal/classes/js_client.internal.GetPublishableApiKeysParams.mdx)",
+    "type": "[GetPublishableApiKeysParams](../../medusa/classes/medusa.GetPublishableApiKeysParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved publishable API keys.",
     "optional": true,
     "defaultValue": "",
@@ -710,123 +430,12 @@ medusa.admin.publishableApiKeys.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysListRes](../../internal/types/js_client.internal.AdminPublishableApiKeysListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of publishable API keys with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPublishableApiKeysListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ publishable_api_keys: [PublishableApiKey](../../internal/classes/js_client.internal.PublishableApiKey.mdx)[]  }``",
-        "description": "The list of publishable API keys with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "publishable_api_keys",
-            "type": "[PublishableApiKey](../../internal/classes/js_client.internal.PublishableApiKey.mdx)[]",
-            "description": "An array of publishable API keys details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The key's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the key was revoked.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that revoked the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The key's title.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -862,7 +471,7 @@ medusa.admin.publishableApiKeys.listSalesChannels()
   },
   {
     "name": "query",
-    "type": "[GetPublishableApiKeySalesChannelsParams](../../internal/classes/js_client.internal.GetPublishableApiKeySalesChannelsParams.mdx)",
+    "type": "[GetPublishableApiKeySalesChannelsParams](../../medusa/classes/medusa.GetPublishableApiKeySalesChannelsParams.mdx)",
     "description": "Filters to apply on the retrieved sales channels.",
     "optional": true,
     "defaultValue": "",
@@ -931,114 +540,12 @@ medusa.admin.publishableApiKeys.listSalesChannels()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysListSalesChannelsRes](../../internal/types/js_client.internal.AdminPublishableApiKeysListSalesChannelsRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysListSalesChannelsRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of sales channels.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPublishableApiKeysListSalesChannelsRes",
-        "type": "`object`",
-        "description": "The list of sales channel.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "sales_channels",
-            "type": "[SalesChannel](../../internal/classes/js_client.internal.SalesChannel.mdx)[]",
-            "description": "An array of sales channels details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`null` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[SalesChannelLocation](../../internal/classes/js_client.internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`null` \\| `Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1097,96 +604,12 @@ medusa.admin.publishableApiKeys.retrieve(publishableApiKeyId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../../internal/types/js_client.internal.AdminPublishableApiKeysRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishable API key's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPublishableApiKeysRes",
-        "type": "`object`",
-        "description": "The publishable API key's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "publishable_api_key",
-            "type": "[PublishableApiKey](../../internal/classes/js_client.internal.PublishableApiKey.mdx)",
-            "description": "Publishable API key details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The key's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the key was revoked.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that revoked the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The key's title.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1236,96 +659,12 @@ medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../../internal/types/js_client.internal.AdminPublishableApiKeysRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPublishableApiKeysRes",
-        "type": "`object`",
-        "description": "The publishable API key's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "publishable_api_key",
-            "type": "[PublishableApiKey](../../internal/classes/js_client.internal.PublishableApiKey.mdx)",
-            "description": "Publishable API key details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The key's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the key was revoked.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that revoked the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The key's title.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1363,7 +702,7 @@ medusa.admin.publishableApiKeys.update(publishableApiKeyId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostPublishableApiKeysPublishableApiKeyReq](../../internal/classes/js_client.internal.AdminPostPublishableApiKeysPublishableApiKeyReq.mdx)",
+    "type": "[AdminPostPublishableApiKeysPublishableApiKeyReq](../../medusa/classes/medusa.AdminPostPublishableApiKeysPublishableApiKeyReq.mdx)",
     "description": "The attributes to update in the publishable API key.",
     "optional": false,
     "defaultValue": "",
@@ -1396,95 +735,11 @@ medusa.admin.publishableApiKeys.update(publishableApiKeyId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../../internal/types/js_client.internal.AdminPublishableApiKeysRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminPublishableApiKeysRes",
-        "type": "`object`",
-        "description": "The publishable API key's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "publishable_api_key",
-            "type": "[PublishableApiKey](../../internal/classes/js_client.internal.PublishableApiKey.mdx)",
-            "description": "Publishable API key details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that created the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The key's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the key was revoked.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "revoked_by",
-                "type": "`null` \\| `string`",
-                "description": "The unique identifier of the user that revoked the key.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The key's title.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

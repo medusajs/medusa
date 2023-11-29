@@ -1,0 +1,291 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AuthenticateResult
+
+ **AuthenticateResult**: `Object`
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "customer",
+    "type": "[Customer](../classes/medusa.Customer.mdx)",
+    "description": "A customer can make purchases in your store and manage their profile.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "billing_address",
+        "type": "[Address](../classes/medusa.Address.mdx)",
+        "description": "The details of the billing address associated with the customer.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "billing_address_id",
+        "type": "`null` \\| `string`",
+        "description": "The customer's billing address ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "`null` \\| `Date`",
+        "description": "The date with timezone at which the resource was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "The customer's email",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "first_name",
+        "type": "`string`",
+        "description": "The customer's first name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "groups",
+        "type": "[CustomerGroup](../classes/medusa.CustomerGroup.mdx)[]",
+        "description": "The customer groups the customer belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "has_account",
+        "type": "`boolean`",
+        "description": "Whether the customer has an account or not",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The customer's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "last_name",
+        "type": "`string`",
+        "description": "The customer's last name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "orders",
+        "type": "[Order](../classes/medusa.Order.mdx)[]",
+        "description": "The details of the orders this customer placed.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "password_hash",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "phone",
+        "type": "`string`",
+        "description": "The customer's phone number",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_addresses",
+        "type": "[Address](../classes/medusa.Address.mdx)[]",
+        "description": "The details of the shipping addresses associated with the customer.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "error",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "success",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "user",
+    "type": "[User](../classes/medusa.User.mdx)",
+    "description": "A User is an administrator who can manage store settings and data.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "api_token",
+        "type": "`string`",
+        "description": "An API token associated with the user.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "`null` \\| `Date`",
+        "description": "The date with timezone at which the resource was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "The email of the User",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "first_name",
+        "type": "`string`",
+        "description": "The first name of the User",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The user's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "last_name",
+        "type": "`string`",
+        "description": "The last name of the User",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "password_hash",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "role",
+        "type": "[UserRoles](../enums/medusa.UserRoles.mdx)",
+        "description": "The user's role. These roles don't provide any different privileges.",
+        "optional": false,
+        "defaultValue": "member",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

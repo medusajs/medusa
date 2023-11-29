@@ -58,7 +58,7 @@ ___
   },
   {
     "name": "cacheService_",
-    "type": "[ICacheService](../interfaces/services.ICacheService.mdx)",
+    "type": "[ICacheService](../../medusa/interfaces/medusa.ICacheService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ ___
   },
   {
     "name": "eventBus_",
-    "type": "[IEventBusService](../interfaces/services.IEventBusService.mdx)",
+    "type": "[IEventBusService](../../medusa/interfaces/medusa.IEventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ ___
   },
   {
     "name": "smTaxLineRepo_",
-    "type": "Repository&#60;[ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
+    "type": "Repository&#60;[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ ___
   },
   {
     "name": "taxLineRepo_",
-    "type": "Repository&#60;[LineItemTaxLine](services.LineItemTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
+    "type": "Repository&#60;[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ ___
   },
   {
     "name": "taxProviderRepo_",
-    "type": "Repository&#60;[TaxProvider](services.TaxProvider.mdx)&#62;",
+    "type": "Repository&#60;[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -304,7 +304,7 @@ for return shipping methods.
 <ParameterTypes parameters={[
   {
     "name": "shippingMethod",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx)",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)",
     "description": "the shipping method to create tax lines for",
     "optional": false,
     "defaultValue": "",
@@ -313,7 +313,7 @@ for return shipping methods.
   },
   {
     "name": "calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "the calculation context to get tax lines by",
     "optional": false,
     "defaultValue": "",
@@ -327,7 +327,7 @@ for return shipping methods.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;([LineItemTaxLine](services.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx))[]&#62;",
+    "type": "Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created tax lines",
@@ -347,7 +347,7 @@ Persists the tax lines relevant for an order to the database.
 <ParameterTypes parameters={[
   {
     "name": "cartOrLineItems",
-    "type": "[LineItem](services.LineItem.mdx)[] \\| [Cart](services.Cart.mdx)",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[] \\| [Cart](../../entities/classes/entities.Cart.mdx)",
     "description": "the cart or line items to create tax lines for",
     "optional": false,
     "defaultValue": "",
@@ -356,7 +356,7 @@ Persists the tax lines relevant for an order to the database.
   },
   {
     "name": "calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "the calculation context to get tax lines by",
     "optional": false,
     "defaultValue": "",
@@ -370,7 +370,7 @@ Persists the tax lines relevant for an order to the database.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;([LineItemTaxLine](services.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx))[]&#62;",
+    "type": "Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created tax lines",
@@ -443,7 +443,7 @@ calls.
   },
   {
     "name": "region",
-    "type": "[RegionDetails](../types/services.RegionDetails.mdx)",
+    "type": "[RegionDetails](../../medusa/types/medusa.RegionDetails.mdx)",
     "description": "the region to get configured rates for.",
     "optional": false,
     "defaultValue": "",
@@ -457,7 +457,7 @@ calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;Map&#60;string, [TaxServiceRate](../types/services.TaxServiceRate.mdx)[]&#62;&#62;",
+    "type": "Promise&#60;Map&#60;string, [TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax rates configured for the shipping option. A map by product id",
@@ -487,7 +487,7 @@ between calls.
   },
   {
     "name": "regionDetails",
-    "type": "[RegionDetails](../types/services.RegionDetails.mdx)",
+    "type": "[RegionDetails](../../medusa/types/medusa.RegionDetails.mdx)",
     "description": "the region to get configured rates for.",
     "optional": false,
     "defaultValue": "",
@@ -501,7 +501,7 @@ between calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[TaxServiceRate](../types/services.TaxServiceRate.mdx)[]&#62;",
+    "type": "Promise&#60;[TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax rates configured for the shipping option.",
@@ -523,7 +523,7 @@ persist the tax lines to the DB layer.
 <ParameterTypes parameters={[
   {
     "name": "shippingMethod",
-    "type": "[ShippingMethod](services.ShippingMethod.mdx)",
+    "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)",
     "description": "the shipping method to get tax lines for",
     "optional": false,
     "defaultValue": "",
@@ -532,7 +532,7 @@ persist the tax lines to the DB layer.
   },
   {
     "name": "calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "the calculation context to get tax lines by",
     "optional": false,
     "defaultValue": "",
@@ -546,7 +546,7 @@ persist the tax lines to the DB layer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx)[]&#62;",
+    "type": "Promise&#60;[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the computed tax lines",
@@ -570,7 +570,7 @@ wish to persist the tax lines to the DB layer.
 <ParameterTypes parameters={[
   {
     "name": "lineItems",
-    "type": "[LineItem](services.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "the cart or order to get tax lines for",
     "optional": false,
     "defaultValue": "",
@@ -579,7 +579,7 @@ wish to persist the tax lines to the DB layer.
   },
   {
     "name": "calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "the calculation context to get tax lines by",
     "optional": false,
     "defaultValue": "",
@@ -593,7 +593,7 @@ wish to persist the tax lines to the DB layer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;([LineItemTaxLine](services.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx))[]&#62;",
+    "type": "Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the computed tax lines",
@@ -613,7 +613,7 @@ Return a map of tax lines for line items and shipping methods
 <ParameterTypes parameters={[
   {
     "name": "items",
-    "type": "[LineItem](services.LineItem.mdx)[]",
+    "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -622,7 +622,7 @@ Return a map of tax lines for line items and shipping methods
   },
   {
     "name": "calculationContext",
-    "type": "[TaxCalculationContext](../types/services.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -636,7 +636,7 @@ Return a map of tax lines for line items and shipping methods
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[TaxLinesMaps](../types/services.TaxLinesMaps.mdx)&#62;",
+    "type": "Promise&#60;[TaxLinesMaps](../../medusa/types/medusa.TaxLinesMaps.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -654,7 +654,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[TaxProvider](services.TaxProvider.mdx)[]&#62;",
+    "type": "Promise&#60;[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -706,7 +706,7 @@ Retrieves the relevant tax provider for the given region.
 <ParameterTypes parameters={[
   {
     "name": "region",
-    "type": "[Region](services.Region.mdx)",
+    "type": "[Region](../../entities/classes/entities.Region.mdx)",
     "description": "the region to get tax provider for.",
     "optional": false,
     "defaultValue": "",
@@ -720,7 +720,7 @@ Retrieves the relevant tax provider for the given region.
 <ParameterTypes parameters={[
   {
     "name": "getTaxLines",
-    "type": "(`itemLines`: [ItemTaxCalculationLine](../types/services.ItemTaxCalculationLine.mdx)[], `shippingLines`: [ShippingTaxCalculationLine](../types/services.ShippingTaxCalculationLine.mdx)[], `context`: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx)) => Promise&#60;[ProviderTaxLine](../types/services.ProviderTaxLine.mdx)[]&#62;",
+    "type": "(`itemLines`: [ItemTaxCalculationLine](../../medusa/types/medusa.ItemTaxCalculationLine.mdx)[], `shippingLines`: [ShippingTaxCalculationLine](../../medusa/types/medusa.ShippingTaxCalculationLine.mdx)[], `context`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;[ProviderTaxLine](../../medusa/types/medusa.ProviderTaxLine.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -738,7 +738,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
+    "type": "`Record<string, unknown>` \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -820,7 +820,7 @@ ___
   },
   {
     "name": "cacheService_",
-    "type": "[ICacheService](../interfaces/services.ICacheService.mdx)",
+    "type": "[ICacheService](../../medusa/interfaces/medusa.ICacheService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -838,7 +838,7 @@ ___
   },
   {
     "name": "eventBus_",
-    "type": "[IEventBusService](../interfaces/services.IEventBusService.mdx)",
+    "type": "[IEventBusService](../../medusa/interfaces/medusa.IEventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -856,7 +856,7 @@ ___
   },
   {
     "name": "smTaxLineRepo_",
-    "type": "Repository&#60;[ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
+    "type": "Repository&#60;[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -865,7 +865,7 @@ ___
   },
   {
     "name": "taxLineRepo_",
-    "type": "Repository&#60;[LineItemTaxLine](services.LineItemTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
+    "type": "Repository&#60;[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)&#62; & `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -874,7 +874,7 @@ ___
   },
   {
     "name": "taxProviderRepo_",
-    "type": "Repository&#60;[TaxProvider](services.TaxProvider.mdx)&#62;",
+    "type": "Repository&#60;[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -937,7 +937,7 @@ ___
   },
   {
     "name": "createShippingTaxLines",
-    "type": "(`shippingMethod`: [ShippingMethod](services.ShippingMethod.mdx), `calculationContext`: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](services.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx))[]&#62;",
+    "type": "(`shippingMethod`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx), `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -946,7 +946,7 @@ ___
   },
   {
     "name": "createTaxLines",
-    "type": "(`cartOrLineItems`: [LineItem](services.LineItem.mdx)[] \\| [Cart](services.Cart.mdx), `calculationContext`: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](services.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx))[]&#62;",
+    "type": "(`cartOrLineItems`: [LineItem](../../entities/classes/entities.LineItem.mdx)[] \\| [Cart](../../entities/classes/entities.Cart.mdx), `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -964,7 +964,7 @@ ___
   },
   {
     "name": "getRegionRatesForProduct",
-    "type": "(`productIds`: `string` \\| `string`[], `region`: [RegionDetails](../types/services.RegionDetails.mdx)) => Promise&#60;Map&#60;string, [TaxServiceRate](../types/services.TaxServiceRate.mdx)[]&#62;&#62;",
+    "type": "(`productIds`: `string` \\| `string`[], `region`: [RegionDetails](../../medusa/types/medusa.RegionDetails.mdx)) => Promise&#60;Map&#60;string, [TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -973,7 +973,7 @@ ___
   },
   {
     "name": "getRegionRatesForShipping",
-    "type": "(`optionId`: `string`, `regionDetails`: [RegionDetails](../types/services.RegionDetails.mdx)) => Promise&#60;[TaxServiceRate](../types/services.TaxServiceRate.mdx)[]&#62;",
+    "type": "(`optionId`: `string`, `regionDetails`: [RegionDetails](../../medusa/types/medusa.RegionDetails.mdx)) => Promise&#60;[TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -982,7 +982,7 @@ ___
   },
   {
     "name": "getShippingTaxLines",
-    "type": "(`shippingMethod`: [ShippingMethod](services.ShippingMethod.mdx), `calculationContext`: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx)) => Promise&#60;[ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx)[]&#62;",
+    "type": "(`shippingMethod`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx), `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -991,7 +991,7 @@ ___
   },
   {
     "name": "getTaxLines",
-    "type": "(`lineItems`: [LineItem](services.LineItem.mdx)[], `calculationContext`: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](services.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](services.ShippingMethodTaxLine.mdx))[]&#62;",
+    "type": "(`lineItems`: [LineItem](../../entities/classes/entities.LineItem.mdx)[], `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1000,7 +1000,7 @@ ___
   },
   {
     "name": "getTaxLinesMap",
-    "type": "(`items`: [LineItem](services.LineItem.mdx)[], `calculationContext`: [TaxCalculationContext](../types/services.TaxCalculationContext.mdx)) => Promise&#60;[TaxLinesMaps](../types/services.TaxLinesMaps.mdx)&#62;",
+    "type": "(`items`: [LineItem](../../entities/classes/entities.LineItem.mdx)[], `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;[TaxLinesMaps](../../medusa/types/medusa.TaxLinesMaps.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1009,7 +1009,7 @@ ___
   },
   {
     "name": "list",
-    "type": "() => Promise&#60;[TaxProvider](services.TaxProvider.mdx)[]&#62;",
+    "type": "() => Promise&#60;[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1027,7 +1027,7 @@ ___
   },
   {
     "name": "retrieveProvider",
-    "type": "(`region`: [Region](services.Region.mdx)) => [ITaxService](../interfaces/services.ITaxService.mdx)",
+    "type": "(`region`: [Region](../../entities/classes/entities.Region.mdx)) => [ITaxService](../../medusa/interfaces/medusa.ITaxService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",

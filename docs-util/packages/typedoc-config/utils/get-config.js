@@ -2,6 +2,16 @@
 const path = require("path")
 const globalTypedocOptions = require("../_base")
 
+function getEntryPoints(entryPointPaths) {
+  if (Array.isArray(entryPointPaths)) {
+    return entryPointPaths.map((entryPath) =>
+      path.join(__dirname, "..", "..", "..", "..", entryPath)
+    )
+  } else {
+    return path.join(__dirname, "..", "..", "..", "..", entryPointPaths)
+  }
+}
+
 /**
  *
  * @param {Record<string, any>} param0 - The configuration options
@@ -10,7 +20,7 @@ const globalTypedocOptions = require("../_base")
 function getConfig({ entryPointPath, tsConfigName, name, ...otherOptions }) {
   return {
     ...globalTypedocOptions,
-    entryPoints: [path.join(__dirname, "..", "..", "..", "..", entryPointPath)],
+    entryPoints: getEntryPoints(entryPointPath),
     tsconfig: path.join(__dirname, "..", "extended-tsconfig", tsConfigName),
     name,
     json: path.join(

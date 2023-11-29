@@ -1,0 +1,3962 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductCategoryService
+
+Provides layer to manipulate product categories.
+
+## constructor
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[InjectedDependencies](../types/medusa.InjectedDependencies-25.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "eventBusService",
+        "type": "[EventBusService](medusa.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryRepository",
+        "type": "typeof [ProductCategoryRepository](../../modules/medusa.mdx#productcategoryrepository)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBusService_",
+    "type": "[EventBusService](medusa.EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "config_",
+        "type": "[ConfigModule](../types/medusa.ConfigModule-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "enqueue_",
+        "type": "Promise&#60;void&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "logger_",
+        "type": "[Logger](../interfaces/medusa.Logger.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldEnqueuerRun",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "stagedJobService_",
+        "type": "[StagedJobService](medusa.StagedJobService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productCategoryRepo_",
+    "type": "TreeRepository&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62; & `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "CREATED",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product-category.created\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "DELETED",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product-category.deleted\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "UPDATED",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product-category.updated\"",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-category.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-category.deleted\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-category.updated\"",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[]} />
+
+___
+
+## Methods
+
+### addProducts
+
+Add a batch of product to a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "The id of the product category on which to add the products",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "The products ids to attach to the product category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category on which the products have been added",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;TResult&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": [
+      {
+        "name": "TResult",
+        "type": "`TResult`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### create
+
+Creates a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryInput",
+    "type": "[CreateProductCategoryInput](../types/medusa.CreateProductCategoryInput.mdx)",
+    "description": "parameters to create a product category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "created product category",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### delete
+
+Deletes a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "is the id of the product category to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a promise",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### fetchReorderConditions
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategory",
+    "type": "[ProductCategory](medusa.ProductCategory.mdx)",
+    "description": "A product category can be used to categorize products into a hierarchy of categories.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "input",
+    "type": "[UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "shouldDeleteElement",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReorderConditions",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "originalParentId",
+        "type": "`string` \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "originalRank",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldChangeParent",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldChangeRank",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldDeleteElement",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldIncrementRank",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetCategoryId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetParentId",
+        "type": "`string` \\| `null` \\| `undefined`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetRank",
+        "type": "`number` \\| `undefined`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### listAndCount
+
+Lists product category based on the provided parameters and includes the count of
+product category that match the query.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[TreeQuerySelector](../types/medusa.TreeQuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "Filter options for product category.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "Configuration for query.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "order",
+        "type": "`object`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "relations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "select",
+        "type": "keyof `Entity`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "skip",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "take",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "treeSelector",
+    "type": "[QuerySelector](../types/medusa.QuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "Filter options for product category tree relations",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[[ProductCategory](medusa.ProductCategory.mdx)[], number]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "an array containing the product category as\n  the first element and the total count of product category that matches the query\n  as the second element.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### performReordering
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "repository",
+    "type": "TreeRepository&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62; & `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "conditions",
+    "type": "[ReorderConditions](../types/medusa.ReorderConditions.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "originalParentId",
+        "type": "`string` \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "originalRank",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldChangeParent",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldChangeRank",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldDeleteElement",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldIncrementRank",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetCategoryId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetParentId",
+        "type": "`string` \\| `null` \\| `undefined`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetRank",
+        "type": "`number` \\| `undefined`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### removeProducts
+
+Remove a batch of product from a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "The id of the product category on which to remove the products",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "The products ids to remove from the product category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category on which the products have been removed",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieves a product category by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "the id of the product category to retrieve.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "the config of the product category to retrieve.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "order",
+        "type": "`object`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "relations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "select",
+        "type": "keyof `Entity`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "skip",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "take",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "selector",
+    "type": "[Selector](../types/medusa.Selector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "treeSelector",
+    "type": "[QuerySelector](../types/medusa.QuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieveByHandle
+
+Retrieves a product category by handle.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "handle",
+    "type": "`string`",
+    "description": "the handle of the category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "the config of the product category to retrieve.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "order",
+        "type": "`object`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "relations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "select",
+        "type": "keyof `Entity`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "skip",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "take",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "selector",
+    "type": "[Selector](../types/medusa.Selector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "treeSelector",
+    "type": "[QuerySelector](../types/medusa.QuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve\_
+
+A generic retrieve for fining product categories by different attributes.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "config",
+    "type": "[FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "the config of the product category to retrieve.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "order",
+        "type": "`object`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "relations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "select",
+        "type": "keyof `Entity`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "skip",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "take",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "selector",
+    "type": "[Selector](../types/medusa.Selector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "treeSelector",
+    "type": "[QuerySelector](../types/medusa.QuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": [
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### shiftSiblings
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "repository",
+    "type": "TreeRepository&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62; & `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "conditions",
+    "type": "[ReorderConditions](../types/medusa.ReorderConditions.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "originalParentId",
+        "type": "`string` \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "originalRank",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldChangeParent",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldChangeRank",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldDeleteElement",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldIncrementRank",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetCategoryId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetParentId",
+        "type": "`string` \\| `null` \\| `undefined`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "targetRank",
+        "type": "`number` \\| `undefined`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "`Record<string, unknown>` \\| `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### transformParentIdToEntity
+
+Accepts an input object and transforms product\_category\_id
+into product\_category entity.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryInput",
+    "type": "[CreateProductCategoryInput](../types/medusa.CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx)",
+    "description": "params used to create/update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[CreateProductCategoryInput](../types/medusa.CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "transformed productCategoryInput",
+    "expandable": false,
+    "children": [
+      {
+        "name": "CreateProductCategoryInput \\| UpdateProductCategoryInput",
+        "type": "[CreateProductCategoryInput](../types/medusa.CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### update
+
+Updates a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "id of product category to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productCategoryInput",
+    "type": "[UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx)",
+    "description": "parameters to update in product category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated product category",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "category_children",
+        "type": "[ProductCategory](medusa.ProductCategory.mdx)[]",
+        "description": "The details of the category's children.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The product category's description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handle",
+        "type": "`string`",
+        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The product category's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_active",
+        "type": "`Boolean`",
+        "description": "A flag to make product category visible/hidden in the store front",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_internal",
+        "type": "`Boolean`",
+        "description": "A flag to make product category an internal category for admins",
+        "optional": false,
+        "defaultValue": "false",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "`Record<string, unknown>`",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The product category's name",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent_category",
+        "type": "`null` \\| [ProductCategory](medusa.ProductCategory.mdx)",
+        "description": "The details of the parent of this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "parent_category_id",
+        "type": "`null` \\| `string`",
+        "description": "The ID of the parent category.",
+        "optional": false,
+        "defaultValue": "null",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "[Product](medusa.Product.mdx)[]",
+        "description": "The details of the products that belong to this category.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rank",
+        "type": "`number`",
+        "description": "An integer that depicts the rank of category in a tree node",
+        "optional": false,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productCategoryProductJoinTable",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product_category_product\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "treeRelations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "constructor",
+    "type": "(`__namedParameters`: [InjectedDependencies](../types/medusa.InjectedDependencies-25.mdx)) => [ProductCategoryService](medusa.ProductCategoryService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__configModule__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBusService_",
+    "type": "[EventBusService](medusa.EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "config_",
+        "type": "[ConfigModule](../types/medusa.ConfigModule-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "enqueue_",
+        "type": "Promise&#60;void&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "logger_",
+        "type": "[Logger](../interfaces/medusa.Logger.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldEnqueuerRun",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "stagedJobService_",
+        "type": "[StagedJobService](medusa.StagedJobService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productCategoryRepo_",
+    "type": "TreeRepository&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62; & `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "CREATED",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product-category.created\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "DELETED",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product-category.deleted\"",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "UPDATED",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "\"product-category.updated\"",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "activeManager_",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "addProducts",
+    "type": "(`productCategoryId`: `string`, `productIds`: `string`[]) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "atomicPhase_",
+    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "create",
+    "type": "(`productCategoryInput`: [CreateProductCategoryInput](../types/medusa.CreateProductCategoryInput.mdx)) => Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "delete",
+    "type": "(`productCategoryId`: `string`) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fetchReorderConditions",
+    "type": "(`productCategory`: [ProductCategory](medusa.ProductCategory.mdx), `input`: [UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx), `shouldDeleteElement`: `boolean`) => [ReorderConditions](../types/medusa.ReorderConditions.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCount",
+    "type": "(`selector`: [TreeQuerySelector](../types/medusa.TreeQuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;, `config`: [FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;, `treeSelector`: [QuerySelector](../types/medusa.QuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;) => Promise&#60;[[ProductCategory](medusa.ProductCategory.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "performReordering",
+    "type": "(`repository`: TreeRepository&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62; & ``{ addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  }``, `conditions`: [ReorderConditions](../types/medusa.ReorderConditions.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removeProducts",
+    "type": "(`productCategoryId`: `string`, `productIds`: `string`[]) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieve",
+    "type": "(`productCategoryId`: `string`, `config`: [FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;, `selector`: [Selector](../types/medusa.Selector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;, `treeSelector`: [QuerySelector](../types/medusa.QuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;) => Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveByHandle",
+    "type": "(`handle`: `string`, `config`: [FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;, `selector`: [Selector](../types/medusa.Selector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;, `treeSelector`: [QuerySelector](../types/medusa.QuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;) => Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieve_",
+    "type": "(`config`: [FindConfig](../interfaces/medusa.FindConfig.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;, `selector`: [Selector](../types/medusa.Selector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;, `treeSelector`: [QuerySelector](../types/medusa.QuerySelector.mdx)&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;) => Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shiftSiblings",
+    "type": "(`repository`: TreeRepository&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62; & ``{ addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  }``, `conditions`: [ReorderConditions](../types/medusa.ReorderConditions.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shouldRetryTransaction_",
+    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transformParentIdToEntity",
+    "type": "(`productCategoryInput`: [CreateProductCategoryInput](../types/medusa.CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx)) => Promise&#60;[CreateProductCategoryInput](../types/medusa.CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "(`productCategoryId`: `string`, `productCategoryInput`: [UpdateProductCategoryInput](../types/medusa.UpdateProductCategoryInput.mdx)) => Promise&#60;[ProductCategory](medusa.ProductCategory.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "withTransaction",
+    "type": "(`transactionManager?`: `EntityManager`) => [ProductCategoryService](medusa.ProductCategoryService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

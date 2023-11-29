@@ -41,7 +41,7 @@
 							"fileName": "stock-location/common.ts",
 							"line": 163,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L163"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L163"
 						}
 					],
 					"type": {
@@ -82,7 +82,7 @@
 							"fileName": "stock-location/common.ts",
 							"line": 167,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L167"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L167"
 						}
 					],
 					"type": {
@@ -123,7 +123,7 @@
 					"fileName": "stock-location/common.ts",
 					"line": 159,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L159"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L159"
 				}
 			]
 		},
@@ -187,7 +187,7 @@
 							"fileName": "common/common.ts",
 							"line": 70,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L70"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L70"
 						}
 					],
 					"type": {
@@ -203,7 +203,7 @@
 									"fileName": "common/common.ts",
 									"line": 70,
 									"character": 10,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L70"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L70"
 								}
 							],
 							"indexSignature": {
@@ -217,7 +217,7 @@
 										"fileName": "common/common.ts",
 										"line": 70,
 										"character": 12,
-										"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L70"
+										"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L70"
 									}
 								],
 								"parameters": [
@@ -271,7 +271,7 @@
 							"fileName": "common/common.ts",
 							"line": 65,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L65"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L65"
 						}
 					],
 					"type": {
@@ -303,7 +303,7 @@
 							"fileName": "common/common.ts",
 							"line": 53,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L53"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L53"
 						}
 					],
 					"type": {
@@ -350,7 +350,7 @@
 							"fileName": "common/common.ts",
 							"line": 57,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L57"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L57"
 						}
 					],
 					"type": {
@@ -388,7 +388,7 @@
 							"fileName": "common/common.ts",
 							"line": 61,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L61"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L61"
 						}
 					],
 					"type": {
@@ -434,7 +434,7 @@
 							"fileName": "common/common.ts",
 							"line": 75,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L75"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L75"
 						}
 					],
 					"type": {
@@ -461,7 +461,7 @@
 					"fileName": "common/common.ts",
 					"line": 49,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L49"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L49"
 				}
 			],
 			"typeParameters": [
@@ -492,7 +492,7 @@
 							"fileName": "stock-location/service.ts",
 							"line": 245,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L245"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L245"
 						}
 					],
 					"signatures": [
@@ -535,7 +535,7 @@
 									"fileName": "stock-location/service.ts",
 									"line": 245,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L245"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L245"
 								}
 							],
 							"parameters": [
@@ -615,7 +615,7 @@
 							"fileName": "stock-location/service.ts",
 							"line": 297,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L297"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L297"
 						}
 					],
 					"signatures": [
@@ -658,7 +658,7 @@
 									"fileName": "stock-location/service.ts",
 									"line": 297,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L297"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L297"
 								}
 							],
 							"parameters": [
@@ -734,7 +734,7 @@
 							"fileName": "stock-location/service.ts",
 							"line": 89,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L89"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L89"
 						}
 					],
 					"signatures": [
@@ -829,7 +829,7 @@
 									"fileName": "stock-location/service.ts",
 									"line": 89,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L89"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L89"
 								}
 							],
 							"parameters": [
@@ -959,7 +959,7 @@
 							"fileName": "stock-location/service.ts",
 							"line": 166,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L166"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L166"
 						}
 					],
 					"signatures": [
@@ -1054,7 +1054,7 @@
 									"fileName": "stock-location/service.ts",
 									"line": 166,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L166"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L166"
 								}
 							],
 							"parameters": [
@@ -1193,7 +1193,7 @@
 							"fileName": "stock-location/service.ts",
 							"line": 217,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L217"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L217"
 						}
 					],
 					"signatures": [
@@ -1248,7 +1248,7 @@
 									"fileName": "stock-location/service.ts",
 									"line": 217,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L217"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L217"
 								}
 							],
 							"parameters": [
@@ -1373,7 +1373,7 @@
 							"fileName": "stock-location/service.ts",
 							"line": 273,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L273"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L273"
 						}
 					],
 					"signatures": [
@@ -1416,7 +1416,7 @@
 									"fileName": "stock-location/service.ts",
 									"line": 273,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L273"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L273"
 								}
 							],
 							"parameters": [
@@ -1523,7 +1523,7 @@
 					"fileName": "stock-location/service.ts",
 					"line": 12,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/service.ts#L12"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/service.ts#L12"
 				}
 			]
 		},
@@ -1555,7 +1555,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 38,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L38"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L38"
 						}
 					],
 					"type": {
@@ -1600,7 +1600,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 59,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L59"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L59"
 						}
 					],
 					"type": {
@@ -1636,7 +1636,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 52,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L52"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L52"
 						}
 					],
 					"type": {
@@ -1661,7 +1661,7 @@
 												"fileName": "joiner/index.ts",
 												"line": 54,
 												"character": 4,
-												"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L54"
+												"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L54"
 											}
 										],
 										"type": {
@@ -1682,7 +1682,7 @@
 												"fileName": "joiner/index.ts",
 												"line": 53,
 												"character": 4,
-												"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L53"
+												"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L53"
 											}
 										],
 										"type": {
@@ -1705,7 +1705,7 @@
 										"fileName": "joiner/index.ts",
 										"line": 52,
 										"character": 12,
-										"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L52"
+										"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L52"
 									}
 								]
 							}
@@ -1733,7 +1733,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 42,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L42"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L42"
 						}
 					],
 					"type": {
@@ -1774,7 +1774,7 @@
 															"fileName": "joiner/index.ts",
 															"line": 47,
 															"character": 8,
-															"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L47"
+															"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L47"
 														}
 													],
 													"type": {
@@ -1796,7 +1796,7 @@
 															"fileName": "joiner/index.ts",
 															"line": 46,
 															"character": 8,
-															"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L46"
+															"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L46"
 														}
 													],
 													"type": {
@@ -1819,7 +1819,7 @@
 													"fileName": "joiner/index.ts",
 													"line": 45,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L45"
+													"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L45"
 												}
 											]
 										}
@@ -1842,7 +1842,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 50,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L50"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L50"
 						}
 					],
 					"type": {
@@ -1866,7 +1866,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 51,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L51"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L51"
 						}
 					],
 					"type": {
@@ -1890,7 +1890,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 34,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L34"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L34"
 						}
 					],
 					"type": {
@@ -1918,7 +1918,7 @@
 					"fileName": "joiner/index.ts",
 					"line": 33,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L33"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L33"
 				}
 			]
 		},
@@ -1950,7 +1950,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 30,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L30"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L30"
 						}
 					],
 					"type": {
@@ -1984,7 +1984,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 26,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L26"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L26"
 						}
 					],
 					"type": {
@@ -2019,7 +2019,7 @@
 					"fileName": "joiner/index.ts",
 					"line": 25,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L25"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L25"
 				}
 			]
 		},
@@ -2059,7 +2059,7 @@
 							"fileName": "shared-context.ts",
 							"line": 16,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/shared-context.ts#L16"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/shared-context.ts#L16"
 						}
 					],
 					"type": {
@@ -2093,7 +2093,7 @@
 							"fileName": "shared-context.ts",
 							"line": 12,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/shared-context.ts#L12"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/shared-context.ts#L12"
 						}
 					],
 					"type": {
@@ -2121,7 +2121,7 @@
 					"fileName": "shared-context.ts",
 					"line": 8,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/shared-context.ts#L8"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/shared-context.ts#L8"
 				}
 			]
 		},
@@ -2145,7 +2145,7 @@
 							"fileName": "common/common.ts",
 							"line": 184,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L184"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L184"
 						}
 					],
 					"type": {
@@ -2166,7 +2166,7 @@
 							"fileName": "common/common.ts",
 							"line": 186,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L186"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L186"
 						}
 					],
 					"type": {
@@ -2187,7 +2187,7 @@
 							"fileName": "common/common.ts",
 							"line": 181,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L181"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L181"
 						}
 					],
 					"type": {
@@ -2208,7 +2208,7 @@
 							"fileName": "common/common.ts",
 							"line": 182,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L182"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L182"
 						}
 					],
 					"type": {
@@ -2229,7 +2229,7 @@
 							"fileName": "common/common.ts",
 							"line": 180,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L180"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L180"
 						}
 					],
 					"type": {
@@ -2250,7 +2250,7 @@
 							"fileName": "common/common.ts",
 							"line": 183,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L183"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L183"
 						}
 					],
 					"type": {
@@ -2271,7 +2271,7 @@
 							"fileName": "common/common.ts",
 							"line": 185,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L185"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L185"
 						}
 					],
 					"type": {
@@ -2299,7 +2299,7 @@
 					"fileName": "common/common.ts",
 					"line": 179,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/common/common.ts#L179"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/common/common.ts#L179"
 				}
 			]
 		},
@@ -2325,7 +2325,7 @@
 					"fileName": "stock-location/common.ts",
 					"line": 247,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L247"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L247"
 				}
 			],
 			"type": {
@@ -2358,7 +2358,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 250,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L250"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L250"
 								}
 							],
 							"type": {
@@ -2398,7 +2398,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 249,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L249"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L249"
 								}
 							],
 							"type": {
@@ -2427,7 +2427,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 251,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L251"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L251"
 								}
 							],
 							"type": {
@@ -2469,7 +2469,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 248,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L248"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L248"
 								}
 							],
 							"type": {
@@ -2494,7 +2494,7 @@
 							"fileName": "stock-location/common.ts",
 							"line": 247,
 							"character": 39,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L247"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L247"
 						}
 					]
 				}
@@ -2511,7 +2511,7 @@
 					"fileName": "joiner/index.ts",
 					"line": 1,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L1"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L1"
 				}
 			],
 			"type": {
@@ -2534,7 +2534,7 @@
 									"fileName": "joiner/index.ts",
 									"line": 2,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L2"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L2"
 								}
 							],
 							"type": {
@@ -2563,7 +2563,7 @@
 									"fileName": "joiner/index.ts",
 									"line": 22,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L22"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L22"
 								}
 							],
 							"type": {
@@ -2597,7 +2597,7 @@
 									"fileName": "joiner/index.ts",
 									"line": 3,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L3"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L3"
 								}
 							],
 							"type": {
@@ -2626,7 +2626,7 @@
 									"fileName": "joiner/index.ts",
 									"line": 14,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L14"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L14"
 								}
 							],
 							"type": {
@@ -2655,7 +2655,7 @@
 									"fileName": "joiner/index.ts",
 									"line": 10,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L10"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L10"
 								}
 							],
 							"type": {
@@ -2684,7 +2684,7 @@
 									"fileName": "joiner/index.ts",
 									"line": 18,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L18"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L18"
 								}
 							],
 							"type": {
@@ -2703,7 +2703,7 @@
 									"fileName": "joiner/index.ts",
 									"line": 4,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L4"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L4"
 								}
 							],
 							"type": {
@@ -2722,7 +2722,7 @@
 									"fileName": "joiner/index.ts",
 									"line": 5,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L5"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L5"
 								}
 							],
 							"type": {
@@ -2751,7 +2751,7 @@
 							"fileName": "joiner/index.ts",
 							"line": 1,
 							"character": 33,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/joiner/index.ts#L1"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/joiner/index.ts#L1"
 						}
 					]
 				}
@@ -2768,7 +2768,7 @@
 					"fileName": "modules-sdk/index.ts",
 					"line": 132,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L132"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L132"
 				}
 			],
 			"type": {
@@ -2834,7 +2834,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 167,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L167"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L167"
 										}
 									],
 									"type": {
@@ -2859,7 +2859,7 @@
 															"fileName": "modules-sdk/index.ts",
 															"line": 176,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L176"
+															"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L176"
 														}
 													],
 													"type": {
@@ -2895,7 +2895,7 @@
 																					"fileName": "modules-sdk/index.ts",
 																					"line": 201,
 																					"character": 8,
-																					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L201"
+																					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L201"
 																				}
 																			],
 																			"type": {
@@ -2916,7 +2916,7 @@
 																					"fileName": "modules-sdk/index.ts",
 																					"line": 202,
 																					"character": 8,
-																					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L202"
+																					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L202"
 																				}
 																			],
 																			"type": {
@@ -2945,7 +2945,7 @@
 																					"fileName": "modules-sdk/index.ts",
 																					"line": 206,
 																					"character": 8,
-																					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L206"
+																					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L206"
 																				}
 																			],
 																			"type": {
@@ -2979,7 +2979,7 @@
 																					"fileName": "modules-sdk/index.ts",
 																					"line": 179,
 																					"character": 8,
-																					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L179"
+																					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L179"
 																				}
 																			],
 																			"type": {
@@ -3089,7 +3089,7 @@
 																			"fileName": "modules-sdk/index.ts",
 																			"line": 178,
 																			"character": 6,
-																			"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L178"
+																			"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L178"
 																		}
 																	]
 																}
@@ -3120,7 +3120,7 @@
 															"fileName": "modules-sdk/index.ts",
 															"line": 175,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L175"
+															"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L175"
 														}
 													],
 													"type": {
@@ -3149,7 +3149,7 @@
 															"fileName": "modules-sdk/index.ts",
 															"line": 171,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L171"
+															"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L171"
 														}
 													],
 													"type": {
@@ -3173,7 +3173,7 @@
 													"fileName": "modules-sdk/index.ts",
 													"line": 167,
 													"character": 19,
-													"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L167"
+													"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L167"
 												}
 											]
 										}
@@ -3192,7 +3192,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 141,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L141"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L141"
 										}
 									],
 									"type": {
@@ -3219,7 +3219,7 @@
 																"fileName": "modules-sdk/index.ts",
 																"line": 143,
 																"character": 4,
-																"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L143"
+																"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L143"
 															}
 														],
 														"type": {
@@ -3260,7 +3260,7 @@
 																								"fileName": "modules-sdk/index.ts",
 																								"line": 148,
 																								"character": 10,
-																								"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L148"
+																								"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L148"
 																							}
 																						],
 																						"type": {
@@ -3282,7 +3282,7 @@
 																								"fileName": "modules-sdk/index.ts",
 																								"line": 147,
 																								"character": 10,
-																								"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L147"
+																								"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L147"
 																							}
 																						],
 																						"type": {
@@ -3305,7 +3305,7 @@
 																						"fileName": "modules-sdk/index.ts",
 																						"line": 146,
 																						"character": 8,
-																						"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L146"
+																						"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L146"
 																					}
 																				]
 																			}
@@ -3328,7 +3328,7 @@
 																"fileName": "modules-sdk/index.ts",
 																"line": 151,
 																"character": 4,
-																"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L151"
+																"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L151"
 															}
 														],
 														"type": {
@@ -3349,7 +3349,7 @@
 																"fileName": "modules-sdk/index.ts",
 																"line": 142,
 																"character": 4,
-																"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L142"
+																"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L142"
 															}
 														],
 														"type": {
@@ -3373,7 +3373,7 @@
 														"fileName": "modules-sdk/index.ts",
 														"line": 141,
 														"character": 12,
-														"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L141"
+														"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L141"
 													}
 												]
 											}
@@ -3401,7 +3401,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 158,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L158"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L158"
 										}
 									],
 									"type": {
@@ -3430,7 +3430,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 166,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L166"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L166"
 										}
 									],
 									"type": {
@@ -3459,7 +3459,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 162,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L162"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L162"
 										}
 									],
 									"type": {
@@ -3495,7 +3495,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 154,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L154"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L154"
 										}
 									],
 									"type": {
@@ -3519,7 +3519,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 140,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L140"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L140"
 										}
 									],
 									"type": {
@@ -3553,7 +3553,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 139,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L139"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L139"
 										}
 									],
 									"type": {
@@ -3574,7 +3574,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 153,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L153"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L153"
 										}
 									],
 									"type": {
@@ -3604,7 +3604,7 @@
 									"fileName": "modules-sdk/index.ts",
 									"line": 135,
 									"character": 4,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L135"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L135"
 								}
 							]
 						}
@@ -3623,7 +3623,7 @@
 					"fileName": "modules-sdk/index.ts",
 					"line": 212,
 					"character": 20,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L212"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L212"
 				}
 			],
 			"type": {
@@ -3665,7 +3665,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 220,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L220"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L220"
 										}
 									],
 									"type": {
@@ -3694,7 +3694,7 @@
 											"fileName": "modules-sdk/index.ts",
 											"line": 216,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L216"
+											"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L216"
 										}
 									],
 									"type": {
@@ -3717,7 +3717,7 @@
 									"fileName": "modules-sdk/index.ts",
 									"line": 212,
 									"character": 68,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/modules-sdk/index.ts#L212"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/modules-sdk/index.ts#L212"
 								}
 							]
 						}
@@ -3747,7 +3747,7 @@
 					"fileName": "stock-location/common.ts",
 					"line": 67,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L67"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L67"
 				}
 			],
 			"type": {
@@ -3778,7 +3778,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 69,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L69"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L69"
 								}
 							],
 							"type": {
@@ -3807,7 +3807,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 70,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L70"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L70"
 								}
 							],
 							"type": {
@@ -3845,7 +3845,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 73,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L73"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L73"
 								}
 							],
 							"type": {
@@ -3883,7 +3883,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 71,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L71"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L71"
 								}
 							],
 							"type": {
@@ -3919,7 +3919,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 72,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L72"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L72"
 								}
 							],
 							"type": {
@@ -3946,7 +3946,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 78,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L78"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L78"
 								}
 							],
 							"type": {
@@ -3987,7 +3987,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 80,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L80"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L80"
 								}
 							],
 							"type": {
@@ -4034,7 +4034,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 68,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L68"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L68"
 								}
 							],
 							"type": {
@@ -4063,7 +4063,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 77,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L77"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L77"
 								}
 							],
 							"type": {
@@ -4116,7 +4116,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 74,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L74"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L74"
 								}
 							],
 							"type": {
@@ -4154,7 +4154,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 75,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L75"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L75"
 								}
 							],
 							"type": {
@@ -4192,7 +4192,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 76,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L76"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L76"
 								}
 							],
 							"type": {
@@ -4228,7 +4228,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 79,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L79"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L79"
 								}
 							],
 							"type": {
@@ -4276,7 +4276,7 @@
 							"fileName": "stock-location/common.ts",
 							"line": 67,
 							"character": 38,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L67"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L67"
 						}
 					]
 				}
@@ -4304,7 +4304,7 @@
 					"fileName": "stock-location/common.ts",
 					"line": 212,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L212"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L212"
 				}
 			],
 			"type": {
@@ -4335,7 +4335,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 213,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L213"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L213"
 								}
 							],
 							"type": {
@@ -4364,7 +4364,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 214,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L214"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L214"
 								}
 							],
 							"type": {
@@ -4393,7 +4393,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 216,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L216"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L216"
 								}
 							],
 							"type": {
@@ -4420,7 +4420,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 215,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L215"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L215"
 								}
 							],
 							"type": {
@@ -4449,7 +4449,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 220,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L220"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L220"
 								}
 							],
 							"type": {
@@ -4493,7 +4493,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 217,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L217"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L217"
 								}
 							],
 							"type": {
@@ -4522,7 +4522,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 219,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L219"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L219"
 								}
 							],
 							"type": {
@@ -4551,7 +4551,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 218,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L218"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L218"
 								}
 							],
 							"type": {
@@ -4580,7 +4580,7 @@
 							"fileName": "stock-location/common.ts",
 							"line": 212,
 							"character": 40,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L212"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L212"
 						}
 					]
 				}
@@ -4608,7 +4608,7 @@
 					"fileName": "stock-location/common.ts",
 					"line": 129,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L129"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L129"
 				}
 			],
 			"type": {
@@ -4641,7 +4641,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 134,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L134"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L134"
 								}
 							],
 							"type": {
@@ -4670,7 +4670,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 133,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L133"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L133"
 								}
 							],
 							"type": {
@@ -4697,7 +4697,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 135,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L135"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L135"
 								}
 							],
 							"type": {
@@ -4738,7 +4738,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 137,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L137"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L137"
 								}
 							],
 							"type": {
@@ -4783,7 +4783,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 130,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L130"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L130"
 								}
 							],
 							"type": {
@@ -4810,7 +4810,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 132,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L132"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L132"
 								}
 							],
 							"type": {
@@ -4861,7 +4861,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 131,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L131"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L131"
 								}
 							],
 							"type": {
@@ -4888,7 +4888,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 136,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L136"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L136"
 								}
 							],
 							"type": {
@@ -4931,7 +4931,7 @@
 							"fileName": "stock-location/common.ts",
 							"line": 129,
 							"character": 31,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L129"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L129"
 						}
 					]
 				}
@@ -4959,7 +4959,7 @@
 					"fileName": "stock-location/common.ts",
 					"line": 276,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L276"
+					"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L276"
 				}
 			],
 			"type": {
@@ -4992,7 +4992,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 279,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L279"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L279"
 								}
 							],
 							"type": {
@@ -5023,7 +5023,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 278,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L278"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L278"
 								}
 							],
 							"type": {
@@ -5052,7 +5052,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 280,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L280"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L280"
 								}
 							],
 							"type": {
@@ -5096,7 +5096,7 @@
 									"fileName": "stock-location/common.ts",
 									"line": 277,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L277"
+									"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L277"
 								}
 							],
 							"type": {
@@ -5121,7 +5121,7 @@
 							"fileName": "stock-location/common.ts",
 							"line": 276,
 							"character": 39,
-							"url": "https://github.com/medusajs/medusa/blob/fb0e733c8/packages/types/src/stock-location/common.ts#L276"
+							"url": "https://github.com/medusajs/medusa/blob/cb679f359/packages/types/src/stock-location/common.ts#L276"
 						}
 					]
 				}

@@ -44,7 +44,7 @@ medusa.admin.customers.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[AdminPostCustomersReq](../../internal/classes/js_client.internal.AdminPostCustomersReq.mdx)",
+    "type": "[AdminPostCustomersReq](../../medusa/classes/medusa.AdminPostCustomersReq.mdx)",
     "description": "The customer to create.",
     "optional": false,
     "defaultValue": "",
@@ -122,168 +122,12 @@ medusa.admin.customers.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomersRes](../../internal/types/js_client.internal.AdminCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "billing_address",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)",
-                "description": "The details of the billing address associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "billing_address_id",
-                "type": "`null` \\| `string`",
-                "description": "The customer's billing address ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "email",
-                "type": "`string`",
-                "description": "The customer's email",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "first_name",
-                "type": "`string`",
-                "description": "The customer's first name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "groups",
-                "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)[]",
-                "description": "The customer groups the customer belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "has_account",
-                "type": "`boolean`",
-                "description": "Whether the customer has an account or not",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "last_name",
-                "type": "`string`",
-                "description": "The customer's last name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "orders",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)[]",
-                "description": "The details of the orders this customer placed.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "phone",
-                "type": "`string`",
-                "description": "The customer's phone number",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_addresses",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)[]",
-                "description": "The details of the shipping addresses associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -342,7 +186,7 @@ medusa.admin.customers.list({
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[AdminGetCustomersParams](../../internal/classes/js_client.internal.AdminGetCustomersParams.mdx)",
+    "type": "[AdminGetCustomersParams](../../medusa/classes/medusa.AdminGetCustomersParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved customers.",
     "optional": true,
     "defaultValue": "",
@@ -420,195 +264,12 @@ medusa.admin.customers.list({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomersListRes](../../internal/types/js_client.internal.AdminCustomersListRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomersListRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of customers with pagination fields.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomersListRes",
-        "type": "[PaginatedResponse](../../internal/interfaces/js_client.internal.PaginatedResponse.mdx) & ``{ customers: [Customer](../../internal/classes/js_client.internal.Customer.mdx)[]  }``",
-        "description": "The list of customers with pagination fields.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "count",
-            "type": "`number`",
-            "description": "The total number of items available.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "limit",
-            "type": "`number`",
-            "description": "The maximum number of items that can be returned in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "offset",
-            "type": "`number`",
-            "description": "The number of items skipped before the returned items in the list.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "customers",
-            "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)[]",
-            "description": "An array of customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "billing_address",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)",
-                "description": "The details of the billing address associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "billing_address_id",
-                "type": "`null` \\| `string`",
-                "description": "The customer's billing address ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "email",
-                "type": "`string`",
-                "description": "The customer's email",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "first_name",
-                "type": "`string`",
-                "description": "The customer's first name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "groups",
-                "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)[]",
-                "description": "The customer groups the customer belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "has_account",
-                "type": "`boolean`",
-                "description": "Whether the customer has an account or not",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "last_name",
-                "type": "`string`",
-                "description": "The customer's last name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "orders",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)[]",
-                "description": "The details of the orders this customer placed.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "phone",
-                "type": "`string`",
-                "description": "The customer's phone number",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_addresses",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)[]",
-                "description": "The details of the shipping addresses associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -658,168 +319,12 @@ medusa.admin.customers.retrieve(customerId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomersRes](../../internal/types/js_client.internal.AdminCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "billing_address",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)",
-                "description": "The details of the billing address associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "billing_address_id",
-                "type": "`null` \\| `string`",
-                "description": "The customer's billing address ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "email",
-                "type": "`string`",
-                "description": "The customer's email",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "first_name",
-                "type": "`string`",
-                "description": "The customer's first name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "groups",
-                "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)[]",
-                "description": "The customer groups the customer belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "has_account",
-                "type": "`boolean`",
-                "description": "Whether the customer has an account or not",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "last_name",
-                "type": "`string`",
-                "description": "The customer's last name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "orders",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)[]",
-                "description": "The details of the orders this customer placed.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "phone",
-                "type": "`string`",
-                "description": "The customer's phone number",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_addresses",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)[]",
-                "description": "The details of the shipping addresses associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -857,7 +362,7 @@ medusa.admin.customers.update(customerId, {
   },
   {
     "name": "payload",
-    "type": "[AdminPostCustomersCustomerReq](../../internal/classes/js_client.internal.AdminPostCustomersCustomerReq.mdx)",
+    "type": "[AdminPostCustomersCustomerReq](../../medusa/classes/medusa.AdminPostCustomersCustomerReq.mdx)",
     "description": "The attributes to update in the customer.",
     "optional": false,
     "defaultValue": "",
@@ -883,7 +388,7 @@ medusa.admin.customers.update(customerId, {
       },
       {
         "name": "groups",
-        "type": "[Group](../../internal/classes/js_client.internal.Group.mdx)[]",
+        "type": "[Group](../../medusa/classes/medusa.Group.mdx)[]",
         "description": "A list of customer groups to which the customer belongs.",
         "optional": true,
         "defaultValue": "",
@@ -954,167 +459,11 @@ medusa.admin.customers.update(customerId, {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../../internal/types/js_client.internal.ResponsePromise.mdx)&#60;[AdminCustomersRes](../../internal/types/js_client.internal.AdminCustomersRes.mdx)&#62;",
+    "type": "ResponsePromise&#60;AdminCustomersRes&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AdminCustomersRes",
-        "type": "`object`",
-        "description": "The customer's details.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "customer",
-            "type": "[Customer](../../internal/classes/js_client.internal.Customer.mdx)",
-            "description": "Customer details.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "billing_address",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)",
-                "description": "The details of the billing address associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "billing_address_id",
-                "type": "`null` \\| `string`",
-                "description": "The customer's billing address ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "`null` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "email",
-                "type": "`string`",
-                "description": "The customer's email",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "first_name",
-                "type": "`string`",
-                "description": "The customer's first name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "groups",
-                "type": "[CustomerGroup](../../internal/classes/js_client.internal.CustomerGroup.mdx)[]",
-                "description": "The customer groups the customer belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "has_account",
-                "type": "`boolean`",
-                "description": "Whether the customer has an account or not",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The customer's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "last_name",
-                "type": "`string`",
-                "description": "The customer's last name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "`Record<string, unknown>`",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "orders",
-                "type": "[Order](../../internal/classes/js_client.internal.Order.mdx)[]",
-                "description": "The details of the orders this customer placed.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "phone",
-                "type": "`string`",
-                "description": "The customer's phone number",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shipping_addresses",
-                "type": "[Address](../../internal/classes/js_client.internal.Address.mdx)[]",
-                "description": "The details of the shipping addresses associated with the customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
