@@ -121,7 +121,11 @@ export function getWebpackConfig({
         },
         {
           test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
+          use: [
+            MiniCssExtractPlugin.loader,
+            require.resolve("css-loader"),
+            require.resolve("postcss-loader"),
+          ],
         },
         {
           test: /\.svg$/,
@@ -160,7 +164,7 @@ export function getWebpackConfig({
       symlinks: false,
       extensions: [".js", ".jsx", ".ts", ".tsx"],
       mainFields: ["browser", "module", "main"],
-      modules: ["node_modules", path.resolve(__dirname, "..", "node_modules")],
+      modules: ["node_modules"],
       fallback: {
         readline: false,
         path: false,
