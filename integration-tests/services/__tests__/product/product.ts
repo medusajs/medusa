@@ -16,6 +16,7 @@ describe("product", () => {
     await initDb({ cwd })
     shutdownServer = shutdownServer = await startBootstrapApp({ cwd })
     medusaContainer = getContainer()
+    console.warn(medusaContainer)
   })
 
   afterAll(async () => {
