@@ -2357,6 +2357,32 @@ describe("/store/carts", () => {
       expect(res.data.cart.completed_at).not.toBe(null)
     })
 
+    it("should return the swap when cart is already completed", async () => {
+      const manager = dbConnection.manager
+      await manager.query(
+        "UPDATE swap SET cart_id='swap-cart' where id='test-swap'"
+      )
+
+      await manager.query("DELETE FROM payment where swap_id='test-swap'")
+
+      const api = useApi()
+
+      await api.post(`/store/carts/swap-cart/complete-cart`)
+
+      const alreadyCompletedCart = await api.post(
+        `/store/carts/swap-cart/complete-cart`
+      )
+
+      expect(alreadyCompletedCart.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: "swap-cart",
+          id: expect.any(String),
+        })
+      )
+      expect(alreadyCompletedCart.data.type).toEqual("swap")
+      expect(alreadyCompletedCart.status).toEqual(200)
+    })
+
     it("completes cart with a non-customer and for a customer with the same email created later the order doesn't show up", async () => {
       const api = useApi()
       const customerEmail = "test-email-for-non-existent-customer@test.com"

@@ -201,6 +201,20 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     })
 
     if (cart.completed_at) {
+      if (cart.type === "swap") {
+        const swapId = cart.metadata?.swap_id as string
+        const swapServiceTx = this.swapService_.withTransaction(manager)
+
+        const swap = await swapServiceTx.retrieve(swapId, {
+          relations: ["shipping_address"],
+        })
+
+        return {
+          response_code: 200,
+          response_body: { data: swap, type: "swap" },
+        }
+      }
+
       const order = await this.orderService_
         .withTransaction(manager)
         .retrieveByCartIdWithTotals(id, {
@@ -451,8 +465,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       await this.removeReservations(reservations)
 
       if (error && error.message === ORDER_CART_ALREADY_EXISTS_ERROR) {
-        order = await orderServiceTx.retrieveByCartId(id, {
-          relations: ["shipping_address", "payments"],
+        order = await orderServiceTx.retrieveByCartIdWithTotals(id, {
+          relations: ["shipping_address", "items", "payments"],
         })
 
         return {
