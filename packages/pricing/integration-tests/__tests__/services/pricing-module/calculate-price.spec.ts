@@ -1924,7 +1924,7 @@ describe("PricingModule Service - Calculate Price", () => {
         await createPriceLists(service, {}, { region_id: ["DE", "PL"] }, [
           ...defaultPriceListPrices,
           {
-            amount: 987,
+            amount: 111,
             currency_code: "PLN",
             price_set_id: "price-set-PLN",
             rules: {

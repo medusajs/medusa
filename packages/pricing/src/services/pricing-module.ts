@@ -14,7 +14,6 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
-  arrayUnique,
   groupBy,
   InjectManager,
   InjectTransactionManager,
@@ -361,6 +360,7 @@ export default class PricingModuleService<
           price_set: createdPriceSets[index],
         })) || []
     )
+
     if (ruleTypeData.length > 0) {
       await this.priceSetRuleTypeService_.create(
         ruleTypeData as unknown as PricingTypes.CreatePriceSetRuleTypeDTO[],
@@ -450,16 +450,19 @@ export default class PricingModuleService<
 
     const priceSets = await this.addRules_(inputs, sharedContext)
 
-    return (Array.isArray(data) ? priceSets : priceSets[0]) as unknown as
-      | PricingTypes.PriceSetDTO[]
-      | PricingTypes.PriceSetDTO
+    return await this.list(
+      { id: priceSets.map(({ id }) => id) },
+      {
+        relations: ["rule_types"],
+      }
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async addRules_(
     inputs: PricingTypes.AddRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceSetDTO[]> {
+  ): Promise<TPriceSet[]> {
     const priceSets = await this.priceSetService_.list(
       { id: inputs.map((d) => d.priceSetId) },
       { relations: ["rule_types"], take: null },
@@ -538,12 +541,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
-      priceSets,
-      {
-        populate: true,
-      }
-    )
+    return priceSets
   }
 
   async addPrices(
@@ -1777,12 +1775,14 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceListDTO[]> {
     const ruleTypeAttributes: string[] = []
     const priceListIds: string[] = []
+    const priceSetIds: string[] = []
 
     for (const priceListData of data) {
       priceListIds.push(priceListData.priceListId)
 
       for (const price of priceListData.prices) {
         ruleTypeAttributes.push(...Object.keys(price.rules || {}))
+        priceSetIds.push(price.price_set_id)
       }
     }
 
@@ -1791,29 +1791,54 @@ export default class PricingModuleService<
       { take: null }
     )
 
+    const priceSets = await this.list(
+      { id: priceSetIds },
+      { relations: ["rule_types"] }
+    )
+
+    const priceSetRuleTypeMap: Map<string, Set<string>> = priceSets.reduce(
+      (acc, curr) => {
+        const priceSetRuleAttributeSet: Set<string> =
+          acc.get(curr.id) || new Set()
+
+        for (const rt of curr.rule_types ?? []) {
+          priceSetRuleAttributeSet.add(rt.rule_attribute)
+        }
+
+        acc.set(curr.id, priceSetRuleAttributeSet)
+        return acc
+      },
+      new Map()
+    )
+
+    const ruleTypeErrors: string[] = []
+
+    for (const priceListData of data) {
+      for (const price of priceListData.prices) {
+        for (const rule_attribute of Object.keys(price.rules ?? {})) {
+          if (
+            !priceSetRuleTypeMap.get(price.price_set_id)?.has(rule_attribute)
+          ) {
+            ruleTypeErrors.push(
+              `rule_attribute "${rule_attribute}" in price set ${price.price_set_id}`
+            )
+          }
+        }
+      }
+    }
+
+    if (ruleTypeErrors.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid rule type configuration: Price set rules doesn't exist for ${ruleTypeErrors.join(
+          ", "
+        )}`
+      )
+    }
+
     const ruleTypeMap: Map<string, RuleTypeDTO> = new Map(
       ruleTypes.map((rt) => [rt.rule_attribute, rt])
     )
-
-    for (const ruleAttribute of arrayUnique<string>(ruleTypeAttributes)) {
-      let ruleType = ruleTypeMap.get(ruleAttribute)
-
-      if (ruleType) {
-        continue
-      }
-
-      ;[ruleType] = await this.createRuleTypes(
-        [
-          {
-            name: ruleAttribute,
-            rule_attribute: ruleAttribute,
-          },
-        ],
-        sharedContext
-      )
-
-      ruleTypeMap.set(ruleAttribute, ruleType)
-    }
 
     const priceLists = await this.listPriceLists(
       { id: priceListIds },

@@ -584,7 +584,56 @@ describe("PriceList Service", () => {
       )
     })
 
+    it("should fail to add a price with non-existing rule-types in the price-set to a priceList", async () => {
+      await service.createRuleTypes([
+        {
+          name: "twitter_handle",
+          rule_attribute: "twitter_handle",
+        },
+      ])
+
+      let error
+      try {
+        await service.addPriceListPrices([
+          {
+            priceListId: "price-list-1",
+            prices: [
+              {
+                amount: 123,
+                currency_code: "EUR",
+                price_set_id: "price-set-1",
+                rules: {
+                  twitter_handle: "owjuhl",
+                },
+              },
+            ],
+          },
+        ])
+      } catch (err) {
+        error = err
+      }
+
+      expect(error.message).toEqual(
+        "" +
+          `Invalid rule type configuration: Price set rules doesn't exist for rule_attribute "twitter_handle" in price set price-set-1`
+      )
+    })
+
     it("should add a price with rules to a priceList successfully", async () => {
+      await service.createRuleTypes([
+        {
+          name: "region_id",
+          rule_attribute: "region_id",
+        },
+      ])
+
+      const r = await service.addRules([
+        {
+          priceSetId: "price-set-1",
+          rules: [{ attribute: "region_id" }],
+        },
+      ])
+
       await service.addPriceListPrices([
         {
           priceListId: "price-list-1",
