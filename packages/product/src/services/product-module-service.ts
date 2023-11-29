@@ -68,14 +68,14 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import {
-  CreateProductOptionValueDTO,
-  UpdateProductOptionValueDTO,
-} from "../types/services/product-option-value"
-import {
   entityNameToLinkableKeysMap,
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
+import {
+  CreateProductOptionValueDTO,
+  UpdateProductOptionValueDTO,
+} from "../types/services/product-option-value"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService

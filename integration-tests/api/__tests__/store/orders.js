@@ -456,7 +456,7 @@ describe("/store/carts", () => {
       await db.teardown()
     })
 
-    it("should return order on cart already completed", async () => {
+    it("should return an order on cart already completed", async () => {
       const api = useApi()
       const manager = dbConnection.manager
 
@@ -501,11 +501,7 @@ describe("/store/carts", () => {
         })
       )
 
-      const successRes = await api
-        .post(`/store/carts/${cartId}/complete`)
-        .catch((err) => {
-          return err.response
-        })
+      const successRes = await api.post(`/store/carts/${cartId}/complete`)
 
       expect(successRes.status).toEqual(200)
       expect(successRes.data.data).toEqual(
