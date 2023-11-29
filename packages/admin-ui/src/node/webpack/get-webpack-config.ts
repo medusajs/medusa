@@ -166,7 +166,7 @@ export function getWebpackConfig({
       mainFields: ["browser", "module", "main"],
       modules: [
         "node_modules",
-        path.resolve(__dirname, "..", "..", "node_modules"),
+        path.resolve(__dirname, "..", "..", "..", "node_modules"),
       ],
       fallback: {
         readline: false,
