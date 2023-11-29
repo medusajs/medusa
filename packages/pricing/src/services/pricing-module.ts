@@ -1885,21 +1885,19 @@ export default class PricingModuleService<
             sharedContext
           )
 
-          for (const [ruleAttribute, ruleValue] of Object.entries(priceRules)) {
-            await this.createPriceRules(
-              [
-                {
-                  price_set_id: price.price_set_id,
-                  rule_type:
-                    ruleTypeMap.get(ruleAttribute)!?.id ||
-                    ruleTypeMap.get(ruleAttribute)!,
-                  value: ruleValue,
-                  price_set_money_amount: psma as any,
-                },
-              ],
-              sharedContext
-            )
-          }
+          await this.createPriceRules(
+            Object.entries(priceRules).map(([ruleAttribute, ruleValue]) => {
+              return {
+                price_set_id: price.price_set_id,
+                rule_type:
+                  ruleTypeMap.get(ruleAttribute)!?.id ||
+                  ruleTypeMap.get(ruleAttribute)!,
+                value: ruleValue,
+                price_set_money_amount: psma as any,
+              }
+            }),
+            sharedContext
+          )
 
           return psma
         })
