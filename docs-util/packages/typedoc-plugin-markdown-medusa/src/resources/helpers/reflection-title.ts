@@ -10,6 +10,10 @@ export default function (theme: MarkdownTheme) {
     function (this: PageEvent<any>, shouldEscape = true) {
       const { reflectionTitle } = theme.getFormattingOptionsForLocation()
 
+      if (reflectionTitle?.fullReplacement?.length) {
+        return reflectionTitle.fullReplacement
+      }
+
       const title: string[] = [""]
       if (
         reflectionTitle?.kind &&

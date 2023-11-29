@@ -130,23 +130,37 @@ Handles Fulfillments
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -178,7 +192,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -194,13 +208,13 @@ transaction manager is created.
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
 Cancels a fulfillment with the fulfillment provider. Will decrement the
 fulfillment\_quantity on the line items associated with the fulfillment.
 Throws if the fulfillment has already been shipped.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -214,7 +228,7 @@ Throws if the fulfillment has already been shipped.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -230,14 +244,14 @@ Throws if the fulfillment has already been shipped.
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
 Creates an order fulfillment
 If items needs to be fulfilled by different provider, we make
 sure to partition those items, and create fulfillment for
 those partitions.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -269,7 +283,7 @@ those partitions.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -285,12 +299,12 @@ those partitions.
 
 ___
 
-#### createShipment
+### createShipment
 
 Creates a shipment by marking a fulfillment as shipped. Adds
 tracking links and potentially more metadata.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -322,7 +336,7 @@ tracking links and potentially more metadata.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -338,11 +352,11 @@ tracking links and potentially more metadata.
 
 ___
 
-#### getFulfillmentItems\_
+### getFulfillmentItems\_
 
 Retrieves the order line items, given an array of items.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -365,7 +379,7 @@ Retrieves the order line items, given an array of items.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -381,9 +395,9 @@ Retrieves the order line items, given an array of items.
 
 ___
 
-#### partitionItems\_
+### partitionItems\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -406,7 +420,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -422,11 +436,11 @@ ___
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieves a fulfillment by its id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -449,7 +463,7 @@ Retrieves a fulfillment by its id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -465,9 +479,9 @@ Retrieves a fulfillment by its id.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -481,7 +495,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -497,14 +511,14 @@ ___
 
 ___
 
-#### validateFulfillmentLineItem\_
+### validateFulfillmentLineItem\_
 
 Checks that a given quantity of a line item can be fulfilled. Fails if the
 fulfillable quantity is lower than the requested fulfillment quantity.
 Fulfillable quantity is calculated by subtracting the already fulfilled
 quantity from the quantity that was originally purchased.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -527,7 +541,7 @@ quantity from the quantity that was originally purchased.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -543,9 +557,9 @@ quantity from the quantity that was originally purchased.
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -559,7 +573,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

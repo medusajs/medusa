@@ -263,23 +263,37 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -311,7 +325,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -327,9 +341,9 @@ transaction manager is created.
 
 ___
 
-#### cancel
+### cancel
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -343,7 +357,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -359,9 +373,9 @@ ___
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -375,7 +389,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -391,13 +405,13 @@ ___
 
 ___
 
-#### create
+### create
 
 Creates a Claim on an Order. Claims consists of items that are claimed and
 optionally items to be sent as replacement for the claimed items. The
 shipping address that the new items will be shipped to
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -411,7 +425,7 @@ shipping address that the new items will be shipped to
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -427,9 +441,9 @@ shipping address that the new items will be shipped to
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -479,7 +493,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -495,9 +509,9 @@ ___
 
 ___
 
-#### createShipment
+### createShipment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -556,7 +570,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -572,7 +586,7 @@ ___
 
 ___
 
-#### getRefundTotalForClaimLinesOnOrder
+### getRefundTotalForClaimLinesOnOrder
 
 Finds claim line items on an order and calculates the refund amount.
 There are three places too look:
@@ -581,7 +595,7 @@ There are three places too look:
 - Claim items (from previous claims)
 Note, it will attempt to return early from each of these places to avoid having to iterate over all items every time.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -604,7 +618,7 @@ Note, it will attempt to return early from each of these places to avoid having 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -620,9 +634,9 @@ Note, it will attempt to return early from each of these places to avoid having 
 
 ___
 
-#### list
+### list
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -645,7 +659,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -661,9 +675,9 @@ ___
 
 ___
 
-#### processRefund
+### processRefund
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -677,7 +691,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -693,11 +707,11 @@ ___
 
 ___
 
-#### retrieve
+### retrieve
 
 Gets an order by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -720,7 +734,7 @@ Gets an order by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -736,9 +750,9 @@ Gets an order by id.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -752,7 +766,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -768,9 +782,9 @@ ___
 
 ___
 
-#### update
+### update
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -793,7 +807,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -809,9 +823,9 @@ ___
 
 ___
 
-#### validateCreateClaimInput
+### validateCreateClaimInput
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -825,7 +839,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -841,9 +855,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -857,7 +871,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

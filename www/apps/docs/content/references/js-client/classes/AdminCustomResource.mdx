@@ -12,11 +12,11 @@ are available in the JS Client under the `medusa.admin.custom` property.
 
 ## Methods
 
-#### delete
+### delete
 
 Send a `DELETE` request to a custom API Route. The method accepts a type parameters `TResponse` indicating the type of response, which defaults to `any`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -27,7 +27,7 @@ medusa.admin.custom.delete(`/blog/posts/${postId}`).then(() => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -78,7 +78,7 @@ medusa.admin.custom.delete(`/blog/posts/${postId}`).then(() => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -104,12 +104,12 @@ medusa.admin.custom.delete(`/blog/posts/${postId}`).then(() => {
 
 ___
 
-#### get
+### get
 
 Send a `GET` request to a custom API Route. The method accepts a tuple of type parameters: the first `TQuery` is the type of accepted query parameters,
 which defaults to `Record<string, any>`; the second `TResponse` is the type of response, which defaults to `any`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -126,7 +126,7 @@ medusa.admin.custom.get<Record<string, any>, PostsResponse>(
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -186,7 +186,7 @@ medusa.admin.custom.get<Record<string, any>, PostsResponse>(
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -212,12 +212,12 @@ medusa.admin.custom.get<Record<string, any>, PostsResponse>(
 
 ___
 
-#### post
+### post
 
 Send a `POST` request to a custom API Route. The method accepts a tuple of type parameters: the first `TPayload` is the type of accepted body parameters,
 which defaults to `Record<string, any>`; the second `TResponse` is the type of response, which defaults to `any`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -240,7 +240,7 @@ medusa.admin.custom.post<PostRequest, PostResponse>(
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -300,7 +300,7 @@ medusa.admin.custom.post<PostRequest, PostResponse>(
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

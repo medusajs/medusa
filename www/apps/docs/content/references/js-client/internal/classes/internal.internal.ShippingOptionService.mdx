@@ -121,22 +121,36 @@ Provides layer to manipulate profiles.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addRequirement
+### addRequirement
 
 Adds a requirement to a shipping option. Only 1 requirement of each type
 is allowed.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -159,7 +173,7 @@ is allowed.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -175,13 +189,13 @@ is allowed.
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -213,7 +227,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -229,13 +243,13 @@ transaction manager is created.
 
 ___
 
-#### create
+### create
 
 Creates a new shipping option. Used both for outbound and inbound shipping
 options. The difference is registered by the `is_return` field which
 defaults to false.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -249,7 +263,7 @@ defaults to false.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -265,11 +279,11 @@ defaults to false.
 
 ___
 
-#### createShippingMethod
+### createShippingMethod
 
 Creates a shipping method for a given cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -301,7 +315,7 @@ Creates a shipping method for a given cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -317,11 +331,11 @@ Creates a shipping method for a given cart.
 
 ___
 
-#### delete
+### delete
 
 Deletes a profile with a given profile id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -335,7 +349,7 @@ Deletes a profile with a given profile id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -351,11 +365,11 @@ Deletes a profile with a given profile id.
 
 ___
 
-#### deleteShippingMethods
+### deleteShippingMethods
 
 Removes a given shipping method
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -369,7 +383,7 @@ Removes a given shipping method
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -385,13 +399,13 @@ Removes a given shipping method
 
 ___
 
-#### getPrice\_
+### getPrice\_
 
 Returns the amount to be paid for a shipping method. Will ask the
 fulfillment provider to calculate the price if the shipping option has the
 price type "calculated".
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -423,7 +437,7 @@ price type "calculated".
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -439,9 +453,9 @@ price type "calculated".
 
 ___
 
-#### list
+### list
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -464,7 +478,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -480,9 +494,9 @@ ___
 
 ___
 
-#### listAndCount
+### listAndCount
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -505,7 +519,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -521,11 +535,11 @@ ___
 
 ___
 
-#### removeRequirement
+### removeRequirement
 
 Removes a requirement from a shipping option
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -539,7 +553,7 @@ Removes a requirement from a shipping option
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -555,12 +569,12 @@ Removes a requirement from a shipping option
 
 ___
 
-#### retrieve
+### retrieve
 
 Gets a profile by id.
 Throws in case of DB Error and if profile was not found.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -583,7 +597,7 @@ Throws in case of DB Error and if profile was not found.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -599,9 +613,9 @@ Throws in case of DB Error and if profile was not found.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -615,7 +629,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -631,13 +645,13 @@ ___
 
 ___
 
-#### update
+### update
 
 Updates a profile. Metadata updates and product updates should use
 dedicated methods, e.g. `setMetadata`, etc. The function
 will throw errors if metadata or product updates are attempted.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -660,7 +674,7 @@ will throw errors if metadata or product updates are attempted.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -676,12 +690,12 @@ will throw errors if metadata or product updates are attempted.
 
 ___
 
-#### updateShippingMethod
+### updateShippingMethod
 
 Updates a shipping method's associations. Useful when a cart is completed
 and its methods should be copied to an order/swap entity.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -704,7 +718,7 @@ and its methods should be copied to an order/swap entity.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -720,9 +734,9 @@ and its methods should be copied to an order/swap entity.
 
 ___
 
-#### updateShippingProfile
+### updateShippingProfile
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -745,7 +759,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -761,13 +775,13 @@ ___
 
 ___
 
-#### validateCartOption
+### validateCartOption
 
 Checks if a given option id is a valid option for a cart. If it is the
 option is returned with the correct price. Throws when region\_ids do not
 match, or when the shipping option requirements are not satisfied.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -790,7 +804,7 @@ match, or when the shipping option requirements are not satisfied.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -806,11 +820,11 @@ match, or when the shipping option requirements are not satisfied.
 
 ___
 
-#### validatePriceType\_
+### validatePriceType\_
 
 Validates a shipping option price
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -833,7 +847,7 @@ Validates a shipping option price
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -849,11 +863,11 @@ Validates a shipping option price
 
 ___
 
-#### validateRequirement\_
+### validateRequirement\_
 
 Validates a requirement
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -876,7 +890,7 @@ Validates a requirement
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -892,9 +906,9 @@ Validates a requirement
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -908,7 +922,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

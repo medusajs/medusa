@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ProductVariantService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new ProductVariantService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -184,15 +184,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addOptionValue
+### addOptionValue
 
 `**addOptionValue**(variantId, optionId, optionValue): Promise&#60;[ProductOptionValue](ProductOptionValue.mdx)&#62;`
 
@@ -202,7 +222,7 @@ if that product does not have an option with the given
 option id. Fails if given variant is not found.
 Option value must be of type string or number.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -234,7 +254,7 @@ Option value must be of type string or number.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductOptionValue](ProductOptionValue.mdx)&#62;
 
@@ -252,7 +272,7 @@ Promise&#60;[ProductOptionValue](ProductOptionValue.mdx)&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -260,7 +280,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -283,7 +303,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -315,7 +335,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -333,14 +353,14 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**<TypeParameter TVariants, TypeParameter TOutput>(productOrProductId, variants): Promise&#60;TOutput&#62;`
 
 Creates an unpublished product variant. Will validate against parent product
 to ensure that the variant can in fact be created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -363,7 +383,7 @@ to ensure that the variant can in fact be created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -386,7 +406,7 @@ to ensure that the variant can in fact be created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TOutput&#62;
 
@@ -404,14 +424,14 @@ Promise&#60;TOutput&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(variantIds): Promise&#60;void&#62;`
 
 Deletes variant or variants.
 Will never fail due to delete being idempotent.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -425,7 +445,7 @@ Will never fail due to delete being idempotent.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -443,14 +463,14 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteOptionValue
+### deleteOptionValue
 
 `**deleteOptionValue**(variantId, optionId): Promise&#60;void&#62;`
 
 Deletes option value from given variant.
 Will never fail due to delete being idempotent.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -473,7 +493,7 @@ Will never fail due to delete being idempotent.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -491,14 +511,14 @@ Promise&#60;void&#62;
 
 ___
 
-#### getFreeTextQueryBuilder\_
+### getFreeTextQueryBuilder\_
 
 `**getFreeTextQueryBuilder_**(variantRepo, query, q?): SelectQueryBuilder&#60;[ProductVariant](ProductVariant.mdx)&#62;`
 
 Lists variants based on the provided parameters and includes the count of
 variants that match the query.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -530,7 +550,7 @@ variants that match the query.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 SelectQueryBuilder&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
@@ -548,7 +568,7 @@ SelectQueryBuilder&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
 ___
 
-#### getRegionPrice
+### getRegionPrice
 
 `**getRegionPrice**(variantId, context): Promise&#60;null \| number&#62;`
 
@@ -556,7 +576,7 @@ Gets the price specific to a region. If no region specific money amount
 exists the function will try to use a currency price. If no default
 currency price exists the function will throw an error.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -579,7 +599,7 @@ currency price exists the function will throw an error.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;null \| number&#62;
 
@@ -597,13 +617,13 @@ Promise&#60;null \| number&#62;
 
 ___
 
-#### isVariantInSalesChannels
+### isVariantInSalesChannels
 
 `**isVariantInSalesChannels**(id, salesChannelIds): Promise&#60;boolean&#62;`
 
 Check if the variant is assigned to at least one of the provided sales channels.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -626,7 +646,7 @@ Check if the variant is assigned to at least one of the provided sales channels.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -644,11 +664,11 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -671,7 +691,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
@@ -689,11 +709,11 @@ Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[ProductVariant](ProductVariant.mdx)[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -716,7 +736,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[ProductVariant](ProductVariant.mdx)[], number]&#62;
 
@@ -734,13 +754,13 @@ Promise&#60;[[ProductVariant](ProductVariant.mdx)[], number]&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(variantId, config?): Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;`
 
 Gets a product variant by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -763,7 +783,7 @@ Gets a product variant by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
@@ -781,13 +801,13 @@ Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
 ___
 
-#### retrieveBySKU
+### retrieveBySKU
 
 `**retrieveBySKU**(sku, config?): Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;`
 
 Gets a product variant by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -810,7 +830,7 @@ Gets a product variant by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
@@ -828,11 +848,11 @@ Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
 ___
 
-#### setCurrencyPrice
+### setCurrencyPrice
 
 `**setCurrencyPrice**(variantId, price): Promise&#60;[MoneyAmount](MoneyAmount.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -855,7 +875,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[MoneyAmount](MoneyAmount.mdx)&#62;
 
@@ -878,11 +898,11 @@ Sets the default price for the given currency.
 
 ___
 
-#### setRegionPrice
+### setRegionPrice
 
 `**setRegionPrice**(variantId, price): Promise&#60;[MoneyAmount](MoneyAmount.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -905,7 +925,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[MoneyAmount](MoneyAmount.mdx)&#62;
 
@@ -928,11 +948,11 @@ Sets the default price of a specific region
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -946,7 +966,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -964,13 +984,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(variantData): Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;`
 
 Updates a collection of variant.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -984,7 +1004,7 @@ Updates a collection of variant.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
@@ -1006,7 +1026,7 @@ Updates a variant.
 Price updates should use dedicated methods.
 The function will throw, if price updates are attempted.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1029,7 +1049,7 @@ The function will throw, if price updates are attempted.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
@@ -1047,7 +1067,7 @@ Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
 `**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1070,7 +1090,7 @@ Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
@@ -1088,11 +1108,11 @@ Promise&#60;[ProductVariant](ProductVariant.mdx)&#62;
 
 ___
 
-#### updateBatch
+### updateBatch
 
 `Protected **updateBatch**(variantData): Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1106,7 +1126,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
@@ -1124,14 +1144,14 @@ Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
 ___
 
-#### updateOptionValue
+### updateOptionValue
 
 `**updateOptionValue**(variantId, optionId, optionValue): Promise&#60;[ProductOptionValue](ProductOptionValue.mdx)&#62;`
 
 Updates variant's option value.
 Option value must be of type string or number.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1163,7 +1183,7 @@ Option value must be of type string or number.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductOptionValue](ProductOptionValue.mdx)&#62;
 
@@ -1181,14 +1201,14 @@ Promise&#60;[ProductOptionValue](ProductOptionValue.mdx)&#62;
 
 ___
 
-#### updateVariantPrices
+### updateVariantPrices
 
 `**updateVariantPrices**(data): Promise&#60;void&#62;`
 
 Updates variant/prices collection.
 Deletes any prices that are not in the update object, and is not associated with a price list.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1202,7 +1222,7 @@ Deletes any prices that are not in the update object, and is not associated with
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1223,7 +1243,7 @@ Promise&#60;void&#62;
 Updates a variant's prices.
 Deletes any prices that are not in the update object, and is not associated with a price list.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1246,7 +1266,7 @@ Deletes any prices that are not in the update object, and is not associated with
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1264,11 +1284,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### updateVariantPricesBatch
+### updateVariantPricesBatch
 
 `Protected **updateVariantPricesBatch**(data): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1282,7 +1302,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1300,11 +1320,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### upsertCurrencyPrices
+### upsertCurrencyPrices
 
 `**upsertCurrencyPrices**(data): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1318,7 +1338,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1336,11 +1356,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### upsertRegionPrices
+### upsertRegionPrices
 
 `**upsertRegionPrices**(data): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1354,7 +1374,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1372,11 +1392,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### validateVariantsToCreate\_
+### validateVariantsToCreate\_
 
 `Protected **validateVariantsToCreate_**(product, variants): void`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1399,7 +1419,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `void`
 
@@ -1417,11 +1437,11 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [ProductVariantService](ProductVariantService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1435,7 +1455,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [ProductVariantService](ProductVariantService.mdx)
 

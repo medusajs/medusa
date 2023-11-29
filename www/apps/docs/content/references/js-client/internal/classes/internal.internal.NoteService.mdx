@@ -110,23 +110,37 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -158,7 +172,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -174,11 +188,11 @@ transaction manager is created.
 
 ___
 
-#### create
+### create
 
 Creates a note associated with a given author
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -210,7 +224,7 @@ Creates a note associated with a given author
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -226,11 +240,11 @@ Creates a note associated with a given author
 
 ___
 
-#### delete
+### delete
 
 Deletes a given note
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -244,7 +258,7 @@ Deletes a given note
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -260,11 +274,11 @@ Deletes a given note
 
 ___
 
-#### list
+### list
 
 Fetches all notes related to the given selector
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -287,7 +301,7 @@ Fetches all notes related to the given selector
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -303,11 +317,11 @@ Fetches all notes related to the given selector
 
 ___
 
-#### listAndCount
+### listAndCount
 
 Fetches all notes related to the given selector
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -330,7 +344,7 @@ Fetches all notes related to the given selector
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -346,11 +360,11 @@ Fetches all notes related to the given selector
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieves a specific note.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -373,7 +387,7 @@ Retrieves a specific note.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -389,9 +403,9 @@ Retrieves a specific note.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -405,7 +419,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -421,11 +435,11 @@ ___
 
 ___
 
-#### update
+### update
 
 Updates a given note with a new value
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -448,7 +462,7 @@ Updates a given note with a new value
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -464,9 +478,9 @@ Updates a given note with a new value
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -480,7 +494,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

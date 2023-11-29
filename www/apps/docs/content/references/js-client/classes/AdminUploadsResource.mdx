@@ -18,9 +18,9 @@ Related Guide: [How to upload CSV file when importing a product](https://docs.me
 
 ## Methods
 
-#### \_createPayload
+### \_createPayload
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -34,7 +34,7 @@ Related Guide: [How to upload CSV file when importing a product](https://docs.me
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -50,11 +50,11 @@ Related Guide: [How to upload CSV file when importing a product](https://docs.me
 
 ___
 
-#### create
+### create
 
 Upload a file to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -65,7 +65,7 @@ medusa.admin.uploads.create(file).then(({ uploads }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -79,7 +79,7 @@ medusa.admin.uploads.create(file).then(({ uploads }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -134,11 +134,11 @@ medusa.admin.uploads.create(file).then(({ uploads }) => {
 
 ___
 
-#### createProtected
+### createProtected
 
 Upload a file to an ACL or a non-public bucket. The file upload is handled by the file service installed on the Medusa backend.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -149,7 +149,7 @@ medusa.admin.uploads.createProtected(file).then(({ uploads }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -163,7 +163,7 @@ medusa.admin.uploads.createProtected(file).then(({ uploads }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -218,11 +218,11 @@ medusa.admin.uploads.createProtected(file).then(({ uploads }) => {
 
 ___
 
-#### delete
+### delete
 
 Delete an uploaded file from storage. The file is deleted using the installed file service on the Medusa backend.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -237,7 +237,7 @@ medusa.admin.uploads
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -270,7 +270,7 @@ medusa.admin.uploads
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -314,11 +314,11 @@ medusa.admin.uploads
 
 ___
 
-#### getPresignedDownloadUrl
+### getPresignedDownloadUrl
 
 Create and retrieve a presigned or public download URL for a file. The URL creation is handled by the file service installed on the Medusa backend.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -333,7 +333,7 @@ medusa.admin.uploads
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -366,7 +366,7 @@ medusa.admin.uploads
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

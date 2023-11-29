@@ -8,15 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate discounts.
 
-#### Implements
+## Implements
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new DiscountService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -29,6 +27,8 @@ Provides layer to manipulate discounts.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -188,21 +188,41 @@ Provides layer to manipulate discounts.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addRegion
+### addRegion
 
 `**addRegion**(discountId, regionId): Promise&#60;[Discount](Discount.mdx)&#62;`
 
 Adds a region to the discount regions array.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -225,7 +245,7 @@ Adds a region to the discount regions array.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)&#62;
 
@@ -243,7 +263,7 @@ Promise&#60;[Discount](Discount.mdx)&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -251,7 +271,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -274,7 +294,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -306,7 +326,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -324,11 +344,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### calculateDiscountForLineItem
+### calculateDiscountForLineItem
 
 `**calculateDiscountForLineItem**(discountId, lineItem, calculationContextData): Promise&#60;number&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -360,7 +380,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;number&#62;
 
@@ -378,11 +398,11 @@ Promise&#60;number&#62;
 
 ___
 
-#### canApplyForCustomer
+### canApplyForCustomer
 
 `**canApplyForCustomer**(discountRuleId, customerId): Promise&#60;boolean&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -405,7 +425,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -423,14 +443,14 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(discount): Promise&#60;[Discount](Discount.mdx)&#62;`
 
 Creates a discount with provided data given that the data is validated.
 Normalizes discount code to uppercase.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -444,7 +464,7 @@ Normalizes discount code to uppercase.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)&#62;
 
@@ -462,13 +482,13 @@ Promise&#60;[Discount](Discount.mdx)&#62;
 
 ___
 
-#### createDynamicCode
+### createDynamicCode
 
 `**createDynamicCode**(discountId, data): Promise&#60;[Discount](Discount.mdx)&#62;`
 
 Creates a dynamic code for a discount id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -491,7 +511,7 @@ Creates a dynamic code for a discount id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)&#62;
 
@@ -509,13 +529,13 @@ Promise&#60;[Discount](Discount.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(discountId): Promise&#60;void&#62;`
 
 Deletes a discount idempotently
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -529,7 +549,7 @@ Deletes a discount idempotently
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -547,13 +567,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteDynamicCode
+### deleteDynamicCode
 
 `**deleteDynamicCode**(discountId, code): Promise&#60;void&#62;`
 
 Deletes a dynamic code for a discount id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -576,7 +596,7 @@ Deletes a dynamic code for a discount id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -594,11 +614,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### hasCustomersGroupCondition
+### hasCustomersGroupCondition
 
 `**hasCustomersGroupCondition**(discount): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -612,7 +632,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -630,11 +650,11 @@ ___
 
 ___
 
-#### hasExpired
+### hasExpired
 
 `**hasExpired**(discount): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -648,7 +668,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -666,11 +686,11 @@ ___
 
 ___
 
-#### hasNotStarted
+### hasNotStarted
 
 `**hasNotStarted**(discount): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -684,7 +704,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -702,11 +722,11 @@ ___
 
 ___
 
-#### hasReachedLimit
+### hasReachedLimit
 
 `**hasReachedLimit**(discount): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -720,7 +740,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -738,11 +758,11 @@ ___
 
 ___
 
-#### isDisabled
+### isDisabled
 
 `**isDisabled**(discount): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -756,7 +776,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -774,11 +794,11 @@ ___
 
 ___
 
-#### isValidForRegion
+### isValidForRegion
 
 `**isValidForRegion**(discount, region_id): Promise&#60;boolean&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -801,7 +821,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -819,11 +839,11 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector?, config?): Promise&#60;[Discount](Discount.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -846,7 +866,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)[]&#62;
 
@@ -864,11 +884,11 @@ Promise&#60;[Discount](Discount.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector?, config?): Promise&#60;[[Discount](Discount.mdx)[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -891,7 +911,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[Discount](Discount.mdx)[], number]&#62;
 
@@ -909,13 +929,13 @@ Promise&#60;[[Discount](Discount.mdx)[], number]&#62;
 
 ___
 
-#### listByCodes
+### listByCodes
 
 `**listByCodes**(discountCodes, config?): Promise&#60;[Discount](Discount.mdx)[]&#62;`
 
 List all the discounts corresponding to the given codes
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -938,7 +958,7 @@ List all the discounts corresponding to the given codes
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)[]&#62;
 
@@ -956,13 +976,13 @@ Promise&#60;[Discount](Discount.mdx)[]&#62;
 
 ___
 
-#### removeRegion
+### removeRegion
 
 `**removeRegion**(discountId, regionId): Promise&#60;[Discount](Discount.mdx)&#62;`
 
 Removes a region from the discount regions array.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -985,7 +1005,7 @@ Removes a region from the discount regions array.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)&#62;
 
@@ -1003,13 +1023,13 @@ Promise&#60;[Discount](Discount.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(discountId, config?): Promise&#60;[Discount](Discount.mdx)&#62;`
 
 Gets a discount by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1032,7 +1052,7 @@ Gets a discount by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)&#62;
 
@@ -1050,13 +1070,13 @@ Promise&#60;[Discount](Discount.mdx)&#62;
 
 ___
 
-#### retrieveByCode
+### retrieveByCode
 
 `**retrieveByCode**(discountCode, config?): Promise&#60;[Discount](Discount.mdx)&#62;`
 
 Gets the discount by discount code.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1079,7 +1099,7 @@ Gets the discount by discount code.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)&#62;
 
@@ -1097,11 +1117,11 @@ Promise&#60;[Discount](Discount.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1115,7 +1135,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -1133,13 +1153,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(discountId, update): Promise&#60;[Discount](Discount.mdx)&#62;`
 
 Updates a discount.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1162,7 +1182,7 @@ Updates a discount.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Discount](Discount.mdx)&#62;
 
@@ -1180,11 +1200,11 @@ Promise&#60;[Discount](Discount.mdx)&#62;
 
 ___
 
-#### validateDiscountForCartOrThrow
+### validateDiscountForCartOrThrow
 
 `**validateDiscountForCartOrThrow**(cart, discount): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1207,7 +1227,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1225,11 +1245,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### validateDiscountForProduct
+### validateDiscountForProduct
 
 `**validateDiscountForProduct**(discountRuleId, productId?): Promise&#60;boolean&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1252,7 +1272,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -1270,13 +1290,13 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### validateDiscountRule\_
+### validateDiscountRule\_
 
 `**validateDiscountRule_**<TypeParameter T>(discountRule): T`
 
 Creates a discount rule with provided data given that the data is validated.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1290,7 +1310,7 @@ Creates a discount rule with provided data given that the data is validated.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1304,7 +1324,7 @@ Creates a discount rule with provided data given that the data is validated.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `T`
 
@@ -1322,11 +1342,11 @@ Creates a discount rule with provided data given that the data is validated.
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [DiscountService](DiscountService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1340,7 +1360,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [DiscountService](DiscountService.mdx)
 

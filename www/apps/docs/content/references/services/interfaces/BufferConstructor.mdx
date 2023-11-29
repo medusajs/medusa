@@ -10,15 +10,13 @@ Raw data is stored in instances of the Buffer class.
 A Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap.  A Buffer cannot be resized.
 Valid string encodings: 'ascii'\|'utf8'\|'utf16le'\|'ucs2'(alias of 'utf16le')\|'base64'\|'base64url'\|'binary'(deprecated)\|'hex'
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new BufferConstructor**(str, encoding?)`
 
 Allocates a new buffer containing the given &#123;str&#125;.
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -41,7 +39,7 @@ Allocates a new buffer containing the given &#123;str&#125;.
   }
 ]} />
 
-#### Deprecated
+### Deprecated
 
 since v10.0.0 - Use `Buffer.from(string[, encoding])` instead.
 
@@ -49,7 +47,7 @@ since v10.0.0 - Use `Buffer.from(string[, encoding])` instead.
 
 Allocates a new buffer of &#123;size&#125; octets.
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -63,7 +61,7 @@ Allocates a new buffer of &#123;size&#125; octets.
   }
 ]} />
 
-#### Deprecated
+### Deprecated
 
 since v10.0.0 - Use `Buffer.alloc()` instead (also see `Buffer.allocUnsafe()`).
 
@@ -71,7 +69,7 @@ since v10.0.0 - Use `Buffer.alloc()` instead (also see `Buffer.allocUnsafe()`).
 
 Allocates a new buffer containing the given &#123;array&#125; of octets.
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -85,7 +83,7 @@ Allocates a new buffer containing the given &#123;array&#125; of octets.
   }
 ]} />
 
-#### Deprecated
+### Deprecated
 
 since v10.0.0 - Use `Buffer.from(array)` instead.
 
@@ -94,7 +92,7 @@ since v10.0.0 - Use `Buffer.from(array)` instead.
 Produces a Buffer backed by the same allocated memory as
 the given &#123;ArrayBuffer&#125;/&#123;SharedArrayBuffer&#125;.
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -108,7 +106,7 @@ the given &#123;ArrayBuffer&#125;/&#123;SharedArrayBuffer&#125;.
   }
 ]} />
 
-#### Deprecated
+### Deprecated
 
 since v10.0.0 - Use `Buffer.from(arrayBuffer[, byteOffset[, length]])` instead.
 
@@ -116,7 +114,7 @@ since v10.0.0 - Use `Buffer.from(arrayBuffer[, byteOffset[, length]])` instead.
 
 Allocates a new buffer containing the given &#123;array&#125; of octets.
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -130,7 +128,7 @@ Allocates a new buffer containing the given &#123;array&#125; of octets.
   }
 ]} />
 
-#### Deprecated
+### Deprecated
 
 since v10.0.0 - Use `Buffer.from(array)` instead.
 
@@ -138,7 +136,7 @@ since v10.0.0 - Use `Buffer.from(array)` instead.
 
 Copies the passed &#123;buffer&#125; data onto a new &#123;Buffer&#125; instance.
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -152,9 +150,11 @@ Copies the passed &#123;buffer&#125; data onto a new &#123;Buffer&#125; instance
   }
 ]} />
 
-#### Deprecated
+### Deprecated
 
 since v10.0.0 - Use `Buffer.from(buffer)` instead.
+
+___
 
 ## Properties
 
@@ -170,9 +170,11 @@ since v10.0.0 - Use `Buffer.from(buffer)` instead.
   }
 ]} />
 
+___
+
 ## Methods
 
-#### alloc
+### alloc
 
 `**alloc**(size, fill?, encoding?): [Buffer](../index.md#buffer)`
 
@@ -218,7 +220,7 @@ data that might not have been allocated for `Buffer`s.
 
 A `TypeError` will be thrown if `size` is not a number.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -250,7 +252,7 @@ A `TypeError` will be thrown if `size` is not a number.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -272,7 +274,7 @@ v5.10.0
 
 ___
 
-#### allocUnsafe
+### allocUnsafe
 
 `**allocUnsafe**(size): [Buffer](../index.md#buffer)`
 
@@ -308,7 +310,7 @@ than or equal to half `Buffer.poolSize`. The
 difference is subtle but can be important when an application requires the
 additional performance that `Buffer.allocUnsafe()` provides.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -322,7 +324,7 @@ additional performance that `Buffer.allocUnsafe()` provides.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -344,7 +346,7 @@ v5.10.0
 
 ___
 
-#### allocUnsafeSlow
+### allocUnsafeSlow
 
 `**allocUnsafeSlow**(size): [Buffer](../index.md#buffer)`
 
@@ -389,7 +391,7 @@ socket.on('readable', () => {
 
 A `TypeError` will be thrown if `size` is not a number.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -403,7 +405,7 @@ A `TypeError` will be thrown if `size` is not a number.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -425,7 +427,7 @@ v5.12.0
 
 ___
 
-#### byteLength
+### byteLength
 
 `**byteLength**(string, encoding?): number`
 
@@ -453,7 +455,7 @@ When `string` is a
 Reference/Global\_Objects/TypedArray)/[`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/ArrayBuffer)/[`SharedArrayBuffer`](https://develop-
 er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/SharedArrayBuffer), the byte length as reported by `.byteLength`is returned.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -476,7 +478,7 @@ er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/SharedArrayBu
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `number`
 
@@ -498,7 +500,7 @@ v0.1.90
 
 ___
 
-#### compare
+### compare
 
 `**compare**(buf1, buf2): 0 \| 1 \| -1`
 
@@ -516,7 +518,7 @@ console.log(arr.sort(Buffer.compare));
 // (This result is equal to: [buf2, buf1].)
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -539,7 +541,7 @@ console.log(arr.sort(Buffer.compare));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `0` \| `1` \| `-1`
 
@@ -561,7 +563,7 @@ v0.11.13
 
 ___
 
-#### concat
+### concat
 
 `**concat**(list, totalLength?): [Buffer](../index.md#buffer)`
 
@@ -599,7 +601,7 @@ console.log(bufA.length);
 
 `Buffer.concat()` may also use the internal `Buffer` pool like `Buffer.allocUnsafe()` does.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -622,7 +624,7 @@ console.log(bufA.length);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -644,7 +646,7 @@ v0.7.11
 
 ___
 
-#### copyBytesFrom
+### copyBytesFrom
 
 `**copyBytesFrom**(view, offset?, length?): [Buffer](../index.md#buffer)`
 
@@ -659,7 +661,7 @@ console.log(buf[0]); // 255
 console.log(buf[1]); // 255
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -691,7 +693,7 @@ console.log(buf[1]); // 255
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -713,7 +715,7 @@ v19.8.0
 
 ___
 
-#### from
+### from
 
 `**from**(arrayBuffer, byteOffset?, length?): [Buffer](../index.md#buffer)`
 
@@ -736,7 +738,7 @@ appropriate for `Buffer.from()` variants.
 
 `Buffer.from(array)` and `Buffer.from(string)` may also use the internal`Buffer` pool like `Buffer.allocUnsafe()` does.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -768,7 +770,7 @@ appropriate for `Buffer.from()` variants.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -792,7 +794,7 @@ v5.10.0
 
 Creates a new Buffer using the passed &#123;data&#125;
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -806,7 +808,7 @@ Creates a new Buffer using the passed &#123;data&#125;
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -824,7 +826,7 @@ Creates a new Buffer using the passed &#123;data&#125;
 
 `**from**(data): [Buffer](../index.md#buffer)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -838,7 +840,7 @@ Creates a new Buffer using the passed &#123;data&#125;
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -860,7 +862,7 @@ Creates a new Buffer containing the given JavaScript string &#123;str&#125;.
 If provided, the &#123;encoding&#125; parameter identifies the character encoding.
 If not provided, &#123;encoding&#125; defaults to 'utf8'.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -883,7 +885,7 @@ If not provided, &#123;encoding&#125; defaults to 'utf8'.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 
@@ -901,7 +903,7 @@ If not provided, &#123;encoding&#125; defaults to 'utf8'.
 
 ___
 
-#### isBuffer
+### isBuffer
 
 `**isBuffer**(obj): obj is Buffer`
 
@@ -917,7 +919,7 @@ Buffer.isBuffer([]); // false
 Buffer.isBuffer(new Uint8Array(1024)); // false
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -931,7 +933,7 @@ Buffer.isBuffer(new Uint8Array(1024)); // false
   }
 ]} />
 
-##### Returns
+#### Returns
 
 obj is Buffer
 
@@ -953,7 +955,7 @@ v0.1.101
 
 ___
 
-#### isEncoding
+### isEncoding
 
 `**isEncoding**(encoding): encoding is BufferEncoding`
 
@@ -976,7 +978,7 @@ console.log(Buffer.isEncoding(''));
 // Prints: false
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -990,7 +992,7 @@ console.log(Buffer.isEncoding(''));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 encoding is BufferEncoding
 
@@ -1012,13 +1014,13 @@ v0.9.1
 
 ___
 
-#### of
+### of
 
 `**of**(...items): [Buffer](../index.md#buffer)`
 
 Creates a new Buffer using the passed &#123;data&#125;
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1032,7 +1034,7 @@ Creates a new Buffer using the passed &#123;data&#125;
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Buffer](../index.md#buffer)
 

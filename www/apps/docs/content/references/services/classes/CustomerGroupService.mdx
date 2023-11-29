@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # CustomerGroupService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new CustomerGroupService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -94,21 +94,41 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addCustomers
+### addCustomers
 
 `**addCustomers**(id, customerIds): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 Add a batch of customers to a customer group at once
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -131,7 +151,7 @@ Add a batch of customers to a customer group at once
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
@@ -149,7 +169,7 @@ Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -157,7 +177,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -180,7 +200,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -212,7 +232,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -230,13 +250,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(group): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 Creates a customer group with the provided data.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -250,7 +270,7 @@ Creates a customer group with the provided data.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
@@ -268,13 +288,13 @@ Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(groupId): Promise&#60;void&#62;`
 
 Remove customer group
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -288,7 +308,7 @@ Remove customer group
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -306,11 +326,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### handleCreationFail
+### handleCreationFail
 
 `Private **handleCreationFail**(id, ids, error): Promise&#60;never&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -342,7 +362,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;never&#62;
 
@@ -360,13 +380,13 @@ Promise&#60;never&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector?, config): Promise&#60;[CustomerGroup](CustomerGroup.mdx)[]&#62;`
 
 List customer groups.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -389,7 +409,7 @@ List customer groups.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CustomerGroup](CustomerGroup.mdx)[]&#62;
 
@@ -407,13 +427,13 @@ Promise&#60;[CustomerGroup](CustomerGroup.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector?, config): Promise&#60;[[CustomerGroup](CustomerGroup.mdx)[], number]&#62;`
 
 Retrieve a list of customer groups and total count of records that match the query.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -436,7 +456,7 @@ Retrieve a list of customer groups and total count of records that match the que
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[CustomerGroup](CustomerGroup.mdx)[], number]&#62;
 
@@ -454,13 +474,13 @@ Promise&#60;[[CustomerGroup](CustomerGroup.mdx)[], number]&#62;
 
 ___
 
-#### removeCustomer
+### removeCustomer
 
 `**removeCustomer**(id, customerIds): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 Remove list of customers from a customergroup
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -483,7 +503,7 @@ Remove list of customers from a customergroup
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
@@ -501,11 +521,11 @@ Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(customerGroupId, config?): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -528,7 +548,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
@@ -546,11 +566,11 @@ Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -564,7 +584,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -582,13 +602,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(customerGroupId, update): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 Update a customer group.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -611,7 +631,7 @@ Update a customer group.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
@@ -629,11 +649,11 @@ Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [CustomerGroupService](CustomerGroupService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -647,7 +667,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [CustomerGroupService](CustomerGroupService.mdx)
 

@@ -13,11 +13,15 @@ export default function (theme: MarkdownTheme) {
     function (this: SignatureReflection, accessor?: string, standalone = true) {
       const { sections, expandMembers = false } =
         theme.getFormattingOptionsForLocation()
-      if (sections && sections.member_signature_title === false) {
+      const parentHasMoreThanOneSignature =
+        Handlebars.helpers.hasMoreThanOneSignature(this.parent)
+      if (
+        sections &&
+        sections.member_signature_title === false &&
+        !parentHasMoreThanOneSignature
+      ) {
         // only show title if there are more than one signatures
-        if (!this.parent.signatures || this.parent.signatures.length <= 1) {
-          return ""
-        }
+        return ""
       }
       const md: string[] = []
 
@@ -36,12 +40,12 @@ export default function (theme: MarkdownTheme) {
       if (accessor) {
         md.push(
           `${accessor}${
-            expandMembers ? `${Handlebars.helpers.titleLevel(4)} ` : "**"
+            expandMembers ? `${Handlebars.helpers.titleLevel()} ` : "**"
           }${this.name}${!expandMembers ? "**" : ""}`
         )
       } else if (this.name !== "__call" && this.name !== "__type") {
         md.push(
-          `${expandMembers ? `${Handlebars.helpers.titleLevel(4)} ` : "**"}${
+          `${expandMembers ? `${Handlebars.helpers.titleLevel()} ` : "**"}${
             this.name
           }${!expandMembers ? "**" : ""}`
         )

@@ -206,7 +206,7 @@ export interface UpdatePriceListDTO {
 }
 
 /**
- * @inteface
+ * @interface
  *
  * Filters to apply on price lists.
  */

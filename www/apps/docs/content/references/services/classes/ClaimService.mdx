@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ClaimService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new ClaimService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -283,15 +283,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -299,7 +319,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -322,7 +342,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -354,7 +374,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -372,11 +392,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### cancel
+### cancel
 
 `**cancel**(id): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -390,7 +410,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
@@ -408,11 +428,11 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
 `**cancelFulfillment**(fulfillmentId): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -426,7 +446,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
@@ -444,7 +464,7 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(data): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
@@ -452,7 +472,7 @@ Creates a Claim on an Order. Claims consists of items that are claimed and
 optionally items to be sent as replacement for the claimed items. The
 shipping address that the new items will be shipped to
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -466,7 +486,7 @@ shipping address that the new items will be shipped to
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
@@ -484,11 +504,11 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
 `**createFulfillment**(id, config?): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -538,7 +558,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
@@ -556,11 +576,11 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 ___
 
-#### createShipment
+### createShipment
 
 `**createShipment**(id, fulfillmentId, trackingLinks?, config?): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -619,7 +639,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
@@ -637,7 +657,7 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 ___
 
-#### getRefundTotalForClaimLinesOnOrder
+### getRefundTotalForClaimLinesOnOrder
 
 `Protected **getRefundTotalForClaimLinesOnOrder**(order, claimItems): Promise&#60;number&#62;`
 
@@ -648,7 +668,7 @@ There are three places too look:
 - Claim items (from previous claims)
 Note, it will attempt to return early from each of these places to avoid having to iterate over all items every time.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -671,7 +691,7 @@ Note, it will attempt to return early from each of these places to avoid having 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;number&#62;
 
@@ -689,11 +709,11 @@ Promise&#60;number&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[ClaimOrder](ClaimOrder.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -716,7 +736,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)[]&#62;
 
@@ -734,11 +754,11 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)[]&#62;
 
 ___
 
-#### processRefund
+### processRefund
 
 `**processRefund**(id): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -752,7 +772,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
@@ -770,13 +790,13 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(claimId, config?): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 Gets an order by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -799,7 +819,7 @@ Gets an order by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
@@ -817,11 +837,11 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -835,7 +855,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -853,11 +873,11 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(id, data): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -880,7 +900,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
@@ -898,11 +918,11 @@ Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 ___
 
-#### validateCreateClaimInput
+### validateCreateClaimInput
 
 `Protected **validateCreateClaimInput**(data): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -916,7 +936,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -934,11 +954,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [ClaimService](ClaimService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -952,7 +972,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [ClaimService](ClaimService.mdx)
 
