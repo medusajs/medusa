@@ -1,6 +1,5 @@
 import { LineItemDTO, ProductVariantDTO } from "@medusajs/types"
-
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInputData = {
   items: (Partial<ProductVariantDTO> & {

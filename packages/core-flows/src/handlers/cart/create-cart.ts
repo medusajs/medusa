@@ -1,5 +1,6 @@
 import { CartDTO } from "@medusajs/types"
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
+import { SalesChannelFeatureFlag } from "@medusajs/utils"
 
 enum Aliases {
   SalesChannel = "SalesChannel",
@@ -40,18 +41,25 @@ export async function createCart({
 }: WorkflowArguments<HandlerInputData>): Promise<HandlerOutputData> {
   const { manager } = context
 
+  const featureFlagRouter = container.resolve("featureFlagRouter")
   const cartService = container.resolve("cartService")
   const cartServiceTx = cartService.withTransaction(manager)
 
-  const cart = await cartServiceTx.create({
-    ...data[Aliases.SalesChannel],
+  const cartData = {
     ...data[Aliases.Addresses],
     ...data[Aliases.Customer],
     ...data[Aliases.Region],
     ...data[Aliases.Context],
-  })
+  }
 
-  return cart
+  const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
+    SalesChannelFeatureFlag.key
+  )
+  if (isSalesChannelEnabled) {
+    Object.assign(cartData, data[Aliases.SalesChannel])
+  }
+
+  return await cartServiceTx.create(cartData)
 }
 
 createCart.aliases = Aliases

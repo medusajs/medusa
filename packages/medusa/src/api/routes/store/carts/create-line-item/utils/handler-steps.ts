@@ -1,5 +1,6 @@
 import {
   FlagRouter,
+  MedusaV2Flag,
   prepareLineItemData,
   validateItemsInput,
 } from "@medusajs/utils"
@@ -16,7 +17,6 @@ import { WithRequiredProperty } from "../../../../../../types/common"
 import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-key"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
 import SalesChannelFeatureFlag from "../../../../../../loaders/feature-flags/sales-channels"
-import { MedusaError } from "medusa-core-utils"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../../../utils"
 
 export const CreateLineItemSteps = {
@@ -50,7 +50,7 @@ export async function handleAddOrUpdateLineItem(
 
   let line
 
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const remoteQuery = container.resolve("remoteQuery")
     const [variant] = await retrieveVariantsWithIsolatedProductModule(
       remoteQuery,

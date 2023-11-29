@@ -5,8 +5,7 @@ import {
   prepareLineItemData,
   validateItemsInput,
 } from "@medusajs/utils"
-
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInputData = {
   cart: {

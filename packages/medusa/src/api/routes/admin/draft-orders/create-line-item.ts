@@ -23,10 +23,10 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { validator } from "../../../../utils/validator"
 import {
   FlagRouter,
+  MedusaV2Flag,
   prepareLineItemData,
   validateItemsInput,
 } from "@medusajs/utils"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
 
 /**
@@ -130,9 +130,7 @@ export default async (req, res) => {
     if (validated.variant_id) {
       let line
 
-      if (
-        featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
-      ) {
+      if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
         const remoteQuery = req.scope.resolve("remoteQuery")
         const [variant] = await retrieveVariantsWithIsolatedProductModule(
           remoteQuery,

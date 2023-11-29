@@ -2,7 +2,6 @@ import {
   createCart as createCartWorkflow,
   Workflows,
 } from "@medusajs/core-flows"
-import { ProductVariantDTO } from "@medusajs/types"
 import {
   IsArray,
   IsInt,
@@ -12,10 +11,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import reqIp from "request-ip"
-import { EntityManager } from "typeorm"
 import {
-  FlagRouter,
+  MedusaV2Flag,
   prepareLineItemData,
   validateItemsInput,
 } from "@medusajs/utils"
@@ -24,7 +21,6 @@ import {
   CartService,
   LineItemService,
   ProductVariantInventoryService,
-  ProductVariantService,
   RegionService,
 } from "../../../../services"
 
@@ -211,11 +207,7 @@ export default async (req, res) => {
       if (validated.items?.length) {
         let generatedLineItems: LineItem[]
 
-        if (
-          featureFlagRouter.isFeatureEnabled(
-            IsolateProductDomainFeatureFlag.key
-          )
-        ) {
+        if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
           const variantIds = validated.items
             .map((i) => i.variant_id)
             .filter(Boolean)

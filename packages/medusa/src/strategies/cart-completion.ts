@@ -1,4 +1,8 @@
-import { FlagRouter, remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
@@ -327,11 +331,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
       let variantsMap: Map<string, any> | undefined
 
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(
-          IsolateProductDomainFeatureFlag.key
-        )
-      ) {
+      if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
         variantsMap = new Map<
           string,
           {

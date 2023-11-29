@@ -1,5 +1,6 @@
 import { EntityManager, In } from "typeorm"
 import {
+  ICacheService,
   IEventBusService,
   IInventoryService,
   InventoryItemDTO,
@@ -9,7 +10,14 @@ import {
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { FlagRouter, isDefined, isString, MedusaError, promiseAll } from "@medusajs/utils"
+import {
+  FlagRouter,
+  isDefined,
+  isString,
+  MedusaError,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
@@ -315,11 +323,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     // We should be able to just attach the inventory to the variant id provided without constraints
-    if (
-      !this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
+    if (!this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       // Verify that variant exists
       const variants = await this.productVariantService_
         .withTransaction(this.activeManager_)

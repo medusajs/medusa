@@ -1,10 +1,9 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { WorkflowTypes } from "@medusajs/types"
 import { EntityManager } from "typeorm"
-import { createProducts, Workflows } from "@medusajs/workflows"
 import express from "express"
 import loaders from "../loaders"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import { createProducts, Workflows } from "@medusajs/core-flows"
 
 const seedProducts = [
   {
@@ -118,12 +117,12 @@ async function seedIsolatedProduct({ directory }) {
   })
 
   const isProductIsolatedEnabled = featureFlagRouter.isFeatureEnabled(
-    IsolateProductDomainFeatureFlag.key
+    MedusaV2Flag.key
   )
 
   if (!isProductIsolatedEnabled) {
     throw new Error(
-      `Cannot run script 'seed-isolated-product without the '${IsolateProductDomainFeatureFlag.key}' feature flag enabled`
+      `Cannot run script 'seed-isolated-product without the '${MedusaV2Flag.key}' feature flag enabled`
     )
   }
 

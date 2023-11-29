@@ -1,11 +1,11 @@
 import { RemoteQueryQuery } from "@medusajs/types"
-import { FlagRouter, remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   FlagRouter,
   isDefined,
   MedusaError,
   MedusaV2Flag,
   promiseAll,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
@@ -587,7 +587,7 @@ class CartService extends TransactionBaseService {
    * Returns true if all products in the cart can be fulfilled with the current
    * shipping methods.
    * @param shippingMethods - the set of shipping methods to check from
-   * @param lineItem - the line item
+   * @param lineItemShippingProfiledId - the line item shipping profile id
    * @return boolean representing whether shipping method is validated
    */
   protected validateLineItemShipping_(
@@ -1022,11 +1022,7 @@ class CartService extends TransactionBaseService {
 
         const lineItemFields = ["id", "quantity", "variant_id", "cart_id"]
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            IsolateProductDomainFeatureFlag.key
-          )
-        ) {
+        if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
           lineItemFields.push("product_id")
         }
 
@@ -1046,11 +1042,7 @@ class CartService extends TransactionBaseService {
           if (lineItem.variant_id) {
             let variantOrId = lineItem.variant_id
 
-            if (
-              this.featureFlagRouter_.isFeatureEnabled(
-                IsolateProductDomainFeatureFlag.key
-              )
-            ) {
+            if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
               const [variant] = await this.remoteQuery_(
                 remoteQueryObjectFromString({
                   entryPoint: "variants",

@@ -99,32 +99,37 @@ export async function createProductsPrepareData({
       )
     }
 
-    if (
-      featureFlagRouter.isFeatureEnabled(salesChannelFeatureFlagKey) &&
-      !product.sales_channels?.length
-    ) {
-      productsHandleSalesChannelsMap.set(product.handle!, [
-        defaultSalesChannel!.id,
-      ])
-    } else {
-      productsHandleSalesChannelsMap.set(
-        product.handle!,
-        product.sales_channels!.map((s) => s.id)
-      )
+    if (featureFlagRouter.isFeatureEnabled(salesChannelFeatureFlagKey)) {
+      if (!product.sales_channels?.length) {
+        productsHandleSalesChannelsMap.set(product.handle!, [
+          defaultSalesChannel!.id,
+        ])
+      } else {
+        productsHandleSalesChannelsMap.set(
+          product.handle!,
+          product.sales_channels!.map((s) => s.id)
+        )
+      }
     }
 
     if (product.variants) {
-      const items =
-        productsHandleVariantsIndexPricesMap.get(product.handle!) ?? []
-
-      product.variants.forEach((variant, index) => {
-        items.push({
-          index,
-          prices: variant.prices!,
-        })
+      const hasPrices = product.variants.some((variant) => {
+        return (variant.prices?.length ?? 0) > 0
       })
 
-      productsHandleVariantsIndexPricesMap.set(product.handle!, items)
+      if (hasPrices) {
+        const items =
+          productsHandleVariantsIndexPricesMap.get(product.handle!) ?? []
+
+        product.variants.forEach((variant, index) => {
+          items.push({
+            index,
+            prices: variant.prices!,
+          })
+        })
+
+        productsHandleVariantsIndexPricesMap.set(product.handle!, items)
+      }
     }
   }
 

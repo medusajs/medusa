@@ -5,12 +5,11 @@ import {
 import { IsInt, IsOptional } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
 
 /**
@@ -105,9 +104,7 @@ export default async (req, res) => {
         should_calculate_prices: true,
       }
 
-      if (
-        featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
-      ) {
+      if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
         const remoteQuery = req.scope.resolve("remoteQuery")
 
         const variants = await retrieveVariantsWithIsolatedProductModule(

@@ -1,4 +1,4 @@
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, SalesChannelFeatureFlag } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
 
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
@@ -24,6 +24,16 @@ export async function findSalesChannel({
   container,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<AttachSalesChannelDTO> {
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+
+  const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
+    SalesChannelFeatureFlag.key
+  )
+
+  if (!isSalesChannelEnabled) {
+    return {}
+  }
+
   const salesChannelService = container.resolve("salesChannelService")
   const storeService = container.resolve("storeService")
 

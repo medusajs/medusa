@@ -1,9 +1,8 @@
 import express from "express"
 import loaders from "../loaders"
-import { FlagRouter } from "@medusajs/utils"
-import { Workflows } from "@medusajs/workflows"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { ShippingProfileService } from "../services"
+import { Workflows } from "@medusajs/core-flows"
 
 async function addProductToShippingProfilesIsolated({ directory }) {
   const app = express()
@@ -26,12 +25,12 @@ async function addProductToShippingProfilesIsolated({ directory }) {
       shippingProfileService.withTransaction(transaction)
 
     const isProductIsolatedEnabled = featureFlagRouter.isFeatureEnabled(
-      IsolateProductDomainFeatureFlag.key
+      MedusaV2Flag.key
     )
 
     if (!isProductIsolatedEnabled) {
       throw new Error(
-        `Cannot run script 'seed-isolated-product without the '${IsolateProductDomainFeatureFlag.key}' feature flag enabled`
+        `Cannot run script 'seed-isolated-product without the '${MedusaV2Flag.key}' feature flag enabled`
       )
     }
 

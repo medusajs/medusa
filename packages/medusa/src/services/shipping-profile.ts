@@ -365,11 +365,7 @@ class ShippingProfileService extends TransactionBaseService {
     productId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(
-          IsolateProductDomainFeatureFlag.key
-        )
-      ) {
+      if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
         const shippingProfileRepo = manager.withRepository(
           this.shippingProfileRepository_
         )
