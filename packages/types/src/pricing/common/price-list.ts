@@ -120,7 +120,9 @@ export interface PriceListPriceDTO extends CreateMoneyAmountDTO {
 /**
  * @interface
  *
- * The price list's rules to be set. Each key of the object is a rule type's `rule_attribute`, and its value
+ * The price rules to be set for each price in the price set.
+ *
+ * Each key of the object is a rule type's `rule_attribute`, and its value
  * is the values of the rule.
  */
 export interface CreatePriceSetPriceRules extends Record<string, string> {}
