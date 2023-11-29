@@ -10,6 +10,7 @@ const instance = AppUtils
 
 module.exports = {
   setContainer: (container) => {
+    console.log("setting contianer")
     instance.setContainer(container)
   },
   getContainer: () => {

@@ -288,7 +288,8 @@ jobs:
         run: yarn build
 
       - name: Run Service integration tests
-        run: yarn test:integration:services
+        working-directory: integration-tests/services
+        run: yarn test:integration
         env:
           DB_USERNAME: postgres
           DB_PASSWORD: postgres
