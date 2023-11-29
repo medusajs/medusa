@@ -46,6 +46,9 @@ module.exports = {
     })
     let expressServer
 
+    console.warn("container")
+    console.warn(container)
+
     setContainer(container)
 
     if (skipExpressListen) {
