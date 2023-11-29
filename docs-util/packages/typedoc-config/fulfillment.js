@@ -2,8 +2,8 @@
 const getConfig = require("./utils/get-config")
 
 module.exports = getConfig({
-  entryPointPath: "packages/medusa/src/models/index.ts",
+  entryPointPath: "packages/medusa/src/interfaces/fulfillment-service.ts",
   tsConfigName: "medusa.json",
-  name: "entities",
-  indexTitle: "Entities Reference",
+  name: "fulfillment",
+  indexTitle: "Fulfillment Provider Reference",
 })

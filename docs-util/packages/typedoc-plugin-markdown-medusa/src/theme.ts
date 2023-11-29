@@ -277,6 +277,15 @@ export class MarkdownTheme extends Theme {
     }
   }
 
+  getAllReflectionsHaveOwnDocument(): boolean {
+    const {
+      allReflectionsHaveOwnDocument: overrideAllReflectionsHaveOwnDocument,
+    } = this.getFormattingOptionsForLocation()
+    return overrideAllReflectionsHaveOwnDocument !== undefined
+      ? overrideAllReflectionsHaveOwnDocument
+      : this.allReflectionsHaveOwnDocument
+  }
+
   getMappings(directoryPrefix?: string): Mapping[] {
     return [
       {
@@ -315,7 +324,7 @@ export class MarkdownTheme extends Theme {
         directory: path.join(directoryPrefix || "", "types"),
         template: this.getReflectionMemberTemplate(),
       },
-      ...(this.allReflectionsHaveOwnDocument
+      ...(this.getAllReflectionsHaveOwnDocument()
         ? [
             {
               kind: [ReflectionKind.Variable],

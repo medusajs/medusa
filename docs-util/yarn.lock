@@ -4210,6 +4210,8 @@ __metadata:
 "typedoc-config@*, typedoc-config@workspace:packages/typedoc-config":
   version: 0.0.0-use.local
   resolution: "typedoc-config@workspace:packages/typedoc-config"
+  dependencies:
+    glob: ^10.3.10
   peerDependencies:
     typedoc: 0.25.x
   languageName: unknown

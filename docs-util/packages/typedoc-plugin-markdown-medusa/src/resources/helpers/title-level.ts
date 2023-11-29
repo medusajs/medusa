@@ -13,8 +13,6 @@ export default function (theme: MarkdownTheme) {
         return Array(originalLevel).fill("#").join("")
       }
 
-      const { allReflectionsHaveOwnDocument } = theme
-
       let isSignatureChild = false
       if (
         sections &&
@@ -28,13 +26,13 @@ export default function (theme: MarkdownTheme) {
           (this.parent.signatures as SignatureReflection[]).length > 1
       }
 
-      const numberToSubtract = allReflectionsHaveOwnDocument
+      const numberToSubtract = theme.getAllReflectionsHaveOwnDocument()
         ? isSignatureChild
           ? 1
           : 2
         : isSignatureChild
-        ? 0
-        : 1
+          ? 0
+          : 1
 
       const level = originalLevel - numberToSubtract
 
