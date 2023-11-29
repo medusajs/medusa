@@ -19,11 +19,11 @@ Related Guide: [How to manage swaps](https://docs.medusajs.com/modules/orders/ad
 
 ## Methods
 
-#### list
+### list
 
 Retrieve a list of swaps. The swaps can be paginated.
 
-##### Example
+#### Example
 
 To list swaps:
 
@@ -52,7 +52,7 @@ medusa.admin.swaps
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -94,7 +94,7 @@ medusa.admin.swaps
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -374,11 +374,11 @@ medusa.admin.swaps
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a swap's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -389,7 +389,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -412,7 +412,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

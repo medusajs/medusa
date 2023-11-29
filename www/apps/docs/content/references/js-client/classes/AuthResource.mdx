@@ -19,11 +19,11 @@ Related Guide: [How to implement customer profiles in your storefront](https://d
 
 ## Methods
 
-#### authenticate
+### authenticate
 
 Authenticate a customer using their email and password. If the customer is authenticated successfully, the cookie is automatically attached to subsequent requests sent with the JS Client.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -38,7 +38,7 @@ medusa.auth
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -80,7 +80,7 @@ medusa.auth
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -252,11 +252,11 @@ medusa.auth
 
 ___
 
-#### deleteSession
+### deleteSession
 
 Log out the customer and remove their authentication session. This method requires [customer authentication](AuthResource.mdx#authenticate).
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -266,7 +266,7 @@ medusa.auth.deleteSession().then(() => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -280,7 +280,7 @@ medusa.auth.deleteSession().then(() => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -296,11 +296,11 @@ medusa.auth.deleteSession().then(() => {
 
 ___
 
-#### exists
+### exists
 
 Check if the email is already used by another registered customer. Can be used to validate a new customer's email.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -308,7 +308,7 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.auth.exists("user@example.com")
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -331,7 +331,7 @@ medusa.auth.exists("user@example.com")
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -367,12 +367,12 @@ medusa.auth.exists("user@example.com")
 
 ___
 
-#### getSession
+### getSession
 
 Retrieve the details of the logged-in customer. Can also be used to check if there is an authenticated customer.
 This method requires [customer authentication](AuthResource.mdx#authenticate).
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -383,7 +383,7 @@ medusa.auth.getSession().then(({ customer }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -397,7 +397,7 @@ medusa.auth.getSession().then(({ customer }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -569,11 +569,11 @@ medusa.auth.getSession().then(({ customer }) => {
 
 ___
 
-#### getToken
+### getToken
 
 Authenticate the customer and retrieve a JWT token to use for subsequent authenticated requests.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -588,7 +588,7 @@ medusa.auth
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -630,7 +630,7 @@ medusa.auth
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

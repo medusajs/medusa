@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # NoteService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new NoteService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -130,15 +130,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -146,7 +166,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -169,7 +189,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -201,7 +221,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -219,13 +239,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(data, config?): Promise&#60;[Note](Note.mdx)&#62;`
 
 Creates a note associated with a given author
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -257,7 +277,7 @@ Creates a note associated with a given author
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Note](Note.mdx)&#62;
 
@@ -275,13 +295,13 @@ Promise&#60;[Note](Note.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(noteId): Promise&#60;void&#62;`
 
 Deletes a given note
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -295,7 +315,7 @@ Deletes a given note
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -313,13 +333,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[Note](Note.mdx)[]&#62;`
 
 Fetches all notes related to the given selector
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -342,7 +362,7 @@ Fetches all notes related to the given selector
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Note](Note.mdx)[]&#62;
 
@@ -360,13 +380,13 @@ Promise&#60;[Note](Note.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[Note](Note.mdx)[], number]&#62;`
 
 Fetches all notes related to the given selector
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -389,7 +409,7 @@ Fetches all notes related to the given selector
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[Note](Note.mdx)[], number]&#62;
 
@@ -407,13 +427,13 @@ Promise&#60;[[Note](Note.mdx)[], number]&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(noteId, config?): Promise&#60;[Note](Note.mdx)&#62;`
 
 Retrieves a specific note.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -436,7 +456,7 @@ Retrieves a specific note.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Note](Note.mdx)&#62;
 
@@ -454,11 +474,11 @@ Promise&#60;[Note](Note.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -472,7 +492,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -490,13 +510,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(noteId, value): Promise&#60;[Note](Note.mdx)&#62;`
 
 Updates a given note with a new value
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -519,7 +539,7 @@ Updates a given note with a new value
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Note](Note.mdx)&#62;
 
@@ -537,11 +557,11 @@ Promise&#60;[Note](Note.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [NoteService](NoteService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -555,7 +575,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [NoteService](NoteService.mdx)
 

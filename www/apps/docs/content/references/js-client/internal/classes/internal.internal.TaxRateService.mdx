@@ -92,19 +92,33 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addToProduct
+### addToProduct
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -136,7 +150,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -152,9 +166,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ___
 
-#### addToProductType
+### addToProductType
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -186,7 +200,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -202,9 +216,9 @@ ___
 
 ___
 
-#### addToShippingOption
+### addToShippingOption
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -236,7 +250,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -252,13 +266,13 @@ ___
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -290,7 +304,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -306,9 +320,9 @@ transaction manager is created.
 
 ___
 
-#### create
+### create
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -322,7 +336,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -338,9 +352,9 @@ ___
 
 ___
 
-#### delete
+### delete
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -354,7 +368,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -370,9 +384,9 @@ ___
 
 ___
 
-#### list
+### list
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -395,7 +409,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -411,9 +425,9 @@ ___
 
 ___
 
-#### listAndCount
+### listAndCount
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -436,7 +450,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -452,9 +466,9 @@ ___
 
 ___
 
-#### listByProduct
+### listByProduct
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -477,7 +491,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -493,9 +507,9 @@ ___
 
 ___
 
-#### listByShippingOption
+### listByShippingOption
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -509,7 +523,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -525,9 +539,9 @@ ___
 
 ___
 
-#### removeFromProduct
+### removeFromProduct
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -550,7 +564,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -566,9 +580,9 @@ ___
 
 ___
 
-#### removeFromProductType
+### removeFromProductType
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -591,7 +605,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -607,9 +621,9 @@ ___
 
 ___
 
-#### removeFromShippingOption
+### removeFromShippingOption
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -632,7 +646,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -648,9 +662,9 @@ ___
 
 ___
 
-#### retrieve
+### retrieve
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -673,7 +687,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -689,9 +703,9 @@ ___
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -705,7 +719,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -721,9 +735,9 @@ ___
 
 ___
 
-#### update
+### update
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -746,7 +760,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -762,9 +776,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -778,7 +792,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

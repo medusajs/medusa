@@ -8,9 +8,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-#### emit
+### emit
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -42,7 +42,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -58,59 +58,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ___
 
-#### subscribe
+### subscribe
 
-##### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "eventName",
-    "type": "`string` \\| `symbol`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "subscriber",
-    "type": "[Subscriber](../types/internal.internal-1.EventBusTypes.Subscriber.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "context",
-    "type": "[SubscriberContext](../types/internal.internal-1.EventBusTypes.SubscriberContext.mdx)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-##### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "IEventBusService",
-    "type": "[IEventBusService](internal.internal-1.EventBusTypes.IEventBusService.mdx)",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-___
-
-#### unsubscribe
-
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -142,7 +92,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -158,9 +108,59 @@ ___
 
 ___
 
-#### withTransaction
+### unsubscribe
 
-##### Parameters
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "eventName",
+    "type": "`string` \\| `symbol`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "subscriber",
+    "type": "[Subscriber](../types/internal.internal-1.EventBusTypes.Subscriber.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[SubscriberContext](../types/internal.internal-1.EventBusTypes.SubscriberContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "IEventBusService",
+    "type": "[IEventBusService](internal.internal-1.EventBusTypes.IEventBusService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -174,7 +174,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

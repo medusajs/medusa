@@ -1,0 +1,180 @@
+---
+displayed_sidebar: modules
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Fulfillment Provider Reference
+
+## Enumerations
+
+- [AllocationType](enums/AllocationType.mdx)
+- [CartType](enums/CartType.mdx)
+- [ClaimFulfillmentStatus](enums/ClaimFulfillmentStatus.mdx)
+- [ClaimPaymentStatus](enums/ClaimPaymentStatus.mdx)
+- [ClaimReason](enums/ClaimReason.mdx)
+- [ClaimType](enums/ClaimType.mdx)
+- [DiscountConditionOperator](enums/DiscountConditionOperator.mdx)
+- [DiscountConditionType](enums/DiscountConditionType.mdx)
+- [DiscountRuleType](enums/DiscountRuleType.mdx)
+- [DraftOrderStatus](enums/DraftOrderStatus.mdx)
+- [FulfillmentStatus](enums/FulfillmentStatus.mdx)
+- [OrderEditItemChangeType](enums/OrderEditItemChangeType.mdx)
+- [OrderEditStatus](enums/OrderEditStatus.mdx)
+- [OrderStatus](enums/OrderStatus.mdx)
+- [PaymentCollectionStatus](enums/PaymentCollectionStatus.mdx)
+- [PaymentStatus](enums/PaymentStatus.mdx)
+- [PriceListStatus](enums/PriceListStatus.mdx)
+- [PriceListType](enums/PriceListType.mdx)
+- [ProductStatus](enums/ProductStatus.mdx)
+- [RequirementType](enums/RequirementType.mdx)
+- [ReturnStatus](enums/ReturnStatus.mdx)
+- [ShippingOptionPriceType](enums/ShippingOptionPriceType.mdx)
+- [ShippingProfileType](enums/ShippingProfileType.mdx)
+- [SwapFulfillmentStatus](enums/SwapFulfillmentStatus.mdx)
+- [SwapPaymentStatus](enums/SwapPaymentStatus.mdx)
+
+## Classes
+
+- [AbstractFulfillmentService](classes/AbstractFulfillmentService.mdx)
+- [Address](classes/Address.mdx)
+- [BaseEntity](classes/BaseEntity.mdx)
+- [Cart](classes/Cart.mdx)
+- [ClaimImage](classes/ClaimImage.mdx)
+- [ClaimItem](classes/ClaimItem.mdx)
+- [ClaimOrder](classes/ClaimOrder.mdx)
+- [ClaimTag](classes/ClaimTag.mdx)
+- [Country](classes/Country.mdx)
+- [Currency](classes/Currency.mdx)
+- [Customer](classes/Customer.mdx)
+- [CustomerGroup](classes/CustomerGroup.mdx)
+- [Discount](classes/Discount.mdx)
+- [DiscountCondition](classes/DiscountCondition.mdx)
+- [DiscountRule](classes/DiscountRule.mdx)
+- [DraftOrder](classes/DraftOrder.mdx)
+- [Fulfillment](classes/Fulfillment.mdx)
+- [FulfillmentItem](classes/FulfillmentItem.mdx)
+- [FulfillmentProvider](classes/FulfillmentProvider.mdx)
+- [GiftCard](classes/GiftCard.mdx)
+- [GiftCardTransaction](classes/GiftCardTransaction.mdx)
+- [Image](classes/Image.mdx)
+- [LineItem](classes/LineItem.mdx)
+- [LineItemAdjustment](classes/LineItemAdjustment.mdx)
+- [LineItemTaxLine](classes/LineItemTaxLine.mdx)
+- [MoneyAmount](classes/MoneyAmount.mdx)
+- [Order](classes/Order.mdx)
+- [OrderEdit](classes/OrderEdit.mdx)
+- [OrderItemChange](classes/OrderItemChange.mdx)
+- [Payment](classes/Payment.mdx)
+- [PaymentCollection](classes/PaymentCollection.mdx)
+- [PaymentProvider](classes/PaymentProvider.mdx)
+- [PaymentSession](classes/PaymentSession.mdx)
+- [PriceList](classes/PriceList.mdx)
+- [Product](classes/Product.mdx)
+- [ProductCategory](classes/ProductCategory.mdx)
+- [ProductCollection](classes/ProductCollection.mdx)
+- [ProductOption](classes/ProductOption.mdx)
+- [ProductOptionValue](classes/ProductOptionValue.mdx)
+- [ProductTag](classes/ProductTag.mdx)
+- [ProductType](classes/ProductType.mdx)
+- [ProductVariant](classes/ProductVariant.mdx)
+- [ProductVariantInventoryItem](classes/ProductVariantInventoryItem.mdx)
+- [Refund](classes/Refund.mdx)
+- [Region](classes/Region.mdx)
+- [Return](classes/Return.mdx)
+- [ReturnItem](classes/ReturnItem.mdx)
+- [ReturnReason](classes/ReturnReason.mdx)
+- [SalesChannel](classes/SalesChannel.mdx)
+- [SalesChannelLocation](classes/SalesChannelLocation.mdx)
+- [ShippingMethod](classes/ShippingMethod.mdx)
+- [ShippingMethodTaxLine](classes/ShippingMethodTaxLine.mdx)
+- [ShippingOption](classes/ShippingOption.mdx)
+- [ShippingOptionRequirement](classes/ShippingOptionRequirement.mdx)
+- [ShippingProfile](classes/ShippingProfile.mdx)
+- [SoftDeletableEntity](classes/SoftDeletableEntity.mdx)
+- [Swap](classes/Swap.mdx)
+- [TaxLine](classes/TaxLine.mdx)
+- [TaxProvider](classes/TaxProvider.mdx)
+- [TaxRate](classes/TaxRate.mdx)
+- [TrackingLink](classes/TrackingLink.mdx)
+
+## Interfaces
+
+- [Boolean](interfaces/Boolean.mdx)
+- [FulfillmentService](interfaces/FulfillmentService.mdx)
+
+## Type Aliases
+
+- [CreateReturnType](types/CreateReturnType.mdx)
+- [Exclude](types/Exclude.mdx)
+- [FulfillmentProviderData](types/FulfillmentProviderData.mdx)
+- [MedusaContainer](types/MedusaContainer.mdx)
+- [Omit](types/Omit.mdx)
+- [Pick](types/Pick.mdx)
+- [Record](types/Record.mdx)
+- [ShippingMethodData](types/ShippingMethodData.mdx)
+- [ShippingOptionData](types/ShippingOptionData.mdx)
+
+## References
+
+### default
+
+Renames and re-exports [AbstractFulfillmentService](classes/AbstractFulfillmentService.mdx)
+
+___
+
+## Enumeration Members
+
+### ORDER\_EDIT
+
+ **ORDER\_EDIT**: `"order_edit"`
+
+The payment collection is used for an order edit.
+
+___
+
+## Functions
+
+### Boolean
+
+#### Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`T`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

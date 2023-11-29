@@ -8,7 +8,9 @@
 
 {{#unless (getFormattingOption "expandMembers")}}
 
-## {{title}}
+{{{titleLevel}}} {{title}}
+
+{{incrementCurrentTitleLevel}}
 
 {{/unless}}
 
@@ -16,11 +18,17 @@
 
 {{#unless hasOwnDocument}}
 
-{{> member commentLevel=4}}
+{{> member}}
 
 {{/unless}}
 
 {{/each}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/unless}}
 
 {{/unless}}
 
@@ -31,6 +39,10 @@
 {{#each groups}}
 
 {{#unless allChildrenHaveOwnDocument}}
+
+{{#unless @first}}
+___
+{{/unless}}
 
 {{> members.group}}
 

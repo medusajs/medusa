@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Service for managing the stock locations of sales channels
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new SalesChannelLocationService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Service for managing the stock locations of sales channels
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -96,27 +96,108 @@ Service for managing the stock locations of sales channels
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
-#### stockLocationService\_
+### stockLocationService\_
 
- `Protected` **stockLocationService\_**: [object Object]
+`Protected get**stockLocationService_**(): [IStockLocationService](../interfaces/IStockLocationService.mdx)`
+
+#### Returns
+
+[IStockLocationService](../interfaces/IStockLocationService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "create",
+    "type": "(`input`: [CreateStockLocationInput](../types/CreateStockLocationInput.mdx), `context?`: [SharedContext](../interfaces/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "delete",
+    "type": "(`id`: `string`, `context?`: [SharedContext](../interfaces/SharedContext.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "list",
+    "type": "(`selector`: [FilterableStockLocationProps](../interfaces/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../interfaces/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCount",
+    "type": "(`selector`: [FilterableStockLocationProps](../interfaces/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../interfaces/SharedContext.mdx)) => Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieve",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../interfaces/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../types/UpdateStockLocationInput.mdx), `context?`: [SharedContext](../interfaces/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### associateLocation
+### associateLocation
 
 `**associateLocation**(salesChannelId, locationId): Promise&#60;void&#62;`
 
 Associates a sales channel with a stock location.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -139,7 +220,7 @@ Associates a sales channel with a stock location.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -157,7 +238,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -165,7 +246,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -188,7 +269,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -220,7 +301,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -238,13 +319,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### listLocationIds
+### listLocationIds
 
 `**listLocationIds**(salesChannelId): Promise&#60;string[]&#62;`
 
 Lists the stock locations associated with a sales channel.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -258,7 +339,7 @@ Lists the stock locations associated with a sales channel.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;string[]&#62;
 
@@ -276,13 +357,13 @@ Promise&#60;string[]&#62;
 
 ___
 
-#### listSalesChannelIds
+### listSalesChannelIds
 
 `**listSalesChannelIds**(locationId): Promise&#60;string[]&#62;`
 
 Lists the sales channels associated with a stock location.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -296,7 +377,7 @@ Lists the sales channels associated with a stock location.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;string[]&#62;
 
@@ -314,13 +395,13 @@ Promise&#60;string[]&#62;
 
 ___
 
-#### removeLocation
+### removeLocation
 
 `**removeLocation**(locationId, salesChannelId?): Promise&#60;void&#62;`
 
 Removes an association between a sales channel and a stock location.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -343,7 +424,7 @@ Removes an association between a sales channel and a stock location.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -361,11 +442,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -379,7 +460,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -397,11 +478,11 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [SalesChannelLocationService](SalesChannelLocationService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -415,7 +496,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [SalesChannelLocationService](SalesChannelLocationService.mdx)
 

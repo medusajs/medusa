@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate store settings.
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new StoreService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate store settings.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -105,21 +105,41 @@ Provides layer to manipulate store settings.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addCurrency
+### addCurrency
 
 `**addCurrency**(code): Promise&#60;[Store](Store.mdx)&#62;`
 
 Add a currency to the store
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -133,7 +153,7 @@ Add a currency to the store
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Store](Store.mdx)&#62;
 
@@ -151,7 +171,7 @@ Promise&#60;[Store](Store.mdx)&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -159,7 +179,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -182,7 +202,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -214,7 +234,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -232,13 +252,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(): Promise&#60;[Store](Store.mdx)&#62;`
 
 Creates a store if it doesn't already exist.
 
-##### Returns
+#### Returns
 
 Promise&#60;[Store](Store.mdx)&#62;
 
@@ -256,11 +276,11 @@ Promise&#60;[Store](Store.mdx)&#62;
 
 ___
 
-#### getDefaultCurrency\_
+### getDefaultCurrency\_
 
 `Protected **getDefaultCurrency_**(code): [Partial](../types/Partial.mdx)&#60;[Currency](Currency.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -274,7 +294,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [Partial](../types/Partial.mdx)&#60;[Currency](Currency.mdx)&#62;
 
@@ -292,13 +312,13 @@ ___
 
 ___
 
-#### removeCurrency
+### removeCurrency
 
 `**removeCurrency**(code): Promise&#60;any&#62;`
 
 Removes a currency from the store
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -312,7 +332,7 @@ Removes a currency from the store
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;any&#62;
 
@@ -330,13 +350,13 @@ Promise&#60;any&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(config?): Promise&#60;[Store](Store.mdx)&#62;`
 
 Retrieve the store settings. There is always a maximum of one store.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -350,7 +370,7 @@ Retrieve the store settings. There is always a maximum of one store.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Store](Store.mdx)&#62;
 
@@ -368,11 +388,11 @@ Promise&#60;[Store](Store.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -386,7 +406,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -404,13 +424,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(data): Promise&#60;[Store](Store.mdx)&#62;`
 
 Updates a store
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -424,7 +444,7 @@ Updates a store
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Store](Store.mdx)&#62;
 
@@ -442,11 +462,11 @@ Promise&#60;[Store](Store.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [StoreService](StoreService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -460,7 +480,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [StoreService](StoreService.mdx)
 

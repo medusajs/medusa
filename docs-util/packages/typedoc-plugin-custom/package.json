@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@types/node": "^16.11.10",
-    "typescript": "^4.6"
+    "typescript": "5.2"
   },
   "keywords": [
     "typedocplugin",

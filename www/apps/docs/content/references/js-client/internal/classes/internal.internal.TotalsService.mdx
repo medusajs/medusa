@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 A service that calculates total and subtotals for orders, carts etc..
 
-#### Implements
+## Implements
 
 ## Properties
 
@@ -96,23 +96,37 @@ A service that calculates total and subtotals for orders, carts etc..
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -144,7 +158,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -160,11 +174,11 @@ transaction manager is created.
 
 ___
 
-#### calculateDiscount\_
+### calculateDiscount\_
 
 Calculates either fixed or percentage discount of a variant
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -214,7 +228,7 @@ Calculates either fixed or percentage discount of a variant
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -234,7 +248,7 @@ Calculates either fixed or percentage discount of a variant
 
 ___
 
-#### getAllocationItemDiscounts
+### getAllocationItemDiscounts
 
 If the rule of a discount has allocation="item", then we need
 to calculate discount on each item in the cart. Furthermore, we need to
@@ -242,7 +256,7 @@ make sure to only apply the discount on valid variants. And finally we
 return ether an array of percentages discounts or fixed discounts
 alongside the variant on which the discount was applied.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -265,7 +279,7 @@ alongside the variant on which the discount was applied.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -281,13 +295,13 @@ alongside the variant on which the discount was applied.
 
 ___
 
-#### getAllocationMap
+### getAllocationMap
 
 Gets a map of discounts and gift cards that apply to line items in an
 order. The function calculates the amount of a discount or gift card that
 applies to a specific line item.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -346,7 +360,7 @@ applies to a specific line item.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -362,11 +376,11 @@ applies to a specific line item.
 
 ___
 
-#### getCalculationContext
+### getCalculationContext
 
 Prepares the calculation context for a tax total calculation.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -389,7 +403,7 @@ Prepares the calculation context for a tax total calculation.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -405,12 +419,12 @@ Prepares the calculation context for a tax total calculation.
 
 ___
 
-#### getDiscountTotal
+### getDiscountTotal
 
 Calculates the total discount amount for each of the different supported
 discount types. If discounts aren't present or invalid returns 0.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -424,7 +438,7 @@ discount types. If discounts aren't present or invalid returns 0.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -440,11 +454,11 @@ discount types. If discounts aren't present or invalid returns 0.
 
 ___
 
-#### getGiftCardTotal
+### getGiftCardTotal
 
 Gets the gift card amount on a cart or order.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -476,7 +490,7 @@ Gets the gift card amount on a cart or order.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -492,12 +506,12 @@ Gets the gift card amount on a cart or order.
 
 ___
 
-#### getGiftCardableAmount
+### getGiftCardableAmount
 
 Gets the amount that can be gift carded on a cart. In regions where gift
 cards are taxable this amount should exclude taxes.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -511,7 +525,7 @@ cards are taxable this amount should exclude taxes.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -527,11 +541,11 @@ cards are taxable this amount should exclude taxes.
 
 ___
 
-#### getLineDiscounts
+### getLineDiscounts
 
 Returns the discount amount allocated to the line items of an order.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -581,7 +595,7 @@ Returns the discount amount allocated to the line items of an order.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -597,9 +611,9 @@ Returns the discount amount allocated to the line items of an order.
 
 ___
 
-#### getLineItemAdjustmentsTotal
+### getLineItemAdjustmentsTotal
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -613,7 +627,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -629,9 +643,9 @@ ___
 
 ___
 
-#### getLineItemDiscountAdjustment
+### getLineItemDiscountAdjustment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -654,7 +668,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -670,11 +684,11 @@ ___
 
 ___
 
-#### getLineItemRefund
+### getLineItemRefund
 
 The amount that can be refunded for a given line item.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -697,7 +711,7 @@ The amount that can be refunded for a given line item.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -713,12 +727,12 @@ The amount that can be refunded for a given line item.
 
 ___
 
-#### getLineItemTotal
+### getLineItemTotal
 
 Gets a total for a line item. The total can take gift cards, discounts and
 taxes into account. This can be controlled through the options.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -750,7 +764,7 @@ taxes into account. This can be controlled through the options.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -766,13 +780,13 @@ taxes into account. This can be controlled through the options.
 
 ___
 
-#### getLineItemTotals
+### getLineItemTotals
 
 Breaks down the totals related to a line item; these are the subtotal, the
 amount of discount applied to the line item, the amount of a gift card
 applied to a line item and the amount of tax applied to a line item.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -804,7 +818,7 @@ applied to a line item and the amount of tax applied to a line item.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -820,11 +834,11 @@ applied to a line item and the amount of tax applied to a line item.
 
 ___
 
-#### getPaidTotal
+### getPaidTotal
 
 Gets the total payments made on an order
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -838,7 +852,7 @@ Gets the total payments made on an order
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -854,13 +868,13 @@ Gets the total payments made on an order
 
 ___
 
-#### getRefundTotal
+### getRefundTotal
 
 Calculates refund total of line items.
 If any of the items to return have been discounted, we need to
 apply the discount again before refunding them.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -883,7 +897,7 @@ apply the discount again before refunding them.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -899,11 +913,11 @@ apply the discount again before refunding them.
 
 ___
 
-#### getRefundedTotal
+### getRefundedTotal
 
 Gets the total refund amount for an order.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -917,7 +931,7 @@ Gets the total refund amount for an order.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -933,12 +947,12 @@ Gets the total refund amount for an order.
 
 ___
 
-#### getShippingMethodTotals
+### getShippingMethodTotals
 
 Gets the totals breakdown for a shipping method. Fetches tax lines if not
 already provided.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -970,7 +984,7 @@ already provided.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -986,11 +1000,11 @@ already provided.
 
 ___
 
-#### getShippingTotal
+### getShippingTotal
 
 Calculates shipping total
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1004,7 +1018,7 @@ Calculates shipping total
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1020,11 +1034,11 @@ Calculates shipping total
 
 ___
 
-#### getSubtotal
+### getSubtotal
 
 Calculates subtotal of a given cart or order.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1047,7 +1061,7 @@ Calculates subtotal of a given cart or order.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1063,12 +1077,12 @@ Calculates subtotal of a given cart or order.
 
 ___
 
-#### getSwapTotal
+### getSwapTotal
 
 The total paid for swaps. May be negative in case of negative swap
 difference.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1082,7 +1096,7 @@ difference.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1098,12 +1112,12 @@ difference.
 
 ___
 
-#### getTaxTotal
+### getTaxTotal
 
 Calculates tax total
 Currently based on the Danish tax system
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1126,7 +1140,7 @@ Currently based on the Danish tax system
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1142,11 +1156,11 @@ Currently based on the Danish tax system
 
 ___
 
-#### getTotal
+### getTotal
 
 Calculates total of a given cart or order.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1169,7 +1183,7 @@ Calculates total of a given cart or order.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1185,11 +1199,11 @@ Calculates total of a given cart or order.
 
 ___
 
-#### rounded
+### rounded
 
 Rounds a number using Math.round.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1203,7 +1217,7 @@ Rounds a number using Math.round.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1219,9 +1233,9 @@ Rounds a number using Math.round.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1235,7 +1249,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1251,9 +1265,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1267,7 +1281,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

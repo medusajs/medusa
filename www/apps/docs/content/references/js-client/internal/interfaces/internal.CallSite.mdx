@@ -8,11 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-#### getColumnNumber
+### getColumnNumber
 
 Current column number [if this function was defined in a script]
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -28,12 +28,12 @@ Current column number [if this function was defined in a script]
 
 ___
 
-#### getEvalOrigin
+### getEvalOrigin
 
 A call site object representing the location where eval was called
 [if this function was created using a call to eval]
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -49,11 +49,11 @@ A call site object representing the location where eval was called
 
 ___
 
-#### getFileName
+### getFileName
 
 Name of the script [if this function was defined in a script]
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -69,11 +69,11 @@ Name of the script [if this function was defined in a script]
 
 ___
 
-#### getFunction
+### getFunction
 
 Current function
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -89,13 +89,13 @@ Current function
 
 ___
 
-#### getFunctionName
+### getFunctionName
 
 Name of the current function, typically its name property.
 If a name property is not available an attempt will be made to try
 to infer a name from the function's context.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -111,11 +111,11 @@ to infer a name from the function's context.
 
 ___
 
-#### getLineNumber
+### getLineNumber
 
 Current line number [if this function was defined in a script]
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -131,12 +131,12 @@ Current line number [if this function was defined in a script]
 
 ___
 
-#### getMethodName
+### getMethodName
 
 Name of the property [of "this" or one of its prototypes] that holds
 the current function
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -152,11 +152,11 @@ the current function
 
 ___
 
-#### getThis
+### getThis
 
 Value of "this"
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -172,14 +172,14 @@ Value of "this"
 
 ___
 
-#### getTypeName
+### getTypeName
 
 Type of "this" as a string.
 This is the name of the function stored in the constructor field of
 "this", if available.  Otherwise the object's [[Class]] internal
 property.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -195,11 +195,11 @@ property.
 
 ___
 
-#### isConstructor
+### isConstructor
 
 Is this a constructor call?
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -215,11 +215,11 @@ Is this a constructor call?
 
 ___
 
-#### isEval
+### isEval
 
 Does this call take place in code defined by a call to eval?
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -235,11 +235,11 @@ Does this call take place in code defined by a call to eval?
 
 ___
 
-#### isNative
+### isNative
 
 Is this call in native V8 code?
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -255,11 +255,11 @@ Is this call in native V8 code?
 
 ___
 
-#### isToplevel
+### isToplevel
 
 Is this a toplevel invocation, that is, is "this" the global object?
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

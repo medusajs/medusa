@@ -29,15 +29,17 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Methods
 
-#### createClient
+### createClient
 
 Creates the axios client used for requests
 As part of the creation, we configure the retry conditions
 and the exponential backoff approach.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -51,7 +53,7 @@ and the exponential backoff approach.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -67,9 +69,9 @@ and the exponential backoff approach.
 
 ___
 
-#### normalizeHeader
+### normalizeHeader
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -83,7 +85,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -99,9 +101,9 @@ ___
 
 ___
 
-#### normalizeHeaders
+### normalizeHeaders
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -115,7 +117,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -131,11 +133,11 @@ ___
 
 ___
 
-#### request
+### request
 
 Axios request
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -185,7 +187,7 @@ Axios request
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -201,9 +203,9 @@ Axios request
 
 ___
 
-#### requiresAuthentication
+### requiresAuthentication
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -226,7 +228,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -242,12 +244,12 @@ ___
 
 ___
 
-#### setHeaders
+### setHeaders
 
 Creates all the initial headers.
 We add the idempotency key, if the request is configured to retry.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -288,7 +290,7 @@ We add the idempotency key, if the request is configured to retry.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -304,9 +306,9 @@ We add the idempotency key, if the request is configured to retry.
 
 ___
 
-#### shouldRetryCondition
+### shouldRetryCondition
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -338,7 +340,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
