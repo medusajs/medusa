@@ -3,7 +3,6 @@ import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
 import {
   IsArray,
   IsBoolean,
-  IsDateString,
   IsEnum,
   IsOptional,
   IsString,
@@ -21,7 +20,7 @@ import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 import { getPriceListPricingModule } from "./modules-queries"
-import { transformDate } from "../../../../utils/validators/date-transform"
+import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
  * @oas [post] /admin/price-lists/{id}
@@ -240,11 +239,11 @@ export class AdminPostPriceListsPriceListPriceListReq {
   description?: string
 
   @IsOptional()
-  @Transform((input) => (input.value === null ? null : transformDate(input)))
+  @Transform(transformOptionalDate)
   starts_at?: Date | null
 
   @IsOptional()
-  @Transform((input) => (input.value === null ? null : transformDate(input)))
+  @Transform(transformOptionalDate)
   ends_at?: Date | null
 
   @IsOptional()
