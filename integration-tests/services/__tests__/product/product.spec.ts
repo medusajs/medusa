@@ -15,8 +15,10 @@ describe("product", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     await initDb({ cwd })
     shutdownServer = shutdownServer = await startBootstrapApp({ cwd })
-    medusaContainer = getContainer()
-    console.warn(medusaContainer)
+    const container = getContainer()
+    console.warn("medusaContainer in beforeAll")
+    console.warn(container)
+    medusaContainer = container
   })
 
   afterAll(async () => {
