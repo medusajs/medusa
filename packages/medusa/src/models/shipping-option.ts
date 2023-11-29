@@ -19,8 +19,19 @@ import { generateEntityId } from "../utils/generate-entity-id"
 import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
+/**
+ * @enum
+ * 
+ * The type of the shipping option price.
+ */
 export enum ShippingOptionPriceType {
+  /**
+   * The shipping option's price is a flat rate.
+   */
   FLAT_RATE = "flat_rate",
+  /**
+   * The shipping option's price is calculated. In this case, the `amount` field is typically `null`.
+   */
   CALCULATED = "calculated",
 }
 
@@ -80,6 +91,9 @@ export class ShippingOption extends SoftDeletableEntity {
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax: boolean
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "so")

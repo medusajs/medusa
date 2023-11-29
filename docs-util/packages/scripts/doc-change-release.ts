@@ -3,6 +3,7 @@
 import { Octokit } from "@octokit/core"
 import fs from "fs"
 import path from "path"
+import { fileURLToPath } from "url"
 
 const shouldExpire = process.argv.indexOf("--expire") !== -1
 const octokit = new Octokit({
@@ -58,6 +59,9 @@ async function main() {
       isCloseable: true,
     }
   }
+
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = path.dirname(__filename)
 
   //write new config file
   fs.writeFileSync(

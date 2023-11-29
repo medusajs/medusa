@@ -22,6 +22,7 @@ import {
   InjectEntityManager,
   MedusaContext,
   MedusaError,
+  promiseAll,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
@@ -376,6 +377,27 @@ export default class InventoryService implements IInventoryService {
     return await this.inventoryItemService_.delete(inventoryItemId, context)
   }
 
+  /**
+   * Restore an inventory item and levels
+   * @param inventoryItemId - the id of the inventory item to delete
+   * @param context
+   */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async restoreInventoryItem(
+    inventoryItemId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    await this.inventoryLevelService_.restoreByInventoryItemId(
+      inventoryItemId,
+      context
+    )
+
+    return await this.inventoryItemService_.restore(inventoryItemId, context)
+  }
+
   @InjectEntityManager(
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
@@ -452,7 +474,7 @@ export default class InventoryService implements IInventoryService {
       return acc
     }, new Map())
 
-    return await Promise.all(
+    return await promiseAll(
       updates.map(async (update) => {
         const levelId = levelMap
           .get(update.inventory_item_id)

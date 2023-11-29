@@ -1,8 +1,12 @@
-import { FlagRouter, isDefined } from "@medusajs/utils"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  isDefined,
+  promiseAll,
+} from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import {
   Cart,
   CustomShippingOption,
@@ -486,7 +490,7 @@ class ShippingProfileService extends TransactionBaseService {
       }
 
       return (
-        await Promise.all(
+        await promiseAll(
           rawOpts.map(async (so) => {
             return await this.shippingOptionService_
               .withTransaction(manager)
@@ -506,11 +510,7 @@ class ShippingProfileService extends TransactionBaseService {
   protected async getProfilesInCart(cart: Cart): Promise<string[]> {
     let profileIds = new Set<string>()
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       const productShippingProfileMap = await this.getMapProfileIdsByProductIds(
         cart.items.map((item) => item.variant?.product_id)
       )

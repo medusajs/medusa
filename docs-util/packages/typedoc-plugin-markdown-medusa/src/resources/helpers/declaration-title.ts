@@ -43,11 +43,7 @@ export default function (theme: MarkdownTheme) {
         `${this.flags.isRest ? "... " : ""} **${escapeChars(this.name)}**`
       )
       if (this instanceof DeclarationReflection && this.typeParameters) {
-        md.push(
-          `<${this.typeParameters
-            .map((typeParameter) => `\`${typeParameter.name}\``)
-            .join(", ")}\\>`
-        )
+        md.push(`\`<${this.typeParameters.join(", ")}>\``)
       }
 
       md.push(getType(this))
@@ -57,7 +53,9 @@ export default function (theme: MarkdownTheme) {
         this.defaultValue &&
         this.defaultValue !== "..."
       ) {
-        md.push(` = \`${stripLineBreaks(stripComments(this.defaultValue))}\``)
+        md.push(
+          ` = \`${stripLineBreaks(stripComments(`${this.defaultValue}`))}\``
+        )
       }
       return md.join("")
     }

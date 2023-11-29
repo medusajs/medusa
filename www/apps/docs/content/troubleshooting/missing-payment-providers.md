@@ -4,7 +4,7 @@ title: 'Payment Processor not showing in checkout'
 
 You add payment processors to your Medusa instance by adding them as plugins in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {

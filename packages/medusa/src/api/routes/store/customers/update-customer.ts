@@ -32,12 +32,12 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/store/customers/me' \
- *       -H 'Cookie: connect.sid={sid}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Laury"

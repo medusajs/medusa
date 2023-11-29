@@ -101,6 +101,8 @@ import {
 } from "@medusajs/icons"
 import IconPuzzleSolid from "./PuzzleSolid"
 import IconNextjs from "./Nextjs"
+import IconFlagMini from "./FlagMini"
+import IconBeaker from "./Beaker"
 
 export default {
   "academic-cap-solid": AcademicCapSolid,
@@ -110,6 +112,7 @@ export default {
   "arrow-down-tray": ArrowDownTray,
   "back-arrow": ArrowUturnLeft,
   "bars-three": BarsThree,
+  beaker: IconBeaker,
   bell: BellAlert,
   "bell-alert-solid": BellAlertSolid,
   bolt: Bolt,
@@ -159,6 +162,7 @@ export default {
   "folder-open": FolderOpen,
   gatsby: Gatsby,
   "gift-solid": GiftSolid,
+  "flag-mini": IconFlagMini,
   github: Github,
   "globe-europe": GlobeEurope,
   "globe-europe-solid": GlobeEuropeSolid,

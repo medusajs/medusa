@@ -5,12 +5,14 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryKey,
   PrimaryKeyType,
   Property,
 } from "@mikro-orm/core"
 
 import MoneyAmount from "./money-amount"
+import PriceList from "./price-list"
 import PriceRule from "./price-rule"
 import PriceSet from "./price-set"
 import PriceSetMoneyAmountRules from "./price-set-money-amount-rules"
@@ -29,7 +31,7 @@ export default class PriceSetMoneyAmount {
   })
   price_set?: PriceSet
 
-  @ManyToOne(() => MoneyAmount, {
+  @OneToOne(() => MoneyAmount, {
     onDelete: "cascade",
     index: "IDX_price_set_money_amount_money_amount_id",
   })
@@ -49,6 +51,13 @@ export default class PriceSetMoneyAmount {
     mappedBy: (psmar) => psmar.price_set_money_amount,
   })
   price_set_money_amount_rules = new Collection<PriceSetMoneyAmountRules>(this)
+
+  @ManyToOne(() => PriceList, {
+    index: "IDX_price_rule_price_list_id",
+    onDelete: "cascade",
+    nullable: true,
+  })
+  price_list?: PriceList
 
   @BeforeCreate()
   onCreate() {

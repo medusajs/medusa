@@ -13,6 +13,10 @@ export interface AdminPostReservationsReservationReq {
    */
   quantity?: number
   /**
+   * The reservation's description.
+   */
+  description?: string
+  /**
    * An optional set of key-value pairs with additional information.
    */
   metadata?: Record<string, any>

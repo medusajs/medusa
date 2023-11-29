@@ -1,4 +1,5 @@
 type: object
+description: The publishable API key's details.
 required:
   - publishable_api_key
 properties:

@@ -1,3 +1,7 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { IsInt, IsOptional } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -5,7 +9,6 @@ import { FlagRouter } from "@medusajs/utils"
 
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { CartService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
@@ -36,7 +39,7 @@ import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -73,6 +76,9 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   await manager.transaction(async (m) => {
     // If the quantity is 0 that is effectively deletion
@@ -132,6 +138,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }

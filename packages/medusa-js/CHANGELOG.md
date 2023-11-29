@@ -1,5 +1,29 @@
 # Change Log
 
+## 6.1.4
+
+### Patch Changes
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+
+## 6.1.3
+
+### Patch Changes
+
+- [`045d1b6a0`](https://github.com/medusajs/medusa/commit/045d1b6a0c2b0d03e5fa1db886d1f81c843059ce) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump @medusajs/medusa dep
+
+## 6.1.2
+
+### Patch Changes
+
+- [#5400](https://github.com/medusajs/medusa/pull/5400) [`5a5c96e21`](https://github.com/medusajs/medusa/commit/5a5c96e2118e50a558d9d6dc340e505454d4c593) Thanks [@dwene](https://github.com/dwene)! - add types to exports to help projects using moduleResolution bundler
+
+- [#5406](https://github.com/medusajs/medusa/pull/5406) [`98e275551`](https://github.com/medusajs/medusa/commit/98e275551415583602763cf457c3f95400209d0a) Thanks [@dPreininger](https://github.com/dPreininger)! - Fix(medusa-js): Fix JwtTokenManager.register for store domain
+
 ## 6.1.1
 
 ### Patch Changes

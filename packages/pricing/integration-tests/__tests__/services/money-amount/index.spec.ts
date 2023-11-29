@@ -42,20 +42,22 @@ describe("MoneyAmount Service", () => {
     it("should list all moneyAmounts", async () => {
       const moneyAmountsResult = await service.list()
 
-      expect(moneyAmountsResult).toEqual([
-        expect.objectContaining({
-          id: "money-amount-USD",
-          amount: "500",
-        }),
-        expect.objectContaining({
-          id: "money-amount-EUR",
-          amount: "400",
-        }),
-        expect.objectContaining({
-          id: "money-amount-CAD",
-          amount: "600",
-        }),
-      ])
+      expect(JSON.parse(JSON.stringify(moneyAmountsResult))).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "money-amount-USD",
+            amount: 500,
+          }),
+          expect.objectContaining({
+            id: "money-amount-EUR",
+            amount: 400,
+          }),
+          expect.objectContaining({
+            id: "money-amount-CAD",
+            amount: 600,
+          }),
+        ])
+      )
     })
 
     it("should list moneyAmounts by id", async () => {
@@ -63,7 +65,7 @@ describe("MoneyAmount Service", () => {
         id: ["money-amount-USD"],
       })
 
-      expect(moneyAmountsResult).toEqual([
+      expect(JSON.parse(JSON.stringify(moneyAmountsResult))).toEqual([
         expect.objectContaining({
           id: "money-amount-USD",
         }),
@@ -76,7 +78,7 @@ describe("MoneyAmount Service", () => {
           id: ["money-amount-USD"],
         },
         {
-          select: ["id", "min_quantity", "currency.code"],
+          select: ["id", "min_quantity", "currency.code", "amount"],
           relations: ["currency"],
         }
       )
@@ -86,6 +88,7 @@ describe("MoneyAmount Service", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: 500,
           min_quantity: "1",
           currency_code: "USD",
           currency: {
@@ -101,7 +104,7 @@ describe("MoneyAmount Service", () => {
           currency_code: ["USD"],
         },
         {
-          select: ["id", "min_quantity", "currency.code"],
+          select: ["id", "min_quantity", "currency.code", "amount"],
           relations: ["currency"],
         }
       )
@@ -113,6 +116,7 @@ describe("MoneyAmount Service", () => {
           id: "money-amount-USD",
           min_quantity: "1",
           currency_code: "USD",
+          amount: 500,
           currency: {
             code: "USD",
           },
@@ -126,17 +130,19 @@ describe("MoneyAmount Service", () => {
       const [moneyAmountsResult, count] = await service.listAndCount()
 
       expect(count).toEqual(3)
-      expect(moneyAmountsResult).toEqual([
-        expect.objectContaining({
-          id: "money-amount-USD",
-        }),
-        expect.objectContaining({
-          id: "money-amount-EUR",
-        }),
-        expect.objectContaining({
-          id: "money-amount-CAD",
-        }),
-      ])
+      expect(JSON.parse(JSON.stringify(moneyAmountsResult))).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "money-amount-USD",
+          }),
+          expect.objectContaining({
+            id: "money-amount-EUR",
+          }),
+          expect.objectContaining({
+            id: "money-amount-CAD",
+          }),
+        ])
+      )
     })
 
     it("should return moneyAmounts and count when filtered", async () => {
@@ -158,7 +164,7 @@ describe("MoneyAmount Service", () => {
           id: ["money-amount-USD"],
         },
         {
-          select: ["id", "min_quantity", "currency.code"],
+          select: ["id", "min_quantity", "currency.code", "amount"],
           relations: ["currency"],
         }
       )
@@ -169,6 +175,7 @@ describe("MoneyAmount Service", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: 500,
           min_quantity: "1",
           currency_code: "USD",
           currency: {
@@ -197,7 +204,7 @@ describe("MoneyAmount Service", () => {
         {},
         {
           take: 1,
-          select: ["id"],
+          select: ["id", "amount"],
         }
       )
 
@@ -207,6 +214,7 @@ describe("MoneyAmount Service", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: 500,
         },
       ])
     })
@@ -214,7 +222,7 @@ describe("MoneyAmount Service", () => {
 
   describe("retrieve", () => {
     const id = "money-amount-USD"
-    const amount = "500"
+    const amount = 500
 
     it("should return moneyAmount for the given id", async () => {
       const moneyAmount = await service.retrieve(id)
@@ -291,9 +299,9 @@ describe("MoneyAmount Service", () => {
         },
       ])
 
-      const moneyAmount = await service.retrieve(id)
+      const moneyAmount = JSON.parse(JSON.stringify(await service.retrieve(id)))
 
-      expect(moneyAmount.amount).toEqual("700")
+      expect(moneyAmount.amount).toEqual(700)
     })
 
     it("should update the currency of the moneyAmount successfully", async () => {
@@ -346,11 +354,11 @@ describe("MoneyAmount Service", () => {
         id: ["money-amount-TESM"],
       })
 
-      expect(moneyAmount).toEqual(
+      expect(JSON.parse(JSON.stringify(moneyAmount))).toEqual(
         expect.objectContaining({
           id: "money-amount-TESM",
           currency_code: "USD",
-          amount: "333",
+          amount: 333,
           min_quantity: "1",
           max_quantity: "4",
         })

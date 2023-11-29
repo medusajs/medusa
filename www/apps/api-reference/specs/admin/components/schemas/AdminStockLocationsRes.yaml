@@ -1,4 +1,5 @@
 type: object
+description: The stock location's details.
 required:
   - stock_location
 properties:

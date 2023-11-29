@@ -260,6 +260,7 @@ module.exports = {
         fade: "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))",
         "fade-dark":
           "linear-gradient(to top, rgba(27, 27, 31, 1), rgba(27, 27, 31, 0))",
+        diagrams: "url('/img/diagrams-bg.png')",
       }),
       screens: {
         xs: "576px",
@@ -560,6 +561,22 @@ module.exports = {
             opacity: 0.3,
           },
         },
+        minimize: {
+          from: {
+            transform: "scale(1)",
+          },
+          to: {
+            transform: "scale(0)",
+          },
+        },
+        maximize: {
+          from: {
+            transform: "scale(0)",
+          },
+          to: {
+            transform: "scale(1)",
+          },
+        },
       }),
       animation: {
         fadeIn: "fadeIn 500ms",
@@ -576,6 +593,8 @@ module.exports = {
         slideInLeft: "slideInLeft 500ms",
         slideOutLeft: "slideOutLeft 500ms",
         pulsingDots: "pulsingDots 1s alternate infinite",
+        minimize: "minimize 500ms",
+        maximize: "maximize 500ms",
       },
     },
     fontFamily: {
@@ -675,6 +694,9 @@ module.exports = {
           ".animate-fast": {
             animationDuration: "300ms",
           },
+          ".animate-fastest": {
+            animationDuration: "150ms",
+          },
           ".clip": {
             clipPath: "inset(0)",
           },
@@ -682,6 +704,9 @@ module.exports = {
             "&::-webkit-details-marker": {
               display: "none",
             },
+          },
+          ".flip-y": {
+            transform: "rotateY(180deg)",
           },
         })
         addComponents({

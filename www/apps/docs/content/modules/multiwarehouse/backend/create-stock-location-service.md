@@ -19,7 +19,7 @@ This guide will only explain what is required to create in your custom stock loc
 
 :::note
 
-It should be noted that the Medusa backend expects the stock location module to have entities for a location and a location address, as it uses the IDs of those entities when orchestrating between different modules and the in the endpoints it exposes. You can learn more about this in the [Stock Location Module Architecture documentation](../stock-location-module.md).
+It should be noted that the Medusa backend expects the stock location module to have entities for a location and a location address, as it uses the IDs of those entities when orchestrating between different modules and the in the API Routes it exposes. You can learn more about this in the [Stock Location Module Architecture documentation](../stock-location-module.md).
 
 :::
 
@@ -47,7 +47,7 @@ Create a file in the `src/services` directory that will hold your custom stock l
 
 In that file, add the following content:
 
-```ts title=src/services/stock-location.ts
+```ts title="src/services/stock-location.ts"
 import { 
   CreateStockLocationInput,
   FilterableStockLocationProps,
@@ -168,7 +168,7 @@ type StockLocationDTO = {
 
 Here’s an example implementation of the method:
 
-```ts title=src/services/stock-location.ts
+```ts title="src/services/stock-location.ts"
 class StockLocationService implements IStockLocationService {
   // ...
   @InjectEntityManager()
@@ -199,7 +199,7 @@ It accepts the exact same parameters as the [list method](#implementing-list-met
 
 Here’s an example implementation of the method:
 
-```ts title=src/services/stock-location.ts
+```ts title="src/services/stock-location.ts"
 class StockLocationService implements IStockLocationService {
   // ...
   @InjectEntityManager()
@@ -234,7 +234,7 @@ This method returns the location as an object.
 
 For example:
 
-```ts title=src/services/stock-location.ts
+```ts title="src/services/stock-location.ts"
 class StockLocationService implements IStockLocationService {
   // ...
   @InjectEntityManager()
@@ -275,7 +275,7 @@ The method is expected to return the created location as an object.
 
 For example:
 
-```ts title=src/services/stock-location.ts
+```ts title="src/services/stock-location.ts"
 class StockLocationService implements IStockLocationService {
   // ...
   @InjectEntityManager()
@@ -313,7 +313,7 @@ This method is expected to return the updated location object.
 
 For example:
 
-```ts title=src/services/stock-location.ts
+```ts title="src/services/stock-location.ts"
 class StockLocationService implements IStockLocationService {
   // ...
   @InjectEntityManager()
@@ -348,7 +348,7 @@ This method is not expected to return anything.
 
 For example:
 
-```ts title=src/services/stock-location.ts
+```ts title="src/services/stock-location.ts"
 class StockLocationService implements IStockLocationService {
   // ...
   @InjectEntityManager()

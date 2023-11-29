@@ -1,5 +1,8 @@
 export { default as Currency } from "./currency"
 export { default as MoneyAmount } from "./money-amount"
+export { default as PriceList } from "./price-list"
+export { default as PriceListRule } from "./price-list-rule"
+export { default as PriceListRuleValue } from "./price-list-rule-value"
 export { default as PriceRule } from "./price-rule"
 export { default as PriceSet } from "./price-set"
 export { default as PriceSetMoneyAmount } from "./price-set-money-amount"

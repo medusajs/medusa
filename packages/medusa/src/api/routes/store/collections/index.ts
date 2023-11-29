@@ -38,6 +38,7 @@ export const allowedFields = [
 /**
  * @schema StoreCollectionsListRes
  * type: object
+ * description: "The list of product collections with pagination fields."
  * required:
  *   - collections
  *   - count
@@ -66,6 +67,7 @@ export type StoreCollectionsListRes = PaginatedResponse & {
 /**
  * @schema StoreCollectionsRes
  * type: object
+ * description: "The details of the product collection."
  * required:
  *   - collection
  * properties:

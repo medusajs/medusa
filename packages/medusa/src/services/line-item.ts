@@ -2,9 +2,8 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 
-import { FlagRouter, LineItemCreateData } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag, LineItemCreateData } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   LineItem,
@@ -479,11 +478,7 @@ class LineItemService extends TransactionBaseService {
       should_merge: shouldMerge,
     }
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       rawLineItem.product_id = variant.product_id
     }
 

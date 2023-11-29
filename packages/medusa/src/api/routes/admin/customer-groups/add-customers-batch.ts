@@ -38,7 +38,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

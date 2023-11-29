@@ -1,7 +1,10 @@
 import { Context, SharedContext } from "@medusajs/types"
+import { isString } from "../../common"
 
 export function InjectTransactionManager(
-  shouldForceTransaction: (target: any) => boolean = () => false,
+  shouldForceTransactionOrManagerProperty:
+    | string
+    | ((target: any) => boolean) = () => false,
   managerProperty?: string
 ): MethodDecorator {
   return function (
@@ -16,6 +19,14 @@ export function InjectTransactionManager(
     }
 
     const originalMethod = descriptor.value
+    const shouldForceTransaction = !isString(
+      shouldForceTransactionOrManagerProperty
+    )
+      ? shouldForceTransactionOrManagerProperty
+      : () => false
+    managerProperty = isString(shouldForceTransactionOrManagerProperty)
+      ? shouldForceTransactionOrManagerProperty
+      : managerProperty
 
     const argIndex = target.MedusaContextIndex_[propertyKey]
     descriptor.value = async function (...args: any[]) {
@@ -31,7 +42,7 @@ export function InjectTransactionManager(
         : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
-          args[argIndex] = args[argIndex] ?? {}
+          args[argIndex] = { ...(args[argIndex] ?? {}) }
           args[argIndex].transactionManager = transactionManager
 
           return await originalMethod.apply(this, args)

@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, FindOperator, In } from "typeorm"
 
@@ -299,7 +300,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
       return []
     }
 
-    return await Promise.all(
+    return await promiseAll(
       cart.items.map(async (li) => this.createAdjustmentForLineItem(cart, li))
     )
   }

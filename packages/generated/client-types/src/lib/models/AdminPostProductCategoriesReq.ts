@@ -28,4 +28,8 @@ export interface AdminPostProductCategoriesReq {
    * The ID of the parent product category
    */
   parent_category_id?: string
+  /**
+   * An optional set of key-value pairs to hold additional information.
+   */
+  metadata?: Record<string, any>
 }

@@ -52,7 +52,7 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -132,7 +132,8 @@ export default async (req: Request, res: Response) => {
  *         description: "The value that the discount represents. This will depend on the type of the discount."
  *       allocation:
  *         type: string
- *         description: "The scope that the discount should apply to. `total` indicates that the discount should be applied on the cart total, and `item` indicates that the discount should be applied to each discountable item in the cart."
+ *         description: >-
+ *           The scope that the discount should apply to. `total` indicates that the discount should be applied on the cart total, and `item` indicates that the discount should be applied to each discountable item in the cart.
  *         enum: [total, item]
  *       conditions:
  *         type: array
@@ -147,8 +148,9 @@ export default async (req: Request, res: Response) => {
  *               description: "The ID of the condition"
  *             operator:
  *               type: string
- *               description: "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
- *                discountable resources are everything but the specified resources."
+ *               description: >-
+ *                 Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *                 discountable resources are everything but the specified resources.
  *               enum: [in, not_in]
  *             products:
  *               type: array
@@ -177,7 +179,8 @@ export default async (req: Request, res: Response) => {
  *                 type: string
  *   is_disabled:
  *     type: boolean
- *     description: Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.
+ *     description: >-
+ *       Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.
  *   starts_at:
  *     type: string
  *     format: date-time
@@ -249,25 +252,43 @@ export class AdminPostDiscountsDiscountReq {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * The attributes of the discount rule to update.
+ */
 export class AdminUpdateDiscountRule {
+  /**
+   * The discount rule's ID.
+   */
   @IsString()
   @IsNotEmpty()
   id: string
 
+  /**
+   * The discount rule's description.
+   */
   @IsString()
   @IsOptional()
   description?: string
 
+  /**
+   * The discount rule's value.
+   */
   @IsNumber()
   @IsOptional()
   value?: number
 
+  /**
+   * The discount rule's allocation.
+   */
   @IsOptional()
   @IsEnum(AllocationType, {
     message: `Invalid allocation type, must be one of "total" or "item"`,
   })
   allocation?: AllocationType
 
+  /**
+   * The discount rule's discount conditions.
+   */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
@@ -275,11 +296,20 @@ export class AdminUpdateDiscountRule {
   conditions?: AdminUpsertCondition[]
 }
 
+/**
+ * The attributes to create or update in the discount condition.
+ */
 export class AdminUpsertCondition extends AdminUpsertConditionsReq {
+  /**
+   * The discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * The discount condition's operator.
+   */
   @IsString()
   @IsOptional()
   operator: DiscountConditionOperator

@@ -24,7 +24,7 @@ The sales channel feature can be used in a variety of use cases including:
 
 ## SalesChannel Entity Overview
 
-A sales channel is stored in the database as a [SalesChannel](../../references/entities/classes/SalesChannel.md) entity. Some of its important attributes are:
+A sales channel is stored in the database as a [SalesChannel](../../references/entities/classes/SalesChannel.mdx) entity. Some of its important attributes are:
 
 - `name`: The name of the sales channel.
 - `is_disabled`: A boolean value indicating of the Sales Channel is disabled or not.
@@ -37,13 +37,13 @@ A sales channel is stored in the database as a [SalesChannel](../../references/e
 
 A store has a default sales channel. When you first run your Medusa backend or seed your database, a default sales channel is created, if it doesn’t exist, and associated with the store.
 
-The relation is implemented in the [Store](../../references/entities/classes/Store.md) entity. You can access the default sales channel of a store by expanding the `default_sales_channel` relation and using `store.default_sales_channel`. You can also access the ID of the default sales channel using `store.default_sales_channel_id`.
+The relation is implemented in the [Store](../../references/entities/classes/Store.mdx) entity. You can access the default sales channel of a store by expanding the `default_sales_channel` relation and using `store.default_sales_channel`. You can also access the ID of the default sales channel using `store.default_sales_channel_id`.
 
 ### Product
 
 Products can be available in more than one sales channel. You can then filter products by a sales channel using the Storefront and Admin APIs.
 
-The relation is implemented in the [Product](../../references/entities/classes/Product.md) entity. You can access the sales channels a product is available in by expanding the `sales_channels` relation and using `product.sales_channels`.
+The relation is implemented in the [Product](../../references/entities/classes/Product.mdx) entity. You can access the sales channels a product is available in by expanding the `sales_channels` relation and using `product.sales_channels`.
 
 ### Cart
 
@@ -51,13 +51,13 @@ When you create a cart, you can optionally specify the sales channel it belongs 
 
 A cart can belong to only one sales channel. Only products that belong to the same sales channel as the cart can be added to it.
 
-The relation is implemented in the [Cart](../../references/entities/classes/Cart.md) entity. You can access the sales channel a cart is associated with by expanding the `sales_channel` relation and using `cart.sales_channel`. You can also access the ID of the sales channel using `cart.sales_channel_id`.
+The relation is implemented in the [Cart](../../references/entities/classes/Cart.mdx) entity. You can access the sales channel a cart is associated with by expanding the `sales_channel` relation and using `cart.sales_channel`. You can also access the ID of the sales channel using `cart.sales_channel_id`.
 
 ### Order
 
 Orders can optionally be associated with a sales channel. You can filter orders by a sales channel using the Storefront and Admin APIs.
 
-The relation is implemented in the [Order](../../references/entities/classes/Order.md) entity. You can access the sales channel an order is associated with by expanding the `sales_channel` relation and using `order.sales_channel`. You can also access the ID of the sales channel using `order.sales_channel_id`.
+The relation is implemented in the [Order](../../references/entities/classes/Order.mdx) entity. You can access the sales channel an order is associated with by expanding the `sales_channel` relation and using `order.sales_channel`. You can also access the ID of the sales channel using `order.sales_channel_id`.
 
 ---
 

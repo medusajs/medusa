@@ -8,4 +8,4 @@ medusa.admin.products.create({
 })
 .then(({ product }) => {
   console.log(product.id);
-});
+})

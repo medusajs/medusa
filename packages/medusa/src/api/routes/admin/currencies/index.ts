@@ -35,6 +35,7 @@ export default (app) => {
 /**
  * @schema AdminCurrenciesListRes
  * type: object
+ * description: List of currencies with pagination fields.
  * required:
  *   - currencies
  *   - count
@@ -63,6 +64,7 @@ export type AdminCurrenciesListRes = PaginatedResponse & {
 /**
  * @schema AdminCurrenciesRes
  * type: object
+ * description: A currency's details.
  * required:
  *   - currency
  * properties:

@@ -21,7 +21,7 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.delete(regionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -3,7 +3,7 @@ get:
   summary: List Regions
   description: >-
     Retrieve a list of Regions. The regions can be filtered by fields such as
-    `created_at`. The regions can also be paginated
+    `created_at`. The regions can also be paginated.
   x-authenticated: true
   parameters:
     - in: query

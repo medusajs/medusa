@@ -88,6 +88,7 @@ export const defaultAdminRegionRelations = [
 /**
  * @schema AdminRegionsRes
  * type: object
+ * description: "The region's details."
  * x-expanded-relations:
  *   field: region
  *   relations:
@@ -104,13 +105,14 @@ export const defaultAdminRegionRelations = [
  *     description: "Region details."
  *     $ref: "#/components/schemas/Region"
  */
-export class AdminRegionsRes {
+export type AdminRegionsRes = {
   region: Region
 }
 
 /**
  * @schema AdminRegionsListRes
  * type: object
+ * description: "The list of regions with pagination fields."
  * x-expanded-relations:
  *   field: regions
  *   relations:
@@ -175,6 +177,7 @@ export class FulfillmentOption {
 /**
  * @schema AdminGetRegionsRegionFulfillmentOptionsRes
  * type: object
+ * description: "The list of fulfillment options in a region."
  * required:
  *   - fulfillment_options
  * properties:
@@ -210,4 +213,3 @@ export * from "./add-payment-provider"
 export * from "./create-region"
 export * from "./list-regions"
 export * from "./update-region"
-

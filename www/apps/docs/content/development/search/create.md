@@ -35,7 +35,7 @@ You can learn more about services and their naming convention in [this documenta
 
 For example, create the file `src/services/my-search.ts` with the following content:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 import { AbstractSearchService } from "@medusajs/utils"
 
 class MySearchService extends AbstractSearchService {
@@ -101,7 +101,7 @@ For example:
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 // ...
 import { ProductService } from "@medusajs/medusa"
 
@@ -127,7 +127,7 @@ You can access the plugin options in the second parameter passed to the construc
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 // ...
 
 class MySearchService extends AbstractSearchService {
@@ -177,7 +177,7 @@ The method does not require any specific data type to be returned.
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -195,7 +195,7 @@ The method accepts one parameter, which is a string indicating the name of the i
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -221,7 +221,7 @@ The method should return the response of saving the documents in the search engi
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -250,7 +250,7 @@ The method should return the response of saving the documents in the search engi
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -282,7 +282,7 @@ The method should return the response of deleting the document in the search eng
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -306,7 +306,7 @@ The method should return the response of deleting the documents of that index in
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -321,11 +321,11 @@ class MySearchService extends AbstractSearchService {
 
 This method is used to search through an index by a query.
 
-In the Medusa backend, this method is used within the [Search Products endpoint](https://docs.medusajs.com/api/store#products_postproductssearch) to retrieve the search results.
+In the Medusa backend, this method is used within the [Search Products API Route](https://docs.medusajs.com/api/store#products_postproductssearch) to retrieve the search results.
 
 This method accepts the following parameters:
 
-1. `indexName`: the first parameter is a string indicating the index to search through. When using the Search Products endpoint, the index is the default index defined in the `IndexName` static property of the `ProductService`, which is `products`.
+1. `indexName`: the first parameter is a string indicating the index to search through. When using the Search Products API Route, the index is the default index defined in the `IndexName` static property of the `ProductService`, which is `products`.
 2. `query`: the second parameter is a string indicating the query to use to search through the documents.
 3. `options`: the third parameter is typically an object that can be used to pass any necessary options to the search engine.
 
@@ -333,7 +333,7 @@ Although there’s no required data format or type to be returned to the method,
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -366,7 +366,7 @@ The method should return the response of updating the index in the search engine
 
 An example implementation, assuming `client_` would interact with a third-party service:
 
-```ts title=src/services/my-search.ts
+```ts title="src/services/my-search.ts"
 class MySearchService extends AbstractSearchService {
   // ...
 
@@ -406,7 +406,7 @@ Run your backend to test it out:
 npx medusa develop
 ```
 
-You can then send a request to the [Search Products endpoint](https://docs.medusajs.com/api/store#products_postproductssearch) to see if your search service returns any results.
+You can then send a request to the [Search Products API Route](https://docs.medusajs.com/api/store#products_postproductssearch) to see if your search service returns any results.
 
 ---
 

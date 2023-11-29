@@ -120,12 +120,12 @@ export const initialize = async (
       },
     }
 
-    const loaded = await MedusaModule.bootstrapLink(
-      linkModuleDefinition,
-      options as InternalModuleDeclaration,
-      moduleDefinition,
-      injectedDependencies
-    )
+    const loaded = await MedusaModule.bootstrapLink({
+      definition: linkModuleDefinition,
+      declaration: options as InternalModuleDeclaration,
+      moduleExports: moduleDefinition,
+      injectedDependencies,
+    })
 
     allLinks[serviceKey as string] = Object.values(loaded)[0]
   }
@@ -178,10 +178,8 @@ export async function runMigrations(
     allLinks.add(serviceKey)
 
     if (
-      (!primary.isInternalService &&
-        !modulesLoadedKeys.includes(primary.serviceName)) ||
-      (!foreign.isInternalService &&
-        !modulesLoadedKeys.includes(foreign.serviceName))
+      !modulesLoadedKeys.includes(primary.serviceName) ||
+      !modulesLoadedKeys.includes(foreign.serviceName)
     ) {
       continue
     }

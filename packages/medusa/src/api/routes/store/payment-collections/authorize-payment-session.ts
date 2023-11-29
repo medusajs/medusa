@@ -9,7 +9,7 @@ import { PaymentCollectionService } from "../../../../services"
  * description: "Authorize a Payment Session of a Payment Collection."
  * x-authenticated: false
  * parameters:
- *   - (path) id=* {string} The ID of the Payment Collections.
+ *   - (path) id=* {string} The ID of the Payment Collection.
  *   - (path) session_id=* {string} The ID of the Payment Session.
  * x-codegen:
  *   method: authorizePaymentSession
@@ -23,7 +23,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.authorize(paymentId, sessionId)
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

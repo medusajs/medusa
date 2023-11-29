@@ -20,7 +20,7 @@ import NoteService from "../../../../services/note"
  *       medusa.admin.notes.retrieve(noteId)
  *       .then(({ note }) => {
  *         console.log(note.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -23,7 +23,7 @@ export type JoinerRelationship = {
 }
 
 export interface JoinerServiceConfigAlias {
-  name: string
+  name: string | string[]
   /**
    * Extra arguments to pass to the remoteFetchData callback
    */

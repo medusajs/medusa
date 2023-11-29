@@ -19,7 +19,7 @@ import {
   WithRequiredProperty,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
+import { DALUtils, isDefined, MedusaError, promiseAll } from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
 
@@ -228,7 +228,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
       productsToUpdate.map((product) => [product.id, product])
     )
 
-    const products = await Promise.all(
+    const products = await promiseAll(
       data.map(async (updateData) => {
         const product = productsToUpdateMap.get(updateData.id)
 

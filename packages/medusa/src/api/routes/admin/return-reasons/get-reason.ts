@@ -25,7 +25,7 @@ import { ReturnReasonService } from "../../../../services"
  *       medusa.admin.returnReasons.retrieve(returnReasonId)
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -1,9 +1,3 @@
-{{#with model}}
-
-{{{frontmatter}}}
-
-{{/with}}
-
 {{> header}}
 
 {{> title}}
@@ -21,6 +15,12 @@
 {{/if}}
 
 {{/with}}
+
+{{#if (sectionEnabled "reflection_example")}}
+
+{{{example model 2}}}
+
+{{/if}}
 
 {{#if (sectionEnabled "reflection_typeParameters")}}
 
@@ -94,7 +94,7 @@
 
 ### {{name}}
 
-{{> member.signature showSources=true }}
+{{> member.signature showSources=true commentLevel=4 }}
 
 {{/each}}
 

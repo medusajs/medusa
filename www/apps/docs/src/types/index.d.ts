@@ -26,6 +26,8 @@ declare module "@medusajs/docs" {
     PropSidebarItemCategory,
     PropSidebarItemLink,
     PropSidebarItemHtml,
+    SidebarCategoriesShorthand,
+    SidebarItemConfig,
   } from "@docusaurus/plugin-content-docs"
   import { BadgeProps, ButtonType, ButtonVariants } from "docs-ui"
   import { IconProps } from "@medusajs/icons/dist/types"
@@ -55,6 +57,7 @@ declare module "@medusajs/docs" {
       sidebar_is_group_divider?: boolean
       sidebar_is_divider_line?: boolean
       sidebar_is_back_link?: boolean
+      sidebar_badge?: BadgeProps
     }
   }
 
@@ -203,5 +206,18 @@ declare module "@medusajs/docs" {
 
   export declare type MedusaDocusaurusContext = DocusaurusContext & {
     siteConfig: MedusaDocusaurusConfig
+  }
+
+  export declare type Diagram2Code = {
+    diagram: string
+    code: string
+  }
+
+  export declare type Diagram2CodeSpec = {
+    [k: string]: Diagram2Code
+  }
+
+  export declare type Diagram2CodeSpecs = {
+    [k: string]: Diagram2CodeSpec
   }
 }

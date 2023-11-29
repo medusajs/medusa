@@ -1,5 +1,11 @@
 # Change Log
 
+## 6.0.6
+
+### Patch Changes
+
+- [#5470](https://github.com/medusajs/medusa/pull/5470) [`e4ce2f4e0`](https://github.com/medusajs/medusa/commit/e4ce2f4e07a0c02103c17e16d3a12dbba6053b0e) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa-payment-stripe): Add missing dev/peer dependency on react table
+
 ## 6.0.5
 
 ### Patch Changes

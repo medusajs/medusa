@@ -1,11 +1,8 @@
-import { MedusaContainer } from "@medusajs/modules-sdk"
 import {
   createCart as createCartWorkflow,
   Workflows,
-} from "@medusajs/workflows"
-import { Type } from "class-transformer"
+} from "@medusajs/core-flows"
 import { ProductVariantDTO } from "@medusajs/types"
-
 import {
   IsArray,
   IsInt,
@@ -23,19 +20,25 @@ import {
   validateItemsInput,
 } from "@medusajs/utils"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { LineItem } from "../../../../models"
 import {
   CartService,
   LineItemService,
+  ProductVariantInventoryService,
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+
+import { MedusaContainer } from "@medusajs/modules-sdk"
+import { FlagRouter } from "@medusajs/utils"
+import { Type } from "class-transformer"
+import reqIp from "request-ip"
+import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { LineItem } from "../../../../models"
 import { CartCreateProps } from "../../../../types/cart"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { Logger } from "../../../../types/global"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
 
 /**
@@ -46,7 +49,7 @@ import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
  *   Create a Cart. Although optional, specifying the cart's region and sales channel can affect the cart's pricing and
  *   the products that can be added to the cart respectively. So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
  *
- *   If a customer is logged in, the cart's customer ID and email will automatically be set.
+ *   If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
  * requestBody:
  *   content:
  *     application/json:
@@ -63,7 +66,7 @@ import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
  *       medusa.carts.create()
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -94,6 +97,8 @@ export default async (req, res) => {
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const cartService: CartService = req.scope.resolve("cartService")
   const productModuleService = req.scope.resolve("productModuleService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   const validated = req.validatedBody as StorePostCartReq
 
@@ -279,6 +284,11 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
+  await productVariantInventoryService.setVariantAvailability(
+    cart.items.map((i) => i.variant),
+    cart.sales_channel_id!
+  )
+
   res.status(200).json({ cart: cleanResponseData(cart, []) })
 }
 
@@ -295,6 +305,7 @@ export class Item {
 /**
  * @schema StorePostCartReq
  * type: object
+ * description: "The details of the cart to be created."
  * properties:
  *   region_id:
  *     type: string
@@ -310,7 +321,7 @@ export class Item {
  *      the cart will not be associated with any sales channel."
  *   country_code:
  *     type: string
- *     description: "The 2 character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address."
+ *     description: "The two character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address."
  *     externalDocs:
  *      url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
  *      description: See a list of codes.
@@ -330,7 +341,8 @@ export class Item {
  *           description: The quantity to add into the cart.
  *           type: integer
  *   context:
- *     description: "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *     description: >-
+ *       An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
  *     type: object
  *     example:
  *       ip: "::1"

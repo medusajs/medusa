@@ -14,7 +14,7 @@ const buttonProps: PropDataMap = [
     prop: "size",
     type: {
       type: "enum",
-      values: ["small", "base", "large", "xlarge"],
+      values: ["base", "large", "xlarge"],
     },
     defaultValue: "base",
   },

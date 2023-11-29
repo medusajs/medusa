@@ -32,11 +32,11 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.updateLineItem(orderEditId, lineItemId, {
- *           quantity: 5
- *         })
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *         quantity: 5
+ *       })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

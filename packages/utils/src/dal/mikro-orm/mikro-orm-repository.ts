@@ -137,6 +137,8 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     retrieveConstraintsToApply: (q: string) => any[]
   ): void {
     if (!("q" in findOptions.where) || !findOptions.where.q) {
+      delete findOptions.where.q
+
       return
     }
 

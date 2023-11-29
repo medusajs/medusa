@@ -5,7 +5,6 @@ import {
   PageEvent,
   ProjectReflection,
   Reflection,
-  ReflectionGroup,
   ReflectionKind,
   RenderTemplate,
   Renderer,
@@ -47,6 +46,9 @@ export class MarkdownTheme extends Theme {
   preserveAnchorCasing!: boolean
   objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle
   formattingOptions: FormattingOptionsType
+  mdxOutput: boolean
+  outputNamespace: boolean
+  outputModules: boolean
 
   project?: ProjectReflection
   reflection?: DeclarationReflection
@@ -54,6 +56,8 @@ export class MarkdownTheme extends Theme {
   anchorMap: Record<string, string[]> = {}
 
   static URL_PREFIX = /^(http|ftp)s?:\/\//
+
+  static MAX_LEVEL = 3
 
   constructor(renderer: Renderer) {
     super(renderer)
@@ -83,6 +87,10 @@ export class MarkdownTheme extends Theme {
     this.formattingOptions = this.getOption(
       "formatting"
     ) as FormattingOptionsType
+    this.mdxOutput = this.getOption("mdxOutput") as boolean
+    this.outputNamespace = this.getOption("outputNamespace") as boolean
+    this.outputModules = this.getOption("outputModules") as boolean
+    MarkdownTheme.MAX_LEVEL = this.getOption("maxLevel") as number
 
     this.listenTo(this.owner, {
       [RendererEvent.BEGIN]: this.onBeginRenderer,
@@ -162,7 +170,12 @@ export class MarkdownTheme extends Theme {
   }
 
   toUrl(mapping: Mapping, reflection: DeclarationReflection) {
-    return mapping.directory + "/" + this.getUrl(reflection) + ".md"
+    return (
+      mapping.directory +
+      "/" +
+      this.getUrl(reflection) +
+      (this.mdxOutput ? ".mdx" : ".md")
+    )
   }
 
   getUrl(reflection: Reflection, relative?: Reflection): string {
@@ -296,14 +309,14 @@ export class MarkdownTheme extends Theme {
         directory: path.join(directoryPrefix || "", "interfaces"),
         template: this.getReflectionTemplate(),
       },
+      {
+        kind: [ReflectionKind.TypeAlias],
+        isLeaf: true,
+        directory: path.join(directoryPrefix || "", "types"),
+        template: this.getReflectionMemberTemplate(),
+      },
       ...(this.allReflectionsHaveOwnDocument
         ? [
-            {
-              kind: [ReflectionKind.TypeAlias],
-              isLeaf: true,
-              directory: path.join(directoryPrefix || "", "types"),
-              template: this.getReflectionMemberTemplate(),
-            },
             {
               kind: [ReflectionKind.Variable],
               isLeaf: true,
@@ -345,26 +358,49 @@ export class MarkdownTheme extends Theme {
     this.location = page.url
     this.reflection =
       page.model instanceof DeclarationReflection ? page.model : undefined
-    const options = this.getFormattingOptionsForLocation()
-    if (this.reflection && this.reflection.groups) {
-      // filter out unwanted groups
-      const tempGroups: ReflectionGroup[] = []
-      this.reflection.groups.forEach((reflectionGroup) => {
-        if (
-          !options.reflectionGroups ||
-          !(reflectionGroup.title in options.reflectionGroups) ||
-          options.reflectionGroups[reflectionGroup.title]
-        ) {
-          tempGroups.push(reflectionGroup)
-        }
-      })
 
-      this.reflection.groups = tempGroups
+    if (
+      page.model instanceof DeclarationReflection ||
+      page.model instanceof ProjectReflection
+    ) {
+      this.removeGroups(page.model)
+    }
+
+    if (
+      this.reflection instanceof DeclarationReflection &&
+      this.reflection.signatures
+    ) {
+      // check if any of its signature has the `@mainSignature` tag
+      // and if so remove other signatures
+      const mainSignatureIndex = this.reflection.signatures.findIndex(
+        (signature) => signature.comment?.hasModifier("@mainSignature")
+      )
+
+      if (mainSignatureIndex !== -1) {
+        const mainSignature = this.reflection.signatures[mainSignatureIndex]
+        this.reflection.signatures = [mainSignature]
+      }
     }
   }
 
+  protected removeGroups(model?: DeclarationReflection | ProjectReflection) {
+    if (!model?.groups) {
+      return
+    }
+
+    const options = this.getFormattingOptionsForLocation()
+
+    model.groups = model.groups.filter((reflectionGroup) => {
+      return (
+        !options.reflectionGroups ||
+        !(reflectionGroup.title in options.reflectionGroups) ||
+        options.reflectionGroups[reflectionGroup.title]
+      )
+    })
+  }
+
   get globalsFile() {
-    return "modules.md"
+    return `modules.${this.mdxOutput ? "mdx" : "md"}`
   }
 
   getFormattingOptionsForLocation(): FormattingOptionType {
@@ -372,20 +408,14 @@ export class MarkdownTheme extends Theme {
       return {}
     }
 
-    const optionKey =
-      Object.keys(this.formattingOptions).find((key) => {
-        if (key === "*") {
-          return false
-        }
+    const applicableOptions: FormattingOptionType[] = []
 
-        const keyPattern = new RegExp(key)
-        if (keyPattern.test(this.location)) {
-          return true
-        }
-      }) || "*"
+    Object.keys(this.formattingOptions).forEach((key) => {
+      if (key === "*" || new RegExp(key).test(this.location)) {
+        applicableOptions.push(this.formattingOptions[key])
+      }
+    })
 
-    return optionKey in this.formattingOptions
-      ? this.formattingOptions[optionKey]
-      : {}
+    return Object.assign({}, ...applicableOptions)
   }
 }

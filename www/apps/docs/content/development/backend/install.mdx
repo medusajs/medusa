@@ -6,11 +6,12 @@ addHowToData: true
 import Feedback from '@site/src/components/Feedback';
 import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import SaslSection from '../../troubleshooting/database-errors/_sasl.md'
 import ConnectionErrorSection from '../../troubleshooting/database-errors/_connection-error.md'
 import FreshInstallationSection from '../../troubleshooting/awilix-resolution-error/_fresh-installation.md'
 import EaddrinuseSection from '../../troubleshooting/eaddrinuse.md'
+import DockerSection from '../../troubleshooting/database-errors/_docker.md'
 
 # Install Medusa Backend
 
@@ -92,11 +93,15 @@ curl localhost:9000/store/products
 
 ## Troubleshooting Installation
 
-<Troubleshooting
+<DetailsList
   sections={[
     {
       title: 'Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: Client password must be a string',
       content: <SaslSection />
+    },
+    {
+      title: "Can't Connect to PostgreSQL Docker Container",
+      content: <DockerSection />
     },
     {
       title: 'Error: connect ECONNREFUSED ::1:5432',

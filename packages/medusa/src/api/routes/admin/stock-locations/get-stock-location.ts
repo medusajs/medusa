@@ -30,7 +30,7 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *       medusa.admin.stockLocations.retrieve(stockLocationId)
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
