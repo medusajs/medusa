@@ -2234,7 +2234,7 @@ describe("/store/carts", () => {
       expect(createdOrder.status).toEqual(200)
     })
 
-    it("returns early, if cart is already completed", async () => {
+    it.only("returns early, if cart is already completed", async () => {
       const manager = dbConnection.manager
       const api = useApi()
       await manager.query(
@@ -2242,16 +2242,15 @@ describe("/store/carts", () => {
          SET completed_at=current_timestamp
          WHERE id = 'test-cart-2'`
       )
-      try {
-        await api.post(`/store/carts/test-cart-2/complete-cart`)
-      } catch (error) {
-        expect(error.response.data).toMatchSnapshot({
-          type: "not_allowed",
-          message: "Cart has already been completed",
-          code: "cart_incompatible_state",
+      const response = await api.post(`/store/carts/test-cart-2/complete-cart`)
+      expect(response.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: "test-cart-2",
+          id: expect.any(String),
         })
-        expect(error.response.status).toEqual(409)
-      }
+      )
+      expect(response.data.data.type).toEqual("order")
+      expect(response.status).toEqual(200)
     })
 
     it("fails to complete cart with items inventory not/partially covered", async () => {

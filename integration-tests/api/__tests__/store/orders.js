@@ -456,7 +456,7 @@ describe("/store/carts", () => {
       await db.teardown()
     })
 
-    it("should fails on cart already completed", async () => {
+    it("should return order on cart already completed", async () => {
       const api = useApi()
       const manager = dbConnection.manager
 
@@ -507,11 +507,14 @@ describe("/store/carts", () => {
           return err.response
         })
 
-      expect(responseFail.status).toEqual(409)
-      expect(responseFail.data.code).toEqual("cart_incompatible_state")
-      expect(responseFail.data.message).toEqual(
-        "Cart has already been completed"
+      expect(responseFail.status).toEqual(200)
+      expect(responseFail.data.data).toEqual(
+        expect.objectContaining({
+          cart_id: cartId,
+          id: expect.any(String),
+        })
       )
+      expect(responseFail.data.type).toEqual("order")
     })
   })
 
