@@ -1428,6 +1428,7 @@ export default class PricingModuleService<
     const priceListsToCreate: PricingTypes.CreatePriceListDTO[] = []
 
     for (const priceListData of data) {
+<<<<<<< HEAD
       const { rules = {}, 
       prices = [],
       ...priceListOnlyData } = priceListData
@@ -1437,6 +1438,23 @@ export default class PricingModuleService<
         rules_count: Object.keys(rules).length,
       })
     }
+=======
+      const {
+        rules = {},
+        prices = [],
+        ...priceListOnlyData
+      } = priceListData
+
+      const [createdPriceList] = (await this.priceListService_.create(
+        [
+          {
+            ...priceListOnlyData,
+            number_rules: Object.keys(rules).length,
+          },
+        ],
+        sharedContext
+      )) as unknown as PricingTypes.PriceListDTO[]
+>>>>>>> d85e9c7df (move type conversion to the datalayer)
 
     const priceLists = (await this.priceListService_.create(
       priceListsToCreate
@@ -1588,17 +1606,9 @@ export default class PricingModuleService<
     )
 
     for (const priceListData of data) {
-      const { rules, starts_at, ends_at, ...priceListOnlyData } = priceListData
-      const updatePriceListData: any = {
+      const { rules, ...priceListOnlyData } = priceListData
+      const updatePriceListData = {
         ...priceListOnlyData,
-      }
-
-      if (starts_at) {
-        updatePriceListData.starts_at = starts_at!.toISOString()
-      }
-
-      if (ends_at) {
-        updatePriceListData.ends_at = ends_at!.toISOString()
       }
 
       if (typeof rules === "object") {

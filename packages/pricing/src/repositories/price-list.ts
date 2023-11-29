@@ -71,7 +71,18 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const priceLists = data.map((priceListData) => {
+    const priceLists = data.map((priceListData: any) => {
+
+      if (!!priceListData.starts_at) {
+        priceListData.starts_at = 
+          priceListData.starts_at
+        .toISOString()
+      }
+      
+      if (!!priceListData.ends_at) {
+        priceListData.ends_at = priceListData.ends_at.toISOString()
+      }
+
       return manager.create(PriceList, priceListData)
     })
 
@@ -104,7 +115,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
       ])
     )
 
-    const priceLists = data.map((priceListData) => {
+    const priceLists = data.map((priceListData: any) => {
       const existingPriceList = existingPriceListMap.get(priceListData.id)
 
       if (!existingPriceList) {
@@ -112,6 +123,16 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
           MedusaError.Types.NOT_FOUND,
           `PriceList with id "${priceListData.id}" not found`
         )
+      }
+      
+      if (!!priceListData.starts_at) {
+        priceListData.starts_at = 
+          priceListData.starts_at
+        .toISOString()
+      }
+      
+      if (!!priceListData.ends_at) {
+        priceListData.ends_at = priceListData.ends_at.toISOString()
       }
 
       return manager.assign(existingPriceList, priceListData)
