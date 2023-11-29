@@ -29,13 +29,15 @@ Related Guide: [How to implement cart functionality in your storefront](https://
   }
 ]} />
 
+___
+
 ## Methods
 
-#### addShippingMethod
+### addShippingMethod
 
 Add a shipping method to the cart. The validation of the `data` field is handled by the fulfillment provider of the chosen shipping option.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -49,7 +51,7 @@ medusa.carts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -100,7 +102,7 @@ medusa.carts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -488,7 +490,7 @@ medusa.carts
 
 ___
 
-#### complete
+### complete
 
 Complete a cart and place an order or create a swap, based on the cart's type. This includes attempting to authorize the cart's payment.
 If authorizing the payment requires more action, the cart will not be completed and the order will not be placed or the swap will not be created.
@@ -496,7 +498,7 @@ An idempotency key will be generated if none is provided in the header `Idempote
 the response. If an error occurs during cart completion or the request is interrupted for any reason, the cart completion can be retried by passing the idempotency
 key in the `Idempotency-Key` header.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -506,7 +508,7 @@ medusa.carts.complete(cartId).then(({ cart }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -529,7 +531,7 @@ medusa.carts.complete(cartId).then(({ cart }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -555,13 +557,13 @@ medusa.carts.complete(cartId).then(({ cart }) => {
 
 ___
 
-#### create
+### create
 
 Create a Cart. Although optional, specifying the cart's region and sales channel can affect the cart's pricing and
 the products that can be added to the cart respectively. So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
 If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -571,7 +573,7 @@ medusa.carts.create().then(({ cart }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -659,7 +661,7 @@ medusa.carts.create().then(({ cart }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1047,12 +1049,12 @@ medusa.carts.create().then(({ cart }) => {
 
 ___
 
-#### createPaymentSessions
+### createPaymentSessions
 
 Create Payment Sessions for each of the available Payment Providers in the Cart's Region. If there's only one payment session created,
 it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1062,7 +1064,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1085,7 +1087,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1473,12 +1475,12 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
 
 ___
 
-#### deleteDiscount
+### deleteDiscount
 
 Remove a Discount from a Cart. This only removes the application of the discount, and not completely deletes it. The totals will be re-calculated and the payment sessions
 will be refreshed after the removal.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1488,7 +1490,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1520,7 +1522,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1908,11 +1910,11 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
 
 ___
 
-#### deletePaymentSession
+### deletePaymentSession
 
 Delete a Payment Session in a Cart. May be useful if a payment has failed. The totals will be recalculated.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1922,7 +1924,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1954,7 +1956,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2342,11 +2344,11 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
 
 ___
 
-#### refreshPaymentSession
+### refreshPaymentSession
 
 Refresh a Payment Session to ensure that it is in sync with the Cart. This is usually not necessary, but is provided for edge cases.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2356,7 +2358,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2388,7 +2390,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2776,11 +2778,11 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a Cart's details. This includes recalculating its totals.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2790,7 +2792,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2813,7 +2815,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3201,12 +3203,12 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
 
 ___
 
-#### setPaymentSession
+### setPaymentSession
 
 Select the Payment Session that will be used to complete the cart. This is typically used when the customer chooses their preferred payment method during checkout.
 The totals of the cart will be recalculated.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3220,7 +3222,7 @@ medusa.carts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3262,7 +3264,7 @@ medusa.carts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3650,11 +3652,11 @@ medusa.carts
 
 ___
 
-#### update
+### update
 
 Update a Cart's details. If the cart has payment sessions and the region was not changed, the payment sessions are updated. The cart's totals are also recalculated.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3668,7 +3670,7 @@ medusa.carts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3811,7 +3813,7 @@ medusa.carts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4199,12 +4201,12 @@ medusa.carts
 
 ___
 
-#### updatePaymentSession
+### updatePaymentSession
 
 Update a Payment Session with additional data. This can be useful depending on the payment provider used.
 All payment sessions are updated and cart totals are recalculated afterwards.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -4219,7 +4221,7 @@ medusa.carts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4270,7 +4272,7 @@ medusa.carts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

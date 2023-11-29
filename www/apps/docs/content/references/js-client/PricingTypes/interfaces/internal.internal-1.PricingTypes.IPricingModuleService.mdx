@@ -8,11 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-#### addPriceListPrices
+### addPriceListPrices
 
 This method is used to add prices to price lists.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -35,7 +35,7 @@ async function addPriceListPrices (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -58,7 +58,7 @@ async function addPriceListPrices (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -74,13 +74,13 @@ async function addPriceListPrices (items: {
 
 ___
 
-#### addPrices
+### addPrices
 
 `**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;`
 
 This method adds prices to a price set.
 
-##### Example
+#### Example
 
 To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
 
@@ -151,7 +151,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -174,7 +174,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -192,7 +192,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 
 This method adds prices to multiple price sets.
 
-##### Example
+#### Example
 
 To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
 
@@ -263,7 +263,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -286,7 +286,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -302,13 +302,13 @@ async function addPricesToPriceSet (priceSetId: string) {
 
 ___
 
-#### addRules
+### addRules
 
 `**addRules**(data, sharedContext?): Promise&#60;[PriceSetDTO](internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;`
 
 This method adds rules to a price set.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -329,7 +329,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -352,7 +352,7 @@ async function addRulesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -370,7 +370,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 
 This method adds rules to multiple price sets.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -391,7 +391,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -414,7 +414,7 @@ async function addRulesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -430,11 +430,11 @@ async function addRulesToPriceSet (priceSetId: string) {
 
 ___
 
-#### calculatePrices
+### calculatePrices
 
 This method is used to calculate prices based on the provided filters and context.
 
-##### Example
+#### Example
 
 When you calculate prices, you must at least specify the currency code:
 
@@ -504,7 +504,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -536,7 +536,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -552,13 +552,13 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
 
 ___
 
-#### create
+### create
 
 `**create**(data, sharedContext?): Promise&#60;[PriceSetDTO](internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;`
 
 This method is used to create a new price set.
 
-##### Example
+#### Example
 
 To create a default price set, don't pass any rules. For example:
 
@@ -632,7 +632,7 @@ async function createPriceSet() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -655,7 +655,7 @@ async function createPriceSet() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -673,7 +673,7 @@ async function createPriceSet() {
 
 This method is used to create multiple price sets.
 
-##### Example
+#### Example
 
 To create price sets with a default price, don't pass any rules and make sure to pass the `currency_code` of the price. For example:
 
@@ -744,7 +744,7 @@ async function createPriceSets() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -767,7 +767,7 @@ async function createPriceSets() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -783,11 +783,11 @@ async function createPriceSets() {
 
 ___
 
-#### createCurrencies
+### createCurrencies
 
 This method is used to create new currencies.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -808,7 +808,7 @@ async function createCurrencies() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -831,7 +831,7 @@ async function createCurrencies() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -847,11 +847,11 @@ async function createCurrencies() {
 
 ___
 
-#### createMoneyAmounts
+### createMoneyAmounts
 
 This method creates money amounts.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -876,7 +876,7 @@ async function retrieveMoneyAmounts() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -899,7 +899,7 @@ async function retrieveMoneyAmounts() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -915,11 +915,11 @@ async function retrieveMoneyAmounts() {
 
 ___
 
-#### createPriceListRules
+### createPriceListRules
 
 This method is used to create price list rules.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -938,7 +938,7 @@ async function createPriceListRules (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -961,7 +961,7 @@ async function createPriceListRules (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -977,11 +977,11 @@ async function createPriceListRules (items: {
 
 ___
 
-#### createPriceLists
+### createPriceLists
 
 This method is used to create price lists.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1002,7 +1002,7 @@ async function createPriceList (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1025,7 +1025,7 @@ async function createPriceList (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1041,11 +1041,11 @@ async function createPriceList (items: {
 
 ___
 
-#### createPriceRules
+### createPriceRules
 
 This method is used to create new price rules based on the provided data.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1077,7 +1077,7 @@ async function createPriceRules (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1100,7 +1100,7 @@ async function createPriceRules (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1116,12 +1116,12 @@ async function createPriceRules (
 
 ___
 
-#### createPriceSetMoneyAmountRules
+### createPriceSetMoneyAmountRules
 
 This method is used to create new price set money amount rules. A price set money amount rule creates an association between a price set money amount and
 a rule type.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1143,7 +1143,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1166,7 +1166,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1182,11 +1182,11 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
 
 ___
 
-#### createRuleTypes
+### createRuleTypes
 
 This method is used to create new rule types.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -1205,7 +1205,7 @@ async function createRuleTypes() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1228,7 +1228,7 @@ async function createRuleTypes() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1244,11 +1244,11 @@ async function createRuleTypes() {
 
 ___
 
-#### delete
+### delete
 
 This method deletes price sets by their IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1262,7 +1262,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1285,7 +1285,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1301,11 +1301,11 @@ async function removePriceSetRule (priceSetIds: string[]) {
 
 ___
 
-#### deleteCurrencies
+### deleteCurrencies
 
 This method is used to delete currencies based on their currency code.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -1317,7 +1317,7 @@ async function deleteCurrencies() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1340,7 +1340,7 @@ async function deleteCurrencies() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1356,11 +1356,11 @@ async function deleteCurrencies() {
 
 ___
 
-#### deleteMoneyAmounts
+### deleteMoneyAmounts
 
 This method deletes money amounts by their IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1376,7 +1376,7 @@ async function deleteMoneyAmounts (moneyAmountIds: string[]) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1399,7 +1399,7 @@ async function deleteMoneyAmounts (moneyAmountIds: string[]) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1415,11 +1415,11 @@ async function deleteMoneyAmounts (moneyAmountIds: string[]) {
 
 ___
 
-#### deletePriceListRules
+### deletePriceListRules
 
 This method is used to delete price list rules.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1433,7 +1433,7 @@ async function deletePriceListRules (priceListRuleIds: string[]) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1456,7 +1456,7 @@ async function deletePriceListRules (priceListRuleIds: string[]) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1472,11 +1472,11 @@ async function deletePriceListRules (priceListRuleIds: string[]) {
 
 ___
 
-#### deletePriceLists
+### deletePriceLists
 
 This method is used to delete price lists.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1490,7 +1490,7 @@ async function deletePriceLists (ids: string[]) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1513,7 +1513,7 @@ async function deletePriceLists (ids: string[]) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1529,11 +1529,11 @@ async function deletePriceLists (ids: string[]) {
 
 ___
 
-#### deletePriceRules
+### deletePriceRules
 
 This method is used to delete price rules based on the specified IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1549,7 +1549,7 @@ async function deletePriceRules (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1572,7 +1572,7 @@ async function deletePriceRules (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1588,11 +1588,11 @@ async function deletePriceRules (
 
 ___
 
-#### deletePriceSetMoneyAmountRules
+### deletePriceSetMoneyAmountRules
 
 This method is used to delete price set money amount rules based on the specified IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1606,7 +1606,7 @@ async function deletePriceSetMoneyAmountRule (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1629,7 +1629,7 @@ async function deletePriceSetMoneyAmountRule (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1645,11 +1645,11 @@ async function deletePriceSetMoneyAmountRule (id: string) {
 
 ___
 
-#### deleteRuleTypes
+### deleteRuleTypes
 
 This method is used to delete rule types based on the provided IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1663,7 +1663,7 @@ async function deleteRuleTypes (ruleTypeId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1686,7 +1686,7 @@ async function deleteRuleTypes (ruleTypeId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1702,11 +1702,11 @@ async function deleteRuleTypes (ruleTypeId: string) {
 
 ___
 
-#### list
+### list
 
 This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price sets using their IDs:
 
@@ -1810,7 +1810,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1842,7 +1842,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1858,11 +1858,11 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 
 ___
 
-#### listAndCount
+### listAndCount
 
 This method is used to retrieve a paginated list of price sets along with the total count of available price sets satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of prices sets using their IDs:
 
@@ -1966,7 +1966,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1998,7 +1998,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2014,11 +2014,11 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 
 ___
 
-#### listAndCountCurrencies
+### listAndCountCurrencies
 
 This method is used to retrieve a paginated list of currencies along with the total count of available currencies satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of currencies using their codes:
 
@@ -2088,7 +2088,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2120,7 +2120,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2136,11 +2136,11 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 
 ___
 
-#### listAndCountMoneyAmounts
+### listAndCountMoneyAmounts
 
 This method is used to retrieve a paginated list of money amounts along with the total count of available money amounts satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of money amounts using their IDs:
 
@@ -2242,7 +2242,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2274,7 +2274,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2290,11 +2290,11 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 
 ___
 
-#### listAndCountPriceListRules
+### listAndCountPriceListRules
 
 This method is used to retrieve a paginated list of price list ruless along with the total count of available price list ruless satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price list vs using their IDs:
 
@@ -2396,7 +2396,7 @@ async function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeI
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2428,7 +2428,7 @@ async function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeI
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2444,11 +2444,11 @@ async function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeI
 
 ___
 
-#### listAndCountPriceLists
+### listAndCountPriceLists
 
 This method is used to retrieve a paginated list of price lists along with the total count of available price lists satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price lists using their IDs:
 
@@ -2550,7 +2550,7 @@ async function retrievePriceLists (priceListIds: string[], titles: string[], ski
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2582,7 +2582,7 @@ async function retrievePriceLists (priceListIds: string[], titles: string[], ski
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2598,11 +2598,11 @@ async function retrievePriceLists (priceListIds: string[], titles: string[], ski
 
 ___
 
-#### listAndCountPriceRules
+### listAndCountPriceRules
 
 This method is used to retrieve a paginated list of price rules along with the total count of available price rules satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price rules using their IDs:
 
@@ -2693,7 +2693,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2725,7 +2725,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2741,12 +2741,12 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 
 ___
 
-#### listAndCountPriceSetMoneyAmountRules
+### listAndCountPriceSetMoneyAmountRules
 
 This method is used to retrieve a paginated list of price set money amount rules along with the total count of
 available price set money amount rules satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price set money amounts using their IDs:
 
@@ -2837,7 +2837,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2869,7 +2869,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2885,12 +2885,12 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 
 ___
 
-#### listAndCountPriceSetMoneyAmounts
+### listAndCountPriceSetMoneyAmounts
 
 This method is used to retrieve a paginated list of price set money amounts along with the total count of
 available price set money amounts satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price set money amounts using their IDs:
 
@@ -2981,7 +2981,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3013,7 +3013,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3029,11 +3029,11 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 
 ___
 
-#### listAndCountRuleTypes
+### listAndCountRuleTypes
 
 This method is used to retrieve a paginated list of rule types along with the total count of available rule types satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of rule types using their IDs:
 
@@ -3130,7 +3130,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3162,7 +3162,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3178,11 +3178,11 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 
 ___
 
-#### listCurrencies
+### listCurrencies
 
 This method is used to retrieve a paginated list of currencies based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of currencies using their codes:
 
@@ -3252,7 +3252,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3284,7 +3284,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3300,11 +3300,11 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 
 ___
 
-#### listMoneyAmounts
+### listMoneyAmounts
 
 This method is used to retrieve a paginated list of money amounts based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of money amounts using their IDs:
 
@@ -3406,7 +3406,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3438,7 +3438,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3454,11 +3454,11 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 
 ___
 
-#### listPriceListRules
+### listPriceListRules
 
 This method is used to retrieve a paginated list of price list rules based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price list vs using their IDs:
 
@@ -3560,7 +3560,7 @@ async function listPriceListRules (priceListRuleIds: string[], ruleTypeIDs: stri
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3592,7 +3592,7 @@ async function listPriceListRules (priceListRuleIds: string[], ruleTypeIDs: stri
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3608,11 +3608,11 @@ async function listPriceListRules (priceListRuleIds: string[], ruleTypeIDs: stri
 
 ___
 
-#### listPriceLists
+### listPriceLists
 
 This method is used to retrieve a paginated list of price lists based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price lists using their IDs:
 
@@ -3714,7 +3714,7 @@ async function listPriceLists (priceListIds: string[], titles: string[], skip: n
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3746,7 +3746,7 @@ async function listPriceLists (priceListIds: string[], titles: string[], skip: n
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3762,11 +3762,11 @@ async function listPriceLists (priceListIds: string[], titles: string[], skip: n
 
 ___
 
-#### listPriceRules
+### listPriceRules
 
 This method is used to retrieve a paginated list of price rules based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price rules using their IDs:
 
@@ -3857,7 +3857,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3889,7 +3889,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3905,11 +3905,11 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 
 ___
 
-#### listPriceSetMoneyAmountRules
+### listPriceSetMoneyAmountRules
 
 This method is used to retrieve a paginated list of price set money amount rules based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price set money amount rules using their IDs:
 
@@ -4000,7 +4000,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4032,7 +4032,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4048,11 +4048,11 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 
 ___
 
-#### listPriceSetMoneyAmounts
+### listPriceSetMoneyAmounts
 
 This method is used to retrieve a paginated list of price set money amounts based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price set money amounts using their IDs:
 
@@ -4143,7 +4143,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4175,7 +4175,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4191,11 +4191,11 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 
 ___
 
-#### listRuleTypes
+### listRuleTypes
 
 This method is used to retrieve a paginated list of rule types based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of rule types using their IDs:
 
@@ -4292,7 +4292,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4324,7 +4324,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4340,11 +4340,11 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 
 ___
 
-#### removePriceListRules
+### removePriceListRules
 
 This method is used to remove rules from a price list.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -4363,7 +4363,7 @@ async function setPriceListRules (priceListId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4386,7 +4386,7 @@ async function setPriceListRules (priceListId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4402,11 +4402,11 @@ async function setPriceListRules (priceListId: string) {
 
 ___
 
-#### removeRules
+### removeRules
 
 This method remove rules from a price set.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -4425,7 +4425,7 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4448,7 +4448,7 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4464,11 +4464,11 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
 
 ___
 
-#### retrieve
+### retrieve
 
 This method is used to retrieve a price set by its ID.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price set by its ID:
 
@@ -4509,7 +4509,7 @@ async function retrievePriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4541,7 +4541,7 @@ async function retrievePriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4557,11 +4557,11 @@ async function retrievePriceSet (priceSetId: string) {
 
 ___
 
-#### retrieveCurrency
+### retrieveCurrency
 
 This method retrieves a currency by its code and and optionally based on the provided configurations.
 
-##### Example
+#### Example
 
 A simple example that retrieves a currency by its code:
 
@@ -4602,7 +4602,7 @@ async function retrieveCurrency (code: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4634,7 +4634,7 @@ async function retrieveCurrency (code: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4650,11 +4650,11 @@ async function retrieveCurrency (code: string) {
 
 ___
 
-#### retrieveMoneyAmount
+### retrieveMoneyAmount
 
 This method retrieves a money amount by its ID.
 
-##### Example
+#### Example
 
 To retrieve a money amount by its ID:
 
@@ -4695,7 +4695,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4727,7 +4727,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4743,11 +4743,11 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
 
 ___
 
-#### retrievePriceList
+### retrievePriceList
 
 This method is used to retrieve a price list by its ID.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price list by its ID:
 
@@ -4788,7 +4788,7 @@ async function retrievePriceList (priceListId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4820,7 +4820,7 @@ async function retrievePriceList (priceListId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4836,11 +4836,11 @@ async function retrievePriceList (priceListId: string) {
 
 ___
 
-#### retrievePriceListRule
+### retrievePriceListRule
 
 This method is used to retrieve a price list rule by its ID.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price list rule by its ID:
 
@@ -4881,7 +4881,7 @@ async function retrievePriceListRule (priceListRuleId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4913,7 +4913,7 @@ async function retrievePriceListRule (priceListRuleId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4929,11 +4929,11 @@ async function retrievePriceListRule (priceListRuleId: string) {
 
 ___
 
-#### retrievePriceRule
+### retrievePriceRule
 
 This method is used to retrieve a price rule by its ID.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price rule by its ID:
 
@@ -4969,7 +4969,7 @@ async function retrievePriceRule (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5001,7 +5001,7 @@ async function retrievePriceRule (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5017,11 +5017,11 @@ async function retrievePriceRule (id: string) {
 
 ___
 
-#### retrievePriceSetMoneyAmountRules
+### retrievePriceSetMoneyAmountRules
 
 This method is used to a price set money amount rule by its ID based on the provided configuration.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price set money amount rule by its ID:
 
@@ -5057,7 +5057,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5089,7 +5089,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5105,11 +5105,11 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
 
 ___
 
-#### retrieveRuleType
+### retrieveRuleType
 
 This method is used to retrieve a rule type by its ID and and optionally based on the provided configurations.
 
-##### Example
+#### Example
 
 A simple example that retrieves a rule type by its code:
 
@@ -5145,7 +5145,7 @@ async function retrieveRuleType (ruleTypeId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5177,7 +5177,7 @@ async function retrieveRuleType (ruleTypeId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5193,11 +5193,11 @@ async function retrieveRuleType (ruleTypeId: string) {
 
 ___
 
-#### setPriceListRules
+### setPriceListRules
 
 This method is used to set the rules of a price list.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5218,7 +5218,7 @@ async function setPriceListRules (priceListId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5241,7 +5241,7 @@ async function setPriceListRules (priceListId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5257,11 +5257,11 @@ async function setPriceListRules (priceListId: string) {
 
 ___
 
-#### updateCurrencies
+### updateCurrencies
 
 This method is used to update existing currencies with the provided data. In each currency object, the currency code must be provided to identify which currency to update.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -5280,7 +5280,7 @@ async function updateCurrencies() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5303,7 +5303,7 @@ async function updateCurrencies() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5319,11 +5319,11 @@ async function updateCurrencies() {
 
 ___
 
-#### updateMoneyAmounts
+### updateMoneyAmounts
 
 This method updates existing money amounts.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5344,7 +5344,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5367,7 +5367,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5383,11 +5383,11 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 
 ___
 
-#### updatePriceListRules
+### updatePriceListRules
 
 This method is used to update price list rules.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5407,7 +5407,7 @@ async function updatePriceListRules (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5430,7 +5430,7 @@ async function updatePriceListRules (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5446,11 +5446,11 @@ async function updatePriceListRules (items: {
 
 ___
 
-#### updatePriceLists
+### updatePriceLists
 
 This method is used to update price lists.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5472,7 +5472,7 @@ async function updatePriceLists (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5495,7 +5495,7 @@ async function updatePriceLists (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5511,11 +5511,11 @@ async function updatePriceLists (items: {
 
 ___
 
-#### updatePriceRules
+### updatePriceRules
 
 This method is used to update price rules, each with their provided data.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5539,7 +5539,7 @@ async function updatePriceRules (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5562,7 +5562,7 @@ async function updatePriceRules (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5578,11 +5578,11 @@ async function updatePriceRules (
 
 ___
 
-#### updatePriceSetMoneyAmountRules
+### updatePriceSetMoneyAmountRules
 
 This method is used to update price set money amount rules, each with their provided data.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5603,7 +5603,7 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5626,7 +5626,7 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5642,11 +5642,11 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
 
 ___
 
-#### updateRuleTypes
+### updateRuleTypes
 
 This method is used to update existing rule types with the provided data.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5667,7 +5667,7 @@ async function updateRuleTypes (ruleTypeId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5690,7 +5690,7 @@ async function updateRuleTypes (ruleTypeId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

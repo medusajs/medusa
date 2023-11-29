@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # NotificationService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new NotificationService**(container)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -130,15 +130,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -146,7 +166,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -169,7 +189,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -201,7 +221,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -219,7 +239,7 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### handleEvent
+### handleEvent
 
 `**handleEvent**(eventName, data): Promise&#60;undefined \| void \| [Notification](Notification.mdx)[]&#62;`
 
@@ -227,7 +247,7 @@ Handles an event by relaying the event data to the subscribing providers.
 The result of the notification send will be persisted in the database in
 order to allow for resends. Will log any errors that are encountered.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -250,7 +270,7 @@ order to allow for resends. Will log any errors that are encountered.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;undefined \| void \| [Notification](Notification.mdx)[]&#62;
 
@@ -268,13 +288,13 @@ Promise&#60;undefined \| void \| [Notification](Notification.mdx)[]&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[Notification](Notification.mdx)[]&#62;`
 
 Retrieves a list of notifications.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -297,7 +317,7 @@ Retrieves a list of notifications.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Notification](Notification.mdx)[]&#62;
 
@@ -315,13 +335,13 @@ Promise&#60;[Notification](Notification.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[Notification](Notification.mdx)[], number]&#62;`
 
 Retrieves a list of notifications and total count.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -344,7 +364,7 @@ Retrieves a list of notifications and total count.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[Notification](Notification.mdx)[], number]&#62;
 
@@ -362,14 +382,14 @@ Promise&#60;[[Notification](Notification.mdx)[], number]&#62;
 
 ___
 
-#### registerAttachmentGenerator
+### registerAttachmentGenerator
 
 `**registerAttachmentGenerator**(service): void`
 
 Registers an attachment generator to the service. The generator can be
 used to generate on demand invoices or other documents.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -383,7 +403,7 @@ used to generate on demand invoices or other documents.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `void`
 
@@ -401,13 +421,13 @@ used to generate on demand invoices or other documents.
 
 ___
 
-#### registerInstalledProviders
+### registerInstalledProviders
 
 `**registerInstalledProviders**(providerIds): Promise&#60;void&#62;`
 
 Takes a list of notification provider ids and persists them in the database.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -421,7 +441,7 @@ Takes a list of notification provider ids and persists them in the database.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -439,14 +459,14 @@ Promise&#60;void&#62;
 
 ___
 
-#### resend
+### resend
 
 `**resend**(id, config?): Promise&#60;[Notification](Notification.mdx)&#62;`
 
 Resends a notification by retrieving a prior notification and calling the
 underlying provider's resendNotification method.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -469,7 +489,7 @@ underlying provider's resendNotification method.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Notification](Notification.mdx)&#62;
 
@@ -487,13 +507,13 @@ Promise&#60;[Notification](Notification.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(id, config?): Promise&#60;[Notification](Notification.mdx)&#62;`
 
 Retrieves a notification with a given id
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -516,7 +536,7 @@ Retrieves a notification with a given id
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Notification](Notification.mdx)&#62;
 
@@ -534,14 +554,14 @@ Promise&#60;[Notification](Notification.mdx)&#62;
 
 ___
 
-#### retrieveProvider\_
+### retrieveProvider\_
 
 `Protected **retrieveProvider_**(id): [AbstractNotificationService](AbstractNotificationService.mdx)`
 
 Finds a provider with a given id. Will throw a NOT\_FOUND error if the
 resolution fails.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -555,7 +575,7 @@ resolution fails.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [AbstractNotificationService](AbstractNotificationService.mdx)
 
@@ -573,14 +593,14 @@ resolution fails.
 
 ___
 
-#### send
+### send
 
 `**send**(event, eventData, providerId): Promise&#60;undefined \| [Notification](Notification.mdx)&#62;`
 
 Sends a notification, by calling the given provider's sendNotification
 method. Persists the Notification in the database.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -612,7 +632,7 @@ method. Persists the Notification in the database.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;undefined \| [Notification](Notification.mdx)&#62;
 
@@ -630,11 +650,11 @@ Promise&#60;undefined \| [Notification](Notification.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -648,7 +668,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -666,13 +686,13 @@ ___
 
 ___
 
-#### subscribe
+### subscribe
 
 `**subscribe**(eventName, providerId): void`
 
 Subscribes a given provider to an event.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -695,7 +715,7 @@ Subscribes a given provider to an event.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `void`
 
@@ -713,11 +733,11 @@ Subscribes a given provider to an event.
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [NotificationService](NotificationService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -731,7 +751,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [NotificationService](NotificationService.mdx)
 

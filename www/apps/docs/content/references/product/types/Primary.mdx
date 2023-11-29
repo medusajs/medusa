@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
  **Primary**: `T` extends ``{ [PrimaryKeyType]?: infer PK  }`` ? [ReadonlyPrimary](ReadonlyPrimary.mdx)&#60;PK&#62; : `T` extends ``{ _id?: infer PK  }`` ? [ReadonlyPrimary](ReadonlyPrimary.mdx)&#60;PK&#62; \| `string` : `T` extends ``{ uuid?: infer PK  }`` ? [ReadonlyPrimary](ReadonlyPrimary.mdx)&#60;PK&#62; : `T` extends ``{ id?: infer PK  }`` ? [ReadonlyPrimary](ReadonlyPrimary.mdx)&#60;PK&#62; : `never`
 
-#### Type Parameters
+## Type Parameters
 
 <ParameterTypes parameters={[
   {

@@ -74,23 +74,37 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -122,7 +136,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -138,11 +152,11 @@ transaction manager is created.
 
 ___
 
-#### create
+### create
 
 Creates an analytics config.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -165,7 +179,7 @@ Creates an analytics config.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -181,11 +195,11 @@ Creates an analytics config.
 
 ___
 
-#### delete
+### delete
 
 Deletes an analytics config.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -199,7 +213,7 @@ Deletes an analytics config.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -215,9 +229,9 @@ Deletes an analytics config.
 
 ___
 
-#### retrieve
+### retrieve
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -231,7 +245,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -247,9 +261,9 @@ ___
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -263,7 +277,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -279,11 +293,11 @@ ___
 
 ___
 
-#### update
+### update
 
 Updates an analytics config. If the config does not exist, it will be created instead.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -306,7 +320,7 @@ Updates an analytics config. If the config does not exist, it will be created in
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -322,9 +336,9 @@ Updates an analytics config. If the config does not exist, it will be created in
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -338,7 +352,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -16,11 +16,11 @@ Related Guide: [Shipping Option architecture](https://docs.medusajs.com/modules/
 
 ## Methods
 
-#### list
+### list
 
 Retrieve a list of shipping options. The shipping options can be filtered using the `query` parameter.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -30,7 +30,7 @@ medusa.shippingOptions.list().then(({ shipping_options }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -81,7 +81,7 @@ medusa.shippingOptions.list().then(({ shipping_options }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -317,11 +317,11 @@ medusa.shippingOptions.list().then(({ shipping_options }) => {
 
 ___
 
-#### listCartOptions
+### listCartOptions
 
 Retrieve a list of shipping options available for a cart.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -331,7 +331,7 @@ medusa.shippingOptions.listCartOptions(cartId).then(({ shipping_options }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -354,7 +354,7 @@ medusa.shippingOptions.listCartOptions(cartId).then(({ shipping_options }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

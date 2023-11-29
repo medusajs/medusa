@@ -20,11 +20,11 @@ Related Guide: [How to manage item allocations in orders](https://docs.medusajs.
 
 ## Methods
 
-#### create
+### create
 
 Create a reservation which can be associated with any resource, such as an order's line item.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -42,7 +42,7 @@ medusa.admin.reservations
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -120,7 +120,7 @@ medusa.admin.reservations
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -256,11 +256,11 @@ medusa.admin.reservations
 
 ___
 
-#### delete
+### delete
 
 Delete a reservation. Associated resources, such as the line item, will not be deleted.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -273,7 +273,7 @@ medusa.admin.reservations
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -296,7 +296,7 @@ medusa.admin.reservations
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -340,11 +340,11 @@ medusa.admin.reservations
 
 ___
 
-#### list
+### list
 
 Retrieve a list of reservations. The reservations can be filtered by fields such as `location_id` or `quantity` passed in the `query` parameter. The reservations can also be paginated.
 
-##### Example
+#### Example
 
 To list reservations:
 
@@ -391,7 +391,7 @@ medusa.admin.reservations
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -588,7 +588,7 @@ medusa.admin.reservations
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -751,11 +751,11 @@ medusa.admin.reservations
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a reservation's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -766,7 +766,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -789,7 +789,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -925,11 +925,11 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
 
 ___
 
-#### update
+### update
 
 Update a reservation's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -944,7 +944,7 @@ medusa.admin.reservations
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1013,7 +1013,7 @@ medusa.admin.reservations
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

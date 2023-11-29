@@ -19,11 +19,11 @@ Related Guide: [How to manage orders](https://docs.medusajs.com/modules/orders/a
 
 ## Methods
 
-#### addShippingMethod
+### addShippingMethod
 
 Add a shipping method to an order. If another shipping method exists with the same shipping profile, the previous shipping method will be replaced.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -39,7 +39,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -99,7 +99,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -125,11 +125,11 @@ medusa.admin.orders
 
 ___
 
-#### archive
+### archive
 
 Archive an order and change its status.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -140,7 +140,7 @@ medusa.admin.orders.archive(orderId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -163,7 +163,7 @@ medusa.admin.orders.archive(orderId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -189,12 +189,12 @@ medusa.admin.orders.archive(orderId).then(({ order }) => {
 
 ___
 
-#### cancel
+### cancel
 
 Cancel an order and change its status. This will also cancel any associated fulfillments and payments, and it may fail if the payment or fulfillment Provider 
 is unable to cancel the payment/fulfillment.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -205,7 +205,7 @@ medusa.admin.orders.cancel(orderId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -228,7 +228,7 @@ medusa.admin.orders.cancel(orderId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -254,11 +254,11 @@ medusa.admin.orders.cancel(orderId).then(({ order }) => {
 
 ___
 
-#### cancelClaim
+### cancelClaim
 
 Cancel a claim and change its status. A claim can't be canceled if it has a refund, if its fulfillments haven't been canceled, of if its associated return hasn't been canceled.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -269,7 +269,7 @@ medusa.admin.orders.cancelClaim(orderId, claimId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -301,7 +301,7 @@ medusa.admin.orders.cancelClaim(orderId, claimId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -327,11 +327,11 @@ medusa.admin.orders.cancelClaim(orderId, claimId).then(({ order }) => {
 
 ___
 
-#### cancelClaimFulfillment
+### cancelClaimFulfillment
 
 Cancel a claim's fulfillment and change its fulfillment status to `canceled`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -344,7 +344,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -385,7 +385,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -411,11 +411,11 @@ medusa.admin.orders
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
 Cancel an order's fulfillment and change its fulfillment status to `canceled`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -428,7 +428,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -460,7 +460,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -486,11 +486,11 @@ medusa.admin.orders
 
 ___
 
-#### cancelSwap
+### cancelSwap
 
 Cancel a swap and change its status.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -501,7 +501,7 @@ medusa.admin.orders.cancelSwap(orderId, swapId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -533,7 +533,7 @@ medusa.admin.orders.cancelSwap(orderId, swapId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -559,11 +559,11 @@ medusa.admin.orders.cancelSwap(orderId, swapId).then(({ order }) => {
 
 ___
 
-#### cancelSwapFulfillment
+### cancelSwapFulfillment
 
 Cancel a swap's fulfillment and change its fulfillment status to `canceled`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -576,7 +576,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -617,7 +617,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -643,11 +643,11 @@ medusa.admin.orders
 
 ___
 
-#### capturePayment
+### capturePayment
 
 Capture all the payments associated with an order. The payment of canceled orders can't be captured.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -658,7 +658,7 @@ medusa.admin.orders.capturePayment(orderId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -681,7 +681,7 @@ medusa.admin.orders.capturePayment(orderId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -707,11 +707,11 @@ medusa.admin.orders.capturePayment(orderId).then(({ order }) => {
 
 ___
 
-#### complete
+### complete
 
 Complete an order and change its status. A canceled order can't be completed.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -722,7 +722,7 @@ medusa.admin.orders.complete(orderId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -745,7 +745,7 @@ medusa.admin.orders.complete(orderId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -771,12 +771,12 @@ medusa.admin.orders.complete(orderId).then(({ order }) => {
 
 ___
 
-#### createClaim
+### createClaim
 
 Create a claim for an order. If a return shipping method is specified, a return will also be created and associated with the claim. If the claim's type is `refund`,
 the refund is processed as well.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -797,7 +797,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -920,7 +920,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -946,12 +946,12 @@ medusa.admin.orders
 
 ___
 
-#### createClaimShipment
+### createClaimShipment
 
 Create a shipment for the claim and mark its fulfillment as shipped. If the shipment is created successfully, this changes the claim's fulfillment status
 to either `partially_shipped` or `shipped`, depending on whether all the items were shipped.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -966,7 +966,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1026,7 +1026,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1052,12 +1052,12 @@ medusa.admin.orders
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
 Create a Fulfillment of an Order using the fulfillment provider, and change the order's fulfillment status to either `partially_fulfilled` or `fulfilled`, depending on
  whether all the items were fulfilled.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1077,7 +1077,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1146,7 +1146,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1172,12 +1172,12 @@ medusa.admin.orders
 
 ___
 
-#### createShipment
+### createShipment
 
 Create a shipment and mark a fulfillment as shipped. This changes the order's fulfillment status to either `partially_shipped` or `shipped`, depending on
 whether all the items were shipped.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1192,7 +1192,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1252,7 +1252,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1278,11 +1278,11 @@ medusa.admin.orders
 
 ___
 
-#### createSwap
+### createSwap
 
 Create a swap for an order. This includes creating a return that is associated with the swap.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1302,7 +1302,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1407,7 +1407,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1433,12 +1433,12 @@ medusa.admin.orders
 
 ___
 
-#### createSwapShipment
+### createSwapShipment
 
 Create a shipment for a swap and mark its fulfillment as shipped. This changes the swap's fulfillment status to either `shipped` or `partially_shipped`, depending on
 whether all the items were shipped.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1453,7 +1453,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1522,7 +1522,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1548,12 +1548,12 @@ medusa.admin.orders
 
 ___
 
-#### fulfillClaim
+### fulfillClaim
 
 Create a Fulfillment for a Claim, and change its fulfillment status to `partially_fulfilled` or `fulfilled` depending on whether all the items were fulfilled.
 It may also change the status to `requires_action` if any actions are required.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1564,7 +1564,7 @@ medusa.admin.orders.fulfillClaim(orderId, claimId, {}).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1633,7 +1633,7 @@ medusa.admin.orders.fulfillClaim(orderId, claimId, {}).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1659,12 +1659,12 @@ medusa.admin.orders.fulfillClaim(orderId, claimId, {}).then(({ order }) => {
 
 ___
 
-#### fulfillSwap
+### fulfillSwap
 
 Create a Fulfillment for a Swap and change its fulfillment status to `fulfilled`. If it requires any additional actions,
 its fulfillment status may change to `requires_action`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1679,7 +1679,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1748,7 +1748,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1774,11 +1774,11 @@ medusa.admin.orders
 
 ___
 
-#### list
+### list
 
 Retrieve a list of orders. The orders can be filtered by fields such as `status` or `display_id` passed in the `query` parameter. The order can also be paginated.
 
-##### Example
+#### Example
 
 To list orders:
 
@@ -1823,7 +1823,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2027,7 +2027,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2053,12 +2053,12 @@ medusa.admin.orders
 
 ___
 
-#### processSwapPayment
+### processSwapPayment
 
 Process a swap's payment either by refunding or issuing a payment. This depends on the `difference_due` of the swap. If `difference_due` is negative, the amount is refunded.
 If `difference_due` is positive, the amount is captured.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2069,7 +2069,7 @@ medusa.admin.orders.processSwapPayment(orderId, swapId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2101,7 +2101,7 @@ medusa.admin.orders.processSwapPayment(orderId, swapId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2127,11 +2127,11 @@ medusa.admin.orders.processSwapPayment(orderId, swapId).then(({ order }) => {
 
 ___
 
-#### refundPayment
+### refundPayment
 
 Refund an amount for an order. The amount must be less than or equal the `refundable_amount` of the order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2147,7 +2147,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2216,7 +2216,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2242,11 +2242,11 @@ medusa.admin.orders
 
 ___
 
-#### requestReturn
+### requestReturn
 
 Request and create a return for items in an order. If the return shipping method is specified, it will be automatically fulfilled.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2266,7 +2266,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2362,7 +2362,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2388,11 +2388,11 @@ medusa.admin.orders
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve an order's details.
 
-##### Example
+#### Example
 
 A simple example that retrieves an order by its ID:
 
@@ -2420,7 +2420,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2471,7 +2471,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2497,11 +2497,11 @@ medusa.admin.orders
 
 ___
 
-#### update
+### update
 
 Update and order's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2516,7 +2516,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2639,7 +2639,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2665,11 +2665,11 @@ medusa.admin.orders
 
 ___
 
-#### updateClaim
+### updateClaim
 
 Update a claim's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2684,7 +2684,7 @@ medusa.admin.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2762,7 +2762,7 @@ medusa.admin.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

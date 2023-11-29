@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Can authenticate a user based on email password combination
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new AuthService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Can authenticate a user based on email password combination
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -96,15 +96,35 @@ Can authenticate a user based on email password combination
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -112,7 +132,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -135,7 +155,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -167,7 +187,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -185,14 +205,14 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### authenticate
+### authenticate
 
 `**authenticate**(email, password): Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;`
 
 Authenticates a given user based on an email, password combination. Uses
 scrypt to match password with hashed value.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -215,7 +235,7 @@ scrypt to match password with hashed value.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;
 
@@ -233,13 +253,13 @@ Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;
 
 ___
 
-#### authenticateAPIToken
+### authenticateAPIToken
 
 `**authenticateAPIToken**(token): Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;`
 
 Authenticates a given user with an API token
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -253,7 +273,7 @@ Authenticates a given user with an API token
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;
 
@@ -271,14 +291,14 @@ Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;
 
 ___
 
-#### authenticateCustomer
+### authenticateCustomer
 
 `**authenticateCustomer**(email, password): Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;`
 
 Authenticates a customer based on an email, password combination. Uses
 scrypt to match password with hashed value.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -301,7 +321,7 @@ scrypt to match password with hashed value.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;
 
@@ -319,13 +339,13 @@ Promise&#60;[AuthenticateResult](../types/AuthenticateResult.mdx)&#62;
 
 ___
 
-#### comparePassword\_
+### comparePassword\_
 
 `Protected **comparePassword_**(password, hash): Promise&#60;boolean&#62;`
 
 Verifies if a password is valid given the provided password hash
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -348,7 +368,7 @@ Verifies if a password is valid given the provided password hash
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -366,11 +386,11 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -384,7 +404,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -402,11 +422,11 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [AuthService](AuthService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -420,7 +440,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [AuthService](AuthService.mdx)
 

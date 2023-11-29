@@ -37,14 +37,16 @@ Related Guide: [How to implement customer profiles in your storefront](https://d
   }
 ]} />
 
+___
+
 ## Methods
 
-#### create
+### create
 
 Register a new customer. This will also automatically authenticate the customer and set their login session in the response Cookie header.
 Subsequent requests sent with the JS client are sent with the Cookie session automatically.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -61,7 +63,7 @@ medusa.customers
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -130,7 +132,7 @@ medusa.customers
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -302,12 +304,12 @@ medusa.customers
 
 ___
 
-#### generatePasswordToken
+### generatePasswordToken
 
 Create a reset password token to be used when sending a request with the [resetPassword](CustomersResource.mdx#resetpassword) method. This emits the event `customer.password_reset`. If a notification provider is
 installed in the Medusa backend and is configured to handle this event, a notification to the customer, such as an email, may be sent with reset instructions.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -324,7 +326,7 @@ medusa.customers
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -357,7 +359,7 @@ medusa.customers
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -373,12 +375,12 @@ medusa.customers
 
 ___
 
-#### listOrders
+### listOrders
 
 Retrieve a list of the logged-in customer's orders. The orders can be filtered by fields such as `status` or `fulfillment_status`. The orders can also be paginated.
 This method requires [customer authentication](AuthResource.mdx#authenticate).
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -389,7 +391,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -878,7 +880,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1446,12 +1448,12 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
 
 ___
 
-#### resetPassword
+### resetPassword
 
 Reset a customer's password using a password token created by a previous request using the [generatePasswordToken](CustomersResource.mdx#generatepasswordtoken) method. If the password token expired,
 you must create a new one.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1467,7 +1469,7 @@ medusa.customers
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1518,7 +1520,7 @@ medusa.customers
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1690,11 +1692,11 @@ medusa.customers
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve the logged-in customer's details. This method requires [customer authentication](AuthResource.mdx#authenticate).
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1705,7 +1707,7 @@ medusa.customers.retrieve().then(({ customer }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1719,7 +1721,7 @@ medusa.customers.retrieve().then(({ customer }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1891,11 +1893,11 @@ medusa.customers.retrieve().then(({ customer }) => {
 
 ___
 
-#### update
+### update
 
 Update the logged-in customer's details. This method requires [customer authentication](AuthResource.mdx#authenticate).
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1910,7 +1912,7 @@ medusa.customers
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1997,7 +1999,7 @@ medusa.customers
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

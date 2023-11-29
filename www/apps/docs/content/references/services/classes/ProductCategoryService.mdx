@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate product categories.
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new ProductCategoryService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate product categories.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -132,21 +132,41 @@ Provides layer to manipulate product categories.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addProducts
+### addProducts
 
 `**addProducts**(productCategoryId, productIds): Promise&#60;void&#62;`
 
 Add a batch of product to a product category
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -169,7 +189,7 @@ Add a batch of product to a product category
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -187,7 +207,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -195,7 +215,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -218,7 +238,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -250,7 +270,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -268,13 +288,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(productCategoryInput): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 Creates a product category
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -288,7 +308,7 @@ Creates a product category
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
@@ -306,13 +326,13 @@ Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(productCategoryId): Promise&#60;void&#62;`
 
 Deletes a product category
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -326,7 +346,7 @@ Deletes a product category
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -344,11 +364,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### fetchReorderConditions
+### fetchReorderConditions
 
 `Protected **fetchReorderConditions**(productCategory, input, shouldDeleteElement?): [ReorderConditions](../types/ReorderConditions.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -380,7 +400,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [ReorderConditions](../types/ReorderConditions.mdx)
 
@@ -398,14 +418,14 @@ ___
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?, treeSelector?): Promise&#60;[[ProductCategory](ProductCategory.mdx)[], number]&#62;`
 
 Lists product category based on the provided parameters and includes the count of
 product category that match the query.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -437,7 +457,7 @@ product category that match the query.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[ProductCategory](ProductCategory.mdx)[], number]&#62;
 
@@ -455,11 +475,11 @@ Promise&#60;[[ProductCategory](ProductCategory.mdx)[], number]&#62;
 
 ___
 
-#### performReordering
+### performReordering
 
 `Protected **performReordering**(repository, conditions): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -482,7 +502,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -500,13 +520,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### removeProducts
+### removeProducts
 
 `**removeProducts**(productCategoryId, productIds): Promise&#60;void&#62;`
 
 Remove a batch of product from a product category
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -529,7 +549,7 @@ Remove a batch of product from a product category
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -547,13 +567,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(productCategoryId, config?, selector?, treeSelector?): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 Retrieves a product category by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -594,7 +614,7 @@ Retrieves a product category by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
@@ -612,13 +632,13 @@ Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 ___
 
-#### retrieveByHandle
+### retrieveByHandle
 
 `**retrieveByHandle**(handle, config?, selector?, treeSelector?): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 Retrieves a product category by handle.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -659,7 +679,7 @@ Retrieves a product category by handle.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
@@ -677,13 +697,13 @@ Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 ___
 
-#### retrieve\_
+### retrieve\_
 
 `Protected **retrieve_**(config?, selector?, treeSelector?): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 A generic retrieve for fining product categories by different attributes.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -715,7 +735,7 @@ A generic retrieve for fining product categories by different attributes.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
@@ -733,11 +753,11 @@ Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 ___
 
-#### shiftSiblings
+### shiftSiblings
 
 `Protected **shiftSiblings**(repository, conditions): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -760,7 +780,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -778,11 +798,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -796,7 +816,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -814,14 +834,14 @@ ___
 
 ___
 
-#### transformParentIdToEntity
+### transformParentIdToEntity
 
 `Protected **transformParentIdToEntity**(productCategoryInput): Promise&#60;[CreateProductCategoryInput](../types/CreateProductCategoryInput.mdx) \| [UpdateProductCategoryInput](../types/UpdateProductCategoryInput.mdx)&#62;`
 
 Accepts an input object and transforms product\_category\_id
 into product\_category entity.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -835,7 +855,7 @@ into product\_category entity.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CreateProductCategoryInput](../types/CreateProductCategoryInput.mdx) \| [UpdateProductCategoryInput](../types/UpdateProductCategoryInput.mdx)&#62;
 
@@ -853,13 +873,13 @@ Promise&#60;[CreateProductCategoryInput](../types/CreateProductCategoryInput.mdx
 
 ___
 
-#### update
+### update
 
 `**update**(productCategoryId, productCategoryInput): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 Updates a product category
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -882,7 +902,7 @@ Updates a product category
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
@@ -900,11 +920,11 @@ Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [ProductCategoryService](ProductCategoryService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -918,7 +938,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [ProductCategoryService](ProductCategoryService.mdx)
 

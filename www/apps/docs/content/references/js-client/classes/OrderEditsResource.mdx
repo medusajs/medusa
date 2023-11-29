@@ -17,11 +17,11 @@ Related Guide: [How to handle order edits in a storefront](https://docs.medusajs
 
 ## Methods
 
-#### complete
+### complete
 
 Complete an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the [PaymentCollectionsResource](PaymentCollectionsResource.mdx) routes.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -31,7 +31,7 @@ medusa.orderEdits.complete(orderEditId).then(({ order_edit }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -54,7 +54,7 @@ medusa.orderEdits.complete(orderEditId).then(({ order_edit }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -316,11 +316,11 @@ medusa.orderEdits.complete(orderEditId).then(({ order_edit }) => {
 
 ___
 
-#### decline
+### decline
 
 Decline an Order Edit. The changes are not reflected on the original order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -330,7 +330,7 @@ medusa.orderEdits.decline(orderEditId).then(({ order_edit }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -372,7 +372,7 @@ medusa.orderEdits.decline(orderEditId).then(({ order_edit }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -634,11 +634,11 @@ medusa.orderEdits.decline(orderEditId).then(({ order_edit }) => {
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve an Order Edit's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -648,7 +648,7 @@ medusa.orderEdits.retrieve(orderEditId).then(({ order_edit }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -671,7 +671,7 @@ medusa.orderEdits.retrieve(orderEditId).then(({ order_edit }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
