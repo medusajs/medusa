@@ -51,6 +51,8 @@ module.exports = {
     "content",
     "references"
   ),
+  name: "references",
+  indexTitle: "Medusa References",
   plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-markdown-medusa"],
   hideInPageTOC: true,
   hideBreadcrumbs: true,
