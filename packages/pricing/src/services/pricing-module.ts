@@ -1502,7 +1502,8 @@ export default class PricingModuleService<
               value: ruleValue,
               price_set_money_amount: priceSetMoneyAmount as any,
             }
-          })
+          }),
+          sharedContext
         )
       }
     }
