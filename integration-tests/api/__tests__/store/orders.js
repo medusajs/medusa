@@ -501,20 +501,20 @@ describe("/store/carts", () => {
         })
       )
 
-      const responseFail = await api
+      const successRes = await api
         .post(`/store/carts/${cartId}/complete`)
         .catch((err) => {
           return err.response
         })
 
-      expect(responseFail.status).toEqual(200)
-      expect(responseFail.data.data).toEqual(
+      expect(successRes.status).toEqual(200)
+      expect(successRes.data.data).toEqual(
         expect.objectContaining({
           cart_id: cartId,
           id: expect.any(String),
         })
       )
-      expect(responseFail.data.type).toEqual("order")
+      expect(successRes.data.type).toEqual("order")
     })
   })
 
