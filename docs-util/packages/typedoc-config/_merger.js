@@ -52,7 +52,6 @@ module.exports = {
     "references"
   ),
   plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-markdown-medusa"],
-  excludeExternals: true,
   hideInPageTOC: true,
   hideBreadcrumbs: true,
   objectLiteralTypeDeclarationStyle: "component",
@@ -177,7 +176,7 @@ module.exports = {
     "^js_client/.*AdminOrdersResource": {
       maxLevel: 2,
     },
-    "^(js_client/.*modules/.*internal|internal.*/modules/js_client.*)": {
+    "^(js_client/.*modules/.*internal|internal.*/modules)": {
       reflectionGroups: {
         Constructors: false,
         "Type Aliases": false,
@@ -187,6 +186,14 @@ module.exports = {
         Functions: false,
         Interfaces: false,
         References: false,
+      },
+    },
+    "^internal.*/.*js_client.*": {
+      frontmatterData: {
+        reflectionGroups: {
+          Constructors: false,
+        },
+        displayed_sidebar: "jsClientSidebar",
       },
     },
 

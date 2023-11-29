@@ -1,0 +1,112 @@
+---
+displayed_sidebar: inventoryReference
+slug: /references/inventory/updateInventoryItem
+sidebar_label: updateInventoryItem
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# updateInventoryItem - Inventory Module Reference
+
+This documentation provides a reference to the `updateInventoryItem` method. This belongs to the Inventory Module.
+
+This method is used to update an inventory item.
+
+## Example
+
+```ts
+import { 
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function updateInventoryItem (
+  inventoryItemId: string,
+  sku: string
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryItem = await inventoryModule.updateInventoryItem(
+    inventoryItemId,
+    {
+      sku
+    }
+  )
+
+  // do something with the inventory item or return it
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "inventoryItemId",
+    "type": "`string`",
+    "description": "The ID of the inventory item.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "input",
+    "type": "Partial&#60;[CreateInventoryItemInput](../../inventory/interfaces/inventory.CreateInventoryItemInput.mdx)&#62;",
+    "description": "The attributes to update in the inventory item.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[SharedContext](../../inventory/interfaces/inventory.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "manager",
+        "type": "`EntityManager`",
+        "description": "An instance of an entity manager.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`EntityManager`",
+        "description": "An instance of a transaction manager.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[InventoryItemDTO](../../inventory/types/inventory.InventoryItemDTO.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The updated inventory item's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "InventoryItemDTO",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

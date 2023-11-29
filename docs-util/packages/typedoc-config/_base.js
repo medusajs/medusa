@@ -15,6 +15,7 @@ module.exports = {
   pluginsResolvePath: path.join(pathPrefix, "www"),
   exclude: [path.join(pathPrefix, "node_modules/**")],
   excludeInternal: true,
+  excludeExternals: true,
   // Uncomment this when debugging
   // showConfig: true,
 }

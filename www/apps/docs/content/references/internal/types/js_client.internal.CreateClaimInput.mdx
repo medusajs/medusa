@@ -1,0 +1,133 @@
+---
+reflectionGroups:
+  Constructors: false
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# CreateClaimInput
+
+ **CreateClaimInput**: `Object`
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "additional_items",
+    "type": "[CreateClaimItemAdditionalItemInput](js_client.internal.CreateClaimItemAdditionalItemInput.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "claim_items",
+    "type": "[CreateClaimItemInput](js_client.internal.CreateClaimItemInput.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "claim_order_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "no_notification",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order",
+    "type": "[Order](../classes/js_client.internal.Order.mdx)",
+    "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "refund_amount",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "return_location_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "return_shipping",
+    "type": "[CreateClaimReturnShippingInput](js_client.internal.CreateClaimReturnShippingInput.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_address",
+    "type": "[AddressPayload](../classes/js_client.internal.AddressPayload.mdx)",
+    "description": "Address fields used when creating/updating an address.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_address_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_methods",
+    "type": "[CreateClaimShippingMethodInput](js_client.internal.CreateClaimShippingMethodInput.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "[ClaimTypeValue](js_client.internal.ClaimTypeValue.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

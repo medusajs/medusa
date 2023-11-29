@@ -1,0 +1,239 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/setPriceListRules
+sidebar_label: setPriceListRules
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# setPriceListRules - Pricing Module Reference
+
+This documentation provides a reference to the `setPriceListRules` method. This belongs to the Pricing Module.
+
+This method is used to set the rules of a price list.
+
+## Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function setPriceListRules (priceListId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceList = await pricingService.setPriceListRules({
+    priceListId,
+    rules: {
+      region_id: "US"
+    }
+  })
+
+  // do something with the price list or return it
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[SetPriceListRulesDTO](../../pricing/interfaces/pricing.SetPriceListRulesDTO.mdx)",
+    "description": "The rules to set for a price list.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "priceListId",
+        "type": "`string`",
+        "description": "The ID of the price list to add rules to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rules",
+        "type": "`Record<string, string \\| string[]>`",
+        "description": "The rules to add to the price list. Each key of the object is a rule type's `rule_attribute`, and its value\nis the value(s) of the rule.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../pricing/interfaces/pricing.Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "A string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceListDTO](../../pricing/interfaces/pricing.PriceListDTO.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The updated price lists.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "ends_at",
+        "type": "`null` \\| `string`",
+        "description": "The price list expires after this date.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The price list's ID.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "money_amounts",
+        "type": "[MoneyAmountDTO](../../pricing/interfaces/pricing.MoneyAmountDTO.mdx)[]",
+        "description": "The associated money amounts.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "number_rules",
+        "type": "`number`",
+        "description": "The number of rules associated with this price list.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price_list_rules",
+        "type": "[PriceListRuleDTO](../../pricing/interfaces/pricing.PriceListRuleDTO.mdx)[]",
+        "description": "The price set's rules.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "price_set_money_amounts",
+        "type": "[PriceSetMoneyAmountDTO](../../pricing/interfaces/pricing.PriceSetMoneyAmountDTO.mdx)[]",
+        "description": "The associated price set money amounts.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rule_types",
+        "type": "[RuleTypeDTO](../../pricing/interfaces/pricing.RuleTypeDTO.mdx)[]",
+        "description": "The associated rule types.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "rules",
+        "type": "[PriceListRuleDTO](../../pricing/interfaces/pricing.PriceListRuleDTO.mdx)[]",
+        "description": "The price set's rules.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": true,
+        "children": []
+      },
+      {
+        "name": "starts_at",
+        "type": "`null` \\| `string`",
+        "description": "The price list is enabled starting from this date.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "status",
+        "type": "[PriceListStatus](../../pricing/enums/pricing.PriceListStatus.mdx)",
+        "description": "The price list's status.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "The price list's title.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

@@ -1,0 +1,27 @@
+---
+reflectionGroups:
+  Constructors: false
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Order
+
+ **Order**: &#123; [key in keyof T]?: "ASC" \| "DESC" \| Order&#60;T[key] extends any[] ? T[key][0] : T[key]&#62; &#125;
+
+An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.
+
+## Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

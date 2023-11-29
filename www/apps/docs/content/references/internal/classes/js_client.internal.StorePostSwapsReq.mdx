@@ -1,0 +1,54 @@
+---
+reflectionGroups:
+  Constructors: false
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# StorePostSwapsReq
+
+## constructor
+
+___
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "additional_items",
+    "type": "[AdditionalItem](js_client.internal.AdditionalItem.mdx)[]",
+    "description": "The items to exchange the returned items with.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order_id",
+    "type": "`string`",
+    "description": "The ID of the Order to create the Swap for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "return_items",
+    "type": "[Item](js_client.internal.Item-2.mdx)[]",
+    "description": "The items to include in the Return.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "return_shipping_option",
+    "type": "`string`",
+    "description": "The ID of the Shipping Option to create the Shipping Method from.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

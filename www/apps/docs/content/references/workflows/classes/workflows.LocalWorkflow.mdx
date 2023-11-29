@@ -1,0 +1,203 @@
+---
+displayed_sidebar: workflowsSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# LocalWorkflow
+
+## Methods
+
+- [addAction](../../LocalWorkflow/methods/workflows.LocalWorkflow.addAction.mdx)
+- [appendAction](../../LocalWorkflow/methods/workflows.LocalWorkflow.appendAction.mdx)
+- [assertHandler](../../LocalWorkflow/methods/workflows.LocalWorkflow.assertHandler.mdx)
+- [commit](../../LocalWorkflow/methods/workflows.LocalWorkflow.commit.mdx)
+- [deleteAction](../../LocalWorkflow/methods/workflows.LocalWorkflow.deleteAction.mdx)
+- [getFlow](../../LocalWorkflow/methods/workflows.LocalWorkflow.getFlow.mdx)
+- [insertActionAfter](../../LocalWorkflow/methods/workflows.LocalWorkflow.insertActionAfter.mdx)
+- [insertActionBefore](../../LocalWorkflow/methods/workflows.LocalWorkflow.insertActionBefore.mdx)
+- [mergeActions](../../LocalWorkflow/methods/workflows.LocalWorkflow.mergeActions.mdx)
+- [moveAction](../../LocalWorkflow/methods/workflows.LocalWorkflow.moveAction.mdx)
+- [moveAndMergeNextAction](../../LocalWorkflow/methods/workflows.LocalWorkflow.moveAndMergeNextAction.mdx)
+- [pruneAction](../../LocalWorkflow/methods/workflows.LocalWorkflow.pruneAction.mdx)
+- [registerStepFailure](../../LocalWorkflow/methods/workflows.LocalWorkflow.registerStepFailure.mdx)
+- [registerStepSuccess](../../LocalWorkflow/methods/workflows.LocalWorkflow.registerStepSuccess.mdx)
+- [replaceAction](../../LocalWorkflow/methods/workflows.LocalWorkflow.replaceAction.mdx)
+- [run](../../LocalWorkflow/methods/workflows.LocalWorkflow.run.mdx)
+
+## constructor
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "workflowId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "modulesLoaded",
+    "type": "[MedusaContainer](../types/workflows.MedusaContainer.mdx) \\| ``{ __definition: [ModuleDefinition](../types/workflows.ModuleDefinition.mdx) ; __joinerConfig: [ModuleJoinerConfig](../types/workflows.ModuleJoinerConfig.mdx)  }``[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+<ParameterTypes parameters={[
+  {
+    "name": "container",
+    "type": "[MedusaContainer](../types/workflows.MedusaContainer.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "createScope",
+        "type": "() => [MedusaContainer](../types/workflows.MedusaContainer.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "registerAdd",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../types/workflows.MedusaContainer.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "flow",
+    "type": "[OrchestratorBuilder](workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "hasChanges_",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "steps",
+        "type": "[InternalStep](../interfaces/workflows.InternalStep.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "handlers",
+    "type": "Map&#60;string, [StepHandler](../types/workflows.StepHandler.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "workflow",
+    "type": "[WorkflowDefinition](../interfaces/workflows.WorkflowDefinition.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "flow_",
+        "type": "[TransactionStepsDefinition](../types/workflows.TransactionStepsDefinition.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handler",
+        "type": "(`container`: [MedusaContainer](../types/workflows.MedusaContainer.mdx), `context?`: [Context](../interfaces/workflows.Context.mdx)) => [TransactionStepHandler](../types/workflows.TransactionStepHandler.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handlers_",
+        "type": "Map&#60;string, &#123; compensate?: [WorkflowStepHandler](../types/workflows.WorkflowStepHandler.mdx) ; invoke: [WorkflowStepHandler](../types/workflows.WorkflowStepHandler.mdx)  &#125;&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "optionalModules",
+        "type": "Set&#60;string&#62;",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "orchestrator",
+        "type": "[TransactionOrchestrator](workflows.TransactionOrchestrator.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "requiredModules",
+        "type": "Set&#60;string&#62;",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "workflowId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

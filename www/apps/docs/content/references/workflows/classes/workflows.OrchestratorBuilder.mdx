@@ -1,0 +1,272 @@
+---
+displayed_sidebar: workflowsSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# OrchestratorBuilder
+
+## Methods
+
+- [addAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.addAction.mdx)
+- [appendAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.appendAction.mdx)
+- [appendTo](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.appendTo.mdx)
+- [build](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.build.mdx)
+- [deleteAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.deleteAction.mdx)
+- [findLastStep](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.findLastStep.mdx)
+- [findOrThrowStepByAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.findOrThrowStepByAction.mdx)
+- [findParentStepByAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.findParentStepByAction.mdx)
+- [findStepByAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.findStepByAction.mdx)
+- [insertActionAfter](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.insertActionAfter.mdx)
+- [insertActionBefore](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.insertActionBefore.mdx)
+- [load](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.load.mdx)
+- [mergeActions](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.mergeActions.mdx)
+- [move](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.move.mdx)
+- [moveAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.moveAction.mdx)
+- [moveAndMergeNextAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.moveAndMergeNextAction.mdx)
+- [pruneAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.pruneAction.mdx)
+- [replaceAction](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.replaceAction.mdx)
+- [updateDepths](../../OrchestratorBuilder/methods/workflows.OrchestratorBuilder.updateDepths.mdx)
+
+## constructor
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "steps",
+    "type": "[TransactionStepsDefinition](../types/workflows.TransactionStepsDefinition.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "action",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "async",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "continueOnPermanentFailure",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "maxRetries",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "next",
+        "type": "[TransactionStepsDefinition](../types/workflows.TransactionStepsDefinition.mdx) \\| [TransactionStepsDefinition](../types/workflows.TransactionStepsDefinition.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "noCompensation",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "noWait",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "retryInterval",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "saveResponse",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "timeout",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+<ParameterTypes parameters={[
+  {
+    "name": "hasChanges_",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "steps",
+    "type": "[InternalStep](../interfaces/workflows.InternalStep.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "action",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "async",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "continueOnPermanentFailure",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "depth",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "maxRetries",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "next",
+        "type": "[InternalStep](../interfaces/workflows.InternalStep.mdx) \\| [InternalStep](../interfaces/workflows.InternalStep.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "noCompensation",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "noWait",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent",
+        "type": "`null` \\| [InternalStep](../interfaces/workflows.InternalStep.mdx)",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "retryInterval",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "saveResponse",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "timeout",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+## hasChanges

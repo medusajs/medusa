@@ -1,0 +1,41 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# loadTransaction
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;null \\| [TransactionCheckpoint](../../workflows/classes/workflows.TransactionCheckpoint.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "null \\| TransactionCheckpoint",
+        "type": "`null` \\| [TransactionCheckpoint](../../workflows/classes/workflows.TransactionCheckpoint.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

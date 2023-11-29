@@ -1,0 +1,286 @@
+---
+displayed_sidebar: workflowsSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# DistributedTransaction
+
+DistributedTransaction represents a distributed transaction, which is a transaction that is composed of multiple steps that are executed in a specific order.
+
+## Methods
+
+- [addError](../../DistributedTransaction/methods/workflows.DistributedTransaction.addError.mdx)
+- [addResponse](../../DistributedTransaction/methods/workflows.DistributedTransaction.addResponse.mdx)
+- [canInvoke](../../DistributedTransaction/methods/workflows.DistributedTransaction.canInvoke.mdx)
+- [canRevert](../../DistributedTransaction/methods/workflows.DistributedTransaction.canRevert.mdx)
+- [deleteCheckpoint](../../DistributedTransaction/methods/workflows.DistributedTransaction.deleteCheckpoint.mdx)
+- [getContext](../../DistributedTransaction/methods/workflows.DistributedTransaction.getContext.mdx)
+- [getErrors](../../DistributedTransaction/methods/workflows.DistributedTransaction.getErrors.mdx)
+- [getFlow](../../DistributedTransaction/methods/workflows.DistributedTransaction.getFlow.mdx)
+- [getState](../../DistributedTransaction/methods/workflows.DistributedTransaction.getState.mdx)
+- [hasFinished](../../DistributedTransaction/methods/workflows.DistributedTransaction.hasFinished.mdx)
+- [saveCheckpoint](../../DistributedTransaction/methods/workflows.DistributedTransaction.saveCheckpoint.mdx)
+- [loadTransaction](../../DistributedTransaction/methods/workflows.DistributedTransaction.loadTransaction.mdx)
+
+## constructor
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "flow",
+    "type": "[TransactionFlow](../types/workflows.TransactionFlow.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "definition",
+        "type": "[TransactionStepsDefinition](../types/workflows.TransactionStepsDefinition.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "hasFailedSteps",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "hasSkippedSteps",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "modelId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "state",
+        "type": "[TransactionState](../enums/workflows.TransactionState.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "steps",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "handler",
+    "type": "[TransactionStepHandler](../types/workflows.TransactionStepHandler.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "`any`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "errors",
+    "type": "[TransactionStepError](workflows.TransactionStepError.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "action",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "error",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handlerType",
+        "type": "[TransactionHandlerType](../enums/workflows.TransactionHandlerType.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[TransactionContext](workflows.TransactionContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "compensate",
+        "type": "`Record<string, unknown>`",
+        "description": "Object containing responses of Compensate handlers on steps flagged with saveResponse.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "invoke",
+        "type": "`Record<string, unknown>`",
+        "description": "Object containing responses of Invoke handlers on steps flagged with saveResponse.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "payload",
+        "type": "`unknown`",
+        "description": "Object containing the initial payload.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+<ParameterTypes parameters={[
+  {
+    "name": "context",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "errors",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "flow",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "handler",
+    "type": "[TransactionStepHandler](../types/workflows.TransactionStepHandler.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "modelId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "`any`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "keyPrefix",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "keyValueStore",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## isPartiallyCompleted

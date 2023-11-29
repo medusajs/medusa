@@ -1,0 +1,46 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FilterableProductTagProps
+
+The filters to apply on retrieved product tags.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "$and",
+    "type": "([FilterableProductTagProps](js_client.internal.internal-1.ProductTypes.FilterableProductTagProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/js_client.internal.internal-1.DAL.BaseFilterable.mdx)&#60;[FilterableProductTagProps](js_client.internal.internal-1.ProductTypes.FilterableProductTagProps.mdx)&#62;)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "$or",
+    "type": "([FilterableProductTagProps](js_client.internal.internal-1.ProductTypes.FilterableProductTagProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/js_client.internal.internal-1.DAL.BaseFilterable.mdx)&#60;[FilterableProductTagProps](js_client.internal.internal-1.ProductTypes.FilterableProductTagProps.mdx)&#62;)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string` \\| `string`[]",
+    "description": "The IDs to filter product tags by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`string`",
+    "description": "The value to filter product tags by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

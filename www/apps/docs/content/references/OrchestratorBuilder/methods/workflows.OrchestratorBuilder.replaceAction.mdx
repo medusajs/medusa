@@ -1,0 +1,356 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# replaceAction
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "existingAction",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "action",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "Partial&#60;[TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)&#62;",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "constructor",
+    "type": "(`steps?`: [TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "hasChanges_",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "steps",
+    "type": "[InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "action",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "async",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "continueOnPermanentFailure",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "depth",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "maxRetries",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "next",
+        "type": "[InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx) \\| [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "noCompensation",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "noWait",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "parent",
+        "type": "`null` \\| [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "retryInterval",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "saveResponse",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "timeout",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "hasChanges",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "addAction",
+    "type": "(`action`: `string`, `options?`: Partial&#60;[TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)&#62;) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "appendAction",
+    "type": "(`action`: `string`, `to`: `string`, `options?`: Partial&#60;[TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)&#62;) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "appendTo",
+    "type": "(`step`: `string` \\| [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx), `newStep`: [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "build",
+    "type": "() => [TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteAction",
+    "type": "(`action`: `string`, `steps?`: [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "findLastStep",
+    "type": "(`steps?`: [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)) => [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "findOrThrowStepByAction",
+    "type": "(`action`: `string`, `steps?`: [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)) => [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "findParentStepByAction",
+    "type": "(`action`: `string`, `step?`: [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)) => `undefined` \\| [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "findStepByAction",
+    "type": "(`action`: `string`, `step?`: [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)) => `undefined` \\| [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "insertActionAfter",
+    "type": "(`existingAction`: `string`, `action`: `string`, `options?`: Partial&#60;[TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)&#62;) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "insertActionBefore",
+    "type": "(`existingAction`: `string`, `action`: `string`, `options?`: Partial&#60;[TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)&#62;) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "load",
+    "type": "(`steps?`: [TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "mergeActions",
+    "type": "(`where`: `string`, ...`actions`: `string`[]) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "move",
+    "type": "(`actionToMove`: `string`, `targetAction`: `string`, `__namedParameters?`: ``{ mergeNext?: boolean ; runInParallel?: boolean  }``) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "moveAction",
+    "type": "(`actionToMove`: `string`, `targetAction`: `string`) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "moveAndMergeNextAction",
+    "type": "(`actionToMove`: `string`, `targetAction`: `string`) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "pruneAction",
+    "type": "(`action`: `string`) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "replaceAction",
+    "type": "(`existingAction`: `string`, `action`: `string`, `options?`: Partial&#60;[TransactionStepsDefinition](../../workflows/types/workflows.TransactionStepsDefinition.mdx)&#62;) => [OrchestratorBuilder](../../workflows/classes/workflows.OrchestratorBuilder.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateDepths",
+    "type": "(`startingStep`: [InternalStep](../../workflows/interfaces/workflows.InternalStep.mdx), `parent`: `any`, `incr?`: `number`, `beginFrom?`: `number`) => `void`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

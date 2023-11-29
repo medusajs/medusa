@@ -1,0 +1,259 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# beginTransaction
+
+Create a new transaction
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionId",
+    "type": "`string`",
+    "description": "unique identifier of the transaction",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "handler",
+    "type": "[TransactionStepHandler](../../workflows/types/workflows.TransactionStepHandler.mdx)",
+    "description": "function to handle action of the transaction",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "`unknown`",
+    "description": "payload to be passed to all the transaction steps",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[DistributedTransaction](../../workflows/classes/workflows.DistributedTransaction.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "(`flow`: [TransactionFlow](../../workflows/types/workflows.TransactionFlow.mdx), `handler`: [TransactionStepHandler](../../workflows/types/workflows.TransactionStepHandler.mdx), `payload?`: `any`, `errors?`: [TransactionStepError](../../workflows/classes/workflows.TransactionStepError.mdx)[], `context?`: [TransactionContext](../../workflows/classes/workflows.TransactionContext.mdx)) => [DistributedTransaction](../../workflows/classes/workflows.DistributedTransaction.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "context",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errors",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "flow",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handler",
+        "type": "[TransactionStepHandler](../../workflows/types/workflows.TransactionStepHandler.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "modelId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "payload",
+        "type": "`any`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "keyPrefix",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "keyValueStore",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "isPartiallyCompleted",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "addError",
+        "type": "(`action`: `string`, `handlerType`: [TransactionHandlerType](../../workflows/enums/workflows.TransactionHandlerType.mdx), `error`: `any`) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "addResponse",
+        "type": "(`action`: `string`, `handlerType`: [TransactionHandlerType](../../workflows/enums/workflows.TransactionHandlerType.mdx), `response`: `unknown`) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "canInvoke",
+        "type": "() => `boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "canRevert",
+        "type": "() => `boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "deleteCheckpoint",
+        "type": "() => Promise&#60;void&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "getContext",
+        "type": "() => [TransactionContext](../../workflows/classes/workflows.TransactionContext.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "getErrors",
+        "type": "(`handlerType?`: [TransactionHandlerType](../../workflows/enums/workflows.TransactionHandlerType.mdx)) => [TransactionStepError](../../workflows/classes/workflows.TransactionStepError.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "getFlow",
+        "type": "() => [TransactionFlow](../../workflows/types/workflows.TransactionFlow.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "getState",
+        "type": "() => [TransactionState](../../workflows/enums/workflows.TransactionState.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "hasFinished",
+        "type": "() => `boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "saveCheckpoint",
+        "type": "() => Promise&#60;[TransactionCheckpoint](../../workflows/classes/workflows.TransactionCheckpoint.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "loadTransaction",
+        "type": "(`transactionId`: `string`) => Promise&#60;null \\| [TransactionCheckpoint](../../workflows/classes/workflows.TransactionCheckpoint.mdx)&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

@@ -1,0 +1,87 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# getErrors
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "handlerType",
+    "type": "[TransactionHandlerType](../../workflows/enums/workflows.TransactionHandlerType.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "COMPENSATE",
+        "type": "`\"compensate\"`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "INVOKE",
+        "type": "`\"invoke\"`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "TransactionStepError[]",
+    "type": "[TransactionStepError](../../workflows/classes/workflows.TransactionStepError.mdx)[]",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "constructor",
+        "type": "(`action`: `string`, `handlerType`: [TransactionHandlerType](../../workflows/enums/workflows.TransactionHandlerType.mdx), `error`: `any`) => [TransactionStepError](../../workflows/classes/workflows.TransactionStepError.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "action",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "error",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "handlerType",
+        "type": "[TransactionHandlerType](../../workflows/enums/workflows.TransactionHandlerType.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

@@ -1,0 +1,46 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FilterablePriceSetProps
+
+Filters to apply on price sets.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "$and",
+    "type": "([FilterablePriceSetProps](js_client.internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/js_client.internal.internal-1.DAL.BaseFilterable.mdx)&#60;[FilterablePriceSetProps](js_client.internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx)&#62;)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "$or",
+    "type": "([FilterablePriceSetProps](js_client.internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/js_client.internal.internal-1.DAL.BaseFilterable.mdx)&#60;[FilterablePriceSetProps](js_client.internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx)&#62;)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`[]",
+    "description": "IDs to filter price sets by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "money_amounts",
+    "type": "[FilterableMoneyAmountProps](js_client.internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx)",
+    "description": "Filters to apply on a price set's associated money amounts.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
