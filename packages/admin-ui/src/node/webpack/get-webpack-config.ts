@@ -80,7 +80,7 @@ export function getWebpackConfig({
           exclude: /node_modules/,
           include: [cacheDir],
           use: {
-            loader: "swc-loader",
+            loader: require.resolve("swc-loader"),
             options: {
               jsc: {
                 parser: {
@@ -103,7 +103,7 @@ export function getWebpackConfig({
           exclude: /node_modules/,
           include: [cacheDir],
           use: {
-            loader: "swc-loader",
+            loader: require.resolve("swc-loader"),
             options: {
               jsc: {
                 parser: {
