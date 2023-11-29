@@ -421,7 +421,8 @@ export class MedusaModule {
   public static async migrateUp(
     moduleKey: string,
     modulePath: string,
-    options?: Record<string, any>
+    options?: Record<string, any>,
+    moduleExports?: ModuleExports
   ): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
@@ -431,7 +432,10 @@ export class MedusaModule {
     })
 
     for (const mod in moduleResolutions) {
-      const [migrateUp] = await loadModuleMigrations(moduleResolutions[mod])
+      const [migrateUp] = await loadModuleMigrations(
+        moduleResolutions[mod],
+        moduleExports
+      )
 
       if (typeof migrateUp === "function") {
         await migrateUp({
@@ -445,7 +449,8 @@ export class MedusaModule {
   public static async migrateDown(
     moduleKey: string,
     modulePath: string,
-    options?: Record<string, any>
+    options?: Record<string, any>,
+    moduleExports?: ModuleExports
   ): Promise<void> {
     const moduleResolutions = registerMedusaModule(moduleKey, {
       scope: MODULE_SCOPE.INTERNAL,
@@ -455,7 +460,10 @@ export class MedusaModule {
     })
 
     for (const mod in moduleResolutions) {
-      const [, migrateDown] = await loadModuleMigrations(moduleResolutions[mod])
+      const [, migrateDown] = await loadModuleMigrations(
+        moduleResolutions[mod],
+        moduleExports
+      )
 
       if (typeof migrateDown === "function") {
         await migrateDown({
