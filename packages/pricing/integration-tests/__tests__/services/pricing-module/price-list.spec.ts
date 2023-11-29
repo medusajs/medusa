@@ -301,7 +301,6 @@ describe("PriceList Service", () => {
           {
             id: "does-not-exist",
             number_rules: 2,
-            rules: {},
           },
         ])
       } catch (e) {

@@ -65,6 +65,11 @@ export async function prepareUpdatePriceLists({
         return
       }
 
+      const rules: Record<string, string> = {}
+      if (price.region_id) {
+        rules.region_id = price.region_id
+      }
+
       priceListPrices.push({
         id: priceData.id,
         price_set_id: variantPriceSetMap.get(variant_id) as string,
@@ -74,9 +79,7 @@ export async function prepareUpdatePriceLists({
         amount: priceData.amount,
         min_quantity: priceData.min_quantity,
         max_quantity: priceData.max_quantity,
-        rules: {
-          ...(priceData.region_id ? { region_id: priceData.region_id } : {}),
-        },
+        rules,
       })
 
       return

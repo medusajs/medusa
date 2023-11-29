@@ -331,7 +331,9 @@ export default class PricingModuleService<
     }
 
     const invalidMoneyAmountRule = data
-      .map((d) => d.prices?.map((ma) => Object.keys(ma.rules)).flat() ?? [])
+      .map(
+        (d) => d.prices?.map((ma) => Object.keys(ma?.rules ?? {})).flat() ?? []
+      )
       .flat()
       .filter((r) => !ruleTypeMap.has(r))
 

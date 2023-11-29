@@ -59,11 +59,12 @@ export async function prepareCreatePriceLists({
       `No priceSet exist for variants: ${variantsWithoutPriceSets.join(", ")}`
     )
   }
+
   const regionIds = price_lists
     .map(({ prices }) => prices?.map((price) => price.region_id) ?? [])
     .flat(2)
-  const regions = await regionService.list({ id: regionIds })
-  const regionsMap: Map<string, string> = new Map(
+  const regions = await regionService.list({ id: regionIds }, {})
+  const regionIdCurrencyCodeMap: Map<string, string> = new Map(
     regions.map((region: { id: string; currency_code: string }) => [
       region.id,
       region.currency_code,
@@ -81,17 +82,20 @@ export async function prepareCreatePriceLists({
       prices?.map((price) => {
         const price_set_id = variantIdPriceSetIdMap.get(price.variant_id)!
 
+        const rules: Record<string, string> = {}
+        if (price.region_id) {
+          rules.region_id = price.region_id
+        }
+
         return {
           currency_code:
-            regionsMap.get(price.region_id as string) ??
+            regionIdCurrencyCodeMap.get(price.region_id as string) ??
             (price.currency_code as string),
           amount: price.amount,
           min_quantity: price.min_quantity,
           max_quantity: price.max_quantity,
           price_set_id,
-          rules: {
-            ...(price.region_id ? { region_id: price.region_id } : {}),
-          },
+          rules,
         }
       }) ?? []
 
