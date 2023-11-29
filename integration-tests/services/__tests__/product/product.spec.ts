@@ -16,9 +16,7 @@ describe("product", () => {
     await initDb({ cwd })
     shutdownServer = shutdownServer = await startBootstrapApp({ cwd })
     const container = getContainer()
-    console.warn("medusaContainer in beforeAll")
-    console.warn(container)
-    medusaContainer = container
+    medusaContainer = container ? container : medusaContainer
   })
 
   afterAll(async () => {
