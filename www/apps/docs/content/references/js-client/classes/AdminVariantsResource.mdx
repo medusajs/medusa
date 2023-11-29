@@ -19,11 +19,11 @@ Related Guide: [How to manage product variants](https://docs.medusajs.com/module
 
 ## Methods
 
-#### getInventory
+### getInventory
 
 Retrieve the available inventory of a product variant.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -34,7 +34,7 @@ medusa.admin.variants.getInventory(variantId).then(({ variant }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -57,7 +57,7 @@ medusa.admin.variants.getInventory(variantId).then(({ variant }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -121,11 +121,11 @@ medusa.admin.variants.getInventory(variantId).then(({ variant }) => {
 
 ___
 
-#### list
+### list
 
 Retrieve a list of product variants. The product variant can be filtered by fields such as `id` or `title` passed in the `query` parameter. The product variant can also be paginated.
 
-##### Example
+#### Example
 
 To list product variants:
 
@@ -170,7 +170,7 @@ medusa.admin.variants
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -302,7 +302,7 @@ medusa.admin.variants
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -719,11 +719,11 @@ medusa.admin.variants
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a product variant's details.
 
-##### Example
+#### Example
 
 A simple example that retrieves a product variant by its ID:
 
@@ -751,7 +751,7 @@ medusa.admin.variants
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -802,7 +802,7 @@ medusa.admin.variants
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

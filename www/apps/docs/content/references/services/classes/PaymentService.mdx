@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # PaymentService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new PaymentService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -166,15 +166,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -182,7 +202,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -205,7 +225,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -237,7 +257,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -255,13 +275,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### capture
+### capture
 
 `**capture**(paymentOrId): Promise&#60;[Payment](Payment.mdx)&#62;`
 
 Captures a payment.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -275,7 +295,7 @@ Captures a payment.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Payment](Payment.mdx)&#62;
 
@@ -293,13 +313,13 @@ Promise&#60;[Payment](Payment.mdx)&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(paymentInput): Promise&#60;[Payment](Payment.mdx)&#62;`
 
 Created a new payment.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -313,7 +333,7 @@ Created a new payment.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Payment](Payment.mdx)&#62;
 
@@ -331,13 +351,13 @@ Promise&#60;[Payment](Payment.mdx)&#62;
 
 ___
 
-#### refund
+### refund
 
 `**refund**(paymentOrId, amount, reason, note?): Promise&#60;[Refund](Refund.mdx)&#62;`
 
 refunds a payment.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -378,7 +398,7 @@ refunds a payment.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Refund](Refund.mdx)&#62;
 
@@ -396,13 +416,13 @@ Promise&#60;[Refund](Refund.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(paymentId, config?): Promise&#60;[Payment](Payment.mdx)&#62;`
 
 Retrieves a payment by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -425,7 +445,7 @@ Retrieves a payment by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Payment](Payment.mdx)&#62;
 
@@ -443,11 +463,11 @@ Promise&#60;[Payment](Payment.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -461,7 +481,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -479,13 +499,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(paymentId, data): Promise&#60;[Payment](Payment.mdx)&#62;`
 
 Updates a payment in order to link it to an order or a swap.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -526,7 +546,7 @@ Updates a payment in order to link it to an order or a swap.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Payment](Payment.mdx)&#62;
 
@@ -544,11 +564,11 @@ Promise&#60;[Payment](Payment.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [PaymentService](PaymentService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -562,7 +582,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [PaymentService](PaymentService.mdx)
 

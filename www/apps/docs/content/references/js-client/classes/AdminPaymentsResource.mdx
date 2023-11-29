@@ -16,11 +16,11 @@ A payment can be related to an order, swap, return, or more. It can be captured 
 
 ## Methods
 
-#### capturePayment
+### capturePayment
 
 Capture a payment.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -31,7 +31,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -54,7 +54,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -262,11 +262,11 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
 
 ___
 
-#### refundPayment
+### refundPayment
 
 Refund a payment. The payment must be captured first.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -283,7 +283,7 @@ medusa.admin.payments
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -389,7 +389,7 @@ medusa.admin.payments
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -534,11 +534,11 @@ medusa.admin.payments
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a payment's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -549,7 +549,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -600,7 +600,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

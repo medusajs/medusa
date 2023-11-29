@@ -209,23 +209,51 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
-#### inventoryService\_
+### inventoryService\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "undefined \\| IInventoryService",
+    "type": "`undefined` \\| [IInventoryService](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.IInventoryService.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addLineItem
+### addLineItem
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -248,7 +276,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -264,13 +292,13 @@ ___
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -302,7 +330,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -318,9 +346,9 @@ transaction manager is created.
 
 ___
 
-#### cancel
+### cancel
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -352,7 +380,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -368,9 +396,9 @@ ___
 
 ___
 
-#### confirm
+### confirm
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -402,7 +430,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -418,9 +446,9 @@ ___
 
 ___
 
-#### create
+### create
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -452,7 +480,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -468,9 +496,9 @@ ___
 
 ___
 
-#### decline
+### decline
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -511,7 +539,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -527,9 +555,9 @@ ___
 
 ___
 
-#### decorateTotals
+### decorateTotals
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -543,7 +571,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -559,9 +587,9 @@ ___
 
 ___
 
-#### delete
+### delete
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -575,7 +603,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -591,9 +619,9 @@ ___
 
 ___
 
-#### deleteClonedItems
+### deleteClonedItems
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -607,7 +635,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -623,9 +651,9 @@ ___
 
 ___
 
-#### deleteItemChange
+### deleteItemChange
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -648,7 +676,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -664,9 +692,9 @@ ___
 
 ___
 
-#### list
+### list
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -689,7 +717,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -705,9 +733,9 @@ ___
 
 ___
 
-#### listAndCount
+### listAndCount
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -730,7 +758,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -746,9 +774,9 @@ ___
 
 ___
 
-#### refreshAdjustments
+### refreshAdjustments
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -780,7 +808,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -796,9 +824,9 @@ ___
 
 ___
 
-#### removeLineItem
+### removeLineItem
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -821,7 +849,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -837,9 +865,9 @@ ___
 
 ___
 
-#### requestConfirmation
+### requestConfirmation
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -871,7 +899,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -887,9 +915,9 @@ ___
 
 ___
 
-#### retrieve
+### retrieve
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -912,7 +940,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -928,9 +956,9 @@ ___
 
 ___
 
-#### retrieveActive
+### retrieveActive
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -953,7 +981,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -969,9 +997,9 @@ ___
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -985,7 +1013,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1001,9 +1029,9 @@ ___
 
 ___
 
-#### update
+### update
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1026,7 +1054,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1042,13 +1070,13 @@ ___
 
 ___
 
-#### updateLineItem
+### updateLineItem
 
 Create or update order edit item change line item and apply the quantity
 - If the item change already exists then update the quantity of the line item as well as the line adjustments
 - If the item change does not exist then create the item change of type update and apply the quantity as well as update the line adjustments
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1089,7 +1117,7 @@ Create or update order edit item change line item and apply the quantity
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1105,9 +1133,9 @@ Create or update order edit item change line item and apply the quantity
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1121,7 +1149,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

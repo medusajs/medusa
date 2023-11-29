@@ -153,5 +153,5 @@ The `ShippingMethod` instance holds a `price` attribute, which will either b
 
 ## See Also
 
-- [Create a Fulfillment Provider](./backend/add-fulfillment-provider.md)
+- [Create a Fulfillment Provider](../../references/fulfillment/classes/AbstractFulfillmentService.mdx)
 - [Available shipping plugins](https://github.com/medusajs/medusa/tree/master/packages)

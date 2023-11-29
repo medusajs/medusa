@@ -56,15 +56,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -72,7 +92,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -95,7 +115,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -127,7 +147,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -145,13 +165,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### buildTemplate
+### buildTemplate
 
 `**buildTemplate**(): Promise&#60;string&#62;`
 
 Builds and returns a template file that can be downloaded and filled in
 
-##### Returns
+#### Returns
 
 Promise&#60;string&#62;
 
@@ -169,13 +189,13 @@ Promise&#60;string&#62;
 
 ___
 
-#### preProcessBatchJob
+### preProcessBatchJob
 
 `**preProcessBatchJob**(batchJobId): Promise&#60;void&#62;`
 
 Method for pre-processing a batch job
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -189,7 +209,7 @@ Method for pre-processing a batch job
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -207,13 +227,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### prepareBatchJobForProcessing
+### prepareBatchJobForProcessing
 
 `**prepareBatchJobForProcessing**(batchJobEntity, req): Promise&#60;[CreateBatchJobInput](../types/CreateBatchJobInput.mdx)&#62;`
 
 Method for preparing a batch job for processing
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -236,7 +256,7 @@ Method for preparing a batch job for processing
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CreateBatchJobInput](../types/CreateBatchJobInput.mdx)&#62;
 
@@ -254,13 +274,13 @@ Promise&#60;[CreateBatchJobInput](../types/CreateBatchJobInput.mdx)&#62;
 
 ___
 
-#### processJob
+### processJob
 
 `**processJob**(batchJobId): Promise&#60;void&#62;`
 
 Method does the actual processing of the job. Should report back on the progress of the operation.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -274,7 +294,7 @@ Method does the actual processing of the job. Should report back on the progress
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -292,11 +312,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -310,7 +330,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -328,11 +348,11 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [IBatchJobStrategy](IBatchJobStrategy.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -346,7 +366,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [IBatchJobStrategy](IBatchJobStrategy.mdx)
 

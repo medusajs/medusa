@@ -1,9 +1,13 @@
 {{#if showSources}}
 
-{{{titleLevel 4}}} {{{title}}}
+{{incrementCurrentTitleLevel}}
 
-{{else}}
+{{/if}}
 
-{{{titleLevel 5}}} {{{title}}}
+{{{titleLevel}}} {{{title}}}
+
+{{#if showSources}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/if}}

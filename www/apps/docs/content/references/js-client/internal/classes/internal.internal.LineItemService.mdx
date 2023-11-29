@@ -146,23 +146,37 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -194,7 +208,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -210,9 +224,9 @@ transaction manager is created.
 
 ___
 
-#### cloneTo
+### cloneTo
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -253,7 +267,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -269,11 +283,11 @@ ___
 
 ___
 
-#### create
+### create
 
 Create a line item
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -287,7 +301,7 @@ Create a line item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -303,12 +317,12 @@ Create a line item
 
 ___
 
-#### createReturnLines
+### createReturnLines
 
 Creates return line items for a given cart based on the return items in a
 return.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -331,7 +345,7 @@ return.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -347,11 +361,11 @@ return.
 
 ___
 
-#### createTaxLine
+### createTaxLine
 
 Create a line item tax line.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -365,7 +379,7 @@ Create a line item tax line.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -381,11 +395,11 @@ Create a line item tax line.
 
 ___
 
-#### delete
+### delete
 
 Deletes a line item.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -399,7 +413,7 @@ Deletes a line item.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -415,9 +429,9 @@ Deletes a line item.
 
 ___
 
-#### deleteWithTaxLines
+### deleteWithTaxLines
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -431,7 +445,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -452,11 +466,11 @@ Deletes a line item with the tax lines.
 
 ___
 
-#### generate
+### generate
 
 Generate a single or multiple line item without persisting the data into the db
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -497,7 +511,7 @@ Generate a single or multiple line item without persisting the data into the db
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -513,9 +527,9 @@ Generate a single or multiple line item without persisting the data into the db
 
 ___
 
-#### generateLineItem
+### generateLineItem
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -619,7 +633,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -635,9 +649,9 @@ ___
 
 ___
 
-#### list
+### list
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -660,7 +674,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -676,11 +690,11 @@ ___
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieves a line item by its id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -703,7 +717,7 @@ Retrieves a line item by its id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -719,9 +733,9 @@ Retrieves a line item by its id.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -735,7 +749,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -751,11 +765,11 @@ ___
 
 ___
 
-#### update
+### update
 
 Updates a line item
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -778,7 +792,7 @@ Updates a line item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -794,9 +808,9 @@ Updates a line item
 
 ___
 
-#### validateGenerateArguments
+### validateGenerateArguments
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -828,7 +842,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -844,9 +858,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -860,7 +874,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

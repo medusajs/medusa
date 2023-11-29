@@ -8,15 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Handles draft orders
 
-#### Implements
+## Implements
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new DraftOrderService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -29,6 +27,8 @@ Handles draft orders
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -188,15 +188,35 @@ Handles draft orders
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -204,7 +224,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -227,7 +247,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -259,7 +279,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -277,13 +297,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(data): Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;`
 
 Creates a draft order.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -297,7 +317,7 @@ Creates a draft order.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;
 
@@ -315,13 +335,13 @@ Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(draftOrderId): Promise&#60;undefined \| [DraftOrder](DraftOrder.mdx)&#62;`
 
 Deletes draft order idempotently.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -335,7 +355,7 @@ Deletes draft order idempotently.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;undefined \| [DraftOrder](DraftOrder.mdx)&#62;
 
@@ -353,13 +373,13 @@ Promise&#60;undefined \| [DraftOrder](DraftOrder.mdx)&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[DraftOrder](DraftOrder.mdx)[]&#62;`
 
 Lists draft orders
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -382,7 +402,7 @@ Lists draft orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[DraftOrder](DraftOrder.mdx)[]&#62;
 
@@ -400,13 +420,13 @@ Promise&#60;[DraftOrder](DraftOrder.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[DraftOrder](DraftOrder.mdx)[], number]&#62;`
 
 Lists draft orders alongside the count
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -429,7 +449,7 @@ Lists draft orders alongside the count
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[DraftOrder](DraftOrder.mdx)[], number]&#62;
 
@@ -447,13 +467,13 @@ Promise&#60;[[DraftOrder](DraftOrder.mdx)[], number]&#62;
 
 ___
 
-#### registerCartCompletion
+### registerCartCompletion
 
 `**registerCartCompletion**(draftOrderId, orderId): Promise&#60;UpdateResult&#62;`
 
 Registers a draft order as completed, when an order has been completed.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -476,7 +496,7 @@ Registers a draft order as completed, when an order has been completed.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;UpdateResult&#62;
 
@@ -494,13 +514,13 @@ Promise&#60;UpdateResult&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(draftOrderId, config?): Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;`
 
 Retrieves a draft order with the given id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -523,7 +543,7 @@ Retrieves a draft order with the given id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;
 
@@ -541,13 +561,13 @@ Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;
 
 ___
 
-#### retrieveByCartId
+### retrieveByCartId
 
 `**retrieveByCartId**(cartId, config?): Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;`
 
 Retrieves a draft order based on its associated cart id
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -570,7 +590,7 @@ Retrieves a draft order based on its associated cart id
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;
 
@@ -588,11 +608,11 @@ Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -606,7 +626,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -624,13 +644,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(id, data): Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;`
 
 Updates a draft order with the given data
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -662,7 +682,7 @@ Updates a draft order with the given data
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;
 
@@ -680,11 +700,11 @@ Promise&#60;[DraftOrder](DraftOrder.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [DraftOrderService](DraftOrderService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -698,7 +718,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [DraftOrderService](DraftOrderService.mdx)
 

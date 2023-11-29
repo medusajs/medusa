@@ -11,11 +11,11 @@ Fullfillment provider plugin services should extend the AbstractFulfillmentServi
 
 ## Methods
 
-#### calculatePrice
+### calculatePrice
 
 Used to calculate a price for a given shipping option.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -47,7 +47,7 @@ Used to calculate a price for a given shipping option.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -63,11 +63,11 @@ Used to calculate a price for a given shipping option.
 
 ___
 
-#### canCalculate
+### canCalculate
 
 Used to determine if a shipping option can have a calculated price
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -81,7 +81,7 @@ Used to determine if a shipping option can have a calculated price
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -97,11 +97,11 @@ Used to determine if a shipping option can have a calculated price
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
 Cancel a fulfillment using data from the fulfillment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -115,7 +115,7 @@ Cancel a fulfillment using data from the fulfillment
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -131,12 +131,12 @@ Cancel a fulfillment using data from the fulfillment
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
 Create a fulfillment using data from shipping method, line items, and fulfillment. All from the order.
 The returned value of this method will populate the `fulfillment.data` field.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -177,7 +177,7 @@ The returned value of this method will populate the `fulfillment.data` field.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -193,13 +193,13 @@ The returned value of this method will populate the `fulfillment.data` field.
 
 ___
 
-#### createReturn
+### createReturn
 
 Used to create a return order. Should return the data necessary for future
 operations on the return; in particular the data may be used to receive
 documents attached to the return.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -213,7 +213,7 @@ documents attached to the return.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -229,11 +229,11 @@ documents attached to the return.
 
 ___
 
-#### getFulfillmentDocuments
+### getFulfillmentDocuments
 
 Used to retrieve documents associated with a fulfillment.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -247,7 +247,7 @@ Used to retrieve documents associated with a fulfillment.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -263,7 +263,7 @@ Used to retrieve documents associated with a fulfillment.
 
 ___
 
-#### getFulfillmentOptions
+### getFulfillmentOptions
 
 Called before a shipping option is created in Admin. The method should
 return all of the options that the fulfillment provider can be used with,
@@ -272,7 +272,7 @@ enforced. For example, a fulfillment provider may offer Standard Shipping
 and Express Shipping as fulfillment options, it is up to the store operator
 to create shipping options in Medusa that are offered to the customer.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -288,11 +288,11 @@ to create shipping options in Medusa that are offered to the customer.
 
 ___
 
-#### getIdentifier
+### getIdentifier
 
 Return a unique identifier to retrieve the fulfillment plugin provider
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -308,11 +308,11 @@ Return a unique identifier to retrieve the fulfillment plugin provider
 
 ___
 
-#### getReturnDocuments
+### getReturnDocuments
 
 Used to retrieve documents related to a return order.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -326,7 +326,7 @@ Used to retrieve documents related to a return order.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -342,11 +342,11 @@ Used to retrieve documents related to a return order.
 
 ___
 
-#### getShipmentDocuments
+### getShipmentDocuments
 
 Used to retrieve documents related to a shipment.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -360,7 +360,7 @@ Used to retrieve documents related to a shipment.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -376,9 +376,9 @@ Used to retrieve documents related to a shipment.
 
 ___
 
-#### retrieveDocuments
+### retrieveDocuments
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -401,7 +401,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -417,7 +417,7 @@ ___
 
 ___
 
-#### validateFulfillmentData
+### validateFulfillmentData
 
 Called before a shipping method is set on a cart to ensure that the data
 sent with the shipping method is valid. The data object may contain extra
@@ -425,7 +425,7 @@ data about the shipment such as an id of a drop point. It is up to the
 fulfillment provider to enforce that the correct data is being sent
 through.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -457,7 +457,7 @@ through.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -473,12 +473,12 @@ through.
 
 ___
 
-#### validateOption
+### validateOption
 
 Called before a shipping option is created in Admin. Use this to ensure
 that a fulfillment option does in fact exist.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -492,7 +492,7 @@ that a fulfillment option does in fact exist.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

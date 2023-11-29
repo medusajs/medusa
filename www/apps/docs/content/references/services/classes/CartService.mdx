@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # CartService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new CartService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -355,21 +355,41 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addLineItem
+### addLineItem
 
 `**addLineItem**(cartId, lineItem, config?): Promise&#60;void&#62;`
 
 Adds a line item to the cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -410,7 +430,7 @@ Adds a line item to the cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -432,14 +452,14 @@ Use [addOrUpdateLineItems](CartService.mdx#addorupdatelineitems) instead.
 
 ___
 
-#### addOrUpdateLineItems
+### addOrUpdateLineItems
 
 `**addOrUpdateLineItems**(cartId, lineItems, config?): Promise&#60;void&#62;`
 
 Adds or update one or multiple line items to the cart. It also update all existing items in the cart
 to have has\_shipping to false. Finally, the adjustments will be updated.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -480,7 +500,7 @@ to have has\_shipping to false. Finally, the adjustments will be updated.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -498,7 +518,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### addShippingMethod
+### addShippingMethod
 
 `**addShippingMethod**(cartOrId, optionId, data?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
@@ -508,7 +528,7 @@ Shipping Option is a possible way to ship an order. Shipping Methods may
 also have additional details in the data field such as an id for a package
 shop.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -540,7 +560,7 @@ shop.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -558,7 +578,7 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### adjustFreeShipping\_
+### adjustFreeShipping\_
 
 `Protected **adjustFreeShipping_**(cart, shouldAdd): Promise&#60;void&#62;`
 
@@ -567,7 +587,7 @@ shipping discount
 If a free shipping is present, we set shipping methods price to 0
 if a free shipping was present, we set shipping methods to original amount
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -590,7 +610,7 @@ if a free shipping was present, we set shipping methods to original amount
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -608,7 +628,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### applyDiscount
+### applyDiscount
 
 `**applyDiscount**(cart, discountCode): Promise&#60;void&#62;`
 
@@ -617,7 +637,7 @@ If discount besides free shipping is already applied, this
 will be overwritten
 Throws if discount regions does not include the cart region
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -640,7 +660,7 @@ Throws if discount regions does not include the cart region
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -658,7 +678,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### applyDiscounts
+### applyDiscounts
 
 `**applyDiscounts**(cart, discountCodes): Promise&#60;void&#62;`
 
@@ -667,7 +687,7 @@ If discount besides free shipping is already applied, this
 will be overwritten
 Throws if discount regions does not include the cart region
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -690,7 +710,7 @@ Throws if discount regions does not include the cart region
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -708,11 +728,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### applyGiftCard\_
+### applyGiftCard\_
 
 `Protected **applyGiftCard_**(cart, code): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -735,7 +755,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -753,7 +773,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -761,7 +781,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -784,7 +804,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -816,7 +836,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -834,7 +854,7 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### authorizePayment
+### authorizePayment
 
 `**authorizePayment**(cartId, context?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
@@ -844,7 +864,7 @@ a payment object, that we will use to update our cart payment with.
 Additionally, if the payment does not require more or fails, we will
 set the payment on the cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -867,7 +887,7 @@ set the payment on the cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -885,13 +905,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(data): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Creates a cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -905,7 +925,7 @@ Creates a cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -923,13 +943,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### createOrFetchGuestCustomerFromEmail\_
+### createOrFetchGuestCustomerFromEmail\_
 
 `Protected **createOrFetchGuestCustomerFromEmail_**(email): Promise&#60;[Customer](Customer.mdx)&#62;`
 
 Creates or fetches a user based on an email.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -943,7 +963,7 @@ Creates or fetches a user based on an email.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Customer](Customer.mdx)&#62;
 
@@ -961,11 +981,11 @@ Promise&#60;[Customer](Customer.mdx)&#62;
 
 ___
 
-#### createTaxLines
+### createTaxLines
 
 `**createTaxLines**(cartOrId): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -979,7 +999,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -997,11 +1017,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### decorateTotals
+### decorateTotals
 
 `**decorateTotals**(cart, totalsConfig?): Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), "total"&#62;&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1024,7 +1044,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), "total"&#62;&#62;
 
@@ -1042,11 +1062,11 @@ Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart]
 
 ___
 
-#### decorateTotals\_
+### decorateTotals\_
 
 `Protected **decorateTotals_**(cart, totalsToSelect, options?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1078,7 +1098,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -1100,13 +1120,13 @@ Use decorateTotals instead
 
 ___
 
-#### delete
+### delete
 
 `**delete**(cartId): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Deletes a cart from the database. Completed carts cannot be deleted.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1120,7 +1140,7 @@ Deletes a cart from the database. Completed carts cannot be deleted.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -1138,13 +1158,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### deletePaymentSession
+### deletePaymentSession
 
 `**deletePaymentSession**(cartId, providerId): Promise&#60;void&#62;`
 
 Removes a payment session from the cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1167,7 +1187,7 @@ Removes a payment session from the cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1185,11 +1205,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteTaxLines
+### deleteTaxLines
 
 `**deleteTaxLines**(id): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1203,7 +1223,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1221,14 +1241,14 @@ Promise&#60;void&#62;
 
 ___
 
-#### findCustomShippingOption
+### findCustomShippingOption
 
 `**findCustomShippingOption**(cartCustomShippingOptions, optionId): undefined \| [CustomShippingOption](CustomShippingOption.mdx)`
 
 Finds the cart's custom shipping options based on the passed option id.
 throws if custom options is not empty and no shipping option corresponds to optionId
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1251,7 +1271,7 @@ throws if custom options is not empty and no shipping option corresponds to opti
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `undefined` \| [CustomShippingOption](CustomShippingOption.mdx)
 
@@ -1269,11 +1289,11 @@ throws if custom options is not empty and no shipping option corresponds to opti
 
 ___
 
-#### getTotalsRelations
+### getTotalsRelations
 
 `Private **getTotalsRelations**(config): string[]`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1287,7 +1307,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `string`[]
 
@@ -1305,11 +1325,11 @@ ___
 
 ___
 
-#### getValidatedSalesChannel
+### getValidatedSalesChannel
 
 `Protected **getValidatedSalesChannel**(salesChannelId?): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1323,7 +1343,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
@@ -1341,11 +1361,11 @@ Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[Cart](Cart.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1368,7 +1388,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)[]&#62;
 
@@ -1386,13 +1406,13 @@ Promise&#60;[Cart](Cart.mdx)[]&#62;
 
 ___
 
-#### onSalesChannelChange
+### onSalesChannelChange
 
 `Protected **onSalesChannelChange**(cart, newSalesChannelId): Promise&#60;void&#62;`
 
 Remove the cart line item that does not belongs to the newly assigned sales channel
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1415,7 +1435,7 @@ Remove the cart line item that does not belongs to the newly assigned sales chan
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1433,11 +1453,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### refreshAdjustments\_
+### refreshAdjustments\_
 
 `Protected **refreshAdjustments_**(cart): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1451,7 +1471,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1469,13 +1489,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### refreshPaymentSession
+### refreshPaymentSession
 
 `**refreshPaymentSession**(cartId, providerId): Promise&#60;void&#62;`
 
 Refreshes a payment session on a cart
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1498,7 +1518,7 @@ Refreshes a payment session on a cart
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1516,13 +1536,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### removeDiscount
+### removeDiscount
 
 `**removeDiscount**(cartId, discountCode): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Removes a discount based on a discount code.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1545,7 +1565,7 @@ Removes a discount based on a discount code.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -1563,13 +1583,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### removeLineItem
+### removeLineItem
 
 `**removeLineItem**(cartId, lineItemId): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Removes a line item from the cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1592,7 +1612,7 @@ Removes a line item from the cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -1610,13 +1630,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(cartId, options?, totalsConfig?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Gets a cart by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1648,7 +1668,7 @@ Gets a cart by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -1666,11 +1686,11 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### retrieveLegacy
+### retrieveLegacy
 
 `Protected **retrieveLegacy**(cartId, options?, totalsConfig?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1702,7 +1722,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -1722,11 +1742,11 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### retrieveWithTotals
+### retrieveWithTotals
 
 `**retrieveWithTotals**(cartId, options?, totalsConfig?): Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), "total"&#62;&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1758,7 +1778,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), "total"&#62;&#62;
 
@@ -1776,7 +1796,7 @@ Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart]
 
 ___
 
-#### setMetadata
+### setMetadata
 
 `**setMetadata**(cartId, key, value): Promise&#60;[Cart](Cart.mdx)&#62;`
 
@@ -1784,7 +1804,7 @@ Dedicated method to set metadata for a cart.
 To ensure that plugins does not overwrite each
 others metadata fields, setMetadata is provided.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1816,7 +1836,7 @@ others metadata fields, setMetadata is provided.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -1834,13 +1854,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### setPaymentSession
+### setPaymentSession
 
 `**setPaymentSession**(cartId, providerId): Promise&#60;void&#62;`
 
 Selects a payment session for a cart and creates a payment object in the external provider system
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1863,7 +1883,7 @@ Selects a payment session for a cart and creates a payment object in the externa
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1881,7 +1901,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### setPaymentSessions
+### setPaymentSessions
 
 `**setPaymentSessions**(cartOrCartId): Promise&#60;void&#62;`
 
@@ -1891,7 +1911,7 @@ provider. Additional calls will ensure that payment sessions have correct
 amounts, currencies, etc. as well as make sure to filter payment sessions
 that are not available for the cart's region.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1905,7 +1925,7 @@ that are not available for the cart's region.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1923,13 +1943,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### setRegion\_
+### setRegion\_
 
 `Protected **setRegion_**(cart, regionId, countryCode): Promise&#60;void&#62;`
 
 Set's the region of a cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1961,7 +1981,7 @@ Set's the region of a cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1979,11 +1999,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1997,7 +2017,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -2015,11 +2035,11 @@ ___
 
 ___
 
-#### transformQueryForTotals\_
+### transformQueryForTotals\_
 
 `Protected **transformQueryForTotals_**(config): [FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & &#123; totalsToSelect: [TotalField](../types/TotalField.mdx)[]  &#125;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2033,7 +2053,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & ``{ totalsToSelect: [TotalField](../types/TotalField.mdx)[]  }``
 
@@ -2051,11 +2071,11 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(cartOrId, data): Promise&#60;[Cart](Cart.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2078,7 +2098,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -2096,13 +2116,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### updateBillingAddress\_
+### updateBillingAddress\_
 
 `Protected **updateBillingAddress_**(cart, addressOrId, addrRepo): Promise&#60;void&#62;`
 
 Updates the cart's billing address.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2134,7 +2154,7 @@ Updates the cart's billing address.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -2152,13 +2172,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### updateCustomerId\_
+### updateCustomerId\_
 
 `Protected **updateCustomerId_**(cart, customerId): Promise&#60;void&#62;`
 
 Sets the customer id of a cart
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2181,7 +2201,7 @@ Sets the customer id of a cart
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -2199,13 +2219,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### updateLineItem
+### updateLineItem
 
 `**updateLineItem**(cartId, lineItemId, update): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Updates a cart's existing line item.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2237,7 +2257,7 @@ Updates a cart's existing line item.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -2255,13 +2275,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### updatePaymentSession
+### updatePaymentSession
 
 `**updatePaymentSession**(cartId, update): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Updates the currently selected payment session.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2284,7 +2304,7 @@ Updates the currently selected payment session.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Cart](Cart.mdx)&#62;
 
@@ -2302,13 +2322,13 @@ Promise&#60;[Cart](Cart.mdx)&#62;
 
 ___
 
-#### updateShippingAddress\_
+### updateShippingAddress\_
 
 `Protected **updateShippingAddress_**(cart, addressOrId, addrRepo): Promise&#60;void&#62;`
 
 Updates the cart's shipping address.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2340,7 +2360,7 @@ Updates the cart's shipping address.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -2358,11 +2378,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### updateUnitPrices\_
+### updateUnitPrices\_
 
 `Protected **updateUnitPrices_**(cart, regionId?, customer_id?): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2394,7 +2414,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -2412,13 +2432,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### validateLineItem
+### validateLineItem
 
 `Protected **validateLineItem**(sales_channel_id, lineItem): Promise&#60;boolean&#62;`
 
 Check if line item's variant belongs to the cart's sales channel.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2450,7 +2470,7 @@ Check if line item's variant belongs to the cart's sales channel.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -2468,7 +2488,7 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### validateLineItemShipping\_
+### validateLineItemShipping\_
 
 `Protected **validateLineItemShipping_**(shippingMethods, lineItemShippingProfiledId): boolean`
 
@@ -2476,7 +2496,7 @@ Checks if a given line item has a shipping method that can fulfill it.
 Returns true if all products in the cart can be fulfilled with the current
 shipping methods.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2499,7 +2519,7 @@ shipping methods.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -2517,11 +2537,11 @@ shipping methods.
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [CartService](CartService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2535,7 +2555,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [CartService](CartService.mdx)
 

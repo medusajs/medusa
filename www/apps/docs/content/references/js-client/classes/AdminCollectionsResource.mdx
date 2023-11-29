@@ -16,11 +16,11 @@ A product collection is used to organize products for different purposes such as
 
 ## Methods
 
-#### addProducts
+### addProducts
 
 Add products to collection.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -35,7 +35,7 @@ medusa.admin.collections
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -77,7 +77,7 @@ medusa.admin.collections
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -186,11 +186,11 @@ medusa.admin.collections
 
 ___
 
-#### create
+### create
 
 Create a product collection.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -205,7 +205,7 @@ medusa.admin.collections
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -256,7 +256,7 @@ medusa.admin.collections
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -365,11 +365,11 @@ medusa.admin.collections
 
 ___
 
-#### delete
+### delete
 
 Delete a product collection. This does not delete associated products.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -382,7 +382,7 @@ medusa.admin.collections
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -405,7 +405,7 @@ medusa.admin.collections
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -449,11 +449,11 @@ medusa.admin.collections
 
 ___
 
-#### list
+### list
 
 Retrieve a list of product collections. The product collections can be filtered by fields such as `handle` or `title`. The collections can also be sorted or paginated.
 
-##### Example
+#### Example
 
 To list product collections:
 
@@ -484,7 +484,7 @@ medusa.admin.collections
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -700,7 +700,7 @@ medusa.admin.collections
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -836,11 +836,11 @@ medusa.admin.collections
 
 ___
 
-#### removeProducts
+### removeProducts
 
 Remove a list of products from a collection. This would not delete the product, only the association between the product and the collection.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -855,7 +855,7 @@ medusa.admin.collections
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -897,7 +897,7 @@ medusa.admin.collections
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -951,11 +951,11 @@ medusa.admin.collections
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a product collection by its ID. The products associated with it are expanded and returned as well.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -966,7 +966,7 @@ medusa.admin.collections.retrieve(collectionId).then(({ collection }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -989,7 +989,7 @@ medusa.admin.collections.retrieve(collectionId).then(({ collection }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1098,11 +1098,11 @@ medusa.admin.collections.retrieve(collectionId).then(({ collection }) => {
 
 ___
 
-#### update
+### update
 
 Update a product collection's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1117,7 +1117,7 @@ medusa.admin.collections
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1177,7 +1177,7 @@ medusa.admin.collections
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ProductService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new ProductService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -220,15 +220,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addOption
+### addOption
 
 `**addOption**(productId, optionTitle): Promise&#60;[Product](Product.mdx)&#62;`
 
@@ -236,7 +256,7 @@ Adds an option to a product. Options can, for example, be "Size", "Color",
 etc. Will update all the products variants with a dummy value for the newly
 created option. The same option cannot be added more than once.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -259,7 +279,7 @@ created option. The same option cannot be added more than once.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -277,7 +297,7 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -285,7 +305,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -308,7 +328,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -340,7 +360,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -358,13 +378,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### count
+### count
 
 `**count**(selector?): Promise&#60;number&#62;`
 
 Return the total number of documents in database
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -378,7 +398,7 @@ Return the total number of documents in database
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;number&#62;
 
@@ -396,13 +416,13 @@ Promise&#60;number&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(productObject): Promise&#60;[Product](Product.mdx)&#62;`
 
 Creates a product.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -416,7 +436,7 @@ Creates a product.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -434,14 +454,14 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(productId): Promise&#60;void&#62;`
 
 Deletes a product from a given product id. The product's associated
 variants will also be deleted.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -455,7 +475,7 @@ variants will also be deleted.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -473,13 +493,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteOption
+### deleteOption
 
 `**deleteOption**(productId, optionId): Promise&#60;void \| [Product](Product.mdx)&#62;`
 
 Delete an option from a product.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -502,7 +522,7 @@ Delete an option from a product.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void \| [Product](Product.mdx)&#62;
 
@@ -520,11 +540,11 @@ Promise&#60;void \| [Product](Product.mdx)&#62;
 
 ___
 
-#### filterProductsBySalesChannel
+### filterProductsBySalesChannel
 
 `**filterProductsBySalesChannel**(productIds, salesChannelId, config?): Promise&#60;[Product](Product.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -556,7 +576,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)[]&#62;
 
@@ -574,13 +594,13 @@ Promise&#60;[Product](Product.mdx)[]&#62;
 
 ___
 
-#### isProductInSalesChannels
+### isProductInSalesChannels
 
 `**isProductInSalesChannels**(id, salesChannelIds): Promise&#60;boolean&#62;`
 
 Check if the product is assigned to at least one of the provided sales channels.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -603,7 +623,7 @@ Check if the product is assigned to at least one of the provided sales channels.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -621,13 +641,13 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[Product](Product.mdx)[]&#62;`
 
 Lists products based on the provided parameters.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -650,7 +670,7 @@ Lists products based on the provided parameters.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)[]&#62;
 
@@ -668,14 +688,14 @@ Promise&#60;[Product](Product.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[Product](Product.mdx)[], number]&#62;`
 
 Lists products based on the provided parameters and includes the count of
 products that match the query.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -698,7 +718,7 @@ products that match the query.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[Product](Product.mdx)[], number]&#62;
 
@@ -716,11 +736,11 @@ Promise&#60;[[Product](Product.mdx)[], number]&#62;
 
 ___
 
-#### listTagsByUsage
+### listTagsByUsage
 
 `**listTagsByUsage**(take?): Promise&#60;[ProductTag](ProductTag.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -734,7 +754,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductTag](ProductTag.mdx)[]&#62;
 
@@ -752,11 +772,11 @@ Promise&#60;[ProductTag](ProductTag.mdx)[]&#62;
 
 ___
 
-#### listTypes
+### listTypes
 
 `**listTypes**(): Promise&#60;[ProductType](ProductType.mdx)[]&#62;`
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductType](ProductType.mdx)[]&#62;
 
@@ -774,13 +794,13 @@ Promise&#60;[ProductType](ProductType.mdx)[]&#62;
 
 ___
 
-#### prepareListQuery\_
+### prepareListQuery\_
 
 `Protected **prepareListQuery_**(selector, config): &#123; q: string ; query: [FindWithoutRelationsOptions](../types/FindWithoutRelationsOptions-1.mdx) ; relations: keyof [Product](Product.mdx)[]  &#125;`
 
 Temporary method to be used in place we need custom query strategy to prevent typeorm bug
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -803,7 +823,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `object`
 
@@ -851,11 +871,11 @@ Temporary method to be used in place we need custom query strategy to prevent ty
 
 ___
 
-#### reorderVariants
+### reorderVariants
 
 `**reorderVariants**(productId, variantOrder): Promise&#60;[Product](Product.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -878,7 +898,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -896,14 +916,14 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(productId, config?): Promise&#60;[Product](Product.mdx)&#62;`
 
 Gets a product by id.
 Throws in case of DB Error and if product was not found.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -926,7 +946,7 @@ Throws in case of DB Error and if product was not found.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -944,14 +964,14 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### retrieveByExternalId
+### retrieveByExternalId
 
 `**retrieveByExternalId**(externalId, config?): Promise&#60;[Product](Product.mdx)&#62;`
 
 Gets a product by external id.
 Throws in case of DB Error and if product was not found.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -974,7 +994,7 @@ Throws in case of DB Error and if product was not found.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -992,14 +1012,14 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### retrieveByHandle
+### retrieveByHandle
 
 `**retrieveByHandle**(productHandle, config?): Promise&#60;[Product](Product.mdx)&#62;`
 
 Gets a product by handle.
 Throws in case of DB Error and if product was not found.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1022,7 +1042,7 @@ Throws in case of DB Error and if product was not found.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -1040,13 +1060,13 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### retrieveOptionByTitle
+### retrieveOptionByTitle
 
 `**retrieveOptionByTitle**(title, productId): Promise&#60;null \| [ProductOption](ProductOption.mdx)&#62;`
 
 Retrieve product's option by title.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1069,7 +1089,7 @@ Retrieve product's option by title.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;null \| [ProductOption](ProductOption.mdx)&#62;
 
@@ -1087,13 +1107,13 @@ Promise&#60;null \| [ProductOption](ProductOption.mdx)&#62;
 
 ___
 
-#### retrieveVariants
+### retrieveVariants
 
 `**retrieveVariants**(productId, config?): Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;`
 
 Gets all variants belonging to a product.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1116,7 +1136,7 @@ Gets all variants belonging to a product.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
@@ -1134,14 +1154,14 @@ Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
 ___
 
-#### retrieve\_
+### retrieve\_
 
 `**retrieve_**(selector, config?): Promise&#60;[Product](Product.mdx)&#62;`
 
 Gets a product by selector.
 Throws in case of DB Error and if product was not found.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1164,7 +1184,7 @@ Throws in case of DB Error and if product was not found.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -1182,11 +1202,11 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1200,7 +1220,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -1218,7 +1238,7 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(productId, update): Promise&#60;[Product](Product.mdx)&#62;`
 
@@ -1226,7 +1246,7 @@ Updates a product. Product variant updates should use dedicated methods,
 e.g. `addVariant`, etc. The function will throw errors if metadata or
 product variant updates are attempted.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1249,7 +1269,7 @@ product variant updates are attempted.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -1267,14 +1287,14 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### updateOption
+### updateOption
 
 `**updateOption**(productId, optionId, data): Promise&#60;[Product](Product.mdx)&#62;`
 
 Updates a product's option. Throws if the call tries to update an option
 not associated with the product. Throws if the updated title already exists.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1306,7 +1326,7 @@ not associated with the product. Throws if the updated title already exists.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)&#62;
 
@@ -1324,13 +1344,13 @@ Promise&#60;[Product](Product.mdx)&#62;
 
 ___
 
-#### updateShippingProfile
+### updateShippingProfile
 
 `**updateShippingProfile**(productIds, profileId): Promise&#60;[Product](Product.mdx)[]&#62;`
 
 Assign a product to a profile, if a profile id null is provided then detach the product from the profile
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1353,7 +1373,7 @@ Assign a product to a profile, if a profile id null is provided then detach the 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Product](Product.mdx)[]&#62;
 
@@ -1371,11 +1391,11 @@ Promise&#60;[Product](Product.mdx)[]&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [ProductService](ProductService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1389,7 +1409,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [ProductService](ProductService.mdx)
 

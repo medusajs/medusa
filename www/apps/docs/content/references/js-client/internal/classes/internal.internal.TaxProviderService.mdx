@@ -130,23 +130,37 @@ Finds tax providers and assists in tax related operations.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -178,7 +192,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -194,9 +208,9 @@ transaction manager is created.
 
 ___
 
-#### clearLineItemsTaxLines
+### clearLineItemsTaxLines
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -210,7 +224,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -226,9 +240,9 @@ ___
 
 ___
 
-#### clearTaxLines
+### clearTaxLines
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -242,7 +256,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -258,12 +272,12 @@ ___
 
 ___
 
-#### createShippingTaxLines
+### createShippingTaxLines
 
 Persists the tax lines relevant for a shipping method to the database. Used
 for return shipping methods.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -286,7 +300,7 @@ for return shipping methods.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -302,11 +316,11 @@ for return shipping methods.
 
 ___
 
-#### createTaxLines
+### createTaxLines
 
 Persists the tax lines relevant for an order to the database.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -329,7 +343,7 @@ Persists the tax lines relevant for an order to the database.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -345,12 +359,12 @@ Persists the tax lines relevant for an order to the database.
 
 ___
 
-#### getRegionRatesForProduct
+### getRegionRatesForProduct
 
 Gets the tax rates configured for a product. The rates are cached between
 calls.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -373,7 +387,7 @@ calls.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -389,12 +403,12 @@ calls.
 
 ___
 
-#### getRegionRatesForShipping
+### getRegionRatesForShipping
 
 Gets the tax rates configured for a shipping option. The rates are cached
 between calls.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -417,7 +431,7 @@ between calls.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -433,13 +447,13 @@ between calls.
 
 ___
 
-#### getShippingTaxLines
+### getShippingTaxLines
 
 Gets the relevant tax lines for a shipping method. Note: this method
 doesn't persist the tax lines. Use createShippingTaxLines if you wish to
 persist the tax lines to the DB layer.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -462,7 +476,7 @@ persist the tax lines to the DB layer.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -478,7 +492,7 @@ persist the tax lines to the DB layer.
 
 ___
 
-#### getTaxLines
+### getTaxLines
 
 Gets the relevant tax lines for an order or cart. If an order is provided
 the order's tax lines will be returned. If a cart is provided the tax lines
@@ -486,7 +500,7 @@ will be computed from the tax rules and potentially a 3rd party tax plugin.
 Note: this method doesn't persist the tax lines. Use createTaxLines if you
 wish to persist the tax lines to the DB layer.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -509,7 +523,7 @@ wish to persist the tax lines to the DB layer.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -525,11 +539,11 @@ wish to persist the tax lines to the DB layer.
 
 ___
 
-#### getTaxLinesMap
+### getTaxLinesMap
 
 Return a map of tax lines for line items and shipping methods
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -552,7 +566,7 @@ Return a map of tax lines for line items and shipping methods
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -568,9 +582,9 @@ Return a map of tax lines for line items and shipping methods
 
 ___
 
-#### list
+### list
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -586,9 +600,9 @@ ___
 
 ___
 
-#### registerInstalledProviders
+### registerInstalledProviders
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -602,7 +616,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -618,11 +632,11 @@ ___
 
 ___
 
-#### retrieveProvider
+### retrieveProvider
 
 Retrieves the relevant tax provider for the given region.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -636,7 +650,7 @@ Retrieves the relevant tax provider for the given region.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -652,9 +666,9 @@ Retrieves the relevant tax provider for the given region.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -668,7 +682,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -684,9 +698,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -700,7 +714,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

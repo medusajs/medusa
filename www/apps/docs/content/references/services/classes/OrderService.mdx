@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # OrderService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new OrderService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -418,19 +418,39 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addShippingMethod
+### addShippingMethod
 
 `**addShippingMethod**(orderId, optionId, data?, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -471,7 +491,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -489,14 +509,14 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### archive
+### archive
 
 `**archive**(orderId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Archives an order. It only alloved, if the order has been fulfilled
 and payment has been captured.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -510,7 +530,7 @@ and payment has been captured.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -528,7 +548,7 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -536,7 +556,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -559,7 +579,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -591,7 +611,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -609,7 +629,7 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### cancel
+### cancel
 
 `**cancel**(orderId): Promise&#60;[Order](Order.mdx)&#62;`
 
@@ -617,7 +637,7 @@ Cancels an order.
 Throws if fulfillment process has been initiated.
 Throws if payment process has been initiated.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -631,7 +651,7 @@ Throws if payment process has been initiated.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -649,13 +669,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
 `**cancelFulfillment**(fulfillmentId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Cancels a fulfillment (if related to an order)
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -669,7 +689,7 @@ Cancels a fulfillment (if related to an order)
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -687,13 +707,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### capturePayment
+### capturePayment
 
 `**capturePayment**(orderId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Captures payment for an order.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -707,7 +727,7 @@ Captures payment for an order.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -725,11 +745,11 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### completeOrder
+### completeOrder
 
 `**completeOrder**(orderId): Promise&#60;[Order](Order.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -743,7 +763,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -761,13 +781,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### createFromCart
+### createFromCart
 
 `**createFromCart**(cartOrId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Creates an order from a cart
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -781,7 +801,7 @@ Creates an order from a cart
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -799,7 +819,7 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
 `**createFulfillment**(orderId, itemsToFulfill, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
@@ -808,7 +828,7 @@ In a situation where the order has more than one shipping method,
 we need to partition the order items, such that they can be sent
 to their respective fulfillment provider.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -867,7 +887,7 @@ to their respective fulfillment provider.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -885,11 +905,11 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### createGiftCardsFromLineItem\_
+### createGiftCardsFromLineItem\_
 
 `Protected **createGiftCardsFromLineItem_**(order, lineItem, manager): Promise&#60;[GiftCard](GiftCard.mdx)&#62;[]`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -921,7 +941,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[GiftCard](GiftCard.mdx)&#62;[]
 
@@ -939,13 +959,13 @@ Promise&#60;[GiftCard](GiftCard.mdx)&#62;[]
 
 ___
 
-#### createRefund
+### createRefund
 
 `**createRefund**(orderId, refundAmount, reason, note?, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Refunds a given amount back to the customer.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1004,7 +1024,7 @@ Refunds a given amount back to the customer.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1022,7 +1042,7 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### createShipment
+### createShipment
 
 `**createShipment**(orderId, fulfillmentId, trackingLinks?, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
@@ -1030,7 +1050,7 @@ Adds a shipment to the order to indicate that an order has left the
 warehouse. Will ask the fulfillment provider for any documents that may
 have been created in regards to the shipment.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1089,7 +1109,7 @@ have been created in regards to the shipment.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1107,13 +1127,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### decorateTotals
+### decorateTotals
 
 `**decorateTotals**(order, totalsFields?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Calculate and attach the different total fields on the object
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1136,7 +1156,7 @@ Calculate and attach the different total fields on the object
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1156,7 +1176,7 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 Calculate and attach the different total fields on the object
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1179,7 +1199,7 @@ Calculate and attach the different total fields on the object
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1197,11 +1217,11 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### decorateTotalsLegacy
+### decorateTotalsLegacy
 
 `Protected **decorateTotalsLegacy**(order, totalsFields?): Promise&#60;[Order](Order.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1224,7 +1244,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1242,13 +1262,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### getFulfillmentItems
+### getFulfillmentItems
 
 `Protected **getFulfillmentItems**(order, items, transformer): Promise&#60;[LineItem](LineItem.mdx)[]&#62;`
 
 Retrieves the order line items, given an array of items.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1280,7 +1300,7 @@ Retrieves the order line items, given an array of items.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
@@ -1298,11 +1318,11 @@ Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
 ___
 
-#### getTotalsRelations
+### getTotalsRelations
 
 `Private **getTotalsRelations**(config): string[]`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1316,7 +1336,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `string`[]
 
@@ -1334,11 +1354,11 @@ ___
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[Order](Order.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1361,7 +1381,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)[]&#62;
 
@@ -1379,11 +1399,11 @@ Promise&#60;[Order](Order.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[Order](Order.mdx)[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1406,7 +1426,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[Order](Order.mdx)[], number]&#62;
 
@@ -1424,7 +1444,7 @@ Promise&#60;[[Order](Order.mdx)[], number]&#62;
 
 ___
 
-#### registerReturnReceived
+### registerReturnReceived
 
 `**registerReturnReceived**(orderId, receivedReturn, customRefundAmount?): Promise&#60;[Order](Order.mdx)&#62;`
 
@@ -1436,7 +1456,7 @@ returned items are not matching the requested items. Setting the
 allowMismatch argument to true, will process the return, ignoring any
 mismatches.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1468,7 +1488,7 @@ mismatches.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1486,13 +1506,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(orderId, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Gets an order by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1515,7 +1535,7 @@ Gets an order by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1533,13 +1553,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### retrieveByCartId
+### retrieveByCartId
 
 `**retrieveByCartId**(cartId, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Gets an order by cart id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1562,7 +1582,7 @@ Gets an order by cart id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1580,11 +1600,11 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### retrieveByCartIdWithTotals
+### retrieveByCartIdWithTotals
 
 `**retrieveByCartIdWithTotals**(cartId, options?): Promise&#60;[Order](Order.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1607,7 +1627,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1625,13 +1645,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### retrieveByExternalId
+### retrieveByExternalId
 
 `**retrieveByExternalId**(externalId, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Gets an order by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1654,7 +1674,7 @@ Gets an order by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1672,11 +1692,11 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### retrieveLegacy
+### retrieveLegacy
 
 `Protected **retrieveLegacy**(orderIdOrSelector, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1699,7 +1719,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1717,11 +1737,11 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### retrieveWithTotals
+### retrieveWithTotals
 
 `**retrieveWithTotals**(orderId, options?, context?): Promise&#60;[Order](Order.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1753,7 +1773,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1771,11 +1791,11 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1789,7 +1809,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -1807,11 +1827,11 @@ ___
 
 ___
 
-#### transformQueryForTotals
+### transformQueryForTotals
 
 `Protected **transformQueryForTotals**(config): &#123; relations: undefined \| string[] ; select: undefined \| keyof [Order](Order.mdx)[] ; totalsToSelect: undefined \| keyof [Order](Order.mdx)[]  &#125;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1825,7 +1845,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `object`
 
@@ -1873,7 +1893,7 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(orderId, update): Promise&#60;[Order](Order.mdx)&#62;`
 
@@ -1881,7 +1901,7 @@ Updates an order. Metadata updates should
 use dedicated method, e.g. `setMetadata` etc. The function
 will throw errors if metadata updates are attempted.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1904,7 +1924,7 @@ will throw errors if metadata updates are attempted.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Order](Order.mdx)&#62;
 
@@ -1922,13 +1942,13 @@ Promise&#60;[Order](Order.mdx)&#62;
 
 ___
 
-#### updateBillingAddress
+### updateBillingAddress
 
 `Protected **updateBillingAddress**(order, address): Promise&#60;void&#62;`
 
 Updates the order's billing address.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1951,7 +1971,7 @@ Updates the order's billing address.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1969,13 +1989,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### updateShippingAddress
+### updateShippingAddress
 
 `Protected **updateShippingAddress**(order, address): Promise&#60;void&#62;`
 
 Updates the order's shipping address.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1998,7 +2018,7 @@ Updates the order's shipping address.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -2016,7 +2036,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### validateFulfillmentLineItem
+### validateFulfillmentLineItem
 
 `Protected **validateFulfillmentLineItem**(item, quantity): null \| [LineItem](LineItem.mdx)`
 
@@ -2025,7 +2045,7 @@ fulfillable quantity is lower than the requested fulfillment quantity.
 Fulfillable quantity is calculated by subtracting the already fulfilled
 quantity from the quantity that was originally purchased.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2048,7 +2068,7 @@ quantity from the quantity that was originally purchased.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `null` \| [LineItem](LineItem.mdx)
 
@@ -2066,11 +2086,11 @@ quantity from the quantity that was originally purchased.
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [OrderService](OrderService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2084,7 +2104,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [OrderService](OrderService.mdx)
 
