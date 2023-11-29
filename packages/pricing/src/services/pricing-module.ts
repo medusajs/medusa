@@ -1486,7 +1486,7 @@ export default class PricingModuleService<
                 price_list: createdPriceList,
                 money_amount: moneyAmount,
                 title: "test",
-                number_rules: Object.keys(priceRules || {}).length,
+                number_rules: Object.keys(priceRules).length,
               },
             ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
             sharedContext
