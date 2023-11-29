@@ -49,7 +49,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -2234,23 +2234,27 @@ describe("/store/carts", () => {
       expect(createdOrder.status).toEqual(200)
     })
 
-    it.only("returns early, if cart is already completed", async () => {
-      const manager = dbConnection.manager
+    it("should return early, if cart is already completed", async () => {
       const api = useApi()
-      await manager.query(
-        `UPDATE "cart"
-         SET completed_at=current_timestamp
-         WHERE id = 'test-cart-2'`
+
+      const completedCart = await api.post(
+        `/store/carts/test-cart-2/complete-cart`
       )
-      const response = await api.post(`/store/carts/test-cart-2/complete-cart`)
-      expect(response.data.data).toEqual(
+
+      expect(completedCart.status).toEqual(200)
+
+      const alreadyCompletedCart = await api.post(
+        `/store/carts/test-cart-2/complete-cart`
+      )
+
+      expect(alreadyCompletedCart.data.data).toEqual(
         expect.objectContaining({
           cart_id: "test-cart-2",
           id: expect.any(String),
         })
       )
-      expect(response.data.data.type).toEqual("order")
-      expect(response.status).toEqual(200)
+      expect(alreadyCompletedCart.data.type).toEqual("order")
+      expect(alreadyCompletedCart.status).toEqual(200)
     })
 
     it("fails to complete cart with items inventory not/partially covered", async () => {

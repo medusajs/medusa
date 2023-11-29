@@ -88,7 +88,7 @@ const toTest = [
     },
   ],
   [
-    "returns 409",
+    "succeeds",
     {
       cart: {
         id: "test-cart",
@@ -105,12 +105,10 @@ const toTest = [
         recovery_point: "started",
       },
       validate: function (value) {
-        expect(value.response_code).toEqual(409)
-        expect(value.response_body).toEqual({
-          code: "cart_incompatible_state",
-          message: "Cart has already been completed",
-          type: "not_allowed",
-        })
+        expect(value.response_code).toEqual(200)
+        expect(value.response_body.data).toEqual(
+          expect.objectContaining({ id: "test-cart" })
+        )
       },
     },
   ],
