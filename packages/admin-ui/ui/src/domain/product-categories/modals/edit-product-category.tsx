@@ -197,7 +197,7 @@ function EditProductCategoriesSideModal(
                 <NextSelect
                   {...field}
                   label={t("modals-status", "Status") as string}
-                  placeholder="Choose a country"
+                  placeholder="Choose status"
                   options={statusOptions(t)}
                   value={
                     statusOptions(t)[field.value?.value === CategoryStatus.Active ? 0 : 1]
@@ -217,7 +217,7 @@ function EditProductCategoriesSideModal(
                   {...field}
                   className="my-6"
                   label={t("modals-visibility", "Visibility") as string}
-                  placeholder="Choose a country"
+                  placeholder="Choose visibility"
                   options={visibilityOptions(t)}
                   value={
                     visibilityOptions(t)[field.value.value === CategoryVisibility.Public ? 0 : 1]
