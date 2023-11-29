@@ -240,12 +240,10 @@ export class AdminPostPriceListsPriceListPriceListReq {
   description?: string
 
   @IsOptional()
-  @IsDateString()
   @Transform((input) => (input.value === null ? null : transformDate(input)))
   starts_at?: Date | null
 
   @IsOptional()
-  @IsDateString()
   @Transform((input) => (input.value === null ? null : transformDate(input)))
   ends_at?: Date | null
 
