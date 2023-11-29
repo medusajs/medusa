@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # OauthService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new OauthService**(cradle)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -130,15 +130,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -146,7 +166,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -169,7 +189,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -201,7 +221,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -219,11 +239,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(data): Promise&#60;[Oauth](Oauth.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -237,7 +257,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Oauth](Oauth.mdx)&#62;
 
@@ -255,11 +275,11 @@ Promise&#60;[Oauth](Oauth.mdx)&#62;
 
 ___
 
-#### generateToken
+### generateToken
 
 `**generateToken**(appName, code, state): Promise&#60;[Oauth](Oauth.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -291,7 +311,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Oauth](Oauth.mdx)&#62;
 
@@ -309,11 +329,11 @@ Promise&#60;[Oauth](Oauth.mdx)&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector): Promise&#60;[Oauth](Oauth.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -327,7 +347,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Oauth](Oauth.mdx)[]&#62;
 
@@ -345,11 +365,11 @@ Promise&#60;[Oauth](Oauth.mdx)[]&#62;
 
 ___
 
-#### refreshToken
+### refreshToken
 
 `**refreshToken**(appName): Promise&#60;[Oauth](Oauth.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -363,7 +383,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Oauth](Oauth.mdx)&#62;
 
@@ -381,11 +401,11 @@ Promise&#60;[Oauth](Oauth.mdx)&#62;
 
 ___
 
-#### registerOauthApp
+### registerOauthApp
 
 `**registerOauthApp**(appDetails): Promise&#60;[Oauth](Oauth.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -399,7 +419,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Oauth](Oauth.mdx)&#62;
 
@@ -417,11 +437,11 @@ Promise&#60;[Oauth](Oauth.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(oauthId): Promise&#60;[Oauth](Oauth.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -435,7 +455,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Oauth](Oauth.mdx)&#62;
 
@@ -453,11 +473,11 @@ Promise&#60;[Oauth](Oauth.mdx)&#62;
 
 ___
 
-#### retrieveByName
+### retrieveByName
 
 `**retrieveByName**(appName): Promise&#60;[Oauth](Oauth.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -471,7 +491,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Oauth](Oauth.mdx)&#62;
 
@@ -489,11 +509,11 @@ Promise&#60;[Oauth](Oauth.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -507,7 +527,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -525,11 +545,11 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(id, update): Promise&#60;[Oauth](Oauth.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -552,7 +572,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Oauth](Oauth.mdx)&#62;
 
@@ -570,11 +590,11 @@ Promise&#60;[Oauth](Oauth.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [OauthService](OauthService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -588,7 +608,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [OauthService](OauthService.mdx)
 

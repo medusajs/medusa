@@ -21,11 +21,11 @@ Related Guide: [How to manage publishable API keys](https://docs.medusajs.com/de
 
 ## Methods
 
-#### addSalesChannelsBatch
+### addSalesChannelsBatch
 
 Add a list of sales channels to a publishable API key.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -44,7 +44,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -96,7 +96,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -196,11 +196,11 @@ medusa.admin.publishableApiKeys
 
 ___
 
-#### create
+### create
 
 Create a publishable API key.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -215,7 +215,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -248,7 +248,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -348,11 +348,11 @@ medusa.admin.publishableApiKeys
 
 ___
 
-#### delete
+### delete
 
 Delete a publishable API key. Associated resources, such as sales channels, are not deleted.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -365,7 +365,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -388,7 +388,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -432,11 +432,11 @@ medusa.admin.publishableApiKeys
 
 ___
 
-#### deleteSalesChannelsBatch
+### deleteSalesChannelsBatch
 
 Remove a list of sales channels from a publishable API key. This doesn't delete the sales channels and only removes the association between them and the publishable API key.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -455,7 +455,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -507,7 +507,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -607,11 +607,11 @@ medusa.admin.publishableApiKeys
 
 ___
 
-#### list
+### list
 
 Retrieve a list of publishable API keys. The publishable API keys can be filtered by fields such as `q` passed in `query`. The publishable API keys can also be paginated.
 
-##### Example
+#### Example
 
 To list publishable API keys:
 
@@ -642,7 +642,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -711,7 +711,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -838,11 +838,11 @@ medusa.admin.publishableApiKeys
 
 ___
 
-#### listSalesChannels
+### listSalesChannels
 
 List the sales channels associated with a publishable API key. The sales channels can be filtered by fields such as `q` passed in the `query` parameter.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -855,7 +855,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -933,7 +933,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1051,11 +1051,11 @@ medusa.admin.publishableApiKeys
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a publishable API key's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1068,7 +1068,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1100,7 +1100,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1200,11 +1200,11 @@ medusa.admin.publishableApiKeys
 
 ___
 
-#### revoke
+### revoke
 
 Revoke a publishable API key. Revoking the publishable API Key can't be undone, and the key can't be used in future requests.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1217,7 +1217,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1240,7 +1240,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1340,11 +1340,11 @@ medusa.admin.publishableApiKeys
 
 ___
 
-#### update
+### update
 
 Update a publishable API key's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1359,7 +1359,7 @@ medusa.admin.publishableApiKeys
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1401,7 +1401,7 @@ medusa.admin.publishableApiKeys
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

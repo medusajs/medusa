@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # OrderEditService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new OrderEditService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -220,25 +220,61 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
-#### inventoryService\_
+### inventoryService\_
 
- `Protected` **inventoryService\_**: [object Object]
+`Protected get**inventoryService_**(): undefined \| [IInventoryService](../interfaces/IInventoryService.mdx)`
+
+#### Returns
+
+`undefined` \| [IInventoryService](../interfaces/IInventoryService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "undefined \\| IInventoryService",
+    "type": "`undefined` \\| [IInventoryService](../interfaces/IInventoryService.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addLineItem
+### addLineItem
 
 `**addLineItem**(orderEditId, data): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -261,7 +297,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -279,7 +315,7 @@ Promise&#60;void&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -287,7 +323,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -310,7 +346,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -342,7 +378,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -360,11 +396,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### cancel
+### cancel
 
 `**cancel**(orderEditId, context?): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -396,7 +432,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
@@ -414,11 +450,11 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### confirm
+### confirm
 
 `**confirm**(orderEditId, context?): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -450,7 +486,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
@@ -468,11 +504,11 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(data, context): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -504,7 +540,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
@@ -522,11 +558,11 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### decline
+### decline
 
 `**decline**(orderEditId, context): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -567,7 +603,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
@@ -585,11 +621,11 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### decorateTotals
+### decorateTotals
 
 `**decorateTotals**(orderEdit): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -603,7 +639,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
@@ -621,11 +657,11 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(id): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -639,7 +675,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -657,11 +693,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteClonedItems
+### deleteClonedItems
 
 `Protected **deleteClonedItems**(orderEditId): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -675,7 +711,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -693,11 +729,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteItemChange
+### deleteItemChange
 
 `**deleteItemChange**(orderEditId, itemChangeId): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -720,7 +756,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -738,11 +774,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector, config?): Promise&#60;[OrderEdit](OrderEdit.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -765,7 +801,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)[]&#62;
 
@@ -783,11 +819,11 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector, config?): Promise&#60;[[OrderEdit](OrderEdit.mdx)[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -810,7 +846,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[OrderEdit](OrderEdit.mdx)[], number]&#62;
 
@@ -828,11 +864,11 @@ Promise&#60;[[OrderEdit](OrderEdit.mdx)[], number]&#62;
 
 ___
 
-#### refreshAdjustments
+### refreshAdjustments
 
 `**refreshAdjustments**(orderEditId, config?): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -864,7 +900,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -882,11 +918,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### removeLineItem
+### removeLineItem
 
 `**removeLineItem**(orderEditId, lineItemId): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -909,7 +945,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -927,11 +963,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### requestConfirmation
+### requestConfirmation
 
 `**requestConfirmation**(orderEditId, context?): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -963,7 +999,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
@@ -981,11 +1017,11 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(orderEditId, config?): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1008,7 +1044,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
@@ -1026,11 +1062,11 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### retrieveActive
+### retrieveActive
 
 `Protected **retrieveActive**(orderId, config?): Promise&#60;undefined \| null \| [OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1053,7 +1089,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;undefined \| null \| [OrderEdit](OrderEdit.mdx)&#62;
 
@@ -1071,11 +1107,11 @@ Promise&#60;undefined \| null \| [OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1089,7 +1125,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -1107,11 +1143,11 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(orderEditId, data): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1134,7 +1170,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
@@ -1152,7 +1188,7 @@ Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 ___
 
-#### updateLineItem
+### updateLineItem
 
 `**updateLineItem**(orderEditId, itemId, data): Promise&#60;void&#62;`
 
@@ -1160,7 +1196,7 @@ Create or update order edit item change line item and apply the quantity
 - If the item change already exists then update the quantity of the line item as well as the line adjustments
 - If the item change does not exist then create the item change of type update and apply the quantity as well as update the line adjustments
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1201,7 +1237,7 @@ Create or update order edit item change line item and apply the quantity
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1219,11 +1255,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [OrderEditService](OrderEditService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1237,7 +1273,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [OrderEditService](OrderEditService.mdx)
 
@@ -1255,11 +1291,11 @@ ___
 
 ___
 
-#### isOrderEditActive
+### isOrderEditActive
 
 `Static Private **isOrderEditActive**(orderEdit): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1273,7 +1309,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 

@@ -717,7 +717,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/carts-and-checkout/backend/add-fulfillment-provider",
+          id: "references/fulfillment/classes/AbstractFulfillmentService",
           label: "Backend: Create Fulfillment Provider",
         },
         {

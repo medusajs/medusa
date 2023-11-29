@@ -108,27 +108,55 @@ subscribers when events happen. Events will run asynchronously.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
-#### eventBusModuleService\_
+### eventBusModuleService\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "IEventBusModuleService",
+    "type": "[IEventBusModuleService](../../EventBusTypes/interfaces/internal.internal-1.EventBusTypes.IEventBusModuleService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -160,7 +188,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -176,13 +204,13 @@ transaction manager is created.
 
 ___
 
-#### emit
+### emit
 
 `**emit**<TypeParameter T>(data): Promise&#60;void \| [StagedJob](internal.internal.StagedJob.mdx)[]&#62;`
 
 Calls all subscribers when an event occurs.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -196,7 +224,7 @@ Calls all subscribers when an event occurs.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -214,7 +242,7 @@ Calls all subscribers when an event occurs.
 
 Calls all subscribers when an event occurs.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -246,7 +274,7 @@ Calls all subscribers when an event occurs.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -262,9 +290,9 @@ Calls all subscribers when an event occurs.
 
 ___
 
-#### enqueuer\_
+### enqueuer\_
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -280,9 +308,9 @@ ___
 
 ___
 
-#### listJobs
+### listJobs
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -296,7 +324,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -312,9 +340,9 @@ ___
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -328,7 +356,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -344,9 +372,9 @@ ___
 
 ___
 
-#### startEnqueuer
+### startEnqueuer
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -362,9 +390,9 @@ ___
 
 ___
 
-#### stopEnqueuer
+### stopEnqueuer
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -380,11 +408,11 @@ ___
 
 ___
 
-#### subscribe
+### subscribe
 
 Adds a function to a list of event subscribers.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -416,7 +444,7 @@ Adds a function to a list of event subscribers.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -432,11 +460,11 @@ Adds a function to a list of event subscribers.
 
 ___
 
-#### unsubscribe
+### unsubscribe
 
 Removes function from the list of event subscribers.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -468,7 +496,7 @@ Removes function from the list of event subscribers.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -484,9 +512,9 @@ Removes function from the list of event subscribers.
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -500,7 +528,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

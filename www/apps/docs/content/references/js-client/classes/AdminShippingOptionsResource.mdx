@@ -19,11 +19,11 @@ Related Guide: [Shipping Option architecture](https://docs.medusajs.com/modules/
 
 ## Methods
 
-#### create
+### create
 
 Create a shipping option.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -42,7 +42,7 @@ medusa.admin.shippingOptions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -194,7 +194,7 @@ medusa.admin.shippingOptions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -403,11 +403,11 @@ medusa.admin.shippingOptions
 
 ___
 
-#### delete
+### delete
 
 Delete a shipping option. Once deleted, it can't be used when creating orders or returns.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -420,7 +420,7 @@ medusa.admin.shippingOptions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -443,7 +443,7 @@ medusa.admin.shippingOptions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -487,11 +487,11 @@ medusa.admin.shippingOptions
 
 ___
 
-#### list
+### list
 
 Retrieve a list of shipping options. The shipping options can be filtered by fields such as `region_id` or `is_return` passed in the `query` parameter.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -502,7 +502,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -553,7 +553,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -789,11 +789,11 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a shipping option's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -804,7 +804,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -827,7 +827,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1036,11 +1036,11 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
 
 ___
 
-#### update
+### update
 
 Update a shipping option's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1062,7 +1062,7 @@ medusa.admin.shippingOptions
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1178,7 +1178,7 @@ medusa.admin.shippingOptions
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

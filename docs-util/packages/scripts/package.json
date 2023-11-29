@@ -33,7 +33,7 @@
     "typedoc-plugin-missing-exports": "^2.1.0",
     "typedoc-plugin-reference-excluder": "1.1.3",
     "typedoc-plugin-rename-defaults": "^0.6.6",
-    "typescript": "^5.2.2"
+    "typescript": "5.2"
   },
   "devDependencies": {
     "@types/randomcolor": "^0.5.8"

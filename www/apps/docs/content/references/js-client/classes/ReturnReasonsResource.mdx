@@ -14,11 +14,11 @@ Return reasons are key-value pairs that are used to specify why an order return 
 
 ## Methods
 
-#### list
+### list
 
 Retrieve a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -28,7 +28,7 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -42,7 +42,7 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -178,11 +178,11 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a Return Reason's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -192,7 +192,7 @@ medusa.returnReasons.retrieve(reasonId).then(({ return_reason }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -215,7 +215,7 @@ medusa.returnReasons.retrieve(reasonId).then(({ return_reason }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

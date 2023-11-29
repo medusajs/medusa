@@ -17,7 +17,7 @@ added and `'removeListener'` when existing listeners are removed.
 
 It supports the following option:
 
-#### Since
+## Since
 
 v0.1.26
 
@@ -62,11 +62,13 @@ v0.1.26
   }
 ]} />
 
+___
+
 ## Methods
 
-#### [captureRejectionSymbol]
+### [captureRejectionSymbol]
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -98,7 +100,7 @@ v0.1.26
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -114,11 +116,11 @@ v0.1.26
 
 ___
 
-#### addListener
+### addListener
 
 Alias for `emitter.on(eventName, listener)`.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -141,7 +143,7 @@ Alias for `emitter.on(eventName, listener)`.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -161,7 +163,7 @@ v0.1.26
 
 ___
 
-#### emit
+### emit
 
 Synchronously calls each of the listeners registered for the event named`eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -201,7 +203,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 // event with parameters 1, 2, 3, 4, 5 in third listener
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -224,7 +226,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -244,7 +246,7 @@ v0.1.26
 
 ___
 
-#### eventNames
+### eventNames
 
 Returns an array listing the events for which the emitter has registered
 listeners. The values in the array are strings or `Symbol`s.
@@ -263,7 +265,7 @@ console.log(myEE.eventNames());
 // Prints: [ 'foo', 'bar', Symbol(symbol) ]
 ```
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -283,12 +285,12 @@ v6.0.0
 
 ___
 
-#### getMaxListeners
+### getMaxListeners
 
 Returns the current max listener value for the `EventEmitter` which is either
 set by `emitter.setMaxListeners(n)` or defaults to [defaultMaxListeners](internal.EventEmitter-1.mdx#defaultmaxlisteners).
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -308,13 +310,13 @@ v1.0.0
 
 ___
 
-#### listenerCount
+### listenerCount
 
 Returns the number of listeners listening for the event named `eventName`.
 If `listener` is provided, it will return how many times the listener is found
 in the list of the listeners of the event.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -337,7 +339,7 @@ in the list of the listeners of the event.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -357,7 +359,7 @@ v3.2.0
 
 ___
 
-#### listeners
+### listeners
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -369,7 +371,7 @@ console.log(util.inspect(server.listeners('connection')));
 // Prints: [ [Function] ]
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -383,7 +385,7 @@ console.log(util.inspect(server.listeners('connection')));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -403,11 +405,11 @@ v0.1.26
 
 ___
 
-#### off
+### off
 
 Alias for `emitter.removeListener()`.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -430,7 +432,7 @@ Alias for `emitter.removeListener()`.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -450,7 +452,7 @@ v10.0.0
 
 ___
 
-#### on
+### on
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -479,7 +481,7 @@ myEE.emit('foo');
 //   a
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -502,7 +504,7 @@ myEE.emit('foo');
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -522,7 +524,7 @@ v0.1.101
 
 ___
 
-#### once
+### once
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -549,7 +551,7 @@ myEE.emit('foo');
 //   a
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -572,7 +574,7 @@ myEE.emit('foo');
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -592,7 +594,7 @@ v0.3.0
 
 ___
 
-#### prependListener
+### prependListener
 
 Adds the `listener` function to the \_beginning\_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -607,7 +609,7 @@ server.prependListener('connection', (stream) => {
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -630,7 +632,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -650,7 +652,7 @@ v6.0.0
 
 ___
 
-#### prependOnceListener
+### prependOnceListener
 
 Adds a **one-time**`listener` function for the event named `eventName` to the \_beginning\_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
@@ -663,7 +665,7 @@ server.prependOnceListener('connection', (stream) => {
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -686,7 +688,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -706,7 +708,7 @@ v6.0.0
 
 ___
 
-#### rawListeners
+### rawListeners
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -736,7 +738,7 @@ newListeners[0]();
 emitter.emit('log');
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -750,7 +752,7 @@ emitter.emit('log');
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -770,7 +772,7 @@ v9.4.0
 
 ___
 
-#### removeAllListeners
+### removeAllListeners
 
 Removes all listeners, or those of the specified `eventName`.
 
@@ -780,7 +782,7 @@ component or module (e.g. sockets or file streams).
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -794,7 +796,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -814,7 +816,7 @@ v0.1.26
 
 ___
 
-#### removeListener
+### removeListener
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -896,7 +898,7 @@ ee.emit('ping');
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -919,7 +921,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -939,7 +941,7 @@ v0.1.26
 
 ___
 
-#### setMaxListeners
+### setMaxListeners
 
 By default `EventEmitter`s will print a warning if more than `10` listeners are
 added for a particular event. This is a useful default that helps finding
@@ -948,7 +950,7 @@ modified for this specific `EventEmitter` instance. The value can be set to`Infi
 
 Returns a reference to the `EventEmitter`, so that calls can be chained.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -962,7 +964,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -982,7 +984,7 @@ v0.3.5
 
 ___
 
-#### addAbortListener
+### addAbortListener
 
 Listens once to the `abort` event on the provided `signal`.
 
@@ -1014,7 +1016,7 @@ function example(signal) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1037,7 +1039,7 @@ function example(signal) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1057,7 +1059,7 @@ v20.5.0
 
 ___
 
-#### getEventListeners
+### getEventListeners
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -1084,7 +1086,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1107,7 +1109,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1127,7 +1129,7 @@ v15.2.0, v14.17.0
 
 ___
 
-#### getMaxListeners
+### getMaxListeners
 
 Returns the currently set max amount of listeners.
 
@@ -1155,7 +1157,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1169,7 +1171,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1189,7 +1191,7 @@ v19.9.0
 
 ___
 
-#### listenerCount
+### listenerCount
 
 A class method that returns the number of listeners for the given `eventName`registered on the given `emitter`.
 
@@ -1203,7 +1205,7 @@ console.log(listenerCount(myEmitter, 'event'));
 // Prints: 2
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1226,7 +1228,7 @@ console.log(listenerCount(myEmitter, 'event'));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1250,7 +1252,7 @@ Since v3.2.0 - Use `listenerCount` instead.
 
 ___
 
-#### on
+### on
 
 ```js
 import { on, EventEmitter } from 'node:events';
@@ -1307,7 +1309,7 @@ const ac = new AbortController();
 process.nextTick(() => ac.abort());
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1339,7 +1341,7 @@ process.nextTick(() => ac.abort());
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1359,7 +1361,7 @@ v13.6.0, v12.16.0
 
 ___
 
-#### once
+### once
 
 `Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
@@ -1440,7 +1442,7 @@ ac.abort(); // Abort waiting for the event
 ee.emit('foo'); // Prints: Waiting for the event was canceled!
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1472,7 +1474,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1492,7 +1494,7 @@ v11.13.0, v10.16.0
 
 `Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1524,7 +1526,7 @@ v11.13.0, v10.16.0
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1540,7 +1542,7 @@ v11.13.0, v10.16.0
 
 ___
 
-#### setMaxListeners
+### setMaxListeners
 
 ```js
 import { setMaxListeners, EventEmitter } from 'node:events';
@@ -1551,7 +1553,7 @@ const emitter = new EventEmitter();
 setMaxListeners(5, target, emitter);
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1574,7 +1576,7 @@ setMaxListeners(5, target, emitter);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
