@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This will be
 
-#### Deprecated
+## Deprecated
 
 in the near future use the AbstractPaymentProcessor instead
 
@@ -16,13 +16,11 @@ in the near future use the AbstractPaymentProcessor instead
 
 - ["medusa-interfaces"](../modules/medusa_interfaces_.mdx)
 
-## Constructors
-
-#### constructor
+## constructor
 
 `Protected **new AbstractPaymentService**(container, config?)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -44,6 +42,8 @@ in the near future use the AbstractPaymentProcessor instead
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -104,15 +104,35 @@ in the near future use the AbstractPaymentProcessor instead
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -120,7 +140,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -143,7 +163,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -175,7 +195,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -193,11 +213,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### authorizePayment
+### authorizePayment
 
 `Abstract **authorizePayment**(paymentSession, context): Promise&#60;&#123; data: [Data](../types/Data.mdx) ; status: [PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)  &#125;&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -220,7 +240,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;&#123; data: [Data](../types/Data.mdx) ; status: [PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)  &#125;&#62;
 
@@ -240,13 +260,13 @@ Promise&#60;&#123; data: [Data](../types/Data.mdx) ; status: [PaymentSessionStat
 
 ___
 
-#### cancelPayment
+### cancelPayment
 
 `Abstract **cancelPayment**(payment): Promise&#60;[Data](../types/Data.mdx)&#62;`
 
 This will be
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -260,7 +280,7 @@ This will be
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)&#62;
 
@@ -282,13 +302,13 @@ in the near future
 
 ___
 
-#### capturePayment
+### capturePayment
 
 `Abstract **capturePayment**(payment): Promise&#60;[Data](../types/Data.mdx)&#62;`
 
 This will be
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -302,7 +322,7 @@ This will be
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)&#62;
 
@@ -324,11 +344,11 @@ in the near future
 
 ___
 
-#### createPayment
+### createPayment
 
 `Abstract **createPayment**(context): Promise&#60;[PaymentSessionResponse](../types/PaymentSessionResponse.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -342,7 +362,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PaymentSessionResponse](../types/PaymentSessionResponse.mdx)&#62;
 
@@ -362,7 +382,7 @@ Promise&#60;[PaymentSessionResponse](../types/PaymentSessionResponse.mdx)&#62;
 
 This will be
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -376,7 +396,7 @@ This will be
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)&#62;
 
@@ -398,13 +418,13 @@ in the near future use `createPayment(context: Cart & PaymentContext): Promise<P
 
 ___
 
-#### deletePayment
+### deletePayment
 
 `Abstract **deletePayment**(paymentSession): Promise&#60;void&#62;`
 
 This will be
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -418,7 +438,7 @@ This will be
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -440,11 +460,11 @@ in the near future
 
 ___
 
-#### getIdentifier
+### getIdentifier
 
 `**getIdentifier**(): string`
 
-##### Returns
+#### Returns
 
 `string`
 
@@ -462,11 +482,11 @@ ___
 
 ___
 
-#### getPaymentData
+### getPaymentData
 
 `Abstract **getPaymentData**(paymentSession): Promise&#60;[Data](../types/Data.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -480,7 +500,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)&#62;
 
@@ -500,13 +520,13 @@ Promise&#60;[Data](../types/Data.mdx)&#62;
 
 ___
 
-#### getStatus
+### getStatus
 
 `Abstract **getStatus**(data): Promise&#60;[PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)&#62;`
 
 This will be
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -520,7 +540,7 @@ This will be
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)&#62;
 
@@ -542,13 +562,13 @@ in the near future
 
 ___
 
-#### refundPayment
+### refundPayment
 
 `Abstract **refundPayment**(payment, refundAmount): Promise&#60;[Data](../types/Data.mdx)&#62;`
 
 This will be
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -571,7 +591,7 @@ This will be
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)&#62;
 
@@ -593,11 +613,11 @@ in the near future
 
 ___
 
-#### retrievePayment
+### retrievePayment
 
 `Abstract **retrievePayment**(paymentData): Promise&#60;[Data](../types/Data.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -611,7 +631,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)&#62;
 
@@ -631,13 +651,13 @@ Promise&#60;[Data](../types/Data.mdx)&#62;
 
 ___
 
-#### retrieveSavedMethods
+### retrieveSavedMethods
 
 `**retrieveSavedMethods**(customer): Promise&#60;[Data](../types/Data.mdx)[]&#62;`
 
 This will be
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -651,7 +671,7 @@ This will be
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)[]&#62;
 
@@ -673,11 +693,11 @@ in the near future
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -691,7 +711,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -709,11 +729,11 @@ ___
 
 ___
 
-#### updatePayment
+### updatePayment
 
 `Abstract **updatePayment**(paymentSessionData, context): Promise&#60;Record&#60;string, unknown&#62; \| [PaymentSessionResponse](../types/PaymentSessionResponse.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -736,7 +756,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62; \| [PaymentSessionResponse](../types/PaymentSessionResponse.mdx)&#62;
 
@@ -756,7 +776,7 @@ Promise&#60;Record&#60;string, unknown&#62; \| [PaymentSessionResponse](../types
 
 This will be
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -779,7 +799,7 @@ This will be
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)&#62;
 
@@ -801,11 +821,11 @@ in the near future use `updatePayment(paymentSessionData: PaymentSessionData, co
 
 ___
 
-#### updatePaymentData
+### updatePaymentData
 
 `Abstract **updatePaymentData**(paymentSessionData, data): Promise&#60;[Data](../types/Data.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -828,7 +848,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Data](../types/Data.mdx)&#62;
 
@@ -848,11 +868,11 @@ Promise&#60;[Data](../types/Data.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [AbstractPaymentService](AbstractPaymentService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -866,7 +886,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [AbstractPaymentService](AbstractPaymentService.mdx)
 

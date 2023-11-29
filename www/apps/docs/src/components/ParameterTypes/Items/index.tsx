@@ -76,7 +76,7 @@ const ParameterTypesItems = ({
           parameter.description || parameter.defaultValue ? (
             <>
               <MarkdownContent
-                allowedElements={["a", "strong", "code"]}
+                allowedElements={["a", "strong", "code", "ul", "ol", "li"]}
                 unwrapDisallowed={true}
                 className="text-medium"
               >

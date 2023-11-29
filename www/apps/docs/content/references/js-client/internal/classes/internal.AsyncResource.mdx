@@ -44,9 +44,9 @@ asyncResource.triggerAsyncId();
 
 ## Methods
 
-#### asyncId
+### asyncId
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -62,11 +62,11 @@ asyncResource.triggerAsyncId();
 
 ___
 
-#### bind
+### bind
 
 Binds the given function to execute to this `AsyncResource`'s scope.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -80,7 +80,7 @@ Binds the given function to execute to this `AsyncResource`'s scope.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -100,14 +100,14 @@ v14.8.0, v12.19.0
 
 ___
 
-#### emitDestroy
+### emitDestroy
 
 Call all `destroy` hooks. This should only ever be called once. An error will
 be thrown if it is called more than once. This **must** be manually called. If
 the resource is left to be collected by the GC then the `destroy` hooks will
 never be called.
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -123,14 +123,14 @@ never be called.
 
 ___
 
-#### runInAsyncScope
+### runInAsyncScope
 
 Call the provided function with the provided arguments in the execution context
 of the async resource. This will establish the context, trigger the AsyncHooks
 before callbacks, call the function, trigger the AsyncHooks after callbacks, and
 then restore the original execution context.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -162,7 +162,7 @@ then restore the original execution context.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -182,9 +182,9 @@ v9.6.0
 
 ___
 
-#### triggerAsyncId
+### triggerAsyncId
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -200,11 +200,11 @@ ___
 
 ___
 
-#### bind
+### bind
 
 Binds the given function to the current execution context.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -236,7 +236,7 @@ Binds the given function to the current execution context.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

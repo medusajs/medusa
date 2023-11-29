@@ -24,9 +24,11 @@ Valid string encodings: 'ascii'\|'utf8'\|'utf16le'\|'ucs2'(alias of 'utf16le')\|
   }
 ]} />
 
+___
+
 ## Methods
 
-#### alloc
+### alloc
 
 Allocates a new `Buffer` of `size` bytes. If `fill` is `undefined`, the`Buffer` will be zero-filled.
 
@@ -70,7 +72,7 @@ data that might not have been allocated for `Buffer`s.
 
 A `TypeError` will be thrown if `size` is not a number.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -102,7 +104,7 @@ A `TypeError` will be thrown if `size` is not a number.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -122,7 +124,7 @@ v5.10.0
 
 ___
 
-#### allocUnsafe
+### allocUnsafe
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown.
 
@@ -156,7 +158,7 @@ than or equal to half `Buffer.poolSize`. The
 difference is subtle but can be important when an application requires the
 additional performance that `Buffer.allocUnsafe()` provides.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -170,7 +172,7 @@ additional performance that `Buffer.allocUnsafe()` provides.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -190,7 +192,7 @@ v5.10.0
 
 ___
 
-#### allocUnsafeSlow
+### allocUnsafeSlow
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown. A zero-length `Buffer` is created if
 `size` is 0.
@@ -233,7 +235,7 @@ socket.on('readable', () => {
 
 A `TypeError` will be thrown if `size` is not a number.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -247,7 +249,7 @@ A `TypeError` will be thrown if `size` is not a number.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -267,7 +269,7 @@ v5.12.0
 
 ___
 
-#### byteLength
+### byteLength
 
 Returns the byte length of a string when encoded using `encoding`.
 This is not the same as [`String.prototype.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/String/length), which does not account
@@ -293,7 +295,7 @@ When `string` is a
 Reference/Global\_Objects/TypedArray)/[`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/ArrayBuffer)/[`SharedArrayBuffer`](https://develop-
 er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/SharedArrayBuffer), the byte length as reported by `.byteLength`is returned.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -316,7 +318,7 @@ er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/SharedArrayBu
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -336,7 +338,7 @@ v0.1.90
 
 ___
 
-#### compare
+### compare
 
 Compares `buf1` to `buf2`, typically for the purpose of sorting arrays of`Buffer` instances. This is equivalent to calling `buf1.compare(buf2)`.
 
@@ -352,7 +354,7 @@ console.log(arr.sort(Buffer.compare));
 // (This result is equal to: [buf2, buf1].)
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -375,7 +377,7 @@ console.log(arr.sort(Buffer.compare));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -395,7 +397,7 @@ v0.11.13
 
 ___
 
-#### concat
+### concat
 
 Returns a new `Buffer` which is the result of concatenating all the `Buffer`instances in the `list` together.
 
@@ -431,7 +433,7 @@ console.log(bufA.length);
 
 `Buffer.concat()` may also use the internal `Buffer` pool like `Buffer.allocUnsafe()` does.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -454,7 +456,7 @@ console.log(bufA.length);
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -474,7 +476,7 @@ v0.7.11
 
 ___
 
-#### copyBytesFrom
+### copyBytesFrom
 
 Copies the underlying memory of `view` into a new `Buffer`.
 
@@ -487,7 +489,7 @@ console.log(buf[0]); // 255
 console.log(buf[1]); // 255
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -519,7 +521,7 @@ console.log(buf[1]); // 255
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -539,7 +541,7 @@ v19.8.0
 
 ___
 
-#### from
+### from
 
 `**from**(arrayBuffer, byteOffset?, length?): [Buffer](../../modules/internal.mdx#buffer)`
 
@@ -562,7 +564,7 @@ appropriate for `Buffer.from()` variants.
 
 `Buffer.from(array)` and `Buffer.from(string)` may also use the internal`Buffer` pool like `Buffer.allocUnsafe()` does.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -594,7 +596,7 @@ appropriate for `Buffer.from()` variants.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -616,7 +618,7 @@ v5.10.0
 
 Creates a new Buffer using the passed &#123;data&#125;
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -630,7 +632,7 @@ Creates a new Buffer using the passed &#123;data&#125;
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -646,7 +648,7 @@ Creates a new Buffer using the passed &#123;data&#125;
 
 `**from**(data): [Buffer](../../modules/internal.mdx#buffer)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -660,7 +662,7 @@ Creates a new Buffer using the passed &#123;data&#125;
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -680,7 +682,7 @@ Creates a new Buffer containing the given JavaScript string &#123;str&#125;.
 If provided, the &#123;encoding&#125; parameter identifies the character encoding.
 If not provided, &#123;encoding&#125; defaults to 'utf8'.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -703,7 +705,7 @@ If not provided, &#123;encoding&#125; defaults to 'utf8'.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -719,7 +721,7 @@ If not provided, &#123;encoding&#125; defaults to 'utf8'.
 
 ___
 
-#### isBuffer
+### isBuffer
 
 Returns `true` if `obj` is a `Buffer`, `false` otherwise.
 
@@ -733,7 +735,7 @@ Buffer.isBuffer([]); // false
 Buffer.isBuffer(new Uint8Array(1024)); // false
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -747,7 +749,7 @@ Buffer.isBuffer(new Uint8Array(1024)); // false
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -767,7 +769,7 @@ v0.1.101
 
 ___
 
-#### isEncoding
+### isEncoding
 
 Returns `true` if `encoding` is the name of a supported character encoding,
 or `false` otherwise.
@@ -788,7 +790,7 @@ console.log(Buffer.isEncoding(''));
 // Prints: false
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -802,7 +804,7 @@ console.log(Buffer.isEncoding(''));
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -822,11 +824,11 @@ v0.9.1
 
 ___
 
-#### of
+### of
 
 Creates a new Buffer using the passed &#123;data&#125;
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -840,7 +842,7 @@ Creates a new Buffer using the passed &#123;data&#125;
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

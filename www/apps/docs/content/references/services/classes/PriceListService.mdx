@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate product tags.
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new PriceListService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate product tags.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -150,21 +150,41 @@ Provides layer to manipulate product tags.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addCurrencyFromRegion
+### addCurrencyFromRegion
 
 `Protected **addCurrencyFromRegion**<TypeParameter T>(prices): Promise&#60;T[]&#62;`
 
 Add `currency_code` to an MA record if `region_id`is passed.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -178,7 +198,7 @@ Add `currency_code` to an MA record if `region_id`is passed.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -192,7 +212,7 @@ Add `currency_code` to an MA record if `region_id`is passed.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;T[]&#62;
 
@@ -210,13 +230,13 @@ Promise&#60;T[]&#62;
 
 ___
 
-#### addPrices
+### addPrices
 
 `**addPrices**(id, prices, replace?): Promise&#60;[PriceList](PriceList.mdx)&#62;`
 
 Adds prices to a price list in bulk, optionally replacing all existing prices
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -248,7 +268,7 @@ Adds prices to a price list in bulk, optionally replacing all existing prices
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceList](PriceList.mdx)&#62;
 
@@ -266,7 +286,7 @@ Promise&#60;[PriceList](PriceList.mdx)&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -274,7 +294,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -297,7 +317,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -329,7 +349,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -347,13 +367,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### clearPrices
+### clearPrices
 
 `**clearPrices**(id): Promise&#60;void&#62;`
 
 Removes all prices from a price list and deletes the removed prices in bulk
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -367,7 +387,7 @@ Removes all prices from a price list and deletes the removed prices in bulk
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -385,13 +405,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(priceListObject): Promise&#60;[PriceList](PriceList.mdx)&#62;`
 
 Creates a Price List
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -405,7 +425,7 @@ Creates a Price List
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceList](PriceList.mdx)&#62;
 
@@ -423,14 +443,14 @@ Promise&#60;[PriceList](PriceList.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(id): Promise&#60;void&#62;`
 
 Deletes a Price List
 Will never fail due to delete being idempotent.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -444,7 +464,7 @@ Will never fail due to delete being idempotent.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -462,13 +482,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deletePrices
+### deletePrices
 
 `**deletePrices**(id, priceIds): Promise&#60;void&#62;`
 
 Removes prices from a price list and deletes the removed prices in bulk
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -491,7 +511,7 @@ Removes prices from a price list and deletes the removed prices in bulk
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -509,11 +529,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteProductPrices
+### deleteProductPrices
 
 `**deleteProductPrices**(priceListId, productIds): Promise&#60;[string[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -536,7 +556,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[string[], number]&#62;
 
@@ -554,11 +574,11 @@ Promise&#60;[string[], number]&#62;
 
 ___
 
-#### deleteVariantPrices
+### deleteVariantPrices
 
 `**deleteVariantPrices**(priceListId, variantIds): Promise&#60;[string[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -581,7 +601,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[string[], number]&#62;
 
@@ -599,13 +619,13 @@ Promise&#60;[string[], number]&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector?, config?): Promise&#60;[PriceList](PriceList.mdx)[]&#62;`
 
 Lists Price Lists
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -628,7 +648,7 @@ Lists Price Lists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceList](PriceList.mdx)[]&#62;
 
@@ -646,13 +666,13 @@ Promise&#60;[PriceList](PriceList.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector?, config?): Promise&#60;[[PriceList](PriceList.mdx)[], number]&#62;`
 
 Lists Price Lists and adds count
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -675,7 +695,7 @@ Lists Price Lists and adds count
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[PriceList](PriceList.mdx)[], number]&#62;
 
@@ -693,11 +713,11 @@ Promise&#60;[[PriceList](PriceList.mdx)[], number]&#62;
 
 ___
 
-#### listPriceListsVariantIdsMap
+### listPriceListsVariantIdsMap
 
 `**listPriceListsVariantIdsMap**(priceListIds): Promise&#60;&#123; [priceListId: string]: string[];  &#125;&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -711,7 +731,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;&#123; [priceListId: string]: string[];  &#125;&#62;
 
@@ -729,11 +749,11 @@ Promise&#60;&#123; [priceListId: string]: string[];  &#125;&#62;
 
 ___
 
-#### listProducts
+### listProducts
 
 `**listProducts**(priceListId, selector?, config?, requiresPriceList?): Promise&#60;[[Product](Product.mdx)[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -774,7 +794,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[Product](Product.mdx)[], number]&#62;
 
@@ -792,11 +812,11 @@ Promise&#60;[[Product](Product.mdx)[], number]&#62;
 
 ___
 
-#### listVariants
+### listVariants
 
 `**listVariants**(priceListId, selector?, config?, requiresPriceList?): Promise&#60;[[ProductVariant](ProductVariant.mdx)[], number]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -837,7 +857,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[ProductVariant](ProductVariant.mdx)[], number]&#62;
 
@@ -855,13 +875,13 @@ Promise&#60;[[ProductVariant](ProductVariant.mdx)[], number]&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(priceListId, config?): Promise&#60;[PriceList](PriceList.mdx)&#62;`
 
 Retrieves a product tag by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -884,7 +904,7 @@ Retrieves a product tag by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceList](PriceList.mdx)&#62;
 
@@ -902,11 +922,11 @@ Promise&#60;[PriceList](PriceList.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -920,7 +940,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -938,13 +958,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(id, update): Promise&#60;[PriceList](PriceList.mdx)&#62;`
 
 Updates a Price List
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -967,7 +987,7 @@ Updates a Price List
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceList](PriceList.mdx)&#62;
 
@@ -985,11 +1005,11 @@ Promise&#60;[PriceList](PriceList.mdx)&#62;
 
 ___
 
-#### upsertCustomerGroups\_
+### upsertCustomerGroups\_
 
 `Protected **upsertCustomerGroups_**(priceListId, customerGroups): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1012,7 +1032,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1030,11 +1050,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [PriceListService](PriceListService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1048,7 +1068,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [PriceListService](PriceListService.mdx)
 

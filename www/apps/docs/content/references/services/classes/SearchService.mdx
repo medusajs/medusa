@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # SearchService
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new SearchService**(«destructured», options)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -34,6 +32,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -67,21 +67,41 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### options
+### options
 
- **options**: [object Object]
+`get**options**(): Record&#60;string, unknown&#62;`
+
+#### Returns
+
+`Record<string, unknown>`
+
+<ParameterTypes parameters={[
+  {
+    "name": "Record",
+    "type": "`Record<string, unknown>`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addDocuments
+### addDocuments
 
 `**addDocuments**(indexName, documents, type): Promise&#60;void&#62;`
 
 Used to index documents by the search engine provider
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -113,7 +133,7 @@ Used to index documents by the search engine provider
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -131,13 +151,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### createIndex
+### createIndex
 
 `**createIndex**(indexName, options): Promise&#60;void&#62;`
 
 Used to create an index
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -160,7 +180,7 @@ Used to create an index
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -178,13 +198,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteAllDocuments
+### deleteAllDocuments
 
 `**deleteAllDocuments**(indexName): Promise&#60;void&#62;`
 
 Used to delete all documents
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -198,7 +218,7 @@ Used to delete all documents
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -216,13 +236,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteDocument
+### deleteDocument
 
 `**deleteDocument**(indexName, document_id): Promise&#60;void&#62;`
 
 Used to delete document
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -245,7 +265,7 @@ Used to delete document
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -263,13 +283,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### getIndex
+### getIndex
 
 `**getIndex**(indexName): Promise&#60;void&#62;`
 
 Used to get an index
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -283,7 +303,7 @@ Used to get an index
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -301,13 +321,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### replaceDocuments
+### replaceDocuments
 
 `**replaceDocuments**(indexName, documents, type): Promise&#60;void&#62;`
 
 Used to replace documents
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -339,7 +359,7 @@ Used to replace documents
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -357,13 +377,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### search
+### search
 
 `**search**(indexName, query, options): Promise&#60;&#123; hits: unknown[]  &#125;&#62;`
 
 Used to search for a document in an index
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -395,7 +415,7 @@ Used to search for a document in an index
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;&#123; hits: unknown[]  &#125;&#62;
 
@@ -413,13 +433,13 @@ Promise&#60;&#123; hits: unknown[]  &#125;&#62;
 
 ___
 
-#### updateSettings
+### updateSettings
 
 `**updateSettings**(indexName, settings): Promise&#60;void&#62;`
 
 Used to update the settings of an index
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -442,7 +462,7 @@ Used to update the settings of an index
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 

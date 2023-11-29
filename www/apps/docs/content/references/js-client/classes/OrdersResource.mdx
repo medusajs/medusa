@@ -17,11 +17,11 @@ Related Guide: [How to retrieve order details in a storefront](https://docs.medu
 
 ## Methods
 
-#### confirmRequest
+### confirmRequest
 
 Verify the claim order token provided to the customer when they request ownership of an order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -37,7 +37,7 @@ medusa.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -70,7 +70,7 @@ medusa.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -86,11 +86,11 @@ medusa.orders
 
 ___
 
-#### lookupOrder
+### lookupOrder
 
 Look up an order using filters. If the filters don't narrow down the results to a single order, a `404` response is returned with no orders.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -105,7 +105,7 @@ medusa.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -184,7 +184,7 @@ medusa.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -725,13 +725,13 @@ medusa.orders
 
 ___
 
-#### requestCustomerOrders
+### requestCustomerOrders
 
 Allow the logged-in customer to claim ownership of one or more orders. This generates a token that can be used later on to verify the claim using the [confirmRequest](OrdersResource.mdx#confirmrequest) method.
 This also emits the event `order-update-token.created`. So, if you have a notification provider installed that handles this event and sends the customer a notification, such as an email,
 the customer should receive instructions on how to finalize their claim ownership.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -749,7 +749,7 @@ medusa.orders
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -782,7 +782,7 @@ medusa.orders
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -798,11 +798,11 @@ medusa.orders
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve an Order's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -812,7 +812,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -835,7 +835,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1376,11 +1376,11 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
 
 ___
 
-#### retrieveByCartId
+### retrieveByCartId
 
 Retrieve an order's details by the ID of the cart that was used to create the order.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1390,7 +1390,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1413,7 +1413,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

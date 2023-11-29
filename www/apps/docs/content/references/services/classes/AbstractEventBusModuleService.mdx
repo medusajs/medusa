@@ -10,11 +10,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 - [IEventBusModuleService](../interfaces/IEventBusModuleService.mdx)
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new AbstractEventBusModuleService**()`
+
+___
 
 ## Properties
 
@@ -30,19 +30,39 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### eventToSubscribersMap
+### eventToSubscribersMap
 
- **eventToSubscribersMap**: [object Object]
+`get**eventToSubscribersMap**(): Map&#60;string \| symbol, [SubscriberDescriptor](../types/SubscriberDescriptor.mdx)[]&#62;`
+
+#### Returns
+
+Map&#60;string \| symbol, [SubscriberDescriptor](../types/SubscriberDescriptor.mdx)[]&#62;
+
+<ParameterTypes parameters={[
+  {
+    "name": "Map",
+    "type": "Map&#60;string \\| symbol, [SubscriberDescriptor](../types/SubscriberDescriptor.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### emit
+### emit
 
 `Abstract **emit**<TypeParameter T>(eventName, data, options): Promise&#60;void&#62;`
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -56,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -88,7 +108,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -106,7 +126,7 @@ Promise&#60;void&#62;
 
 `Abstract **emit**<TypeParameter T>(data): Promise&#60;void&#62;`
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -120,7 +140,7 @@ Promise&#60;void&#62;
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -134,7 +154,7 @@ Promise&#60;void&#62;
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -152,11 +172,11 @@ Promise&#60;void&#62;
 
 ___
 
-#### storeSubscribers
+### storeSubscribers
 
 `Protected **storeSubscribers**(«destructured»): void`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -197,7 +217,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `void`
 
@@ -215,11 +235,11 @@ ___
 
 ___
 
-#### subscribe
+### subscribe
 
 `**subscribe**(eventName, subscriber, context?): [AbstractEventBusModuleService](AbstractEventBusModuleService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -251,7 +271,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [AbstractEventBusModuleService](AbstractEventBusModuleService.mdx)
 
@@ -269,11 +289,11 @@ ___
 
 ___
 
-#### unsubscribe
+### unsubscribe
 
 `**unsubscribe**(eventName, subscriber, context): [AbstractEventBusModuleService](AbstractEventBusModuleService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -305,7 +325,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [AbstractEventBusModuleService](AbstractEventBusModuleService.mdx)
 

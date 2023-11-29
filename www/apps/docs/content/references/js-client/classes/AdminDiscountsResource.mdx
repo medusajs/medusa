@@ -19,12 +19,12 @@ Related Guide: [How to manage discounts](https://docs.medusajs.com/modules/disco
 
 ## Methods
 
-#### addConditionResourceBatch
+### addConditionResourceBatch
 
 Add a batch of resources to a discount condition. The type of resource depends on the type of discount condition. For example, if the discount condition's type is `products`,
 the resources being added should be products.
 
-##### Example
+#### Example
 
 To add resources to a discount condition:
 
@@ -63,7 +63,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -152,7 +152,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -351,11 +351,11 @@ medusa.admin.discounts
 
 ___
 
-#### addRegion
+### addRegion
 
 Add a Region to the list of Regions a Discount can be used in.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -366,7 +366,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -398,7 +398,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -597,11 +597,11 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
 
 ___
 
-#### create
+### create
 
 Create a discount with a given set of rules that defines how the discount is applied.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -625,7 +625,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -887,7 +887,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1086,12 +1086,12 @@ medusa.admin.discounts
 
 ___
 
-#### createCondition
+### createCondition
 
 Create a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided in the `payload` parameter, 
 based on the type of discount condition. For example, if the discount condition's type is `products`, the `products` field should be provided in the `payload` parameter.
 
-##### Example
+#### Example
 
 To create a condition in a discount:
 
@@ -1133,7 +1133,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1267,7 +1267,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1466,11 +1466,11 @@ medusa.admin.discounts
 
 ___
 
-#### createDynamicCode
+### createDynamicCode
 
 Create a dynamic unique code that can map to a parent discount. This is useful if you want to automatically generate codes with the same rules and conditions.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1486,7 +1486,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1546,7 +1546,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1745,11 +1745,11 @@ medusa.admin.discounts
 
 ___
 
-#### delete
+### delete
 
 Delete a discount. Deleting the discount will make it unavailable for customers to use.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1760,7 +1760,7 @@ medusa.admin.discounts.delete(discountId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1783,7 +1783,7 @@ medusa.admin.discounts.delete(discountId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1827,11 +1827,11 @@ medusa.admin.discounts.delete(discountId).then(({ id, object, deleted }) => {
 
 ___
 
-#### deleteCondition
+### deleteCondition
 
 Delete a discount condition. This doesn't delete resources associated to the discount condition.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1844,7 +1844,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1876,7 +1876,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1920,11 +1920,11 @@ medusa.admin.discounts
 
 ___
 
-#### deleteConditionResourceBatch
+### deleteConditionResourceBatch
 
 Remove a batch of resources from a discount condition. This will only remove the association between the resource and the discount condition, not the resource itself.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1939,7 +1939,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2000,7 +2000,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2199,11 +2199,11 @@ medusa.admin.discounts
 
 ___
 
-#### deleteDynamicCode
+### deleteDynamicCode
 
 Delete a dynamic code from a discount.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2216,7 +2216,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2248,7 +2248,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2447,11 +2447,11 @@ medusa.admin.discounts
 
 ___
 
-#### getCondition
+### getCondition
 
 Retrieve a Discount Condition's details.
 
-##### Example
+#### Example
 
 A simple example that retrieves a discount condition by its ID:
 
@@ -2481,7 +2481,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2541,7 +2541,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2704,11 +2704,11 @@ medusa.admin.discounts
 
 ___
 
-#### list
+### list
 
 Retrieve a list of Discounts. The discounts can be filtered by fields such as `rule` or `is_dynamic`. The discounts can also be paginated.
 
-##### Example
+#### Example
 
 To list discounts:
 
@@ -2753,7 +2753,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2915,7 +2915,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3141,11 +3141,11 @@ medusa.admin.discounts
 
 ___
 
-#### removeRegion
+### removeRegion
 
 Remove a Region from the list of Regions that a Discount can be used in. This does not delete a region, only the association between it and the discount.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3158,7 +3158,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3190,7 +3190,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3389,11 +3389,11 @@ medusa.admin.discounts
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a discount.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3404,7 +3404,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3427,7 +3427,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3626,11 +3626,11 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
 
 ___
 
-#### retrieveByCode
+### retrieveByCode
 
 Retrieve a discount's details by its discount code.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3641,7 +3641,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3664,7 +3664,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3863,11 +3863,11 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
 
 ___
 
-#### update
+### update
 
 Update a discount with a given set of rules that define how the discount is applied.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3882,7 +3882,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4125,7 +4125,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4324,12 +4324,12 @@ medusa.admin.discounts
 
 ___
 
-#### updateCondition
+### updateCondition
 
 Update a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided in the `payload` parameter,
 based on the type of discount condition. For example, if the discount condition's type is `products`, the `products` field should be provided in the `payload` parameter.
 
-##### Example
+#### Example
 
 To update a condition in a discount:
 
@@ -4368,7 +4368,7 @@ medusa.admin.discounts
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4483,7 +4483,7 @@ medusa.admin.discounts
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

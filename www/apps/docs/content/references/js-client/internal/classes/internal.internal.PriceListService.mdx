@@ -130,21 +130,35 @@ Provides layer to manipulate product tags.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addCurrencyFromRegion
+### addCurrencyFromRegion
 
 Add `currency_code` to an MA record if `region_id`is passed.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -158,7 +172,7 @@ Add `currency_code` to an MA record if `region_id`is passed.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -174,11 +188,11 @@ Add `currency_code` to an MA record if `region_id`is passed.
 
 ___
 
-#### addPrices
+### addPrices
 
 Adds prices to a price list in bulk, optionally replacing all existing prices
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -210,7 +224,7 @@ Adds prices to a price list in bulk, optionally replacing all existing prices
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -226,13 +240,13 @@ Adds prices to a price list in bulk, optionally replacing all existing prices
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -264,7 +278,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -280,11 +294,11 @@ transaction manager is created.
 
 ___
 
-#### clearPrices
+### clearPrices
 
 Removes all prices from a price list and deletes the removed prices in bulk
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -298,7 +312,7 @@ Removes all prices from a price list and deletes the removed prices in bulk
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -314,11 +328,11 @@ Removes all prices from a price list and deletes the removed prices in bulk
 
 ___
 
-#### create
+### create
 
 Creates a Price List
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -332,7 +346,7 @@ Creates a Price List
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -348,12 +362,12 @@ Creates a Price List
 
 ___
 
-#### delete
+### delete
 
 Deletes a Price List
 Will never fail due to delete being idempotent.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -367,7 +381,7 @@ Will never fail due to delete being idempotent.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -383,11 +397,11 @@ Will never fail due to delete being idempotent.
 
 ___
 
-#### deletePrices
+### deletePrices
 
 Removes prices from a price list and deletes the removed prices in bulk
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -410,7 +424,7 @@ Removes prices from a price list and deletes the removed prices in bulk
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -426,9 +440,9 @@ Removes prices from a price list and deletes the removed prices in bulk
 
 ___
 
-#### deleteProductPrices
+### deleteProductPrices
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -451,7 +465,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -467,9 +481,9 @@ ___
 
 ___
 
-#### deleteVariantPrices
+### deleteVariantPrices
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -492,7 +506,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -508,11 +522,11 @@ ___
 
 ___
 
-#### list
+### list
 
 Lists Price Lists
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -535,7 +549,7 @@ Lists Price Lists
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -551,11 +565,11 @@ Lists Price Lists
 
 ___
 
-#### listAndCount
+### listAndCount
 
 Lists Price Lists and adds count
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -578,7 +592,7 @@ Lists Price Lists and adds count
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -594,9 +608,9 @@ Lists Price Lists and adds count
 
 ___
 
-#### listPriceListsVariantIdsMap
+### listPriceListsVariantIdsMap
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -610,7 +624,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -626,9 +640,9 @@ ___
 
 ___
 
-#### listProducts
+### listProducts
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -669,7 +683,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -685,9 +699,9 @@ ___
 
 ___
 
-#### listVariants
+### listVariants
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -728,7 +742,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -744,11 +758,11 @@ ___
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieves a product tag by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -771,7 +785,7 @@ Retrieves a product tag by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -787,9 +801,9 @@ Retrieves a product tag by id.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -803,7 +817,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -819,11 +833,11 @@ ___
 
 ___
 
-#### update
+### update
 
 Updates a Price List
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -846,7 +860,7 @@ Updates a Price List
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -862,9 +876,9 @@ Updates a Price List
 
 ___
 
-#### upsertCustomerGroups\_
+### upsertCustomerGroups\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -887,7 +901,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -903,9 +917,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -919,7 +933,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
