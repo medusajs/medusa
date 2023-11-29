@@ -682,6 +682,7 @@ export default class PricingModuleService<
       {
         id: data.map((d) => d.id),
       },
+      {},
       sharedContext
     )
     const priceSetIds = priceSets.map((ps) => ps.id)
@@ -1552,6 +1553,7 @@ export default class PricingModuleService<
       {
         id: priceListRuleIds,
       },
+      {},
       sharedContext
     )
 
@@ -1785,12 +1787,14 @@ export default class PricingModuleService<
 
     const ruleTypes = await this.listRuleTypes(
       { rule_attribute: ruleTypeAttributes },
-      { take: null }
+      { take: null },
+      sharedContext
     )
 
     const priceSets = await this.list(
       { id: priceSetIds },
-      { relations: ["rule_types"] }
+      { relations: ["rule_types"] },
+      sharedContext
     )
 
     const priceSetRuleTypeMap: Map<string, Set<string>> = priceSets.reduce(
@@ -1839,6 +1843,7 @@ export default class PricingModuleService<
 
     const priceLists = await this.listPriceLists(
       { id: priceListIds },
+      {},
       sharedContext
     )
 
@@ -1878,16 +1883,19 @@ export default class PricingModuleService<
           )
 
           for (const [ruleAttribute, ruleValue] of Object.entries(priceRules)) {
-            await this.createPriceRules([
-              {
-                price_set_id: price.price_set_id,
-                rule_type:
-                  ruleTypeMap.get(ruleAttribute)!?.id ||
-                  ruleTypeMap.get(ruleAttribute)!,
-                value: ruleValue,
-                price_set_money_amount: psma as any,
-              },
-            ])
+            await this.createPriceRules(
+              [
+                {
+                  price_set_id: price.price_set_id,
+                  rule_type:
+                    ruleTypeMap.get(ruleAttribute)!?.id ||
+                    ruleTypeMap.get(ruleAttribute)!,
+                  value: ruleValue,
+                  price_set_money_amount: psma as any,
+                },
+              ],
+              sharedContext
+            )
           }
 
           return psma
