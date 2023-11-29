@@ -5,5 +5,4 @@ module.exports = getConfig({
   entryPointPath: "packages/medusa/src/models/index.ts",
   tsConfigName: "medusa.json",
   name: "entities",
-  indexTitle: "Entities Reference",
 })

@@ -11,6 +11,9 @@ const require = createRequire(import.meta.url)
 
 const referenceNames = process.argv.slice(2) || ["all"]
 const basePath = path.join(require.resolve("typedoc-config"), "..")
+let generatedCount = 0
+let totalCount = 0
+let ranMerger = false
 
 if (!referenceNames.length) {
   console.error(
@@ -27,10 +30,12 @@ referenceNames.forEach((name) => {
     // `typedoc-config` directory, except for files starting
     // with `_`
     const files = globSync("[^_]**.js", {
-      cwd: path.join(basePath),
+      cwd: basePath,
     })
+    totalCount = files.length
     files.forEach((file) => generateReference(file))
   } else {
+    totalCount = 1
     generateReference(`${name}.js`)
   }
 })
@@ -53,6 +58,15 @@ function generateReference(referenceName: string) {
   const typedocProcess = exec(`typedoc --options ${configPathName}`)
   typedocProcess.stdout?.on("data", (chunk: string) => {
     formatColoredLog(colorLog, referenceName, chunk.trim())
+  })
+  typedocProcess.on("exit", () => {
+    generatedCount++
+    if (generatedCount >= totalCount && !ranMerger) {
+      // run merger
+      console.log(chalk.bgBlueBright("\n\nRunning Merger\n\n"))
+      ranMerger = true
+      generateReference("_merger.js")
+    }
   })
   typedocProcess.stderr?.on("data", (chunk: string) => {
     // split multiline outputs

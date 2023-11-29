@@ -1,0 +1,6113 @@
+{
+	"id": 0,
+	"name": "stock-location",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 59,
+			"name": "FilterableStockLocationProps",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The filters to apply on the retrieved stock locations."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 60,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The IDs to filter stock locations by."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/common.ts",
+							"line": 163,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L163"
+						}
+					],
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 61,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The names to filter stock locations by."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/common.ts",
+							"line": 167,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L167"
+						}
+					],
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							},
+							{
+								"type": "reference",
+								"target": 122,
+								"name": "StringComparisonOperator",
+								"package": "@medusajs/types"
+							}
+						]
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						60,
+						61
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "packages/types/src/stock-location/common.ts",
+					"line": 159,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L159"
+				}
+			]
+		},
+		{
+			"id": 62,
+			"name": "FindConfig",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an "
+					},
+					{
+						"kind": "code",
+						"text": "`Entity`"
+					},
+					{
+						"kind": "text",
+						"text": " class,\nwhich provides correct typing of field names in its properties."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 67,
+					"name": "order",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be "
+							},
+							{
+								"kind": "code",
+								"text": "`ASC`"
+							},
+							{
+								"kind": "text",
+								"text": "\nto sort retrieved records in an ascending order, or "
+							},
+							{
+								"kind": "code",
+								"text": "`DESC`"
+							},
+							{
+								"kind": "text",
+								"text": " to sort retrieved records in a descending order."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 70,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L70"
+						}
+					],
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 68,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "packages/types/src/common/common.ts",
+									"line": 70,
+									"character": 10,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L70"
+								}
+							],
+							"indexSignature": {
+								"id": 69,
+								"name": "__index",
+								"variant": "signature",
+								"kind": 8192,
+								"flags": {},
+								"sources": [
+									{
+										"fileName": "packages/types/src/common/common.ts",
+										"line": 70,
+										"character": 12,
+										"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L70"
+									}
+								],
+								"parameters": [
+									{
+										"id": 70,
+										"name": "K",
+										"variant": "param",
+										"kind": 32768,
+										"flags": {},
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"type": {
+									"type": "union",
+									"types": [
+										{
+											"type": "literal",
+											"value": "ASC"
+										},
+										{
+											"type": "literal",
+											"value": "DESC"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				{
+					"id": 66,
+					"name": "relations",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being relation names of the entity to retrieve in the result."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 65,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L65"
+						}
+					],
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 63,
+					"name": "select",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An array of strings, each being attribute names of the entity to retrieve in the result."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 53,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L53"
+						}
+					],
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "union",
+							"types": [
+								{
+									"type": "intrinsic",
+									"name": "string"
+								},
+								{
+									"type": "typeOperator",
+									"operator": "keyof",
+									"target": {
+										"type": "reference",
+										"target": -1,
+										"name": "Entity",
+										"refersToTypeParameter": true
+									}
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 64,
+					"name": "skip",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A number indicating the number of records to skip before retrieving the results."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 57,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L57"
+						}
+					],
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 65,
+					"name": "take",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A number indicating the number of records to return in the result."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 61,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L61"
+						}
+					],
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 71,
+					"name": "withDeleted",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n"
+							},
+							{
+								"kind": "code",
+								"text": "`SoftDeletableEntity`"
+							},
+							{
+								"kind": "text",
+								"text": " class."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 75,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L75"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						67,
+						66,
+						63,
+						64,
+						65,
+						71
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "packages/types/src/common/common.ts",
+					"line": 49,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L49"
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 72,
+					"name": "Entity",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {}
+				}
+			]
+		},
+		{
+			"id": 1,
+			"name": "IStockLocationService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 19,
+					"name": "create",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/service.ts",
+							"line": 245,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L245"
+						}
+					],
+					"signatures": [
+						{
+							"id": 20,
+							"name": "create",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to create a stock location."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The created stock location's details."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function createStockLocation (name: string) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const stockLocation = await stockLocationModule.create({\n    name\n  })\n  \n  // do something with the stock location or return it\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/service.ts",
+									"line": 245,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L245"
+								}
+							],
+							"parameters": [
+								{
+									"id": 21,
+									"name": "input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the stock location to create."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 86,
+										"name": "CreateStockLocationInput",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 22,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 83,
+										"name": "SharedContext",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 73,
+										"name": "StockLocationDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 28,
+					"name": "delete",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/service.ts",
+							"line": 297,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L297"
+						}
+					],
+					"signatures": [
+						{
+							"id": 29,
+							"name": "delete",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to delete a stock location."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the stock location is successfully deleted."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function deleteStockLocation (id:string) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  await stockLocationModule.delete(id)\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/service.ts",
+									"line": 297,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L297"
+								}
+							],
+							"parameters": [
+								{
+									"id": 30,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the stock location."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 31,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 83,
+										"name": "SharedContext",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 4,
+					"name": "list",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/service.ts",
+							"line": 89,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L89"
+						}
+					],
+					"signatures": [
+						{
+							"id": 5,
+							"name": "list",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to retrieve a paginated list of stock locations based on optional filters and configuration."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of stock locations."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of stock locations using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function listStockLocations (ids: string[]) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const stockLocations = await stockLocationModule.list({\n    id: ids\n  })\n  \n  // do something with the stock locations or return them\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the stock locations:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function listStockLocations (ids: string[]) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const stockLocations = await stockLocationModule.list({\n    id: ids\n  }, {\n    relations: [\"address\"]\n  })\n  \n  // do something with the stock locations or return them\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`10`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function listStockLocations (ids: string[], skip: number, take: number) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const stockLocations = await stockLocationModule.list({\n    id: ids\n  }, {\n    relations: [\"address\"],\n    skip,\n    take\n  })\n  \n  // do something with the stock locations or return them\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/service.ts",
+									"line": 89,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L89"
+								}
+							],
+							"parameters": [
+								{
+									"id": 6,
+									"name": "selector",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved stock locations."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 59,
+										"name": "FilterableStockLocationProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 7,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the stock locations are retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a stock location."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 62,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 73,
+												"name": "StockLocationDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 8,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 83,
+										"name": "SharedContext",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 73,
+											"name": "StockLocationDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 9,
+					"name": "listAndCount",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/service.ts",
+							"line": 166,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L166"
+						}
+					],
+					"signatures": [
+						{
+							"id": 10,
+							"name": "listAndCount",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to retrieve a paginated list of stock locations along with the total count of available stock locations satisfying the provided filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of stock locations along with the total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve a list of stock locations using their IDs:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function listStockLocations (ids: string[]) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const [stockLocations, count] = await stockLocationModule.listAndCount({\n    id: ids\n  })\n  \n  // do something with the stock locations or return them\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved within the stock locations:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function listStockLocations (ids: string[]) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const [stockLocations, count] = await stockLocationModule.listAndCount({\n    id: ids\n  }, {\n    relations: [\"address\"]\n  })\n  \n  // do something with the stock locations or return them\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nBy default, only the first "
+											},
+											{
+												"kind": "code",
+												"text": "`10`"
+											},
+											{
+												"kind": "text",
+												"text": " records are retrieved. You can control pagination by specifying the "
+											},
+											{
+												"kind": "code",
+												"text": "`skip`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`take`"
+											},
+											{
+												"kind": "text",
+												"text": " properties of the "
+											},
+											{
+												"kind": "code",
+												"text": "`config`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function listStockLocations (ids: string[], skip: number, take: number) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const [stockLocations, count] = await stockLocationModule.listAndCount({\n    id: ids\n  }, {\n    relations: [\"address\"],\n    skip,\n    take\n  })\n  \n  // do something with the stock locations or return them\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/service.ts",
+									"line": 166,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L166"
+								}
+							],
+							"parameters": [
+								{
+									"id": 11,
+									"name": "selector",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply on the retrieved stock locations."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 59,
+										"name": "FilterableStockLocationProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 12,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the stock locations are retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a stock location."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 62,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 73,
+												"name": "StockLocationDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 13,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 83,
+										"name": "SharedContext",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "tuple",
+										"elements": [
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": 73,
+													"name": "StockLocationDTO",
+													"package": "@medusajs/types"
+												}
+											},
+											{
+												"type": "intrinsic",
+												"name": "number"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 14,
+					"name": "retrieve",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/service.ts",
+							"line": 217,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L217"
+						}
+					],
+					"signatures": [
+						{
+							"id": 15,
+							"name": "retrieve",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to retrieve a stock location by its ID"
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The stock location's details."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A simple example that retrieves a inventory item by its ID:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function retrieveStockLocation (id: string) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const stockLocation = await stockLocationModule.retrieve(id)\n  \n  // do something with the stock location or return it\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo specify relations that should be retrieved:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function retrieveStockLocation (id: string) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const stockLocation = await stockLocationModule.retrieve(id, {\n    relations: [\"address\"]\n  })\n  \n  // do something with the stock location or return it\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/service.ts",
+									"line": 217,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L217"
+								}
+							],
+							"parameters": [
+								{
+									"id": 16,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the stock location"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 17,
+									"name": "config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The configurations determining how the stock location is retrieved. Its properties, such as "
+											},
+											{
+												"kind": "code",
+												"text": "`select`"
+											},
+											{
+												"kind": "text",
+												"text": " or "
+											},
+											{
+												"kind": "code",
+												"text": "`relations`"
+											},
+											{
+												"kind": "text",
+												"text": ", accept the\nattributes or relations associated with a stock location."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 62,
+										"typeArguments": [
+											{
+												"type": "reference",
+												"target": 73,
+												"name": "StockLocationDTO",
+												"package": "@medusajs/types"
+											}
+										],
+										"name": "FindConfig",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 18,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 83,
+										"name": "SharedContext",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 73,
+										"name": "StockLocationDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 23,
+					"name": "update",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/service.ts",
+							"line": 273,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L273"
+						}
+					],
+					"signatures": [
+						{
+							"id": 24,
+							"name": "update",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to update a stock location."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The stock location's details."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  initialize as initializeStockLocationModule,\n} from \"@medusajs/stock-location\"\n\nasync function updateStockLocation (id:string, name: string) {\n  const stockLocationModule = await initializeStockLocationModule({})\n\n  const stockLocation = await stockLocationModule.update(id, {\n    name\n  })\n  \n  // do something with the stock location or return it\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/service.ts",
+									"line": 273,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L273"
+								}
+							],
+							"parameters": [
+								{
+									"id": 25,
+									"name": "id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the stock location."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 26,
+									"name": "input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The attributes to update in the stock location."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 92,
+										"name": "UpdateStockLocationInput",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 27,
+									"name": "context",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": 83,
+										"name": "SharedContext",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": 73,
+										"name": "StockLocationDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						19,
+						28,
+						4,
+						9,
+						14,
+						23
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "packages/types/src/stock-location/service.ts",
+					"line": 12,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/service.ts#L12"
+				}
+			]
+		},
+		{
+			"id": 101,
+			"name": "JoinerServiceConfig",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 103,
+					"name": "alias",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Property name to use as entrypoint to the service"
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 38,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L38"
+						}
+					],
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"target": 161,
+								"name": "JoinerServiceConfigAlias",
+								"package": "@medusajs/types"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": 161,
+									"name": "JoinerServiceConfigAlias",
+									"package": "@medusajs/types"
+								}
+							}
+						]
+					}
+				},
+				{
+					"id": 114,
+					"name": "args",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Extra arguments to pass to the remoteFetchData callback"
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 59,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L59"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": 119,
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 110,
+					"name": "extends",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 52,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L52"
+						}
+					],
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reflection",
+							"declaration": {
+								"id": 111,
+								"name": "__type",
+								"variant": "declaration",
+								"kind": 65536,
+								"flags": {},
+								"children": [
+									{
+										"id": 113,
+										"name": "relationship",
+										"variant": "declaration",
+										"kind": 1024,
+										"flags": {},
+										"sources": [
+											{
+												"fileName": "packages/types/src/joiner/index.ts",
+												"line": 54,
+												"character": 4,
+												"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L54"
+											}
+										],
+										"type": {
+											"type": "reference",
+											"target": 164,
+											"name": "JoinerRelationship",
+											"package": "@medusajs/types"
+										}
+									},
+									{
+										"id": 112,
+										"name": "serviceName",
+										"variant": "declaration",
+										"kind": 1024,
+										"flags": {},
+										"sources": [
+											{
+												"fileName": "packages/types/src/joiner/index.ts",
+												"line": 53,
+												"character": 4,
+												"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L53"
+											}
+										],
+										"type": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"groups": [
+									{
+										"title": "Properties",
+										"children": [
+											113,
+											112
+										]
+									}
+								],
+								"sources": [
+									{
+										"fileName": "packages/types/src/joiner/index.ts",
+										"line": 52,
+										"character": 12,
+										"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L52"
+									}
+								]
+							}
+						}
+					}
+				},
+				{
+					"id": 104,
+					"name": "fieldAlias",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })"
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 42,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L42"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": 119,
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reflection",
+										"declaration": {
+											"id": 105,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 107,
+													"name": "forwardArgumentsOnPath",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"sources": [
+														{
+															"fileName": "packages/types/src/joiner/index.ts",
+															"line": 47,
+															"character": 8,
+															"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L47"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												},
+												{
+													"id": 106,
+													"name": "path",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"sources": [
+														{
+															"fileName": "packages/types/src/joiner/index.ts",
+															"line": 46,
+															"character": 8,
+															"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L46"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														107,
+														106
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "packages/types/src/joiner/index.ts",
+													"line": 45,
+													"character": 6,
+													"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L45"
+												}
+											]
+										}
+									}
+								]
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 108,
+					"name": "primaryKeys",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 50,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L50"
+						}
+					],
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				},
+				{
+					"id": 109,
+					"name": "relationships",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 51,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L51"
+						}
+					],
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 164,
+							"name": "JoinerRelationship",
+							"package": "@medusajs/types"
+						}
+					}
+				},
+				{
+					"id": 102,
+					"name": "serviceName",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 34,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L34"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						103,
+						114,
+						110,
+						104,
+						108,
+						109,
+						102
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "packages/types/src/joiner/index.ts",
+					"line": 33,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L33"
+				}
+			]
+		},
+		{
+			"id": 161,
+			"name": "JoinerServiceConfigAlias",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 163,
+					"name": "args",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Extra arguments to pass to the remoteFetchData callback"
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 30,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L30"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": 119,
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 162,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 26,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L26"
+						}
+					],
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						]
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						163,
+						162
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "packages/types/src/joiner/index.ts",
+					"line": 25,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L25"
+				}
+			]
+		},
+		{
+			"id": 83,
+			"name": "SharedContext",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "A shared context object that is used to share resources between the application and the module."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 85,
+					"name": "manager",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of an entity manager."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/shared-context.ts",
+							"line": 16,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/shared-context.ts#L16"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+							"qualifiedName": "EntityManager"
+						},
+						"name": "EntityManager",
+						"package": "typeorm"
+					}
+				},
+				{
+					"id": 84,
+					"name": "transactionManager",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An instance of a transaction manager."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/shared-context.ts",
+							"line": 12,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/shared-context.ts#L12"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/typeorm/entity-manager/EntityManager.d.ts",
+							"qualifiedName": "EntityManager"
+						},
+						"name": "EntityManager",
+						"package": "typeorm"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						85,
+						84
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "packages/types/src/shared-context.ts",
+					"line": 8,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/shared-context.ts#L8"
+				}
+			]
+		},
+		{
+			"id": 122,
+			"name": "StringComparisonOperator",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 127,
+					"name": "contains",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 184,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L184"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 129,
+					"name": "ends_with",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 186,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L186"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 124,
+					"name": "gt",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 181,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L181"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 125,
+					"name": "gte",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 182,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L182"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 123,
+					"name": "lt",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 180,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L180"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 126,
+					"name": "lte",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 183,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L183"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 128,
+					"name": "starts_with",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"sources": [
+						{
+							"fileName": "packages/types/src/common/common.ts",
+							"line": 185,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L185"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						127,
+						129,
+						124,
+						125,
+						123,
+						126,
+						128
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "packages/types/src/common/common.ts",
+					"line": 179,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/common/common.ts#L179"
+				}
+			]
+		},
+		{
+			"id": 86,
+			"name": "CreateStockLocationInput",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Represents the Input to create a Stock Location"
+					}
+				],
+				"modifierTags": [
+					"@interface"
+				]
+			},
+			"sources": [
+				{
+					"fileName": "packages/types/src/stock-location/common.ts",
+					"line": 247,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L247"
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 87,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 90,
+							"name": "address",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address object"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 250,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L250"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reference",
+										"target": 145,
+										"name": "StockLocationAddressInput",
+										"package": "@medusajs/types"
+									}
+								]
+							}
+						},
+						{
+							"id": 89,
+							"name": "address_id",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The Stock location address ID"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 249,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L249"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 91,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "An optional key-value map with additional details"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 251,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L251"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 119,
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 88,
+							"name": "name",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The stock location name"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 248,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L248"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								90,
+								89,
+								91,
+								88
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/common.ts",
+							"line": 247,
+							"character": 39,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L247"
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 158,
+			"name": "Exclude",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {
+				"isExternal": true
+			},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Exclude from T those types that are assignable to U"
+					}
+				]
+			},
+			"sources": [
+				{
+					"fileName": "docs-util/node_modules/typescript/lib/lib.es5.d.ts",
+					"line": 1606,
+					"character": 5
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 159,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {
+						"isExternal": true
+					}
+				},
+				{
+					"id": 160,
+					"name": "U",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {
+						"isExternal": true
+					}
+				}
+			],
+			"type": {
+				"type": "conditional",
+				"checkType": {
+					"type": "reference",
+					"target": -1,
+					"name": "T",
+					"refersToTypeParameter": true
+				},
+				"extendsType": {
+					"type": "reference",
+					"target": -1,
+					"name": "U",
+					"refersToTypeParameter": true
+				},
+				"trueType": {
+					"type": "intrinsic",
+					"name": "never"
+				},
+				"falseType": {
+					"type": "reference",
+					"target": -1,
+					"name": "T",
+					"refersToTypeParameter": true
+				}
+			}
+		},
+		{
+			"id": 164,
+			"name": "JoinerRelationship",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "packages/types/src/joiner/index.ts",
+					"line": 1,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L1"
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 165,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 166,
+							"name": "alias",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "packages/types/src/joiner/index.ts",
+									"line": 2,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L2"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 173,
+							"name": "args",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Extra arguments to pass to the remoteFetchData callback"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/joiner/index.ts",
+									"line": 22,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L22"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 119,
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "any"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 167,
+							"name": "foreignKey",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "packages/types/src/joiner/index.ts",
+									"line": 3,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L3"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 171,
+							"name": "inverse",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "In an inverted relationship the foreign key is on the other service and the primary key is on the current service"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/joiner/index.ts",
+									"line": 14,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L14"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 170,
+							"name": "isInternalService",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "If true, the relationship is an internal service from the medusa core\nTODO: Remove when there are no more \"internal\" services"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/joiner/index.ts",
+									"line": 10,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L10"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 172,
+							"name": "isList",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Force the relationship to return a list"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/joiner/index.ts",
+									"line": 18,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L18"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						},
+						{
+							"id": 168,
+							"name": "primaryKey",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "packages/types/src/joiner/index.ts",
+									"line": 4,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L4"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 169,
+							"name": "serviceName",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "packages/types/src/joiner/index.ts",
+									"line": 5,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L5"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								166,
+								173,
+								167,
+								171,
+								170,
+								172,
+								168,
+								169
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "packages/types/src/joiner/index.ts",
+							"line": 1,
+							"character": 33,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/joiner/index.ts#L1"
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 32,
+			"name": "ModuleJoinerConfig",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "packages/types/src/modules-sdk/index.ts",
+					"line": 132,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L132"
+				}
+			],
+			"type": {
+				"type": "intersection",
+				"types": [
+					{
+						"type": "reference",
+						"target": 98,
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 101,
+								"name": "JoinerServiceConfig",
+								"package": "@medusajs/types"
+							},
+							{
+								"type": "union",
+								"types": [
+									{
+										"type": "literal",
+										"value": "serviceName"
+									},
+									{
+										"type": "literal",
+										"value": "primaryKeys"
+									},
+									{
+										"type": "literal",
+										"value": "relationships"
+									},
+									{
+										"type": "literal",
+										"value": "extends"
+									}
+								]
+							}
+						],
+						"name": "Omit",
+						"package": "typescript"
+					},
+					{
+						"type": "reflection",
+						"declaration": {
+							"id": 33,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 49,
+									"name": "databaseConfig",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 167,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L167"
+										}
+									],
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 50,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 53,
+													"name": "extraFields",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"sources": [
+														{
+															"fileName": "packages/types/src/modules-sdk/index.ts",
+															"line": 176,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L176"
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": 119,
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "string"
+															},
+															{
+																"type": "reflection",
+																"declaration": {
+																	"id": 54,
+																	"name": "__type",
+																	"variant": "declaration",
+																	"kind": 65536,
+																	"flags": {},
+																	"children": [
+																		{
+																			"id": 56,
+																			"name": "defaultValue",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"sources": [
+																				{
+																					"fileName": "packages/types/src/modules-sdk/index.ts",
+																					"line": 201,
+																					"character": 8,
+																					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L201"
+																				}
+																			],
+																			"type": {
+																				"type": "intrinsic",
+																				"name": "string"
+																			}
+																		},
+																		{
+																			"id": 57,
+																			"name": "nullable",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"sources": [
+																				{
+																					"fileName": "packages/types/src/modules-sdk/index.ts",
+																					"line": 202,
+																					"character": 8,
+																					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L202"
+																				}
+																			],
+																			"type": {
+																				"type": "intrinsic",
+																				"name": "boolean"
+																			}
+																		},
+																		{
+																			"id": 58,
+																			"name": "options",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {
+																				"isOptional": true
+																			},
+																			"comment": {
+																				"summary": [
+																					{
+																						"kind": "text",
+																						"text": "Mikro-orm options for the column"
+																					}
+																				]
+																			},
+																			"sources": [
+																				{
+																					"fileName": "packages/types/src/modules-sdk/index.ts",
+																					"line": 206,
+																					"character": 8,
+																					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L206"
+																				}
+																			],
+																			"type": {
+																				"type": "reference",
+																				"target": 119,
+																				"typeArguments": [
+																					{
+																						"type": "intrinsic",
+																						"name": "string"
+																					},
+																					{
+																						"type": "intrinsic",
+																						"name": "unknown"
+																					}
+																				],
+																				"name": "Record",
+																				"package": "typescript"
+																			}
+																		},
+																		{
+																			"id": 55,
+																			"name": "type",
+																			"variant": "declaration",
+																			"kind": 1024,
+																			"flags": {},
+																			"sources": [
+																				{
+																					"fileName": "packages/types/src/modules-sdk/index.ts",
+																					"line": 179,
+																					"character": 8,
+																					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L179"
+																				}
+																			],
+																			"type": {
+																				"type": "union",
+																				"types": [
+																					{
+																						"type": "literal",
+																						"value": "date"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "time"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "datetime"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "bigint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "blob"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "uint8array"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "array"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "enumArray"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "enum"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "json"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "integer"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "smallint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "tinyint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "mediumint"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "float"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "double"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "boolean"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "decimal"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "string"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "uuid"
+																					},
+																					{
+																						"type": "literal",
+																						"value": "text"
+																					}
+																				]
+																			}
+																		}
+																	],
+																	"groups": [
+																		{
+																			"title": "Properties",
+																			"children": [
+																				56,
+																				57,
+																				58,
+																				55
+																			]
+																		}
+																	],
+																	"sources": [
+																		{
+																			"fileName": "packages/types/src/modules-sdk/index.ts",
+																			"line": 178,
+																			"character": 6,
+																			"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L178"
+																		}
+																	]
+																}
+															}
+														],
+														"name": "Record",
+														"package": "typescript"
+													}
+												},
+												{
+													"id": 52,
+													"name": "idPrefix",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Prefix for the id column. If not provided it is \"link\""
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "packages/types/src/modules-sdk/index.ts",
+															"line": 175,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L175"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 51,
+													"name": "tableName",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Name of the pivot table. If not provided it is auto generated"
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "packages/types/src/modules-sdk/index.ts",
+															"line": 171,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L171"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														53,
+														52,
+														51
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "packages/types/src/modules-sdk/index.ts",
+													"line": 167,
+													"character": 19,
+													"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L167"
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 36,
+									"name": "extends",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 141,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L141"
+										}
+									],
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reflection",
+											"declaration": {
+												"id": 37,
+												"name": "__type",
+												"variant": "declaration",
+												"kind": 65536,
+												"flags": {},
+												"children": [
+													{
+														"id": 39,
+														"name": "fieldAlias",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {
+															"isOptional": true
+														},
+														"sources": [
+															{
+																"fileName": "packages/types/src/modules-sdk/index.ts",
+																"line": 143,
+																"character": 4,
+																"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L143"
+															}
+														],
+														"type": {
+															"type": "reference",
+															"target": 119,
+															"typeArguments": [
+																{
+																	"type": "intrinsic",
+																	"name": "string"
+																},
+																{
+																	"type": "union",
+																	"types": [
+																		{
+																			"type": "intrinsic",
+																			"name": "string"
+																		},
+																		{
+																			"type": "reflection",
+																			"declaration": {
+																				"id": 40,
+																				"name": "__type",
+																				"variant": "declaration",
+																				"kind": 65536,
+																				"flags": {},
+																				"children": [
+																					{
+																						"id": 42,
+																						"name": "forwardArgumentsOnPath",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {},
+																						"sources": [
+																							{
+																								"fileName": "packages/types/src/modules-sdk/index.ts",
+																								"line": 148,
+																								"character": 10,
+																								"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L148"
+																							}
+																						],
+																						"type": {
+																							"type": "array",
+																							"elementType": {
+																								"type": "intrinsic",
+																								"name": "string"
+																							}
+																						}
+																					},
+																					{
+																						"id": 41,
+																						"name": "path",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {},
+																						"sources": [
+																							{
+																								"fileName": "packages/types/src/modules-sdk/index.ts",
+																								"line": 147,
+																								"character": 10,
+																								"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L147"
+																							}
+																						],
+																						"type": {
+																							"type": "intrinsic",
+																							"name": "string"
+																						}
+																					}
+																				],
+																				"groups": [
+																					{
+																						"title": "Properties",
+																						"children": [
+																							42,
+																							41
+																						]
+																					}
+																				],
+																				"sources": [
+																					{
+																						"fileName": "packages/types/src/modules-sdk/index.ts",
+																						"line": 146,
+																						"character": 8,
+																						"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L146"
+																					}
+																				]
+																			}
+																		}
+																	]
+																}
+															],
+															"name": "Record",
+															"package": "typescript"
+														}
+													},
+													{
+														"id": 43,
+														"name": "relationship",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"sources": [
+															{
+																"fileName": "packages/types/src/modules-sdk/index.ts",
+																"line": 151,
+																"character": 4,
+																"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L151"
+															}
+														],
+														"type": {
+															"type": "reference",
+															"target": 115,
+															"name": "ModuleJoinerRelationship",
+															"package": "@medusajs/types"
+														}
+													},
+													{
+														"id": 38,
+														"name": "serviceName",
+														"variant": "declaration",
+														"kind": 1024,
+														"flags": {},
+														"sources": [
+															{
+																"fileName": "packages/types/src/modules-sdk/index.ts",
+																"line": 142,
+																"character": 4,
+																"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L142"
+															}
+														],
+														"type": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												],
+												"groups": [
+													{
+														"title": "Properties",
+														"children": [
+															39,
+															43,
+															38
+														]
+													}
+												],
+												"sources": [
+													{
+														"fileName": "packages/types/src/modules-sdk/index.ts",
+														"line": 141,
+														"character": 12,
+														"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L141"
+													}
+												]
+											}
+										}
+									}
+								},
+								{
+									"id": 46,
+									"name": "isLink",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If the module is a link module"
+											}
+										]
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 158,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L158"
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 48,
+									"name": "isReadOnlyLink",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true it expands a RemoteQuery property but doesn't create a pivot table"
+											}
+										]
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 166,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L166"
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 47,
+									"name": "linkableKeys",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Keys that can be used to link to other modules. e.g { product_id: \"Product\" } \"Product\" being the entity it refers to"
+											}
+										]
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 162,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L162"
+										}
+									],
+									"type": {
+										"type": "reference",
+										"target": 119,
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "string"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								},
+								{
+									"id": 45,
+									"name": "primaryKeys",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 154,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L154"
+										}
+									],
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								},
+								{
+									"id": 35,
+									"name": "relationships",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 140,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L140"
+										}
+									],
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": 115,
+											"name": "ModuleJoinerRelationship",
+											"package": "@medusajs/types"
+										}
+									}
+								},
+								{
+									"id": 34,
+									"name": "schema",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "GraphQL schema for the all module's available entities and fields"
+											}
+										]
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 139,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L139"
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 44,
+									"name": "serviceName",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 153,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L153"
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										49,
+										36,
+										46,
+										48,
+										47,
+										45,
+										35,
+										34,
+										44
+									]
+								}
+							],
+							"sources": [
+								{
+									"fileName": "packages/types/src/modules-sdk/index.ts",
+									"line": 135,
+									"character": 4,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L135"
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": 115,
+			"name": "ModuleJoinerRelationship",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "packages/types/src/modules-sdk/index.ts",
+					"line": 212,
+					"character": 20,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L212"
+				}
+			],
+			"type": {
+				"type": "intersection",
+				"types": [
+					{
+						"type": "reference",
+						"target": 164,
+						"name": "JoinerRelationship",
+						"package": "@medusajs/types"
+					},
+					{
+						"type": "reflection",
+						"declaration": {
+							"id": 116,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 118,
+									"name": "deleteCascade",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true, the link joiner will cascade deleting the relationship"
+											}
+										]
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 220,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L220"
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								},
+								{
+									"id": 117,
+									"name": "isInternalService",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more \"internal\" services"
+											}
+										]
+									},
+									"sources": [
+										{
+											"fileName": "packages/types/src/modules-sdk/index.ts",
+											"line": 216,
+											"character": 2,
+											"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L216"
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										118,
+										117
+									]
+								}
+							],
+							"sources": [
+								{
+									"fileName": "packages/types/src/modules-sdk/index.ts",
+									"line": 212,
+									"character": 68,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/modules-sdk/index.ts#L212"
+								}
+							]
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": 98,
+			"name": "Omit",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {
+				"isExternal": true
+			},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Construct a type with the properties of T except for those in type K."
+					}
+				]
+			},
+			"sources": [
+				{
+					"fileName": "docs-util/node_modules/typescript/lib/lib.es5.d.ts",
+					"line": 1616,
+					"character": 5
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 99,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {
+						"isExternal": true
+					}
+				},
+				{
+					"id": 100,
+					"name": "K",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {
+						"isExternal": true
+					},
+					"type": {
+						"type": "typeOperator",
+						"operator": "keyof",
+						"target": {
+							"type": "intrinsic",
+							"name": "any"
+						}
+					}
+				}
+			],
+			"type": {
+				"type": "reference",
+				"target": 155,
+				"typeArguments": [
+					{
+						"type": "reference",
+						"target": -1,
+						"name": "T",
+						"refersToTypeParameter": true
+					},
+					{
+						"type": "reference",
+						"target": 158,
+						"typeArguments": [
+							{
+								"type": "typeOperator",
+								"operator": "keyof",
+								"target": {
+									"type": "reference",
+									"target": -1,
+									"name": "T",
+									"refersToTypeParameter": true
+								}
+							},
+							{
+								"type": "reference",
+								"target": -1,
+								"name": "K",
+								"refersToTypeParameter": true
+							}
+						],
+						"name": "Exclude",
+						"package": "typescript"
+					}
+				],
+				"name": "Pick",
+				"package": "typescript"
+			}
+		},
+		{
+			"id": 155,
+			"name": "Pick",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {
+				"isExternal": true
+			},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "From T, pick a set of properties whose keys are in the union K"
+					}
+				]
+			},
+			"sources": [
+				{
+					"fileName": "docs-util/node_modules/typescript/lib/lib.es5.d.ts",
+					"line": 1592,
+					"character": 5
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 156,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {
+						"isExternal": true
+					}
+				},
+				{
+					"id": 157,
+					"name": "K",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {
+						"isExternal": true
+					},
+					"type": {
+						"type": "typeOperator",
+						"operator": "keyof",
+						"target": {
+							"type": "reference",
+							"target": -1,
+							"name": "T",
+							"refersToTypeParameter": true
+						}
+					}
+				}
+			],
+			"type": {
+				"type": "mapped",
+				"parameter": "P",
+				"parameterType": {
+					"type": "reference",
+					"target": -1,
+					"name": "K",
+					"refersToTypeParameter": true
+				},
+				"templateType": {
+					"type": "indexedAccess",
+					"indexType": {
+						"type": "reference",
+						"target": -1,
+						"name": "P",
+						"refersToTypeParameter": true
+					},
+					"objectType": {
+						"type": "reference",
+						"target": -1,
+						"name": "T",
+						"refersToTypeParameter": true
+					}
+				}
+			}
+		},
+		{
+			"id": 119,
+			"name": "Record",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {
+				"isExternal": true
+			},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Construct a type with a set of properties K of type T"
+					}
+				]
+			},
+			"sources": [
+				{
+					"fileName": "docs-util/node_modules/typescript/lib/lib.es5.d.ts",
+					"line": 1599,
+					"character": 5
+				}
+			],
+			"typeParameters": [
+				{
+					"id": 120,
+					"name": "K",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {
+						"isExternal": true
+					},
+					"type": {
+						"type": "typeOperator",
+						"operator": "keyof",
+						"target": {
+							"type": "intrinsic",
+							"name": "any"
+						}
+					}
+				},
+				{
+					"id": 121,
+					"name": "T",
+					"variant": "typeParam",
+					"kind": 131072,
+					"flags": {
+						"isExternal": true
+					}
+				}
+			],
+			"type": {
+				"type": "mapped",
+				"parameter": "P",
+				"parameterType": {
+					"type": "reference",
+					"target": -1,
+					"name": "K",
+					"refersToTypeParameter": true
+				},
+				"templateType": {
+					"type": "reference",
+					"target": -1,
+					"name": "T",
+					"refersToTypeParameter": true
+				}
+			}
+		},
+		{
+			"id": 130,
+			"name": "StockLocationAddressDTO",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Represents a Stock Location Address"
+					}
+				],
+				"modifierTags": [
+					"@interface"
+				]
+			},
+			"sources": [
+				{
+					"fileName": "packages/types/src/stock-location/common.ts",
+					"line": 67,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L67"
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 131,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 133,
+							"name": "address_1",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 69,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L69"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 134,
+							"name": "address_2",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' complement"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 70,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L70"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 137,
+							"name": "city",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' city"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 73,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L73"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 135,
+							"name": "company",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location company' name"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 71,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L71"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 136,
+							"name": "country_code",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' country"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 72,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L72"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 142,
+							"name": "created_at",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The date with timezone at which the resource was created."
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 78,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L78"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Date"
+										},
+										"name": "Date",
+										"package": "typescript"
+									}
+								]
+							}
+						},
+						{
+							"id": 144,
+							"name": "deleted_at",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The date with timezone at which the resource was deleted."
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 80,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L80"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Date"
+										},
+										"name": "Date",
+										"package": "typescript"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 132,
+							"name": "id",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The stock location address' ID"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 68,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L68"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 141,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "An optional key-value map with additional details"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 77,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L77"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "reference",
+										"target": 119,
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 138,
+							"name": "phone",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' phone number"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 74,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L74"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 139,
+							"name": "postal_code",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' postal code"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 75,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L75"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 140,
+							"name": "province",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' province"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 76,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L76"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 143,
+							"name": "updated_at",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The date with timezone at which the resource was updated."
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 79,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L79"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Date"
+										},
+										"name": "Date",
+										"package": "typescript"
+									}
+								]
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								133,
+								134,
+								137,
+								135,
+								136,
+								142,
+								144,
+								132,
+								141,
+								138,
+								139,
+								140,
+								143
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/common.ts",
+							"line": 67,
+							"character": 38,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L67"
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 145,
+			"name": "StockLocationAddressInput",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Represents a Stock Location Address Input"
+					}
+				],
+				"modifierTags": [
+					"@interface"
+				]
+			},
+			"sources": [
+				{
+					"fileName": "packages/types/src/stock-location/common.ts",
+					"line": 212,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L212"
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 146,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 147,
+							"name": "address_1",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 213,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L213"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 148,
+							"name": "address_2",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' complement"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 214,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L214"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 150,
+							"name": "city",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' city"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 216,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L216"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 149,
+							"name": "country_code",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' country"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 215,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L215"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 154,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "An optional key-value map with additional details"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 220,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L220"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 119,
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 151,
+							"name": "phone",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' phone number"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 217,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L217"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 153,
+							"name": "postal_code",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' postal code"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 219,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L219"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 152,
+							"name": "province",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' province"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 218,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L218"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								147,
+								148,
+								150,
+								149,
+								154,
+								151,
+								153,
+								152
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/common.ts",
+							"line": 212,
+							"character": 40,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L212"
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 73,
+			"name": "StockLocationDTO",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Represents a Stock Location"
+					}
+				],
+				"modifierTags": [
+					"@interface"
+				]
+			},
+			"sources": [
+				{
+					"fileName": "packages/types/src/stock-location/common.ts",
+					"line": 129,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L129"
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 74,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 79,
+							"name": "address",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The Address of the Stock Location"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 134,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L134"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 130,
+								"name": "StockLocationAddressDTO",
+								"package": "@medusajs/types"
+							}
+						},
+						{
+							"id": 78,
+							"name": "address_id",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address' ID"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 133,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L133"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 80,
+							"name": "created_at",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The date with timezone at which the resource was created."
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 135,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L135"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Date"
+										},
+										"name": "Date",
+										"package": "typescript"
+									}
+								]
+							}
+						},
+						{
+							"id": 82,
+							"name": "deleted_at",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The date with timezone at which the resource was deleted."
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 137,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L137"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Date"
+										},
+										"name": "Date",
+										"package": "typescript"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 75,
+							"name": "id",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The stock location's ID"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 130,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L130"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 77,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "An optional key-value map with additional details"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 132,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L132"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "reference",
+										"target": 119,
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									},
+									{
+										"type": "literal",
+										"value": null
+									}
+								]
+							}
+						},
+						{
+							"id": 76,
+							"name": "name",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The name of the stock location"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 131,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L131"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 81,
+							"name": "updated_at",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The date with timezone at which the resource was updated."
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 136,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L136"
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Date"
+										},
+										"name": "Date",
+										"package": "typescript"
+									}
+								]
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								79,
+								78,
+								80,
+								82,
+								75,
+								77,
+								76,
+								81
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/common.ts",
+							"line": 129,
+							"character": 31,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L129"
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": 92,
+			"name": "UpdateStockLocationInput",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Represents the Input to update a Stock Location"
+					}
+				],
+				"modifierTags": [
+					"@interface"
+				]
+			},
+			"sources": [
+				{
+					"fileName": "packages/types/src/stock-location/common.ts",
+					"line": 276,
+					"character": 12,
+					"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L276"
+				}
+			],
+			"type": {
+				"type": "reflection",
+				"declaration": {
+					"id": 93,
+					"name": "__type",
+					"variant": "declaration",
+					"kind": 65536,
+					"flags": {},
+					"children": [
+						{
+							"id": 96,
+							"name": "address",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Stock location address object"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 279,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L279"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 145,
+								"name": "StockLocationAddressInput",
+								"package": "@medusajs/types"
+							}
+						},
+						{
+							"id": 95,
+							"name": "address_id",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The Stock location address ID"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 278,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L278"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 97,
+							"name": "metadata",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "An optional key-value map with additional details"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 280,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L280"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 119,
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						},
+						{
+							"id": 94,
+							"name": "name",
+							"variant": "declaration",
+							"kind": 1024,
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The stock location name"
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "packages/types/src/stock-location/common.ts",
+									"line": 277,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L277"
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"children": [
+								96,
+								95,
+								97,
+								94
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "packages/types/src/stock-location/common.ts",
+							"line": 276,
+							"character": 39,
+							"url": "https://github.com/medusajs/medusa/blob/ab4b925b5/packages/types/src/stock-location/common.ts#L276"
+						}
+					]
+				}
+			}
+		}
+	],
+	"groups": [
+		{
+			"title": "Interfaces",
+			"children": [
+				59,
+				62,
+				1,
+				101,
+				161,
+				83,
+				122
+			]
+		},
+		{
+			"title": "Type Aliases",
+			"children": [
+				86,
+				158,
+				164,
+				32,
+				115,
+				98,
+				155,
+				119,
+				130,
+				145,
+				73,
+				92
+			]
+		}
+	],
+	"packageName": "@medusajs/types",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService"
+		},
+		"4": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.list"
+		},
+		"5": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.list"
+		},
+		"6": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "selector"
+		},
+		"7": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "config"
+		},
+		"8": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "context"
+		},
+		"9": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.listAndCount"
+		},
+		"10": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.listAndCount"
+		},
+		"11": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "selector"
+		},
+		"12": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "config"
+		},
+		"13": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "context"
+		},
+		"14": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.retrieve"
+		},
+		"15": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.retrieve"
+		},
+		"16": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "id"
+		},
+		"17": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "config"
+		},
+		"18": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "context"
+		},
+		"19": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.create"
+		},
+		"20": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.create"
+		},
+		"21": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "input"
+		},
+		"22": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "context"
+		},
+		"23": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.update"
+		},
+		"24": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.update"
+		},
+		"25": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "id"
+		},
+		"26": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "input"
+		},
+		"27": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "context"
+		},
+		"28": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.delete"
+		},
+		"29": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "IStockLocationService.delete"
+		},
+		"30": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "id"
+		},
+		"31": {
+			"sourceFileName": "../../../packages/types/src/stock-location/service.ts",
+			"qualifiedName": "context"
+		},
+		"32": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerConfig"
+		},
+		"33": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"34": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.schema"
+		},
+		"35": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationships"
+		},
+		"36": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extends"
+		},
+		"37": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"38": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"39": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.fieldAlias"
+		},
+		"40": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"41": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"42": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"43": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"44": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"45": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.primaryKeys"
+		},
+		"46": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isLink"
+		},
+		"47": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.linkableKeys"
+		},
+		"48": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isReadOnlyLink"
+		},
+		"49": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.databaseConfig"
+		},
+		"50": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"51": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.tableName"
+		},
+		"52": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.idPrefix"
+		},
+		"53": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extraFields"
+		},
+		"54": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"55": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.type"
+		},
+		"56": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.defaultValue"
+		},
+		"57": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.nullable"
+		},
+		"58": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"59": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "FilterableStockLocationProps"
+		},
+		"60": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.id"
+		},
+		"61": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.name"
+		},
+		"62": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig"
+		},
+		"63": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.select"
+		},
+		"64": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.skip"
+		},
+		"65": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.take"
+		},
+		"66": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.relations"
+		},
+		"67": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.order"
+		},
+		"68": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type"
+		},
+		"69": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type.__index"
+		},
+		"71": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.withDeleted"
+		},
+		"72": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.Entity"
+		},
+		"73": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "StockLocationDTO"
+		},
+		"74": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type"
+		},
+		"75": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.id"
+		},
+		"76": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.name"
+		},
+		"77": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"78": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address_id"
+		},
+		"79": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address"
+		},
+		"80": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.created_at"
+		},
+		"81": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.updated_at"
+		},
+		"82": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.deleted_at"
+		},
+		"83": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "SharedContext"
+		},
+		"84": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.transactionManager"
+		},
+		"85": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.manager"
+		},
+		"86": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "CreateStockLocationInput"
+		},
+		"87": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type"
+		},
+		"88": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.name"
+		},
+		"89": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address_id"
+		},
+		"90": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address"
+		},
+		"91": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"92": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "UpdateStockLocationInput"
+		},
+		"93": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type"
+		},
+		"94": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.name"
+		},
+		"95": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address_id"
+		},
+		"96": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address"
+		},
+		"97": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"98": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "Omit"
+		},
+		"99": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "T"
+		},
+		"100": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "K"
+		},
+		"101": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig"
+		},
+		"102": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.serviceName"
+		},
+		"103": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.alias"
+		},
+		"104": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.fieldAlias"
+		},
+		"105": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"106": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.path"
+		},
+		"107": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.forwardArgumentsOnPath"
+		},
+		"108": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.primaryKeys"
+		},
+		"109": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.relationships"
+		},
+		"110": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.extends"
+		},
+		"111": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"112": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"113": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.relationship"
+		},
+		"114": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.args"
+		},
+		"115": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerRelationship"
+		},
+		"116": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"117": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"118": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.deleteCascade"
+		},
+		"119": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "Record"
+		},
+		"120": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "K"
+		},
+		"121": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "T"
+		},
+		"122": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "StringComparisonOperator"
+		},
+		"123": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "StringComparisonOperator.lt"
+		},
+		"124": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "StringComparisonOperator.gt"
+		},
+		"125": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "StringComparisonOperator.gte"
+		},
+		"126": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "StringComparisonOperator.lte"
+		},
+		"127": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "StringComparisonOperator.contains"
+		},
+		"128": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "StringComparisonOperator.starts_with"
+		},
+		"129": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "StringComparisonOperator.ends_with"
+		},
+		"130": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "StockLocationAddressDTO"
+		},
+		"131": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type"
+		},
+		"132": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.id"
+		},
+		"133": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address_1"
+		},
+		"134": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address_2"
+		},
+		"135": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.company"
+		},
+		"136": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.country_code"
+		},
+		"137": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.city"
+		},
+		"138": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.phone"
+		},
+		"139": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.postal_code"
+		},
+		"140": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.province"
+		},
+		"141": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"142": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.created_at"
+		},
+		"143": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.updated_at"
+		},
+		"144": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.deleted_at"
+		},
+		"145": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "StockLocationAddressInput"
+		},
+		"146": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type"
+		},
+		"147": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address_1"
+		},
+		"148": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.address_2"
+		},
+		"149": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.country_code"
+		},
+		"150": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.city"
+		},
+		"151": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.phone"
+		},
+		"152": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.province"
+		},
+		"153": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.postal_code"
+		},
+		"154": {
+			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"155": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "Pick"
+		},
+		"156": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "T"
+		},
+		"157": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "K"
+		},
+		"158": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "Exclude"
+		},
+		"159": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "T"
+		},
+		"160": {
+			"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+			"qualifiedName": "U"
+		},
+		"161": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias"
+		},
+		"162": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.name"
+		},
+		"163": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.args"
+		},
+		"164": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerRelationship"
+		},
+		"165": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"166": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.alias"
+		},
+		"167": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.foreignKey"
+		},
+		"168": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.primaryKey"
+		},
+		"169": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"170": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"171": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.inverse"
+		},
+		"172": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isList"
+		},
+		"173": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.args"
+		}
+	}
+}

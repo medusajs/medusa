@@ -4,5 +4,4 @@ const modulesConfig = require("./_modules")
 module.exports = modulesConfig({
   entryPointPath: "packages/types/src/product/service.ts",
   name: "product",
-  indexTitle: "Product Module Reference",
 })

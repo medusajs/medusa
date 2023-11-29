@@ -3,7 +3,9 @@ const path = require("path")
 const globalTypedocOptions = require("./_base")
 const { globSync } = require("glob")
 
-const entries = globSync(path.join(__dirname, "json-output", "*.json"))
+const entries = globSync(
+  path.join(__dirname, "..", "..", "typedoc-json-output", "*.json")
+)
 
 const baseSectionsOptions = {
   member_sources_definedIn: false,
@@ -38,11 +40,31 @@ module.exports = {
   entryPoints: entries,
   entryPointStrategy: "merge",
   entryDocument: "_index.mdx",
+  out: path.join(
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "www",
+    "apps",
+    "docs",
+    "content",
+    "references"
+  ),
+  plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-markdown-medusa"],
+  excludeExternals: true,
   hideInPageTOC: true,
   hideBreadcrumbs: true,
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
   maxLevel: 2,
+  allReflectionsHaveOwnDocument: [
+    "inventory",
+    "pricing",
+    "product",
+    "stock-location",
+    "workflows",
+  ],
   formatting: {
     "*": {
       showCommentsAsHeader: true,
@@ -65,6 +87,12 @@ module.exports = {
       },
       frontmatterData: {
         displayed_sidebar: "entitiesSidebar",
+      },
+    },
+    "^entities/classes": {
+      frontmatterData: {
+        displayed_sidebar: "entitiesSidebar",
+        slug: "/references/entities/classes/{{alias}}",
       },
     },
     "^entities/.*(Order|Swap|Cart|LineItem)": {
@@ -97,9 +125,8 @@ module.exports = {
       frontmatterData: {
         displayed_sidebar: "inventoryReference",
       },
-      allReflectionsHaveOwnDocument: true,
     },
-    "^inventory/.*IInventoryService/methods": {
+    "^IInventoryService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Inventory Module.",
       frontmatterData: {
@@ -120,10 +147,15 @@ module.exports = {
         displayed_sidebar: "inventoryReference",
         slug: "/references/inventory",
       },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: " Reference",
+      },
     },
 
     // JS CLIENT CONFIG
-    "^js-client": {
+    "^js_client": {
       sections: {
         ...baseSectionsOptions,
         member_declaration_title: false,
@@ -136,23 +168,25 @@ module.exports = {
       },
       maxLevel: 4,
     },
-    "^js-client/classes/": {
+    "^js_client/classes/": {
       frontmatterData: {
         displayed_sidebar: "jsClientSidebar",
         slug: "/references/js-client/{{alias}}",
       },
     },
-    "^js-client/.*AdminOrdersResource": {
+    "^js_client/.*AdminOrdersResource": {
       maxLevel: 2,
     },
-    "^js-client/.*internal/modules/internal": {
+    "^(js_client/.*modules/.*internal|internal.*/modules/js_client.*)": {
       reflectionGroups: {
         Constructors: false,
         "Type Aliases": false,
         Enumerations: false,
+        "Enumeration Members": false,
         Classes: false,
         Functions: false,
         Interfaces: false,
+        References: false,
       },
     },
 
@@ -163,7 +197,7 @@ module.exports = {
         displayed_sidebar: "pricingReference",
       },
     },
-    "^pricing/.*IPricingModuleService/methods": {
+    "^IPricingModuleService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Pricing Module.",
       frontmatterData: {
@@ -192,6 +226,11 @@ module.exports = {
         },
         slug: "/references/pricing",
       },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: " Reference",
+      },
     },
 
     // PRODUCT CONFIG
@@ -201,7 +240,7 @@ module.exports = {
         displayed_sidebar: "productReference",
       },
     },
-    "^product/.*IProductModuleService/methods": {
+    "^IProductModuleService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Product Module.",
       frontmatterData: {
@@ -230,6 +269,11 @@ module.exports = {
         },
         slug: "/references/product",
       },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: " Reference",
+      },
     },
 
     // SERVICES CONFIG
@@ -247,7 +291,7 @@ module.exports = {
         displayed_sidebar: "stockLocationReference",
       },
     },
-    "^stock-location/.*IStockLocationService/methods": {
+    "^IStockLocationService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Stock Location Module.",
       frontmatterData: {
@@ -268,6 +312,11 @@ module.exports = {
         displayed_sidebar: "stockLocationReference",
         slug: "/references/stock-location",
       },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: " Reference",
+      },
     },
 
     // WORKFLOWS CONFIG
@@ -281,7 +330,7 @@ module.exports = {
         displayed_sidebar: "workflowsSidebar",
       },
     },
-    "^workflows/index\\.md": {
+    "^modules/workflows\\.md": {
       reflectionDescription:
         "This section of the documentation provides a reference to the utility functions of the `@medusajs/workflows-sdk` package.",
       reflectionGroups: {
@@ -293,8 +342,15 @@ module.exports = {
         Variables: false,
         "Enumeration Members": false,
       },
+      frontmatterData: {
+        displayed_sidebar: "workflowsSidebar",
+        slug: "/references/workflows",
+      },
+      reflectionTitle: {
+        fullReplacement: "Workflows API Reference",
+      },
     },
-    "^workflows/.*functions": {
+    "^workflows/functions": {
       maxLevel: 1,
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. It belongs to the `@medusajs/workflows-sdk` package.",
@@ -306,10 +362,10 @@ module.exports = {
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: "- Workflows Reference",
+        suffix: "- Workflows API Reference",
       },
     },
-    "^workflows/.*classes/StepResponse": {
+    "^workflows/.*classes/.*StepResponse": {
       reflectionGroups: {
         Properties: false,
       },

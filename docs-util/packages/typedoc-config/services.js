@@ -5,5 +5,4 @@ module.exports = getConfig({
   entryPointPath: "packages/medusa/src/services/index.ts",
   tsConfigName: "medusa.json",
   name: "services",
-  indexTitle: "Services Reference",
 })

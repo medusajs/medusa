@@ -9,8 +9,6 @@ module.exports = getConfig({
   entryPointPath: "packages/medusa-js/src/resources",
   tsConfigName: "js-client.json",
   name: "js-client",
-  indexTitle: "JS Client Reference",
-  entryDocument: "index.mdx",
   plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-rename-defaults"],
   exclude: [
     ...globalTypedocOptions.exclude,

@@ -78,7 +78,6 @@ export type FormattingOptionType = {
   parameterComponent?: string
   mdxImports?: string[]
   maxLevel?: number
-  allReflectionsHaveOwnDocument?: boolean
 }
 
 export type FormattingOptionsType = {

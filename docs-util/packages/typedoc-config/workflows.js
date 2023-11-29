@@ -5,6 +5,4 @@ module.exports = getConfig({
   entryPointPath: "packages/workflows-sdk/src/utils/composer/index.ts",
   tsConfigName: "workflows.json",
   name: "workflows",
-  indexTitle: "Workflows API Reference",
-  excludeExternals: true,
 })
