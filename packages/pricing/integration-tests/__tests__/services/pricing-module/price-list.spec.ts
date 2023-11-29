@@ -28,6 +28,16 @@ describe("PriceList Service", () => {
     await createCurrencies(testManager)
     await createPriceSets(testManager)
     await createPriceLists(testManager)
+    await service.createRuleTypes([
+      {
+        name: "Region ID",
+        rule_attribute: "region_id",
+      },
+      {
+        name: "Customer Group ID",
+        rule_attribute: "customer_group_id",
+      },
+    ])
   })
 
   afterEach(async () => {
@@ -313,7 +323,7 @@ describe("PriceList Service", () => {
     })
   })
 
-  describe("create", () => {
+  describe("createPriceLists", () => {
     it("should create a priceList successfully", async () => {
       const [created] = await service.createPriceLists([
         {
@@ -540,6 +550,36 @@ describe("PriceList Service", () => {
             }),
           ]),
         })
+      )
+    })
+
+    it("should throw error when rule type does not exist", async () => {
+      const error = await service
+        .createPriceLists([
+          {
+            title: "test",
+            description: "test",
+            rules: {
+              region_id: ["DE", "DK"],
+              missing_1: ["test-missing-1"],
+            },
+            prices: [
+              {
+                amount: 400,
+                currency_code: "EUR",
+                price_set_id: "price-set-1",
+                rules: {
+                  region_id: "DE",
+                  missing_2: "test-missing-2",
+                },
+              },
+            ],
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toEqual(
+        "Cannot find RuleTypes with rule_attribute - missing_1, missing_2"
       )
     })
   })
