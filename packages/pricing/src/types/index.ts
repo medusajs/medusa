@@ -5,3 +5,4 @@ export type InitializeModuleInjectableDependencies = {
 }
 
 export * as RepositoryTypes from "./repositories"
+export * as ServiceTypes from "./services"
