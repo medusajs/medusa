@@ -497,6 +497,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
       const columnNameNameValue = columnNameValueBuilder(i)
 
+      // option values are not guaranteed to keep the same order as options on product. Pick them in the same order as product options
       this.columnsDefinition[columnNameNameValue] = {
         name: columnNameNameValue,
         exportDescriptor: {
