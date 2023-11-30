@@ -1,6 +1,3 @@
-export const SymbolWorkflowStepPermanentFailureResponse = Symbol.for(
-  "WorkflowStepPermanentFailureResponse"
-)
 export const SymbolMedusaWorkflowComposerContext = Symbol.for(
   "MedusaWorkflowComposerContext"
 )

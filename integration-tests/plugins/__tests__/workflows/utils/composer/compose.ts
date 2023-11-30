@@ -1000,7 +1000,7 @@ describe("Workflow composer", function () {
       const maxRetries = 1
 
       const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
-        return StepResponse.permanentFailure({ message: "fail permanently" })
+        return StepResponse.permanentFailure("fail permanently")
       })
 
       const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)

@@ -12,7 +12,8 @@ import {
 } from "./types"
 
 import { EventEmitter } from "events"
-import { OrchestrationUtils, promiseAll } from "@medusajs/utils"
+import { promiseAll } from "@medusajs/utils"
+import { PermanentStepFailureError } from "./errors"
 
 export type TransactionFlow = {
   modelId: string
@@ -384,15 +385,6 @@ export class TransactionOrchestrator extends EventEmitter {
           transaction
             .handler(step.definition.action + "", type, payload, transaction)
             .then(async (response: any) => {
-              // Specific case for steps that return a permanentFailure response and should not be retried
-              if (
-                response?.output?.output?.__type ===
-                OrchestrationUtils.SymbolWorkflowStepPermanentFailureResponse
-              ) {
-                const error = response.output.output.error
-                return await setStepFailure(error, { endRetry: true })
-              }
-
               await TransactionOrchestrator.setStepSuccess(
                 transaction,
                 step,
@@ -400,6 +392,12 @@ export class TransactionOrchestrator extends EventEmitter {
               )
             })
             .catch(async (error) => {
+              if (
+                PermanentStepFailureError.isPermanentStepFailureError(error)
+              ) {
+                await setStepFailure(error, { endRetry: true })
+                return
+              }
               await setStepFailure(error)
             })
         )
@@ -408,17 +406,13 @@ export class TransactionOrchestrator extends EventEmitter {
           transaction.saveCheckpoint().then(async () =>
             transaction
               .handler(step.definition.action + "", type, payload, transaction)
-              .then(async (response: any) => {
-                // Specific case for steps that return a permanentFailure response and should not be retried
-                if (
-                  response?.output?.__type ===
-                  OrchestrationUtils.SymbolWorkflowStepPermanentFailureResponse
-                ) {
-                  const error = response.output.error
-                  return await setStepFailure(error, { endRetry: true })
-                }
-              })
               .catch(async (error) => {
+                if (
+                  PermanentStepFailureError.isPermanentStepFailureError(error)
+                ) {
+                  await setStepFailure(error, { endRetry: true })
+                  return
+                }
                 await setStepFailure(error)
               })
           )
