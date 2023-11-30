@@ -1,8 +1,8 @@
-import { PriceSetDTO, RuleTypeDTO } from "@medusajs/types"
+import { PriceSet, RuleType } from "@models"
 
 export interface CreatePriceSetRuleTypeDTO {
-  price_set: PriceSetDTO | string
-  rule_type: RuleTypeDTO | string
+  price_set: PriceSet | string
+  rule_type: RuleType | string
 }
 
 export interface UpdatePriceSetRuleTypeDTO {

@@ -1,9 +1,9 @@
-import { CreateCurrencyDTO } from "@medusajs/types"
+import { Currency } from "@models"
 
 export interface CreateMoneyAmountDTO {
   id?: string
   currency_code: string
-  currency?: CreateCurrencyDTO
+  currency?: Currency
   amount: number
   min_quantity?: number | null
   max_quantity?: number | null
