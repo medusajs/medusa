@@ -9,3 +9,12 @@ export interface CreatePriceListDTO {
   type?: PriceListType
   number_rules?: number
 }
+
+export interface UpdatePriceListDTO {
+  id: string
+  title?: string
+  starts_at?: Date | null
+  ends_at?: Date | null
+  status?: PriceListStatus
+  number_rules?: number
+}

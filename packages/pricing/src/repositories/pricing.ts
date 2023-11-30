@@ -1,12 +1,12 @@
-import {
-  CalculatedPriceSetDTO,
-  Context,
-  PricingContext,
-  PricingFilters,
-} from "@medusajs/types"
+import { Context } from "@medusajs/types"
 import { MedusaError, MikroOrmBase } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PricingRepositoryService } from "../types"
+import {
+  CalculatedPriceSetDTO,
+  PricingContext,
+  PricingFilters,
+  PricingRepositoryService,
+} from "@types"
 
 export class PricingRepository
   extends MikroOrmBase
