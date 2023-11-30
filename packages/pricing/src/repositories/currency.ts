@@ -7,7 +7,7 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Currency } from "@models"
-import { CreateCurrencyDTO, UpdateCurrencyDTO } from "@types"
+import { RepositoryTypes } from "@types"
 
 export class CurrencyRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -65,7 +65,7 @@ export class CurrencyRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async create(
-    data: CreateCurrencyDTO[],
+    data: RepositoryTypes.CreateCurrencyDTO[],
     context: Context = {}
   ): Promise<Currency[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -80,7 +80,7 @@ export class CurrencyRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdateCurrencyDTO[],
+    data: RepositoryTypes.UpdateCurrencyDTO[],
     context: Context = {}
   ): Promise<Currency[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)

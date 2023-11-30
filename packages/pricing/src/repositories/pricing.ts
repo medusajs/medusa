@@ -1,16 +1,11 @@
 import { Context } from "@medusajs/types"
 import { MedusaError, MikroOrmBase } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  CalculatedPriceSetDTO,
-  PricingContext,
-  PricingFilters,
-  PricingRepositoryService,
-} from "@types"
+import { RepositoryTypes } from "@types"
 
 export class PricingRepository
   extends MikroOrmBase
-  implements PricingRepositoryService
+  implements RepositoryTypes.PricingRepositoryService
 {
   protected readonly manager_: SqlEntityManager
 
@@ -23,10 +18,10 @@ export class PricingRepository
   }
 
   async calculatePrices(
-    pricingFilters: PricingFilters,
-    pricingContext: PricingContext = { context: {} },
+    pricingFilters: RepositoryTypes.PricingFilters,
+    pricingContext: RepositoryTypes.PricingContext = { context: {} },
     sharedContext: Context = {}
-  ): Promise<CalculatedPriceSetDTO[]> {
+  ): Promise<RepositoryTypes.CalculatedPriceSetDTO[]> {
     const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
     const knex = manager.getKnex()
     const context = pricingContext.context || {}

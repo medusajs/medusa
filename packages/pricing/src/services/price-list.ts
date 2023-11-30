@@ -1,16 +1,16 @@
 import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
 import {
+  doNotForceTransaction,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  doNotForceTransaction,
   retrieveEntity,
   shouldForceTransaction,
 } from "@medusajs/utils"
 import { PriceList } from "@models"
 import { PriceListRepository } from "@repositories"
-import { CreatePriceListDTO } from "../types"
+import { RepositoryTypes } from "../types"
 
 type InjectedDependencies = {
   priceListRepository: DAL.RepositoryService
@@ -68,7 +68,7 @@ export default class PriceListService<TEntity extends PriceList = PriceList> {
 
   @InjectTransactionManager(shouldForceTransaction, "priceListRepository_")
   async create(
-    data: CreatePriceListDTO[],
+    data: RepositoryTypes.CreatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.priceListRepository_ as PriceListRepository).create(

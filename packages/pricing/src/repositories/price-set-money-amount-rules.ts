@@ -7,10 +7,7 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSetMoneyAmountRules } from "@models"
-import {
-  CreatePriceSetMoneyAmountRulesDTO,
-  UpdatePriceSetMoneyAmountRulesDTO,
-} from "@types"
+import { RepositoryTypes } from "@types"
 
 export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -68,7 +65,7 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRep
   }
 
   async create(
-    data: CreatePriceSetMoneyAmountRulesDTO[],
+    data: RepositoryTypes.CreatePriceSetMoneyAmountRulesDTO[],
     context: Context = {}
   ): Promise<PriceSetMoneyAmountRules[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -83,7 +80,7 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRep
   }
 
   async update(
-    data: UpdatePriceSetMoneyAmountRulesDTO[],
+    data: RepositoryTypes.UpdatePriceSetMoneyAmountRulesDTO[],
     context: Context = {}
   ): Promise<PriceSetMoneyAmountRules[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)

@@ -7,7 +7,7 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { RuleType } from "@models"
-import { CreateRuleTypeDTO, UpdateRuleTypeDTO } from "@types"
+import { RepositoryTypes } from "@types"
 
 export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -65,7 +65,7 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async create(
-    data: CreateRuleTypeDTO[],
+    data: RepositoryTypes.CreateRuleTypeDTO[],
     context: Context = {}
   ): Promise<RuleType[]> {
     validateRuleAttributes(data.map((d) => d.rule_attribute))
@@ -82,7 +82,7 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdateRuleTypeDTO[],
+    data: RepositoryTypes.UpdateRuleTypeDTO[],
     context: Context = {}
   ): Promise<RuleType[]> {
     validateRuleAttributes(data.map((d) => d.rule_attribute))

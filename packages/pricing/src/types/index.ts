@@ -4,4 +4,4 @@ export type InitializeModuleInjectableDependencies = {
   logger?: Logger
 }
 
-export * from "./repositories"
+export * as RepositoryTypes from "./repositories"

@@ -8,6 +8,7 @@ import {
 } from "@mikro-orm/core"
 
 import { PriceList } from "@models"
+import { RepositoryTypes } from "@types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
@@ -66,7 +67,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async create(
-    data: CreatePriceListDTO[],
+    data: RepositoryTypes.CreatePriceListDTO[],
     context: Context = {}
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -97,7 +98,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdatePriceListDTO[],
+    data: RepositoryTypes.UpdatePriceListDTO[],
     context: Context = {}
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
