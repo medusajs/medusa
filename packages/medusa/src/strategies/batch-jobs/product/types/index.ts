@@ -59,7 +59,7 @@ export type ProductExportPriceData = {
   region?: { name: string; currency_code: string; id: string }
 }
 
-export type ProductExportColumnSchemaEntity = "product" | "variant"
+export type ProductExportColumnSchemaEntity = "product" | "variant" | "productAndVariant"
 
 export type DynamicProductExportDescriptor = {
   isDynamic: true
@@ -74,6 +74,10 @@ export type ProductExportDescriptor =
   | {
       accessor: (variant: ProductVariant) => string
       entityName: Extract<ProductExportColumnSchemaEntity, "variant">
+    }
+  | {
+      accessor: (product: Product, variant: ProductVariant) => string
+      entityName: Extract<ProductExportColumnSchemaEntity, "productAndVariant">
     }
 
 export type ProductImportInjectedProps = {

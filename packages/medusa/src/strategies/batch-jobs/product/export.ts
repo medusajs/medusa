@@ -500,9 +500,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       this.columnsDefinition[columnNameNameValue] = {
         name: columnNameNameValue,
         exportDescriptor: {
-          accessor: (variant: ProductVariant) =>
-            variant?.options[i]?.value ?? "",
-          entityName: "variant",
+          accessor: (product: Product, variant: ProductVariant) =>
+            variant?.options.find(
+              (ov) => ov.option_id === product!.options[i]?.id
+            )?.value ?? "",
+          entityName: "productAndVariant",
         },
       }
     }
@@ -598,6 +600,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         if (columnSchema.entityName === "variant") {
           const formattedContent = csvCellContentFormatter(
             columnSchema.accessor(variant)
+          )
+          variantLineData.push(formattedContent)
+        }
+        if (columnSchema.entityName === "productAndVariant") {
+          const formattedContent = csvCellContentFormatter(
+            columnSchema.accessor(product, variant)
           )
           variantLineData.push(formattedContent)
         }
