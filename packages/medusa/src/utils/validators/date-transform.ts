@@ -4,7 +4,8 @@ export const transformDate = ({ value }): Date => {
     : new Date(Number(value) * 1000)
 }
 
-export const transformOptionalDate = (input) =>
-  !input.value && !Number.isInteger(input.value)
+export const transformOptionalDate = (input) => {
+  return !input.value && !Number.isInteger(input.value)
     ? input.value
     : transformDate(input)
+}
