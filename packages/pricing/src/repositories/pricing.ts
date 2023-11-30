@@ -5,8 +5,9 @@ import {
   PricingFilters,
 } from "@medusajs/types"
 import { MedusaError, MikroOrmBase } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+
 import { PricingRepositoryService } from "../types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PricingRepository
   extends MikroOrmBase
@@ -176,9 +177,9 @@ export class PricingRepository
 
       .orderBy([
         { column: "psma.has_price_list", order: "asc" },
-        { column: "amount", order: "asc" },
         { column: "number_rules", order: "desc" },
         { column: "default_priority", order: "desc" },
+        { column: "amount", order: "asc" },
       ])
 
     if (quantity) {
