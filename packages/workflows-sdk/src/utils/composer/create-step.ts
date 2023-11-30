@@ -174,6 +174,13 @@ function applyStep<
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
+      config: (config: Pick<TransactionStepsDefinition, "maxRetries">) => {
+        this.flow.replaceAction(stepName, stepName, {
+          ...stepConfig,
+          ...config,
+        })
+        return proxify(ret)
+      },
     }
 
     return proxify(ret)
