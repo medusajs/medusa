@@ -145,7 +145,7 @@ export async function setVariantAvailability({ cart, container, manager }) {
     return
   }
 
-  return productVariantInventoryService
+  return await productVariantInventoryService
     .withTransaction(manager)
     .setVariantAvailability(
       cart.items.map((i) => i.variant),
