@@ -656,7 +656,7 @@ export const currencies: CurrenciesType = {
     symbol: "MNT",
     name: "Mongolian Tugrik",
     symbol_native: "₮",
-    decimal_digits: 0,
+    decimal_digits: 2,
     rounding: 0,
     code: "MNT",
     name_plural: "Mongolian tugriks",
