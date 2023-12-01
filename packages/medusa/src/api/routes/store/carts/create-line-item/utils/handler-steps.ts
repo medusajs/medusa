@@ -138,7 +138,8 @@ export async function setVariantAvailability({ cart, container, manager }) {
     container.resolve("productVariantInventoryService")
 
   const shouldSetAvailability =
-    Object.keys(cart)?.some((prop) => prop === "variant") &&
+    "items" in cart &&
+    "variants" in cart.items[0] &&
     featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
 
   if (!shouldSetAvailability) {
