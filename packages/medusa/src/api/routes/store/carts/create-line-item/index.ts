@@ -4,12 +4,16 @@ import { validator } from "../../../../../utils/validator"
 import {
   addOrUpdateLineItem,
   CreateLineItemSteps,
-  setPaymentSessionAndVariantAvailability,
+  setPaymentSession,
+  setVariantAvailability,
 } from "./utils/handler-steps"
 import { IdempotencyKey } from "../../../../../models"
 import { initializeIdempotencyRequest } from "../../../../../utils/idempotency"
 import { cleanResponseData } from "../../../../../utils/clean-response-data"
 import IdempotencyKeyService from "../../../../../services/idempotency-key"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "../index"
+import { CartService } from "../../../../../services"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /store/carts/{id}/line-items
@@ -125,11 +129,31 @@ export default async (req, res) => {
 
       case CreateLineItemSteps.SET_PAYMENT_SESSIONS: {
         try {
-          const cart = await setPaymentSessionAndVariantAvailability({
-            cartId: id,
+          const cartService: CartService = req.scope.resolve("cartService")
+
+          const cart = await cartService
+            .withTransaction(manager)
+            .retrieveWithTotals(id, {
+              select: defaultStoreCartFields,
+              relations: [
+                ...defaultStoreCartRelations,
+                "billing_address",
+                "region.payment_providers",
+                "payment_sessions",
+                "customer",
+              ],
+            })
+
+          const args = {
+            cart,
             container: req.scope,
             manager,
-          })
+          }
+
+          await promiseAll([
+            setPaymentSession(args),
+            setVariantAvailability(args),
+          ])
 
           idempotencyKey = await idempotencyKeyService
             .withTransaction(manager)

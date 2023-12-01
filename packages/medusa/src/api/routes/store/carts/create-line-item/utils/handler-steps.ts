@@ -1,4 +1,4 @@
-import { FlagRouter, promiseAll } from "@medusajs/utils"
+import { FlagRouter } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
 import { Cart } from "../../../../../../models"
@@ -119,57 +119,36 @@ export async function addOrUpdateLineItem({
   })
 }
 
-export async function setPaymentSessionAndVariantAvailability({
-  cartId,
-  container,
-  manager,
-}) {
+export async function setPaymentSession({ cart, container, manager }) {
   const cartService: CartService = container.resolve("cartService")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    container.resolve("productVariantInventoryService")
-
-  const relations = [
-    ...defaultStoreCartRelations,
-    "billing_address",
-    "region.payment_providers",
-    "payment_sessions",
-    "customer",
-  ]
 
   const txCartService = cartService.withTransaction(manager)
 
-  const cart = await txCartService.retrieveWithTotals(cartId, {
-    select: defaultStoreCartFields,
-    relations,
-  })
-
-  const promises: Promise<any>[] = []
-  if (cart.payment_sessions?.length) {
-    promises.push(
-      txCartService.setPaymentSessions(
-        cart as WithRequiredProperty<Cart, "total">
-      )
-    )
+  if (!cart.payment_sessions?.length) {
+    return
   }
+
+  return await txCartService.setPaymentSessions(
+    cart as WithRequiredProperty<Cart, "total">
+  )
+}
+
+export async function setVariantAvailability({ cart, container, manager }) {
+  const productVariantInventoryService: ProductVariantInventoryService =
+    container.resolve("productVariantInventoryService")
 
   const shouldSetAvailability =
-    relations?.some((rel) => rel.includes("variant")) &&
+    Object.keys(cart)?.some((rel) => rel.includes("variant")) &&
     featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
 
-  if (shouldSetAvailability) {
-    promises.push(
-      productVariantInventoryService
-        .withTransaction(manager)
-        .setVariantAvailability(
-          cart.items.map((i) => i.variant),
-          cart.sales_channel_id!
-        )
+  if (!shouldSetAvailability) {
+    return
+  }
+
+  return productVariantInventoryService
+    .withTransaction(manager)
+    .setVariantAvailability(
+      cart.items.map((i) => i.variant),
+      cart.sales_channel_id!
     )
-  }
-
-  if (promises.length) {
-    await promiseAll(promises)
-  }
-
-  return cart
 }
