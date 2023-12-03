@@ -25,13 +25,11 @@ import { proxify } from "./helpers/proxy"
  *
  * @returns The expected output based on the type parameter `TOutput`.
  */
-type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
+type InvokeFn<TInput, TOutput, TCompensateInput> = (
   /**
    * The input of the step.
    */
-  input: {
-    [Key in keyof TInput]: TInput[Key]
-  },
+  input: TInput,
   /**
    * The step's context.
    */
@@ -70,7 +68,7 @@ interface ApplyStepOptions<
   TStepInputs extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
-  TInvokeInput extends object,
+  TInvokeInput,
   TInvokeResultOutput,
   TInvokeResultCompensateInput
 > {
@@ -96,7 +94,7 @@ interface ApplyStepOptions<
  * @param compensateFn
  */
 function applyStep<
-  TInvokeInput extends object,
+  TInvokeInput,
   TStepInput extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
@@ -233,7 +231,7 @@ function applyStep<
  * )
  */
 export function createStep<
-  TInvokeInput extends object,
+  TInvokeInput,
   TInvokeResultOutput,
   TInvokeResultCompensateInput
 >(
