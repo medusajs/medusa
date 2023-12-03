@@ -66,9 +66,13 @@ export const supportedLanguages = [
     locale: "ru",
     name: "Русский"
   },
-  { 
+  {
     locale: "ko",
     name: "한국어"
+  },
+  {
+    locale: "ja",
+    name: "日本語"
   }
 ].sort((a, b) => a.locale.localeCompare(b.locale))
 
