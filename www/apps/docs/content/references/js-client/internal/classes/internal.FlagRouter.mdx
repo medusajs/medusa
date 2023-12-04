@@ -24,9 +24,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Methods
 
-#### isFeatureEnabled
+### isFeatureEnabled
 
 Check if a feature flag is enabled.
 There are two ways of using this method:
@@ -36,7 +38,7 @@ We use 1. for top-level feature flags and 2. for nested feature flags. Almost al
 An example of a nested flag is workflows. To use it, you would do:
 `isFeatureEnabled({ workflows: Workflows.CreateCart })`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -50,7 +52,7 @@ An example of a nested flag is workflows. To use it, you would do:
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -66,9 +68,9 @@ An example of a nested flag is workflows. To use it, you would do:
 
 ___
 
-#### listFlags
+### listFlags
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -84,7 +86,7 @@ ___
 
 ___
 
-#### setFlag
+### setFlag
 
 Sets a feature flag.
 Flags take two shapes:
@@ -92,7 +94,7 @@ Flags take two shapes:
 `setFlag("myFeatureFlag", { nestedFlag: true })`
 These shapes are used for top-level and nested flags respectively, as explained in isFeatureEnabled.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -115,7 +117,7 @@ These shapes are used for top-level and nested flags respectively, as explained 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -14,7 +14,7 @@ Product variants are the actual salable item in your store. Each variant is a co
 
 ## Methods
 
-#### list
+### list
 
 Retrieves a list of product variants. The product variants can be filtered by fields such as `id` or `title` passed in the `query` parameter. The product variants can also be paginated.
 
@@ -24,7 +24,7 @@ For accurate and correct pricing of the product variants based on the customer's
 Passing `sales_channel_id` ensures retrieving only variants of products available in the specified sales channel.
 You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
 
-##### Example
+#### Example
 
 To list product variants:
 
@@ -69,7 +69,7 @@ medusa.product.variants
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -201,7 +201,7 @@ medusa.product.variants
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -591,7 +591,7 @@ medusa.product.variants
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a Product Variant's details. For accurate and correct pricing of the product variant based on the customer's context, it's highly recommended to pass fields such as
 `region_id`, `currency_code`, and `cart_id` when available.
@@ -599,7 +599,7 @@ Retrieve a Product Variant's details. For accurate and correct pricing of the pr
 Passing `sales_channel_id` ensures retrieving only variants of products available in the current sales channel.
 You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -610,7 +610,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -633,7 +633,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

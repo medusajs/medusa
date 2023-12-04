@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate product collections.
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new ProductCollectionService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate product collections.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -159,19 +159,39 @@ Provides layer to manipulate product collections.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addProducts
+### addProducts
 
 `**addProducts**(collectionId, productIds): Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -194,7 +214,7 @@ Provides layer to manipulate product collections.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
@@ -212,7 +232,7 @@ Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -220,7 +240,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -243,7 +263,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -275,7 +295,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -293,13 +313,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(collection): Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;`
 
 Creates a product collection
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -313,7 +333,7 @@ Creates a product collection
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
@@ -331,13 +351,13 @@ Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(collectionId): Promise&#60;void&#62;`
 
 Deletes a product collection idempotently
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -351,7 +371,7 @@ Deletes a product collection idempotently
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -369,13 +389,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector?, config?): Promise&#60;[ProductCollection](ProductCollection.mdx)[]&#62;`
 
 Lists product collections
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -416,7 +436,7 @@ Lists product collections
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCollection](ProductCollection.mdx)[]&#62;
 
@@ -434,13 +454,13 @@ Promise&#60;[ProductCollection](ProductCollection.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(selector?, config?): Promise&#60;[[ProductCollection](ProductCollection.mdx)[], number]&#62;`
 
 Lists product collections and add count.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -463,7 +483,7 @@ Lists product collections and add count.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[ProductCollection](ProductCollection.mdx)[], number]&#62;
 
@@ -481,11 +501,11 @@ Promise&#60;[[ProductCollection](ProductCollection.mdx)[], number]&#62;
 
 ___
 
-#### removeProducts
+### removeProducts
 
 `**removeProducts**(collectionId, productIds): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -508,7 +528,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -526,13 +546,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(collectionId, config?): Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;`
 
 Retrieves a product collection by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -555,7 +575,7 @@ Retrieves a product collection by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
@@ -573,13 +593,13 @@ Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
 ___
 
-#### retrieveByHandle
+### retrieveByHandle
 
 `**retrieveByHandle**(collectionHandle, config?): Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;`
 
 Retrieves a product collection by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -602,7 +622,7 @@ Retrieves a product collection by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
@@ -620,11 +640,11 @@ Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -638,7 +658,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -656,13 +676,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(collectionId, update): Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;`
 
 Updates a product collection
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -685,7 +705,7 @@ Updates a product collection
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
@@ -703,11 +723,11 @@ Promise&#60;[ProductCollection](ProductCollection.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [ProductCollectionService](ProductCollectionService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -721,7 +741,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [ProductCollectionService](ProductCollectionService.mdx)
 

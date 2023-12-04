@@ -8,13 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-#### addPriceListPrices
+### addPriceListPrices
 
 `**addPriceListPrices**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;`
 
 This method is used to add prices to price lists.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -37,7 +37,7 @@ async function addPriceListPrices (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -60,7 +60,7 @@ async function addPriceListPrices (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
 
@@ -78,13 +78,13 @@ Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
 
 ___
 
-#### addPrices
+### addPrices
 
 `**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
 This method adds prices to a price set.
 
-##### Example
+#### Example
 
 To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
 
@@ -155,7 +155,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -178,7 +178,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
@@ -198,7 +198,7 @@ Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
 This method adds prices to multiple price sets.
 
-##### Example
+#### Example
 
 To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
 
@@ -269,7 +269,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -292,7 +292,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
@@ -310,13 +310,13 @@ Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
 ___
 
-#### addRules
+### addRules
 
 `**addRules**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
 This method adds rules to a price set.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -337,7 +337,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -360,7 +360,7 @@ async function addRulesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
@@ -380,7 +380,7 @@ Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
 This method adds rules to multiple price sets.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -401,7 +401,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -424,7 +424,7 @@ async function addRulesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
@@ -442,13 +442,13 @@ Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
 ___
 
-#### calculatePrices
+### calculatePrices
 
 `**calculatePrices**(filters, context?, sharedContext?): Promise&#60;[CalculatedPriceSet](CalculatedPriceSet.mdx)[]&#62;`
 
 This method is used to calculate prices based on the provided filters and context.
 
-##### Example
+#### Example
 
 When you calculate prices, you must at least specify the currency code:
 
@@ -518,7 +518,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -550,7 +550,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CalculatedPriceSet](CalculatedPriceSet.mdx)[]&#62;
 
@@ -568,13 +568,13 @@ Promise&#60;[CalculatedPriceSet](CalculatedPriceSet.mdx)[]&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
 This method is used to create a new price set.
 
-##### Example
+#### Example
 
 To create a default price set, don't pass any rules. For example:
 
@@ -648,7 +648,7 @@ async function createPriceSet() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -671,7 +671,7 @@ async function createPriceSet() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
@@ -691,7 +691,7 @@ Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
 This method is used to create multiple price sets.
 
-##### Example
+#### Example
 
 To create price sets with a default price, don't pass any rules and make sure to pass the `currency_code` of the price. For example:
 
@@ -762,7 +762,7 @@ async function createPriceSets() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -785,7 +785,7 @@ async function createPriceSets() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
@@ -803,13 +803,13 @@ Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
 ___
 
-#### createCurrencies
+### createCurrencies
 
 `**createCurrencies**(data, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;`
 
 This method is used to create new currencies.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -830,7 +830,7 @@ async function createCurrencies() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -853,7 +853,7 @@ async function createCurrencies() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
@@ -871,13 +871,13 @@ Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
 ___
 
-#### createMoneyAmounts
+### createMoneyAmounts
 
 `**createMoneyAmounts**(data, sharedContext?): Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;`
 
 This method creates money amounts.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -902,7 +902,7 @@ async function retrieveMoneyAmounts() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -925,7 +925,7 @@ async function retrieveMoneyAmounts() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
@@ -943,13 +943,13 @@ Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
 ___
 
-#### createPriceListRules
+### createPriceListRules
 
 `**createPriceListRules**(data, sharedContext?): Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;`
 
 This method is used to create price list rules.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -968,7 +968,7 @@ async function createPriceListRules (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -991,7 +991,7 @@ async function createPriceListRules (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
 
@@ -1009,13 +1009,13 @@ Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
 
 ___
 
-#### createPriceLists
+### createPriceLists
 
 `**createPriceLists**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;`
 
 This method is used to create price lists.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1036,7 +1036,7 @@ async function createPriceList (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1059,7 +1059,7 @@ async function createPriceList (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
 
@@ -1077,13 +1077,13 @@ Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
 
 ___
 
-#### createPriceRules
+### createPriceRules
 
 `**createPriceRules**(data, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;`
 
 This method is used to create new price rules based on the provided data.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1115,7 +1115,7 @@ async function createPriceRules (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1138,7 +1138,7 @@ async function createPriceRules (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
@@ -1156,14 +1156,14 @@ Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
 ___
 
-#### createPriceSetMoneyAmountRules
+### createPriceSetMoneyAmountRules
 
 `**createPriceSetMoneyAmountRules**(data, sharedContext?): Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;`
 
 This method is used to create new price set money amount rules. A price set money amount rule creates an association between a price set money amount and
 a rule type.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1185,7 +1185,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1208,7 +1208,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;
 
@@ -1226,13 +1226,13 @@ Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62
 
 ___
 
-#### createRuleTypes
+### createRuleTypes
 
 `**createRuleTypes**(data, sharedContext?): Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;`
 
 This method is used to create new rule types.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -1251,7 +1251,7 @@ async function createRuleTypes() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1274,7 +1274,7 @@ async function createRuleTypes() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 
@@ -1292,13 +1292,13 @@ Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 
 ___
 
-#### delete
+### delete
 
 `**delete**(ids, sharedContext?): Promise&#60;void&#62;`
 
 This method deletes price sets by their IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1312,7 +1312,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1335,7 +1335,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1353,13 +1353,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteCurrencies
+### deleteCurrencies
 
 `**deleteCurrencies**(currencyCodes, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete currencies based on their currency code.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -1371,7 +1371,7 @@ async function deleteCurrencies() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1394,7 +1394,7 @@ async function deleteCurrencies() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1412,13 +1412,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteMoneyAmounts
+### deleteMoneyAmounts
 
 `**deleteMoneyAmounts**(ids, sharedContext?): Promise&#60;void&#62;`
 
 This method deletes money amounts by their IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1434,7 +1434,7 @@ async function deleteMoneyAmounts (moneyAmountIds: string[]) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1457,7 +1457,7 @@ async function deleteMoneyAmounts (moneyAmountIds: string[]) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1475,13 +1475,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deletePriceListRules
+### deletePriceListRules
 
 `**deletePriceListRules**(priceListRuleIds, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete price list rules.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1495,7 +1495,7 @@ async function deletePriceListRules (priceListRuleIds: string[]) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1518,7 +1518,7 @@ async function deletePriceListRules (priceListRuleIds: string[]) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1536,13 +1536,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deletePriceLists
+### deletePriceLists
 
 `**deletePriceLists**(priceListIds, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete price lists.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1556,7 +1556,7 @@ async function deletePriceLists (ids: string[]) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1579,7 +1579,7 @@ async function deletePriceLists (ids: string[]) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1597,13 +1597,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deletePriceRules
+### deletePriceRules
 
 `**deletePriceRules**(priceRuleIds, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete price rules based on the specified IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1619,7 +1619,7 @@ async function deletePriceRules (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1642,7 +1642,7 @@ async function deletePriceRules (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1660,13 +1660,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deletePriceSetMoneyAmountRules
+### deletePriceSetMoneyAmountRules
 
 `**deletePriceSetMoneyAmountRules**(ids, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete price set money amount rules based on the specified IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1680,7 +1680,7 @@ async function deletePriceSetMoneyAmountRule (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1703,7 +1703,7 @@ async function deletePriceSetMoneyAmountRule (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1721,13 +1721,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### deleteRuleTypes
+### deleteRuleTypes
 
 `**deleteRuleTypes**(ruleTypeIds, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete rule types based on the provided IDs.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -1741,7 +1741,7 @@ async function deleteRuleTypes (ruleTypeId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1764,7 +1764,7 @@ async function deleteRuleTypes (ruleTypeId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -1782,13 +1782,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(filters?, config?, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price sets using their IDs:
 
@@ -1892,7 +1892,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1924,7 +1924,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
@@ -1942,13 +1942,13 @@ Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
 ___
 
-#### listAndCount
+### listAndCount
 
 `**listAndCount**(filters?, config?, sharedContext?): Promise&#60;[[PriceSetDTO](PriceSetDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price sets along with the total count of available price sets satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of prices sets using their IDs:
 
@@ -2052,7 +2052,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2084,7 +2084,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[PriceSetDTO](PriceSetDTO.mdx)[], number]&#62;
 
@@ -2102,13 +2102,13 @@ Promise&#60;[[PriceSetDTO](PriceSetDTO.mdx)[], number]&#62;
 
 ___
 
-#### listAndCountCurrencies
+### listAndCountCurrencies
 
 `**listAndCountCurrencies**(filters?, config?, sharedContext?): Promise&#60;[[CurrencyDTO](CurrencyDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of currencies along with the total count of available currencies satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of currencies using their codes:
 
@@ -2178,7 +2178,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2210,7 +2210,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[CurrencyDTO](CurrencyDTO.mdx)[], number]&#62;
 
@@ -2228,13 +2228,13 @@ Promise&#60;[[CurrencyDTO](CurrencyDTO.mdx)[], number]&#62;
 
 ___
 
-#### listAndCountMoneyAmounts
+### listAndCountMoneyAmounts
 
 `**listAndCountMoneyAmounts**(filters?, config?, sharedContext?): Promise&#60;[[MoneyAmountDTO](MoneyAmountDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of money amounts along with the total count of available money amounts satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of money amounts using their IDs:
 
@@ -2336,7 +2336,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2368,7 +2368,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[MoneyAmountDTO](MoneyAmountDTO.mdx)[], number]&#62;
 
@@ -2386,13 +2386,13 @@ Promise&#60;[[MoneyAmountDTO](MoneyAmountDTO.mdx)[], number]&#62;
 
 ___
 
-#### listAndCountPriceListRules
+### listAndCountPriceListRules
 
 `**listAndCountPriceListRules**(filters?, config?, sharedContext?): Promise&#60;[[PriceListRuleDTO](PriceListRuleDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price list ruless along with the total count of available price list ruless satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price list vs using their IDs:
 
@@ -2494,7 +2494,7 @@ async function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeI
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2526,7 +2526,7 @@ async function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeI
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[PriceListRuleDTO](PriceListRuleDTO.mdx)[], number]&#62;
 
@@ -2544,13 +2544,13 @@ Promise&#60;[[PriceListRuleDTO](PriceListRuleDTO.mdx)[], number]&#62;
 
 ___
 
-#### listAndCountPriceLists
+### listAndCountPriceLists
 
 `**listAndCountPriceLists**(filters?, config?, sharedContext?): Promise&#60;[[PriceListDTO](PriceListDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price lists along with the total count of available price lists satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price lists using their IDs:
 
@@ -2652,7 +2652,7 @@ async function retrievePriceLists (priceListIds: string[], titles: string[], ski
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2684,7 +2684,7 @@ async function retrievePriceLists (priceListIds: string[], titles: string[], ski
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[PriceListDTO](PriceListDTO.mdx)[], number]&#62;
 
@@ -2702,13 +2702,13 @@ Promise&#60;[[PriceListDTO](PriceListDTO.mdx)[], number]&#62;
 
 ___
 
-#### listAndCountPriceRules
+### listAndCountPriceRules
 
 `**listAndCountPriceRules**(filters?, config?, sharedContext?): Promise&#60;[[PriceRuleDTO](PriceRuleDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price rules along with the total count of available price rules satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price rules using their IDs:
 
@@ -2799,7 +2799,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2831,7 +2831,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[PriceRuleDTO](PriceRuleDTO.mdx)[], number]&#62;
 
@@ -2849,14 +2849,14 @@ Promise&#60;[[PriceRuleDTO](PriceRuleDTO.mdx)[], number]&#62;
 
 ___
 
-#### listAndCountPriceSetMoneyAmountRules
+### listAndCountPriceSetMoneyAmountRules
 
 `**listAndCountPriceSetMoneyAmountRules**(filters?, config?, sharedContext?): Promise&#60;[[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price set money amount rules along with the total count of
 available price set money amount rules satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price set money amounts using their IDs:
 
@@ -2947,7 +2947,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2979,7 +2979,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;
 
@@ -2997,14 +2997,14 @@ Promise&#60;[[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[], n
 
 ___
 
-#### listAndCountPriceSetMoneyAmounts
+### listAndCountPriceSetMoneyAmounts
 
 `**listAndCountPriceSetMoneyAmounts**(filters?, config?, sharedContext?): Promise&#60;[[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price set money amounts along with the total count of
 available price set money amounts satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of price set money amounts using their IDs:
 
@@ -3095,7 +3095,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3127,7 +3127,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[], number]&#62;
 
@@ -3145,13 +3145,13 @@ Promise&#60;[[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[], number]&#62
 
 ___
 
-#### listAndCountRuleTypes
+### listAndCountRuleTypes
 
 `**listAndCountRuleTypes**(filters?, config?, sharedContext?): Promise&#60;[[RuleTypeDTO](RuleTypeDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of rule types along with the total count of available rule types satisfying the provided filters.
 
-##### Example
+#### Example
 
 To retrieve a list of rule types using their IDs:
 
@@ -3248,7 +3248,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3280,7 +3280,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[[RuleTypeDTO](RuleTypeDTO.mdx)[], number]&#62;
 
@@ -3298,13 +3298,13 @@ Promise&#60;[[RuleTypeDTO](RuleTypeDTO.mdx)[], number]&#62;
 
 ___
 
-#### listCurrencies
+### listCurrencies
 
 `**listCurrencies**(filters?, config?, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of currencies based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of currencies using their codes:
 
@@ -3374,7 +3374,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3406,7 +3406,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
@@ -3424,13 +3424,13 @@ Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
 ___
 
-#### listMoneyAmounts
+### listMoneyAmounts
 
 `**listMoneyAmounts**(filters?, config?, sharedContext?): Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of money amounts based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of money amounts using their IDs:
 
@@ -3532,7 +3532,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3564,7 +3564,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
@@ -3582,13 +3582,13 @@ Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
 ___
 
-#### listPriceListRules
+### listPriceListRules
 
 `**listPriceListRules**(filters?, config?, sharedContext?): Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price list rules based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price list vs using their IDs:
 
@@ -3690,7 +3690,7 @@ async function listPriceListRules (priceListRuleIds: string[], ruleTypeIDs: stri
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3722,7 +3722,7 @@ async function listPriceListRules (priceListRuleIds: string[], ruleTypeIDs: stri
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
 
@@ -3740,13 +3740,13 @@ Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
 
 ___
 
-#### listPriceLists
+### listPriceLists
 
 `**listPriceLists**(filters?, config?, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price lists based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price lists using their IDs:
 
@@ -3848,7 +3848,7 @@ async function listPriceLists (priceListIds: string[], titles: string[], skip: n
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3880,7 +3880,7 @@ async function listPriceLists (priceListIds: string[], titles: string[], skip: n
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
 
@@ -3898,13 +3898,13 @@ Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
 
 ___
 
-#### listPriceRules
+### listPriceRules
 
 `**listPriceRules**(filters?, config?, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price rules based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price rules using their IDs:
 
@@ -3995,7 +3995,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4027,7 +4027,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
@@ -4045,13 +4045,13 @@ Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
 ___
 
-#### listPriceSetMoneyAmountRules
+### listPriceSetMoneyAmountRules
 
 `**listPriceSetMoneyAmountRules**(filters?, config?, sharedContext?): Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price set money amount rules based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price set money amount rules using their IDs:
 
@@ -4142,7 +4142,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4174,7 +4174,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;
 
@@ -4192,13 +4192,13 @@ Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62
 
 ___
 
-#### listPriceSetMoneyAmounts
+### listPriceSetMoneyAmounts
 
 `**listPriceSetMoneyAmounts**(filters?, config?, sharedContext?): Promise&#60;[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price set money amounts based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of price set money amounts using their IDs:
 
@@ -4289,7 +4289,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4321,7 +4321,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[]&#62;
 
@@ -4339,13 +4339,13 @@ Promise&#60;[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[]&#62;
 
 ___
 
-#### listRuleTypes
+### listRuleTypes
 
 `**listRuleTypes**(filters?, config?, sharedContext?): Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of rule types based on optional filters and configuration.
 
-##### Example
+#### Example
 
 To retrieve a list of rule types using their IDs:
 
@@ -4442,7 +4442,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4474,7 +4474,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 
@@ -4492,13 +4492,13 @@ Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 
 ___
 
-#### removePriceListRules
+### removePriceListRules
 
 `**removePriceListRules**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;`
 
 This method is used to remove rules from a price list.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -4517,7 +4517,7 @@ async function setPriceListRules (priceListId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4540,7 +4540,7 @@ async function setPriceListRules (priceListId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
 
@@ -4558,13 +4558,13 @@ Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
 
 ___
 
-#### removeRules
+### removeRules
 
 `**removeRules**(data, sharedContext?): Promise&#60;void&#62;`
 
 This method remove rules from a price set.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -4583,7 +4583,7 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4606,7 +4606,7 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -4624,13 +4624,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(id, config?, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
 This method is used to retrieve a price set by its ID.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price set by its ID:
 
@@ -4671,7 +4671,7 @@ async function retrievePriceSet (priceSetId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4703,7 +4703,7 @@ async function retrievePriceSet (priceSetId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
@@ -4721,13 +4721,13 @@ Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
 ___
 
-#### retrieveCurrency
+### retrieveCurrency
 
 `**retrieveCurrency**(code, config?, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;`
 
 This method retrieves a currency by its code and and optionally based on the provided configurations.
 
-##### Example
+#### Example
 
 A simple example that retrieves a currency by its code:
 
@@ -4768,7 +4768,7 @@ async function retrieveCurrency (code: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4800,7 +4800,7 @@ async function retrieveCurrency (code: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;
 
@@ -4818,13 +4818,13 @@ Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;
 
 ___
 
-#### retrieveMoneyAmount
+### retrieveMoneyAmount
 
 `**retrieveMoneyAmount**(id, config?, sharedContext?): Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;`
 
 This method retrieves a money amount by its ID.
 
-##### Example
+#### Example
 
 To retrieve a money amount by its ID:
 
@@ -4865,7 +4865,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4897,7 +4897,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;
 
@@ -4915,13 +4915,13 @@ Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;
 
 ___
 
-#### retrievePriceList
+### retrievePriceList
 
 `**retrievePriceList**(id, config?, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;`
 
 This method is used to retrieve a price list by its ID.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price list by its ID:
 
@@ -4962,7 +4962,7 @@ async function retrievePriceList (priceListId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4994,7 +4994,7 @@ async function retrievePriceList (priceListId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
 
@@ -5012,13 +5012,13 @@ Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
 
 ___
 
-#### retrievePriceListRule
+### retrievePriceListRule
 
 `**retrievePriceListRule**(id, config?, sharedContext?): Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;`
 
 This method is used to retrieve a price list rule by its ID.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price list rule by its ID:
 
@@ -5059,7 +5059,7 @@ async function retrievePriceListRule (priceListRuleId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5091,7 +5091,7 @@ async function retrievePriceListRule (priceListRuleId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;
 
@@ -5109,13 +5109,13 @@ Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)&#62;
 
 ___
 
-#### retrievePriceRule
+### retrievePriceRule
 
 `**retrievePriceRule**(id, config?, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;`
 
 This method is used to retrieve a price rule by its ID.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price rule by its ID:
 
@@ -5151,7 +5151,7 @@ async function retrievePriceRule (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5183,7 +5183,7 @@ async function retrievePriceRule (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;
 
@@ -5201,13 +5201,13 @@ Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;
 
 ___
 
-#### retrievePriceSetMoneyAmountRules
+### retrievePriceSetMoneyAmountRules
 
 `**retrievePriceSetMoneyAmountRules**(id, config?, sharedContext?): Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;`
 
 This method is used to a price set money amount rule by its ID based on the provided configuration.
 
-##### Example
+#### Example
 
 A simple example that retrieves a price set money amount rule by its ID:
 
@@ -5243,7 +5243,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5275,7 +5275,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;
 
@@ -5293,13 +5293,13 @@ Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;
 
 ___
 
-#### retrieveRuleType
+### retrieveRuleType
 
 `**retrieveRuleType**(id, config?, sharedContext?): Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;`
 
 This method is used to retrieve a rule type by its ID and and optionally based on the provided configurations.
 
-##### Example
+#### Example
 
 A simple example that retrieves a rule type by its code:
 
@@ -5335,7 +5335,7 @@ async function retrieveRuleType (ruleTypeId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5367,7 +5367,7 @@ async function retrieveRuleType (ruleTypeId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;
 
@@ -5385,13 +5385,13 @@ Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;
 
 ___
 
-#### setPriceListRules
+### setPriceListRules
 
 `**setPriceListRules**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;`
 
 This method is used to set the rules of a price list.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5412,7 +5412,7 @@ async function setPriceListRules (priceListId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5435,7 +5435,7 @@ async function setPriceListRules (priceListId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
 
@@ -5453,13 +5453,13 @@ Promise&#60;[PriceListDTO](PriceListDTO.mdx)&#62;
 
 ___
 
-#### updateCurrencies
+### updateCurrencies
 
 `**updateCurrencies**(data, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;`
 
 This method is used to update existing currencies with the provided data. In each currency object, the currency code must be provided to identify which currency to update.
 
-##### Example
+#### Example
 
 ```ts
 import { initialize as initializePricingModule } from "@medusajs/pricing"
@@ -5478,7 +5478,7 @@ async function updateCurrencies() {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5501,7 +5501,7 @@ async function updateCurrencies() {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
@@ -5519,13 +5519,13 @@ Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
 ___
 
-#### updateMoneyAmounts
+### updateMoneyAmounts
 
 `**updateMoneyAmounts**(data, sharedContext?): Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;`
 
 This method updates existing money amounts.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5546,7 +5546,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5569,7 +5569,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
@@ -5587,13 +5587,13 @@ Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
 ___
 
-#### updatePriceListRules
+### updatePriceListRules
 
 `**updatePriceListRules**(data, sharedContext?): Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;`
 
 This method is used to update price list rules.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5613,7 +5613,7 @@ async function updatePriceListRules (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5636,7 +5636,7 @@ async function updatePriceListRules (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
 
@@ -5654,13 +5654,13 @@ Promise&#60;[PriceListRuleDTO](PriceListRuleDTO.mdx)[]&#62;
 
 ___
 
-#### updatePriceLists
+### updatePriceLists
 
 `**updatePriceLists**(data, sharedContext?): Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;`
 
 This method is used to update price lists.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5682,7 +5682,7 @@ async function updatePriceLists (items: {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5705,7 +5705,7 @@ async function updatePriceLists (items: {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
 
@@ -5723,13 +5723,13 @@ Promise&#60;[PriceListDTO](PriceListDTO.mdx)[]&#62;
 
 ___
 
-#### updatePriceRules
+### updatePriceRules
 
 `**updatePriceRules**(data, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;`
 
 This method is used to update price rules, each with their provided data.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5753,7 +5753,7 @@ async function updatePriceRules (
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5776,7 +5776,7 @@ async function updatePriceRules (
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
@@ -5794,13 +5794,13 @@ Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
 ___
 
-#### updatePriceSetMoneyAmountRules
+### updatePriceSetMoneyAmountRules
 
 `**updatePriceSetMoneyAmountRules**(data, sharedContext?): Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;`
 
 This method is used to update price set money amount rules, each with their provided data.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5821,7 +5821,7 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5844,7 +5844,7 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;
 
@@ -5862,13 +5862,13 @@ Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62
 
 ___
 
-#### updateRuleTypes
+### updateRuleTypes
 
 `**updateRuleTypes**(data, sharedContext?): Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;`
 
 This method is used to update existing rule types with the provided data.
 
-##### Example
+#### Example
 
 ```ts
 import {
@@ -5889,7 +5889,7 @@ async function updateRuleTypes (ruleTypeId: string) {
 }
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5912,7 +5912,7 @@ async function updateRuleTypes (ruleTypeId: string) {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 

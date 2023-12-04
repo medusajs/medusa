@@ -19,11 +19,11 @@ Related Guide: [How to import products](https://docs.medusajs.com/modules/produc
 
 ## Methods
 
-#### cancel
+### cancel
 
 Mark a batch job as canceled. When a batch job is canceled, the processing of the batch job doesn’t automatically stop.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -34,7 +34,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -57,7 +57,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -247,11 +247,11 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
 
 ___
 
-#### confirm
+### confirm
 
 When a batch job is created, it's not executed automatically if `dry_run` is set to `true`. This method confirms that the batch job should be executed.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -262,7 +262,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -285,7 +285,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -475,12 +475,12 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
 
 ___
 
-#### create
+### create
 
 Create a Batch Job to be executed asynchronously in the Medusa backend. If `dry_run` is set to `true`, the batch job will not be executed until the it is confirmed,
 which can be done using the [confirm](AdminBatchJobsResource.mdx#confirm) method.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -495,7 +495,7 @@ medusa.admin.batchJobs.create({
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -546,7 +546,7 @@ medusa.admin.batchJobs.create({
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -736,11 +736,11 @@ medusa.admin.batchJobs.create({
 
 ___
 
-#### list
+### list
 
 Retrieve a list of Batch Jobs. The batch jobs can be filtered by fields such as `type` or `confirmed_at`. The batch jobs can also be sorted or paginated.
 
-##### Example
+#### Example
 
 To list batch jobs:
 
@@ -785,7 +785,7 @@ medusa.admin.batchJobs
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1009,7 +1009,7 @@ medusa.admin.batchJobs
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1226,11 +1226,11 @@ medusa.admin.batchJobs
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve the details of a batch job.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1241,7 +1241,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1264,7 +1264,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

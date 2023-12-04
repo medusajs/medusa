@@ -18,12 +18,12 @@ Related Guide: [How to manage invites](https://docs.medusajs.com/modules/users/a
 
 ## Methods
 
-#### accept
+### accept
 
 Accept an Invite. This will also delete the invite and create a new user that can log in and perform admin functionalities. 
 The user will have the email associated with the invite, and the password provided in the `payload` parameter.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -46,7 +46,7 @@ medusa.admin.invites
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -116,7 +116,7 @@ medusa.admin.invites
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -132,12 +132,12 @@ medusa.admin.invites
 
 ___
 
-#### create
+### create
 
 Create an invite. This will generate a token associated with the invite and trigger an `invite.created` event. If you have a Notification Provider installed that handles this
 event, a notification should be sent to the email associated with the invite to allow them to accept the invite.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -156,7 +156,7 @@ medusa.admin.invites
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -198,7 +198,7 @@ medusa.admin.invites
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -214,11 +214,11 @@ medusa.admin.invites
 
 ___
 
-#### delete
+### delete
 
 Delete an invite. Only invites that weren't accepted can be deleted.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -229,7 +229,7 @@ medusa.admin.invites.delete(inviteId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -252,7 +252,7 @@ medusa.admin.invites.delete(inviteId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -296,11 +296,11 @@ medusa.admin.invites.delete(inviteId).then(({ id, object, deleted }) => {
 
 ___
 
-#### list
+### list
 
 Retrieve a list of invites.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -311,7 +311,7 @@ medusa.admin.invites.list().then(({ invites }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -325,7 +325,7 @@ medusa.admin.invites.list().then(({ invites }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -452,13 +452,13 @@ medusa.admin.invites.list().then(({ invites }) => {
 
 ___
 
-#### resend
+### resend
 
 Resend an invite. This renews the expiry date by seven days and generates a new token for the invite. It also triggers the `invite.created` event, 
 so if you have a Notification Provider installed that handles this event, a notification should be sent to the email associated with the 
 invite to allow them to accept the invite.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -474,7 +474,7 @@ medusa.admin.invites
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -497,7 +497,7 @@ medusa.admin.invites
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

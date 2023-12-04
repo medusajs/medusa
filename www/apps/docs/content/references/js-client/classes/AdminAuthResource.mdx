@@ -19,11 +19,11 @@ Related Guide: [How to implement user profiles](https://docs.medusajs.com/module
 
 ## Methods
 
-#### createSession
+### createSession
 
 Log a User in using their credentials. If the user is authenticated successfully, the cookie is automatically attached to subsequent requests sent with the JS Client.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -36,7 +36,7 @@ medusa.admin.AdminAuthResource.createSession({
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -78,7 +78,7 @@ medusa.admin.AdminAuthResource.createSession({
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -205,12 +205,12 @@ medusa.admin.AdminAuthResource.createSession({
 
 ___
 
-#### deleteSession
+### deleteSession
 
 Log out the user and remove their authentication session. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
 the user is still authorized to perform admin functionalities in other API Routes.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -219,7 +219,7 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.auth.deleteSession()
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -233,7 +233,7 @@ medusa.admin.auth.deleteSession()
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -249,11 +249,11 @@ medusa.admin.auth.deleteSession()
 
 ___
 
-#### getSession
+### getSession
 
 Get the currently logged in user's details. Can also be used to check if there is an authenticated user.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -264,7 +264,7 @@ medusa.admin.auth.getSession().then(({ user }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -278,7 +278,7 @@ medusa.admin.auth.getSession().then(({ user }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -405,11 +405,11 @@ medusa.admin.auth.getSession().then(({ user }) => {
 
 ___
 
-#### getToken
+### getToken
 
 Authenticate the user and retrieve a JWT token to use for subsequent authenticated requests.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -424,7 +424,7 @@ medusa.admin.auth
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -466,7 +466,7 @@ medusa.admin.auth
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -16,11 +16,11 @@ Notes are created by admins and can be associated with any resource. For example
 
 ## Methods
 
-#### create
+### create
 
 Create a Note which can be associated with any resource.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -37,7 +37,7 @@ medusa.admin.notes
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -88,7 +88,7 @@ medusa.admin.notes
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -215,11 +215,11 @@ medusa.admin.notes
 
 ___
 
-#### delete
+### delete
 
 Delete a Note.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -230,7 +230,7 @@ medusa.admin.notes.delete(noteId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -253,7 +253,7 @@ medusa.admin.notes.delete(noteId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -297,11 +297,11 @@ medusa.admin.notes.delete(noteId).then(({ id, object, deleted }) => {
 
 ___
 
-#### list
+### list
 
 Retrieve a list of notes. The notes can be filtered by fields such as `resource_id` passed in the `query` parameter. The notes can also be paginated.
 
-##### Example
+#### Example
 
 To list notes:
 
@@ -330,7 +330,7 @@ medusa.admin.notes
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -381,7 +381,7 @@ medusa.admin.notes
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -535,11 +535,11 @@ medusa.admin.notes
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a note's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -550,7 +550,7 @@ medusa.admin.notes.retrieve(noteId).then(({ note }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -573,7 +573,7 @@ medusa.admin.notes.retrieve(noteId).then(({ note }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -700,11 +700,11 @@ medusa.admin.notes.retrieve(noteId).then(({ note }) => {
 
 ___
 
-#### update
+### update
 
 Update a Note's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -719,7 +719,7 @@ medusa.admin.notes
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -761,7 +761,7 @@ medusa.admin.notes
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

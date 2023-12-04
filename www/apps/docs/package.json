@@ -15,7 +15,8 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
-    "lint:content": "eslint --no-eslintrc -c .content.eslintrc.js content --fix"
+    "lint:content": "eslint --no-eslintrc -c .content.eslintrc.js content --fix",
+    "diagram2code:generate": "docusaurus diagram2code:generate"
   },
   "dependencies": {
     "@babel/preset-react": "^7.18.6",
@@ -24,6 +25,7 @@
     "@docusaurus/core": "3.0.0",
     "@docusaurus/preset-classic": "3.0.0",
     "@docusaurus/remark-plugin-npm2yarn": "3.0.0",
+    "@docusaurus/theme-mermaid": "^3.0.0",
     "@mdx-js/react": "3",
     "@medusajs/icons": "^1.0.0",
     "@svgr/webpack": "6.2.1",

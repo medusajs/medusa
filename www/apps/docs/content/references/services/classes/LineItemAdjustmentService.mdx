@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate line item adjustments.
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new LineItemAdjustmentService**(«destructured»)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate line item adjustments.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -96,15 +96,35 @@ Provides layer to manipulate line item adjustments.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -112,7 +132,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -135,7 +155,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -167,7 +187,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -185,13 +205,13 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### create
+### create
 
 `**create**(data): Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;`
 
 Creates a line item adjustment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -205,7 +225,7 @@ Creates a line item adjustment
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;
 
@@ -223,13 +243,13 @@ Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;
 
 ___
 
-#### createAdjustmentForLineItem
+### createAdjustmentForLineItem
 
 `**createAdjustmentForLineItem**(cart, lineItem): Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[]&#62;`
 
 Creates adjustment for a line item
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -252,7 +272,7 @@ Creates adjustment for a line item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[]&#62;
 
@@ -270,13 +290,13 @@ Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[]&#62;
 
 ___
 
-#### createAdjustments
+### createAdjustments
 
 `**createAdjustments**(cart, lineItem?): Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[] \| [LineItemAdjustment](LineItemAdjustment.mdx)[][]&#62;`
 
 Creates adjustment for a line item
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -299,7 +319,7 @@ Creates adjustment for a line item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[] \| [LineItemAdjustment](LineItemAdjustment.mdx)[][]&#62;
 
@@ -317,13 +337,13 @@ Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[] \| [LineItemAdjustmen
 
 ___
 
-#### delete
+### delete
 
 `**delete**(selectorOrIds): Promise&#60;void&#62;`
 
 Deletes line item adjustments matching a selector
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -337,7 +357,7 @@ Deletes line item adjustments matching a selector
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -355,13 +375,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### generateAdjustments
+### generateAdjustments
 
 `**generateAdjustments**(calculationContextData, generatedLineItem, context): Promise&#60;[GeneratedAdjustment](../types/GeneratedAdjustment.mdx)[]&#62;`
 
 Creates adjustment for a line item
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -393,7 +413,7 @@ Creates adjustment for a line item
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[GeneratedAdjustment](../types/GeneratedAdjustment.mdx)[]&#62;
 
@@ -411,13 +431,13 @@ Promise&#60;[GeneratedAdjustment](../types/GeneratedAdjustment.mdx)[]&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(selector?, config?): Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[]&#62;`
 
 Lists line item adjustments
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -440,7 +460,7 @@ Lists line item adjustments
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[]&#62;
 
@@ -458,13 +478,13 @@ Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)[]&#62;
 
 ___
 
-#### retrieve
+### retrieve
 
 `**retrieve**(lineItemAdjustmentId, config?): Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;`
 
 Retrieves a line item adjustment by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -487,7 +507,7 @@ Retrieves a line item adjustment by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;
 
@@ -505,11 +525,11 @@ Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -523,7 +543,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -541,13 +561,13 @@ ___
 
 ___
 
-#### update
+### update
 
 `**update**(id, data): Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;`
 
 Creates a line item adjustment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -570,7 +590,7 @@ Creates a line item adjustment
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;
 
@@ -588,11 +608,11 @@ Promise&#60;[LineItemAdjustment](LineItemAdjustment.mdx)&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [LineItemAdjustmentService](LineItemAdjustmentService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -606,7 +626,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [LineItemAdjustmentService](LineItemAdjustmentService.mdx)
 

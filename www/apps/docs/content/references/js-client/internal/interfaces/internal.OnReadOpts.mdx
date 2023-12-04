@@ -20,15 +20,17 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Methods
 
-#### callback
+### callback
 
 This function is called for every chunk of incoming data.
 Two arguments are passed to it: the number of bytes written to buffer and a reference to buffer.
 Return false from this function to implicitly pause() the socket.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -51,7 +53,7 @@ Return false from this function to implicitly pause() the socket.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

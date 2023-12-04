@@ -18,11 +18,11 @@ Related Guide: [How to manage users](https://docs.medusajs.com/modules/users/adm
 
 ## Methods
 
-#### create
+### create
 
 Create an admin user. The user has the same privileges as all admin users, and will be able to authenticate and perform admin functionalities right after creation.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -38,7 +38,7 @@ medusa.admin.users
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -61,7 +61,7 @@ medusa.admin.users
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -188,11 +188,11 @@ medusa.admin.users
 
 ___
 
-#### delete
+### delete
 
 Delete a user. Once deleted, the user will not be able to authenticate or perform admin functionalities.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -203,7 +203,7 @@ medusa.admin.users.delete(userId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -226,7 +226,7 @@ medusa.admin.users.delete(userId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -270,11 +270,11 @@ medusa.admin.users.delete(userId).then(({ id, object, deleted }) => {
 
 ___
 
-#### list
+### list
 
 Retrieve all admin users.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -285,7 +285,7 @@ medusa.admin.users.list().then(({ users }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -299,7 +299,7 @@ medusa.admin.users.list().then(({ users }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -426,12 +426,12 @@ medusa.admin.users.list().then(({ users }) => {
 
 ___
 
-#### resetPassword
+### resetPassword
 
 Reset the password of an admin user using their reset password token. You must generate a reset password token first for the user using the [sendResetPasswordToken](AdminUsersResource.mdx#sendresetpasswordtoken) method,
 then use that token to reset the password in this method.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -447,7 +447,7 @@ medusa.admin.users
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -498,7 +498,7 @@ medusa.admin.users
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -625,11 +625,11 @@ medusa.admin.users
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve an admin user's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -640,7 +640,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -663,7 +663,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -790,13 +790,13 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
 
 ___
 
-#### sendResetPasswordToken
+### sendResetPasswordToken
 
 Generate a password token for an admin user with a given email. This also triggers the `user.password_reset` event. So, if you have a Notification Service installed
 that can handle this event, a notification, such as an email, will be sent to the user. The token is triggered as part of the `user.password_reset` event's payload. 
 That token must be used later to reset the password using the [resetPassword](AdminUsersResource.mdx#resetpassword) method.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -814,7 +814,7 @@ medusa.admin.users
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -847,7 +847,7 @@ medusa.admin.users
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -863,11 +863,11 @@ medusa.admin.users
 
 ___
 
-#### update
+### update
 
 Update an admin user's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -882,7 +882,7 @@ medusa.admin.users
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -960,7 +960,7 @@ medusa.admin.users
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

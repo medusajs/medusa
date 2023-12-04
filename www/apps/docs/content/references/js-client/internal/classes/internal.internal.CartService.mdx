@@ -344,21 +344,35 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addLineItem
+### addLineItem
 
 Adds a line item to the cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -399,7 +413,7 @@ Adds a line item to the cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -419,12 +433,12 @@ Use [addOrUpdateLineItems](internal.internal.CartService.mdx#addorupdatelineitem
 
 ___
 
-#### addOrUpdateLineItems
+### addOrUpdateLineItems
 
 Adds or update one or multiple line items to the cart. It also update all existing items in the cart
 to have has\_shipping to false. Finally, the adjustments will be updated.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -465,7 +479,7 @@ to have has\_shipping to false. Finally, the adjustments will be updated.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -481,7 +495,7 @@ to have has\_shipping to false. Finally, the adjustments will be updated.
 
 ___
 
-#### addShippingMethod
+### addShippingMethod
 
 Adds the shipping method to the list of shipping methods associated with
 the cart. Shipping Methods are the ways that an order is shipped, whereas a
@@ -489,7 +503,7 @@ Shipping Option is a possible way to ship an order. Shipping Methods may
 also have additional details in the data field such as an id for a package
 shop.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -521,7 +535,7 @@ shop.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -537,14 +551,14 @@ shop.
 
 ___
 
-#### adjustFreeShipping\_
+### adjustFreeShipping\_
 
 Ensures shipping total on cart is correct in regards to a potential free
 shipping discount
 If a free shipping is present, we set shipping methods price to 0
 if a free shipping was present, we set shipping methods to original amount
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -567,7 +581,7 @@ if a free shipping was present, we set shipping methods to original amount
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -583,14 +597,14 @@ if a free shipping was present, we set shipping methods to original amount
 
 ___
 
-#### applyDiscount
+### applyDiscount
 
 Updates the cart's discounts.
 If discount besides free shipping is already applied, this
 will be overwritten
 Throws if discount regions does not include the cart region
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -613,7 +627,7 @@ Throws if discount regions does not include the cart region
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -629,14 +643,14 @@ Throws if discount regions does not include the cart region
 
 ___
 
-#### applyDiscounts
+### applyDiscounts
 
 Updates the cart's discounts.
 If discount besides free shipping is already applied, this
 will be overwritten
 Throws if discount regions does not include the cart region
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -659,7 +673,7 @@ Throws if discount regions does not include the cart region
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -675,9 +689,9 @@ Throws if discount regions does not include the cart region
 
 ___
 
-#### applyGiftCard\_
+### applyGiftCard\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -700,7 +714,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -716,13 +730,13 @@ ___
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -754,7 +768,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -770,7 +784,7 @@ transaction manager is created.
 
 ___
 
-#### authorizePayment
+### authorizePayment
 
 Authorizes a payment for a cart.
 Will authorize with chosen payment provider. This will return
@@ -778,7 +792,7 @@ a payment object, that we will use to update our cart payment with.
 Additionally, if the payment does not require more or fails, we will
 set the payment on the cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -801,7 +815,7 @@ set the payment on the cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -817,11 +831,11 @@ set the payment on the cart.
 
 ___
 
-#### create
+### create
 
 Creates a cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -835,7 +849,7 @@ Creates a cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -851,11 +865,11 @@ Creates a cart.
 
 ___
 
-#### createOrFetchGuestCustomerFromEmail\_
+### createOrFetchGuestCustomerFromEmail\_
 
 Creates or fetches a user based on an email.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -869,7 +883,7 @@ Creates or fetches a user based on an email.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -885,9 +899,9 @@ Creates or fetches a user based on an email.
 
 ___
 
-#### createTaxLines
+### createTaxLines
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -901,7 +915,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -917,9 +931,9 @@ ___
 
 ___
 
-#### decorateTotals
+### decorateTotals
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -942,7 +956,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -958,9 +972,9 @@ ___
 
 ___
 
-#### decorateTotals\_
+### decorateTotals\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -992,7 +1006,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1012,11 +1026,11 @@ Use decorateTotals instead
 
 ___
 
-#### delete
+### delete
 
 Deletes a cart from the database. Completed carts cannot be deleted.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1030,7 +1044,7 @@ Deletes a cart from the database. Completed carts cannot be deleted.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1046,11 +1060,11 @@ Deletes a cart from the database. Completed carts cannot be deleted.
 
 ___
 
-#### deletePaymentSession
+### deletePaymentSession
 
 Removes a payment session from the cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1073,7 +1087,7 @@ Removes a payment session from the cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1089,9 +1103,9 @@ Removes a payment session from the cart.
 
 ___
 
-#### deleteTaxLines
+### deleteTaxLines
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1105,7 +1119,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1121,12 +1135,12 @@ ___
 
 ___
 
-#### findCustomShippingOption
+### findCustomShippingOption
 
 Finds the cart's custom shipping options based on the passed option id.
 throws if custom options is not empty and no shipping option corresponds to optionId
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1149,7 +1163,7 @@ throws if custom options is not empty and no shipping option corresponds to opti
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1165,9 +1179,9 @@ throws if custom options is not empty and no shipping option corresponds to opti
 
 ___
 
-#### getValidatedSalesChannel
+### getValidatedSalesChannel
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1181,7 +1195,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1197,9 +1211,9 @@ ___
 
 ___
 
-#### list
+### list
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1222,7 +1236,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1238,11 +1252,11 @@ ___
 
 ___
 
-#### onSalesChannelChange
+### onSalesChannelChange
 
 Remove the cart line item that does not belongs to the newly assigned sales channel
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1265,7 +1279,7 @@ Remove the cart line item that does not belongs to the newly assigned sales chan
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1281,9 +1295,9 @@ Remove the cart line item that does not belongs to the newly assigned sales chan
 
 ___
 
-#### refreshAdjustments\_
+### refreshAdjustments\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1297,7 +1311,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1313,11 +1327,11 @@ ___
 
 ___
 
-#### refreshPaymentSession
+### refreshPaymentSession
 
 Refreshes a payment session on a cart
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1340,7 +1354,7 @@ Refreshes a payment session on a cart
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1356,11 +1370,11 @@ Refreshes a payment session on a cart
 
 ___
 
-#### removeDiscount
+### removeDiscount
 
 Removes a discount based on a discount code.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1383,7 +1397,7 @@ Removes a discount based on a discount code.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1399,11 +1413,11 @@ Removes a discount based on a discount code.
 
 ___
 
-#### removeLineItem
+### removeLineItem
 
 Removes a line item from the cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1426,7 +1440,7 @@ Removes a line item from the cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1442,11 +1456,11 @@ Removes a line item from the cart.
 
 ___
 
-#### retrieve
+### retrieve
 
 Gets a cart by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1478,7 +1492,7 @@ Gets a cart by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1494,9 +1508,9 @@ Gets a cart by id.
 
 ___
 
-#### retrieveLegacy
+### retrieveLegacy
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1528,7 +1542,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1546,9 +1560,9 @@ ___
 
 ___
 
-#### retrieveWithTotals
+### retrieveWithTotals
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1580,7 +1594,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1596,13 +1610,13 @@ ___
 
 ___
 
-#### setMetadata
+### setMetadata
 
 Dedicated method to set metadata for a cart.
 To ensure that plugins does not overwrite each
 others metadata fields, setMetadata is provided.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1634,7 +1648,7 @@ others metadata fields, setMetadata is provided.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1650,11 +1664,11 @@ others metadata fields, setMetadata is provided.
 
 ___
 
-#### setPaymentSession
+### setPaymentSession
 
 Selects a payment session for a cart and creates a payment object in the external provider system
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1677,7 +1691,7 @@ Selects a payment session for a cart and creates a payment object in the externa
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1693,7 +1707,7 @@ Selects a payment session for a cart and creates a payment object in the externa
 
 ___
 
-#### setPaymentSessions
+### setPaymentSessions
 
 Creates, updates and sets payment sessions associated with the cart. The
 first time the method is called payment sessions will be created for each
@@ -1701,7 +1715,7 @@ provider. Additional calls will ensure that payment sessions have correct
 amounts, currencies, etc. as well as make sure to filter payment sessions
 that are not available for the cart's region.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1715,7 +1729,7 @@ that are not available for the cart's region.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1731,11 +1745,11 @@ that are not available for the cart's region.
 
 ___
 
-#### setRegion\_
+### setRegion\_
 
 Set's the region of a cart.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1767,7 +1781,7 @@ Set's the region of a cart.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1783,9 +1797,9 @@ Set's the region of a cart.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1799,7 +1813,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1815,9 +1829,9 @@ ___
 
 ___
 
-#### transformQueryForTotals\_
+### transformQueryForTotals\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1831,7 +1845,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1847,9 +1861,9 @@ ___
 
 ___
 
-#### update
+### update
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1872,7 +1886,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1888,11 +1902,11 @@ ___
 
 ___
 
-#### updateBillingAddress\_
+### updateBillingAddress\_
 
 Updates the cart's billing address.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1924,7 +1938,7 @@ Updates the cart's billing address.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1940,11 +1954,11 @@ Updates the cart's billing address.
 
 ___
 
-#### updateCustomerId\_
+### updateCustomerId\_
 
 Sets the customer id of a cart
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1967,7 +1981,7 @@ Sets the customer id of a cart
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1983,11 +1997,11 @@ Sets the customer id of a cart
 
 ___
 
-#### updateLineItem
+### updateLineItem
 
 Updates a cart's existing line item.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2019,7 +2033,7 @@ Updates a cart's existing line item.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2035,11 +2049,11 @@ Updates a cart's existing line item.
 
 ___
 
-#### updatePaymentSession
+### updatePaymentSession
 
 Updates the currently selected payment session.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2062,7 +2076,7 @@ Updates the currently selected payment session.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2078,11 +2092,11 @@ Updates the currently selected payment session.
 
 ___
 
-#### updateShippingAddress\_
+### updateShippingAddress\_
 
 Updates the cart's shipping address.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2114,7 +2128,7 @@ Updates the cart's shipping address.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2130,9 +2144,9 @@ Updates the cart's shipping address.
 
 ___
 
-#### updateUnitPrices\_
+### updateUnitPrices\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2164,7 +2178,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2180,11 +2194,11 @@ ___
 
 ___
 
-#### validateLineItem
+### validateLineItem
 
 Check if line item's variant belongs to the cart's sales channel.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2216,7 +2230,7 @@ Check if line item's variant belongs to the cart's sales channel.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2232,13 +2246,13 @@ Check if line item's variant belongs to the cart's sales channel.
 
 ___
 
-#### validateLineItemShipping\_
+### validateLineItemShipping\_
 
 Checks if a given line item has a shipping method that can fulfill it.
 Returns true if all products in the cart can be fulfilled with the current
 shipping methods.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2261,7 +2275,7 @@ shipping methods.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2277,9 +2291,9 @@ shipping methods.
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2293,7 +2307,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
