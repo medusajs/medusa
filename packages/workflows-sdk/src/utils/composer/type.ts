@@ -21,16 +21,20 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
  * @typeParam TInput - The type of the input of the step.
  * @typeParam TOutput - The type of the output of the step.
  */
-export type StepFunction<TInput, TOutput = unknown> = (TInput extends object
-  ? // function that expects an input object
+export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
+  ? // Function that doesn't expect any input
     {
-      (input: { [K in keyof TInput]: WorkflowData<TInput[K]> }): WorkflowData<{
+      (): WorkflowData<{
         [K in keyof TOutput]: TOutput[K]
       }>
     }
-  : // Function that doesn't expect any input
+  : // function that expects an input object
     {
-      (): WorkflowData<{
+      (
+        input: TInput extends object
+          ? { [K in keyof TInput]: WorkflowData<TInput[K]> }
+          : WorkflowData<TInput>
+      ): WorkflowData<{
         [K in keyof TOutput]: TOutput[K]
       }>
     }) &

@@ -128,7 +128,7 @@ function applyStep<
 
         const argInput = input
           ? await resolveValue(input, transactionContext)
-          : undefined
+          : {}
         const stepResponse: StepResponse<any, any> = await invokeFn.apply(
           this,
           [argInput, executionContext]
