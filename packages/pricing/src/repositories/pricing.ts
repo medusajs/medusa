@@ -1,7 +1,7 @@
 import { Context } from "@medusajs/types"
 import { MedusaError, MikroOrmBase } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { RepositoryTypes } from "@types"
+import { RepositoryTypes } from "../types"
 
 export class PricingRepository
   extends MikroOrmBase

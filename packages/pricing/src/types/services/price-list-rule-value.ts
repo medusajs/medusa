@@ -1,8 +1,9 @@
-import { BaseFilterable, PriceListRuleDTO } from "@medusajs/types"
+import { BaseFilterable } from "@medusajs/types"
+import { PriceListRule } from "@models"
 
 export interface CreatePriceListRuleValueDTO {
   price_list_rule_id?: string
-  price_list_rule: PriceListRuleDTO | string
+  price_list_rule: PriceListRule | string
   value: string
 }
 
@@ -14,7 +15,7 @@ export interface UpdatePriceListRuleValueDTO {
 export interface PriceListRuleValueDTO {
   id: string
   value: string
-  price_list_rule: PriceListRuleDTO
+  price_list_rule: PriceListRule
 }
 
 export interface FilterablePriceListRuleValueProps

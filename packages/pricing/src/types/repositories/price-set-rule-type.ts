@@ -1,8 +1,8 @@
-import { PriceSet, RuleType } from "@models"
+import { PriceSetDTO, RuleTypeDTO } from "../services"
 
 export interface CreatePriceSetRuleTypeDTO {
-  price_set: PriceSet | string
-  rule_type: RuleType | string
+  price_set: PriceSetDTO | string
+  rule_type: RuleTypeDTO | string
 }
 
 export interface UpdatePriceSetRuleTypeDTO {

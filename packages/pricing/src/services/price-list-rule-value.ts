@@ -10,7 +10,7 @@ import {
 } from "@medusajs/utils"
 import { PriceListRuleValue } from "@models"
 import { PriceListRuleValueRepository } from "@repositories"
-import { RepositoryTypes, ServiceTypes } from "@types"
+import { ServiceTypes } from "../types"
 
 type InjectedDependencies = {
   priceListRuleValueRepository: DAL.RepositoryService
@@ -82,7 +82,7 @@ export default class PriceListRuleValueService<
     "priceListRuleValueRepository_"
   )
   async create(
-    data: RepositoryTypes.CreatePriceListRuleValueDTO[],
+    data: ServiceTypes.CreatePriceListRuleValueDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (

@@ -8,7 +8,7 @@ import {
 import { PriceRule } from "@models"
 
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { RepositoryTypes } from "@types"
+import { RepositoryTypes } from "../types"
 
 export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager

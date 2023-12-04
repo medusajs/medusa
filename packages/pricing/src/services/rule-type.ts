@@ -7,7 +7,7 @@ import {
   retrieveEntity,
 } from "@medusajs/utils"
 import { RuleType } from "@models"
-import { ServiceTypes } from "@types"
+import { ServiceTypes } from "../types"
 
 type InjectedDependencies = {
   ruleTypeRepository: DAL.RepositoryService

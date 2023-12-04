@@ -1,5 +1,4 @@
 import { Context, DAL } from "@medusajs/types"
-import { CreatePriceListDTO, UpdatePriceListDTO } from "@types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   LoadStrategy,
@@ -8,7 +7,7 @@ import {
 } from "@mikro-orm/core"
 
 import { PriceList } from "@models"
-import { RepositoryTypes } from "@types"
+import { RepositoryTypes } from "../types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
