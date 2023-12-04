@@ -110,23 +110,37 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -158,7 +172,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -174,13 +188,13 @@ transaction manager is created.
 
 ___
 
-#### handleEvent
+### handleEvent
 
 Handles an event by relaying the event data to the subscribing providers.
 The result of the notification send will be persisted in the database in
 order to allow for resends. Will log any errors that are encountered.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -203,7 +217,7 @@ order to allow for resends. Will log any errors that are encountered.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -219,11 +233,11 @@ order to allow for resends. Will log any errors that are encountered.
 
 ___
 
-#### list
+### list
 
 Retrieves a list of notifications.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -246,7 +260,7 @@ Retrieves a list of notifications.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -262,11 +276,11 @@ Retrieves a list of notifications.
 
 ___
 
-#### listAndCount
+### listAndCount
 
 Retrieves a list of notifications and total count.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -289,7 +303,7 @@ Retrieves a list of notifications and total count.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -305,12 +319,12 @@ Retrieves a list of notifications and total count.
 
 ___
 
-#### registerAttachmentGenerator
+### registerAttachmentGenerator
 
 Registers an attachment generator to the service. The generator can be
 used to generate on demand invoices or other documents.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -324,7 +338,7 @@ used to generate on demand invoices or other documents.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -340,11 +354,11 @@ used to generate on demand invoices or other documents.
 
 ___
 
-#### registerInstalledProviders
+### registerInstalledProviders
 
 Takes a list of notification provider ids and persists them in the database.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -358,7 +372,7 @@ Takes a list of notification provider ids and persists them in the database.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -374,12 +388,12 @@ Takes a list of notification provider ids and persists them in the database.
 
 ___
 
-#### resend
+### resend
 
 Resends a notification by retrieving a prior notification and calling the
 underlying provider's resendNotification method.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -402,7 +416,7 @@ underlying provider's resendNotification method.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -418,11 +432,11 @@ underlying provider's resendNotification method.
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieves a notification with a given id
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -445,7 +459,7 @@ Retrieves a notification with a given id
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -461,12 +475,12 @@ Retrieves a notification with a given id
 
 ___
 
-#### retrieveProvider\_
+### retrieveProvider\_
 
 Finds a provider with a given id. Will throw a NOT\_FOUND error if the
 resolution fails.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -480,7 +494,7 @@ resolution fails.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -496,12 +510,12 @@ resolution fails.
 
 ___
 
-#### send
+### send
 
 Sends a notification, by calling the given provider's sendNotification
 method. Persists the Notification in the database.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -533,7 +547,7 @@ method. Persists the Notification in the database.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -549,9 +563,9 @@ method. Persists the Notification in the database.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -565,7 +579,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -581,11 +595,11 @@ ___
 
 ___
 
-#### subscribe
+### subscribe
 
 Subscribes a given provider to an event.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -608,7 +622,7 @@ Subscribes a given provider to an event.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -624,9 +638,9 @@ Subscribes a given provider to an event.
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -640,7 +654,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

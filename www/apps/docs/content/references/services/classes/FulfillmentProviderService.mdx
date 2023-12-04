@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Helps retrieve fulfillment providers
 
-## Constructors
-
-#### constructor
+## constructor
 
 `**new FulfillmentProviderService**(container)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Helps retrieve fulfillment providers
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -96,15 +96,35 @@ Helps retrieve fulfillment providers
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
- `Protected` **activeManager\_**: [object Object]
+`Protected get**activeManager_**(): EntityManager`
+
+#### Returns
+
+EntityManager
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 `Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
@@ -112,7 +132,7 @@ Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Type Parameters
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -135,7 +155,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -167,7 +187,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;TResult&#62;
 
@@ -185,11 +205,11 @@ Promise&#60;TResult&#62;
 
 ___
 
-#### calculatePrice
+### calculatePrice
 
 `**calculatePrice**(option, data, cart?): Promise&#60;number&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -221,7 +241,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;number&#62;
 
@@ -239,11 +259,11 @@ Promise&#60;number&#62;
 
 ___
 
-#### canCalculate
+### canCalculate
 
 `**canCalculate**(option): Promise&#60;boolean&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -257,7 +277,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -275,11 +295,11 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
 `**cancelFulfillment**(fulfillment): Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -293,7 +313,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;
 
@@ -311,11 +331,11 @@ Promise&#60;[Fulfillment](Fulfillment.mdx)&#62;
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
 `**createFulfillment**(method, items, order, fulfillment): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -356,7 +376,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62;&#62;
 
@@ -374,11 +394,11 @@ Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 ___
 
-#### createReturn
+### createReturn
 
 `**createReturn**(returnOrder): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -392,7 +412,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62;&#62;
 
@@ -410,11 +430,11 @@ Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 ___
 
-#### list
+### list
 
 `**list**(): Promise&#60;[FulfillmentProvider](FulfillmentProvider.mdx)[]&#62;`
 
-##### Returns
+#### Returns
 
 Promise&#60;[FulfillmentProvider](FulfillmentProvider.mdx)[]&#62;
 
@@ -432,11 +452,11 @@ Promise&#60;[FulfillmentProvider](FulfillmentProvider.mdx)[]&#62;
 
 ___
 
-#### listFulfillmentOptions
+### listFulfillmentOptions
 
 `**listFulfillmentOptions**(providerIds): Promise&#60;[FulfillmentOptions](../types/FulfillmentOptions.mdx)[]&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -450,7 +470,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[FulfillmentOptions](../types/FulfillmentOptions.mdx)[]&#62;
 
@@ -468,11 +488,11 @@ Promise&#60;[FulfillmentOptions](../types/FulfillmentOptions.mdx)[]&#62;
 
 ___
 
-#### registerInstalledProviders
+### registerInstalledProviders
 
 `**registerInstalledProviders**(providers): Promise&#60;void&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -486,7 +506,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void&#62;
 
@@ -504,13 +524,13 @@ Promise&#60;void&#62;
 
 ___
 
-#### retrieveDocuments
+### retrieveDocuments
 
 `**retrieveDocuments**(providerId, fulfillmentData, documentType): Promise&#60;any&#62;`
 
 Fetches documents from the fulfillment provider
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -542,7 +562,7 @@ Fetches documents from the fulfillment provider
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;any&#62;
 
@@ -560,11 +580,11 @@ Promise&#60;any&#62;
 
 ___
 
-#### retrieveProvider
+### retrieveProvider
 
 `**retrieveProvider**(providerId): any`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -578,7 +598,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `any`
 
@@ -596,11 +616,11 @@ ___
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
 `Protected **shouldRetryTransaction_**(err): boolean`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -614,7 +634,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 `boolean`
 
@@ -632,11 +652,11 @@ ___
 
 ___
 
-#### validateFulfillmentData
+### validateFulfillmentData
 
 `**validateFulfillmentData**(option, data, cart): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -668,7 +688,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62;&#62;
 
@@ -686,11 +706,11 @@ Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 ___
 
-#### validateOption
+### validateOption
 
 `**validateOption**(option): Promise&#60;boolean&#62;`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -704,7 +724,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;boolean&#62;
 
@@ -722,11 +742,11 @@ Promise&#60;boolean&#62;
 
 ___
 
-#### withTransaction
+### withTransaction
 
 `**withTransaction**(transactionManager?): [FulfillmentProviderService](FulfillmentProviderService.mdx)`
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -740,7 +760,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 [FulfillmentProviderService](FulfillmentProviderService.mdx)
 

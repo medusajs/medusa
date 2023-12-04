@@ -18,11 +18,11 @@ Related Guide: [How to manage products](https://docs.medusajs.com/modules/produc
 
 ## Methods
 
-#### addOption
+### addOption
 
 Add a product option to a product.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -37,7 +37,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -79,7 +79,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -432,11 +432,11 @@ medusa.admin.products
 
 ___
 
-#### create
+### create
 
 Create a new Product. This API Route can also be used to create a gift card if the `is_giftcard` field is set to `true`.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -453,7 +453,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1036,7 +1036,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1389,11 +1389,11 @@ medusa.admin.products
 
 ___
 
-#### createVariant
+### createVariant
 
 Create a product variant associated with a product. Each product variant must have a unique combination of product option values.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -1421,7 +1421,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1690,7 +1690,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2043,11 +2043,11 @@ medusa.admin.products
 
 ___
 
-#### delete
+### delete
 
 Delete a product and its associated product variants and options.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2058,7 +2058,7 @@ medusa.admin.products.delete(productId).then(({ id, object, deleted }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2081,7 +2081,7 @@ medusa.admin.products.delete(productId).then(({ id, object, deleted }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2135,11 +2135,11 @@ medusa.admin.products.delete(productId).then(({ id, object, deleted }) => {
 
 ___
 
-#### deleteOption
+### deleteOption
 
 Delete a product option. If there are product variants that use this product option, they must be deleted before deleting the product option.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2171,7 +2171,7 @@ Delete a product option. If there are product variants that use this product opt
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2551,11 +2551,11 @@ Delete a product option. If there are product variants that use this product opt
 
 ___
 
-#### deleteVariant
+### deleteVariant
 
 Delete a product variant.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -2568,7 +2568,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -2600,7 +2600,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -2980,11 +2980,11 @@ medusa.admin.products
 
 ___
 
-#### list
+### list
 
 Retrieve a list of products. The products can be filtered by fields such as `q` or `status` passed in the `query` parameter. The products can also be sorted or paginated.
 
-##### Example
+#### Example
 
 To list products:
 
@@ -3029,7 +3029,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3409,7 +3409,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3472,11 +3472,11 @@ medusa.admin.products
 
 ___
 
-#### listTags
+### listTags
 
 Retrieve a list of Product Tags with how many times each is used in products.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3487,7 +3487,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3501,7 +3501,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3601,11 +3601,11 @@ medusa.admin.products.listTags().then(({ tags }) => {
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieve a product's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -3616,7 +3616,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -3639,7 +3639,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -3992,12 +3992,12 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
 
 ___
 
-#### setMetadata
+### setMetadata
 
 Set the metadata of a product. It can be any key-value pair, which allows adding custom data to a product. Learn about how you can update and delete the metadata attribute 
 [here](https://docs.medusajs.com/development/entities/overview#metadata-attribute).
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -4013,7 +4013,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -4064,7 +4064,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -4417,11 +4417,11 @@ medusa.admin.products
 
 ___
 
-#### update
+### update
 
 Update a Product's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -4436,7 +4436,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5017,7 +5017,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5370,11 +5370,11 @@ medusa.admin.products
 
 ___
 
-#### updateOption
+### updateOption
 
 Update a product option's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -5389,7 +5389,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -5440,7 +5440,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -5793,11 +5793,11 @@ medusa.admin.products
 
 ___
 
-#### updateVariant
+### updateVariant
 
 Update a product variant's details.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -5825,7 +5825,7 @@ medusa.admin.products
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -6112,7 +6112,7 @@ medusa.admin.products
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

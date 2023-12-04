@@ -12,13 +12,11 @@ Payment processor in charge of creating , managing and processing a payment
 
 - [PaymentProcessor](../interfaces/PaymentProcessor.mdx)
 
-## Constructors
-
-#### constructor
+## constructor
 
 `Protected **new AbstractPaymentProcessor**(container, config?)`
 
-##### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -40,6 +38,8 @@ Payment processor in charge of creating , managing and processing a payment
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -73,15 +73,17 @@ Payment processor in charge of creating , managing and processing a payment
   }
 ]} />
 
+___
+
 ## Methods
 
-#### authorizePayment
+### authorizePayment
 
 `Abstract **authorizePayment**(paymentSessionData, context): Promise&#60;[PaymentProcessorError](../interfaces/PaymentProcessorError.mdx) \| &#123; data: Record&#60;string, unknown&#62; ; status: [PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)  &#125;&#62;`
 
 Authorize an existing session if it is not already authorized
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -104,7 +106,7 @@ Authorize an existing session if it is not already authorized
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PaymentProcessorError](../interfaces/PaymentProcessorError.mdx) \| &#123; data: Record&#60;string, unknown&#62; ; status: [PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)  &#125;&#62;
 
@@ -122,13 +124,13 @@ Promise&#60;[PaymentProcessorError](../interfaces/PaymentProcessorError.mdx) \| 
 
 ___
 
-#### cancelPayment
+### cancelPayment
 
 `Abstract **cancelPayment**(paymentSessionData): Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;`
 
 Cancel an existing session
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -142,7 +144,7 @@ Cancel an existing session
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;
 
@@ -160,13 +162,13 @@ Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interf
 
 ___
 
-#### capturePayment
+### capturePayment
 
 `Abstract **capturePayment**(paymentSessionData): Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;`
 
 Capture an existing session
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -180,7 +182,7 @@ Capture an existing session
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;
 
@@ -198,13 +200,13 @@ Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interf
 
 ___
 
-#### deletePayment
+### deletePayment
 
 `Abstract **deletePayment**(paymentSessionData): Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;`
 
 Delete an existing session
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -218,7 +220,7 @@ Delete an existing session
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;
 
@@ -236,13 +238,13 @@ Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interf
 
 ___
 
-#### getIdentifier
+### getIdentifier
 
 `**getIdentifier**(): string`
 
 Return a unique identifier to retrieve the payment plugin provider
 
-##### Returns
+#### Returns
 
 `string`
 
@@ -260,13 +262,13 @@ Return a unique identifier to retrieve the payment plugin provider
 
 ___
 
-#### getPaymentStatus
+### getPaymentStatus
 
 `Abstract **getPaymentStatus**(paymentSessionData): Promise&#60;[PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)&#62;`
 
 Return the status of the session
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -280,7 +282,7 @@ Return the status of the session
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)&#62;
 
@@ -298,13 +300,13 @@ Promise&#60;[PaymentSessionStatus](../enums/PaymentSessionStatus.mdx)&#62;
 
 ___
 
-#### initiatePayment
+### initiatePayment
 
 `Abstract **initiatePayment**(context): Promise&#60;[PaymentProcessorError](../interfaces/PaymentProcessorError.mdx) \| [PaymentProcessorSessionResponse](../types/PaymentProcessorSessionResponse.mdx)&#62;`
 
 Initiate a payment session with the external provider
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -318,7 +320,7 @@ Initiate a payment session with the external provider
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;[PaymentProcessorError](../interfaces/PaymentProcessorError.mdx) \| [PaymentProcessorSessionResponse](../types/PaymentProcessorSessionResponse.mdx)&#62;
 
@@ -336,13 +338,13 @@ Promise&#60;[PaymentProcessorError](../interfaces/PaymentProcessorError.mdx) \| 
 
 ___
 
-#### refundPayment
+### refundPayment
 
 `Abstract **refundPayment**(paymentSessionData, refundAmount): Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;`
 
 Refund an existing session
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -365,7 +367,7 @@ Refund an existing session
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;
 
@@ -383,13 +385,13 @@ Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interf
 
 ___
 
-#### retrievePayment
+### retrievePayment
 
 `Abstract **retrievePayment**(paymentSessionData): Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;`
 
 Retrieve an existing session
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -403,7 +405,7 @@ Retrieve an existing session
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;
 
@@ -421,13 +423,13 @@ Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interf
 
 ___
 
-#### updatePayment
+### updatePayment
 
 `Abstract **updatePayment**(context): Promise&#60;void \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx) \| [PaymentProcessorSessionResponse](../types/PaymentProcessorSessionResponse.mdx)&#62;`
 
 Update an existing payment session
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -441,7 +443,7 @@ Update an existing payment session
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;void \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx) \| [PaymentProcessorSessionResponse](../types/PaymentProcessorSessionResponse.mdx)&#62;
 
@@ -459,13 +461,13 @@ Promise&#60;void \| [PaymentProcessorError](../interfaces/PaymentProcessorError.
 
 ___
 
-#### updatePaymentData
+### updatePaymentData
 
 `Abstract **updatePaymentData**(sessionId, data): Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;`
 
 Update the session data for a payment session
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -488,7 +490,7 @@ Update the session data for a payment session
   }
 ]} />
 
-##### Returns
+#### Returns
 
 Promise&#60;Record&#60;string, unknown&#62; \| [PaymentProcessorError](../interfaces/PaymentProcessorError.mdx)&#62;
 

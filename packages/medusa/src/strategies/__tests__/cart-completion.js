@@ -88,7 +88,7 @@ const toTest = [
     },
   ],
   [
-    "returns 409",
+    "succeeds",
     {
       cart: {
         id: "test-cart",
@@ -104,12 +104,15 @@ const toTest = [
         idempotency_key: "ikey",
         recovery_point: "started",
       },
-      validate: function (value) {
-        expect(value.response_code).toEqual(409)
-        expect(value.response_body).toEqual({
-          code: "cart_incompatible_state",
-          message: "Cart has already been completed",
-          type: "not_allowed",
+      validate: function (value, { orderServiceMock }) {
+        expect(value.response_code).toEqual(200)
+        expect(
+          orderServiceMock.retrieveByCartIdWithTotals
+        ).toHaveBeenCalledTimes(1)
+        expect(
+          orderServiceMock.retrieveByCartIdWithTotals
+        ).toHaveBeenCalledWith("test-cart", {
+          relations: ["shipping_address", "items", "payments"],
         })
       },
     },
@@ -204,6 +207,7 @@ describe("CartCompletionStrategy", () => {
           createFromCart: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve({})),
           retrieveWithTotals: jest.fn(() => Promise.resolve({})),
+          retrieveByCartIdWithTotals: jest.fn(() => Promise.resolve({})),
           newTotalsService: newTotalsServiceMock,
         }
         const swapServiceMock = {

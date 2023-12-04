@@ -76,23 +76,37 @@ Can authenticate a user based on email password combination
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -124,7 +138,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -140,12 +154,12 @@ transaction manager is created.
 
 ___
 
-#### authenticate
+### authenticate
 
 Authenticates a given user based on an email, password combination. Uses
 scrypt to match password with hashed value.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -168,7 +182,7 @@ scrypt to match password with hashed value.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -184,11 +198,11 @@ scrypt to match password with hashed value.
 
 ___
 
-#### authenticateAPIToken
+### authenticateAPIToken
 
 Authenticates a given user with an API token
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -202,7 +216,7 @@ Authenticates a given user with an API token
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -218,12 +232,12 @@ Authenticates a given user with an API token
 
 ___
 
-#### authenticateCustomer
+### authenticateCustomer
 
 Authenticates a customer based on an email, password combination. Uses
 scrypt to match password with hashed value.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -246,7 +260,7 @@ scrypt to match password with hashed value.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -262,11 +276,11 @@ scrypt to match password with hashed value.
 
 ___
 
-#### comparePassword\_
+### comparePassword\_
 
 Verifies if a password is valid given the provided password hash
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -289,7 +303,7 @@ Verifies if a password is valid given the provided password hash
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -305,9 +319,9 @@ Verifies if a password is valid given the provided password hash
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -321,7 +335,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -337,9 +351,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -353,7 +367,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

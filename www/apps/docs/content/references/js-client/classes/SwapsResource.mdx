@@ -17,7 +17,7 @@ Related Guide: [How to create a swap in a storefront](https://docs.medusajs.com/
 
 ## Methods
 
-#### create
+### create
 
 Create a Swap for an Order. This will also create a return and associate it with the swap. If a return shipping option is specified, the return will automatically be fulfilled.
 To complete the swap, you must use the [CartsResource.complete](CartsResource.mdx#complete) method passing it the ID of the swap's cart.
@@ -26,7 +26,7 @@ An idempotency key will be generated if none is provided in the header `Idempote
 the response. If an error occurs during swap creation or the request is interrupted for any reason, the swap creation can be retried by passing the idempotency
 key in the `Idempotency-Key` header.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -52,7 +52,7 @@ medusa.swaps
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -168,7 +168,7 @@ medusa.swaps
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -421,11 +421,11 @@ medusa.swaps
 
 ___
 
-#### retrieveByCartId
+### retrieveByCartId
 
 Retrieve a Swap's details by the ID of its cart.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -435,7 +435,7 @@ medusa.swaps.retrieveByCartId(cartId).then(({ swap }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -458,7 +458,7 @@ medusa.swaps.retrieveByCartId(cartId).then(({ swap }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

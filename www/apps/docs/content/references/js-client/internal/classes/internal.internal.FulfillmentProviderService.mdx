@@ -76,23 +76,37 @@ Helps retrieve fulfillment providers
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -124,7 +138,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -140,9 +154,9 @@ transaction manager is created.
 
 ___
 
-#### calculatePrice
+### calculatePrice
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -174,7 +188,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -190,9 +204,9 @@ ___
 
 ___
 
-#### canCalculate
+### canCalculate
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -206,7 +220,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -222,9 +236,9 @@ ___
 
 ___
 
-#### cancelFulfillment
+### cancelFulfillment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -238,7 +252,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -254,9 +268,9 @@ ___
 
 ___
 
-#### createFulfillment
+### createFulfillment
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -297,7 +311,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -313,9 +327,9 @@ ___
 
 ___
 
-#### createReturn
+### createReturn
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -329,7 +343,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -345,9 +359,9 @@ ___
 
 ___
 
-#### list
+### list
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -363,9 +377,9 @@ ___
 
 ___
 
-#### listFulfillmentOptions
+### listFulfillmentOptions
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -379,7 +393,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -395,9 +409,9 @@ ___
 
 ___
 
-#### registerInstalledProviders
+### registerInstalledProviders
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -411,7 +425,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -427,11 +441,11 @@ ___
 
 ___
 
-#### retrieveDocuments
+### retrieveDocuments
 
 Fetches documents from the fulfillment provider
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -463,7 +477,7 @@ Fetches documents from the fulfillment provider
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -479,9 +493,9 @@ Fetches documents from the fulfillment provider
 
 ___
 
-#### retrieveProvider
+### retrieveProvider
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -495,7 +509,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -511,9 +525,9 @@ ___
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -527,7 +541,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -543,9 +557,9 @@ ___
 
 ___
 
-#### validateFulfillmentData
+### validateFulfillmentData
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -577,7 +591,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -593,9 +607,9 @@ ___
 
 ___
 
-#### validateOption
+### validateOption
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -609,7 +623,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -625,9 +639,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -641,7 +655,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

@@ -67,6 +67,7 @@ export type FormattingOptionType = {
     kind: boolean
     typeParameters: boolean
     suffix?: string
+    fullReplacement?: string
   }
   reflectionDescription?: string
   expandMembers?: boolean

@@ -193,21 +193,35 @@ Provides layer to manipulate regions.
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### addCountry
+### addCountry
 
 Adds a country to the region.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -230,7 +244,7 @@ Adds a country to the region.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -246,12 +260,12 @@ Adds a country to the region.
 
 ___
 
-#### addFulfillmentProvider
+### addFulfillmentProvider
 
 Adds a fulfillment provider that is available in the region. Fails if the
 provider doesn't exist.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -274,7 +288,7 @@ provider doesn't exist.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -290,12 +304,12 @@ provider doesn't exist.
 
 ___
 
-#### addPaymentProvider
+### addPaymentProvider
 
 Adds a payment provider that is available in the region. Fails if the
 provider doesn't exist.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -318,7 +332,7 @@ provider doesn't exist.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -334,13 +348,13 @@ provider doesn't exist.
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -372,7 +386,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -388,11 +402,11 @@ transaction manager is created.
 
 ___
 
-#### create
+### create
 
 Creates a region.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -406,7 +420,7 @@ Creates a region.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -422,11 +436,11 @@ Creates a region.
 
 ___
 
-#### delete
+### delete
 
 Deletes a region.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -440,7 +454,7 @@ Deletes a region.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -456,11 +470,11 @@ Deletes a region.
 
 ___
 
-#### list
+### list
 
 Lists all regions based on a query
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -483,7 +497,7 @@ Lists all regions based on a query
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -499,11 +513,11 @@ Lists all regions based on a query
 
 ___
 
-#### listAndCount
+### listAndCount
 
 Lists all regions based on a query and returns them along with count
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -526,7 +540,7 @@ Lists all regions based on a query and returns them along with count
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -542,11 +556,11 @@ Lists all regions based on a query and returns them along with count
 
 ___
 
-#### removeCountry
+### removeCountry
 
 Removes a country from a Region.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -569,7 +583,7 @@ Removes a country from a Region.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -585,11 +599,11 @@ Removes a country from a Region.
 
 ___
 
-#### removeFulfillmentProvider
+### removeFulfillmentProvider
 
 Removes a fulfillment provider from a region. Is idempotent.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -612,7 +626,7 @@ Removes a fulfillment provider from a region. Is idempotent.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -628,11 +642,11 @@ Removes a fulfillment provider from a region. Is idempotent.
 
 ___
 
-#### removePaymentProvider
+### removePaymentProvider
 
 Removes a payment provider from a region. Is idempotent.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -655,7 +669,7 @@ Removes a payment provider from a region. Is idempotent.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -671,11 +685,11 @@ Removes a payment provider from a region. Is idempotent.
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieves a region by its id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -698,7 +712,7 @@ Retrieves a region by its id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -714,11 +728,11 @@ Retrieves a region by its id.
 
 ___
 
-#### retrieveByCountryCode
+### retrieveByCountryCode
 
 Retrieve a region by country code.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -741,7 +755,7 @@ Retrieve a region by country code.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -757,11 +771,11 @@ Retrieve a region by country code.
 
 ___
 
-#### retrieveByName
+### retrieveByName
 
 Retrieves a region by name.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -775,7 +789,7 @@ Retrieves a region by name.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -791,9 +805,9 @@ Retrieves a region by name.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -807,7 +821,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -823,11 +837,11 @@ ___
 
 ___
 
-#### update
+### update
 
 Updates a region
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -850,7 +864,7 @@ Updates a region
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -866,12 +880,12 @@ Updates a region
 
 ___
 
-#### validateCountry
+### validateCountry
 
 Validates a country code. Will normalize the code before checking for
 existence.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -894,7 +908,7 @@ existence.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -910,11 +924,11 @@ existence.
 
 ___
 
-#### validateCurrency
+### validateCurrency
 
 Validates a currency code. Will throw if the currency code doesn't exist.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -928,7 +942,7 @@ Validates a currency code. Will throw if the currency code doesn't exist.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -948,12 +962,12 @@ if the provided currency code is invalid
 
 ___
 
-#### validateFields
+### validateFields
 
 Validates fields for creation and updates. If the region already exists
 the id can be passed to check that country updates are allowed.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -976,7 +990,7 @@ the id can be passed to check that country updates are allowed.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -992,11 +1006,11 @@ the id can be passed to check that country updates are allowed.
 
 ___
 
-#### validateTaxRate
+### validateTaxRate
 
 Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1010,7 +1024,7 @@ Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -1030,9 +1044,9 @@ if the tax rate isn't number between 0-100
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1046,7 +1060,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

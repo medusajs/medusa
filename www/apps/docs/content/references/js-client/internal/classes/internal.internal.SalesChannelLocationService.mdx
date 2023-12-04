@@ -76,25 +76,98 @@ Service for managing the stock locations of sales channels
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
-#### stockLocationService\_
+### stockLocationService\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "create",
+    "type": "(`input`: [CreateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx), `context?`: [SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "delete",
+    "type": "(`id`: `string`, `context?`: [SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "list",
+    "type": "(`selector`: [FilterableStockLocationProps](../../StockLocationTypes/interfaces/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCount",
+    "type": "(`selector`: [FilterableStockLocationProps](../../StockLocationTypes/interfaces/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)) => Promise&#60;[[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieve",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx), `context?`: [SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### associateLocation
+### associateLocation
 
 Associates a sales channel with a stock location.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -117,7 +190,7 @@ Associates a sales channel with a stock location.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -133,13 +206,13 @@ Associates a sales channel with a stock location.
 
 ___
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -171,7 +244,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -187,11 +260,11 @@ transaction manager is created.
 
 ___
 
-#### listLocationIds
+### listLocationIds
 
 Lists the stock locations associated with a sales channel.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -205,7 +278,7 @@ Lists the stock locations associated with a sales channel.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -221,11 +294,11 @@ Lists the stock locations associated with a sales channel.
 
 ___
 
-#### listSalesChannelIds
+### listSalesChannelIds
 
 Lists the sales channels associated with a stock location.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -239,7 +312,7 @@ Lists the sales channels associated with a stock location.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -255,11 +328,11 @@ Lists the sales channels associated with a stock location.
 
 ___
 
-#### removeLocation
+### removeLocation
 
 Removes an association between a sales channel and a stock location.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -282,7 +355,7 @@ Removes an association between a sales channel and a stock location.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -298,9 +371,9 @@ Removes an association between a sales channel and a stock location.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -314,7 +387,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -330,9 +403,9 @@ ___
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -346,7 +419,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

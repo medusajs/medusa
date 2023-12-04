@@ -12,11 +12,11 @@ are available in the JS Client under the `medusa.carts.lineItems` property.
 
 ## Methods
 
-#### create
+### create
 
 Generates a Line Item with a given Product Variant and adds it to the Cart
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -31,7 +31,7 @@ medusa.carts.lineItems
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -91,7 +91,7 @@ medusa.carts.lineItems
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -479,11 +479,11 @@ medusa.carts.lineItems
 
 ___
 
-#### delete
+### delete
 
 Delete a line item from a cart. The payment sessions will be updated and the totals will be recalculated.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -493,7 +493,7 @@ medusa.carts.lineItems.delete(cartId, lineId).then(({ cart }) => {
 })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -525,7 +525,7 @@ medusa.carts.lineItems.delete(cartId, lineId).then(({ cart }) => {
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -913,11 +913,11 @@ medusa.carts.lineItems.delete(cartId, lineId).then(({ cart }) => {
 
 ___
 
-#### update
+### update
 
 Update a line item's data.
 
-##### Example
+#### Example
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -931,7 +931,7 @@ medusa.carts.lineItems
   })
 ```
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -991,7 +991,7 @@ medusa.carts.lineItems
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {

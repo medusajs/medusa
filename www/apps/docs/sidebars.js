@@ -75,6 +75,14 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "recipes/integrate-ecommerce-stack",
+          label: "Integrate Ecommerce Stack",
+          customProps: {
+            iconName: "puzzle-solid",
+          },
+        },
+        {
+          type: "doc",
           id: "recipes/commerce-automation",
           label: "Commerce Automation",
           customProps: {
@@ -717,7 +725,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/carts-and-checkout/backend/add-fulfillment-provider",
+          id: "references/fulfillment/classes/AbstractFulfillmentService",
           label: "Backend: Create Fulfillment Provider",
         },
         {

@@ -146,23 +146,37 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
-#### activeManager\_
+### activeManager\_
 
-#### Inherited from
+#### Returns
 
-[TransactionBaseService](internal.internal.TransactionBaseService.mdx).[activeManager_](internal.internal.TransactionBaseService.mdx#activemanager_)
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "EntityManager",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
 
 ## Methods
 
-#### atomicPhase\_
+### atomicPhase\_
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -194,7 +208,7 @@ transaction manager is created.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -210,11 +224,11 @@ transaction manager is created.
 
 ___
 
-#### authorizePaymentSessions
+### authorizePaymentSessions
 
 Authorizes the payment sessions of a payment collection.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -246,7 +260,7 @@ Authorizes the payment sessions of a payment collection.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -262,11 +276,11 @@ Authorizes the payment sessions of a payment collection.
 
 ___
 
-#### create
+### create
 
 Creates a new payment collection.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -280,7 +294,7 @@ Creates a new payment collection.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -296,11 +310,11 @@ Creates a new payment collection.
 
 ___
 
-#### delete
+### delete
 
 Deletes a payment collection.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -314,7 +328,7 @@ Deletes a payment collection.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -330,11 +344,11 @@ Deletes a payment collection.
 
 ___
 
-#### markAsAuthorized
+### markAsAuthorized
 
 Marks a payment collection as authorized bypassing the payment flow.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -348,7 +362,7 @@ Marks a payment collection as authorized bypassing the payment flow.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -364,11 +378,11 @@ Marks a payment collection as authorized bypassing the payment flow.
 
 ___
 
-#### refreshPaymentSession
+### refreshPaymentSession
 
 Removes and recreate a payment session of a payment collection.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -400,7 +414,7 @@ Removes and recreate a payment session of a payment collection.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -416,11 +430,11 @@ Removes and recreate a payment session of a payment collection.
 
 ___
 
-#### retrieve
+### retrieve
 
 Retrieves a payment collection by id.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -443,7 +457,7 @@ Retrieves a payment collection by id.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -459,11 +473,11 @@ Retrieves a payment collection by id.
 
 ___
 
-#### setPaymentSession
+### setPaymentSession
 
 Manages a single payment sessions of a payment collection.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -495,7 +509,7 @@ Manages a single payment sessions of a payment collection.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -511,11 +525,11 @@ Manages a single payment sessions of a payment collection.
 
 ___
 
-#### setPaymentSessionsBatch
+### setPaymentSessionsBatch
 
 Manages multiple payment sessions of a payment collection.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -547,7 +561,7 @@ Manages multiple payment sessions of a payment collection.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -563,9 +577,9 @@ Manages multiple payment sessions of a payment collection.
 
 ___
 
-#### shouldRetryTransaction\_
+### shouldRetryTransaction\_
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -579,7 +593,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -595,11 +609,11 @@ ___
 
 ___
 
-#### update
+### update
 
 Updates a payment collection.
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -622,7 +636,7 @@ Updates a payment collection.
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
@@ -638,9 +652,9 @@ Updates a payment collection.
 
 ___
 
-#### withTransaction
+### withTransaction
 
-##### Parameters
+#### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -654,7 +668,7 @@ ___
   }
 ]} />
 
-##### Returns
+#### Returns
 
 <ParameterTypes parameters={[
   {
