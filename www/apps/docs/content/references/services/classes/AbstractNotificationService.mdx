@@ -10,13 +10,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 - [INotificationService](../interfaces/INotificationService.mdx)
 
-## Constructors
-
-### constructor
+## constructor
 
 `Protected **new AbstractNotificationService**(__container__, __configModule__?, __moduleDeclaration__?)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -47,6 +45,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -107,6 +107,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -129,6 +131,8 @@ EntityManager
   }
 ]} />
 
+___
+
 ## Methods
 
 ### atomicPhase\_
@@ -138,6 +142,8 @@ EntityManager
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

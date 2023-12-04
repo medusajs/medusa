@@ -120,7 +120,7 @@ To add an icon to the sidebar item, start by checking if the icon is already exp
 
 For example:
   
-```tsx title=www/docs/src/theme/Icon/Bolt/index.tsx
+```tsx title="www/docs/src/theme/Icon/Bolt/index.tsx"
 import React from "react"
 import { IconProps } from "@medusajs/icons/dist/types"
 
@@ -148,7 +148,7 @@ Make sure to set the `stroke` or `fill` of the icon to `currentColor` as shown i
 
 If you added a new icon, add it in the exported object in the file `www/apps/docs/src/theme/Icon/index.ts`, where the property is the kebab-case version of the icon's name, and the value being the component you created. Make sure to add it in the correct alphabetical position as well. For example:
 
-```ts title=www/docs/src/theme/Icon/index.ts
+```ts title="www/docs/src/theme/Icon/index.ts"
 import IconBolt from "./Bolt"
 import IconBoltSolid from "./BoltSolid"
 // other imports
@@ -163,7 +163,7 @@ export default {
 
 Finally, you can add the icon to the sidebar item by adding a `sidebar_icon` property to the `customProps` property and setting its value to the kebab-cased version of the icon's name. For example:
 
-```js title=www/docs/sidebars.js
+```js title="www/docs/sidebars.js"
 module.exports = {
   // other sidebars
   homepage: [
@@ -184,7 +184,7 @@ There are different sidebar item types used in the documentation:
 
 - Homepage Items: If a sidebar item is shown under the `homepage` sidebar, you should set the `className` property of the item to `homepage-sidebar-item`. You can use this with other sidebar item types. For example:
   
-  ```js title=www/docs/sidebars.js
+  ```js title="www/docs/sidebars.js"
   module.exports = {
     // other sidebars
     homepage: [
@@ -200,7 +200,7 @@ There are different sidebar item types used in the documentation:
 
 - Sidebar Title: This item is used as a title to the sidebar, typically added at the top of the sidebar. You typically would also use an icon with it. To use this item, add a `sidebar_is_title` property to the `customProps` object of the item with its value being `true`. For example:
   
-  ```js title=www/docs/sidebars.js
+  ```js title="www/docs/sidebars.js"
   module.exports = {
     // other sidebars
     modules: [
@@ -221,7 +221,7 @@ There are different sidebar item types used in the documentation:
 
 - Back Item: This item is used to show a back button, typically at the top of the sidebar. To use this item, add the `sidebar_is_back_link` property to the `customProps` object of the item, with its value set to true. Also, add the `sidebar_icon` property to the `customProps` object with its value set to `back-arrow`. For example:
 
-  ```js title=www/docs/sidebars.js
+  ```js title="www/docs/sidebars.js"
   module.exports = {
     // other sidebars
     core: [
@@ -242,7 +242,7 @@ There are different sidebar item types used in the documentation:
 
 - Group Divider Item: This item is used if a sidebar item does not link to any document and is only used to separate between sidebar sections. The item must be of type `html`, and its `value` property holds the text that should be shown in the divider. You must also add in the `customProps` object of the item the property `sidebar_is_group_divider` with its value being `true`. For example:
   
-  ```js title=www/docs/sidebars.js
+  ```js title="www/docs/sidebars.js"
   module.exports = {
     // other sidebars
     homepage: [
@@ -262,7 +262,7 @@ There are different sidebar item types used in the documentation:
 
 - Group Headline Item: This item is used if a sidebar item does not link to any document and is only used to indicate the beginning of a new section or group in the sidebar. To use this item, set the `type` of the item to `category`, and add the `sidebar_is_group_headline` property to the `customProps` object of the item, with its value set to `true`. For example:
   
-  ```js title=www/docs/sidebars.js
+  ```js title="www/docs/sidebars.js"
   module.exports = {
     // other sidebars
     modules: [
@@ -285,7 +285,7 @@ There are different sidebar item types used in the documentation:
 
 - Soon Item: This item is used to indicate that a certain guide will be added soon, but it does not actually link to any document. To use this item, set the `type` of the item to `link`, its `href` property to `#`, and add to the `customProps` object the property `sidebar_is_soon` with its value set to `true`. For example:
   
-  ```js title=www/docs/sidebars.js
+  ```js title="www/docs/sidebars.js"
   module.exports = {
     // other sidebars
     modules: [
@@ -392,7 +392,7 @@ For example:
 To add a title to a code block without tabs:
 
 ~~~md
-```js title=src/index.ts
+```js title="src/index.ts"
 console.log("hello")
 ```
 ~~~

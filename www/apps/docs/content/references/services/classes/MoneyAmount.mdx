@@ -8,13 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 A Money Amount represent a price amount, for example, a product variant's price or a price in a price list. Each Money Amount either has a Currency or Region associated with it to indicate the pricing in a given Currency or, for fully region-based pricing, the given price in a specific Region. If region-based pricing is used, the amount will be in the currency defined for the Region.
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new MoneyAmount**()`
 
 A Money Amount represent a price amount, for example, a product variant's price or a price in a price list. Each Money Amount either has a Currency or Region associated with it to indicate the pricing in a given Currency or, for fully region-based pricing, the given price in a specific Region. If region-based pricing is used, the amount will be in the currency defined for the Region.
+
+___
 
 ## Properties
 
@@ -120,7 +120,7 @@ A Money Amount represent a price amount, for example, a product variant's price 
   },
   {
     "name": "region_id",
-    "type": "`string`",
+    "type": "`null` \\| `string`",
     "description": "The region's ID",
     "optional": false,
     "defaultValue": "",
@@ -164,6 +164,8 @@ A Money Amount represent a price amount, for example, a product variant's price 
     "children": []
   }
 ]} />
+
+___
 
 ## Methods
 

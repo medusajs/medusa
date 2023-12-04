@@ -88,7 +88,17 @@ medusa.admin.custom.delete(`/blog/posts/${postId}`).then(() => {
     "defaultValue": "",
     "description": "The response data.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "TResponse",
+        "type": "`TResponse`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -186,7 +196,17 @@ medusa.admin.custom.get<Record<string, any>, PostsResponse>(
     "defaultValue": "",
     "description": "The response data.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "TResponse",
+        "type": "`TResponse`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -290,6 +310,16 @@ medusa.admin.custom.post<PostRequest, PostResponse>(
     "defaultValue": "",
     "description": "The response data.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "TResponse",
+        "type": "`TResponse`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

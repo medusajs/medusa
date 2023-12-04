@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate gift cards.
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new GiftCardService**(«destructured»)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate gift cards.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -132,6 +132,8 @@ Provides layer to manipulate gift cards.
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -154,6 +156,8 @@ EntityManager
   }
 ]} />
 
+___
+
 ## Methods
 
 ### atomicPhase\_
@@ -163,6 +167,8 @@ EntityManager
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

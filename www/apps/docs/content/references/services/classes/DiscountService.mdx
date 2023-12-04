@@ -8,15 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate discounts.
 
-#### Implements
+## Implements
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new DiscountService**(«destructured»)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -29,6 +27,8 @@ Provides layer to manipulate discounts.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -188,6 +188,8 @@ Provides layer to manipulate discounts.
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -209,6 +211,8 @@ EntityManager
     "children": []
   }
 ]} />
+
+___
 
 ## Methods
 
@@ -266,6 +270,8 @@ ___
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1290,6 +1296,8 @@ ___
 
 Creates a discount rule with provided data given that the data is validated.
 
+#### Type Parameters
+
 <ParameterTypes parameters={[
   {
     "name": "T",
@@ -1320,7 +1328,17 @@ Creates a discount rule with provided data given that the data is validated.
 
 `T`
 
-<ParameterTypes parameters={[]} />
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`T`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the create operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 

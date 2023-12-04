@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Finds tax providers and assists in tax related operations.
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new TaxProviderService**(container)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Finds tax providers and assists in tax related operations.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -141,6 +141,8 @@ Finds tax providers and assists in tax related operations.
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -163,6 +165,8 @@ EntityManager
   }
 ]} />
 
+___
+
 ## Methods
 
 ### atomicPhase\_
@@ -172,6 +176,8 @@ EntityManager
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

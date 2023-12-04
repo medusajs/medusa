@@ -13,13 +13,11 @@ subscribers when events happen. Events will run asynchronously.
 
 - [IEventBusService](../interfaces/IEventBusService.mdx)
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new EventBusService**(«destructured», config, isSingleton?)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -50,6 +48,8 @@ subscribers when events happen. Events will run asynchronously.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -146,6 +146,8 @@ subscribers when events happen. Events will run asynchronously.
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -190,6 +192,8 @@ ___
   }
 ]} />
 
+___
+
 ## Methods
 
 ### atomicPhase\_
@@ -199,6 +203,8 @@ ___
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -277,6 +283,8 @@ ___
 
 Calls all subscribers when an event occurs.
 
+#### Type Parameters
+
 <ParameterTypes parameters={[
   {
     "name": "T",
@@ -322,6 +330,8 @@ Promise&#60;void \| [StagedJob](StagedJob.mdx)[]&#62;
 `**emit**<TypeParameter T>(eventName, data, options?): Promise&#60;void \| [StagedJob](StagedJob.mdx)&#62;`
 
 Calls all subscribers when an event occurs.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

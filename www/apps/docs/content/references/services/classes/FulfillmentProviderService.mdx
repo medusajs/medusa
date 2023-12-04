@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Helps retrieve fulfillment providers
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new FulfillmentProviderService**(container)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Helps retrieve fulfillment providers
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -96,6 +96,8 @@ Helps retrieve fulfillment providers
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -118,6 +120,8 @@ EntityManager
   }
 ]} />
 
+___
+
 ## Methods
 
 ### atomicPhase\_
@@ -127,6 +131,8 @@ EntityManager
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate store settings.
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new StoreService**(«destructured»)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate store settings.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -105,6 +105,8 @@ Provides layer to manipulate store settings.
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -126,6 +128,8 @@ EntityManager
     "children": []
   }
 ]} />
+
+___
 
 ## Methods
 
@@ -174,6 +178,8 @@ ___
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

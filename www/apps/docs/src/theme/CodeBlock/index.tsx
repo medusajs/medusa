@@ -34,8 +34,21 @@ export default function CodeBlock({
   const CodeBlockComp =
     typeof children === "string" ? StringContent : ElementContent
 
-  const title = props.title
+  let title = props.title
   delete props.title
+
+  if (!title) {
+    // check if it's in `metastring` instead
+    if (props.metastring) {
+      const titleRegex = /title="?(.*)"?/
+      const matchedTitle = props.metastring.match(titleRegex)
+      if (matchedTitle?.length) {
+        title = matchedTitle[1].replace(/^"/, "").replace(/"$/, "")
+        props.metastring = props.metastring.replace(titleRegex, "")
+      }
+    }
+  }
+
   return (
     <div className="code-wrapper">
       {title && <div className="code-header">{title}</div>}

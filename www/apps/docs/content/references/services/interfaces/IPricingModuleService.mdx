@@ -444,7 +444,7 @@ ___
 
 ### calculatePrices
 
-`**calculatePrices**(filters, context?, sharedContext?): Promise&#60;[CalculatedPriceSetDTO](CalculatedPriceSetDTO.mdx)&#62;`
+`**calculatePrices**(filters, context?, sharedContext?): Promise&#60;[CalculatedPriceSet](CalculatedPriceSet.mdx)[]&#62;`
 
 This method is used to calculate prices based on the provided filters and context.
 
@@ -552,15 +552,15 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
 
 #### Returns
 
-Promise&#60;[CalculatedPriceSetDTO](CalculatedPriceSetDTO.mdx)&#62;
+Promise&#60;[CalculatedPriceSet](CalculatedPriceSet.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[CalculatedPriceSetDTO](CalculatedPriceSetDTO.mdx)&#62;",
+    "type": "Promise&#60;[CalculatedPriceSet](CalculatedPriceSet.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "The calculated price matching the context and filters provided.",
+    "description": "The calculated prices matching the context and filters provided.",
     "expandable": false,
     "children": []
   }

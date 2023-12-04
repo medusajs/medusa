@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Provides layer to manipulate product tags.
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new PriceListService**(«destructured»)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Provides layer to manipulate product tags.
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -150,6 +150,8 @@ Provides layer to manipulate product tags.
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -172,6 +174,8 @@ EntityManager
   }
 ]} />
 
+___
+
 ## Methods
 
 ### addCurrencyFromRegion
@@ -179,6 +183,8 @@ EntityManager
 `Protected **addCurrencyFromRegion**<TypeParameter T>(prices): Promise&#60;T[]&#62;`
 
 Add `currency_code` to an MA record if `region_id`is passed.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -287,6 +293,8 @@ ___
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

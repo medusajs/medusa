@@ -6,13 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # LineItemService
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new LineItemService**(«destructured»)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -25,6 +23,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -166,6 +166,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -188,6 +190,8 @@ EntityManager
   }
 ]} />
 
+___
+
 ## Methods
 
 ### atomicPhase\_
@@ -197,6 +201,8 @@ EntityManager
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -337,6 +343,8 @@ ___
 `**create**<TypeParameter T, TypeParameter TResult>(data): Promise&#60;TResult&#62;`
 
 Create a line item
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -561,6 +569,8 @@ ___
 `**generate**<TypeParameter T, TypeParameter TResult>(variantIdOrData, regionIdOrContext, quantity?, context?): Promise&#60;TResult&#62;`
 
 Generate a single or multiple line item without persisting the data into the db
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -946,6 +956,8 @@ ___
 ### validateGenerateArguments
 
 `Protected **validateGenerateArguments**<TypeParameter T, TypeParameter TResult>(variantIdOrData, regionIdOrContext, quantity?): void`
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

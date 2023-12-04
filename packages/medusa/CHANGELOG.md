@@ -1,5 +1,37 @@
 # Change Log
 
+## 1.18.1
+
+### Patch Changes
+
+- [#5685](https://github.com/medusajs/medusa/pull/5685) [`1e39a95f8`](https://github.com/medusajs/medusa/commit/1e39a95f8a136427d04ea20cd320337af0923e31) Thanks [@riqwan](https://github.com/riqwan)! - fix(workflows, pricing, medusa): update region variants fix + pricing module migration scripts
+
+- [#5703](https://github.com/medusajs/medusa/pull/5703) [`22bea2724`](https://github.com/medusajs/medusa/commit/22bea2724d48f7635f96b7c229c3084dee70b37a) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Exclude subscribers correctly on Windows
+
+- [#5705](https://github.com/medusajs/medusa/pull/5705) [`ddbeed4ea`](https://github.com/medusajs/medusa/commit/ddbeed4ea67d67a7aef04eb3135087551a7e9b37) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(workflows, core-flows, ...): Split workflows tooling and definitions
+
+- [#5713](https://github.com/medusajs/medusa/pull/5713) [`18afe0b9a`](https://github.com/medusajs/medusa/commit/18afe0b9addb33ec2e3b285651b4eb1ef8065845) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(stock-location, inventory, medusa, types, utils): allow buildQuery to take null as an argument in order to prevent default pagination
+
+- [#5708](https://github.com/medusajs/medusa/pull/5708) [`712c4496c`](https://github.com/medusajs/medusa/commit/712c4496ce3cbf00e3ae4f1e9e1f94ffbe8a53bd) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): update default admin query with product categories
+
+- [#5715](https://github.com/medusajs/medusa/pull/5715) [`aa6c4cbac`](https://github.com/medusajs/medusa/commit/aa6c4cbac5a67edff7bdeb9d406ac63ea2463249) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): alwyas add price_list_id and price_list to money_amounts when listing for pricing module
+
+- [#5711](https://github.com/medusajs/medusa/pull/5711) [`fc1ef29ed`](https://github.com/medusajs/medusa/commit/fc1ef29ed935e192f0943a2bf4b8fbb05ce6890d) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa,pricing,types): rules only gets updated/deleted upon passing an explicit object
+
+- [#5730](https://github.com/medusajs/medusa/pull/5730) [`2e6b11031`](https://github.com/medusajs/medusa/commit/2e6b1103161a2eb637e69dbd316197434fd0e0db) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa,pricing): fix migrations for existing databases
+
+- [#5607](https://github.com/medusajs/medusa/pull/5607) [`9f9db3969`](https://github.com/medusajs/medusa/commit/9f9db396987776039ad0c2b8d5792d0ebdbf8792) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Workflows composer api
+
+- [#5536](https://github.com/medusajs/medusa/pull/5536) [`dc5750dd6`](https://github.com/medusajs/medusa/commit/dc5750dd665a91d35c0246ba83c7f90ec74907f4) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,types,workflows,utils,product,pricing): PricingModule Integration of PriceLists into Core
+
+- Updated dependencies [[`1e39a95f8`](https://github.com/medusajs/medusa/commit/1e39a95f8a136427d04ea20cd320337af0923e31), [`a39ce125c`](https://github.com/medusajs/medusa/commit/a39ce125cc96f14732d5a6301313d2376484fa23), [`ddbeed4ea`](https://github.com/medusajs/medusa/commit/ddbeed4ea67d67a7aef04eb3135087551a7e9b37), [`18afe0b9a`](https://github.com/medusajs/medusa/commit/18afe0b9addb33ec2e3b285651b4eb1ef8065845), [`de8f74867`](https://github.com/medusajs/medusa/commit/de8f748674bfd19b3dbadb9695d9080aa91940de), [`ffb0c7b4c`](https://github.com/medusajs/medusa/commit/ffb0c7b4cdbc83b61f70c881001a69de6ec8ae99), [`010560fd2`](https://github.com/medusajs/medusa/commit/010560fd2a4c12eb7a551919df33e58e7cbe920f), [`9f9db3969`](https://github.com/medusajs/medusa/commit/9f9db396987776039ad0c2b8d5792d0ebdbf8792), [`dc5750dd6`](https://github.com/medusajs/medusa/commit/dc5750dd665a91d35c0246ba83c7f90ec74907f4)]:
+  - @medusajs/workflows-sdk@0.1.0
+  - @medusajs/core-flows@0.0.2
+  - @medusajs/orchestration@0.5.0
+  - @medusajs/utils@1.11.1
+  - @medusajs/link-modules@0.2.4
+  - @medusajs/modules-sdk@1.12.4
+
 ## 1.18.0
 
 ### Minor Changes

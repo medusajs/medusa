@@ -8,13 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Helps retrieve payment providers
 
-## Constructors
-
-### constructor
+## constructor
 
 `**new PaymentProviderService**(container)`
 
-#### Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -27,6 +25,8 @@ Helps retrieve payment providers
     "children": []
   }
 ]} />
+
+___
 
 ## Properties
 
@@ -150,6 +150,8 @@ Helps retrieve payment providers
   }
 ]} />
 
+___
+
 ## Accessors
 
 ### activeManager\_
@@ -194,6 +196,8 @@ ___
   }
 ]} />
 
+___
+
 ## Methods
 
 ### atomicPhase\_
@@ -203,6 +207,8 @@ ___
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {
@@ -1042,6 +1048,8 @@ ___
 `**retrieveProvider**<TypeParameter TProvider>(providerId): TProvider extends [AbstractPaymentService](AbstractPaymentService.mdx) ? [AbstractPaymentService](AbstractPaymentService.mdx) : TProvider extends [AbstractPaymentProcessor](AbstractPaymentProcessor.mdx) ? [AbstractPaymentProcessor](AbstractPaymentProcessor.mdx) : any`
 
 Finds a provider given an id
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

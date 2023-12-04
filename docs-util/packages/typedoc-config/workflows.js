@@ -7,12 +7,12 @@ const pathPrefix = path.join(__dirname, "..", "..", "..")
 module.exports = {
   ...globalTypedocOptions,
   entryPoints: [
-    path.join(pathPrefix, "packages/workflows/src/utils/composer/index.ts"),
+    path.join(pathPrefix, "packages/workflows-sdk/src/utils/composer/index.ts"),
   ],
   out: [path.join(pathPrefix, "www/apps/docs/content/references/workflows")],
   tsconfig: path.join(__dirname, "extended-tsconfig", "workflows.json"),
-  name: "Workflows Reference",
-  indexTitle: "Workflows Reference",
+  name: "Workflows API Reference",
+  indexTitle: "Workflows API Reference",
   entryDocument: "index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
@@ -43,6 +43,8 @@ module.exports = {
       },
     },
     "index\\.mdx": {
+      reflectionDescription:
+        "This section of the documentation provides a reference to the utility functions of the `@medusajs/workflows-sdk` package.",
       reflectionGroups: {
         Namespaces: false,
         Enumerations: false,
@@ -55,6 +57,18 @@ module.exports = {
     },
     functions: {
       maxLevel: 1,
+      reflectionDescription:
+        "This documentation provides a reference to the `{{alias}}` {{kind}}. It belongs to the `@medusajs/workflows-sdk` package.",
+      frontmatterData: {
+        displayed_sidebar: "workflowsSidebar",
+        slug: "/references/workflows/{{alias}}",
+        sidebar_label: "{{alias}}",
+      },
+      reflectionTitle: {
+        kind: false,
+        typeParameters: false,
+        suffix: "- Workflows Reference",
+      },
     },
     "classes/StepResponse": {
       reflectionGroups: {

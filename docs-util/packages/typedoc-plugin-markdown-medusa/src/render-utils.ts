@@ -45,6 +45,10 @@ import commentTagHelper from "./resources/helpers/comment-tag"
 import exampleHelper from "./resources/helpers/example"
 import ifFeatureFlagHelper from "./resources/helpers/if-feature-flag"
 import featureFlagHelper from "./resources/helpers/feature-flag"
+import decrementCurrentTitleLevelHelper from "./resources/helpers/decrement-current-title-level"
+import incrementCurrentTitleLevelHelper from "./resources/helpers/increment-current-title-level"
+import hasMoreThanOneSignatureHelper from "./resources/helpers/has-more-than-one-signature"
+import ifCanShowConstructorsTitleHelper from "./resources/helpers/if-can-show-constructors-title"
 import { MarkdownTheme } from "./theme"
 
 // test
@@ -120,4 +124,8 @@ export function registerHelpers(theme: MarkdownTheme) {
   exampleHelper()
   ifFeatureFlagHelper()
   featureFlagHelper()
+  decrementCurrentTitleLevelHelper(theme)
+  incrementCurrentTitleLevelHelper(theme)
+  hasMoreThanOneSignatureHelper()
+  ifCanShowConstructorsTitleHelper()
 }

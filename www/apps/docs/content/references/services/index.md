@@ -231,7 +231,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [Buffer](interfaces/Buffer.mdx)
 - [BufferConstructor](interfaces/BufferConstructor.mdx)
 - [BulkUpdateInventoryLevelInput](interfaces/BulkUpdateInventoryLevelInput.mdx)
-- [CalculatedPriceSetDTO](interfaces/CalculatedPriceSetDTO.mdx)
+- [CalculatedPriceSet](interfaces/CalculatedPriceSet.mdx)
 - [Context](interfaces/Context.mdx)
 - [CreateCurrencyDTO](interfaces/CreateCurrencyDTO.mdx)
 - [CreateInventoryItemInput](interfaces/CreateInventoryItemInput.mdx)
@@ -604,6 +604,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [middlewareHandlerType](types/middlewareHandlerType.mdx)
 - [middlewareType](types/middlewareType.mdx)
 
+___
+
 ## Enumeration Members
 
 ### DEFAULT
@@ -629,6 +631,8 @@ ___
  **ORDER\_EDIT**: `"order_edit"`
 
 The payment collection is used for an order edit.
+
+___
 
 ## Variables
 
@@ -846,7 +850,7 @@ ___
 
  **PriceType**: `Object`
 
-### Type declaration
+#### Type declaration
 
 <ParameterTypes parameters={[
   {
@@ -1022,11 +1026,15 @@ ___
 
  `Const` **UserRepository**: Repository&#60;[User](classes/User.mdx)&#62;
 
+___
+
 ## Functions
 
 ### Boolean
 
 `**Boolean**<TypeParameter T>(value?): boolean`
+
+#### Type Parameters
 
 <ParameterTypes parameters={[
   {

@@ -386,6 +386,47 @@ async function createProductType (value: string) {
 
 ___
 
+### createVariants
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[CreateProductVariantDTO](internal.internal-1.ProductTypes.CreateProductVariantDTO.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
 ### delete
 
 This method is used to delete products. Unlike the [softDelete](internal.internal-1.ProductTypes.IProductModuleService.mdx#softdelete) method, this method will completely remove the products and they can no longer be accessed or retrieved.
@@ -722,6 +763,63 @@ async function deleteProductTypes (ids: string[]) {
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product types are successfully deleted.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteVariants
+
+This method is used to delete ProductVariant. This method will completely remove the ProductVariant and they can no longer be accessed or retrieved.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+async function deleteProducts (ids: string[]) {
+  const productModule = await initializeProductModule()
+
+  await productModule.deleteVariants(ids)
+}
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productVariantIds",
+    "type": "`string`[]",
+    "description": "The IDs of the ProductVariant to be deleted.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves when the ProductVariant are successfully deleted.",
     "expandable": false,
     "children": []
   }
@@ -3920,6 +4018,47 @@ async function updateProductType (id: string, value: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product types.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateVariants
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[UpdateProductVariantDTO](internal.internal-1.ProductTypes.UpdateProductVariantDTO.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
     "expandable": false,
     "children": []
   }
