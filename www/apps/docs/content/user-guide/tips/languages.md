@@ -34,4 +34,5 @@ Languages listed in this section are contributed by the Medusa community. So, th
 - Tamil
 - Tiếng Việt
 - Українська
+- 简体中文
 - العربية
