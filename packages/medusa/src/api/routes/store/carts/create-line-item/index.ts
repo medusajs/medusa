@@ -151,8 +151,8 @@ export default async (req, res) => {
           }
 
           await promiseAll([
-            setPaymentSession(args),
             setVariantAvailability(args),
+            setPaymentSession(args),
           ])
 
           idempotencyKey = await idempotencyKeyService
