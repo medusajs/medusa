@@ -73,7 +73,7 @@ interface ApplyStepOptions<
   TInvokeResultCompensateInput
 > {
   stepName: string
-  input: TStepInputs
+  input?: TStepInputs
   invokeFn: InvokeFn<
     TInvokeInput,
     TInvokeResultOutput,
@@ -258,9 +258,13 @@ export function createStep<
 ): StepFunction<TInvokeInput, TInvokeResultOutput> {
   const stepName = name ?? invokeFn.name
 
-  const returnFn = function (input: {
-    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
-  }): WorkflowData<TInvokeResultOutput> {
+  const returnFn = function (
+    input:
+      | {
+          [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
+        }
+      | undefined
+  ): WorkflowData<TInvokeResultOutput> {
     if (!global[SymbolMedusaWorkflowComposerContext]) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
@@ -286,10 +290,10 @@ export function createStep<
         compensateFn,
       })
     )
-  }
+  } as StepFunction<TInvokeInput, TInvokeResultOutput>
 
   returnFn.__type = SymbolWorkflowStepBind
   returnFn.__step__ = stepName
 
-  return returnFn as unknown as StepFunction<TInvokeInput, TInvokeResultOutput>
+  return returnFn
 }
