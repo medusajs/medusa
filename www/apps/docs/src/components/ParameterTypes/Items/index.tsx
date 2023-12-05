@@ -19,11 +19,13 @@ import IconFlagMini from "../../../theme/Icon/FlagMini"
 type ParameterTypesItemsProps = {
   parameters: Parameter[]
   level?: number
+  expandUrl?: string
 }
 
 const ParameterTypesItems = ({
   parameters,
   level = 1,
+  expandUrl,
 }: ParameterTypesItemsProps) => {
   function getGroupName() {
     switch (level) {
@@ -154,7 +156,7 @@ const ParameterTypesItems = ({
             {parameter.expandable && (
               <ExpandableNotice
                 type="method"
-                link="https://docs.medusajs.com/js-client/overview#expanding-fields"
+                link={expandUrl || "#"}
                 badgeClassName="!p-0 leading-none"
                 badgeContent={<ArrowsPointingOutMini />}
               />
@@ -181,6 +183,7 @@ const ParameterTypesItems = ({
                   <ParameterTypesItems
                     parameters={parameter.children}
                     level={level + 1}
+                    expandUrl={expandUrl}
                   />
                 )}
               </Details>

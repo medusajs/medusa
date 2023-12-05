@@ -88,6 +88,10 @@ module.exports = {
         displayed_sidebar: "entitiesSidebar",
       },
       maxLevel: 2,
+      parameterComponentExtraProps: {
+        expandUrl:
+          "https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records",
+      },
     },
     "^entities/classes": {
       frontmatterData: {
@@ -167,6 +171,10 @@ module.exports = {
       frontmatterData: {
         displayed_sidebar: "jsClientSidebar",
       },
+      parameterComponentExtraProps: {
+        expandUrl:
+          "https://docs.medusajs.com/js-client/overview#expanding-fields",
+      },
       maxLevel: 4,
     },
     "^js_client/classes/": {
@@ -208,6 +216,10 @@ module.exports = {
         displayed_sidebar: "homepage",
       },
       maxLevel: 2,
+      parameterComponentExtraProps: {
+        expandUrl:
+          "https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records",
+      },
     },
 
     // PRICING CONFIG

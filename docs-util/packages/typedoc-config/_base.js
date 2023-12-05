@@ -5,7 +5,6 @@ const pathPrefix = path.join(__dirname, "..", "..", "..")
 
 /** @type {import('typedoc').TypeDocOptions} */
 module.exports = {
-  // extends: [typedocConfig],
   plugin: ["typedoc-plugin-custom"],
   readme: "none",
   eslintPathName: path.join(
