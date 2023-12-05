@@ -1,0 +1,28 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# RemovePriceListRulesDTO
+
+The rules to remove from a price list.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListId",
+    "type": "`string`",
+    "description": "The ID of the price list to remove rules from.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rules",
+    "type": "`string`[]",
+    "description": "The rules to remove from the price list. Each item being a rule type's `rule_attribute`.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

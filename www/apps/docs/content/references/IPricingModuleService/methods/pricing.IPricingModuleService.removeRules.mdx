@@ -1,0 +1,137 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/removeRules
+sidebar_label: removeRules
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# removeRules - Pricing Module Reference
+
+This documentation provides a reference to the `removeRules` method. This belongs to the Pricing Module.
+
+This method remove rules from a price set.
+
+## Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
+  const pricingService = await initializePricingModule()
+
+  await pricingService.removeRules([
+    {
+      id: priceSetId,
+      rules: ruleAttributes
+    },
+  ])
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[RemovePriceSetRulesDTO](../../pricing/interfaces/pricing.RemovePriceSetRulesDTO.mdx)[]",
+    "description": "The rules to remove per price set.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the price set.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rules",
+        "type": "`string`[]",
+        "description": "The rules to remove. Each string is the `rule_attribute` of a rule to remove.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../pricing/interfaces/pricing.Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "A string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves when rules are successfully removed.",
+    "expandable": false,
+    "children": []
+  }
+]} />
