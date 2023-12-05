@@ -1,6 +1,7 @@
 import {
   Comment,
   DeclarationReflection,
+  ProjectReflection,
   ReflectionKind,
   ReflectionType,
 } from "typedoc"
@@ -22,29 +23,35 @@ const ALLOWED_KINDS: ReflectionKind[] = [
   ReflectionKind.Reference,
 ]
 
-export default function reflectionFormatter(
-  reflection: ReflectionParameterType,
-  type: ParameterStyle = "table",
-  level = 1,
+type ReflectionFormatterOptions = {
+  reflection: ReflectionParameterType
+  level?: number
   maxLevel?: number | undefined
-): string | Parameter {
+  project?: ProjectReflection
+  type?: ParameterStyle
+}
+
+export default function reflectionFormatter({
+  type = "table",
+  ...options
+}: ReflectionFormatterOptions): string | Parameter {
   switch (type) {
     case "list":
-      return reflectionListFormatter(reflection, level)
+      return reflectionListFormatter(options)
     case "component":
-      return reflectionComponentFormatter(reflection, level, maxLevel)
+      return reflectionComponentFormatter(options)
     case "table":
-      return reflectionTableFormatter(reflection)
+      return reflectionTableFormatter(options)
     default:
       return ""
   }
 }
 
-export function reflectionListFormatter(
-  reflection: ReflectionParameterType,
+export function reflectionListFormatter({
+  reflection,
   level = 1,
-  maxLevel?: number | undefined
-): string {
+  maxLevel,
+}: ReflectionFormatterOptions): string {
   const prefix = `${Array(level - 1)
     .fill("\t")
     .join("")}-`
@@ -81,7 +88,13 @@ export function reflectionListFormatter(
       if (!itemChildrenKind) {
         itemChildrenKind = childItem.kind
       }
-      itemChildren.push(reflectionListFormatter(childItem, level + 1))
+      itemChildren.push(
+        reflectionListFormatter({
+          reflection: childItem,
+          level: level + 1,
+          maxLevel,
+        })
+      )
     })
     if (itemChildren.length) {
       item += ` ${getItemExpandText(
@@ -94,11 +107,12 @@ export function reflectionListFormatter(
   return item
 }
 
-export function reflectionComponentFormatter(
-  reflection: ReflectionParameterType,
+export function reflectionComponentFormatter({
+  reflection,
   level = 1,
-  maxLevel?: number | undefined
-): Parameter {
+  maxLevel,
+  project,
+}: ReflectionFormatterOptions): Parameter {
   const defaultValue = getDefaultValue(reflection) || ""
   const optional =
     reflection.flags.isOptional || reflection.kind === ReflectionKind.EnumMember
@@ -133,9 +147,18 @@ export function reflectionComponentFormatter(
     (reflection.type || hasChildren) &&
     level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   ) {
+    // if (
+    //   reflection.name === "user" &&
+    //   reflection.type &&
+    //   "name" in reflection.type &&
+    //   reflection.type.name.startsWith("Omit") &&
+    //   "typeArguments" in reflection.type
+    // ) {
+    //   console.log(reflection)
+    // }
     const children = hasChildren
       ? reflection.children
-      : getTypeChildren(reflection.type!, reflection.project)
+      : getTypeChildren(reflection.type!, project || reflection.project)
 
     children
       ?.filter((childItem: DeclarationReflection) =>
@@ -143,7 +166,12 @@ export function reflectionComponentFormatter(
       )
       .forEach((childItem: DeclarationReflection) => {
         componentItem.children?.push(
-          reflectionComponentFormatter(childItem, level + 1, maxLevel)
+          reflectionComponentFormatter({
+            reflection: childItem,
+            level: level + 1,
+            maxLevel,
+            project,
+          })
         )
       })
   }
@@ -151,9 +179,9 @@ export function reflectionComponentFormatter(
   return componentItem
 }
 
-export function reflectionTableFormatter(
-  parameter: ReflectionParameterType
-): string {
+export function reflectionTableFormatter({
+  reflection: parameter,
+}: ReflectionFormatterOptions): string {
   const showDefaults = hasDefaultValues([parameter])
 
   const hasComments = !!parameter.comment?.hasVisibleComponent()

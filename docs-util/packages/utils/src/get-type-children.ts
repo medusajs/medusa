@@ -32,35 +32,6 @@ export function getTypeChildren(
       if (referencedReflection instanceof DeclarationReflection) {
         if (referencedReflection.children) {
           children = referencedReflection.children
-        } else if (reflectionType.typeArguments?.length) {
-          reflectionType.typeArguments.forEach((typeArgument, index) => {
-            if (reflectionType.name === "Omit" && index > 0) {
-              switch (typeArgument.type) {
-                case "literal":
-                  removeChild(typeArgument.value?.toString(), children)
-                  break
-                case "union":
-                  typeArgument.types.forEach((childItem) => {
-                    if (childItem.type === "literal") {
-                      removeChild(childItem.value?.toString(), children)
-                    } else {
-                      getTypeChildren(childItem, project, level + 1).forEach(
-                        (child) => {
-                          removeChild(child.name, children)
-                        }
-                      )
-                    }
-                  })
-              }
-            } else {
-              const typeArgumentChildren = getTypeChildren(
-                typeArgument,
-                project,
-                level + 1
-              )
-              children.push(...typeArgumentChildren)
-            }
-          })
         } else if (referencedReflection.type) {
           children = getTypeChildren(
             referencedReflection.type,
@@ -68,6 +39,35 @@ export function getTypeChildren(
             level + 1
           )
         }
+      } else if (reflectionType.typeArguments?.length) {
+        reflectionType.typeArguments.forEach((typeArgument, index) => {
+          if (reflectionType.name === "Omit" && index > 0) {
+            switch (typeArgument.type) {
+              case "literal":
+                removeChild(typeArgument.value?.toString(), children)
+                break
+              case "union":
+                typeArgument.types.forEach((childItem) => {
+                  if (childItem.type === "literal") {
+                    removeChild(childItem.value?.toString(), children)
+                  } else {
+                    getTypeChildren(childItem, project, level + 1).forEach(
+                      (child) => {
+                        removeChild(child.name, children)
+                      }
+                    )
+                  }
+                })
+            }
+          } else {
+            const typeArgumentChildren = getTypeChildren(
+              typeArgument,
+              project,
+              level + 1
+            )
+            children.push(...typeArgumentChildren)
+          }
+        })
       }
       break
     case "reflection":

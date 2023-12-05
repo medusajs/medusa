@@ -102,20 +102,22 @@ export function returnReflectionComponentFormatter({
         if (reflectionChildren?.length) {
           reflectionChildren.forEach((childItem) => {
             componentItem.push(
-              reflectionComponentFormatter(
-                childItem as DeclarationReflection,
+              reflectionComponentFormatter({
+                reflection: childItem as DeclarationReflection,
                 level,
-                maxLevel
-              )
+                maxLevel,
+                project,
+              })
             )
           })
         } else {
           componentItem.push(
-            reflectionComponentFormatter(
-              reflection as DeclarationReflection,
+            reflectionComponentFormatter({
+              reflection,
               level,
-              maxLevel
-            )
+              maxLevel,
+              project,
+            })
           )
         }
       } else {

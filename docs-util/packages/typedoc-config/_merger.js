@@ -178,6 +178,9 @@ module.exports = {
     "^js_client/.*AdminOrdersResource": {
       maxLevel: 2,
     },
+    "^js_client/.*LineItemsResource": {
+      maxLevel: 3,
+    },
     "^(js_client/.*modules/.*internal|internal.*/modules)": {
       reflectionGroups: {
         Constructors: false,
@@ -204,6 +207,7 @@ module.exports = {
       frontmatterData: {
         displayed_sidebar: "homepage",
       },
+      maxLevel: 2,
     },
 
     // PRICING CONFIG
