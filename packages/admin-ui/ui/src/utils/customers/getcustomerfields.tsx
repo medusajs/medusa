@@ -25,11 +25,11 @@ const getCustomerFields = (customer: Customer | undefined) => {
 
                     case 'type':
                         name = 'Customer type on registration';
-                        sort = 1;
                         switch(value) {
                             case 'resellers': value = 'Resellers'; break;
                             case 'installators': value = 'Installators'; break;
                         }
+                        sort = 1;
                         break;
                     
                     // Fields
@@ -38,20 +38,25 @@ const getCustomerFields = (customer: Customer | undefined) => {
                     case 'contact_name': name = 'Contact name'; sort = 3; break;
                     case 'contact_position': name = 'Contact position'; sort = 4; break;
                     case 'exempt_number': name = 'Exempt number'; sort = 5; break;
-                    case 'website': name = 'Website'; sort = 6; break;
+                    case 'website':
+                        name = 'Website'
+                        value = <a href={String(value)} className="text-blue-60" target="_blank" rel="nofollow">{String(value)}</a>;
+                        sort = 6
+                        
+                        break;
                     case 'description':
                         name = 'Description';
-                        sort = 100;
                         value = String(value).split('\n').map((v)=>
                             <div className="break-words">{v ? v : ''}</div>
                         )
+                        sort = 100;
                         break;
 
                     // File
                     
                     case 'exempt_file':
                         name = 'Exempt document';
-                        value = <a href={value as string} className="text-blue-60" target="_blank" rel="nofollow">Download</a>;
+                        value = <a href={String(value)} className="text-blue-60" target="_blank" rel="nofollow">Download</a>
                         sort = 6;
                         break;
                 
