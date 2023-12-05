@@ -5,6 +5,7 @@ module.exports = getConfig({
   entryPointPath: "packages/types/src/index.ts",
   tsConfigName: "types.json",
   name: "types",
+  jsonFileName: "0-types",
   enableInternalResolve: true,
   exclude: [
     "**/pricing/**.ts",

@@ -17,7 +17,13 @@ function getEntryPoints(entryPointPaths) {
  * @param {Record<string, any>} param0 - The configuration options
  * @returns {import('typedoc').TypeDocOptions}
  */
-function getConfig({ entryPointPath, tsConfigName, name, ...otherOptions }) {
+function getConfig({
+  entryPointPath,
+  tsConfigName,
+  name,
+  jsonFileName,
+  ...otherOptions
+}) {
   return {
     ...globalTypedocOptions,
     entryPoints: getEntryPoints(entryPointPath),
@@ -29,7 +35,7 @@ function getConfig({ entryPointPath, tsConfigName, name, ...otherOptions }) {
       "..",
       "..",
       "typedoc-json-output",
-      `${name}.json`
+      `${jsonFileName || name}.json`
     ),
     ...otherOptions,
   }

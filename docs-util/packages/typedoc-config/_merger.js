@@ -26,7 +26,6 @@ const modulesSectionsOptions = {
 const modulesOptions = {
   sections: modulesSectionsOptions,
   expandMembers: true,
-  // useTsLinkResolution: false,
 }
 
 /** @type {import('typedoc').TypeDocOptions} */
@@ -192,11 +191,18 @@ module.exports = {
       },
     },
     "^internal.*/.*js_client.*": {
+      reflectionGroups: {
+        Constructors: false,
+      },
       frontmatterData: {
-        reflectionGroups: {
-          Constructors: false,
-        },
         displayed_sidebar: "jsClientSidebar",
+      },
+    },
+
+    // MEDUSA CONFIG
+    "^medusa": {
+      frontmatterData: {
+        displayed_sidebar: "homepage",
       },
     },
 

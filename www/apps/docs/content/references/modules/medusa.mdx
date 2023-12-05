@@ -22,6 +22,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [AbstractBatchJobStrategy](../medusa/classes/medusa.AbstractBatchJobStrategy.mdx)
 - [AbstractCartCompletionStrategy](../medusa/classes/medusa.AbstractCartCompletionStrategy.mdx)
 - [AbstractFileService](../medusa/classes/medusa.AbstractFileService.mdx)
+- [AbstractFulfillmentService](../medusa/classes/medusa.AbstractFulfillmentService.mdx)
 - [AbstractNotificationService](../medusa/classes/medusa.AbstractNotificationService.mdx)
 - [AbstractPaymentProcessor](../medusa/classes/medusa.AbstractPaymentProcessor.mdx)
 - [AbstractPaymentService](../medusa/classes/medusa.AbstractPaymentService.mdx)
@@ -368,6 +369,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [CustomFindOptions](../medusa/interfaces/medusa.CustomFindOptions.mdx)
 - [DeleteResponse](../medusa/interfaces/medusa.DeleteResponse.mdx)
 - [FindConfig](../medusa/interfaces/medusa.FindConfig.mdx)
+- [FulfillmentService](../medusa/interfaces/medusa.FulfillmentService.mdx)
 - [IBatchJobStrategy](../medusa/interfaces/medusa.IBatchJobStrategy.mdx)
 - [ICartCompletionStrategy](../medusa/interfaces/medusa.ICartCompletionStrategy.mdx)
 - [IFileService](../medusa/interfaces/medusa.IFileService.mdx)
@@ -518,6 +520,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [Constructor](../medusa/types/medusa.Constructor-1.mdx)
 - [CreateBatchJobInput](../medusa/types/medusa.CreateBatchJobInput.mdx)
 - [CreatePriceListInput](../medusa/types/medusa.CreatePriceListInput.mdx)
+- [CreateReturnType](../medusa/types/medusa.CreateReturnType.mdx)
 - [Data](../medusa/types/medusa.Data.mdx)
 - [DecoratedInventoryItemDTO](../medusa/types/medusa.DecoratedInventoryItemDTO.mdx)
 - [DeleteFileType](../medusa/types/medusa.DeleteFileType.mdx)
@@ -531,6 +534,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [FeatureFlagsResponse](../medusa/types/medusa.FeatureFlagsResponse.mdx)
 - [FileServiceGetUploadStreamResult](../medusa/types/medusa.FileServiceGetUploadStreamResult.mdx)
 - [FileServiceUploadResult](../medusa/types/medusa.FileServiceUploadResult.mdx)
+- [FulfillmentProviderData](../medusa/types/medusa.FulfillmentProviderData.mdx)
 - [GetUploadedFileType](../medusa/types/medusa.GetUploadedFileType.mdx)
 - [GiftCardAllocation](../medusa/types/medusa.GiftCardAllocation.mdx)
 - [HttpCompressionOptions](../medusa/types/medusa.HttpCompressionOptions.mdx)
@@ -592,6 +596,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [ScheduledJobConfig](../medusa/types/medusa.ScheduledJobConfig.mdx)
 - [Selector](../medusa/types/medusa.Selector.mdx)
 - [SessionOptions](../medusa/types/medusa.SessionOptions.mdx)
+- [ShippingMethodData](../medusa/types/medusa.ShippingMethodData.mdx)
+- [ShippingOptionData](../medusa/types/medusa.ShippingOptionData.mdx)
 - [ShippingOptionPricing](../medusa/types/medusa.ShippingOptionPricing.mdx)
 - [ShippingTaxCalculationLine](../medusa/types/medusa.ShippingTaxCalculationLine.mdx)
 - [StockLocationAddressDTO](../medusa/types/medusa.StockLocationAddressDTO.mdx)
@@ -2298,7 +2304,17 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[]} />
+<ParameterTypes parameters={[
+  {
+    "name": "PropertyDecorator",
+    "type": "`PropertyDecorator`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
@@ -4195,6 +4211,15 @@ ___
     "expandable": false,
     "children": [
       {
+        "name": "ParamsDictionary",
+        "type": "`ParamsDictionary`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
         "name": "any",
         "type": "`any`",
         "optional": true,
@@ -4207,6 +4232,15 @@ ___
         "name": "any",
         "type": "`any`",
         "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ParsedQs",
+        "type": "`ParsedQs`",
+        "optional": false,
         "defaultValue": "",
         "description": "",
         "expandable": false,
@@ -4260,6 +4294,15 @@ ___
     "expandable": false,
     "children": [
       {
+        "name": "ParamsDictionary",
+        "type": "`ParamsDictionary`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
         "name": "any",
         "type": "`any`",
         "optional": true,
@@ -4272,6 +4315,15 @@ ___
         "name": "any",
         "type": "`any`",
         "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ParsedQs",
+        "type": "`ParsedQs`",
+        "optional": false,
         "defaultValue": "",
         "description": "",
         "expandable": false,
@@ -7574,7 +7626,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "container",
-    "type": "[MedusaContainer](../medusa/types/medusa.MedusaContainer-2.mdx)",
+    "type": "[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -7582,7 +7634,7 @@ ___
     "children": [
       {
         "name": "createScope",
-        "type": "() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-2.mdx)",
+        "type": "() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -7591,7 +7643,7 @@ ___
       },
       {
         "name": "registerAdd",
-        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-2.mdx)",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -7743,6 +7795,15 @@ ___
     "expandable": false,
     "children": [
       {
+        "name": "ParamsDictionary",
+        "type": "`ParamsDictionary`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
         "name": "any",
         "type": "`any`",
         "optional": true,
@@ -7755,6 +7816,15 @@ ___
         "name": "any",
         "type": "`any`",
         "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ParsedQs",
+        "type": "`ParsedQs`",
+        "optional": false,
         "defaultValue": "",
         "description": "",
         "expandable": false,
@@ -12979,7 +13049,17 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[]} />
+<ParameterTypes parameters={[
+  {
+    "name": "ColumnType",
+    "type": "`ColumnType`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
@@ -15587,6 +15667,15 @@ ___
     "expandable": false,
     "children": [
       {
+        "name": "ParamsDictionary",
+        "type": "`ParamsDictionary`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
         "name": "any",
         "type": "`any`",
         "optional": true,
@@ -15599,6 +15688,15 @@ ___
         "name": "any",
         "type": "`any`",
         "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ParsedQs",
+        "type": "`ParsedQs`",
+        "optional": false,
         "defaultValue": "",
         "description": "",
         "expandable": false,

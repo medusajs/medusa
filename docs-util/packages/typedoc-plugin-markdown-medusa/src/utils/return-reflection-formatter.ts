@@ -118,6 +118,25 @@ export function returnReflectionComponentFormatter({
             )
           )
         }
+      } else {
+        componentItem.push({
+          name: "name" in reflectionType ? reflectionType.name : typeName,
+          type,
+          optional:
+            "flags" in reflectionType
+              ? (reflectionType.flags as ReflectionFlags).isOptional
+              : false,
+          defaultValue:
+            "declaration" in reflectionType
+              ? getDefaultValue(
+                  reflectionType.declaration as DeclarationReflection
+                ) || ""
+              : "",
+          description: comment ? getReturnComment(comment) : "",
+          expandable: comment?.hasModifier(`@expandable`) || false,
+          featureFlag: Handlebars.helpers.featureFlag(comment),
+          children: [],
+        })
       }
     }
   } else if (reflectionType.type === "array") {

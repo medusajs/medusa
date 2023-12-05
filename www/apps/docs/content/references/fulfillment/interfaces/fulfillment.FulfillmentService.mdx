@@ -88,7 +88,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "optionData",
-    "type": "`ShippingOptionData`",
+    "type": "[ShippingOptionData](../../medusa/types/medusa.ShippingOptionData.mdx)",
     "description": "The `data` object of the selected shipping option.",
     "optional": false,
     "defaultValue": "",
@@ -97,7 +97,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "data",
-    "type": "`FulfillmentProviderData`",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "A `data` object that is different based on the context it's used in:\n\n1. If the price is being calculated for the list of shipping options available for a cart, it's the `data` object of the shipping option.\n2. If the price is being calculated when the shipping method is being created, it's the data returned by the [validateFulfillmentData](fulfillment.FulfillmentService.mdx#validatefulfillmentdata) method used during the shipping method creation.\n3. If the price is being calculated while calculating the cart's totals, it will be the data object of the cart's shipping method.",
     "optional": false,
     "defaultValue": "",
@@ -542,7 +542,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`ShippingOptionData`",
+    "type": "[ShippingOptionData](../../medusa/types/medusa.ShippingOptionData.mdx)",
     "description": "The `data` object of the shipping option being created. You can use this data to determine whether the shipping option should be calculated or not.\nThis is useful if the fulfillment provider you are integrating has both flat rate and dynamically priced fulfillment options.",
     "optional": false,
     "defaultValue": "",
@@ -601,7 +601,7 @@ class MyFulfillmentService extends FulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "fulfillmentData",
-    "type": "`FulfillmentProviderData`",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "The `data` attribute of the fulfillment being canceled",
     "optional": false,
     "defaultValue": "",
@@ -665,7 +665,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`ShippingMethodData`",
+    "type": "[ShippingMethodData](../../medusa/types/medusa.ShippingMethodData.mdx)",
     "description": "The `data` object of the shipping method associated with the resource, such as the order.\nYou can use it to access the data specific to the shipping option. This is based on your implementation of previous methods.",
     "optional": false,
     "defaultValue": "",
@@ -1799,12 +1799,22 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;FulfillmentProviderData&#62;",
+    "type": "Promise&#60;[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The data that will be stored in the `data` attribute of the created fulfillment.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "FulfillmentProviderData",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1837,7 +1847,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "returnOrder",
-    "type": "`CreateReturnType`",
+    "type": "[CreateReturnType](../../medusa/types/medusa.CreateReturnType.mdx)",
     "description": "the return that the fulfillment is being created for.",
     "optional": false,
     "defaultValue": "",
@@ -1896,7 +1906,7 @@ class MyFulfillmentService extends FulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`FulfillmentProviderData`",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "The `data` attribute of the fulfillment that you're retrieving the documents for.",
     "optional": false,
     "defaultValue": "",
@@ -2124,7 +2134,7 @@ class MyFulfillmentService extends FulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "fulfillmentData",
-    "type": "`FulfillmentProviderData`",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "The `data` attribute of the order's fulfillment.",
     "optional": false,
     "defaultValue": "",
@@ -2204,7 +2214,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "optionData",
-    "type": "`ShippingOptionData`",
+    "type": "[ShippingOptionData](../../medusa/types/medusa.ShippingOptionData.mdx)",
     "description": "The data object of the shipping option selected when creating the shipping method.",
     "optional": false,
     "defaultValue": "",
@@ -2213,7 +2223,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   },
   {
     "name": "data",
-    "type": "`FulfillmentProviderData`",
+    "type": "[FulfillmentProviderData](../../medusa/types/medusa.FulfillmentProviderData.mdx)",
     "description": "The `data` object passed in the body of the request.",
     "optional": false,
     "defaultValue": "",
@@ -2660,7 +2670,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`ShippingOptionData`",
+    "type": "[ShippingOptionData](../../medusa/types/medusa.ShippingOptionData.mdx)",
     "description": "the data object that is sent in the body of the request, basically, the data object of the shipping option. You can use this data to validate the shipping option before it is saved.",
     "optional": false,
     "defaultValue": "",

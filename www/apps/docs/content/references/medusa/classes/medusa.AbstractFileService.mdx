@@ -1,3 +1,7 @@
+---
+displayed_sidebar: homepage
+---
+
 import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # AbstractFileService
@@ -96,7 +100,17 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[]} />
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
 
 ___
 
@@ -280,7 +294,17 @@ download file from fileservice as stream
     "defaultValue": "",
     "description": "readable stream of the file to download",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "ReadableStream",
+        "type": "`ReadableStream`",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
