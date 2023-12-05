@@ -43,7 +43,12 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  const babelPath = path.join(directory, "node_modules", ".bin", "babel")
+  const babelPath = path.resolve(
+    require.resolve("@babel/cli"),
+    "../",
+    "bin",
+    "babel.js"
+  )
 
   execSync(`"${babelPath}" src -d dist --ignore "src/admin/**"`, {
     cwd: directory,
@@ -58,12 +63,9 @@ export default async function ({ port, directory }) {
     COMMAND_INITIATED_BY: "develop",
   }
 
-  const cliPath = path.join(
-    directory,
-    "node_modules",
-    "@medusajs",
-    "medusa",
-    "dist",
+  const cliPath = path.resolve(
+    require.resolve("@medusajs/medusa"),
+    "../",
     "bin",
     "medusa.js"
   )
@@ -78,7 +80,7 @@ export default async function ({ port, directory }) {
     process.exit(1)
   })
 
-  const { cli, binExists } = resolveAdminCLI(directory)
+  const { cli, binExists } = resolveAdminCLI()
 
   if (binExists) {
     const backendUrl = `http://localhost:${port}`
