@@ -1,28 +1,28 @@
 import {
-  AbstractCartCompletionStrategy,
-  CartCompletionResponse,
-} from "../interfaces"
-import {
   IEventBusService,
   IInventoryService,
   ReservationItemDTO,
 } from "@medusajs/types"
+import {
+  AbstractCartCompletionStrategy,
+  CartCompletionResponse,
+} from "../interfaces"
 import { IdempotencyKey, Order } from "../models"
-import OrderService, {
-  ORDER_CART_ALREADY_EXISTS_ERROR,
-} from "../services/order"
 import {
   PaymentProviderService,
   ProductVariantInventoryService,
 } from "../services"
+import OrderService, {
+  ORDER_CART_ALREADY_EXISTS_ERROR,
+} from "../services/order"
 
-import CartService from "../services/cart"
-import { EntityManager } from "typeorm"
-import IdempotencyKeyService from "../services/idempotency-key"
-import { MedusaError } from "medusa-core-utils"
-import { RequestContext } from "../types/request"
-import SwapService from "../services/swap"
 import { promiseAll } from "@medusajs/utils"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import CartService from "../services/cart"
+import IdempotencyKeyService from "../services/idempotency-key"
+import SwapService from "../services/swap"
+import { RequestContext } from "../types/request"
 
 type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
@@ -201,13 +201,29 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     })
 
     if (cart.completed_at) {
+      if (cart.type === "swap") {
+        const swapId = cart.metadata?.swap_id as string
+        const swapServiceTx = this.swapService_.withTransaction(manager)
+
+        const swap = await swapServiceTx.retrieve(swapId, {
+          relations: ["shipping_address"],
+        })
+
+        return {
+          response_code: 200,
+          response_body: { data: swap, type: "swap" },
+        }
+      }
+
+      const order = await this.orderService_
+        .withTransaction(manager)
+        .retrieveByCartIdWithTotals(id, {
+          relations: ["shipping_address", "items", "payments"],
+        })
+
       return {
-        response_code: 409,
-        response_body: {
-          code: MedusaError.Codes.CART_INCOMPATIBLE_STATE,
-          message: "Cart has already been completed",
-          type: MedusaError.Types.NOT_ALLOWED,
-        },
+        response_code: 200,
+        response_body: { data: order, type: "order" },
       }
     }
 
@@ -449,8 +465,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       await this.removeReservations(reservations)
 
       if (error && error.message === ORDER_CART_ALREADY_EXISTS_ERROR) {
-        order = await orderServiceTx.retrieveByCartId(id, {
-          relations: ["shipping_address", "payments"],
+        order = await orderServiceTx.retrieveByCartIdWithTotals(id, {
+          relations: ["shipping_address", "items", "payments"],
         })
 
         return {

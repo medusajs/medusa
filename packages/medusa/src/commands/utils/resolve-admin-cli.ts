@@ -1,12 +1,10 @@
 import fs from "fs-extra"
 import path from "path"
 
-export function resolveAdminCLI(directory: string) {
-  const cli = path.join(
-    directory,
-    "node_modules",
-    "@medusajs",
-    "admin",
+export function resolveAdminCLI() {
+  const cli = path.resolve(
+    require.resolve("@medusajs/admin"),
+    "../../",
     "bin",
     "medusa-admin.js"
   )
