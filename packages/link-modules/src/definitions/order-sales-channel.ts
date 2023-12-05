@@ -51,7 +51,7 @@ export const OrderSalesChannel: ModuleJoinerConfig = {
     {
       serviceName: "salesChannelService",
       fieldAlias: {
-        carts: "order_link.cart",
+        orders: "order_link.order",
       },
       relationship: {
         serviceName: LINKS.OrderSalesChannel,
