@@ -11,6 +11,9 @@ const {
   simplePriceListFactory,
   simpleProductFactory,
 } = require("../../../../factories")
+const {
+  startBootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
 
 const adminReqConfig = {
   headers: {
@@ -86,7 +89,7 @@ describe("Price list import batch job", () => {
     await db.teardown()
   })
 
-  it.only("should import a csv file", async () => {
+  it("should import a csv file", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
 
@@ -170,7 +173,6 @@ describe("Price list import batch job", () => {
         adminReqConfig
       )
 
-      console.warn("polling")
       await new Promise((resolve, _) => {
         setTimeout(resolve, 1000)
       })

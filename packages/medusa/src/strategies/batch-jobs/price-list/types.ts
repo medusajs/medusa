@@ -9,6 +9,7 @@ import {
 } from "../../../services"
 import { CsvSchema } from "../../../interfaces/csv-parser"
 import { BatchJob } from "../../../models"
+import { FlagRouter } from "@medusajs/utils"
 
 export type PriceListImportBatchJob = BatchJob & {
   context: PriceListImportJobContext
@@ -20,7 +21,7 @@ export type PriceListImportBatchJob = BatchJob & {
 }
 
 /**
- * DI props for the Product import strategy
+ * DI props for the Price list import strategy
  */
 export type InjectedProps = {
   priceListService: PriceListService
@@ -29,6 +30,7 @@ export type InjectedProps = {
   regionService: RegionService
   fileService: typeof FileService
   manager: EntityManager
+  featureFlagRouter: FlagRouter
 }
 
 /**

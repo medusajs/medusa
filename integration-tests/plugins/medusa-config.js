@@ -28,7 +28,6 @@ module.exports = {
     },
   ],
   projectConfig: {
-    // redis_url: REDIS_URL,
     database_url: DB_URL,
     database_type: "postgres",
     jwt_secret: "test",
