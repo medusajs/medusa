@@ -8,6 +8,8 @@ A Typedoc plugin that combines utility plugins for documenting references.
 
 The [`resolve-reference-plugin`](./src/resolve-references-plugin.ts) imitates the [`typedoc-plugin-missing-exports`](https://www.npmjs.com/package/typedoc-plugin-missing-exports) plugin. So, it accepts the same options as the [`typedoc-plugin-missing-exports`](https://www.npmjs.com/package/typedoc-plugin-missing-exports) plugin.
 
+This plugin only runs if the `enableInternalResolve` option is enabled.
+
 ### Frontmatter
 
 `frontmatterData` is an object of key-value pairs. If none provided, no frontmatter variables will be added to the Markdown files.

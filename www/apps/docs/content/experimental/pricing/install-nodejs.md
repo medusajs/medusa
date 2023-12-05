@@ -185,4 +185,4 @@ module.exports = nextConfig
 
 You can refer to the [Example Usages documentation page](./examples.mdx) for examples of using the Pricing module.
 
-You can also refer to the [Module Interface Reference](../../references/pricing/interfaces/IPricingModuleService.mdx) for a detailed reference on all available methods.
+You can also refer to the [Module Interface Reference](../../references/pricing/interfaces/pricing.IPricingModuleService.mdx) for a detailed reference on all available methods.

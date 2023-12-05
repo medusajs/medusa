@@ -250,7 +250,7 @@ To make sure the Next.js Starter Template properly displays the products in the 
 
 :::
 
-![Search Result on Next.js Starter Template](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000298/Medusa%20Docs/MeiliSearch/gQVWvH2_datei5.png)
+![Search Result on Next.js Starter Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1701112725/Medusa%20Docs/Screenshots/Screenshot_2023-11-27_at_7.18.09_PM_iozjt0.png)
 
 ### Add to Other Storefronts
 

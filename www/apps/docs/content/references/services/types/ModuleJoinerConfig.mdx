@@ -1,9 +1,0 @@
----
-displayed_sidebar: servicesSidebar
----
-
-import ParameterTypes from "@site/src/components/ParameterTypes"
-
-# ModuleJoinerConfig
-
- **ModuleJoinerConfig**: [Omit](Omit.mdx)&#60;[JoinerServiceConfig](../interfaces/JoinerServiceConfig.mdx), "serviceName" \| "primaryKeys" \| "relationships" \| "extends"&#62; & ``{ databaseConfig?: &#123; extraFields?: Record&#60;string, &#123; defaultValue?: string ; nullable?: boolean ; options?: Record&#60;string, unknown&#62; ; type: "date" \| "time" \| "datetime" \| bigint \| "blob" \| "uint8array" \| "array" \| "enumArray" \| "enum" \| "json" \| "integer" \| "smallint" \| "tinyint" \| "mediumint" \| "float" \| "double" \| "boolean" \| "decimal" \| "string" \| "uuid" \| "text"  &#125;&#62; ; idPrefix?: string ; tableName?: string  &#125; ; extends?: &#123; fieldAlias?: Record&#60;string, string \| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;&#62; ; relationship: [ModuleJoinerRelationship](ModuleJoinerRelationship.mdx) ; serviceName: string  &#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record&#60;string, string&#62; ; primaryKeys?: string[] ; relationships?: [ModuleJoinerRelationship](ModuleJoinerRelationship.mdx)[] ; schema?: string ; serviceName?: string  }``

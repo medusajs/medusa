@@ -39,7 +39,11 @@ export default function () {
       collapse: Collapse = "none",
       emphasis = true
     ) {
-      return getType(this, collapse, emphasis)
+      return getType({
+        reflectionType: this,
+        collapse,
+        wrapBackticks: emphasis,
+      })
     }
   )
 }
