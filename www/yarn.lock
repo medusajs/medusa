@@ -2053,7 +2053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/eslint-plugin@latest":
+"@docusaurus/eslint-plugin@npm:latest":
   version: 3.0.1
   resolution: "@docusaurus/eslint-plugin@npm:3.0.1"
   dependencies:
@@ -3279,7 +3279,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/icons@latest, @medusajs/icons@npm:^1.0.0, @medusajs/icons@npm:^1.1.0":
+"@medusajs/icons@npm:^1.0.0, @medusajs/icons@npm:^1.1.0, @medusajs/icons@npm:latest":
   version: 1.1.0
   resolution: "@medusajs/icons@npm:1.1.0"
   peerDependencies:
@@ -3288,7 +3288,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/ui-preset@latest":
+"@medusajs/ui-preset@npm:latest":
   version: 1.0.2
   resolution: "@medusajs/ui-preset@npm:1.0.2"
   dependencies:
@@ -3300,7 +3300,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/ui@latest":
+"@medusajs/ui@npm:latest":
   version: 2.2.3
   resolution: "@medusajs/ui@npm:2.2.3"
   dependencies:
@@ -11485,7 +11485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-eslint-config-next@latest:
+"eslint-config-next@npm:latest":
   version: 14.0.3
   resolution: "eslint-config-next@npm:14.0.3"
   dependencies:
@@ -13665,9 +13665,9 @@ eslint-config-next@latest:
   languageName: node
   linkType: hard
 
-"instantsearch.js@npm:4.60.0":
-  version: 4.60.0
-  resolution: "instantsearch.js@npm:4.60.0"
+"instantsearch.js@npm:4.61.0":
+  version: 4.61.0
+  resolution: "instantsearch.js@npm:4.61.0"
   dependencies:
     "@algolia/events": ^4.0.1
     "@algolia/ui-components-highlight-vdom": ^1.2.2
@@ -13684,7 +13684,7 @@ eslint-config-next@latest:
     search-insights: ^2.6.0
   peerDependencies:
     algoliasearch: ">= 3.1 < 6"
-  checksum: b83e222a31a2cdcb1a9693c2cff942d0bcc7026a18ba586d44ae2c413c491735bf649057da94d4aaa939bd34ff39089b84c48488fb81068711fcec6896801c27
+  checksum: 20fa96d86034bf9880d81ef6b8f3376cadb6b9c77a484f8a8be8ae3d73e4fe685c9236fbd2ae292929ad8007357a2901f0d1eb0e01e05bce1090a0b4d7ddb6f7
   languageName: node
   linkType: hard
 
@@ -16713,61 +16713,6 @@ eslint-config-next@latest:
   languageName: node
   linkType: hard
 
-next@latest:
-  version: 14.0.3
-  resolution: "next@npm:14.0.3"
-  dependencies:
-    "@next/env": 14.0.3
-    "@next/swc-darwin-arm64": 14.0.3
-    "@next/swc-darwin-x64": 14.0.3
-    "@next/swc-linux-arm64-gnu": 14.0.3
-    "@next/swc-linux-arm64-musl": 14.0.3
-    "@next/swc-linux-x64-gnu": 14.0.3
-    "@next/swc-linux-x64-musl": 14.0.3
-    "@next/swc-win32-arm64-msvc": 14.0.3
-    "@next/swc-win32-ia32-msvc": 14.0.3
-    "@next/swc-win32-x64-msvc": 14.0.3
-    "@swc/helpers": 0.5.2
-    busboy: 1.6.0
-    caniuse-lite: ^1.0.30001406
-    postcss: 8.4.31
-    styled-jsx: 5.1.1
-    watchpack: 2.4.0
-  peerDependencies:
-    "@opentelemetry/api": ^1.1.0
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    sass: ^1.3.0
-  dependenciesMeta:
-    "@next/swc-darwin-arm64":
-      optional: true
-    "@next/swc-darwin-x64":
-      optional: true
-    "@next/swc-linux-arm64-gnu":
-      optional: true
-    "@next/swc-linux-arm64-musl":
-      optional: true
-    "@next/swc-linux-x64-gnu":
-      optional: true
-    "@next/swc-linux-x64-musl":
-      optional: true
-    "@next/swc-win32-arm64-msvc":
-      optional: true
-    "@next/swc-win32-ia32-msvc":
-      optional: true
-    "@next/swc-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    "@opentelemetry/api":
-      optional: true
-    sass:
-      optional: true
-  bin:
-    next: dist/bin/next
-  checksum: 73aa3d5dd7b65b53ef68fa7723a7a98536482a69ae2d56e7b335194168f00b2851397bbdfe490b53dba2c70dfb8ad0150035fab4c762d6bc331e884487c4ff07
-  languageName: node
-  linkType: hard
-
 "next@npm:13.4.13":
   version: 13.4.13
   resolution: "next@npm:13.4.13"
@@ -16877,6 +16822,61 @@ next@latest:
   bin:
     next: dist/bin/next
   checksum: 557fd15a52220f003ec88a79f51de41c5bb9cda5294944985f31ce45e75f98dd3caf902896d8419d96cc81596976671e953391b1eb3707757d261e362a242310
+  languageName: node
+  linkType: hard
+
+"next@npm:latest":
+  version: 14.0.3
+  resolution: "next@npm:14.0.3"
+  dependencies:
+    "@next/env": 14.0.3
+    "@next/swc-darwin-arm64": 14.0.3
+    "@next/swc-darwin-x64": 14.0.3
+    "@next/swc-linux-arm64-gnu": 14.0.3
+    "@next/swc-linux-arm64-musl": 14.0.3
+    "@next/swc-linux-x64-gnu": 14.0.3
+    "@next/swc-linux-x64-musl": 14.0.3
+    "@next/swc-win32-arm64-msvc": 14.0.3
+    "@next/swc-win32-ia32-msvc": 14.0.3
+    "@next/swc-win32-x64-msvc": 14.0.3
+    "@swc/helpers": 0.5.2
+    busboy: 1.6.0
+    caniuse-lite: ^1.0.30001406
+    postcss: 8.4.31
+    styled-jsx: 5.1.1
+    watchpack: 2.4.0
+  peerDependencies:
+    "@opentelemetry/api": ^1.1.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    sass: ^1.3.0
+  dependenciesMeta:
+    "@next/swc-darwin-arm64":
+      optional: true
+    "@next/swc-darwin-x64":
+      optional: true
+    "@next/swc-linux-arm64-gnu":
+      optional: true
+    "@next/swc-linux-arm64-musl":
+      optional: true
+    "@next/swc-linux-x64-gnu":
+      optional: true
+    "@next/swc-linux-x64-musl":
+      optional: true
+    "@next/swc-win32-arm64-msvc":
+      optional: true
+    "@next/swc-win32-ia32-msvc":
+      optional: true
+    "@next/swc-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@opentelemetry/api":
+      optional: true
+    sass:
+      optional: true
+  bin:
+    next: dist/bin/next
+  checksum: 73aa3d5dd7b65b53ef68fa7723a7a98536482a69ae2d56e7b335194168f00b2851397bbdfe490b53dba2c70dfb8ad0150035fab4c762d6bc331e884487c4ff07
   languageName: node
   linkType: hard
 
@@ -18572,7 +18572,7 @@ next@latest:
   languageName: node
   linkType: hard
 
-"react-dom@latest, react-dom@npm:18.2.0, react-dom@npm:^18.2.0":
+"react-dom@npm:18.2.0, react-dom@npm:^18.2.0, react-dom@npm:latest":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -18640,33 +18640,33 @@ next@latest:
   languageName: node
   linkType: hard
 
-"react-instantsearch-core@npm:7.3.0":
-  version: 7.3.0
-  resolution: "react-instantsearch-core@npm:7.3.0"
+"react-instantsearch-core@npm:7.4.0":
+  version: 7.4.0
+  resolution: "react-instantsearch-core@npm:7.4.0"
   dependencies:
     "@babel/runtime": ^7.1.2
     algoliasearch-helper: 3.15.0
-    instantsearch.js: 4.60.0
+    instantsearch.js: 4.61.0
     use-sync-external-store: ^1.0.0
   peerDependencies:
     algoliasearch: ">= 3.1 < 5"
     react: ">= 16.8.0 < 19"
-  checksum: d3dec7e96ec270079c54504d64299222b9ec88fbf5bbf45babc0a14c05c00a5606fc22f5739c1401b60b03554aafe52b996af2b5f672b2a7093e75add5365bda
+  checksum: 1eac865433c1aa2fa22a26349c0b0b6ab661e438f780c880687b2e67d22d5a522ffb5cc4757effd42e98a3c8d422f17e4924014c3c18f9db49039bff2bdca508
   languageName: node
   linkType: hard
 
 "react-instantsearch@npm:^7.0.1, react-instantsearch@npm:^7.0.3":
-  version: 7.3.0
-  resolution: "react-instantsearch@npm:7.3.0"
+  version: 7.4.0
+  resolution: "react-instantsearch@npm:7.4.0"
   dependencies:
     "@babel/runtime": ^7.1.2
-    instantsearch.js: 4.60.0
-    react-instantsearch-core: 7.3.0
+    instantsearch.js: 4.61.0
+    react-instantsearch-core: 7.4.0
   peerDependencies:
     algoliasearch: ">= 3.1 < 5"
     react: ">= 16.8.0 < 19"
     react-dom: ">= 16.8.0 < 19"
-  checksum: eac8a8952cd0628d99622254d600942df7abf3e328cc90a0327741d0b0ac59cd583a8d1cb912aabd0aab70173c110028323c0c9f5ac3509afa671057275aff73
+  checksum: 51b85fd1eaf8f4f82b4032fa857267d57125822244936773bbab88f0142560757a0dfeb59dc7d3f0d71b49621067a07e0bcc039ce18cda7ffe397f5a3d36cdde
   languageName: node
   linkType: hard
 
@@ -18888,7 +18888,7 @@ next@latest:
   languageName: node
   linkType: hard
 
-"react@latest, react@npm:18.2.0, react@npm:^18.2.0":
+"react@npm:18.2.0, react@npm:^18.2.0, react@npm:latest":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -20985,7 +20985,7 @@ next@latest:
   languageName: node
   linkType: hard
 
-turbo@latest:
+"turbo@npm:latest":
   version: 1.10.16
   resolution: "turbo@npm:1.10.16"
   dependencies:
