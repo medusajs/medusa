@@ -19,9 +19,15 @@ export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
    * @param flag - The flag to check
    * @return {boolean} - Whether the flag is enabled or not
    */
-  public isFeatureEnabled(flag: string | Record<string, string>): boolean {
+  public isFeatureEnabled(
+    flag: string | string[] | Record<string, string>
+  ): boolean {
     if (isString(flag)) {
       return !!this.flags[flag]
+    }
+
+    if (Array.isArray(flag)) {
+      return flag.every((f) => !!this.flags[f])
     }
 
     if (isObject(flag)) {
