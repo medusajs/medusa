@@ -297,6 +297,25 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
     "defaultValue": "",
     "description": "The list of money amounts along with their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "MoneyAmountDTO[]",
+        "type": "[MoneyAmountDTO](../../pricing/interfaces/pricing.MoneyAmountDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

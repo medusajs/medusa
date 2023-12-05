@@ -304,6 +304,25 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
     "defaultValue": "",
     "description": "The list of price rules along with their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "PriceRuleDTO[]",
+        "type": "[PriceRuleDTO](../../pricing/interfaces/pricing.PriceRuleDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

@@ -92,7 +92,17 @@ medusa.shippingOptions.list()
     "defaultValue": "",
     "description": "Resolves to the list of shipping options.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "shipping_options",
+        "type": "[PricedShippingOption](../../medusa/types/medusa.PricedShippingOption.mdx)[]",
+        "description": "An array of shipping options details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -146,6 +156,16 @@ medusa.shippingOptions.listCartOptions(cartId)
     "defaultValue": "",
     "description": "Resolves to the list of shipping options.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "shipping_options",
+        "type": "[PricedShippingOption](../../medusa/types/medusa.PricedShippingOption.mdx)[]",
+        "description": "An array of shipping options details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

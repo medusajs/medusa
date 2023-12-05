@@ -294,7 +294,17 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ProductTypeDTO",
+            "type": "`object`",
+            "description": "A product type's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

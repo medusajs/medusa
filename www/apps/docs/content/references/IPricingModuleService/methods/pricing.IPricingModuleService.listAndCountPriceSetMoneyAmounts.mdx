@@ -296,6 +296,25 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
     "defaultValue": "",
     "description": "The list of price set money amounts and their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "PriceSetMoneyAmountDTO[]",
+        "type": "[PriceSetMoneyAmountDTO](../../pricing/interfaces/pricing.PriceSetMoneyAmountDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

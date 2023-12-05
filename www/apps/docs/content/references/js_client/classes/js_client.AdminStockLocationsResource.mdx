@@ -181,7 +181,27 @@ medusa.admin.stockLocations.create({
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "stock_location",
+        "type": "[StockLocationExpandedDTO](../../medusa/types/medusa.StockLocationExpandedDTO.mdx)",
+        "description": "Stock location details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "sales_channels",
+            "type": "`any`[]",
+            "description": "The associated sales channels.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -238,41 +258,31 @@ medusa.admin.stockLocations.delete(stockLocationId)
     "expandable": false,
     "children": [
       {
-        "name": "DeleteResponse",
-        "type": "`object`",
-        "description": "The fields returned in the response of a DELETE request.",
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": [
-          {
-            "name": "deleted",
-            "type": "`boolean`",
-            "description": "Whether the item was deleted successfully.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "The ID of the item that was deleted.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "object",
-            "type": "`string`",
-            "description": "The type of the item that was deleted.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the item that was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the item that was deleted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
       }
     ]
   }
@@ -435,7 +445,54 @@ medusa.admin.stockLocations.list({
     "defaultValue": "",
     "description": "Resolves to the list of stock locations with pagination fields.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminStockLocationsListRes",
+        "type": "[PaginatedResponse](../../medusa/types/medusa.PaginatedResponse-1.mdx) & `object`",
+        "description": "The list of stock locations with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "stock_locations",
+            "type": "[StockLocationExpandedDTO](../../medusa/types/medusa.StockLocationExpandedDTO.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -490,7 +547,27 @@ medusa.admin.stockLocations.retrieve(stockLocationId)
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "stock_location",
+        "type": "[StockLocationExpandedDTO](../../medusa/types/medusa.StockLocationExpandedDTO.mdx)",
+        "description": "Stock location details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "sales_channels",
+            "type": "`any`[]",
+            "description": "The associated sales channels.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -666,6 +743,26 @@ medusa.admin.stockLocations.update(stockLocationId, {
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "stock_location",
+        "type": "[StockLocationExpandedDTO](../../medusa/types/medusa.StockLocationExpandedDTO.mdx)",
+        "description": "Stock location details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "sales_channels",
+            "type": "`any`[]",
+            "description": "The associated sales channels.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />

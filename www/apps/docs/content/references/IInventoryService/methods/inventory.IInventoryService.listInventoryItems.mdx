@@ -254,6 +254,25 @@ async function retrieveInventoryItems (ids: string[], skip: number, take: number
     "defaultValue": "",
     "description": "The list of inventory items along with the total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "InventoryItemDTO[]",
+        "type": "[InventoryItemDTO](../../inventory/types/inventory.InventoryItemDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

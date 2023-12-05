@@ -151,7 +151,17 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`[]",
+            "description": "IDs to filter options by.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "product_id",
@@ -312,7 +322,17 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ProductVariantDTO",
+            "type": "`object`",
+            "description": "A product variant's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

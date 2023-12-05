@@ -58,7 +58,7 @@ ___
   },
   {
     "name": "cacheService_",
-    "type": "[ICacheService](../../medusa/interfaces/medusa.ICacheService.mdx)",
+    "type": "`ICacheService`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ ___
   },
   {
     "name": "eventBus_",
-    "type": "[IEventBusService](../../medusa/interfaces/medusa.IEventBusService.mdx)",
+    "type": "`IEventBusService`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -443,7 +443,7 @@ calls.
   },
   {
     "name": "region",
-    "type": "[RegionDetails](../../medusa/types/medusa.RegionDetails.mdx)",
+    "type": "`RegionDetails`",
     "description": "the region to get configured rates for.",
     "optional": false,
     "defaultValue": "",
@@ -487,7 +487,7 @@ between calls.
   },
   {
     "name": "regionDetails",
-    "type": "[RegionDetails](../../medusa/types/medusa.RegionDetails.mdx)",
+    "type": "`RegionDetails`",
     "description": "the region to get configured rates for.",
     "optional": false,
     "defaultValue": "",
@@ -636,7 +636,7 @@ Return a map of tax lines for line items and shipping methods
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[TaxLinesMaps](../../medusa/types/medusa.TaxLinesMaps.mdx)&#62;",
+    "type": "Promise&#60;TaxLinesMaps&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -719,9 +719,9 @@ Retrieves the relevant tax provider for the given region.
 
 <ParameterTypes parameters={[
   {
-    "name": "getTaxLines",
-    "type": "(`itemLines`: [ItemTaxCalculationLine](../../medusa/types/medusa.ItemTaxCalculationLine.mdx)[], `shippingLines`: [ShippingTaxCalculationLine](../../medusa/types/medusa.ShippingTaxCalculationLine.mdx)[], `context`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;[ProviderTaxLine](../../medusa/types/medusa.ProviderTaxLine.mdx)[]&#62;",
-    "description": "",
+    "name": "ITaxService",
+    "type": "`object`",
+    "description": "Interface to be implemented by tax provider plugins. The interface defines a\nsingle method `getTaxLines` that returns numerical rates to apply to line\nitems and shipping methods.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -783,270 +783,9 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`container`: AwilixContainer&#60;any&#62;) => [TaxProviderService](services.TaxProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cacheService_",
-    "type": "[ICacheService](../../medusa/interfaces/medusa.ICacheService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "container_",
-    "type": "AwilixContainer&#60;any&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "eventBus_",
-    "type": "[IEventBusService](../../medusa/interfaces/medusa.IEventBusService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "smTaxLineRepo_",
-    "type": "Repository&#60;[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "taxLineRepo_",
-    "type": "Repository&#60;[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "taxProviderRepo_",
-    "type": "Repository&#60;[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "taxRateService_",
-    "type": "[TaxRateService](services.TaxRateService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
+    "name": "TaxProviderService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "clearLineItemsTaxLines",
-    "type": "(`itemIds`: `string`[]) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "clearTaxLines",
-    "type": "(`cartId`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createShippingTaxLines",
-    "type": "(`shippingMethod`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx), `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createTaxLines",
-    "type": "(`cartOrLineItems`: [LineItem](../../entities/classes/entities.LineItem.mdx)[] \\| [Cart](../../entities/classes/entities.Cart.mdx), `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getCacheKey",
-    "type": "(`id`: `string`, `regionId`: `string`) => `string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getRegionRatesForProduct",
-    "type": "(`productIds`: `string` \\| `string`[], `region`: [RegionDetails](../../medusa/types/medusa.RegionDetails.mdx)) => Promise&#60;Map&#60;string, [TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]&#62;&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getRegionRatesForShipping",
-    "type": "(`optionId`: `string`, `regionDetails`: [RegionDetails](../../medusa/types/medusa.RegionDetails.mdx)) => Promise&#60;[TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getShippingTaxLines",
-    "type": "(`shippingMethod`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx), `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getTaxLines",
-    "type": "(`lineItems`: [LineItem](../../entities/classes/entities.LineItem.mdx)[], `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;([LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx))[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getTaxLinesMap",
-    "type": "(`items`: [LineItem](../../entities/classes/entities.LineItem.mdx)[], `calculationContext`: [TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)) => Promise&#60;[TaxLinesMaps](../../medusa/types/medusa.TaxLinesMaps.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "() => Promise&#60;[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "registerInstalledProviders",
-    "type": "(`providers`: `string`[]) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveProvider",
-    "type": "(`region`: [Region](../../entities/classes/entities.Region.mdx)) => [ITaxService](../../medusa/interfaces/medusa.ITaxService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [TaxProviderService](services.TaxProviderService.mdx)",
-    "description": "",
+    "description": "Finds tax providers and assists in tax related operations.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

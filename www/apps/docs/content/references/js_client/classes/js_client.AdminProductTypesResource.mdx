@@ -240,6 +240,108 @@ medusa.admin.productTypes.list({
     "defaultValue": "",
     "description": "Resolves to the list of product types with pagination fields.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminProductTypesListRes",
+        "type": "[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`",
+        "description": "The list of product types with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "product_types",
+            "type": "[ProductType](../../entities/classes/entities.ProductType.mdx)[]",
+            "description": "An array of product types details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The product type's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "value",
+                "type": "`string`",
+                "description": "The value that the Product Type represents.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]} />

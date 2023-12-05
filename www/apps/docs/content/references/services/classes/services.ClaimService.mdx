@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-4.mdx)",
+    "type": "`InjectedDependencies`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -447,7 +447,7 @@ shipping address that the new items will be shipped to
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateClaimInput](../../medusa/types/medusa.CreateClaimInput.mdx)",
+    "type": "`CreateClaimInput`",
     "description": "the object containing all data required to create a claim",
     "optional": false,
     "defaultValue": "",
@@ -640,7 +640,7 @@ Note, it will attempt to return early from each of these places to avoid having 
   },
   {
     "name": "claimItems",
-    "type": "[CreateClaimItemInput](../../medusa/types/medusa.CreateClaimItemInput.mdx)[]",
+    "type": "`CreateClaimItemInput`[]",
     "description": "the claim items to match against",
     "optional": false,
     "defaultValue": "",
@@ -829,7 +829,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[UpdateClaimInput](../../medusa/types/medusa.UpdateClaimInput.mdx)",
+    "type": "`UpdateClaimInput`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -861,7 +861,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateClaimInput](../../medusa/types/medusa.CreateClaimInput.mdx)",
+    "type": "`CreateClaimInput`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -906,341 +906,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-4.mdx)) => [ClaimService](services.ClaimService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addressRepository_",
-    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "claimItemService_",
-    "type": "[ClaimItemService](services.ClaimItemService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "claimRepository_",
-    "type": "Repository&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "eventBus_",
-    "type": "[EventBusService](services.EventBusService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "fulfillmentProviderService_",
-    "type": "[FulfillmentProviderService](services.FulfillmentProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "fulfillmentService_",
-    "type": "[FulfillmentService](services.FulfillmentService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "lineItemService_",
-    "type": "[LineItemService](services.LineItemService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "paymentProviderService_",
-    "type": "[PaymentProviderService](services.PaymentProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productVariantInventoryService_",
-    "type": "[ProductVariantInventoryService](services.ProductVariantInventoryService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "regionService_",
-    "type": "[RegionService](services.RegionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "returnService_",
-    "type": "[ReturnService](services.ReturnService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shippingMethodRepository_",
-    "type": "Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shippingOptionService_",
-    "type": "[ShippingOptionService](services.ShippingOptionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "taxProviderService_",
-    "type": "[TaxProviderService](services.TaxProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "totalsService_",
-    "type": "[TotalsService](services.TotalsService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "Events",
+    "name": "ClaimService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cancel",
-    "type": "(`id`: `string`) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cancelFulfillment",
-    "type": "(`fulfillmentId`: `string`) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`data`: [CreateClaimInput](../../medusa/types/medusa.CreateClaimInput.mdx)) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createFulfillment",
-    "type": "(`id`: `string`, `config`: ``{ location_id?: string ; metadata?: Record&#60;string, unknown&#62; ; no_notification?: boolean  }``) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createShipment",
-    "type": "(`id`: `string`, `fulfillmentId`: `string`, `trackingLinks`: ``{ tracking_number: string  }``[], `config`: ``{ metadata: &#123;&#125; = {}; no_notification: undefined = undefined }``) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getRefundTotalForClaimLinesOnOrder",
-    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `claimItems`: [CreateClaimItemInput](../../medusa/types/medusa.CreateClaimItemInput.mdx)[]) => Promise&#60;number&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: `any`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "processRefund",
-    "type": "(`id`: `string`) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`claimId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`id`: `string`, `data`: [UpdateClaimInput](../../medusa/types/medusa.UpdateClaimInput.mdx)) => Promise&#60;[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateCreateClaimInput",
-    "type": "(`data`: [CreateClaimInput](../../medusa/types/medusa.CreateClaimInput.mdx)) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [ClaimService](services.ClaimService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -1496,7 +1496,7 @@ module.exports = {
             },
             {
               type: "ref",
-              id: "references/services/classes/services.AbstractBatchJobStrategy",
+              id: "references/services/classes/services.AnalyticsConfigService",
               label: "Services Reference",
             },
             {

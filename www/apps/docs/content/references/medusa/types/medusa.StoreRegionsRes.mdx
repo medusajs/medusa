@@ -11,7 +11,7 @@ The region's details.
 <ParameterTypes parameters={[
   {
     "name": "region",
-    "type": "[Region](../classes/medusa.Region.mdx)",
+    "type": "[Region](../../entities/classes/entities.Region.mdx)",
     "description": "Region details.",
     "optional": false,
     "defaultValue": "",
@@ -28,12 +28,85 @@ The region's details.
       },
       {
         "name": "countries",
-        "type": "[Country](../classes/medusa.Country.mdx)[]",
+        "type": "[Country](../../entities/classes/entities.Country.mdx)[]",
         "description": "The details of the countries included in this region.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "display_name",
+            "type": "`string`",
+            "description": "The country name appropriate for display.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`number`",
+            "description": "The country's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "iso_2",
+            "type": "`string`",
+            "description": "The 2 character ISO code of the country in lower case",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "iso_3",
+            "type": "`string`",
+            "description": "The 2 character ISO code of the country in lower case",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The normalized country name in upper case.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "num_code",
+            "type": "`number`",
+            "description": "The numerical ISO code for the country.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "region",
+            "type": "[Region](../../entities/classes/entities.Region.mdx)",
+            "description": "The details of the region the country is associated with.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": []
+          },
+          {
+            "name": "region_id",
+            "type": "`null` \\| `string`",
+            "description": "The region ID this country is associated with.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "created_at",
@@ -46,12 +119,59 @@ The region's details.
       },
       {
         "name": "currency",
-        "type": "[Currency](../classes/medusa.Currency.mdx)",
+        "type": "[Currency](../../entities/classes/entities.Currency.mdx)",
         "description": "The details of the currency used in the region.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The 3 character ISO code for the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "Whether the currency prices include tax",
+            "optional": true,
+            "defaultValue": "false",
+            "expandable": false,
+            "featureFlag": "tax_inclusive_pricing",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The written name of the currency",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol",
+            "type": "`string`",
+            "description": "The symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol_native",
+            "type": "`string`",
+            "description": "The native symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "currency_code",
@@ -73,12 +193,31 @@ The region's details.
       },
       {
         "name": "fulfillment_providers",
-        "type": "[FulfillmentProvider](../classes/medusa.FulfillmentProvider.mdx)[]",
+        "type": "[FulfillmentProvider](../../entities/classes/entities.FulfillmentProvider.mdx)[]",
         "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the fulfillment provider as given by the fulfillment service.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_installed",
+            "type": "`boolean`",
+            "description": "Whether the fulfillment service is installed in the current version. If a fulfillment service is no longer installed, the `is\\_installed` attribute is set to `false`.",
+            "optional": false,
+            "defaultValue": "true",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "gift_cards_taxable",
@@ -128,12 +267,31 @@ The region's details.
       },
       {
         "name": "payment_providers",
-        "type": "[PaymentProvider](../classes/medusa.PaymentProvider.mdx)[]",
+        "type": "[PaymentProvider](../../entities/classes/entities.PaymentProvider.mdx)[]",
         "description": "The details of the payment providers that can be used to process payments in the region.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the payment provider as given by the payment service.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_installed",
+            "type": "`boolean`",
+            "description": "Whether the payment service is installed in the current version. If a payment service is no longer installed, the `is\\_installed` attribute is set to `false`.",
+            "optional": false,
+            "defaultValue": "true",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "tax_code",
@@ -146,12 +304,31 @@ The region's details.
       },
       {
         "name": "tax_provider",
-        "type": "[TaxProvider](../classes/medusa.TaxProvider.mdx)",
+        "type": "[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)",
         "description": "The details of the tax provider used in the region.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the tax provider as given by the tax service.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_installed",
+            "type": "`boolean`",
+            "description": "Whether the tax service is installed in the current version. If a tax service is no longer installed, the `is\\_installed` attribute is set to `false`.",
+            "optional": false,
+            "defaultValue": "true",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "tax_provider_id",
@@ -173,7 +350,7 @@ The region's details.
       },
       {
         "name": "tax_rates",
-        "type": "`null` \\| [TaxRate](../classes/medusa.TaxRate.mdx)[]",
+        "type": "`null` \\| [TaxRate](../../entities/classes/entities.TaxRate.mdx)[]",
         "description": "The details of the tax rates used in the region, aside from the default rate.",
         "optional": false,
         "defaultValue": "",

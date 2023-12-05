@@ -151,7 +151,17 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`[]",
+            "description": "IDs to filter options by.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "product_id",
@@ -304,6 +314,25 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
     "defaultValue": "",
     "description": "The list of product variants along with their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "ProductVariantDTO[]",
+        "type": "[ProductVariantDTO](../../product/interfaces/product.ProductVariantDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

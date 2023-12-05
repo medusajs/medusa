@@ -305,6 +305,25 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
     "defaultValue": "",
     "description": "The list of price set money amount rules and their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "PriceSetMoneyAmountRulesDTO[]",
+        "type": "[PriceSetMoneyAmountRulesDTO](../../pricing/interfaces/pricing.PriceSetMoneyAmountRulesDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

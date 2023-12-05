@@ -5,6 +5,10 @@ module.exports = getConfig({
   entryPointPath: "packages/medusa/src/index.js",
   tsConfigName: "medusa.json",
   name: "medusa",
-  // entryPointStrategy: "expand",
   enableInternalResolve: true,
+  exclude: [
+    "**/models/**.ts",
+    "**/services/**.ts",
+    "**/interfaces/fulfillment-service.ts",
+  ],
 })

@@ -129,7 +129,117 @@ medusa.admin.reservations.create({
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "reservation",
+        "type": "[ReservationItemDTO](../../medusa/types/medusa.ReservationItemDTO.mdx)",
+        "description": "Reservation details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`string` \\| `null`",
+            "description": "UserId of user who created the reservation item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the reservation item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The id of the reservation item",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "inventory_item_id",
+            "type": "`string`",
+            "description": "The id of the inventory item the reservation relates to",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "line_item_id",
+            "type": "`string` \\| `null`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "location_id",
+            "type": "`string`",
+            "description": "The id of the location of the reservation",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "The id of the reservation item",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -184,7 +294,35 @@ medusa.admin.reservations.delete(reservationId)
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -445,7 +583,154 @@ medusa.admin.reservations.list({
     "defaultValue": "",
     "description": "Resolves to the list of reservations with pagination fields.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminReservationsListRes",
+        "type": "[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`",
+        "description": "The list of reservations with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "reservations",
+            "type": "[ReservationItemDTO](../../medusa/types/medusa.ReservationItemDTO.mdx)[]",
+            "description": "An array of reservations details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`string` \\| `Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string` \\| `null`",
+                "description": "UserId of user who created the reservation item",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`string` \\| `Date` \\| `null`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "description",
+                "type": "`string` \\| `null`",
+                "description": "Description of the reservation item",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The id of the reservation item",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "inventory_item_id",
+                "type": "`string`",
+                "description": "The id of the inventory item the reservation relates to",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "line_item_id",
+                "type": "`string` \\| `null`",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "location_id",
+                "type": "`string`",
+                "description": "The id of the location of the reservation",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>` \\| `null`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "quantity",
+                "type": "`number`",
+                "description": "The id of the reservation item",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`string` \\| `Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -500,7 +785,117 @@ medusa.admin.reservations.retrieve(reservationId)
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "reservation",
+        "type": "[ReservationItemDTO](../../medusa/types/medusa.ReservationItemDTO.mdx)",
+        "description": "Reservation details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`string` \\| `null`",
+            "description": "UserId of user who created the reservation item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the reservation item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The id of the reservation item",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "inventory_item_id",
+            "type": "`string`",
+            "description": "The id of the inventory item the reservation relates to",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "line_item_id",
+            "type": "`string` \\| `null`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "location_id",
+            "type": "`string`",
+            "description": "The id of the location of the reservation",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "The id of the reservation item",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -603,6 +998,116 @@ medusa.admin.reservations.update(reservationId, {
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "reservation",
+        "type": "[ReservationItemDTO](../../medusa/types/medusa.ReservationItemDTO.mdx)",
+        "description": "Reservation details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`string` \\| `null`",
+            "description": "UserId of user who created the reservation item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the reservation item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The id of the reservation item",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "inventory_item_id",
+            "type": "`string`",
+            "description": "The id of the inventory item the reservation relates to",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "line_item_id",
+            "type": "`string` \\| `null`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "location_id",
+            "type": "`string`",
+            "description": "The id of the location of the reservation",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "The id of the reservation item",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />

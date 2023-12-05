@@ -11,7 +11,7 @@ The note's details.
 <ParameterTypes parameters={[
   {
     "name": "note",
-    "type": "[Note](../classes/medusa.Note.mdx)",
+    "type": "[Note](../../entities/classes/entities.Note.mdx)",
     "description": "Note details.",
     "optional": false,
     "defaultValue": "",
@@ -19,12 +19,112 @@ The note's details.
     "children": [
       {
         "name": "author",
-        "type": "[User](../classes/medusa.User.mdx)",
+        "type": "[User](../../entities/classes/entities.User.mdx)",
         "description": "The details of the user that created the note.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "api_token",
+            "type": "`string`",
+            "description": "An API token associated with the user.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "email",
+            "type": "`string`",
+            "description": "The email of the User",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "first_name",
+            "type": "`string`",
+            "description": "The first name of the User",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The user's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "last_name",
+            "type": "`string`",
+            "description": "The last name of the User",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "password_hash",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "role",
+            "type": "[UserRoles](../../entities/enums/entities.UserRoles.mdx)",
+            "description": "The user's role. These roles don't provide any different privileges.",
+            "optional": false,
+            "defaultValue": "member",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "author_id",

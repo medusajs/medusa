@@ -14,6 +14,7 @@ import {
   reflectionComponentFormatter,
 } from "./reflection-formatter"
 import { MarkdownTheme } from "../theme"
+import { getProjectChild, getTypeChildren } from "utils"
 
 type ReturnReflectionComponentFormatterParams = {
   reflectionType: SomeType
@@ -92,10 +93,14 @@ export function returnReflectionComponentFormatter({
       }
     } else {
       const reflection = (reflectionType.reflection ||
-        project.getChildByName(reflectionType.name)) as DeclarationReflection
+        getProjectChild(project, reflectionType.name)) as DeclarationReflection
       if (reflection) {
-        if (reflection.children?.length) {
-          reflection.children.forEach((childItem) => {
+        const reflectionChildren = canRetrieveChildren
+          ? reflection.children ||
+            getTypeChildren(reflectionType, project, level)
+          : undefined
+        if (reflectionChildren?.length) {
+          reflectionChildren.forEach((childItem) => {
             componentItem.push(
               reflectionComponentFormatter(
                 childItem as DeclarationReflection,

@@ -57,7 +57,7 @@ module.exports = {
   hideBreadcrumbs: true,
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
-  maxLevel: 2,
+  maxLevel: 3,
   allReflectionsHaveOwnDocument: [
     "inventory",
     "pricing",
@@ -88,6 +88,7 @@ module.exports = {
       frontmatterData: {
         displayed_sidebar: "entitiesSidebar",
       },
+      maxLevel: 2,
     },
     "^entities/classes": {
       frontmatterData: {
@@ -107,6 +108,7 @@ module.exports = {
       frontmatterData: {
         displayed_sidebar: "modules",
       },
+      maxLevel: 2,
     },
     "^fulfillment/.*AbstractFulfillmentService": {
       reflectionDescription: `In this document, you’ll learn how to create a fulfillment provider to a Medusa backend and the methods you must implement in it. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/modules/carts-and-checkout/shipping).`,
@@ -337,6 +339,7 @@ module.exports = {
       frontmatterData: {
         displayed_sidebar: "workflowsSidebar",
       },
+      maxLevel: 2,
     },
     "^modules/workflows\\.md": {
       reflectionDescription:

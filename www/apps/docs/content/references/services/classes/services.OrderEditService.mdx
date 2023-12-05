@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-19.mdx)",
+    "type": "`InjectedDependencies`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -237,7 +237,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "undefined \\| IInventoryService",
-    "type": "`undefined` \\| [IInventoryService](../../medusa/interfaces/medusa.IInventoryService.mdx)",
+    "type": "`undefined` \\| [IInventoryService](../../inventory/interfaces/inventory.IInventoryService.mdx)",
     "optional": true,
     "defaultValue": "",
     "description": "",
@@ -266,7 +266,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[AddOrderEditLineItemInput](../../medusa/types/medusa.AddOrderEditLineItemInput.mdx)",
+    "type": "`AddOrderEditLineItemInput`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -475,7 +475,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateOrderEditInput](../../medusa/types/medusa.CreateOrderEditInput.mdx)",
+    "type": "`CreateOrderEditInput`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1175,359 +1175,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-19.mdx)) => [OrderEditService](services.OrderEditService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "eventBusService_",
-    "type": "[EventBusService](services.EventBusService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "lineItemAdjustmentService_",
-    "type": "[LineItemAdjustmentService](services.LineItemAdjustmentService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "lineItemService_",
-    "type": "[LineItemService](services.LineItemService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "newTotalsService_",
-    "type": "[NewTotalsService](services.NewTotalsService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "orderEditItemChangeService_",
-    "type": "[OrderEditItemChangeService](services.OrderEditItemChangeService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "orderEditRepository_",
-    "type": "Repository&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "orderService_",
-    "type": "[OrderService](services.OrderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "taxProviderService_",
-    "type": "[TaxProviderService](services.TaxProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "totalsService_",
-    "type": "[TotalsService](services.TotalsService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "Events",
+    "name": "OrderEditService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "inventoryService_",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addLineItem",
-    "type": "(`orderEditId`: `string`, `data`: [AddOrderEditLineItemInput](../../medusa/types/medusa.AddOrderEditLineItemInput.mdx)) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cancel",
-    "type": "(`orderEditId`: `string`, `context`: ``{ canceledBy?: string  }``) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "confirm",
-    "type": "(`orderEditId`: `string`, `context`: ``{ confirmedBy?: string  }``) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`data`: [CreateOrderEditInput](../../medusa/types/medusa.CreateOrderEditInput.mdx), `context`: ``{ createdBy: string  }``) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "decline",
-    "type": "(`orderEditId`: `string`, `context`: ``{ declinedBy?: string ; declinedReason?: string  }``) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "decorateTotals",
-    "type": "(`orderEdit`: [OrderEdit](../../entities/classes/entities.OrderEdit.mdx)) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "delete",
-    "type": "(`id`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deleteClonedItems",
-    "type": "(`orderEditId`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deleteItemChange",
-    "type": "(`orderEditId`: `string`, `itemChangeId`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listAndCount",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62; & ``{ q?: string  }``, `config?`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;) => Promise&#60;[[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "refreshAdjustments",
-    "type": "(`orderEditId`: `string`, `config`: ``{ preserveCustomAdjustments: boolean = false }``) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "removeLineItem",
-    "type": "(`orderEditId`: `string`, `lineItemId`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "requestConfirmation",
-    "type": "(`orderEditId`: `string`, `context`: ``{ requestedBy?: string  }``) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`orderEditId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveActive",
-    "type": "(`orderId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;) => Promise&#60;undefined \\| null \\| [OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`orderEditId`: `string`, `data`: DeepPartial&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;) => Promise&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateLineItem",
-    "type": "(`orderEditId`: `string`, `itemId`: `string`, `data`: ``{ quantity: number  }``) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [OrderEditService](services.OrderEditService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "isOrderEditActive",
-    "type": "(`orderEdit`: [OrderEdit](../../entities/classes/entities.OrderEdit.mdx)) => `boolean`",
     "description": "",
     "optional": false,
     "defaultValue": "",

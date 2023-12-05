@@ -81,7 +81,71 @@ async function createPriceList (items: {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "amount",
+            "type": "`number`",
+            "description": "The amount of this money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currency",
+            "type": "[CreateCurrencyDTO](../../pricing/interfaces/pricing.CreateCurrencyDTO.mdx)",
+            "description": "The currency of this money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currency_code",
+            "type": "`string`",
+            "description": "The currency code of this money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "max_quantity",
+            "type": "`null` \\| `number`",
+            "description": "The maximum quantity required to be purchased for this money amount to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "min_quantity",
+            "type": "`null` \\| `number`",
+            "description": "The minimum quantity required to be purchased for this money amount to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_set_id",
+            "type": "`string`",
+            "description": "The ID of the associated price set.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "rules",
@@ -108,7 +172,26 @@ async function createPriceList (items: {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ACTIVE",
+            "type": "`\"active\"`",
+            "description": "The price list is enabled and its prices can be used.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DRAFT",
+            "type": "`\"draft\"`",
+            "description": "The price list is disabled, meaning its prices can't be used yet.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "title",
@@ -126,7 +209,26 @@ async function createPriceList (items: {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "OVERRIDE",
+            "type": "`\"override\"`",
+            "description": "The price list's prices override original prices. This affects the calculated price of associated price sets.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "SALE",
+            "type": "`\"sale\"`",
+            "description": "The price list's prices are used for a sale.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   },
@@ -205,7 +307,17 @@ async function createPriceList (items: {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "PriceListDTO",
+            "type": "`object`",
+            "description": "A price list's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

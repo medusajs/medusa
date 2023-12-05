@@ -13,7 +13,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "allocation",
-    "type": "[AllocationType](../enums/medusa.AllocationType.mdx)",
+    "type": "[AllocationType](../../entities/enums/entities.AllocationType.mdx)",
     "description": "The discount rule's allocation.",
     "optional": true,
     "defaultValue": "",
@@ -67,12 +67,31 @@ ___
       },
       {
         "name": "operator",
-        "type": "[DiscountConditionOperator](../enums/medusa.DiscountConditionOperator.mdx)",
+        "type": "[DiscountConditionOperator](../../entities/enums/entities.DiscountConditionOperator.mdx)",
         "description": "The discount condition's operator.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "IN",
+            "type": "`\"in\"`",
+            "description": "The discountable resources are within the specified resources.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "NOT_IN",
+            "type": "`\"not_in\"`",
+            "description": "The discountable resources are everything but the specified resources.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "product_collections",

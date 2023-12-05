@@ -80,7 +80,36 @@ medusa.admin.uploads.create(file)
     "defaultValue": "",
     "description": "Resolves to the uploaded file details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "uploads",
+        "type": "[FileServiceUploadResult](../../medusa/types/medusa.FileServiceUploadResult.mdx)[]",
+        "description": "Uploaded files details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "key",
+            "type": "`string`",
+            "description": "The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "url",
+            "type": "`string`",
+            "description": "The URL of the uploaded file.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -126,7 +155,36 @@ medusa.admin.uploads.createProtected(file)
     "defaultValue": "",
     "description": "Resolves to the uploaded file details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "uploads",
+        "type": "[FileServiceUploadResult](../../medusa/types/medusa.FileServiceUploadResult.mdx)[]",
+        "description": "Uploaded files details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "key",
+            "type": "`string`",
+            "description": "The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "url",
+            "type": "`string`",
+            "description": "The URL of the uploaded file.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -193,7 +251,35 @@ medusa.admin.uploads.delete({
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -260,6 +346,16 @@ medusa.admin.uploads.getPresignedDownloadUrl({
     "defaultValue": "",
     "description": "Resolves to the download URL details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "download_url",
+        "type": "`string`",
+        "description": "The Download URL of the file",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

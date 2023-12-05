@@ -339,7 +339,17 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ProductCategoryDTO",
+            "type": "`object`",
+            "description": "A product category's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

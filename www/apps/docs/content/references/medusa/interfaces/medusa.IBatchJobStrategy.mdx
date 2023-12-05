@@ -234,7 +234,7 @@ Method for preparing a batch job for processing
     "children": [
       {
         "name": "context",
-        "type": "[BatchJob](../classes/medusa.BatchJob.mdx)[`\"context\"`]",
+        "type": "[BatchJob](../../entities/classes/entities.BatchJob.mdx)[`\"context\"`]",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -284,8 +284,26 @@ Method for preparing a batch job for processing
     "expandable": false,
     "children": [
       {
-        "name": "CreateBatchJobInput",
-        "type": "`object`",
+        "name": "context",
+        "type": "[BatchJob](../../entities/classes/entities.BatchJob.mdx)[`\"context\"`]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "dry_run",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "type",
+        "type": "`string`",
         "description": "",
         "optional": false,
         "defaultValue": "",

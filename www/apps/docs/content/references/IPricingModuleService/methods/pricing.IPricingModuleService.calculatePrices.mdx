@@ -201,7 +201,17 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "CalculatedPriceSet",
+            "type": "`object`",
+            "description": "The calculated price for a specific price set and context.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

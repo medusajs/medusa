@@ -301,6 +301,25 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
     "defaultValue": "",
     "description": "The list of rule types along with their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "RuleTypeDTO[]",
+        "type": "[RuleTypeDTO](../../pricing/interfaces/pricing.RuleTypeDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

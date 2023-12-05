@@ -15,7 +15,7 @@ Provides layer to manipulate users.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[UserServiceProps](../../medusa/types/medusa.UserServiceProps.mdx)",
+    "type": "`UserServiceProps`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
+    "type": "`FlagRouter`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -258,7 +258,7 @@ Fails if email is not a valid format.
 <ParameterTypes parameters={[
   {
     "name": "user",
-    "type": "[CreateUserInput](../../medusa/interfaces/medusa.CreateUserInput.mdx)",
+    "type": "`CreateUserInput`",
     "description": "the user to create",
     "optional": false,
     "defaultValue": "",
@@ -405,7 +405,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableUserProps](../../medusa/types/medusa.FilterableUserProps.mdx)",
+    "type": "`FilterableUserProps`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -666,7 +666,7 @@ Updates a user.
   },
   {
     "name": "update",
-    "type": "[UpdateUserInput](../../medusa/interfaces/medusa.UpdateUserInput.mdx)",
+    "type": "`UpdateUserInput`",
     "description": "the values to be updated on the user",
     "optional": false,
     "defaultValue": "",
@@ -711,225 +711,9 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [UserServiceProps](../../medusa/types/medusa.UserServiceProps.mdx)) => [UserService](services.UserService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "analyticsConfigService_",
-    "type": "[AnalyticsConfigService](services.AnalyticsConfigService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "eventBus_",
-    "type": "[EventBusService](services.EventBusService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "userRepository_",
-    "type": "Repository&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "Events",
+    "name": "UserService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`user`: [CreateUserInput](../../medusa/interfaces/medusa.CreateUserInput.mdx), `password`: `string`) => Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "delete",
-    "type": "(`userId`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "generateResetPasswordToken",
-    "type": "(`userId`: `string`) => Promise&#60;string&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "hashPassword_",
-    "type": "(`password`: `string`) => Promise&#60;string&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: [FilterableUserProps](../../medusa/types/medusa.FilterableUserProps.mdx), `config`: ``{}``) => Promise&#60;[User](../../entities/classes/entities.User.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`userId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[User](../../entities/classes/entities.User.mdx)&#62;) => Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByApiToken",
-    "type": "(`apiToken`: `string`, `relations`: `string`[]) => Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[User](../../entities/classes/entities.User.mdx)&#62;) => Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "setPassword_",
-    "type": "(`userId`: `string`, `password`: `string`) => Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`userId`: `string`, `update`: [UpdateUserInput](../../medusa/interfaces/medusa.UpdateUserInput.mdx)) => Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [UserService](services.UserService.mdx)",
-    "description": "",
+    "description": "Provides layer to manipulate users.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

@@ -15,7 +15,7 @@ Handles Fulfillments
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-40.mdx)",
+    "type": "`InjectedDependencies`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -287,7 +287,7 @@ those partitions.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[CreateFulfillmentOrder](../../medusa/types/medusa.CreateFulfillmentOrder.mdx)",
+    "type": "`CreateFulfillmentOrder`",
     "description": "order to create fulfillment for",
     "optional": false,
     "defaultValue": "",
@@ -296,7 +296,7 @@ those partitions.
   },
   {
     "name": "itemsToFulfill",
-    "type": "[FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[]",
+    "type": "`FulFillmentItemType`[]",
     "description": "the items in the order to fulfill",
     "optional": false,
     "defaultValue": "",
@@ -358,7 +358,7 @@ tracking links and potentially more metadata.
   },
   {
     "name": "config",
-    "type": "[CreateShipmentConfig](../../medusa/types/medusa.CreateShipmentConfig.mdx)",
+    "type": "`CreateShipmentConfig`",
     "description": "potential configuration settings, such as no\\_notification and metadata",
     "optional": false,
     "defaultValue": "",
@@ -392,7 +392,7 @@ Retrieves the order line items, given an array of items.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[CreateFulfillmentOrder](../../medusa/types/medusa.CreateFulfillmentOrder.mdx)",
+    "type": "`CreateFulfillmentOrder`",
     "description": "the order to get line items from",
     "optional": false,
     "defaultValue": "",
@@ -401,7 +401,7 @@ Retrieves the order line items, given an array of items.
   },
   {
     "name": "items",
-    "type": "[FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[]",
+    "type": "`FulFillmentItemType`[]",
     "description": "the items to get",
     "optional": false,
     "defaultValue": "",
@@ -456,7 +456,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "FulfillmentItemPartition[]",
-    "type": "[FulfillmentItemPartition](../../medusa/types/medusa.FulfillmentItemPartition.mdx)[]",
+    "type": "`FulfillmentItemPartition`[]",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -608,225 +608,9 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-40.mdx)) => [FulfillmentService](services.FulfillmentService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "fulfillmentProviderService_",
-    "type": "[FulfillmentProviderService](services.FulfillmentProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "fulfillmentRepository_",
-    "type": "Repository&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "lineItemRepository_",
-    "type": "Repository&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "lineItemService_",
-    "type": "[LineItemService](services.LineItemService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productVariantInventoryService_",
-    "type": "[ProductVariantInventoryService](services.ProductVariantInventoryService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shippingProfileService_",
-    "type": "[ShippingProfileService](services.ShippingProfileService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "totalsService_",
-    "type": "[TotalsService](services.TotalsService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "trackingLinkRepository_",
-    "type": "Repository&#60;[TrackingLink](../../entities/classes/entities.TrackingLink.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
+    "name": "FulfillmentService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cancelFulfillment",
-    "type": "(`fulfillmentOrId`: `string` \\| [Fulfillment](../../entities/classes/entities.Fulfillment.mdx)) => Promise&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createFulfillment",
-    "type": "(`order`: [CreateFulfillmentOrder](../../medusa/types/medusa.CreateFulfillmentOrder.mdx), `itemsToFulfill`: [FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[], `custom`: Partial&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)&#62;) => Promise&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createShipment",
-    "type": "(`fulfillmentId`: `string`, `trackingLinks?`: ``{ tracking_number: string  }``[], `config`: [CreateShipmentConfig](../../medusa/types/medusa.CreateShipmentConfig.mdx)) => Promise&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getFulfillmentItems_",
-    "type": "(`order`: [CreateFulfillmentOrder](../../medusa/types/medusa.CreateFulfillmentOrder.mdx), `items`: [FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[]) => Promise&#60;(null \\| [LineItem](../../entities/classes/entities.LineItem.mdx))[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "partitionItems_",
-    "type": "(`shippingMethods`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[], `items`: [LineItem](../../entities/classes/entities.LineItem.mdx)[]) => [FulfillmentItemPartition](../../medusa/types/medusa.FulfillmentItemPartition.mdx)[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`fulfillmentId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)&#62;) => Promise&#60;[Fulfillment](../../entities/classes/entities.Fulfillment.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateFulfillmentLineItem_",
-    "type": "(`item`: `undefined` \\| [LineItem](../../entities/classes/entities.LineItem.mdx), `quantity`: `number`) => `null` \\| [LineItem](../../entities/classes/entities.LineItem.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [FulfillmentService](services.FulfillmentService.mdx)",
-    "description": "",
+    "description": "Handles Fulfillments",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

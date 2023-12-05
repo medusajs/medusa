@@ -167,7 +167,17 @@ async function createReservationItems (items: {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ReservationItemDTO",
+            "type": "`object`",
+            "description": "Represents a reservation of an inventory item at a stock location",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

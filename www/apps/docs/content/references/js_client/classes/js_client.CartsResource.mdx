@@ -111,7 +111,17 @@ medusa.carts.addShippingMethod(cartId, {
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -169,7 +179,17 @@ medusa.carts.complete(cartId)
     "defaultValue": "",
     "description": "Resolves to the completion details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "StoreCompleteCartRes",
+        "type": "`object` \\| `object` \\| `object`",
+        "description": "If the cart is completed successfully, this will have the created order or the swap's details, based on the cart's type. Otherwise, it'll be the cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -290,7 +310,17 @@ medusa.carts.create()
     "defaultValue": "",
     "description": "Resolves to the created cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -345,7 +375,17 @@ medusa.carts.createPaymentSessions(cartId)
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -409,7 +449,17 @@ medusa.carts.deleteDiscount(cartId, code)
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -472,7 +522,17 @@ medusa.carts.deletePaymentSession(cartId, "manual")
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -535,7 +595,17 @@ medusa.carts.refreshPaymentSession(cartId, "manual")
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -589,7 +659,17 @@ medusa.carts.retrieve(cartId)
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -665,7 +745,17 @@ medusa.carts.setPaymentSession(cartId, {
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -746,7 +836,7 @@ medusa.carts.update(cartId, {
       },
       {
         "name": "discounts",
-        "type": "[Discount](../../medusa/classes/medusa.Discount-3.mdx)[]",
+        "type": "[Discount](../../medusa/classes/medusa.Discount-2.mdx)[]",
         "description": "An array of Discount codes to add to the Cart.",
         "optional": true,
         "defaultValue": "",
@@ -774,7 +864,7 @@ medusa.carts.update(cartId, {
       },
       {
         "name": "gift_cards",
-        "type": "[GiftCard](../../medusa/classes/medusa.GiftCard-1.mdx)[]",
+        "type": "[GiftCard](../../medusa/classes/medusa.GiftCard.mdx)[]",
         "description": "An array of Gift Card codes to add to the Cart.",
         "optional": true,
         "defaultValue": "",
@@ -841,7 +931,17 @@ medusa.carts.update(cartId, {
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -928,6 +1028,16 @@ medusa.carts.updatePaymentSession(cartId, "manual", {
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "cart",
+        "type": "Omit&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"refundable_amount\" \\| \"refunded_total\"&#62;",
+        "description": "Cart details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

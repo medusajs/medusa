@@ -169,7 +169,17 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "MoneyAmountDTO",
+            "type": "`object`",
+            "description": "A money amount's data. A money amount represents a price.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

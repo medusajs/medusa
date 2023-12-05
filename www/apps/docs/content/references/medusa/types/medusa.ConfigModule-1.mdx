@@ -76,7 +76,17 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ssl",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "database_logging",
@@ -121,7 +131,44 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "enabled",
+            "type": "`boolean`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "level",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "memLevel",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "threshold",
+            "type": "`number` \\| `string`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "jwt_secret",
@@ -166,7 +213,62 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "resave",
+            "type": "`boolean`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rolling",
+            "type": "`boolean`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "saveUninitialized",
+            "type": "`boolean`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "secret",
+            "type": "`string`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "ttl",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "store_cors",

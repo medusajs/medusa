@@ -108,7 +108,17 @@ medusa.admin.orders.addShippingMethod(orderId, {
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -163,7 +173,17 @@ medusa.admin.orders.archive(orderId)
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -219,7 +239,17 @@ medusa.admin.orders.cancel(orderId)
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -283,7 +313,17 @@ medusa.admin.orders.cancelClaim(orderId, claimId)
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -356,7 +396,17 @@ medusa.admin.orders.cancelClaimFulfillment(orderId, claimId, fulfillmentId)
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -420,7 +470,17 @@ medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -484,7 +544,17 @@ medusa.admin.orders.cancelSwap(orderId, swapId)
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -557,7 +627,17 @@ medusa.admin.orders.cancelSwapFulfillment(orderId, swapId, fulfillmentId)
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -612,7 +692,17 @@ medusa.admin.orders.capturePayment(orderId)
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -667,7 +757,17 @@ medusa.admin.orders.complete(orderId)
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -792,7 +892,7 @@ medusa.admin.orders.createClaim(orderId, {
       },
       {
         "name": "shipping_methods",
-        "type": "[ShippingMethod](../../medusa/classes/medusa.ShippingMethod-2.mdx)[]",
+        "type": "[ShippingMethod](../../medusa/classes/medusa.ShippingMethod-1.mdx)[]",
         "description": "The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is `replace`.",
         "optional": true,
         "defaultValue": "",
@@ -831,7 +931,17 @@ medusa.admin.orders.createClaim(orderId, {
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -926,7 +1036,17 @@ medusa.admin.orders.createClaimShipment(orderId, claimId, {
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1035,7 +1155,17 @@ medusa.admin.orders.createFulfillment(orderId, {
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1130,7 +1260,17 @@ medusa.admin.orders.createShipment(order_id, {
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1199,7 +1339,7 @@ medusa.admin.orders.createSwap(orderId, {
       },
       {
         "name": "custom_shipping_options",
-        "type": "[CustomShippingOption](../../medusa/classes/medusa.CustomShippingOption-1.mdx)[]",
+        "type": "[CustomShippingOption](../../medusa/classes/medusa.CustomShippingOption.mdx)[]",
         "description": "An array of custom shipping options to potentially create a Shipping Method from to send the additional items.",
         "optional": true,
         "defaultValue": "[]",
@@ -1217,7 +1357,7 @@ medusa.admin.orders.createSwap(orderId, {
       },
       {
         "name": "return_items",
-        "type": "[ReturnItem](../../medusa/classes/medusa.ReturnItem-1.mdx)[]",
+        "type": "[ReturnItem](../../medusa/classes/medusa.ReturnItem.mdx)[]",
         "description": "The Line Items to associate with the swap's return.",
         "optional": false,
         "defaultValue": "",
@@ -1274,7 +1414,17 @@ medusa.admin.orders.createSwap(orderId, {
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1378,7 +1528,17 @@ medusa.admin.orders.createSwapShipment(orderId, swapId, {
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1481,7 +1641,17 @@ medusa.admin.orders.fulfillClaim(orderId, claimId, {
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1585,7 +1755,17 @@ medusa.admin.orders.fulfillSwap(orderId, swapId, {
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1853,7 +2033,17 @@ medusa.admin.orders.list({
     "defaultValue": "",
     "description": "Resolves to the list of orders with pagination fields.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersListRes",
+        "type": "[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`",
+        "description": "The list of orders with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -1918,7 +2108,17 @@ medusa.admin.orders.processSwapPayment(orderId, swapId)
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -2022,7 +2222,17 @@ medusa.admin.orders.refundPayment(orderId, {
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -2157,7 +2367,17 @@ medusa.admin.orders.requestReturn(orderId, {
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the return under the `returns` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -2256,7 +2476,17 @@ medusa.admin.orders.retrieve(orderId, {
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -2383,7 +2613,7 @@ medusa.admin.orders.update(orderId, {
       },
       {
         "name": "shipping_method",
-        "type": "[ShippingMethod](../../medusa/classes/medusa.ShippingMethod-4.mdx)[]",
+        "type": "[ShippingMethod](../../medusa/classes/medusa.ShippingMethod-3.mdx)[]",
         "description": "The Shipping Method used for shipping the order.",
         "optional": true,
         "defaultValue": "",
@@ -2413,7 +2643,17 @@ medusa.admin.orders.update(orderId, {
     "defaultValue": "",
     "description": "Resolves to the order's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -2495,7 +2735,7 @@ medusa.admin.orders.updateClaim(orderId, claimId, {
       },
       {
         "name": "shipping_methods",
-        "type": "[ShippingMethod](../../medusa/classes/medusa.ShippingMethod-3.mdx)[]",
+        "type": "[ShippingMethod](../../medusa/classes/medusa.ShippingMethod-2.mdx)[]",
         "description": "The Shipping Methods to send the additional Line Items with.",
         "optional": true,
         "defaultValue": "",
@@ -2525,6 +2765,16 @@ medusa.admin.orders.updateClaim(orderId, claimId, {
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminOrdersRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

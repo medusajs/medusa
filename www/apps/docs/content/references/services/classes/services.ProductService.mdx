@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-24.mdx)",
+    "type": "`InjectedDependencies`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
+    "type": "`FlagRouter`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -397,7 +397,7 @@ Creates a product.
 <ParameterTypes parameters={[
   {
     "name": "productObject",
-    "type": "[CreateProductInput](../../medusa/types/medusa.CreateProductInput.mdx)",
+    "type": "`CreateProductInput`",
     "description": "the product to create",
     "optional": false,
     "defaultValue": "",
@@ -525,7 +525,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -602,7 +602,7 @@ Lists products based on the provided parameters.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[ProductSelector](../../medusa/types/medusa.ProductSelector.mdx)",
+    "type": "`ProductSelector`",
     "description": "an object that defines rules to filter products\n  by",
     "optional": false,
     "defaultValue": "",
@@ -611,7 +611,7 @@ Lists products based on the provided parameters.
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "object that defines the scope for what should be\n  returned",
     "optional": false,
     "defaultValue": "",
@@ -646,7 +646,7 @@ products that match the query.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[ProductSelector](../../medusa/types/medusa.ProductSelector.mdx)",
+    "type": "`ProductSelector`",
     "description": "an object that defines rules to filter products\n  by",
     "optional": false,
     "defaultValue": "",
@@ -655,7 +655,7 @@ products that match the query.
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "object that defines the scope for what should be\n  returned",
     "optional": false,
     "defaultValue": "",
@@ -748,7 +748,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -783,7 +783,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
   },
   {
     "name": "query",
-    "type": "[FindWithoutRelationsOptions](../../medusa/types/medusa.FindWithoutRelationsOptions-1.mdx)",
+    "type": "`FindWithoutRelationsOptions`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -863,7 +863,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "object that defines what should be included in the\n  query response",
     "optional": false,
     "defaultValue": "",
@@ -907,7 +907,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "details about what to get from the product",
     "optional": false,
     "defaultValue": "{}",
@@ -951,7 +951,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "details about what to get from the product",
     "optional": false,
     "defaultValue": "{}",
@@ -1037,7 +1037,7 @@ Gets all variants belonging to a product.
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "The config to select and configure relations etc...",
     "optional": false,
     "defaultValue": "",
@@ -1081,7 +1081,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)",
+    "type": "`FindProductConfig`",
     "description": "object that defines what should be included in the\n  query response",
     "optional": false,
     "defaultValue": "",
@@ -1158,7 +1158,7 @@ product variant updates are attempted.
   },
   {
     "name": "update",
-    "type": "[UpdateProductInput](../../medusa/types/medusa.UpdateProductInput.mdx)",
+    "type": "`UpdateProductInput`",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -1211,7 +1211,7 @@ not associated with the product. Throws if the updated title already exists.
   },
   {
     "name": "data",
-    "type": "[ProductOptionInput](../../medusa/types/medusa.ProductOptionInput.mdx)",
+    "type": "`ProductOptionInput`",
     "description": "the data to update the option with",
     "optional": false,
     "defaultValue": "",
@@ -1299,404 +1299,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-24.mdx)) => [ProductService](services.ProductService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "eventBus_",
-    "type": "[EventBusService](services.EventBusService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "imageRepository_",
-    "type": "Repository&#60;[Image](../../entities/classes/entities.Image.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productCategoryRepository_",
-    "type": "TreeRepository&#60;[ProductCategory](../../entities/classes/entities.ProductCategory.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productOptionRepository_",
-    "type": "Repository&#60;[ProductOption](../../entities/classes/entities.ProductOption.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productRepository_",
-    "type": "Repository&#60;[Product](../../entities/classes/entities.Product.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productTagRepository_",
-    "type": "Repository&#60;[ProductTag](../../entities/classes/entities.ProductTag.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productTypeRepository_",
-    "type": "Repository&#60;[ProductType](../../entities/classes/entities.ProductType.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productVariantRepository_",
-    "type": "Repository&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productVariantService_",
-    "type": "[ProductVariantService](services.ProductVariantService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "searchService_",
-    "type": "[SearchService](services.SearchService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "Events",
+    "name": "ProductService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "IndexName",
-    "type": "`\"products\"`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addOption",
-    "type": "(`productId`: `string`, `optionTitle`: `string`) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "count",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;) => Promise&#60;number&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`productObject`: [CreateProductInput](../../medusa/types/medusa.CreateProductInput.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "delete",
-    "type": "(`productId`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deleteOption",
-    "type": "(`productId`: `string`, `optionId`: `string`) => Promise&#60;void \\| [Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "filterProductsBySalesChannel",
-    "type": "(`productIds`: `string`[], `salesChannelId`: `string`, `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "isProductInSalesChannels",
-    "type": "(`id`: `string`, `salesChannelIds`: `string`[]) => Promise&#60;boolean&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: [ProductSelector](../../medusa/types/medusa.ProductSelector.mdx), `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listAndCount",
-    "type": "(`selector`: [ProductSelector](../../medusa/types/medusa.ProductSelector.mdx), `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => Promise&#60;[[Product](../../entities/classes/entities.Product.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listTagsByUsage",
-    "type": "(`take`: `number`) => Promise&#60;[ProductTag](../../entities/classes/entities.ProductTag.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listTypes",
-    "type": "() => Promise&#60;[ProductType](../../entities/classes/entities.ProductType.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "prepareListQuery_",
-    "type": "(`selector`: [FilterableProductProps](../../medusa/classes/medusa.FilterableProductProps.mdx) \\| [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;, `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => ``{ q: string ; query: [FindWithoutRelationsOptions](../../medusa/types/medusa.FindWithoutRelationsOptions-1.mdx) ; relations: keyof [Product](../../entities/classes/entities.Product.mdx)[]  }``",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "reorderVariants",
-    "type": "(`productId`: `string`, `variantOrder`: `string`[]) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`productId`: `string`, `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByExternalId",
-    "type": "(`externalId`: `string`, `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByHandle",
-    "type": "(`productHandle`: `string`, `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveOptionByTitle",
-    "type": "(`title`: `string`, `productId`: `string`) => Promise&#60;null \\| [ProductOption](../../entities/classes/entities.ProductOption.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveVariants",
-    "type": "(`productId`: `string`, `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve_",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;, `config`: [FindProductConfig](../../medusa/types/medusa.FindProductConfig.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`productId`: `string`, `update`: [UpdateProductInput](../../medusa/types/medusa.UpdateProductInput.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateOption",
-    "type": "(`productId`: `string`, `optionId`: `string`, `data`: [ProductOptionInput](../../medusa/types/medusa.ProductOptionInput.mdx)) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateShippingProfile",
-    "type": "(`productIds`: `string` \\| `string`[], `profileId`: `null` \\| `string`) => Promise&#60;[Product](../../entities/classes/entities.Product.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [ProductService](services.ProductService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -331,6 +331,25 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
     "defaultValue": "",
     "description": "The list of product categories along with their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "ProductCategoryDTO[]",
+        "type": "[ProductCategoryDTO](../../product/interfaces/product.ProductCategoryDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

@@ -392,7 +392,54 @@ medusa.products.list({
     "defaultValue": "",
     "description": "Resolves to the list of products with pagination fields.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "StoreProductsListRes",
+        "type": "[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`",
+        "description": "The list of products with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "products",
+            "type": "[PricedProduct](../../medusa/types/medusa.PricedProduct.mdx)[]",
+            "description": "An array of products details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -450,7 +497,27 @@ medusa.products.retrieve(productId)
     "defaultValue": "",
     "description": "Resolves to the product's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "product",
+        "type": "[PricedProduct](../../medusa/types/medusa.PricedProduct.mdx)",
+        "description": "Product details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "variants",
+            "type": "[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]",
+            "description": "The product variants and their prices.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -544,6 +611,26 @@ medusa.products.search({
     "defaultValue": "",
     "description": "Resolves to the list of search results. The format of the items depends on the search engine installed on the Medusa backend.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "StorePostSearchRes",
+        "type": "`object` & `Record<string, unknown>`",
+        "description": "The list of search results.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "hits",
+            "type": "`unknown`[]",
+            "description": "Array of search results. The format of the items depends on the search engine installed on the Medusa backend.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />

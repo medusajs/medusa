@@ -210,7 +210,17 @@ medusa.product.variants.list({
     "defaultValue": "",
     "description": "Resolves to the list of product variants.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "variants",
+        "type": "[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)[]",
+        "description": "An array of product variant descriptions.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -269,6 +279,16 @@ medusa.product.variants.retrieve(productVariantId)
     "defaultValue": "",
     "description": "Resolves to the product variant's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "variant",
+        "type": "[PricedVariant](../../medusa/types/medusa.PricedVariant.mdx)",
+        "description": "Product variant description.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

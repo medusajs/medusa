@@ -16,7 +16,8 @@ module.exports = {
   exclude: [path.join(pathPrefix, "node_modules/**")],
   excludeInternal: true,
   excludeExternals: true,
-  // disableSources: true,
+  excludeReferences: true,
+  disableSources: true,
   validation: {
     notExported: false,
     // invalidLink: false,

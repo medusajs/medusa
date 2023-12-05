@@ -148,7 +148,7 @@ ___
   },
   {
     "name": "status",
-    "type": "[ProductStatus](../enums/medusa.ProductStatus.mdx)",
+    "type": "[ProductStatus](../../entities/enums/entities.ProductStatus.mdx)",
     "description": "The status of the product. The product is shown to the customer only if its status is `published`.",
     "optional": true,
     "defaultValue": "",
@@ -398,7 +398,26 @@ ___
         "optional": true,
         "defaultValue": "[]",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "option_id",
+            "type": "`string`",
+            "description": "The ID of the Option.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "value",
+            "type": "`string`",
+            "description": "The value of the Product Option.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "origin_country",
@@ -416,7 +435,62 @@ ___
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "amount",
+            "type": "`number`",
+            "description": "The price amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currency_code",
+            "type": "`string`",
+            "description": "The 3 character ISO currency code the price will be used in. This is only required if `region\\_id` is not provided.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the Price. If provided, the existing price will be updated. Otherwise, a new price will be created.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "max_quantity",
+            "type": "`number`",
+            "description": "The maximum quantity required to be added to the cart for the price to be used.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "min_quantity",
+            "type": "`number`",
+            "description": "The minimum quantity required to be added to the cart for the price to be used.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "region_id",
+            "type": "`string`",
+            "description": "The ID of the Region the price will be used in. This is only required if `currency\\_code` is not provided.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "sku",

@@ -225,7 +225,180 @@ medusa.admin.inventoryItems.create({
     "defaultValue": "",
     "description": "The inventory item's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "inventory_item",
+        "type": "[InventoryItemDTO](../../medusa/types/medusa.InventoryItemDTO.mdx)",
+        "description": "Inventory Item details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "height",
+            "type": "`number` \\| `null`",
+            "description": "The height of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "hs_code",
+            "type": "`string` \\| `null`",
+            "description": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The inventory item's ID.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "length",
+            "type": "`number` \\| `null`",
+            "description": "The length of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "material",
+            "type": "`string` \\| `null`",
+            "description": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "mid_code",
+            "type": "`string` \\| `null`",
+            "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "origin_country",
+            "type": "`string` \\| `null`",
+            "description": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "requires_shipping",
+            "type": "`boolean`",
+            "description": "Whether the item requires shipping.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "sku",
+            "type": "`string` \\| `null`",
+            "description": "The Stock Keeping Unit (SKU) code of the Inventory Item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "`string` \\| `null`",
+            "description": "Thumbnail for the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string` \\| `null`",
+            "description": "Title of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "weight",
+            "type": "`number` \\| `null`",
+            "description": "The weight of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "width",
+            "type": "`number` \\| `null`",
+            "description": "The width of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -348,7 +521,180 @@ medusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {
     "defaultValue": "",
     "description": "the inventory item's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "inventory_item",
+        "type": "[InventoryItemDTO](../../medusa/types/medusa.InventoryItemDTO.mdx)",
+        "description": "Inventory Item details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "height",
+            "type": "`number` \\| `null`",
+            "description": "The height of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "hs_code",
+            "type": "`string` \\| `null`",
+            "description": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The inventory item's ID.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "length",
+            "type": "`number` \\| `null`",
+            "description": "The length of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "material",
+            "type": "`string` \\| `null`",
+            "description": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "mid_code",
+            "type": "`string` \\| `null`",
+            "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "origin_country",
+            "type": "`string` \\| `null`",
+            "description": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "requires_shipping",
+            "type": "`boolean`",
+            "description": "Whether the item requires shipping.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "sku",
+            "type": "`string` \\| `null`",
+            "description": "The Stock Keeping Unit (SKU) code of the Inventory Item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "`string` \\| `null`",
+            "description": "Thumbnail for the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string` \\| `null`",
+            "description": "Title of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "weight",
+            "type": "`number` \\| `null`",
+            "description": "The weight of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "width",
+            "type": "`number` \\| `null`",
+            "description": "The width of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -403,7 +749,35 @@ medusa.admin.inventoryItems.delete(inventoryItemId)
     "defaultValue": "",
     "description": "The deletion operation's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -630,7 +1004,180 @@ medusa.admin.inventoryItems.deleteLocationLevel(inventoryItemId, locationId)
     "defaultValue": "",
     "description": "the inventory item's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "inventory_item",
+        "type": "[InventoryItemDTO](../../medusa/types/medusa.InventoryItemDTO.mdx)",
+        "description": "Inventory Item details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "height",
+            "type": "`number` \\| `null`",
+            "description": "The height of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "hs_code",
+            "type": "`string` \\| `null`",
+            "description": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The inventory item's ID.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "length",
+            "type": "`number` \\| `null`",
+            "description": "The length of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "material",
+            "type": "`string` \\| `null`",
+            "description": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "mid_code",
+            "type": "`string` \\| `null`",
+            "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "origin_country",
+            "type": "`string` \\| `null`",
+            "description": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "requires_shipping",
+            "type": "`boolean`",
+            "description": "Whether the item requires shipping.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "sku",
+            "type": "`string` \\| `null`",
+            "description": "The Stock Keeping Unit (SKU) code of the Inventory Item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "`string` \\| `null`",
+            "description": "Thumbnail for the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string` \\| `null`",
+            "description": "Title of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "weight",
+            "type": "`number` \\| `null`",
+            "description": "The weight of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "width",
+            "type": "`number` \\| `null`",
+            "description": "The width of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -840,7 +1387,54 @@ medusa.admin.inventoryItems.list()
     "defaultValue": "",
     "description": "The list of inventory items with pagination fields.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminInventoryItemsListWithVariantsAndLocationLevelsRes",
+        "type": "[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "inventory_items",
+            "type": "[DecoratedInventoryItemDTO](../../medusa/types/medusa.DecoratedInventoryItemDTO.mdx)[]",
+            "description": "an array of Inventory Item details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -932,7 +1526,127 @@ medusa.admin.inventoryItems.listLocationLevels(inventoryItemId)
     "defaultValue": "",
     "description": "The inventory item's details and list of location levels.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "inventory_item",
+        "type": "`object`",
+        "description": "An inventory item's ID and associated location levels.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "id",
+            "type": "`any`",
+            "description": "The id of the location",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "location_levels",
+            "type": "[InventoryLevelDTO](../../medusa/types/medusa.InventoryLevelDTO.mdx)[]",
+            "description": "List of stock levels at a given location",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`string` \\| `Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`string` \\| `Date` \\| `null`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "incoming_quantity",
+                "type": "`number`",
+                "description": "the incoming stock quantity of an inventory item at the given location ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "inventory_item_id",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "location_id",
+                "type": "`string`",
+                "description": "the item location ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>` \\| `null`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "reserved_quantity",
+                "type": "`number`",
+                "description": "the reserved stock quantity of an inventory item at the given location ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "stocked_quantity",
+                "type": "`number`",
+                "description": "the total stock quantity of an inventory item at the given location ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`string` \\| `Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -1015,7 +1729,180 @@ medusa.admin.inventoryItems.retrieve(inventoryItemId)
     "defaultValue": "",
     "description": "The inventory item's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "inventory_item",
+        "type": "[InventoryItemDTO](../../medusa/types/medusa.InventoryItemDTO.mdx)",
+        "description": "Inventory Item details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "height",
+            "type": "`number` \\| `null`",
+            "description": "The height of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "hs_code",
+            "type": "`string` \\| `null`",
+            "description": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The inventory item's ID.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "length",
+            "type": "`number` \\| `null`",
+            "description": "The length of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "material",
+            "type": "`string` \\| `null`",
+            "description": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "mid_code",
+            "type": "`string` \\| `null`",
+            "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "origin_country",
+            "type": "`string` \\| `null`",
+            "description": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "requires_shipping",
+            "type": "`boolean`",
+            "description": "Whether the item requires shipping.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "sku",
+            "type": "`string` \\| `null`",
+            "description": "The Stock Keeping Unit (SKU) code of the Inventory Item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "`string` \\| `null`",
+            "description": "Thumbnail for the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string` \\| `null`",
+            "description": "Title of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "weight",
+            "type": "`number` \\| `null`",
+            "description": "The weight of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "width",
+            "type": "`number` \\| `null`",
+            "description": "The width of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -1227,7 +2114,180 @@ medusa.admin.inventoryItems.update(inventoryItemId, {
     "defaultValue": "",
     "description": "The inventory item's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "inventory_item",
+        "type": "[InventoryItemDTO](../../medusa/types/medusa.InventoryItemDTO.mdx)",
+        "description": "Inventory Item details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "height",
+            "type": "`number` \\| `null`",
+            "description": "The height of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "hs_code",
+            "type": "`string` \\| `null`",
+            "description": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The inventory item's ID.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "length",
+            "type": "`number` \\| `null`",
+            "description": "The length of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "material",
+            "type": "`string` \\| `null`",
+            "description": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "mid_code",
+            "type": "`string` \\| `null`",
+            "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "origin_country",
+            "type": "`string` \\| `null`",
+            "description": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "requires_shipping",
+            "type": "`boolean`",
+            "description": "Whether the item requires shipping.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "sku",
+            "type": "`string` \\| `null`",
+            "description": "The Stock Keeping Unit (SKU) code of the Inventory Item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "`string` \\| `null`",
+            "description": "Thumbnail for the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string` \\| `null`",
+            "description": "Title of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "weight",
+            "type": "`number` \\| `null`",
+            "description": "The weight of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "width",
+            "type": "`number` \\| `null`",
+            "description": "The width of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -1349,6 +2409,179 @@ medusa.admin.inventoryItems.updateLocationLevel(inventoryItemId, locationId, {
     "defaultValue": "",
     "description": "the inventory item's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "inventory_item",
+        "type": "[InventoryItemDTO](../../medusa/types/medusa.InventoryItemDTO.mdx)",
+        "description": "Inventory Item details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date` \\| `null`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string` \\| `null`",
+            "description": "Description of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "height",
+            "type": "`number` \\| `null`",
+            "description": "The height of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "hs_code",
+            "type": "`string` \\| `null`",
+            "description": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The inventory item's ID.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "length",
+            "type": "`number` \\| `null`",
+            "description": "The length of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "material",
+            "type": "`string` \\| `null`",
+            "description": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>` \\| `null`",
+            "description": "An optional key-value map with additional details",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "mid_code",
+            "type": "`string` \\| `null`",
+            "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "origin_country",
+            "type": "`string` \\| `null`",
+            "description": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "requires_shipping",
+            "type": "`boolean`",
+            "description": "Whether the item requires shipping.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "sku",
+            "type": "`string` \\| `null`",
+            "description": "The Stock Keeping Unit (SKU) code of the Inventory Item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "`string` \\| `null`",
+            "description": "Thumbnail for the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string` \\| `null`",
+            "description": "Title of the inventory item",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "weight",
+            "type": "`number` \\| `null`",
+            "description": "The weight of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "width",
+            "type": "`number` \\| `null`",
+            "description": "The width of the Inventory Item. May be used in shipping rate calculations.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />

@@ -11,7 +11,7 @@ The list of invites.
 <ParameterTypes parameters={[
   {
     "name": "invites",
-    "type": "[Invite](../classes/medusa.Invite.mdx)[]",
+    "type": "[Invite](../../entities/classes/entities.Invite.mdx)[]",
     "description": "An array of invites",
     "optional": false,
     "defaultValue": "",
@@ -73,12 +73,40 @@ The list of invites.
       },
       {
         "name": "role",
-        "type": "[UserRoles](../enums/medusa.UserRoles.mdx)",
+        "type": "[UserRoles](../../entities/enums/entities.UserRoles.mdx)",
         "description": "The user's role. These roles don't change the privileges of the user.",
         "optional": false,
         "defaultValue": "member",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ADMIN",
+            "type": "`\"admin\"`",
+            "description": "The user is an admin.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DEVELOPER",
+            "type": "`\"developer\"`",
+            "description": "The user is a developer.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "MEMBER",
+            "type": "`\"member\"`",
+            "description": "The user is a team member.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "token",

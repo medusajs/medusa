@@ -15,7 +15,7 @@ Provides layer to manipulate product tags.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[PriceListConstructorProps](../../medusa/types/medusa.PriceListConstructorProps.mdx)",
+    "type": "`PriceListConstructorProps`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
+    "type": "`FlagRouter`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -760,7 +760,7 @@ ___
   },
   {
     "name": "selector",
-    "type": "[FilterableProductVariantProps](../../medusa/classes/medusa.FilterableProductVariantProps.mdx)",
+    "type": "[FilterableProductVariantProps](../../product/interfaces/product.FilterableProductVariantProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -982,306 +982,9 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [PriceListConstructorProps](../../medusa/types/medusa.PriceListConstructorProps.mdx)) => [PriceListService](services.PriceListService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "customerGroupService_",
-    "type": "[CustomerGroupService](services.CustomerGroupService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "moneyAmountRepo_",
-    "type": "Repository&#60;[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "priceListRepo_",
-    "type": "Repository&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productService_",
-    "type": "[ProductService](services.ProductService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productVariantRepo_",
-    "type": "Repository&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "regionService_",
-    "type": "[RegionService](services.RegionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "variantService_",
-    "type": "[ProductVariantService](services.ProductVariantService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
+    "name": "PriceListService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addCurrencyFromRegion",
-    "type": "`<T>`(`prices`: `T`[]) => Promise&#60;T[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addPrices",
-    "type": "(`id`: `string`, `prices`: [PriceListPriceCreateInput](../../medusa/types/medusa.PriceListPriceCreateInput.mdx)[], `replace`: `boolean`) => Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "clearPrices",
-    "type": "(`id`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`priceListObject`: [CreatePriceListInput](../../medusa/types/medusa.CreatePriceListInput.mdx)) => Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "delete",
-    "type": "(`id`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deletePrices",
-    "type": "(`id`: `string`, `priceIds`: `string`[]) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deleteProductPrices",
-    "type": "(`priceListId`: `string`, `productIds`: `string`[]) => Promise&#60;[string[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deleteVariantPrices",
-    "type": "(`priceListId`: `string`, `variantIds`: `string`[]) => Promise&#60;[string[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: [FilterablePriceListProps](../../medusa/classes/medusa.FilterablePriceListProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;) => Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listAndCount",
-    "type": "(`selector`: [FilterablePriceListProps](../../medusa/classes/medusa.FilterablePriceListProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;) => Promise&#60;[[PriceList](../../entities/classes/entities.PriceList.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listPriceListsVariantIdsMap",
-    "type": "(`priceListIds`: `string` \\| `string`[]) => Promise&#60;&#123; [priceListId: string]: string[];  &#125;&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listProducts",
-    "type": "(`priceListId`: `string`, `selector`: [FilterableProductProps](../../medusa/classes/medusa.FilterableProductProps.mdx) \\| [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Product](../../entities/classes/entities.Product.mdx)&#62;, `requiresPriceList`: `boolean`) => Promise&#60;[[Product](../../entities/classes/entities.Product.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listVariants",
-    "type": "(`priceListId`: `string`, `selector`: [FilterableProductVariantProps](../../medusa/classes/medusa.FilterableProductVariantProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;, `requiresPriceList`: `boolean`) => Promise&#60;[[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`priceListId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;) => Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`id`: `string`, `update`: [UpdatePriceListInput](../../medusa/types/medusa.UpdatePriceListInput.mdx)) => Promise&#60;[PriceList](../../entities/classes/entities.PriceList.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "upsertCustomerGroups_",
-    "type": "(`priceListId`: `string`, `customerGroups`: ``{ id: string  }``[]) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [PriceListService](services.PriceListService.mdx)",
-    "description": "",
+    "description": "Provides layer to manipulate product tags.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

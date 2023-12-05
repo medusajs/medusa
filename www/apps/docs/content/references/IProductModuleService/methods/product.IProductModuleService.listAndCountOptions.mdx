@@ -295,6 +295,25 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
     "defaultValue": "",
     "description": "The list of product options along with the total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "ProductOptionDTO[]",
+        "type": "[ProductOptionDTO](../../product/interfaces/product.ProductOptionDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

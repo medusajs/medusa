@@ -70,7 +70,17 @@ medusa.admin.users.create({
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "user",
+        "type": "Omit&#60;[User](../../entities/classes/entities.User.mdx), \"password_hash\"&#62;",
+        "description": "User details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -125,7 +135,35 @@ medusa.admin.users.delete(userId)
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -171,7 +209,17 @@ medusa.admin.users.list()
     "defaultValue": "",
     "description": "Resolves to the list of users.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "users",
+        "type": "Omit&#60;[User](../../entities/classes/entities.User.mdx), \"password_hash\"&#62;[]",
+        "description": "An array of users details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -258,7 +306,17 @@ medusa.admin.users.resetPassword({
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "user",
+        "type": "Omit&#60;[User](../../entities/classes/entities.User.mdx), \"password_hash\"&#62;",
+        "description": "User details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -313,7 +371,17 @@ medusa.admin.users.retrieve(userId)
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "user",
+        "type": "Omit&#60;[User](../../entities/classes/entities.User.mdx), \"password_hash\"&#62;",
+        "description": "User details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -451,6 +519,16 @@ medusa.admin.users.update(userId, {
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "user",
+        "type": "Omit&#60;[User](../../entities/classes/entities.User.mdx), \"password_hash\"&#62;",
+        "description": "User details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

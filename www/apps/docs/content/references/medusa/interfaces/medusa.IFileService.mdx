@@ -371,8 +371,35 @@ upload file to fileservice from stream
     "expandable": false,
     "children": [
       {
-        "name": "FileServiceGetUploadStreamResult",
-        "type": "`object`",
+        "name": "fileKey",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "promise",
+        "type": "Promise&#60;any&#62;",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "url",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writeStream",
+        "type": "`stream.PassThrough`",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -447,9 +474,18 @@ upload file to fileservice
     "expandable": false,
     "children": [
       {
-        "name": "FileServiceUploadResult",
-        "type": "`object`",
-        "description": "",
+        "name": "key",
+        "type": "`string`",
+        "description": "The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "url",
+        "type": "`string`",
+        "description": "The URL of the uploaded file.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -491,9 +527,18 @@ upload private file to fileservice
     "expandable": false,
     "children": [
       {
-        "name": "FileServiceUploadResult",
-        "type": "`object`",
-        "description": "",
+        "name": "key",
+        "type": "`string`",
+        "description": "The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "url",
+        "type": "`string`",
+        "description": "The URL of the uploaded file.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,

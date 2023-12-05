@@ -11,7 +11,7 @@ The batch job's details.
 <ParameterTypes parameters={[
   {
     "name": "batch_job",
-    "type": "[BatchJob](../classes/medusa.BatchJob.mdx)",
+    "type": "[BatchJob](../../entities/classes/entities.BatchJob.mdx)",
     "description": "Batch job details.",
     "optional": false,
     "defaultValue": "",
@@ -73,12 +73,112 @@ The batch job's details.
       },
       {
         "name": "created_by_user",
-        "type": "[User](../classes/medusa.User.mdx)",
+        "type": "[User](../../entities/classes/entities.User.mdx)",
         "description": "The details of the user that created the batch job.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "api_token",
+            "type": "`string`",
+            "description": "An API token associated with the user.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "email",
+            "type": "`string`",
+            "description": "The email of the User",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "first_name",
+            "type": "`string`",
+            "description": "The first name of the User",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The user's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "last_name",
+            "type": "`string`",
+            "description": "The last name of the User",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "password_hash",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "role",
+            "type": "[UserRoles](../../entities/enums/entities.UserRoles.mdx)",
+            "description": "The user's role. These roles don't provide any different privileges.",
+            "optional": false,
+            "defaultValue": "member",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "deleted_at",
@@ -141,7 +241,71 @@ The batch job's details.
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "advancement_count",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "errors",
+            "type": "(`string` \\| [BatchJobResultError](medusa.BatchJobResultError.mdx))[]",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "file_key",
+            "type": "`string`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "file_size",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "progress",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "stat_descriptors",
+            "type": "[BatchJobResultStatDescriptor](medusa.BatchJobResultStatDescriptor.mdx)[]",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "status",
@@ -150,7 +314,71 @@ The batch job's details.
         "optional": false,
         "defaultValue": "created",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "CANCELED",
+            "type": "`\"canceled\"`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "COMPLETED",
+            "type": "`\"completed\"`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "CONFIRMED",
+            "type": "`\"confirmed\"`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "CREATED",
+            "type": "`\"created\"`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "FAILED",
+            "type": "`\"failed\"`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "PRE_PROCESSED",
+            "type": "`\"pre_processed\"`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "PROCESSING",
+            "type": "`\"processing\"`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "type",

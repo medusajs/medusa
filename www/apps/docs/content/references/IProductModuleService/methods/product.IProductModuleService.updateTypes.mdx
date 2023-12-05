@@ -151,7 +151,17 @@ async function updateProductType (id: string, value: string) {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ProductTypeDTO",
+            "type": "`object`",
+            "description": "A product type's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

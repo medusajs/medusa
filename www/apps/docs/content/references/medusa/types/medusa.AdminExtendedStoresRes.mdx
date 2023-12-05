@@ -28,21 +28,115 @@ The store's details with additional details like payment and tax providers.
       },
       {
         "name": "currencies",
-        "type": "[Currency](../classes/medusa.Currency.mdx)[]",
+        "type": "[Currency](../../entities/classes/entities.Currency.mdx)[]",
         "description": "The details of the enabled currencies in the store.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The 3 character ISO code for the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "Whether the currency prices include tax",
+            "optional": true,
+            "defaultValue": "false",
+            "expandable": false,
+            "featureFlag": "tax_inclusive_pricing",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The written name of the currency",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol",
+            "type": "`string`",
+            "description": "The symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol_native",
+            "type": "`string`",
+            "description": "The native symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "default_currency",
-        "type": "[Currency](../classes/medusa.Currency.mdx)",
+        "type": "[Currency](../../entities/classes/entities.Currency.mdx)",
         "description": "The details of the store's default currency.",
         "optional": false,
         "defaultValue": "usd",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The 3 character ISO code for the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "Whether the currency prices include tax",
+            "optional": true,
+            "defaultValue": "false",
+            "expandable": false,
+            "featureFlag": "tax_inclusive_pricing",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The written name of the currency",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol",
+            "type": "`string`",
+            "description": "The symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol_native",
+            "type": "`string`",
+            "description": "The native symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "default_currency_code",
@@ -64,12 +158,94 @@ The store's details with additional details like payment and tax providers.
       },
       {
         "name": "default_sales_channel",
-        "type": "[SalesChannel](../classes/medusa.SalesChannel.mdx)",
+        "type": "[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)",
         "description": "The details of the store's default sales channel.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`null` \\| `string`",
+            "description": "The description of the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The sales channel's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_disabled",
+            "type": "`boolean`",
+            "description": "Specify if the sales channel is enabled or disabled.",
+            "optional": false,
+            "defaultValue": "false",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "locations",
+            "type": "[SalesChannelLocation](../../entities/classes/entities.SalesChannelLocation.mdx)[]",
+            "description": "The details of the stock locations related to the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`null` \\| `Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "default_sales_channel_id",
@@ -150,16 +326,54 @@ The store's details with additional details like payment and tax providers.
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "key",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "value",
+            "type": "`boolean` \\| `Record<string, boolean>`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "fulfillment_providers",
-        "type": "[FulfillmentProvider](../classes/medusa.FulfillmentProvider.mdx)[]",
+        "type": "[FulfillmentProvider](../../entities/classes/entities.FulfillmentProvider.mdx)[]",
         "description": "The store's fulfillment providers.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the fulfillment provider as given by the fulfillment service.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_installed",
+            "type": "`boolean`",
+            "description": "Whether the fulfillment service is installed in the current version. If a fulfillment service is no longer installed, the `is\\_installed` attribute is set to `false`.",
+            "optional": false,
+            "defaultValue": "true",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "modules",
@@ -172,12 +386,31 @@ The store's details with additional details like payment and tax providers.
       },
       {
         "name": "payment_providers",
-        "type": "[PaymentProvider](../classes/medusa.PaymentProvider.mdx)[]",
+        "type": "[PaymentProvider](../../entities/classes/entities.PaymentProvider.mdx)[]",
         "description": "The store's payment providers.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the payment provider as given by the payment service.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_installed",
+            "type": "`boolean`",
+            "description": "Whether the payment service is installed in the current version. If a payment service is no longer installed, the `is\\_installed` attribute is set to `false`.",
+            "optional": false,
+            "defaultValue": "true",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

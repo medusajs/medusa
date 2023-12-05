@@ -85,7 +85,354 @@ Add a list of customers to a customer group.
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "customer_group",
+        "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)",
+        "description": "Customer group details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "customers",
+            "type": "[Customer](../../entities/classes/entities.Customer.mdx)[]",
+            "description": "The details of the customers that belong to the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)",
+                "description": "The details of the billing address associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`null` \\| `string`",
+                "description": "The customer's billing address ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The customer's email",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "first_name",
+                "type": "`string`",
+                "description": "The customer's first name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The customer groups the customer belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "has_account",
+                "type": "`boolean`",
+                "description": "Whether the customer has an account or not",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "last_name",
+                "type": "`string`",
+                "description": "The customer's last name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "orders",
+                "type": "[Order](../../entities/classes/entities.Order.mdx)[]",
+                "description": "The details of the orders this customer placed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "password_hash",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "phone",
+                "type": "`string`",
+                "description": "The customer's phone number",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_addresses",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)[]",
+                "description": "The details of the shipping addresses associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The customer group's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the customer group",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_lists",
+            "type": "[PriceList](../../entities/classes/entities.PriceList.mdx)[]",
+            "description": "The price lists that are associated with the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer_groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The details of the customer groups that the Price List can apply to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "description",
+                "type": "`string`",
+                "description": "The price list's description",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "ends_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List stops being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The price list's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the price list prices include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The price list's name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "prices",
+                "type": "[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]",
+                "description": "The prices that belong to the price list, represented as a Money Amount.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "starts_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List starts being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[PriceListStatus](../../medusa/enums/medusa.PriceListStatus-1.mdx)",
+                "description": "The status of the Price List",
+                "optional": false,
+                "defaultValue": "draft",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[PriceListType](../../medusa/enums/medusa.PriceListType-1.mdx)",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
+                "optional": false,
+                "defaultValue": "sale",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -161,7 +508,354 @@ medusa.admin.customerGroups.create({
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "customer_group",
+        "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)",
+        "description": "Customer group details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "customers",
+            "type": "[Customer](../../entities/classes/entities.Customer.mdx)[]",
+            "description": "The details of the customers that belong to the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)",
+                "description": "The details of the billing address associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`null` \\| `string`",
+                "description": "The customer's billing address ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The customer's email",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "first_name",
+                "type": "`string`",
+                "description": "The customer's first name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The customer groups the customer belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "has_account",
+                "type": "`boolean`",
+                "description": "Whether the customer has an account or not",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "last_name",
+                "type": "`string`",
+                "description": "The customer's last name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "orders",
+                "type": "[Order](../../entities/classes/entities.Order.mdx)[]",
+                "description": "The details of the orders this customer placed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "password_hash",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "phone",
+                "type": "`string`",
+                "description": "The customer's phone number",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_addresses",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)[]",
+                "description": "The details of the shipping addresses associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The customer group's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the customer group",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_lists",
+            "type": "[PriceList](../../entities/classes/entities.PriceList.mdx)[]",
+            "description": "The price lists that are associated with the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer_groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The details of the customer groups that the Price List can apply to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "description",
+                "type": "`string`",
+                "description": "The price list's description",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "ends_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List stops being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The price list's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the price list prices include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The price list's name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "prices",
+                "type": "[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]",
+                "description": "The prices that belong to the price list, represented as a Money Amount.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "starts_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List starts being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[PriceListStatus](../../medusa/enums/medusa.PriceListStatus-1.mdx)",
+                "description": "The status of the Price List",
+                "optional": false,
+                "defaultValue": "draft",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[PriceListType](../../medusa/enums/medusa.PriceListType-1.mdx)",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
+                "optional": false,
+                "defaultValue": "sale",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -216,7 +910,35 @@ medusa.admin.customerGroups.delete(customerGroupId)
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -468,7 +1190,127 @@ medusa.admin.customerGroups.list({
     "defaultValue": "",
     "description": "Resolves to the list of customer groups with pagination fields.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminCustomerGroupsListRes",
+        "type": "[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "customer_groups",
+            "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+            "description": "An array of customer group details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customers",
+                "type": "[Customer](../../entities/classes/entities.Customer.mdx)[]",
+                "description": "The details of the customers that belong to the customer group.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer group's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the customer group",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "price_lists",
+                "type": "[PriceList](../../entities/classes/entities.PriceList.mdx)[]",
+                "description": "The price lists that are associated with the customer group.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -587,7 +1429,199 @@ medusa.admin.customerGroups.listCustomers(customerGroupId)
     "defaultValue": "",
     "description": "Resolves to the list of customers with pagination fields.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "AdminCustomersListRes",
+        "type": "[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`",
+        "description": "The list of customers with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "customers",
+            "type": "[Customer](../../entities/classes/entities.Customer.mdx)[]",
+            "description": "An array of customer details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)",
+                "description": "The details of the billing address associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`null` \\| `string`",
+                "description": "The customer's billing address ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The customer's email",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "first_name",
+                "type": "`string`",
+                "description": "The customer's first name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The customer groups the customer belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "has_account",
+                "type": "`boolean`",
+                "description": "Whether the customer has an account or not",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "last_name",
+                "type": "`string`",
+                "description": "The customer's last name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "orders",
+                "type": "[Order](../../entities/classes/entities.Order.mdx)[]",
+                "description": "The details of the orders this customer placed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "password_hash",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "phone",
+                "type": "`string`",
+                "description": "The customer's phone number",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_addresses",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)[]",
+                "description": "The details of the shipping addresses associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -677,7 +1711,354 @@ medusa.admin.customerGroups.removeCustomers(customerGroupId, {
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "customer_group",
+        "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)",
+        "description": "Customer group details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "customers",
+            "type": "[Customer](../../entities/classes/entities.Customer.mdx)[]",
+            "description": "The details of the customers that belong to the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)",
+                "description": "The details of the billing address associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`null` \\| `string`",
+                "description": "The customer's billing address ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The customer's email",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "first_name",
+                "type": "`string`",
+                "description": "The customer's first name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The customer groups the customer belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "has_account",
+                "type": "`boolean`",
+                "description": "Whether the customer has an account or not",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "last_name",
+                "type": "`string`",
+                "description": "The customer's last name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "orders",
+                "type": "[Order](../../entities/classes/entities.Order.mdx)[]",
+                "description": "The details of the orders this customer placed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "password_hash",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "phone",
+                "type": "`string`",
+                "description": "The customer's phone number",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_addresses",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)[]",
+                "description": "The details of the shipping addresses associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The customer group's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the customer group",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_lists",
+            "type": "[PriceList](../../entities/classes/entities.PriceList.mdx)[]",
+            "description": "The price lists that are associated with the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer_groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The details of the customer groups that the Price List can apply to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "description",
+                "type": "`string`",
+                "description": "The price list's description",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "ends_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List stops being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The price list's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the price list prices include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The price list's name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "prices",
+                "type": "[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]",
+                "description": "The prices that belong to the price list, represented as a Money Amount.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "starts_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List starts being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[PriceListStatus](../../medusa/enums/medusa.PriceListStatus-1.mdx)",
+                "description": "The status of the Price List",
+                "optional": false,
+                "defaultValue": "draft",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[PriceListType](../../medusa/enums/medusa.PriceListType-1.mdx)",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
+                "optional": false,
+                "defaultValue": "sale",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -760,7 +2141,354 @@ medusa.admin.customerGroups.retrieve(customerGroupId)
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "customer_group",
+        "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)",
+        "description": "Customer group details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "customers",
+            "type": "[Customer](../../entities/classes/entities.Customer.mdx)[]",
+            "description": "The details of the customers that belong to the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)",
+                "description": "The details of the billing address associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`null` \\| `string`",
+                "description": "The customer's billing address ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The customer's email",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "first_name",
+                "type": "`string`",
+                "description": "The customer's first name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The customer groups the customer belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "has_account",
+                "type": "`boolean`",
+                "description": "Whether the customer has an account or not",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "last_name",
+                "type": "`string`",
+                "description": "The customer's last name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "orders",
+                "type": "[Order](../../entities/classes/entities.Order.mdx)[]",
+                "description": "The details of the orders this customer placed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "password_hash",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "phone",
+                "type": "`string`",
+                "description": "The customer's phone number",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_addresses",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)[]",
+                "description": "The details of the shipping addresses associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The customer group's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the customer group",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_lists",
+            "type": "[PriceList](../../entities/classes/entities.PriceList.mdx)[]",
+            "description": "The price lists that are associated with the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer_groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The details of the customer groups that the Price List can apply to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "description",
+                "type": "`string`",
+                "description": "The price list's description",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "ends_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List stops being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The price list's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the price list prices include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The price list's name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "prices",
+                "type": "[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]",
+                "description": "The prices that belong to the price list, represented as a Money Amount.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "starts_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List starts being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[PriceListStatus](../../medusa/enums/medusa.PriceListStatus-1.mdx)",
+                "description": "The status of the Price List",
+                "optional": false,
+                "defaultValue": "draft",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[PriceListType](../../medusa/enums/medusa.PriceListType-1.mdx)",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
+                "optional": false,
+                "defaultValue": "sale",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />
 
@@ -831,6 +2559,353 @@ Update a customer group's details.
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "customer_group",
+        "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)",
+        "description": "Customer group details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "customers",
+            "type": "[Customer](../../entities/classes/entities.Customer.mdx)[]",
+            "description": "The details of the customers that belong to the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)",
+                "description": "The details of the billing address associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`null` \\| `string`",
+                "description": "The customer's billing address ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The customer's email",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "first_name",
+                "type": "`string`",
+                "description": "The customer's first name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The customer groups the customer belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "has_account",
+                "type": "`boolean`",
+                "description": "Whether the customer has an account or not",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "last_name",
+                "type": "`string`",
+                "description": "The customer's last name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "`Record<string, unknown>`",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "orders",
+                "type": "[Order](../../entities/classes/entities.Order.mdx)[]",
+                "description": "The details of the orders this customer placed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "password_hash",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "phone",
+                "type": "`string`",
+                "description": "The customer's phone number",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_addresses",
+                "type": "[Address](../../entities/classes/entities.Address.mdx)[]",
+                "description": "The details of the shipping addresses associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The customer group's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "`Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the customer group",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_lists",
+            "type": "[PriceList](../../entities/classes/entities.PriceList.mdx)[]",
+            "description": "The price lists that are associated with the customer group.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer_groups",
+                "type": "[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]",
+                "description": "The details of the customer groups that the Price List can apply to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "description",
+                "type": "`string`",
+                "description": "The price list's description",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "ends_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List stops being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The price list's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the price list prices include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The price list's name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "prices",
+                "type": "[MoneyAmount](../../entities/classes/entities.MoneyAmount.mdx)[]",
+                "description": "The prices that belong to the price list, represented as a Money Amount.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "starts_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone that the Price List starts being valid.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[PriceListStatus](../../medusa/enums/medusa.PriceListStatus-1.mdx)",
+                "description": "The status of the Price List",
+                "optional": false,
+                "defaultValue": "draft",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[PriceListType](../../medusa/enums/medusa.PriceListType-1.mdx)",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
+                "optional": false,
+                "defaultValue": "sale",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
   }
 ]} />

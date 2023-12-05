@@ -303,7 +303,17 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ProductOptionDTO",
+            "type": "`object`",
+            "description": "A product option's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

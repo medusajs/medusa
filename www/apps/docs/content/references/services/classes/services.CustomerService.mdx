@@ -15,7 +15,7 @@ Provides layer to manipulate customers.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-7.mdx)",
+    "type": "`InjectedDependencies`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -303,7 +303,7 @@ used to hold details of customers.
 <ParameterTypes parameters={[
   {
     "name": "customer",
-    "type": "[CreateCustomerInput](../../medusa/types/medusa.CreateCustomerInput.mdx)",
+    "type": "`CreateCustomerInput`",
     "description": "the customer to create",
     "optional": false,
     "defaultValue": "",
@@ -902,7 +902,7 @@ Updates a customer.
   },
   {
     "name": "update",
-    "type": "[UpdateCustomerInput](../../medusa/types/medusa.UpdateCustomerInput.mdx)",
+    "type": "`UpdateCustomerInput`",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -1040,297 +1040,9 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-7.mdx)) => [CustomerService](services.CustomerService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addressRepository_",
-    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "customerRepository_",
-    "type": "Repository&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "eventBusService_",
-    "type": "[EventBusService](services.EventBusService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "Events",
+    "name": "CustomerService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addAddress",
-    "type": "(`customerId`: `string`, `address`: [AddressCreatePayload](../../medusa/classes/medusa.AddressCreatePayload.mdx)) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx) \\| [Address](../../entities/classes/entities.Address.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "count",
-    "type": "() => Promise&#60;number&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`customer`: [CreateCustomerInput](../../medusa/types/medusa.CreateCustomerInput.mdx)) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "delete",
-    "type": "(`customerId`: `string`) => Promise&#60;void \\| [Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "generateResetPasswordToken",
-    "type": "(`customerId`: `string`) => Promise&#60;string&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "hashPassword_",
-    "type": "(`password`: `string`) => Promise&#60;string&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & ``{ groups?: string[] ; q?: string  }``, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listAndCount",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & ``{ groups?: string[] ; q?: string  }``, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[[Customer](../../entities/classes/entities.Customer.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "removeAddress",
-    "type": "(`customerId`: `string`, `addressId`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`customerId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByPhone",
-    "type": "(`phone`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveRegisteredByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveUnregisteredByEmail",
-    "type": "(`email`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve_",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`customerId`: `string`, `update`: [UpdateCustomerInput](../../medusa/types/medusa.UpdateCustomerInput.mdx)) => Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateAddress",
-    "type": "(`customerId`: `string`, `addressId`: `string`, `address`: [StorePostCustomersCustomerAddressesAddressReq](../../medusa/classes/medusa.StorePostCustomersCustomerAddressesAddressReq.mdx)) => Promise&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateBillingAddress_",
-    "type": "(`customer`: [Customer](../../entities/classes/entities.Customer.mdx), `addressOrId`: `undefined` \\| `string` \\| DeepPartial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [CustomerService](services.CustomerService.mdx)",
-    "description": "",
+    "description": "Provides layer to manipulate customers.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

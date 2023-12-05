@@ -309,7 +309,17 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "RuleTypeDTO",
+            "type": "`object`",
+            "description": "A rule type's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

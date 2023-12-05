@@ -114,7 +114,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
+    "type": "`FlagRouter`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -345,7 +345,7 @@ ___
   },
   {
     "name": "calculationContextData",
-    "type": "[CalculationContextData](../../medusa/types/medusa.CalculationContextData.mdx)",
+    "type": "`CalculationContextData`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -421,7 +421,7 @@ Normalizes discount code to uppercase.
 <ParameterTypes parameters={[
   {
     "name": "discount",
-    "type": "[CreateDiscountInput](../../medusa/types/medusa.CreateDiscountInput.mdx)",
+    "type": "`CreateDiscountInput`",
     "description": "the discount data to create",
     "optional": false,
     "defaultValue": "",
@@ -464,7 +464,7 @@ Creates a dynamic code for a discount id.
   },
   {
     "name": "data",
-    "type": "[CreateDynamicDiscountInput](../../medusa/types/medusa.CreateDynamicDiscountInput.mdx)",
+    "type": "`CreateDynamicDiscountInput`",
     "description": "the object containing a code to identify the discount by",
     "optional": false,
     "defaultValue": "",
@@ -774,7 +774,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableDiscountProps](../../medusa/classes/medusa.FilterableDiscountProps.mdx)",
+    "type": "`FilterableDiscountProps`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -815,7 +815,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableDiscountProps](../../medusa/classes/medusa.FilterableDiscountProps.mdx)",
+    "type": "`FilterableDiscountProps`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -1071,7 +1071,7 @@ Updates a discount.
   },
   {
     "name": "update",
-    "type": "[UpdateDiscountInput](../../medusa/types/medusa.UpdateDiscountInput.mdx)",
+    "type": "`UpdateDiscountInput`",
     "description": "the data to update the discount with",
     "optional": false,
     "defaultValue": "",
@@ -1246,405 +1246,9 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: `Object`) => [DiscountService](services.DiscountService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "customerService_",
-    "type": "[CustomerService](services.CustomerService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "discountConditionRepository_",
-    "type": "Repository&#60;[DiscountCondition](../../entities/classes/entities.DiscountCondition.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "discountConditionService_",
-    "type": "[DiscountConditionService](services.DiscountConditionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "discountRepository_",
-    "type": "Repository&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "discountRuleRepository_",
-    "type": "Repository&#60;[DiscountRule](../../entities/classes/entities.DiscountRule.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "eventBus_",
-    "type": "[EventBusService](services.EventBusService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "giftCardRepository_",
-    "type": "Repository&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "newTotalsService_",
-    "type": "[NewTotalsService](services.NewTotalsService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productService_",
-    "type": "[ProductService](services.ProductService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "regionService_",
-    "type": "[RegionService](services.RegionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "totalsService_",
-    "type": "[TotalsService](services.TotalsService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
+    "name": "DiscountService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addRegion",
-    "type": "(`discountId`: `string`, `regionId`: `string`) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "calculateDiscountForLineItem",
-    "type": "(`discountId`: `string`, `lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `calculationContextData`: [CalculationContextData](../../medusa/types/medusa.CalculationContextData.mdx)) => Promise&#60;number&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "canApplyForCustomer",
-    "type": "(`discountRuleId`: `string`, `customerId`: `undefined` \\| `string`) => Promise&#60;boolean&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`discount`: [CreateDiscountInput](../../medusa/types/medusa.CreateDiscountInput.mdx)) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createDynamicCode",
-    "type": "(`discountId`: `string`, `data`: [CreateDynamicDiscountInput](../../medusa/types/medusa.CreateDynamicDiscountInput.mdx)) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "delete",
-    "type": "(`discountId`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deleteDynamicCode",
-    "type": "(`discountId`: `string`, `code`: `string`) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "hasCustomersGroupCondition",
-    "type": "(`discount`: [Discount](../../entities/classes/entities.Discount.mdx)) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "hasExpired",
-    "type": "(`discount`: [Discount](../../entities/classes/entities.Discount.mdx)) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "hasNotStarted",
-    "type": "(`discount`: [Discount](../../entities/classes/entities.Discount.mdx)) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "hasReachedLimit",
-    "type": "(`discount`: [Discount](../../entities/classes/entities.Discount.mdx)) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "isDisabled",
-    "type": "(`discount`: [Discount](../../entities/classes/entities.Discount.mdx)) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "isValidForRegion",
-    "type": "(`discount`: [Discount](../../entities/classes/entities.Discount.mdx), `region_id`: `string`) => Promise&#60;boolean&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: [FilterableDiscountProps](../../medusa/classes/medusa.FilterableDiscountProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listAndCount",
-    "type": "(`selector`: [FilterableDiscountProps](../../medusa/classes/medusa.FilterableDiscountProps.mdx), `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;) => Promise&#60;[[Discount](../../entities/classes/entities.Discount.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listByCodes",
-    "type": "(`discountCodes`: `string`[], `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "removeRegion",
-    "type": "(`discountId`: `string`, `regionId`: `string`) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`discountId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByCode",
-    "type": "(`discountCode`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`discountId`: `string`, `update`: [UpdateDiscountInput](../../medusa/types/medusa.UpdateDiscountInput.mdx)) => Promise&#60;[Discount](../../entities/classes/entities.Discount.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateDiscountForCartOrThrow",
-    "type": "(`cart`: [Cart](../../entities/classes/entities.Cart.mdx), `discount`: [Discount](../../entities/classes/entities.Discount.mdx) \\| [Discount](../../entities/classes/entities.Discount.mdx)[]) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateDiscountForProduct",
-    "type": "(`discountRuleId`: `string`, `productId?`: `string`) => Promise&#60;boolean&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateDiscountRule_",
-    "type": "`<T>`(`discountRule`: `T`) => `T`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [DiscountService](services.DiscountService.mdx)",
-    "description": "",
+    "description": "Provides layer to manipulate discounts.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

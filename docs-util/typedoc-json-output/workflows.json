@@ -34,14 +34,6 @@
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "helpers/step-response.ts",
-							"line": 24,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/step-response.ts#L24"
-						}
-					],
 					"signatures": [
 						{
 							"id": 42,
@@ -57,14 +49,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "helpers/step-response.ts",
-									"line": 24,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/step-response.ts#L24"
-								}
-							],
 							"typeParameter": [
 								{
 									"id": 43,
@@ -205,14 +189,6 @@
 						"isPrivate": true,
 						"isReadonly": true
 					},
-					"sources": [
-						{
-							"fileName": "helpers/step-response.ts",
-							"line": 12,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/step-response.ts#L12"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "symbol"
@@ -229,14 +205,6 @@
 						"isOptional": true,
 						"isReadonly": true
 					},
-					"sources": [
-						{
-							"fileName": "helpers/step-response.ts",
-							"line": 14,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/step-response.ts#L14"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": -1,
@@ -253,14 +221,6 @@
 						"isPrivate": true,
 						"isReadonly": true
 					},
-					"sources": [
-						{
-							"fileName": "helpers/step-response.ts",
-							"line": 13,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/step-response.ts#L13"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": -1,
@@ -283,14 +243,6 @@
 						49,
 						48
 					]
-				}
-			],
-			"sources": [
-				{
-					"fileName": "helpers/step-response.ts",
-					"line": 11,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/step-response.ts#L11"
 				}
 			],
 			"typeParameters": [
@@ -377,14 +329,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "type.ts",
-							"line": 74,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L74"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -406,18 +350,10 @@
 							{
 								"kind": "inline-tag",
 								"tag": "@inheritDoc",
-								"text": "medusa!Context"
+								"text": "types!Context"
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "type.ts",
-							"line": 82,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L82"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -442,14 +378,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "type.ts",
-							"line": 78,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L78"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -470,14 +398,6 @@
 						167
 					]
 				}
-			],
-			"sources": [
-				{
-					"fileName": "type.ts",
-					"line": 70,
-					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L70"
-				}
 			]
 		},
 		{
@@ -486,14 +406,6 @@
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "type.ts",
-					"line": 49,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L49"
-				}
-			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
@@ -509,14 +421,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 53,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L53"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -533,14 +437,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 54,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L54"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -557,14 +453,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 58,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L58"
-								}
-							],
 							"type": {
 								"type": "reflection",
 								"declaration": {
@@ -573,14 +461,6 @@
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
-									"sources": [
-										{
-											"fileName": "type.ts",
-											"line": 58,
-											"character": 14,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L58"
-										}
-									],
 									"signatures": [
 										{
 											"id": 153,
@@ -655,14 +535,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 51,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L51"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -697,14 +569,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 50,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L50"
-								}
-							],
 							"type": {
 								"type": "array",
 								"elementType": {
@@ -719,14 +583,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 62,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L62"
-								}
-							],
 							"type": {
 								"type": "reflection",
 								"declaration": {
@@ -735,14 +591,6 @@
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
-									"sources": [
-										{
-											"fileName": "type.ts",
-											"line": 62,
-											"character": 21,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L62"
-										}
-									],
 									"signatures": [
 										{
 											"id": 159,
@@ -792,14 +640,6 @@
 															"variant": "declaration",
 															"kind": 65536,
 															"flags": {},
-															"sources": [
-																{
-																	"fileName": "type.ts",
-																	"line": 63,
-																	"character": 8,
-																	"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L63"
-																}
-															],
 															"signatures": [
 																{
 																	"id": 162,
@@ -851,14 +691,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 55,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L55"
-								}
-							],
 							"type": {
 								"type": "reflection",
 								"declaration": {
@@ -867,14 +699,6 @@
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
-									"sources": [
-										{
-											"fileName": "type.ts",
-											"line": 55,
-											"character": 14,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L55"
-										}
-									],
 									"signatures": [
 										{
 											"id": 148,
@@ -935,14 +759,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 52,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L52"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -963,14 +779,6 @@
 								143
 							]
 						}
-					],
-					"sources": [
-						{
-							"fileName": "type.ts",
-							"line": 49,
-							"character": 44,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L49"
-						}
 					]
 				}
 			}
@@ -989,14 +797,6 @@
 					}
 				]
 			},
-			"sources": [
-				{
-					"fileName": "type.ts",
-					"line": 24,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L24"
-				}
-			],
 			"typeParameters": [
 				{
 					"id": 130,
@@ -1052,14 +852,6 @@
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 24,
-									"character": 78,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L24"
-								}
-							],
 							"signatures": [
 								{
 									"id": 128,
@@ -1067,14 +859,6 @@
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
-									"sources": [
-										{
-											"fileName": "type.ts",
-											"line": 25,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L25"
-										}
-									],
 									"parameters": [
 										{
 											"id": 129,
@@ -1222,14 +1006,6 @@
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "type.ts",
-					"line": 9,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L9"
-				}
-			],
 			"typeParameters": [
 				{
 					"id": 125,
@@ -1267,14 +1043,6 @@
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "type.ts",
-							"line": 10,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L10"
-						}
-					],
 					"signatures": [
 						{
 							"id": 123,
@@ -1420,14 +1188,6 @@
 					}
 				]
 			},
-			"sources": [
-				{
-					"fileName": "type.ts",
-					"line": 42,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L42"
-				}
-			],
 			"typeParameters": [
 				{
 					"id": 138,
@@ -1539,14 +1299,6 @@
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "type.ts",
-					"line": 32,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L32"
-				}
-			],
 			"typeParameters": [
 				{
 					"id": 136,
@@ -1575,14 +1327,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 34,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L34"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -1594,14 +1338,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 33,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L33"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -1621,14 +1357,6 @@
 								134
 							]
 						}
-					],
-					"sources": [
-						{
-							"fileName": "type.ts",
-							"line": 32,
-							"character": 50,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L32"
-						}
 					]
 				}
 			}
@@ -1639,14 +1367,6 @@
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "type.ts",
-					"line": 85,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L85"
-				}
-			],
 			"type": {
 				"type": "intersection",
 				"types": [
@@ -1681,14 +1401,6 @@
 									"variant": "declaration",
 									"kind": 1024,
 									"flags": {},
-									"sources": [
-										{
-											"fileName": "type.ts",
-											"line": 87,
-											"character": 4,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L87"
-										}
-									],
 									"type": {
 										"type": "reflection",
 										"declaration": {
@@ -1697,28 +1409,12 @@
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
-											"sources": [
-												{
-													"fileName": "type.ts",
-													"line": 87,
-													"character": 12,
-													"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L87"
-												}
-											],
 											"indexSignature": {
 												"id": 173,
 												"name": "__index",
 												"variant": "signature",
 												"kind": 8192,
 												"flags": {},
-												"sources": [
-													{
-														"fileName": "type.ts",
-														"line": 87,
-														"character": 14,
-														"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L87"
-													}
-												],
 												"parameters": [
 													{
 														"id": 174,
@@ -1747,14 +1443,6 @@
 																"variant": "declaration",
 																"kind": 1024,
 																"flags": {},
-																"sources": [
-																	{
-																		"fileName": "type.ts",
-																		"line": 87,
-																		"character": 31,
-																		"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L87"
-																	}
-																],
 																"type": {
 																	"type": "intrinsic",
 																	"name": "any"
@@ -1767,14 +1455,6 @@
 																"children": [
 																	176
 																]
-															}
-														],
-														"sources": [
-															{
-																"fileName": "type.ts",
-																"line": 87,
-																"character": 29,
-																"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L87"
 															}
 														]
 													}
@@ -1791,14 +1471,6 @@
 										171
 									]
 								}
-							],
-							"sources": [
-								{
-									"fileName": "type.ts",
-									"line": 86,
-									"character": 39,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/type.ts#L86"
-								}
 							]
 						}
 					}
@@ -1813,14 +1485,6 @@
 			"flags": {
 				"isConst": true
 			},
-			"sources": [
-				{
-					"fileName": "helpers/symbol.ts",
-					"line": 4,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/symbol.ts#L4"
-				}
-			],
 			"type": {
 				"type": "query",
 				"queryType": {
@@ -1840,14 +1504,6 @@
 			"flags": {
 				"isConst": true
 			},
-			"sources": [
-				{
-					"fileName": "helpers/symbol.ts",
-					"line": 1,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/symbol.ts#L1"
-				}
-			],
 			"type": {
 				"type": "query",
 				"queryType": {
@@ -1867,14 +1523,6 @@
 			"flags": {
 				"isConst": true
 			},
-			"sources": [
-				{
-					"fileName": "helpers/symbol.ts",
-					"line": 6,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/symbol.ts#L6"
-				}
-			],
 			"type": {
 				"type": "query",
 				"queryType": {
@@ -1894,14 +1542,6 @@
 			"flags": {
 				"isConst": true
 			},
-			"sources": [
-				{
-					"fileName": "helpers/symbol.ts",
-					"line": 5,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/symbol.ts#L5"
-				}
-			],
 			"type": {
 				"type": "query",
 				"queryType": {
@@ -1921,14 +1561,6 @@
 			"flags": {
 				"isConst": true
 			},
-			"sources": [
-				{
-					"fileName": "helpers/symbol.ts",
-					"line": 9,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/symbol.ts#L9"
-				}
-			],
 			"type": {
 				"type": "query",
 				"queryType": {
@@ -1948,14 +1580,6 @@
 			"flags": {
 				"isConst": true
 			},
-			"sources": [
-				{
-					"fileName": "helpers/symbol.ts",
-					"line": 8,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/symbol.ts#L8"
-				}
-			],
 			"type": {
 				"type": "query",
 				"queryType": {
@@ -1975,14 +1599,6 @@
 			"flags": {
 				"isConst": true
 			},
-			"sources": [
-				{
-					"fileName": "helpers/symbol.ts",
-					"line": 10,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/symbol.ts#L10"
-				}
-			],
 			"type": {
 				"type": "query",
 				"queryType": {
@@ -2002,14 +1618,6 @@
 			"flags": {
 				"isConst": true
 			},
-			"sources": [
-				{
-					"fileName": "helpers/symbol.ts",
-					"line": 7,
-					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/helpers/symbol.ts#L7"
-				}
-			],
 			"type": {
 				"type": "query",
 				"queryType": {
@@ -2027,14 +1635,6 @@
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "create-step.ts",
-					"line": 233,
-					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/create-step.ts#L233"
-				}
-			],
 			"signatures": [
 				{
 					"id": 2,
@@ -2091,14 +1691,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "create-step.ts",
-							"line": 233,
-							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/create-step.ts#L233"
-						}
-					],
 					"typeParameter": [
 						{
 							"id": 3,
@@ -2327,14 +1919,6 @@
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "create-workflow.ts",
-					"line": 143,
-					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/create-workflow.ts#L143"
-				}
-			],
 			"signatures": [
 				{
 					"id": 10,
@@ -2410,14 +1994,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "create-workflow.ts",
-							"line": 143,
-							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/create-workflow.ts#L143"
-						}
-					],
 					"typeParameter": [
 						{
 							"id": 11,
@@ -2587,14 +2163,6 @@
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
-									"sources": [
-										{
-											"fileName": "create-workflow.ts",
-											"line": 157,
-											"character": 12,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/create-workflow.ts#L157"
-										}
-									],
 									"signatures": [
 										{
 											"id": 17,
@@ -2642,14 +2210,6 @@
 													}
 												]
 											},
-											"sources": [
-												{
-													"fileName": "create-workflow.ts",
-													"line": 157,
-													"character": 12,
-													"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/create-workflow.ts#L157"
-												}
-											],
 											"parameters": [
 												{
 													"id": 18,
@@ -2812,14 +2372,6 @@
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "parallelize.ts",
-					"line": 43,
-					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/parallelize.ts#L43"
-				}
-			],
 			"signatures": [
 				{
 					"id": 25,
@@ -2855,14 +2407,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "parallelize.ts",
-							"line": 43,
-							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/parallelize.ts#L43"
-						}
-					],
 					"typeParameter": [
 						{
 							"id": 26,
@@ -2927,14 +2471,6 @@
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "transform.ts",
-					"line": 62,
-					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/transform.ts#L62"
-				}
-			],
 			"signatures": [
 				{
 					"id": 65,
@@ -2996,14 +2532,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "transform.ts",
-							"line": 62,
-							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/workflows-sdk/src/utils/composer/transform.ts#L62"
-						}
-					],
 					"typeParameter": [
 						{
 							"id": 66,

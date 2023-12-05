@@ -14,46 +14,10 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "created_at",
-    "type": "`Date`",
-    "description": "The date with timezone at which the resource was created.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deleted_at",
-    "type": "`null` \\| `Date`",
-    "description": "The date with timezone at which the resource was deleted.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "id",
     "type": "`string`",
-    "description": "The image's ID",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "metadata",
-    "type": "`Record<string, unknown>`",
-    "description": "An optional key-value map with additional details",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updated_at",
-    "type": "`Date`",
-    "description": "The date with timezone at which the resource was updated.",
-    "optional": false,
+    "description": "Image ID",
+    "optional": true,
     "defaultValue": "",
     "expandable": false,
     "children": []
@@ -61,29 +25,9 @@ ___
   {
     "name": "url",
     "type": "`string`",
-    "description": "The URL at which the image file can be found.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-___
-
-## Methods
-
-### beforeInsert
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "void",
-    "type": "`void`",
+    "description": "Image URL",
     "optional": true,
     "defaultValue": "",
-    "description": "",
     "expandable": false,
     "children": []
   }

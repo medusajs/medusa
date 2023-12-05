@@ -15,7 +15,7 @@ Provides layer to manipulate profiles.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-35.mdx)",
+    "type": "`InjectedDependencies`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
+    "type": "`FlagRouter`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -276,7 +276,7 @@ defaults to false.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx)",
+    "type": "`CreateShippingOptionInput`",
     "description": "the data to create shipping options",
     "optional": false,
     "defaultValue": "",
@@ -328,7 +328,7 @@ Creates a shipping method for a given cart.
   },
   {
     "name": "config",
-    "type": "[CreateShippingMethodDto](../../medusa/types/medusa.CreateShippingMethodDto.mdx)",
+    "type": "`CreateShippingMethodDto`",
     "description": "the cart to create the shipping method for.",
     "optional": false,
     "defaultValue": "",
@@ -687,7 +687,7 @@ will throw errors if metadata or product updates are attempted.
   },
   {
     "name": "update",
-    "type": "[UpdateShippingOptionInput](../../medusa/types/medusa.UpdateShippingOptionInput.mdx)",
+    "type": "`UpdateShippingOptionInput`",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -731,7 +731,7 @@ and its methods should be copied to an order/swap entity.
   },
   {
     "name": "update",
-    "type": "[ShippingMethodUpdate](../../medusa/types/medusa.ShippingMethodUpdate.mdx)",
+    "type": "`ShippingMethodUpdate`",
     "description": "the values to update the method with",
     "optional": false,
     "defaultValue": "",
@@ -804,7 +804,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx) \\| [CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx)",
+    "type": "[ShippingOption](../../entities/classes/entities.ShippingOption.mdx) \\| `CreateShippingOptionInput`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -813,7 +813,7 @@ ___
   },
   {
     "name": "priceInput",
-    "type": "[ValidatePriceTypeAndAmountInput](../../medusa/types/medusa.ValidatePriceTypeAndAmountInput.mdx)",
+    "type": "`ValidatePriceTypeAndAmountInput`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -827,7 +827,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise&#60;[CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx) \\| Omit&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;",
+    "type": "Promise&#60;CreateShippingOptionInput \\| Omit&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -989,297 +989,9 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-35.mdx)) => [ShippingOptionService](services.ShippingOptionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "methodRepository_",
-    "type": "Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "optionRepository_",
-    "type": "Repository&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "providerService_",
-    "type": "[FulfillmentProviderService](services.FulfillmentProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "regionService_",
-    "type": "[RegionService](services.RegionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "requirementRepository_",
-    "type": "Repository&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
+    "name": "ShippingOptionService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addRequirement",
-    "type": "(`optionId`: `string`, `requirement`: [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`data`: [CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx)) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createShippingMethod",
-    "type": "(`optionId`: `string`, `data`: `Record<string, unknown>`, `config`: [CreateShippingMethodDto](../../medusa/types/medusa.CreateShippingMethodDto.mdx)) => Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "delete",
-    "type": "(`optionId`: `string`) => Promise&#60;void \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deleteShippingMethods",
-    "type": "(`shippingMethods`: [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]) => Promise&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getPrice_",
-    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx), `data`: `Record<string, unknown>`, `cart`: `undefined` \\| [Order](../../entities/classes/entities.Order.mdx) \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;number&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listAndCount",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;) => Promise&#60;[[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "removeRequirement",
-    "type": "(`requirementId`: `any`) => Promise&#60;void \\| [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`optionId`: `any`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`optionId`: `string`, `update`: [UpdateShippingOptionInput](../../medusa/types/medusa.UpdateShippingOptionInput.mdx)) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateShippingMethod",
-    "type": "(`id`: `string`, `update`: [ShippingMethodUpdate](../../medusa/types/medusa.ShippingMethodUpdate.mdx)) => Promise&#60;undefined \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateShippingProfile",
-    "type": "(`optionIds`: `string` \\| `string`[], `profileId`: `string`) => Promise&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateAndMutatePrice",
-    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx) \\| [CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx), `priceInput`: [ValidatePriceTypeAndAmountInput](../../medusa/types/medusa.ValidatePriceTypeAndAmountInput.mdx)) => Promise&#60;[CreateShippingOptionInput](../../medusa/types/medusa.CreateShippingOptionInput.mdx) \\| Omit&#60;[ShippingOption](../../entities/classes/entities.ShippingOption.mdx), \"beforeInsert\"&#62;&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateCartOption",
-    "type": "(`option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx), `cart`: [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;null \\| [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validatePriceType_",
-    "type": "(`priceType`: [ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx), `option`: [ShippingOption](../../entities/classes/entities.ShippingOption.mdx)) => Promise&#60;[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateRequirement_",
-    "type": "(`requirement`: [ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx), `optionId`: `undefined` \\| `string`) => Promise&#60;[ShippingOptionRequirement](../../entities/classes/entities.ShippingOptionRequirement.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [ShippingOptionService](services.ShippingOptionService.mdx)",
-    "description": "",
+    "description": "Provides layer to manipulate profiles.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

@@ -220,7 +220,35 @@ async function retrievePriceRule (id: string) {
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the price set.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "money_amounts",
+            "type": "[MoneyAmountDTO](../../pricing/interfaces/pricing.MoneyAmountDTO.mdx)[]",
+            "description": "The prices that belong to this price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rule_types",
+            "type": "[RuleTypeDTO](../../pricing/interfaces/pricing.RuleTypeDTO.mdx)[]",
+            "description": "The rule types applied on this price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "price_set_id",
@@ -256,7 +284,44 @@ async function retrievePriceRule (id: string) {
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "default_priority",
+            "type": "`number`",
+            "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy \nthe provided context. The higher the value, the higher the priority of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The display name of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rule_attribute",
+            "type": "`string`",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of \nthe `calculatePrices` method to specify a rule for calculating the price.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "rule_type_id",

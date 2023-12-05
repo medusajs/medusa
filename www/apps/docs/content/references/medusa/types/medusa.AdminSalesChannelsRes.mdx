@@ -11,7 +11,7 @@ The sales channel's details.
 <ParameterTypes parameters={[
   {
     "name": "sales_channel",
-    "type": "[SalesChannel](../classes/medusa.SalesChannel.mdx)",
+    "type": "[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)",
     "description": "Sales Channel's details.",
     "optional": false,
     "defaultValue": "",
@@ -64,12 +64,76 @@ The sales channel's details.
       },
       {
         "name": "locations",
-        "type": "[SalesChannelLocation](../classes/medusa.SalesChannelLocation.mdx)[]",
+        "type": "[SalesChannelLocation](../../entities/classes/entities.SalesChannelLocation.mdx)[]",
         "description": "The details of the stock locations related to the sales channel.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
-        "children": []
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The Sales Channel Stock Location's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "location_id",
+            "type": "`string`",
+            "description": "The ID of the Location Stock.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "sales_channel",
+            "type": "[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)",
+            "description": "The details of the sales channel the location is associated with.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": []
+          },
+          {
+            "name": "sales_channel_id",
+            "type": "`string`",
+            "description": "The ID of the Sales Channel",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "metadata",

@@ -142,7 +142,17 @@ async function updateProductTag (id: string, value: string) {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ProductTagDTO",
+            "type": "`object`",
+            "description": "A product tag's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

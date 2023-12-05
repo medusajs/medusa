@@ -221,7 +221,35 @@ circumstances described in the context.
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "code",
+            "type": "`string` \\| `null`",
+            "description": "The tax rate's code.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The tax rate's name.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rate",
+            "type": "`number` \\| `null`",
+            "description": "The tax rate.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "variantId",
@@ -312,7 +340,35 @@ circumstances described in the context.
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "code",
+            "type": "`string` \\| `null`",
+            "description": "The tax rate's code.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The tax rate's name.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rate",
+            "type": "`number` \\| `null`",
+            "description": "The tax rate.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }
@@ -336,7 +392,26 @@ circumstances described in the context.
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "string",
+            "type": "`string`",
+            "optional": true,
+            "defaultValue": "",
+            "description": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "PriceSelectionResult",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

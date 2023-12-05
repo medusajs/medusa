@@ -115,7 +115,71 @@ async function addPricesToPriceSet (priceSetId: string) {
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "amount",
+            "type": "`number`",
+            "description": "The amount of this money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currency",
+            "type": "[CreateCurrencyDTO](../../pricing/interfaces/pricing.CreateCurrencyDTO.mdx)",
+            "description": "The currency of this money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currency_code",
+            "type": "`string`",
+            "description": "The currency code of this money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "max_quantity",
+            "type": "`null` \\| `number`",
+            "description": "The maximum quantity required to be purchased for this money amount to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "min_quantity",
+            "type": "`null` \\| `number`",
+            "description": "The minimum quantity required to be purchased for this money amount to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rules",
+            "type": "`Record<string, string>`",
+            "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   },
@@ -203,7 +267,71 @@ async function addPricesToPriceSet (priceSetId: string) {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "amount",
+            "type": "`number`",
+            "description": "The price of this money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currency",
+            "type": "[CurrencyDTO](../../pricing/interfaces/pricing.CurrencyDTO.mdx)",
+            "description": "The money amount's currency.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": true,
+            "children": []
+          },
+          {
+            "name": "currency_code",
+            "type": "`string`",
+            "description": "The currency code of this money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "max_quantity",
+            "type": "`number`",
+            "description": "The maximum quantity required to be purchased for this price to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "min_quantity",
+            "type": "`number`",
+            "description": "The minimum quantity required to be purchased for this price to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price_set_money_amount",
+            "type": "[PriceSetMoneyAmountDTO](../../pricing/interfaces/pricing.PriceSetMoneyAmountDTO.mdx)",
+            "description": "The details of the relation between the money amount and its associated price set.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "rule_types",
@@ -212,7 +340,44 @@ async function addPricesToPriceSet (priceSetId: string) {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "default_priority",
+            "type": "`number`",
+            "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy \nthe provided context. The higher the value, the higher the priority of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The display name of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rule_attribute",
+            "type": "`string`",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of \nthe `calculatePrices` method to specify a rule for calculating the price.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }
@@ -320,7 +485,71 @@ async function addPricesToPriceSet (priceSetId: string) {
         "optional": false,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "amount",
+            "type": "`number`",
+            "description": "The amount of this money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currency",
+            "type": "[CreateCurrencyDTO](../../pricing/interfaces/pricing.CreateCurrencyDTO.mdx)",
+            "description": "The currency of this money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currency_code",
+            "type": "`string`",
+            "description": "The currency code of this money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "max_quantity",
+            "type": "`null` \\| `number`",
+            "description": "The maximum quantity required to be purchased for this money amount to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "min_quantity",
+            "type": "`null` \\| `number`",
+            "description": "The minimum quantity required to be purchased for this money amount to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rules",
+            "type": "`Record<string, string>`",
+            "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   },
@@ -399,7 +628,17 @@ async function addPricesToPriceSet (priceSetId: string) {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "PriceSetDTO",
+            "type": "`object`",
+            "description": "A price set's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

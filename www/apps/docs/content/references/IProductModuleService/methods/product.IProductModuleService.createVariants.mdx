@@ -151,7 +151,26 @@ async function createProductVariants (items: {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "option_id",
+            "type": "`string`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "value",
+            "type": "`string`",
+            "description": "The value of a product variant option.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "origin_country",
@@ -293,7 +312,17 @@ async function createProductVariants (items: {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ProductVariantDTO",
+            "type": "`object`",
+            "description": "A product variant's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

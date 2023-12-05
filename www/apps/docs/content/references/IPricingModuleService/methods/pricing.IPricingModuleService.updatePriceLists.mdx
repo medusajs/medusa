@@ -100,7 +100,26 @@ async function updatePriceLists (items: {
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ACTIVE",
+            "type": "`\"active\"`",
+            "description": "The price list is enabled and its prices can be used.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DRAFT",
+            "type": "`\"draft\"`",
+            "description": "The price list is disabled, meaning its prices can't be used yet.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "title",
@@ -188,7 +207,17 @@ async function updatePriceLists (items: {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "PriceListDTO",
+            "type": "`object`",
+            "description": "A price list's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

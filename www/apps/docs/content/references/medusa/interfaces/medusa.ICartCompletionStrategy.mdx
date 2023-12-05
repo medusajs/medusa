@@ -23,7 +23,7 @@ creating an order or confirming a swap.
   },
   {
     "name": "idempotencyKey",
-    "type": "[IdempotencyKey](../classes/medusa.IdempotencyKey.mdx)",
+    "type": "[IdempotencyKey](../../entities/classes/entities.IdempotencyKey.mdx)",
     "description": "the idempotency key for the request",
     "optional": false,
     "defaultValue": "",
@@ -154,9 +154,18 @@ creating an order or confirming a swap.
     "expandable": false,
     "children": [
       {
-        "name": "CartCompletionResponse",
-        "type": "`object`",
-        "description": "",
+        "name": "response_body",
+        "type": "`Record<string, unknown>`",
+        "description": "The response body for the completion request",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "response_code",
+        "type": "`number`",
+        "description": "The response code for the completion request",
         "optional": false,
         "defaultValue": "",
         "expandable": false,

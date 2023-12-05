@@ -89,7 +89,17 @@ medusa.admin.AdminAuthResource.createSession({
     "defaultValue": "",
     "description": "Resolves to the user's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "user",
+        "type": "Omit&#60;[User](../../entities/classes/entities.User.mdx), \"password_hash\"&#62;",
+        "description": "User details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -179,7 +189,17 @@ medusa.admin.auth.getSession()
     "defaultValue": "",
     "description": "Resolves to the logged-in user's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "user",
+        "type": "Omit&#60;[User](../../entities/classes/entities.User.mdx), \"password_hash\"&#62;",
+        "description": "User details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -255,6 +275,16 @@ medusa.admin.auth.getToken({
     "defaultValue": "",
     "description": "Resolves to the access token of the user, if they're authenticated successfully.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "access_token",
+        "type": "`string`",
+        "description": "Access token that can be used to send authenticated requests.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

@@ -217,7 +217,17 @@ async function listStockLocations (ids: string[], skip: number, take: number) {
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "StockLocationDTO",
+            "type": "`object`",
+            "description": "Represents a Stock Location",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

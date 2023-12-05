@@ -65,7 +65,17 @@ medusa.orderEdits.complete(orderEditId)
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "order_edit",
+        "type": "Omit&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx), \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;",
+        "description": "Order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -138,7 +148,17 @@ medusa.orderEdits.decline(orderEditId)
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "order_edit",
+        "type": "Omit&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx), \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;",
+        "description": "Order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -192,6 +212,16 @@ medusa.orderEdits.retrieve(orderEditId)
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "order_edit",
+        "type": "Omit&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx), \"internal_note\" \\| \"created_by\" \\| \"confirmed_by\" \\| \"canceled_by\"&#62;",
+        "description": "Order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

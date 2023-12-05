@@ -264,7 +264,17 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "CurrencyDTO",
+            "type": "`object`",
+            "description": "A currency's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }

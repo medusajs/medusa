@@ -6,22 +6,6 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 100,
-			"name": "default",
-			"variant": "reference",
-			"kind": 4194304,
-			"flags": {},
-			"sources": [
-				{
-					"fileName": "fulfillment-service.ts",
-					"line": 480,
-					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L480"
-				}
-			],
-			"target": 47
-		},
-		{
 			"id": 47,
 			"name": "AbstractFulfillmentService",
 			"variant": "declaration",
@@ -142,14 +126,6 @@
 					"flags": {
 						"isProtected": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 406,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L406"
-						}
-					],
 					"signatures": [
 						{
 							"id": 50,
@@ -184,14 +160,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 406,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L406"
-								}
-							],
 							"parameters": [
 								{
 									"id": 51,
@@ -289,14 +257,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 408,
-							"character": 23,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L408"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -342,14 +302,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 407,
-							"character": 23,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L407"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -420,14 +372,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 422,
-							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L422"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -441,14 +385,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 449,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L449"
-						}
-					],
 					"signatures": [
 						{
 							"id": 71,
@@ -528,14 +464,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 449,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L449"
-								}
-							],
 							"parameters": [
 								{
 									"id": 72,
@@ -681,14 +609,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 447,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L447"
-						}
-					],
 					"signatures": [
 						{
 							"id": 68,
@@ -775,14 +695,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 447,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L447"
-								}
-							],
 							"parameters": [
 								{
 									"id": 69,
@@ -853,14 +765,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 462,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L462"
-						}
-					],
 					"signatures": [
 						{
 							"id": 82,
@@ -900,14 +804,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 462,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L462"
-								}
-							],
 							"parameters": [
 								{
 									"id": 83,
@@ -978,14 +874,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 455,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L455"
-						}
-					],
 					"signatures": [
 						{
 							"id": 76,
@@ -1041,14 +929,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 455,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L455"
-								}
-							],
 							"parameters": [
 								{
 									"id": 77,
@@ -1231,14 +1111,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 464,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L464"
-						}
-					],
 					"signatures": [
 						{
 							"id": 85,
@@ -1294,14 +1166,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 464,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L464"
-								}
-							],
 							"parameters": [
 								{
 									"id": 86,
@@ -1379,14 +1243,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 468,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L468"
-						}
-					],
 					"signatures": [
 						{
 							"id": 88,
@@ -1422,14 +1278,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 468,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L468"
-								}
-							],
 							"parameters": [
 								{
 									"id": 89,
@@ -1500,14 +1348,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 437,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L437"
-						}
-					],
 					"signatures": [
 						{
 							"id": 58,
@@ -1551,14 +1391,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 437,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L437"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -1598,14 +1430,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 470,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L470"
-						}
-					],
 					"signatures": [
 						{
 							"id": 91,
@@ -1641,14 +1465,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 470,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L470"
-								}
-							],
 							"parameters": [
 								{
 									"id": 92,
@@ -1721,14 +1537,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 472,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L472"
-						}
-					],
 					"signatures": [
 						{
 							"id": 94,
@@ -1764,14 +1572,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 472,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L472"
-								}
-							],
 							"parameters": [
 								{
 									"id": 95,
@@ -1852,14 +1652,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 474,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L474"
-						}
-					],
 					"signatures": [
 						{
 							"id": 97,
@@ -1895,14 +1687,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 474,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L474"
-								}
-							],
 							"parameters": [
 								{
 									"id": 98,
@@ -2011,14 +1795,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 439,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L439"
-						}
-					],
 					"signatures": [
 						{
 							"id": 60,
@@ -2081,14 +1857,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 439,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L439"
-								}
-							],
 							"parameters": [
 								{
 									"id": 61,
@@ -2222,14 +1990,6 @@
 					"flags": {
 						"isAbstract": true
 					},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 445,
-							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L445"
-						}
-					],
 					"signatures": [
 						{
 							"id": 65,
@@ -2285,14 +2045,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 445,
-									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L445"
-								}
-							],
 							"parameters": [
 								{
 									"id": 66,
@@ -2379,14 +2131,6 @@
 						59,
 						64
 					]
-				}
-			],
-			"sources": [
-				{
-					"fileName": "fulfillment-service.ts",
-					"line": 390,
-					"character": 22,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L390"
 				}
 			],
 			"implementedTypes": [
@@ -2515,14 +2259,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 209,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L209"
-						}
-					],
 					"signatures": [
 						{
 							"id": 18,
@@ -2602,14 +2338,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 209,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L209"
-								}
-							],
 							"parameters": [
 								{
 									"id": 19,
@@ -2743,14 +2471,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 159,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L159"
-						}
-					],
 					"signatures": [
 						{
 							"id": 15,
@@ -2837,14 +2557,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 159,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L159"
-								}
-							],
 							"parameters": [
 								{
 									"id": 16,
@@ -2903,14 +2615,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 276,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L276"
-						}
-					],
 					"signatures": [
 						{
 							"id": 29,
@@ -2950,14 +2654,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 276,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L276"
-								}
-							],
 							"parameters": [
 								{
 									"id": 30,
@@ -3016,14 +2712,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 249,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L249"
-						}
-					],
 					"signatures": [
 						{
 							"id": 23,
@@ -3079,14 +2767,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 249,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L249"
-								}
-							],
 							"parameters": [
 								{
 									"id": 24,
@@ -3257,14 +2937,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 301,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L301"
-						}
-					],
 					"signatures": [
 						{
 							"id": 32,
@@ -3320,14 +2992,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 301,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L301"
-								}
-							],
 							"parameters": [
 								{
 									"id": 33,
@@ -3393,14 +3057,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 321,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L321"
-						}
-					],
 					"signatures": [
 						{
 							"id": 35,
@@ -3436,14 +3092,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 321,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L321"
-								}
-							],
 							"parameters": [
 								{
 									"id": 36,
@@ -3502,14 +3150,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 76,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L76"
-						}
-					],
 					"signatures": [
 						{
 							"id": 5,
@@ -3553,14 +3193,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 76,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L76"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -3588,14 +3220,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 341,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L341"
-						}
-					],
 					"signatures": [
 						{
 							"id": 38,
@@ -3631,14 +3255,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 341,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L341"
-								}
-							],
 							"parameters": [
 								{
 									"id": 39,
@@ -3699,14 +3315,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 361,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L361"
-						}
-					],
 					"signatures": [
 						{
 							"id": 41,
@@ -3742,14 +3350,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 361,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L361"
-								}
-							],
 							"parameters": [
 								{
 									"id": 42,
@@ -3818,14 +3418,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 384,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L384"
-						}
-					],
 					"signatures": [
 						{
 							"id": 44,
@@ -3861,14 +3453,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 384,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L384"
-								}
-							],
 							"parameters": [
 								{
 									"id": 45,
@@ -3955,14 +3539,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 112,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L112"
-						}
-					],
 					"signatures": [
 						{
 							"id": 7,
@@ -4025,14 +3601,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 112,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L112"
-								}
-							],
 							"parameters": [
 								{
 									"id": 8,
@@ -4154,14 +3722,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "fulfillment-service.ts",
-							"line": 138,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L138"
-						}
-					],
 					"signatures": [
 						{
 							"id": 12,
@@ -4217,14 +3777,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "fulfillment-service.ts",
-									"line": 138,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L138"
-								}
-							],
 							"parameters": [
 								{
 									"id": 13,
@@ -4289,14 +3841,6 @@
 					]
 				}
 			],
-			"sources": [
-				{
-					"fileName": "fulfillment-service.ts",
-					"line": 45,
-					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/medusa/src/interfaces/fulfillment-service.ts#L45"
-				}
-			],
 			"implementedBy": [
 				{
 					"type": "reference",
@@ -4307,12 +3851,6 @@
 		}
 	],
 	"groups": [
-		{
-			"title": "References",
-			"children": [
-				100
-			]
-		},
 		{
 			"title": "Classes",
 			"children": [
@@ -4711,10 +4249,6 @@
 		"99": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
 			"qualifiedName": "documentType"
-		},
-		"100": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/fulfillment-service.ts",
-			"qualifiedName": "default"
 		}
 	}
 }

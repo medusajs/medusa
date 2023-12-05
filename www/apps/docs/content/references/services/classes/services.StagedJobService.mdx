@@ -15,7 +15,7 @@ Provides layer to manipulate users.
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[StagedJobServiceProps](../../medusa/types/medusa.StagedJobServiceProps.mdx)",
+    "type": "`StagedJobServiceProps`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -183,7 +183,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[EmitData](../../medusa/types/medusa.EmitData.mdx)&#60;unknown&#62; \\| [EmitData](../../medusa/types/medusa.EmitData.mdx)&#60;unknown&#62;[]",
+    "type": "EmitData&#60;unknown&#62; \\| EmitData&#60;unknown&#62;[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -324,126 +324,9 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [StagedJobServiceProps](../../medusa/types/medusa.StagedJobServiceProps.mdx)) => [StagedJobService](services.StagedJobService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "stagedJobRepository_",
-    "type": "Repository&#60;[StagedJob](../../entities/classes/entities.StagedJob.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
+    "name": "StagedJobService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "create",
-    "type": "(`data`: [EmitData](../../medusa/types/medusa.EmitData.mdx)&#60;unknown&#62; \\| [EmitData](../../medusa/types/medusa.EmitData.mdx)&#60;unknown&#62;[]) => Promise&#60;[StagedJob](../../entities/classes/entities.StagedJob.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "delete",
-    "type": "(`stagedJobIds`: `string` \\| `string`[]) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[StagedJob](../../entities/classes/entities.StagedJob.mdx)&#62;) => Promise&#60;[StagedJob](../../entities/classes/entities.StagedJob.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [StagedJobService](services.StagedJobService.mdx)",
-    "description": "",
+    "description": "Provides layer to manipulate users.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

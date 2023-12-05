@@ -286,6 +286,25 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
     "defaultValue": "",
     "description": "The list of product types along with their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "ProductTypeDTO[]",
+        "type": "[ProductTypeDTO](../../product/interfaces/product.ProductTypeDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

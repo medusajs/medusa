@@ -36,14 +36,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "stock-location/common.ts",
-							"line": 163,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L163"
-						}
-					],
 					"type": {
 						"type": "union",
 						"types": [
@@ -77,14 +69,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "stock-location/common.ts",
-							"line": 167,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L167"
-						}
-					],
 					"type": {
 						"type": "union",
 						"types": [
@@ -116,14 +100,6 @@
 						60,
 						61
 					]
-				}
-			],
-			"sources": [
-				{
-					"fileName": "stock-location/common.ts",
-					"line": 159,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L159"
 				}
 			]
 		},
@@ -182,14 +158,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 70,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L70"
-						}
-					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -198,28 +166,12 @@
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "common/common.ts",
-									"line": 70,
-									"character": 10,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L70"
-								}
-							],
 							"indexSignature": {
 								"id": 69,
 								"name": "__index",
 								"variant": "signature",
 								"kind": 8192,
 								"flags": {},
-								"sources": [
-									{
-										"fileName": "common/common.ts",
-										"line": 70,
-										"character": 12,
-										"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L70"
-									}
-								],
 								"parameters": [
 									{
 										"id": 70,
@@ -266,14 +218,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 65,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L65"
-						}
-					],
 					"type": {
 						"type": "array",
 						"elementType": {
@@ -298,14 +242,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 53,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L53"
-						}
-					],
 					"type": {
 						"type": "array",
 						"elementType": {
@@ -345,14 +281,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 57,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L57"
-						}
-					],
 					"type": {
 						"type": "union",
 						"types": [
@@ -383,14 +311,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 61,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L61"
-						}
-					],
 					"type": {
 						"type": "union",
 						"types": [
@@ -429,14 +349,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 75,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L75"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "boolean"
@@ -454,14 +366,6 @@
 						65,
 						71
 					]
-				}
-			],
-			"sources": [
-				{
-					"fileName": "common/common.ts",
-					"line": 49,
-					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L49"
 				}
 			],
 			"typeParameters": [
@@ -487,14 +391,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "stock-location/service.ts",
-							"line": 245,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L245"
-						}
-					],
 					"signatures": [
 						{
 							"id": 20,
@@ -530,14 +426,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/service.ts",
-									"line": 245,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L245"
-								}
-							],
 							"parameters": [
 								{
 									"id": 21,
@@ -610,14 +498,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "stock-location/service.ts",
-							"line": 297,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L297"
-						}
-					],
 					"signatures": [
 						{
 							"id": 29,
@@ -653,14 +533,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/service.ts",
-									"line": 297,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L297"
-								}
-							],
 							"parameters": [
 								{
 									"id": 30,
@@ -729,14 +601,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "stock-location/service.ts",
-							"line": 89,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L89"
-						}
-					],
 					"signatures": [
 						{
 							"id": 5,
@@ -824,14 +688,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/service.ts",
-									"line": 89,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L89"
-								}
-							],
 							"parameters": [
 								{
 									"id": 6,
@@ -954,14 +810,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "stock-location/service.ts",
-							"line": 166,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L166"
-						}
-					],
 					"signatures": [
 						{
 							"id": 10,
@@ -1049,14 +897,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/service.ts",
-									"line": 166,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L166"
-								}
-							],
 							"parameters": [
 								{
 									"id": 11,
@@ -1188,14 +1028,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "stock-location/service.ts",
-							"line": 217,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L217"
-						}
-					],
 					"signatures": [
 						{
 							"id": 15,
@@ -1243,14 +1075,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/service.ts",
-									"line": 217,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L217"
-								}
-							],
 							"parameters": [
 								{
 									"id": 16,
@@ -1368,14 +1192,6 @@
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "stock-location/service.ts",
-							"line": 273,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L273"
-						}
-					],
 					"signatures": [
 						{
 							"id": 24,
@@ -1411,14 +1227,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/service.ts",
-									"line": 273,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L273"
-								}
-							],
 							"parameters": [
 								{
 									"id": 25,
@@ -1517,14 +1325,6 @@
 						23
 					]
 				}
-			],
-			"sources": [
-				{
-					"fileName": "stock-location/service.ts",
-					"line": 12,
-					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/service.ts#L12"
-				}
 			]
 		},
 		{
@@ -1550,14 +1350,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 38,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L38"
-						}
-					],
 					"type": {
 						"type": "union",
 						"types": [
@@ -1595,14 +1387,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 59,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L59"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -1631,14 +1415,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 52,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L52"
-						}
-					],
 					"type": {
 						"type": "array",
 						"elementType": {
@@ -1656,14 +1432,6 @@
 										"variant": "declaration",
 										"kind": 1024,
 										"flags": {},
-										"sources": [
-											{
-												"fileName": "joiner/index.ts",
-												"line": 54,
-												"character": 4,
-												"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L54"
-											}
-										],
 										"type": {
 											"type": "reference",
 											"target": 152,
@@ -1677,14 +1445,6 @@
 										"variant": "declaration",
 										"kind": 1024,
 										"flags": {},
-										"sources": [
-											{
-												"fileName": "joiner/index.ts",
-												"line": 53,
-												"character": 4,
-												"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L53"
-											}
-										],
 										"type": {
 											"type": "intrinsic",
 											"name": "string"
@@ -1698,14 +1458,6 @@
 											110,
 											109
 										]
-									}
-								],
-								"sources": [
-									{
-										"fileName": "joiner/index.ts",
-										"line": 52,
-										"character": 12,
-										"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L52"
 									}
 								]
 							}
@@ -1728,14 +1480,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 42,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L42"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -1769,14 +1513,6 @@
 													"variant": "declaration",
 													"kind": 1024,
 													"flags": {},
-													"sources": [
-														{
-															"fileName": "joiner/index.ts",
-															"line": 47,
-															"character": 8,
-															"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L47"
-														}
-													],
 													"type": {
 														"type": "array",
 														"elementType": {
@@ -1791,14 +1527,6 @@
 													"variant": "declaration",
 													"kind": 1024,
 													"flags": {},
-													"sources": [
-														{
-															"fileName": "joiner/index.ts",
-															"line": 46,
-															"character": 8,
-															"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L46"
-														}
-													],
 													"type": {
 														"type": "intrinsic",
 														"name": "string"
@@ -1812,14 +1540,6 @@
 														104,
 														103
 													]
-												}
-											],
-											"sources": [
-												{
-													"fileName": "joiner/index.ts",
-													"line": 45,
-													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L45"
 												}
 											]
 										}
@@ -1837,14 +1557,6 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 50,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L50"
-						}
-					],
 					"type": {
 						"type": "array",
 						"elementType": {
@@ -1861,14 +1573,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 51,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L51"
-						}
-					],
 					"type": {
 						"type": "array",
 						"elementType": {
@@ -1885,14 +1589,6 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 34,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L34"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -1911,14 +1607,6 @@
 						106,
 						99
 					]
-				}
-			],
-			"sources": [
-				{
-					"fileName": "joiner/index.ts",
-					"line": 33,
-					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L33"
 				}
 			]
 		},
@@ -1945,14 +1633,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 30,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L30"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -1979,14 +1659,6 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 26,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L26"
-						}
-					],
 					"type": {
 						"type": "union",
 						"types": [
@@ -2012,14 +1684,6 @@
 						151,
 						150
 					]
-				}
-			],
-			"sources": [
-				{
-					"fileName": "joiner/index.ts",
-					"line": 25,
-					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L25"
 				}
 			]
 		},
@@ -2054,14 +1718,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "shared-context.ts",
-							"line": 16,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/shared-context.ts#L16"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -2088,14 +1744,6 @@
 							}
 						]
 					},
-					"sources": [
-						{
-							"fileName": "shared-context.ts",
-							"line": 12,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/shared-context.ts#L12"
-						}
-					],
 					"type": {
 						"type": "reference",
 						"target": {
@@ -2115,14 +1763,6 @@
 						84
 					]
 				}
-			],
-			"sources": [
-				{
-					"fileName": "shared-context.ts",
-					"line": 8,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/shared-context.ts#L8"
-				}
 			]
 		},
 		{
@@ -2140,14 +1780,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 184,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L184"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -2161,14 +1793,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 186,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L186"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -2182,14 +1806,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 181,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L181"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -2203,14 +1819,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 182,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L182"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -2224,14 +1832,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 180,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L180"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -2245,14 +1845,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 183,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L183"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -2266,14 +1858,6 @@
 					"flags": {
 						"isOptional": true
 					},
-					"sources": [
-						{
-							"fileName": "common/common.ts",
-							"line": 185,
-							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L185"
-						}
-					],
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -2292,14 +1876,6 @@
 						120,
 						122
 					]
-				}
-			],
-			"sources": [
-				{
-					"fileName": "common/common.ts",
-					"line": 179,
-					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/common/common.ts#L179"
 				}
 			]
 		},
@@ -2320,14 +1896,6 @@
 					"@interface"
 				]
 			},
-			"sources": [
-				{
-					"fileName": "stock-location/common.ts",
-					"line": 247,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L247"
-				}
-			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
@@ -2353,14 +1921,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 250,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L250"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -2393,14 +1953,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 249,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L249"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -2422,14 +1974,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 251,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L251"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -2464,14 +2008,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 248,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L248"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -2488,14 +2024,6 @@
 								88
 							]
 						}
-					],
-					"sources": [
-						{
-							"fileName": "stock-location/common.ts",
-							"line": 247,
-							"character": 39,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L247"
-						}
 					]
 				}
 			}
@@ -2506,14 +2034,6 @@
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "joiner/index.ts",
-					"line": 1,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L1"
-				}
-			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
@@ -2529,14 +2049,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "joiner/index.ts",
-									"line": 2,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L2"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -2558,14 +2070,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "joiner/index.ts",
-									"line": 22,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L22"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -2592,14 +2096,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "joiner/index.ts",
-									"line": 3,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L3"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -2621,14 +2117,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "joiner/index.ts",
-									"line": 14,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L14"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "boolean"
@@ -2650,14 +2138,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "joiner/index.ts",
-									"line": 10,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L10"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "boolean"
@@ -2679,14 +2159,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "joiner/index.ts",
-									"line": 18,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L18"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "boolean"
@@ -2698,14 +2170,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "joiner/index.ts",
-									"line": 4,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L4"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -2717,14 +2181,6 @@
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
-							"sources": [
-								{
-									"fileName": "joiner/index.ts",
-									"line": 5,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L5"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -2745,14 +2201,6 @@
 								157
 							]
 						}
-					],
-					"sources": [
-						{
-							"fileName": "joiner/index.ts",
-							"line": 1,
-							"character": 33,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/joiner/index.ts#L1"
-						}
 					]
 				}
 			}
@@ -2763,14 +2211,6 @@
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "modules-sdk/index.ts",
-					"line": 132,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L132"
-				}
-			],
 			"type": {
 				"type": "intersection",
 				"types": [
@@ -2829,14 +2269,6 @@
 									"flags": {
 										"isOptional": true
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 167,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L167"
-										}
-									],
 									"type": {
 										"type": "reflection",
 										"declaration": {
@@ -2854,14 +2286,6 @@
 													"flags": {
 														"isOptional": true
 													},
-													"sources": [
-														{
-															"fileName": "modules-sdk/index.ts",
-															"line": 176,
-															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L176"
-														}
-													],
 													"type": {
 														"type": "reference",
 														"target": {
@@ -2890,14 +2314,6 @@
 																			"flags": {
 																				"isOptional": true
 																			},
-																			"sources": [
-																				{
-																					"fileName": "modules-sdk/index.ts",
-																					"line": 201,
-																					"character": 8,
-																					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L201"
-																				}
-																			],
 																			"type": {
 																				"type": "intrinsic",
 																				"name": "string"
@@ -2911,14 +2327,6 @@
 																			"flags": {
 																				"isOptional": true
 																			},
-																			"sources": [
-																				{
-																					"fileName": "modules-sdk/index.ts",
-																					"line": 202,
-																					"character": 8,
-																					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L202"
-																				}
-																			],
 																			"type": {
 																				"type": "intrinsic",
 																				"name": "boolean"
@@ -2940,14 +2348,6 @@
 																					}
 																				]
 																			},
-																			"sources": [
-																				{
-																					"fileName": "modules-sdk/index.ts",
-																					"line": 206,
-																					"character": 8,
-																					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L206"
-																				}
-																			],
 																			"type": {
 																				"type": "reference",
 																				"target": {
@@ -2974,14 +2374,6 @@
 																			"variant": "declaration",
 																			"kind": 1024,
 																			"flags": {},
-																			"sources": [
-																				{
-																					"fileName": "modules-sdk/index.ts",
-																					"line": 179,
-																					"character": 8,
-																					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L179"
-																				}
-																			],
 																			"type": {
 																				"type": "union",
 																				"types": [
@@ -3083,14 +2475,6 @@
 																				55
 																			]
 																		}
-																	],
-																	"sources": [
-																		{
-																			"fileName": "modules-sdk/index.ts",
-																			"line": 178,
-																			"character": 6,
-																			"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L178"
-																		}
 																	]
 																}
 															}
@@ -3115,14 +2499,6 @@
 															}
 														]
 													},
-													"sources": [
-														{
-															"fileName": "modules-sdk/index.ts",
-															"line": 175,
-															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L175"
-														}
-													],
 													"type": {
 														"type": "intrinsic",
 														"name": "string"
@@ -3144,14 +2520,6 @@
 															}
 														]
 													},
-													"sources": [
-														{
-															"fileName": "modules-sdk/index.ts",
-															"line": 171,
-															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L171"
-														}
-													],
 													"type": {
 														"type": "intrinsic",
 														"name": "string"
@@ -3167,14 +2535,6 @@
 														51
 													]
 												}
-											],
-											"sources": [
-												{
-													"fileName": "modules-sdk/index.ts",
-													"line": 167,
-													"character": 19,
-													"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L167"
-												}
 											]
 										}
 									}
@@ -3187,14 +2547,6 @@
 									"flags": {
 										"isOptional": true
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 141,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L141"
-										}
-									],
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -3214,14 +2566,6 @@
 														"flags": {
 															"isOptional": true
 														},
-														"sources": [
-															{
-																"fileName": "modules-sdk/index.ts",
-																"line": 143,
-																"character": 4,
-																"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L143"
-															}
-														],
 														"type": {
 															"type": "reference",
 															"target": {
@@ -3255,14 +2599,6 @@
 																						"variant": "declaration",
 																						"kind": 1024,
 																						"flags": {},
-																						"sources": [
-																							{
-																								"fileName": "modules-sdk/index.ts",
-																								"line": 148,
-																								"character": 10,
-																								"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L148"
-																							}
-																						],
 																						"type": {
 																							"type": "array",
 																							"elementType": {
@@ -3277,14 +2613,6 @@
 																						"variant": "declaration",
 																						"kind": 1024,
 																						"flags": {},
-																						"sources": [
-																							{
-																								"fileName": "modules-sdk/index.ts",
-																								"line": 147,
-																								"character": 10,
-																								"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L147"
-																							}
-																						],
 																						"type": {
 																							"type": "intrinsic",
 																							"name": "string"
@@ -3298,14 +2626,6 @@
 																							42,
 																							41
 																						]
-																					}
-																				],
-																				"sources": [
-																					{
-																						"fileName": "modules-sdk/index.ts",
-																						"line": 146,
-																						"character": 8,
-																						"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L146"
 																					}
 																				]
 																			}
@@ -3323,14 +2643,6 @@
 														"variant": "declaration",
 														"kind": 1024,
 														"flags": {},
-														"sources": [
-															{
-																"fileName": "modules-sdk/index.ts",
-																"line": 151,
-																"character": 4,
-																"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L151"
-															}
-														],
 														"type": {
 															"type": "reference",
 															"target": 112,
@@ -3344,14 +2656,6 @@
 														"variant": "declaration",
 														"kind": 1024,
 														"flags": {},
-														"sources": [
-															{
-																"fileName": "modules-sdk/index.ts",
-																"line": 142,
-																"character": 4,
-																"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L142"
-															}
-														],
 														"type": {
 															"type": "intrinsic",
 															"name": "string"
@@ -3366,14 +2670,6 @@
 															43,
 															38
 														]
-													}
-												],
-												"sources": [
-													{
-														"fileName": "modules-sdk/index.ts",
-														"line": 141,
-														"character": 12,
-														"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L141"
 													}
 												]
 											}
@@ -3396,14 +2692,6 @@
 											}
 										]
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 158,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L158"
-										}
-									],
 									"type": {
 										"type": "intrinsic",
 										"name": "boolean"
@@ -3425,14 +2713,6 @@
 											}
 										]
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 166,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L166"
-										}
-									],
 									"type": {
 										"type": "intrinsic",
 										"name": "boolean"
@@ -3454,14 +2734,6 @@
 											}
 										]
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 162,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L162"
-										}
-									],
 									"type": {
 										"type": "reference",
 										"target": {
@@ -3490,14 +2762,6 @@
 									"flags": {
 										"isOptional": true
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 154,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L154"
-										}
-									],
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -3514,14 +2778,6 @@
 									"flags": {
 										"isOptional": true
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 140,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L140"
-										}
-									],
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -3548,14 +2804,6 @@
 											}
 										]
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 139,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L139"
-										}
-									],
 									"type": {
 										"type": "intrinsic",
 										"name": "string"
@@ -3569,14 +2817,6 @@
 									"flags": {
 										"isOptional": true
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 153,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L153"
-										}
-									],
 									"type": {
 										"type": "intrinsic",
 										"name": "string"
@@ -3598,14 +2838,6 @@
 										44
 									]
 								}
-							],
-							"sources": [
-								{
-									"fileName": "modules-sdk/index.ts",
-									"line": 135,
-									"character": 4,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L135"
-								}
 							]
 						}
 					}
@@ -3618,14 +2850,6 @@
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
-			"sources": [
-				{
-					"fileName": "modules-sdk/index.ts",
-					"line": 212,
-					"character": 20,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L212"
-				}
-			],
 			"type": {
 				"type": "intersection",
 				"types": [
@@ -3660,14 +2884,6 @@
 											}
 										]
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 220,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L220"
-										}
-									],
 									"type": {
 										"type": "intrinsic",
 										"name": "boolean"
@@ -3689,14 +2905,6 @@
 											}
 										]
 									},
-									"sources": [
-										{
-											"fileName": "modules-sdk/index.ts",
-											"line": 216,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L216"
-										}
-									],
 									"type": {
 										"type": "intrinsic",
 										"name": "boolean"
@@ -3710,14 +2918,6 @@
 										115,
 										114
 									]
-								}
-							],
-							"sources": [
-								{
-									"fileName": "modules-sdk/index.ts",
-									"line": 212,
-									"character": 68,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/modules-sdk/index.ts#L212"
 								}
 							]
 						}
@@ -3742,14 +2942,6 @@
 					"@interface"
 				]
 			},
-			"sources": [
-				{
-					"fileName": "stock-location/common.ts",
-					"line": 67,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L67"
-				}
-			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
@@ -3773,14 +2965,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 69,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L69"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -3802,14 +2986,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 70,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L70"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -3840,14 +3016,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 73,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L73"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -3878,14 +3046,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 71,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L71"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -3914,14 +3074,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 72,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L72"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -3941,14 +3093,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 78,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L78"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -3982,14 +3126,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 80,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L80"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4029,14 +3165,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 68,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L68"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4058,14 +3186,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 77,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L77"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4111,14 +3231,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 74,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L74"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4149,14 +3261,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 75,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L75"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4187,14 +3291,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 76,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L76"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4223,14 +3319,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 79,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L79"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4270,14 +3358,6 @@
 								137
 							]
 						}
-					],
-					"sources": [
-						{
-							"fileName": "stock-location/common.ts",
-							"line": 67,
-							"character": 38,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L67"
-						}
 					]
 				}
 			}
@@ -4299,14 +3379,6 @@
 					"@interface"
 				]
 			},
-			"sources": [
-				{
-					"fileName": "stock-location/common.ts",
-					"line": 212,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L212"
-				}
-			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
@@ -4330,14 +3402,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 213,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L213"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4359,14 +3423,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 214,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L214"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4388,14 +3444,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 216,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L216"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4415,14 +3463,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 215,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L215"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4444,14 +3484,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 220,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L220"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -4488,14 +3520,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 217,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L217"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4517,14 +3541,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 219,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L219"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4546,14 +3562,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 218,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L218"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4573,14 +3581,6 @@
 								147,
 								146
 							]
-						}
-					],
-					"sources": [
-						{
-							"fileName": "stock-location/common.ts",
-							"line": 212,
-							"character": 40,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L212"
 						}
 					]
 				}
@@ -4603,14 +3603,6 @@
 					"@interface"
 				]
 			},
-			"sources": [
-				{
-					"fileName": "stock-location/common.ts",
-					"line": 129,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L129"
-				}
-			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
@@ -4636,14 +3628,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 134,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L134"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": 124,
@@ -4665,14 +3649,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 133,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L133"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4692,14 +3668,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 135,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L135"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4733,14 +3701,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 137,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L137"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4778,14 +3738,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 130,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L130"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4805,14 +3757,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 132,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L132"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4856,14 +3800,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 131,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L131"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -4883,14 +3819,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 136,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L136"
-								}
-							],
 							"type": {
 								"type": "union",
 								"types": [
@@ -4925,14 +3853,6 @@
 								81
 							]
 						}
-					],
-					"sources": [
-						{
-							"fileName": "stock-location/common.ts",
-							"line": 129,
-							"character": 31,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L129"
-						}
 					]
 				}
 			}
@@ -4954,14 +3874,6 @@
 					"@interface"
 				]
 			},
-			"sources": [
-				{
-					"fileName": "stock-location/common.ts",
-					"line": 276,
-					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L276"
-				}
-			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
@@ -4987,14 +3899,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 279,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L279"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": 139,
@@ -5018,14 +3922,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 278,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L278"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -5047,14 +3943,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 280,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L280"
-								}
-							],
 							"type": {
 								"type": "reference",
 								"target": {
@@ -5091,14 +3979,6 @@
 									}
 								]
 							},
-							"sources": [
-								{
-									"fileName": "stock-location/common.ts",
-									"line": 277,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L277"
-								}
-							],
 							"type": {
 								"type": "intrinsic",
 								"name": "string"
@@ -5114,14 +3994,6 @@
 								97,
 								94
 							]
-						}
-					],
-					"sources": [
-						{
-							"fileName": "stock-location/common.ts",
-							"line": 276,
-							"character": 39,
-							"url": "https://github.com/medusajs/medusa/blob/17ef8c5d6/packages/types/src/stock-location/common.ts#L276"
 						}
 					]
 				}

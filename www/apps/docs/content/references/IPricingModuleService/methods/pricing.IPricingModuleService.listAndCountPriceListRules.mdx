@@ -315,6 +315,25 @@ async function listAndCountPriceListRules (priceListRuleIds: string[], ruleTypeI
     "defaultValue": "",
     "description": "The list of price list rules along with their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "PriceListRuleDTO[]",
+        "type": "[PriceListRuleDTO](../../pricing/interfaces/pricing.PriceListRuleDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

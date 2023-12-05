@@ -185,7 +185,17 @@ medusa.customers.addresses.addAddress({
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "customer",
+        "type": "Omit&#60;[Customer](../../entities/classes/entities.Customer.mdx), \"password_hash\"&#62;",
+        "description": "Customer details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -240,7 +250,17 @@ medusa.customers.addresses.deleteAddress(addressId)
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "customer",
+        "type": "Omit&#60;[Customer](../../entities/classes/entities.Customer.mdx), \"password_hash\"&#62;",
+        "description": "Customer details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 
@@ -406,6 +426,16 @@ medusa.customers.addresses.updateAddress(addressId, {
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "customer",
+        "type": "Omit&#60;[Customer](../../entities/classes/entities.Customer.mdx), \"password_hash\"&#62;",
+        "description": "Customer details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

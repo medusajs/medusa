@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-18.mdx)",
+    "type": "`InjectedDependencies`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -110,7 +110,7 @@ ___
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
+    "type": "`FlagRouter`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -146,7 +146,7 @@ ___
   },
   {
     "name": "inventoryService_",
-    "type": "[IInventoryService](../../medusa/interfaces/medusa.IInventoryService.mdx)",
+    "type": "[IInventoryService](../../inventory/interfaces/inventory.IInventoryService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -464,7 +464,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[CreateShippingMethodDto](../../medusa/types/medusa.CreateShippingMethodDto.mdx)",
+    "type": "`CreateShippingMethodDto`",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -792,7 +792,7 @@ to their respective fulfillment provider.
   },
   {
     "name": "itemsToFulfill",
-    "type": "[FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[]",
+    "type": "`FulFillmentItemType`[]",
     "description": "items to fulfil.",
     "optional": false,
     "defaultValue": "",
@@ -1124,7 +1124,7 @@ Calculate and attach the different total fields on the object
   },
   {
     "name": "context",
-    "type": "[TotalsContext](../../medusa/types/medusa.TotalsContext.mdx)",
+    "type": "`TotalsContext`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1208,7 +1208,7 @@ Retrieves the order line items, given an array of items.
   },
   {
     "name": "items",
-    "type": "[FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[]",
+    "type": "`FulFillmentItemType`[]",
     "description": "the items to get",
     "optional": false,
     "defaultValue": "",
@@ -1650,7 +1650,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[TotalsContext](../../medusa/types/medusa.TotalsContext.mdx)",
+    "type": "`TotalsContext`",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1789,7 +1789,7 @@ will throw errors if metadata updates are attempted.
   },
   {
     "name": "update",
-    "type": "[UpdateOrderInput](../../medusa/types/medusa.UpdateOrderInput.mdx)",
+    "type": "`UpdateOrderInput`",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -1966,548 +1966,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "constructor",
-    "type": "(`__namedParameters`: [InjectedDependencies](../../medusa/types/medusa.InjectedDependencies-18.mdx)) => [OrderService](services.OrderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addressRepository_",
-    "type": "Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cartService_",
-    "type": "[CartService](services.CartService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "customerService_",
-    "type": "[CustomerService](services.CustomerService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "discountService_",
-    "type": "[DiscountService](services.DiscountService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "draftOrderService_",
-    "type": "[DraftOrderService](services.DraftOrderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "eventBus_",
-    "type": "[EventBusService](services.EventBusService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "featureFlagRouter_",
-    "type": "[FlagRouter](../../medusa/classes/medusa.FlagRouter.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "fulfillmentProviderService_",
-    "type": "[FulfillmentProviderService](services.FulfillmentProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "fulfillmentService_",
-    "type": "[FulfillmentService](services.FulfillmentService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "giftCardService_",
-    "type": "[GiftCardService](services.GiftCardService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "inventoryService_",
-    "type": "[IInventoryService](../../medusa/interfaces/medusa.IInventoryService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "lineItemService_",
-    "type": "[LineItemService](services.LineItemService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "newTotalsService_",
-    "type": "[NewTotalsService](services.NewTotalsService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "orderRepository_",
-    "type": "Repository&#60;[Order](../../entities/classes/entities.Order.mdx)&#62; & `object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "paymentProviderService_",
-    "type": "[PaymentProviderService](services.PaymentProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "productVariantInventoryService_",
-    "type": "[ProductVariantInventoryService](services.ProductVariantInventoryService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "regionService_",
-    "type": "[RegionService](services.RegionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shippingOptionService_",
-    "type": "[ShippingOptionService](services.ShippingOptionService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shippingProfileService_",
-    "type": "[ShippingProfileService](services.ShippingProfileService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "taxProviderService_",
-    "type": "[TaxProviderService](services.TaxProviderService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "totalsService_",
-    "type": "[TotalsService](services.TotalsService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "Events",
+    "name": "OrderService",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "addShippingMethod",
-    "type": "(`orderId`: `string`, `optionId`: `string`, `data?`: `Record<string, unknown>`, `config`: [CreateShippingMethodDto](../../medusa/types/medusa.CreateShippingMethodDto.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "archive",
-    "type": "(`orderId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cancel",
-    "type": "(`orderId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cancelFulfillment",
-    "type": "(`fulfillmentId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "capturePayment",
-    "type": "(`orderId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "completeOrder",
-    "type": "(`orderId`: `string`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createFromCart",
-    "type": "(`cartOrId`: `string` \\| [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createFulfillment",
-    "type": "(`orderId`: `string`, `itemsToFulfill`: [FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[], `config`: ``{ location_id?: string ; metadata?: Record&#60;string, unknown&#62; ; no_notification?: boolean  }``) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createGiftCardsFromLineItem_",
-    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `lineItem`: [LineItem](../../entities/classes/entities.LineItem.mdx), `manager`: `EntityManager`) => Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createRefund",
-    "type": "(`orderId`: `string`, `refundAmount`: `number`, `reason`: `string`, `note?`: `string`, `config`: ``{ no_notification?: boolean  }``) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createShipment",
-    "type": "(`orderId`: `string`, `fulfillmentId`: `string`, `trackingLinks?`: [TrackingLink](../../entities/classes/entities.TrackingLink.mdx)[], `config`: ``{ metadata: Record&#60;string, unknown&#62; ; no_notification?: boolean  }``) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "decorateTotals",
-    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `totalsFields?`: `string`[]) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;(`order`: [Order](../../entities/classes/entities.Order.mdx), `context?`: [TotalsContext](../../medusa/types/medusa.TotalsContext.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "decorateTotalsLegacy",
-    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `totalsFields`: `string`[]) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getFulfillmentItems",
-    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `items`: [FulFillmentItemType](../../medusa/types/medusa.FulFillmentItemType.mdx)[], `transformer`: (`item`: `undefined` \\| [LineItem](../../entities/classes/entities.LineItem.mdx), `quantity`: `number`) => `unknown`) => Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getTotalsRelations",
-    "type": "(`config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => `string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "list",
-    "type": "(`selector`: [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "listAndCount",
-    "type": "(`selector`: [QuerySelector](../../medusa/types/medusa.QuerySelector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[[Order](../../entities/classes/entities.Order.mdx)[], number]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "registerReturnReceived",
-    "type": "(`orderId`: `string`, `receivedReturn`: [Return](../../entities/classes/entities.Return.mdx), `customRefundAmount?`: `number`) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieve",
-    "type": "(`orderId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByCartId",
-    "type": "(`cartId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByCartIdWithTotals",
-    "type": "(`cartId`: `string`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveByExternalId",
-    "type": "(`externalId`: `string`, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveLegacy",
-    "type": "(`orderIdOrSelector`: `string` \\| [Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;, `config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveWithTotals",
-    "type": "(`orderId`: `string`, `options`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;, `context`: [TotalsContext](../../medusa/types/medusa.TotalsContext.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transformQueryForTotals",
-    "type": "(`config`: [FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;) => ``{ relations: undefined \\| string[] ; select: undefined \\| keyof [Order](../../entities/classes/entities.Order.mdx)[] ; totalsToSelect: undefined \\| keyof [Order](../../entities/classes/entities.Order.mdx)[]  }``",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "update",
-    "type": "(`orderId`: `string`, `update`: [UpdateOrderInput](../../medusa/types/medusa.UpdateOrderInput.mdx)) => Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateBillingAddress",
-    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `address`: [Address](../../entities/classes/entities.Address.mdx)) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updateShippingAddress",
-    "type": "(`order`: [Order](../../entities/classes/entities.Order.mdx), `address`: [Address](../../entities/classes/entities.Address.mdx)) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "validateFulfillmentLineItem",
-    "type": "(`item`: [LineItem](../../entities/classes/entities.LineItem.mdx), `quantity`: `number`) => `null` \\| [LineItem](../../entities/classes/entities.LineItem.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [OrderService](services.OrderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",

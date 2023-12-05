@@ -189,7 +189,26 @@ async function retrievePriceLists (priceListIds: string[], titles: string[], ski
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ACTIVE",
+            "type": "`\"active\"`",
+            "description": "The price list is enabled and its prices can be used.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DRAFT",
+            "type": "`\"draft\"`",
+            "description": "The price list is disabled, meaning its prices can't be used yet.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   },
@@ -324,6 +343,25 @@ async function retrievePriceLists (priceListIds: string[], titles: string[], ski
     "defaultValue": "",
     "description": "The list of price lists along with their total count.",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "PriceListDTO[]",
+        "type": "[PriceListDTO](../../pricing/interfaces/pricing.PriceListDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

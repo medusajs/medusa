@@ -142,7 +142,35 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "id",
+            "type": "`string` \\| `string`[] \\| [OperatorMap](../../product/types/product.OperatorMap.mdx)&#60;string&#62;",
+            "description": "IDs to filter categories by.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_active",
+            "type": "`boolean`",
+            "description": "Filter categories by whether they're active.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_internal",
+            "type": "`boolean`",
+            "description": "Filter categories by whether they're internal",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "category_id",
@@ -196,7 +224,17 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
         "optional": true,
         "defaultValue": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "value",
+            "type": "`string`[]",
+            "description": "Values to filter product tags by.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   },
@@ -339,7 +377,17 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
         "defaultValue": "",
         "description": "",
         "expandable": false,
-        "children": []
+        "children": [
+          {
+            "name": "ProductDTO",
+            "type": "`object`",
+            "description": "A product's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }
