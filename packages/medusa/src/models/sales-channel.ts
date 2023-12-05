@@ -56,7 +56,7 @@ export class SalesChannel extends SoftDeletableEntity {
       }),
     ]
   )
-  carts: SalesChannel[]
+  carts: Cart[]
 
   @OneToMany(
     () => SalesChannelLocation,
