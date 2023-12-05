@@ -77,7 +77,7 @@ export interface StepExecutionContext {
    */
   metadata: TransactionPayload["metadata"]
   /**
-   * {@inheritDoc Context}
+   * {@inheritDoc medusa!Context}
    */
   context: Context
 }
