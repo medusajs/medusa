@@ -1,4 +1,3 @@
-import { Text } from "@medusajs/ui"
 import { allDocs } from "contentlayer/generated"
 import { notFound } from "next/navigation"
 
@@ -62,9 +61,7 @@ export default async function DocPage({ params }: DocPageProps) {
   return (
     <div className="flex flex-col">
       <h1 className="h1-docs text-medusa-fg-base mb-2">{doc.title}</h1>
-      <Text className="text-medusa-fg-subtle mb-6" size="large">
-        {doc.description}
-      </Text>
+      <p className="text-medusa-fg-subtle mb-6 txt-large">{doc.description}</p>
       <div>
         <Mdx code={doc.body.code} />
       </div>

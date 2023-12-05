@@ -7398,16 +7398,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.2.7":
-  version: 18.2.7
-  resolution: "@types/react-dom@npm:18.2.7"
-  dependencies:
-    "@types/react": "*"
-  checksum: bd090f5e1b13765fbc191d9eb720dd152d26c20558221963009189c4636ce11e4c1c976e4cde4a74335f997a2be651af27d3727474a8091424101a83a71eebfb
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:^18.2.0":
+"@types/react-dom@npm:^18.2.0, @types/react-dom@npm:latest":
   version: 18.2.17
   resolution: "@types/react-dom@npm:18.2.17"
   dependencies:
@@ -7466,7 +7457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:>=16, @types/react@npm:^18.2.0":
+"@types/react@npm:*, @types/react@npm:>=16, @types/react@npm:^18.2.0, @types/react@npm:latest":
   version: 18.2.42
   resolution: "@types/react@npm:18.2.42"
   dependencies:
@@ -7474,17 +7465,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 2946d78c1f9a220a4dfedd7995b8bcba47235b19756bf3dd845c604bb24fff8d0ff5be81c0c98ac7f4488791e8c7e6cbcc4898c40c0209d74a1223b8fbfb994f
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:18.2.17":
-  version: 18.2.17
-  resolution: "@types/react@npm:18.2.17"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 3a90c1614765a03fc83408cfe7fd75a5284fad96014241654f59e64bf004bed81df3e757eff73310c8d332523e1d2b32230e35d9496f608a1ced93f9ca06a26e
   languageName: node
   linkType: hard
 
@@ -8274,8 +8254,8 @@ __metadata:
     "@types/mapbox__rehype-prism": ^0.8.0
     "@types/mdx": ^2.0.5
     "@types/node": 20.4.5
-    "@types/react": 18.2.17
-    "@types/react-dom": 18.2.7
+    "@types/react": latest
+    "@types/react-dom": latest
     "@types/react-transition-group": ^4.4.6
     autoprefixer: 10.4.14
     clsx: ^2.0.0
