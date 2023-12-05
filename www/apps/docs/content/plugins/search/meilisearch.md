@@ -137,6 +137,7 @@ const plugins = [
               "variant_sku",
             ],
             displayedAttributes: [
+              "id", 
               "title", 
               "description", 
               "variant_sku", 
@@ -245,7 +246,7 @@ If you run your Next.js Starter Template now while the Medusa backend and the Me
 
 :::note
 
-To make sure the Next.js Starter Template properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
+To make sure the Next.js Starter Template properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa backend at least the fields `id`, `title`, `handle`, `description`, and `thumbnail`.
 
 :::
 
