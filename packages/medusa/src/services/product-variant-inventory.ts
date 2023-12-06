@@ -797,47 +797,45 @@ class ProductVariantInventoryService extends TransactionBaseService {
         availabilityContext
       )
 
-    return await promiseAll(
-      variants.map(async (variant) => {
-        if (!variant.id) {
-          return variant
-        }
-
-        variant.purchasable = variant.allow_backorder
-
-        if (!variant.manage_inventory) {
-          variant.purchasable = true
-          return variant
-        }
-
-        const variantInventory = variantInventoryMap.get(variant.id) || []
-
-        if (!variantInventory.length) {
-          delete variant.inventory_quantity
-          variant.purchasable = true
-          return variant
-        }
-
-        if (!salesChannelId) {
-          delete variant.inventory_quantity
-          variant.purchasable = false
-          return variant
-        }
-
-        const locations =
-          inventoryLocationMap.get(variantInventory[0].inventory_item_id) ?? []
-
-        variant.inventory_quantity = locations.reduce(
-          (acc, next) => acc + (next.stocked_quantity - next.reserved_quantity),
-          0
-        )
-
-        variant.purchasable =
-          variant.inventory_quantity > 0 || variant.allow_backorder
-
+    return variants.map((variant) => {
+      if (!variant.id) {
         return variant
-      })
-    )
+      }
+
+      variant.purchasable = variant.allow_backorder
+
+      if (!variant.manage_inventory) {
+        variant.purchasable = true
+        return variant
+      }
+
+      const variantInventory = variantInventoryMap.get(variant.id) || []
+
+      if (!variantInventory.length) {
+        delete variant.inventory_quantity
+        variant.purchasable = true
+        return variant
+      }
+
+      if (!salesChannelId) {
+        delete variant.inventory_quantity
+        variant.purchasable = false
+        return variant
+      }
+
+      const locations =
+        inventoryLocationMap.get(variantInventory[0].inventory_item_id) ?? []
+
+      variant.inventory_quantity = locations.reduce(
+        (acc, next) => acc + (next.stocked_quantity - next.reserved_quantity),
+        0
+      )
+
+      variant.purchasable =
+        variant.inventory_quantity > 0 || variant.allow_backorder
+
+      return variant
+    })
   }
 
   private async getAvailabilityContext(
