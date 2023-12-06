@@ -1,0 +1,372 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ISearchService
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "options",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Methods
+
+### addDocuments
+
+Used to index documents by the search engine provider
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "indexName",
+    "type": "`string`",
+    "description": "the index name",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "documents",
+    "type": "`unknown`",
+    "description": "documents array to be indexed",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "`string`",
+    "description": "of documents to be added (e.g: products, regions, orders, etc)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "returns response from search engine provider",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createIndex
+
+Used to create an index
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "indexName",
+    "type": "`string`",
+    "description": "the index name",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`unknown`",
+    "description": "the options",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "returns response from search engine provider",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteAllDocuments
+
+Used to delete all documents
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "indexName",
+    "type": "`string`",
+    "description": "the index name",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "returns response from search engine provider",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteDocument
+
+Used to delete document
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "indexName",
+    "type": "`string`",
+    "description": "the index name",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "document_id",
+    "type": "`string` \\| `number`",
+    "description": "the id of the document",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "returns response from search engine provider",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getIndex
+
+Used to get an index
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "indexName",
+    "type": "`string`",
+    "description": "the index name.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "returns response from search engine provider",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### replaceDocuments
+
+Used to replace documents
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "indexName",
+    "type": "`string`",
+    "description": "the index name.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "documents",
+    "type": "`unknown`",
+    "description": "array of document objects that will replace existing documents",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "`string`",
+    "description": "type of documents to be replaced (e.g: products, regions, orders, etc)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "returns response from search engine provider",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### search
+
+Used to search for a document in an index
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "indexName",
+    "type": "`string`",
+    "description": "the index name",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "query",
+    "type": "`null` \\| `string`",
+    "description": "the search query",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`unknown`",
+    "description": "any options passed to the request object other than the query and indexName\n- additionalOptions contain any provider specific options",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "returns response from search engine provider",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateSettings
+
+Used to update the settings of an index
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "indexName",
+    "type": "`string`",
+    "description": "the index name",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "settings",
+    "type": "`unknown`",
+    "description": "settings object",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "returns response from search engine provider",
+    "expandable": false,
+    "children": []
+  }
+]} />

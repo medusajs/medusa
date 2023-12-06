@@ -20,7 +20,7 @@ Price lists can be used for a variety of use cases including:
 
 ### Price List Entity Overview
 
-A price list is stored in the database as a [PriceList](../../references/entities/classes/PriceList.mdx) entity. Some of its important attributes are:
+A price list is stored in the database as a [PriceList](../../references/entities/classes/entities.PriceList.mdx) entity. Some of its important attributes are:
 
 - `type`: The price list's type. Can be either a `sale` or an `override`.
 - `status`: The status of the price list. Can be `active` or `draft`. If a price list is a `draft`, its prices won't be applied even if its conditions are met.

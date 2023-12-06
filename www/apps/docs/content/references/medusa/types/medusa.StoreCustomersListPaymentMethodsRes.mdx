@@ -1,0 +1,44 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# StoreCustomersListPaymentMethodsRes
+
+ **StoreCustomersListPaymentMethodsRes**: `Object`
+
+The payment method's details.
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "payment_methods",
+    "type": "`object`[]",
+    "description": "The details of the saved payment methods.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "data",
+        "type": "`object`",
+        "description": "The data needed for the Payment Provider to use the saved payment method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the Payment Provider where the payment method is saved.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

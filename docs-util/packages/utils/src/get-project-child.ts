@@ -4,28 +4,34 @@ import {
   ReflectionKind,
 } from "typedoc"
 
+const MAX_LEVEL = 3
+
 export function getProjectChild(
   project: ProjectReflection,
-  childName: string
+  childName: string,
+  level = 1
 ): DeclarationReflection | undefined {
   let reflection: DeclarationReflection | undefined = project.getChildByName(
     childName
   ) as DeclarationReflection
   const splitChildName = childName.split(".")
+  const canExpandFurther = level <= MAX_LEVEL
 
-  if (!reflection && splitChildName.length > 1) {
+  if (!reflection && splitChildName.length > 1 && canExpandFurther) {
     reflection = getProjectChild(
       project,
-      splitChildName[splitChildName.length - 1]
+      splitChildName[splitChildName.length - 1],
+      level + 1
     )
   }
 
   if (
     !reflection &&
     project.parent &&
-    project.parent instanceof ProjectReflection
+    project.parent instanceof ProjectReflection &&
+    canExpandFurther
   ) {
-    reflection = getProjectChild(project.parent, childName)
+    reflection = getProjectChild(project.parent, childName, level + 1)
   }
 
   if (!reflection) {

@@ -34,10 +34,10 @@ export function load(app: Application) {
   })
 
   app.options.addDeclaration({
-    help: "[Markdown Plugin] Output all reflections into seperate output files.",
+    help: "[Markdown Plugin] Specify module names where all reflections are outputted into seperate files.",
     name: "allReflectionsHaveOwnDocument",
-    type: ParameterType.Boolean,
-    defaultValue: false,
+    type: ParameterType.Array,
+    defaultValue: [],
   })
 
   app.options.addDeclaration({
