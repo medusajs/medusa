@@ -3524,6 +3524,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-docs-generator@workspace:packages/react-docs-generator":
+  version: 0.0.0-use.local
+  resolution: "react-docs-generator@workspace:packages/react-docs-generator"
+  dependencies:
+    "@types/node": ^20.9.4
+    commander: ^11.1.0
+    glob: ^10.3.10
+    ts-node: ^10.9.1
+    typescript: 5.2
+  bin:
+    react-docs-generator: dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0":
   version: 3.6.2
   resolution: "readable-stream@npm:3.6.2"
