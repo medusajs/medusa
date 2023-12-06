@@ -1876,8 +1876,7 @@ class CartService extends TransactionBaseService {
         await this.eventBus_
           .withTransaction(transactionManager)
           .emit(CartService.Events.UPDATED, { id: cartId })
-      },
-      "SERIALIZABLE"
+      }
     )
   }
 
