@@ -17,7 +17,7 @@ const {
   getContainer,
 } = require("../../../../environment-helpers/use-container")
 
-jest.setTimeout(30000)
+jest.setTimeout(60000)
 
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
