@@ -753,7 +753,9 @@ Object {
 
 exports[`medusa-plugin-sendgrid order canceled data 1`] = `
 Object {
+  "afterLoad": [Function],
   "beforeInsert": [Function],
+  "beforeUpdate": [Function],
   "billing_address": null,
   "billing_address_id": null,
   "canceled_at": Any<Date>,
