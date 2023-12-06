@@ -4,7 +4,7 @@ import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { PriceListService, SalesChannelService } from "../../../services"
 import { getVariantsFromPriceList } from "./get-variants-from-price-list"
 
-export async function listAndCountProductWithIsolatedProductModule(
+export async function listProducts(
   container: MedusaContainer,
   filterableFields,
   listConfig

@@ -1,23 +1,19 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import {
-  PriceListService,
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   SalesChannelService,
 } from "../../../../services"
 
-import {
-  IInventoryService,
-  IPricingModuleService,
-  IProductModuleService,
-} from "@medusajs/types"
-import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import { listProducts } from "../../../../utils"
+
+import { IInventoryService } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { Product } from "../../../../models"
 import { PricedProduct } from "../../../../types/pricing"
 import { FilterableProductProps } from "../../../../types/product"
-import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /admin/products
@@ -252,12 +248,11 @@ export default async (req, res) => {
   let count
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    const [products, count_] =
-      await listAndCountProductWithIsolatedProductModule(
-        req,
-        req.filterableFields,
-        req.listConfig
-      )
+    const [products, count_] = await listProducts(
+      req.scope,
+      req.filterableFields,
+      req.listConfig
+    )
 
     rawProducts = products
     count = count_
@@ -303,171 +298,6 @@ export default async (req, res) => {
     offset: skip,
     limit: take,
   })
-}
-
-async function getVariantsFromPriceList(req, priceListId) {
-  const remoteQuery = req.scope.resolve("remoteQuery")
-  const pricingModuleService: IPricingModuleService = req.scope.resolve(
-    "pricingModuleService"
-  )
-  const productModuleService: IProductModuleService = req.scope.resolve(
-    "productModuleService"
-  )
-
-  const [priceList] = await pricingModuleService.listPriceLists(
-    { id: [priceListId] },
-    {
-      relations: [
-        "price_set_money_amounts",
-        "price_set_money_amounts.price_set",
-      ],
-      select: ["price_set_money_amounts.price_set.id"],
-    }
-  )
-
-  const priceSetIds = priceList.price_set_money_amounts?.map(
-    (psma) => psma.price_set?.id
-  )
-
-  const query = {
-    product_variant_price_set: {
-      __args: {
-        price_set_id: priceSetIds,
-      },
-      fields: ["variant_id", "price_set_id"],
-    },
-  }
-
-  const variantPriceSets = await remoteQuery(query)
-  const variantIds = variantPriceSets.map((vps) => vps.variant_id)
-
-  return await productModuleService.listVariants(
-    {
-      id: variantIds,
-    },
-    {
-      select: ["product_id"],
-    }
-  )
-}
-
-export async function listAndCountProductWithIsolatedProductModule(
-  req,
-  filterableFields,
-  listConfig
-) {
-  // TODO: Add support for fields/expands
-
-  const remoteQuery = req.scope.resolve("remoteQuery")
-  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
-
-  const productIdsFilter: Set<string> = new Set()
-  const variantIdsFilter: Set<string> = new Set()
-
-  const promises: Promise<void>[] = []
-
-  // This is not the best way of handling cross filtering but for now I would say it is fine
-  const salesChannelIdFilter = filterableFields.sales_channel_id
-  delete filterableFields.sales_channel_id
-
-  if (salesChannelIdFilter) {
-    const salesChannelService = req.scope.resolve(
-      "salesChannelService"
-    ) as SalesChannelService
-
-    promises.push(
-      salesChannelService
-        .listProductIdsBySalesChannelIds(salesChannelIdFilter)
-        .then((productIdsInSalesChannel) => {
-          let filteredProductIds =
-            productIdsInSalesChannel[salesChannelIdFilter]
-
-          if (filterableFields.id) {
-            filterableFields.id = Array.isArray(filterableFields.id)
-              ? filterableFields.id
-              : [filterableFields.id]
-
-            const salesChannelProductIdsSet = new Set(filteredProductIds)
-
-            filteredProductIds = filterableFields.id.filter((productId) =>
-              salesChannelProductIdsSet.has(productId)
-            )
-          }
-
-          filteredProductIds.map((id) => productIdsFilter.add(id))
-        })
-    )
-  }
-
-  const priceListId = filterableFields.price_list_id
-  delete filterableFields.price_list_id
-
-  if (priceListId) {
-    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-      const variants = await getVariantsFromPriceList(req, priceListId)
-
-      variants.forEach((pv) => variantIdsFilter.add(pv.id))
-    } else {
-      // TODO: it is working but validate the behaviour.
-      // e.g pricing context properly set.
-      // At the moment filtering by price list but not having any customer id or
-      // include discount forces the query to filter with price list id is null
-      const priceListService = req.scope.resolve(
-        "priceListService"
-      ) as PriceListService
-      promises.push(
-        priceListService
-          .listPriceListsVariantIdsMap(priceListId)
-          .then((priceListVariantIdsMap) => {
-            priceListVariantIdsMap[priceListId].map((variantId) =>
-              variantIdsFilter.add(variantId)
-            )
-          })
-      )
-    }
-  }
-
-  const discountConditionId = filterableFields.discount_condition_id
-  delete filterableFields.discount_condition_id
-
-  if (discountConditionId) {
-    // TODO implement later
-  }
-
-  await promiseAll(promises)
-
-  if (productIdsFilter.size > 0) {
-    filterableFields.id = Array.from(productIdsFilter)
-  }
-
-  if (variantIdsFilter.size > 0) {
-    filterableFields.variants = { id: Array.from(variantIdsFilter) }
-  }
-
-  const variables = {
-    filters: filterableFields,
-    order: listConfig.order,
-    skip: listConfig.skip,
-    take: listConfig.take,
-  }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const {
-    rows: products,
-    metadata: { count },
-  } = await remoteQuery(query)
-
-  products.forEach((product) => {
-    product.profile_id = product.profile?.id
-  })
-
-  return [products, count]
 }
 
 /**
