@@ -72,7 +72,10 @@ export type ProductExportDescriptor =
       entityName: Extract<ProductExportColumnSchemaEntity, "product">
     }
   | {
-      accessor: (variant: ProductVariant) => string
+      accessor: (
+        variant: ProductVariant,
+        context?: { product?: Product }
+      ) => string
       entityName: Extract<ProductExportColumnSchemaEntity, "variant">
     }
 
