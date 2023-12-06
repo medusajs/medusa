@@ -85,7 +85,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       switch (idempotencyKey.recovery_point) {
         case "started": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
@@ -102,7 +102,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         }
         case "tax_lines_created": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
@@ -123,7 +123,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
         case "payment_authorized": {
           await this.activeManager_
-            .transaction("SERIALIZABLE", async (transactionManager) => {
+            .transaction(async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
                 .withTransaction(transactionManager)
                 .workStage(
