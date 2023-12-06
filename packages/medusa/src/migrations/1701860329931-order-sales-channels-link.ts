@@ -5,7 +5,7 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 
 export const featureFlag = [SalesChannelFeatureFlag.key, MedusaV2Flag.key]
 
-export class OrderSalesChannelLink1698160217000 implements MigrationInterface {
+export class OrderSalesChannelLink1701860329931 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
         CREATE TABLE IF NOT EXISTS "order_sales_channel"
