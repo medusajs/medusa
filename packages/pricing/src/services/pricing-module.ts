@@ -14,14 +14,14 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
+  arrayDifference,
+  deduplicate,
+  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
-  arrayDifference,
-  arrayUnique,
-  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -1408,7 +1408,7 @@ export default class PricingModuleService<
     )
 
     const invalidRuleTypes = arrayDifference(
-      arrayUnique(ruleTypeAttributes),
+      deduplicate(ruleTypeAttributes),
       ruleTypes.map((ruleType) => ruleType.rule_attribute)
     )
 

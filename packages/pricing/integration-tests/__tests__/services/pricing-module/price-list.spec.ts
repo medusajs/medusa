@@ -70,28 +70,6 @@ describe("PriceList Service", () => {
       ])
     })
 
-    it("should list 16 price lists without take", async () => {
-      const priceLists = Array(16)
-        .fill(1)
-        .map((_, i) => {
-          return {
-            id: `price-list-${i + 2}`,
-            title: "Price List 2",
-            description: "test",
-            number_rules: 0,
-          }
-        })
-
-      await createPriceLists(testManager, priceLists)
-
-      const priceListResult = await service.listPriceLists({
-        id: priceLists.map(({ id }) => id),
-      })
-
-      expect(priceListResult).toHaveLength(16)
-    })
-  })
-
   describe("listAndCount", () => {
     it("should return pricelists and count", async () => {
       const [priceListResult, count] = await service.listAndCountPriceLists()

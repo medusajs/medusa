@@ -1920,7 +1920,7 @@ describe("PricingModule Service - Calculate Price", () => {
         ])
       })
 
-      it("should not return price list prices when price list conditions match within prices", async () => {
+      it("should not return price list prices when price list conditions are met but price rules are not", async () => {
         await createPriceLists(service, {}, { region_id: ["DE", "PL"] }, [
           ...defaultPriceListPrices,
           {

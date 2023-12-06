@@ -87,8 +87,6 @@ export class PricingRepository
       )
       .leftJoin("rule_type as plrt", "plrt.id", "plr.rule_type_id")
       .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
-      .orderBy("pl.number_rules", "desc")
-      .orderBy("number_rules", "desc")
       .orderBy([
         { column: "number_rules", order: "desc" },
         { column: "pl.number_rules", order: "desc" },
@@ -112,7 +110,6 @@ export class PricingRepository
           "pr.value": value,
         })
       }
-
       q.orWhere("psma1.number_rules", "=", 0)
       q.whereNull("psma1.price_list_id")
     })
