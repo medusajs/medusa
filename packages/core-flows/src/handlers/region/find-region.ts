@@ -1,11 +1,12 @@
 import { MedusaError } from "@medusajs/utils"
+import { RegionTypes } from "@medusajs/types"
 import { isDefined } from "medusa-core-utils"
 
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
-type RegionDTO = {
+type RegionResultDTO = {
   region_id?: string
-  region?: any
+  region?: RegionTypes.RegionDTO
 }
 
 type HandlerInputData = {
@@ -21,11 +22,11 @@ enum Aliases {
 export async function findRegion({
   container,
   data,
-}: WorkflowArguments<HandlerInputData>): Promise<RegionDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<RegionResultDTO> {
   const regionService = container.resolve("regionService")
 
   let regionId: string
-  const regionDTO: RegionDTO = {}
+  const regionDTO: RegionResultDTO = {}
 
   if (isDefined(data[Aliases.Region].region_id)) {
     regionDTO.region_id = data[Aliases.Region].region_id

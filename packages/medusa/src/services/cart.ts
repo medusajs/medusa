@@ -366,12 +366,13 @@ class CartService extends TransactionBaseService {
 
         if (data.customer_id || data.customer) {
           const customer =
-            data.customer ??
+            (data.customer ??
             (data.customer_id &&
               (await this.customerService_
                 .withTransaction(transactionManager)
                 .retrieve(data.customer_id)
-                .catch(() => undefined)))
+                .catch(() => undefined)))) as Customer
+
           rawCart.customer = customer
           rawCart.customer_id = customer?.id
           rawCart.email = customer?.email
