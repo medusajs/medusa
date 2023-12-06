@@ -2,9 +2,12 @@
 addHowToData: true
 ---
 
+
+import Details from "@theme/Details"
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 import LearningPath from '@site/src/components/LearningPath';
+import { DetailsSummary } from "docs-ui"
 
 # Integrate Ecommerce Stack Recipe
 
@@ -41,7 +44,7 @@ This increases the maintainability of your integration as it’s all implemented
 }} />
 
 <Details>
-  <Summary>Example: Create a service for an ERP system</Summary>
+  <DetailsSummary>Example: Create a service for an ERP system</DetailsSummary>
 
     Here’s an example of a service created for an external ERP system:
 
@@ -128,7 +131,7 @@ Workflows guarantee data consistency through their compensation feature. You can
 }} />
 
 <Details>
-  <Summary>Example: Update products across systems with workflows</Summary>
+  <DetailsSummary>Example: Update products across systems with workflows</DetailsSummary>
 
     For example, create the following workflow in `src/workflows/update-product.ts`:
 
@@ -252,7 +255,7 @@ For example, suppose an administrator changes the product data in the ERP system
 }} />
 
 <Details>
-  <Summary>Example: Create a webhook listener for ERP changes</Summary>
+  <DetailsSummary>Example: Create a webhook listener for ERP changes</DetailsSummary>
 
     For example, create the file `src/api/webhooks/erp/update/route.ts` with the following content:
 

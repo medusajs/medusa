@@ -2,10 +2,13 @@
 addHowToData: true
 ---
 
+
+import Details from "@theme/Details"
 import DocCardList from '@theme/DocCardList';
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 import LearningPath from '@site/src/components/LearningPath';
+import { DetailsSummary } from "docs-ui"
 
 # B2B Recipe
 
@@ -267,7 +270,7 @@ Medusa allows you to create custom API Routes exposed as REST APIs.
 }} />
 
 <Details>
-  <Summary>Example Implementation</Summary>
+  <DetailsSummary>Example Implementation</DetailsSummary>
 
   For example, create the following API Route that allows you to check the customer’s group and whether it has the `is_b2b` flag enabled:
       

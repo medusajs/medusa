@@ -2,6 +2,9 @@
 description: 'Learn what product categories are and how they work in a Medusa backend. Product categories can be used to organize products using nested collections.'
 ---
 
+import Details from "@theme/Details"
+import { DetailsSummary } from "docs-ui"
+
 # Products Architecture Overview
 
 In this document, you’ll learn about Products in Medusa and their relation to other entities.
@@ -112,7 +115,7 @@ For example, if a variant's price is 10 USD, it's stored is `1000`, as in 1,000 
 For zero-decimal currencies, the amount is still stored as an integer without multiplying by a 100. For example, if a variant's price is ¥500, it's stored as `500`.
 
 <Details>
-  <Summary>Zero-decimal Currencies</Summary>
+  <DetailsSummary>Zero-decimal Currencies</DetailsSummary>
 
   - BIF
   - CLP

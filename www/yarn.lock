@@ -1771,7 +1771,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudinary/transformation-builder-sdk@npm:^1.7.0":
+"@cloudinary/transformation-builder-sdk@npm:^1.9.0":
   version: 1.9.0
   resolution: "@cloudinary/transformation-builder-sdk@npm:1.9.0"
   dependencies:
@@ -1781,11 +1781,11 @@ __metadata:
   linkType: hard
 
 "@cloudinary/url-gen@npm:^1.7.0, @cloudinary/url-gen@npm:^1.9.2":
-  version: 1.13.0
-  resolution: "@cloudinary/url-gen@npm:1.13.0"
+  version: 1.14.0
+  resolution: "@cloudinary/url-gen@npm:1.14.0"
   dependencies:
-    "@cloudinary/transformation-builder-sdk": ^1.7.0
-  checksum: 416c9c5ee17ad5938e3d7fe198106c65658ef605c5a83961ca2f568675498dae8a73be7d52a857332c348098e4d47e68796cd8c01e831e5848e3954e6eba8186
+    "@cloudinary/transformation-builder-sdk": ^1.9.0
+  checksum: 9bd073cf864cd75dd9dd61f88eed9fe00077f227dedaef93e875aea061cb9d77de3d4c0b2efc0500d4833fd22ca5bb3bc51bd049a5775148c1a632b843207864
   languageName: node
   linkType: hard
 
@@ -1959,7 +1959,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/core@npm:3.0.1, @docusaurus/core@npm:latest":
+"@docusaurus/core@npm:3.0.1":
   version: 3.0.1
   resolution: "@docusaurus/core@npm:3.0.1"
   dependencies:
@@ -2112,7 +2112,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/module-type-aliases@npm:3.0.1, @docusaurus/module-type-aliases@npm:latest":
+"@docusaurus/module-type-aliases@npm:3.0.1":
   version: 3.0.1
   resolution: "@docusaurus/module-type-aliases@npm:3.0.1"
   dependencies:
@@ -2287,7 +2287,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/preset-classic@npm:latest":
+"@docusaurus/preset-classic@npm:3.0.1":
   version: 3.0.1
   resolution: "@docusaurus/preset-classic@npm:3.0.1"
   dependencies:
@@ -2323,7 +2323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/remark-plugin-npm2yarn@npm:latest":
+"@docusaurus/remark-plugin-npm2yarn@npm:3.0.1":
   version: 3.0.1
   resolution: "@docusaurus/remark-plugin-npm2yarn@npm:3.0.1"
   dependencies:
@@ -2398,7 +2398,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/theme-mermaid@npm:latest":
+"@docusaurus/theme-mermaid@npm:3.0.1":
   version: 3.0.1
   resolution: "@docusaurus/theme-mermaid@npm:3.0.1"
   dependencies:
@@ -2460,14 +2460,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/tsconfig@npm:latest":
+"@docusaurus/tsconfig@npm:3.0.1":
   version: 3.0.1
   resolution: "@docusaurus/tsconfig@npm:3.0.1"
   checksum: d28f253f8d678c7650934ed3ee0390995a22ffb1b10fd8e15e4482517352b097a9a29bcd4a617d8722490ef299fe37d3162e542822bbbe53d5f1e1d5f8a921ce
   languageName: node
   linkType: hard
 
-"@docusaurus/types@npm:3.0.1, @docusaurus/types@npm:latest":
+"@docusaurus/types@npm:3.0.1":
   version: 3.0.1
   resolution: "@docusaurus/types@npm:3.0.1"
   dependencies:
@@ -3255,18 +3255,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:3, @mdx-js/react@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@mdx-js/react@npm:3.0.0"
-  dependencies:
-    "@types/mdx": ^2.0.0
-  peerDependencies:
-    "@types/react": ">=16"
-    react: ">=16"
-  checksum: 865f6ebc7ae83c6cb9f7e92db4eddd3f85cd1664391643b4736887ddc32b0ddb5aec012db6fbc9b486b552e08e6d5ad800450fcd9d51c20665667ff0f174d966
-  languageName: node
-  linkType: hard
-
 "@mdx-js/react@npm:^2.2.1, @mdx-js/react@npm:^2.3.0":
   version: 2.3.0
   resolution: "@mdx-js/react@npm:2.3.0"
@@ -3276,6 +3264,18 @@ __metadata:
   peerDependencies:
     react: ">=16"
   checksum: 6d647115703dbe258f7fe372499fa8c6fe17a053ff0f2a208111c9973a71ae738a0ed376770445d39194d217e00e1a015644b24f32c2f7cb4f57988de0649b15
+  languageName: node
+  linkType: hard
+
+"@mdx-js/react@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@mdx-js/react@npm:3.0.0"
+  dependencies:
+    "@types/mdx": ^2.0.0
+  peerDependencies:
+    "@types/react": ">=16"
+    react: ">=16"
+  checksum: 865f6ebc7ae83c6cb9f7e92db4eddd3f85cd1664391643b4736887ddc32b0ddb5aec012db6fbc9b486b552e08e6d5ad800450fcd9d51c20665667ff0f174d966
   languageName: node
   linkType: hard
 
@@ -7449,11 +7449,11 @@ __metadata:
   linkType: hard
 
 "@types/react-transition-group@npm:^4.4.6":
-  version: 4.4.9
-  resolution: "@types/react-transition-group@npm:4.4.9"
+  version: 4.4.10
+  resolution: "@types/react-transition-group@npm:4.4.10"
   dependencies:
     "@types/react": "*"
-  checksum: 279cd319202f7ec24ecad174dffd19fd161250bc438bf3c62951f467093e5664a0c895b185976bf45f55b68ec901e520924216eb8abafe934b66f55337319ff5
+  checksum: 3eb9bca143abc21eb781aa5cb1bded0c9335689d515bf0513fb8e63217b7a8122c6a323ecd5644a06938727e1f467ee061d8df1c93b68825a80ff1b47ab777a2
   languageName: node
   linkType: hard
 
@@ -10675,14 +10675,15 @@ __metadata:
     "@babel/preset-react": ^7.18.6
     "@cloudinary/react": ^1.11.2
     "@cloudinary/url-gen": ^1.9.2
-    "@docusaurus/core": latest
-    "@docusaurus/module-type-aliases": latest
-    "@docusaurus/preset-classic": latest
-    "@docusaurus/remark-plugin-npm2yarn": latest
-    "@docusaurus/theme-mermaid": latest
-    "@docusaurus/tsconfig": latest
-    "@docusaurus/types": latest
-    "@mdx-js/react": 3
+    "@docusaurus/core": 3.0.1
+    "@docusaurus/module-type-aliases": 3.0.1
+    "@docusaurus/preset-classic": 3.0.1
+    "@docusaurus/remark-plugin-npm2yarn": 3.0.1
+    "@docusaurus/theme-mermaid": 3.0.1
+    "@docusaurus/tsconfig": 3.0.1
+    "@docusaurus/types": 3.0.1
+    "@mdx-js/mdx": ^3.0.0
+    "@mdx-js/react": ^3.0.0
     "@medusajs/icons": ^1.0.0
     "@svgr/webpack": 6.2.1
     "@types/react": ^18.2.0

@@ -2,6 +2,9 @@
 addHowToData: true
 ---
 
+import Details from "@theme/Details"
+import { DetailsSummary } from "docs-ui"
+
 # Contentful Plugin
 
 In this document, you’ll learn how to install and use the Contentful plugin.
@@ -96,7 +99,7 @@ const plugins = [
 The rest of this section includes the field names you can customize using this option for each content model type.
 
 <Details>
-  <Summary>product</Summary>
+  <DetailsSummary>product</DetailsSummary>
 
   - `title`
   - `subtitle`
@@ -112,7 +115,7 @@ The rest of this section includes the field names you can customize using this o
 </Details>
 
 <Details>
-  <Summary>variant</Summary>
+  <DetailsSummary>variant</DetailsSummary>
 
   - `title`
   - `sku`
@@ -123,7 +126,7 @@ The rest of this section includes the field names you can customize using this o
 </Details>
 
 <Details>
-  <Summary>region</Summary>
+  <DetailsSummary>region</DetailsSummary>
 
   - `name`
   - `countries`
@@ -134,7 +137,7 @@ The rest of this section includes the field names you can customize using this o
 </Details>
 
 <Details>
-  <Summary>collection</Summary>
+  <DetailsSummary>collection</DetailsSummary>
 
   - `title`
   - `medusaId`
@@ -142,7 +145,7 @@ The rest of this section includes the field names you can customize using this o
 </Details>
 
 <Details>
-  <Summary>type</Summary>
+  <DetailsSummary>type</DetailsSummary>
 
   - `name`
   - `medusaId`
@@ -164,7 +167,7 @@ npm install --save-dev contentful-migration
 ```
 
 <Details>
-  <Summary>product Content Model</Summary>
+  <DetailsSummary>product Content Model</DetailsSummary>
 
   Create the file `src/loaders/contentful-migrations/product.ts` with the following content:
 
@@ -243,7 +246,7 @@ npm install --save-dev contentful-migration
 </Details>
 
 <Details>
-  <Summary>productVariant Content Model</Summary>
+  <DetailsSummary>productVariant Content Model</DetailsSummary>
 
   Create the file `src/loaders/contentful-migrations/product-variant.ts` with the following content:
 
@@ -288,7 +291,7 @@ npm install --save-dev contentful-migration
 </Details>
 
 <Details>
-  <Summary>collection Content Model</Summary>
+  <DetailsSummary>collection Content Model</DetailsSummary>
 
   Create the file `src/loaders/contentful-migrations/product-collection.ts` with the following content:
 
@@ -321,7 +324,7 @@ npm install --save-dev contentful-migration
 </Details>
 
 <Details>
-  <Summary>productType Content Model</Summary>
+  <DetailsSummary>productType Content Model</DetailsSummary>
 
   Create the file `src/loaders/contentful-migrations/product-type.ts` with the following content:
 
@@ -354,7 +357,7 @@ npm install --save-dev contentful-migration
 </Details>
     
 <Details>
-  <Summary>region Content Model</Summary>
+  <DetailsSummary>region Content Model</DetailsSummary>
 
   Create the file `src/loaders/contentful-migrations/region.ts` with the following content:
 

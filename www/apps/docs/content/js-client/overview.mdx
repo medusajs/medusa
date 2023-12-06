@@ -2,8 +2,11 @@
 description: 'Learn how to install the Medusa JS Client in a storefront. Medusa JS Client provides easy access to the Medusa API from a client written in TypeScript.'
 ---
 
+
+import Details from "@theme/Details"
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
+import { DetailsSummary } from "docs-ui"
 
 # Medusa JS Client
 
@@ -40,7 +43,7 @@ Where `MEDUSA_BACKEND_URL` is the URL to your Medusa backend. If the `baseUrl` o
 After initialization, you can use the client's properties and methods to send requests to the Medusa backend.
 
 <Details>
-  <Summary>Troubleshooting: Could not find a declaration file for module '@medusajs/medusa-js'</Summary>
+  <DetailsSummary>Troubleshooting: Could not find a declaration file for module '@medusajs/medusa-js'</DetailsSummary>
 
   If you import `@medusajs/medusa-js` in your code and see the following TypeScript error:
 

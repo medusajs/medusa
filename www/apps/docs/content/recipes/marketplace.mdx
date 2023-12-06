@@ -2,10 +2,13 @@
 addHowToData: true
 ---
 
+
+import Details from "@theme/Details"
 import DocCardList from '@theme/DocCardList';
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 import LearningPath from '@site/src/components/LearningPath';
+import { DetailsSummary } from "docs-ui"
 
 # Build a Marketplace
 
@@ -42,7 +45,7 @@ To associate these entities with the `Store` entity, you need to extend and cust
 }} />
 
 <Details>
-  <Summary>Example: Associate User with Store</Summary>
+  <DetailsSummary>Example: Associate User with Store</DetailsSummary>
 
   For example, to associate the `User` entity with the `Store` entity, create the file `src/models/user.ts` with the following content:
 
@@ -180,7 +183,7 @@ You can also extend services if you need to customize a functionality implemente
 }} />
 
 <Details>
-  <Summary>Example: Extend User Service</Summary>
+  <DetailsSummary>Example: Extend User Service</DetailsSummary>
 
   You can extend the user service to change how the `create` method is implemented.
 
@@ -269,7 +272,7 @@ To listen to events, you need to create Subscribers that subscribe a handler fun
 }} />
 
 <Details>
-  <Summary>Example: Listen to Order Created Event</Summary>
+  <DetailsSummary>Example: Listen to Order Created Event</DetailsSummary>
 
   To listen to the `order.placed` event, create the file `src/subscribers/orderNotifier.ts` with the following content:
 

@@ -4,6 +4,9 @@ description: 'Learn how to build the onboarding widget available in the admin da
 addHowToData: true
 ---
 
+import Details from "@theme/Details"
+import { DetailsSummary } from "docs-ui"
+
 In this guide, you’ll learn how to build the onboarding widget available in the admin dashboard the first time you install a Medusa project.
 
 :::note
@@ -60,7 +63,7 @@ The resources in this section are used for typing, layout, and design purposes, 
 Each of the collapsible elements below hold the path to the file that you should create, and the content of that file. 
 
 <Details>
-  <Summary>src/admin/types/icon-type.ts</Summary>
+  <DetailsSummary>src/admin/types/icon-type.ts</DetailsSummary>
 
   ```tsx title="src/admin/types/icon-type.ts"
   import React from "react"
@@ -76,7 +79,7 @@ Each of the collapsible elements below hold the path to the file that you should
 </Details>
 
 <Details>
-  <Summary>src/admin/components/shared/icons/get-started.tsx</Summary>
+  <DetailsSummary>src/admin/components/shared/icons/get-started.tsx</DetailsSummary>
 
 <!-- eslint-disable max-len -->
 
@@ -111,7 +114,7 @@ Each of the collapsible elements below hold the path to the file that you should
 </Details>
 
 <Details>
-  <Summary>src/admin/components/shared/icons/active-circle-dotted-line.tsx</Summary>
+  <DetailsSummary>src/admin/components/shared/icons/active-circle-dotted-line.tsx</DetailsSummary>
 
 <!-- eslint-disable max-len -->
 
@@ -158,7 +161,7 @@ Each of the collapsible elements below hold the path to the file that you should
 </Details>
 
 <Details>
-  <Summary>src/admin/components/shared/accordion.tsx</Summary>
+  <DetailsSummary>src/admin/components/shared/accordion.tsx</DetailsSummary>
 
 <!-- eslint-disable max-len -->
 
@@ -291,7 +294,7 @@ Each of the collapsible elements below hold the path to the file that you should
 </Details>
 
 <Details>
-  <Summary>src/admin/components/shared/card.tsx</Summary>
+  <DetailsSummary>src/admin/components/shared/card.tsx</DetailsSummary>
 
 <!-- eslint-disable max-len -->
 
@@ -1127,7 +1130,7 @@ In this section, you’ll create the components for each step in the onboarding 
 Notice that as there are two types of flows, you'll be creating the components for the default flow and for the Next.js flow.
 
 <Details>
-  <Summary>ProductsListDefault component</Summary>
+  <DetailsSummary>ProductsListDefault component</DetailsSummary>
 
   The `ProductsListDefault` component is used in the first step of the onboarding widget's default flow. It allows the user to create a sample product.
 
@@ -1213,7 +1216,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <Summary>ProductDetailDefault component</Summary>
+  <DetailsSummary>ProductDetailDefault component</DetailsSummary>
 
   The `ProductDetailDefault` component is used in the second step of the onboarding's default flow. It shows the user a code snippet to preview the product created in the first step.
 
@@ -1317,7 +1320,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <Summary>OrdersListDefault component</Summary>
+  <DetailsSummary>OrdersListDefault component</DetailsSummary>
 
   The `OrdersListDefault` component is used in the third step of the onboarding's default flow. It allows the user to create a sample order.
 
@@ -1412,7 +1415,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <Summary>OrderDetailDefault component</Summary>
+  <DetailsSummary>OrderDetailDefault component</DetailsSummary>
 
   The `OrderDetailDefault` component is used in the fourth and final step of the onboarding's default flow. It educates the user on the next steps when developing with Medusa.
 
@@ -1563,7 +1566,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <Summary>ProductsListNextjs component</Summary>
+  <DetailsSummary>ProductsListNextjs component</DetailsSummary>
 
   The `ProductsListNextjs` component is used in the first step of the onboarding widget's Next.js flow. It allows the user to create sample products.
 
@@ -1661,7 +1664,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <Summary>ProductDetailNextjs component</Summary>
+  <DetailsSummary>ProductDetailNextjs component</DetailsSummary>
 
   The `ProductDetailNextjs` component is used in the second step of the onboarding's Next.js flow. It shows the user a button to preview the product created in the first step using the Next.js starter.
 
@@ -1729,7 +1732,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <Summary>OrdersListNextjs component</Summary>
+  <DetailsSummary>OrdersListNextjs component</DetailsSummary>
 
   The `OrdersListNextjs` component is used in the third step of the onboarding's Next.js flow. It links the user to the checkout flow in the Next.js storefront so that they can create an order.
 
@@ -1809,7 +1812,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <Summary>OrderDetailNextjs component</Summary>
+  <DetailsSummary>OrderDetailNextjs component</DetailsSummary>
 
   The `OrderDetailNextjs` component is used in the fourth and final step of the onboarding's default flow. It educates the user on the next steps when developing with Medusa.
 

@@ -2,9 +2,12 @@
 addHowToData: true
 ---
 
+
+import Details from "@theme/Details"
 import DocCardList from '@theme/DocCardList';
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
+import { DetailsSummary } from "docs-ui"
 
 # Digital Products
 
@@ -136,7 +139,7 @@ For example, if you're selling the Harry Potter movies, you would have a `Produc
 ]} />
 
 <Details>
-  <Summary>Example: Create ProductMedia Entity</Summary>
+  <DetailsSummary>Example: Create ProductMedia Entity</DetailsSummary>
 
   In this example, you’ll create a `ProductMedia` entity that is associated with the `ProductVariant` entity in a one-to-many relation.
 
@@ -266,7 +269,7 @@ Creating an API Route also requires creating a service, which is a class that ty
 ]} />
 
 <Details>
-  <Summary>Example: List and Create API Routes</Summary>
+  <DetailsSummary>Example: List and Create API Routes</DetailsSummary>
 
   This example showcases how you can create the list and create API Routes for digital products. These API Routes are chosen in particular as they’re used in later parts of this recipe. You may follow the same instructions to create other necessary API Routes.
 
@@ -561,7 +564,7 @@ To add an interface that allows the admin user to upload digital products, you c
 ]} />
 
 <Details>
-  <Summary>Example: Digital Products Page in Admin</Summary>
+  <DetailsSummary>Example: Digital Products Page in Admin</DetailsSummary>
 
   In this example, you’ll add a single page that lists the digital products and allows you to create a new one. The implementation will be minimal for the purpose of simplicity, so you can elaborate on it based on your use case.
       
@@ -942,7 +945,7 @@ Finally, you can send a notification, such as an email, to the customer using th
 }} />
 
 <Details>
-  <Summary>Example: Using SendGrid</Summary>
+  <DetailsSummary>Example: Using SendGrid</DetailsSummary>
 
   :::note
 
@@ -1049,7 +1052,7 @@ In the product detail's page, you can add a button that allows customers to down
 To implement this, create a storefront API Route that allows you to fetch the digital product, then customize the Next.js storefront to show the preview button if a product is digital.
 
 <Details>
-  <Summary>Example</Summary>
+  <DetailsSummary>Example</DetailsSummary>
 
   Before you customize the Next.js storefront, you need to add a store API Route in your backend.
 
@@ -1297,7 +1300,7 @@ In the product details page, additional information related to the product and i
 You can change this section to show information relevant to the product. For example, how many pages are in an e-book, or how the e-book will be delivered to the customer.
 
 <Details>
-  <Summary>Example</Summary>
+  <DetailsSummary>Example</DetailsSummary>
 
   In this example, you'll change the content of the Product Information and Shipping & Returns tabs to show information relevant to the digital product. The Product Information tab will include custom information relevant to digital products, and the Shipping & Returns tab will be changed to "E-book delivery" and will hold details about how the e-book will be delivered to the customer.
 
@@ -1420,7 +1423,7 @@ You can change this section to show information relevant to the product. For exa
 When a customer purchases a digital product, the shipping form shown during checkout is not relevant. So, you can change its content to instead only ask for the customer's name and email.
 
 <Details>
-  <Summary>Example</Summary>
+  <DetailsSummary>Example</DetailsSummary>
 
   The checkout flow is managed by a checkout context defined in `src/lib/context/checkout-context.tsx`. Change the content of the file to the following:
 
@@ -2005,7 +2008,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 After the customer purchases the digital product you can show a download button to allow them to immediately download the product.
 
 <Details>
-  <Summary>Example</Summary>
+  <DetailsSummary>Example</DetailsSummary>
 
   Before you implement the storefront changes, you need to create a new API Route in the backend that ensures that the currently logged-in customer has purchased the digital product and, if so, returns a presigned URL to download it.
 
