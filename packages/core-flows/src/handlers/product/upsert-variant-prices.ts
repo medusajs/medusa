@@ -152,6 +152,7 @@ export async function upsertVariantPrices({
     },
     {
       select: ["id", "currency_code", "amount", "min_quantity", "max_quantity"],
+      take: null,
     }
   )
 

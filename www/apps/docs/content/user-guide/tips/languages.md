@@ -28,6 +28,7 @@ Languages listed in this section are contributed by the Medusa community. So, th
 - Hindi
 - Hrvatski
 - Italiano
+- 한국어
 - Polski
 - Русский
 - Tamil

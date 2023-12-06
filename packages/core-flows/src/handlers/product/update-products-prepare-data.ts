@@ -53,15 +53,18 @@ export async function updateProductsPrepareData({
         "collection",
         "sales_channels",
       ],
+      take: null,
     }
   )
+
+  const productsMap = new Map(products.map((product) => [product.id, product]))
 
   data.products.forEach((productInput) => {
     const removedChannels: string[] = []
     const addedChannels: string[] = []
 
-    const currentProduct = products.find(
-      (p) => p.id === productInput.id
+    const currentProduct = productsMap.get(
+      productInput.id
     ) as unknown as ProductWithSalesChannelsDTO
 
     if (productInput.sales_channels) {

@@ -15,6 +15,7 @@ export type Parameter = {
 
 type ParameterTypesType = {
   parameters: Parameter[]
+  expandUrl?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 const ParameterTypes = ({
@@ -27,7 +28,10 @@ const ParameterTypes = ({
       className={clsx("bg-docs-bg-surface shadow-card-rest rounded", className)}
       {...props}
     >
-      <ParameterTypesItems parameters={parameters} />
+      <ParameterTypesItems
+        parameters={parameters}
+        expandUrl={props.expandUrl}
+      />
     </div>
   )
 }

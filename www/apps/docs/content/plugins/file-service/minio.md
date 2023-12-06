@@ -92,7 +92,7 @@ Where `<ENDPOINT>` is the URL of your MinIO backend, `<BUCKET>` is the name of t
 
 Finally, configure your `medusa-config.js` to include the plugin with the required options:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -147,7 +147,7 @@ MINIO_PRIVATE_BUCKET=exports
 
 Then, add a new option to the plugin’s options in `medusa-config.js`:
 
-```jsx title=medusa-config.js
+```jsx title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -175,7 +175,7 @@ Where `<YOUR_PRIVATE_ACCESS_KEY>` and `<YOUR_PRIVATE_SECRET_KEY>` are the access
 
 Then, add two new options to the plugin’s options in `medusa-config.js`:
 
-```jsx title=medusa-config.js
+```jsx title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -201,7 +201,7 @@ If this configuration is not added, you’ll receive the error ["next/image Un-c
 
 In `next.config.js` add the following option in the exported object:
 
-```jsx title=next.config.js
+```jsx title="next.config.js"
 const { withStoreConfig } = require("./store-config")
 
 // ...

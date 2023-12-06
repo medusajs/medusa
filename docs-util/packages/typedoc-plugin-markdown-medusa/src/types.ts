@@ -67,6 +67,7 @@ export type FormattingOptionType = {
     kind: boolean
     typeParameters: boolean
     suffix?: string
+    fullReplacement?: string
   }
   reflectionDescription?: string
   expandMembers?: boolean
@@ -75,6 +76,7 @@ export type FormattingOptionType = {
   parameterStyle?: ParameterStyle
   frontmatterData?: Record<string, unknown>
   parameterComponent?: string
+  parameterComponentExtraProps?: Record<string, unknown>
   mdxImports?: string[]
   maxLevel?: number
 }
