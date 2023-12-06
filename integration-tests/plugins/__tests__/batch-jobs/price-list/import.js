@@ -14,6 +14,9 @@ const {
 const {
   startBootstrapApp,
 } = require("../../../../environment-helpers/bootstrap-app")
+const {
+  createVariantPriceSet,
+} = require("../../../helpers/create-variant-price-set")
 
 const adminReqConfig = {
   headers: {
@@ -61,12 +64,21 @@ describe("Price list import batch job", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd })
+    dbConnection = await initDb({
+      cwd,
+      env: {
+        MEDUSA_FF_MEDUSA_V2: true,
+      },
+    })
 
     cleanTempData() // cleanup if previous process didn't manage to do it
 
     medusaProcess = await setupServer({
       cwd,
+      verbose: true,
+      env: {
+        MEDUSA_FF_MEDUSA_V2: true,
+      },
       uploadDir: __dirname,
     })
   })
@@ -82,6 +94,10 @@ describe("Price list import batch job", () => {
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
+
+    await dbConnection.manager
+      .query(`INSERT INTO rule_type(id, name, rule_attribute)
+              VALUES ('1', 'region_id', 'region_id')`)
   })
 
   afterEach(async () => {
@@ -95,70 +111,90 @@ describe("Price list import batch job", () => {
 
     copyTemplateFile()
 
-    const product = await simpleProductFactory(dbConnection, {
-      options: [
-        {
-          title: "Size",
-          id: "size",
-        },
-      ],
-      variants: [
-        {
-          id: "test-pl-variant",
-          options: [
-            {
-              option_id: "size",
-              value: "S",
-            },
-          ],
-        },
-        {
-          id: "test-pl-sku-variant",
-          sku: "pl-sku",
-          options: [
-            {
-              option_id: "size",
-              value: "M",
-            },
-          ],
-        },
-      ],
-    })
-
     await simpleRegionFactory(dbConnection, {
       id: "test-pl-region",
       name: "PL Region",
       currency_code: "eur",
     })
 
-    const priceList = await simplePriceListFactory(dbConnection, {
-      id: "pl_my_price_list",
-      name: "Test price list",
-      prices: [
-        {
-          variant_id: product.variants[0].id,
-          currency_code: "usd",
-          amount: 1000,
-        },
-        {
-          variant_id: product.variants[0].id,
-          currency_code: "eur",
-          amount: 2080,
-        },
-      ],
+    await simpleRegionFactory(dbConnection, {
+      id: "test-pl-region-usd",
+      name: "PL Region",
+      currency_code: "usd",
     })
 
-    const response = await api.post(
-      "/admin/batch-jobs",
-      {
-        type: "price-list-import",
-        context: {
-          price_list_id: priceList.id,
-          fileKey: "price-list-import.csv",
+    const data = {
+      title: "test product",
+      variants: [
+        {
+          title: "test variant",
+          prices: [
+            {
+              amount: 66600,
+              region_id: "test-pl-region",
+            },
+            {
+              amount: 55500,
+              currency_code: "usd",
+            },
+          ],
         },
+        {
+          title: "test variant",
+          sku: "pl-sku",
+          prices: [
+            {
+              amount: 77700,
+              region_id: "test-pl-region",
+            },
+            {
+              amount: 88800,
+              currency_code: "usd",
+            },
+          ],
+        },
+      ],
+    }
+
+    const productRes = await api.post(
+      "/admin/products?relations=variants.prices",
+      data,
+      adminReqConfig
+    )
+
+    await dbConnection.manager.query(`UPDATE product_variant
+                                      SET id='test-pl-variant'
+                                      where id = '${productRes.data.product.variants[0].id}'`)
+    await dbConnection.manager.query(`UPDATE product_variant_price_set
+                                      SET variant_id='test-pl-variant'
+                                      where variant_id = '${productRes.data.product.variants[0].id}'`)
+
+    const priceListResponse = await api.post(
+      `/admin/price-lists`,
+      {
+        name: "testpl",
+        description: "testpl",
+        type: "sale",
+        prices: [],
       },
       adminReqConfig
     )
+
+    const priceList = priceListResponse.data.price_list
+
+    const response = await api
+      .post(
+        "/admin/batch-jobs",
+        {
+          type: "price-list-import",
+          context: {
+            price_list_id: priceList.id,
+            fileKey: "price-list-import.csv",
+          },
+        },
+        adminReqConfig
+      )
+      .catch((err) => console.log(err))
 
     const batchJobId = response.data.batch_job.id
 
@@ -187,7 +223,7 @@ describe("Price list import batch job", () => {
     expect(batchJob.status).toBe("completed")
 
     const priceListRes = await api.get(
-      "/admin/price-lists/pl_my_price_list",
+      `/admin/price-lists/${priceList.id}`,
       adminReqConfig
     )
 
@@ -195,7 +231,7 @@ describe("Price list import batch job", () => {
     const importFilePath = getImportFile()
     expect(fs.existsSync(importFilePath)).toBe(false)
 
-    expect(priceListRes.data.price_list.prices.length).toEqual(5)
+    expect(priceListRes.data.price_list.prices.length).toEqual(4)
     expect(priceListRes.data.price_list.prices).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -206,10 +242,6 @@ describe("Price list import batch job", () => {
           currency_code: "eur",
           region_id: "test-pl-region",
           amount: 2222,
-        }),
-        expect.objectContaining({
-          currency_code: "jpy",
-          amount: 3333,
         }),
         expect.objectContaining({
           currency_code: "usd",
@@ -224,14 +256,19 @@ describe("Price list import batch job", () => {
     )
   })
 
-  it("should fail to import a csv file wihtout existing products and regions", async () => {
+  it("should fail to import a csv file without existing products and regions", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
-    const priceList = await simplePriceListFactory(dbConnection, {
-      id: "pl_my_price_list",
-      name: "Test price list",
-      prices: [],
-    })
+    const priceListResponse = await api.post(
+      `/admin/price-lists`,
+      {
+        name: "testpl",
+        description: "testpl",
+        type: "sale",
+        prices: [],
+      },
+      adminReqConfig
+    )
     // copyTemplateFile()
     await simpleRegionFactory(dbConnection, {
       id: "test-pl-region",
@@ -244,7 +281,7 @@ describe("Price list import batch job", () => {
       {
         type: "price-list-import",
         context: {
-          price_list_id: priceList.id,
+          price_list_id: priceListResponse.data.price_list.id,
           fileKey: "price-list-import-non-existing-variant-and-sku.csv",
         },
       },
@@ -306,29 +343,23 @@ describe("Price list import batch job", () => {
       currency_code: "eur",
     })
 
-    const priceList = await simplePriceListFactory(dbConnection, {
-      id: "pl_my_price_list",
-      name: "Test price list",
-      prices: [
-        {
-          variant_id: product.variants[0].id,
-          currency_code: "usd",
-          amount: 1000,
-        },
-        {
-          variant_id: product.variants[0].id,
-          currency_code: "eur",
-          amount: 2080,
-        },
-      ],
-    })
+    const priceListResponse = await api.post(
+      `/admin/price-lists`,
+      {
+        name: "testpl",
+        description: "testpl",
+        type: "sale",
+        prices: [],
+      },
+      adminReqConfig
+    )
 
     const response = await api.post(
       "/admin/batch-jobs",
       {
         type: "price-list-import",
         context: {
-          price_list_id: priceList.id,
+          price_list_id: priceListResponse.data.price_list.id,
           fileKey: "invalid-format.csv",
         },
       },

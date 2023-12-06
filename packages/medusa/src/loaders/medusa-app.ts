@@ -1,8 +1,8 @@
 import {
-  MODULE_PACKAGE_NAMES,
   MedusaApp,
   MedusaAppOutput,
   MedusaModule,
+  MODULE_PACKAGE_NAMES,
   Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
@@ -12,9 +12,12 @@ import {
   MedusaContainer,
   ModuleDefinition,
 } from "@medusajs/types"
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-
-import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  FlagRouter,
+  isObject,
+  MedusaV2Flag,
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import { remoteQueryFetchData } from ".."
 import { joinerConfig } from "../joiner-config"
@@ -128,7 +131,10 @@ export const loadMedusaApp = async (
     return medusaApp
   }
 
-  container.register("remoteLink", asValue(medusaApp.link))
+  container.register(
+    ContainerRegistrationKeys.REMOTE_LINK,
+    asValue(medusaApp.link)
+  )
   container.register(
     ContainerRegistrationKeys.REMOTE_QUERY,
     asValue(medusaApp.query)

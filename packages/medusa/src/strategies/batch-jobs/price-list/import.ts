@@ -1,10 +1,5 @@
-import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
-import {
-  BatchJobService,
-  PriceListService,
-  ProductVariantService,
-  RegionService,
-} from "../../../services"
+import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces";
+import { BatchJobService, PriceListService, ProductVariantService, RegionService } from "../../../services";
 import {
   InjectedProps,
   OperationType,
@@ -14,23 +9,19 @@ import {
   PriceListImportOperation,
   PriceListImportOperationPrice,
   TBuiltPriceListImportLine,
-  TParsedPriceListImportRowData,
-} from "./types"
-import { computerizeAmount, MedusaError } from "medusa-core-utils"
+  TParsedPriceListImportRowData
+} from "./types";
+import { computerizeAmount, MedusaError } from "medusa-core-utils";
 
-import { BatchJob } from "../../../models"
-import { CreateBatchJobInput } from "../../../types/batch-job"
-import CsvParser from "../../../services/csv-parser"
-import { EntityManager } from "typeorm"
-import { PriceListPriceCreateInput } from "../../../types/price-list"
-import { TParsedProductImportRowData } from "../product/types"
-import { FlagRouter, MedusaV2Flag, promiseAll } from "@medusajs/utils"
-import { getPriceListPricingModule } from "../../../api/routes/admin/price-lists/modules-queries"
-import {
-  IPricingModuleService,
-  PriceListPriceDTO,
-  RemoteQueryFunction,
-} from "@medusajs/types"
+import { BatchJob } from "../../../models";
+import { CreateBatchJobInput } from "../../../types/batch-job";
+import CsvParser from "../../../services/csv-parser";
+import { EntityManager } from "typeorm";
+import { PriceListPriceCreateInput } from "../../../types/price-list";
+import { TParsedProductImportRowData } from "../product/types";
+import { FlagRouter, MedusaV2Flag, promiseAll } from "@medusajs/utils";
+import { IPricingModuleService, RemoteQueryFunction } from "@medusajs/types";
+import { importPriceListWorkflow } from "@medusajs/core-flows";
 
 /*
  * Default strategy class used for a batch import of products/variants.
@@ -128,9 +119,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     // Validate that PriceList exists
     const priceListId = batchJob.context.price_list_id as string
     if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
-      await getPriceListPricingModule(priceListId, {
-        container: this.__container__,
-      })
+      await this.pricingModuleService.retrievePriceList(priceListId)
     } else {
       await this.priceListService_
         .withTransaction(manager)
@@ -175,7 +164,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     }[] = []
     if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       const idQuery = {
-        product_variant: {
+        variants: {
           __args: {
             id: csvDataRowIds,
           },
@@ -186,7 +175,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       idVariants = await this.remoteQuery(idQuery)
 
       const skuQuery = {
-        product_variant: {
+        variants: {
           __args: {
             sku: csvDataRowSkus,
           },
@@ -407,73 +396,76 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       const priceListId = batchJob.context.price_list_id
       const txPriceListService = this.priceListService_.withTransaction(manager)
 
-      // Delete Existing prices for price list
-      if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
-        const priceSetMoneyAmounts =
-          await this.pricingModuleService.listPriceSetMoneyAmounts(
-            {
-              price_list_id: [priceListId],
-            },
-            { take: null, relations: ["money_amount"] }
-          )
-
-        await this.pricingModuleService.deleteMoneyAmounts(
-          priceSetMoneyAmounts.map((psma) => psma.money_amount?.id || "")
-        )
-      } else {
-        await txPriceListService.clearPrices(priceListId)
-      }
-
       // Upload new prices for price list
       const priceImportOperations = await this.downloadImportOpsFile(
         batchJob,
         OperationType.PricesCreate
       )
 
+      // Delete Existing prices for price list
       if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
-        const variables = {
-          variant_id: priceImportOperations.map((op) => op.variant_id),
-          take: null,
-        }
+        const workflow = importPriceListWorkflow(this.__container__)
 
-        const query = {
-          product_variant_price_set: {
-            __args: variables,
-            fields: ["variant_id", "price_set_id"],
-          },
-        }
-
-        const variantPriceSets = await this.remoteQuery(query)
-
-        const variantIdToPriceSetIdMap: Map<string, string> = new Map(
-          variantPriceSets.map((variantPriceSet) => [
-            variantPriceSet.variant_id,
-            variantPriceSet.price_set_id,
-          ])
-        )
-        const priceInput = {
-          priceListId,
-          prices: priceImportOperations
-            .map((op) =>
-              (op.prices as PriceListPriceCreateInput[]).map((p) => {
-                const rules: Record<string, string> = {}
-                if (p.region_id) {
-                  rules.region_id = p.region_id
-                }
-                return {
-                  ...p,
-                  rules,
-                  price_set_id: variantIdToPriceSetIdMap.get(
-                    op.variant_id as string
-                  ),
-                } as PriceListPriceDTO
-              })
-            )
-            .flat(),
-        }
-
-        await this.pricingModuleService.addPriceListPrices([priceInput])
+        await workflow.run({
+          input: { priceListId, operations: priceImportOperations },
+        })
+        // const priceSetMoneyAmounts =
+        //   await this.pricingModuleService.listPriceSetMoneyAmounts(
+        //     {
+        //       price_list_id: [priceListId],
+        //     },
+        //     { take: null, relations: ["money_amount"] }
+        //   )
+        //
+        // await this.pricingModuleService.deleteMoneyAmounts(
+        //   priceSetMoneyAmounts.map((psma) => psma.money_amount?.id || "")
+        // )
+        //
+        // const variables = {
+        //   variant_id: priceImportOperations.map((op) => op.variant_id),
+        //   take: null,
+        // }
+        //
+        // const query = {
+        //   product_variant_price_set: {
+        //     __args: variables,
+        //     fields: ["variant_id", "price_set_id"],
+        //   },
+        // }
+        //
+        // const variantPriceSets = await this.remoteQuery(query)
+        //
+        // const variantIdToPriceSetIdMap: Map<string, string> = new Map(
+        //   variantPriceSets.map((variantPriceSet) => [
+        //     variantPriceSet.variant_id,
+        //     variantPriceSet.price_set_id,
+        //   ])
+        // )
+        // const priceInput = {
+        //   priceListId,
+        //   prices: priceImportOperations
+        //     .map((op) =>
+        //       (op.prices as PriceListPriceCreateInput[]).map((p) => {
+        //         const rules: Record<string, string> = {}
+        //         if (p.region_id) {
+        //           rules.region_id = p.region_id
+        //         }
+        //         return {
+        //           ...p,
+        //           rules,
+        //           price_set_id: variantIdToPriceSetIdMap.get(
+        //             op.variant_id as string
+        //           ),
+        //         } as PriceListPriceDTO
+        //       })
+        //     )
+        //     .flat(),
+        // }
+        //
+        // await this.pricingModuleService.addPriceListPrices([priceInput])
       } else {
+        await txPriceListService.clearPrices(priceListId)
+
         for (const op of priceImportOperations) {
           try {
             await txPriceListService.addPrices(

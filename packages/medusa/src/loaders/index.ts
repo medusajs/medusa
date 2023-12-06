@@ -49,7 +49,7 @@ async function loadLegacyModulesEntities(configModules, container) {
       continue
     }
 
-    let modulePath = isString(moduleConfig)
+    const modulePath = isString(moduleConfig)
       ? moduleConfig
       : (moduleConfig as InternalModuleDeclaration).resolve ??
         (definition.defaultPackage as string)
@@ -160,8 +160,6 @@ export default async ({
   container.register({
     [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
   })
-
-  container.register("remoteQuery", asValue(null)) // ensure remoteQuery is always registered
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
