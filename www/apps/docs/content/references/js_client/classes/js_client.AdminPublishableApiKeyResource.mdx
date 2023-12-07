@@ -1,0 +1,1484 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AdminPublishableApiKeyResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPublishableApiKeyResource
+
+This class is used to send requests to [Admin Publishable API Key API Routes](https://docs.medusajs.com/api/admin#publishable-api-keys). All its method
+are available in the JS Client under the `medusa.admin.publishableApiKeys` property.
+
+All methods in this class require [user authentication](js_client.AdminAuthResource.mdx#createsession).
+
+Publishable API Keys can be used to scope Store API calls with an API key, determining what resources are retrieved when querying the API.
+For example, a publishable API key can be associated with one or more sales channels. When it is passed in the header of a request to the List Product store API Route,
+the sales channels are inferred from the key and only products associated with those sales channels are retrieved.
+Admins can manage publishable API keys and their associated resources. Currently, only Sales Channels are supported as a resource.
+
+Related Guide: [How to manage publishable API keys](https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys).
+
+## Methods
+
+### addSalesChannelsBatch
+
+Add a list of sales channels to a publishable API key.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId, {
+  sales_channel_ids: [
+    {
+      id: channelId
+    }
+  ]
+})
+.then(({ publishable_api_key }) => {
+  console.log(publishable_api_key.id);
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the publishable API key.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[AdminPostPublishableApiKeySalesChannelsBatchReq](../../medusa/classes/medusa.AdminPostPublishableApiKeySalesChannelsBatchReq.mdx)",
+    "description": "The sales channels to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "sales_channel_ids",
+        "type": "[ProductBatchSalesChannel](../../medusa/classes/medusa.ProductBatchSalesChannel.mdx)[]",
+        "description": "The IDs of the sales channels to add to the publishable API key",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the sales channel",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the publishbale API key's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "publishable_api_key",
+        "type": "[PublishableApiKey](../../entities/classes/entities.PublishableApiKey.mdx)",
+        "description": "Publishable API key details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that created the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The key's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the key was revoked.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that revoked the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The key's title.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### create
+
+Create a publishable API key.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.create({
+ title
+})
+.then(({ publishable_api_key }) => {
+  console.log(publishable_api_key.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[AdminPostPublishableApiKeysReq](../../medusa/classes/medusa.AdminPostPublishableApiKeysReq.mdx)",
+    "description": "The publishable API key to be created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "The title of the publishable API key",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the publishbale API key's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "publishable_api_key",
+        "type": "[PublishableApiKey](../../entities/classes/entities.PublishableApiKey.mdx)",
+        "description": "Publishable API key details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that created the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The key's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the key was revoked.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that revoked the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The key's title.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### delete
+
+Delete a publishable API key. Associated resources, such as sales channels, are not deleted.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.delete(publishableApiKeyId)
+.then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the publishable API key",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;DeleteResponse&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the delete operation's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### deleteSalesChannelsBatch
+
+Remove a list of sales channels from a publishable API key. This doesn't delete the sales channels and only removes the association between them and the publishable API key.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId, {
+  sales_channel_ids: [
+    {
+      id: channelId
+    }
+  ]
+})
+.then(({ publishable_api_key }) => {
+  console.log(publishable_api_key.id);
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the publishable API key.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[AdminDeletePublishableApiKeySalesChannelsBatchReq](../../medusa/classes/medusa.AdminDeletePublishableApiKeySalesChannelsBatchReq.mdx)",
+    "description": "The sales channels to delete from the publishable API key.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "sales_channel_ids",
+        "type": "[ProductBatchSalesChannel](../../medusa/classes/medusa.ProductBatchSalesChannel.mdx)[]",
+        "description": "The IDs of the sales channels to remove from the publishable API key",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the sales channel",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the publishbale API key's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "publishable_api_key",
+        "type": "[PublishableApiKey](../../entities/classes/entities.PublishableApiKey.mdx)",
+        "description": "Publishable API key details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that created the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The key's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the key was revoked.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that revoked the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The key's title.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### list
+
+Retrieve a list of publishable API keys. The publishable API keys can be filtered by fields such as `q` passed in `query`. The publishable API keys can also be paginated.
+
+#### Example
+
+To list publishable API keys:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.list()
+.then(({ publishable_api_keys, count, limit, offset }) => {
+  console.log(publishable_api_keys)
+})
+```
+
+By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.list({
+  limit,
+  offset
+})
+.then(({ publishable_api_keys, count, limit, offset }) => {
+  console.log(publishable_api_keys)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "[GetPublishableApiKeysParams](../../medusa/classes/medusa.GetPublishableApiKeysParams.mdx)",
+    "description": "Filters and pagination configurations to apply on the retrieved publishable API keys.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "limit",
+        "type": "`number`",
+        "description": "Limit the number of items returned in the list.",
+        "optional": true,
+        "defaultValue": "20",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "offset",
+        "type": "`number`",
+        "description": "The number of items to skip when retrieving a list.",
+        "optional": true,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "q",
+        "type": "`string`",
+        "description": "Search term to search publishable API keys' titles.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysListRes&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of publishable API keys with pagination fields.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminPublishableApiKeysListRes",
+        "type": "[PaginatedResponse](../../medusa/interfaces/medusa.PaginatedResponse.mdx) & `object`",
+        "description": "The list of publishable API keys with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "publishable_api_keys",
+            "type": "[PublishableApiKey](../../entities/classes/entities.PublishableApiKey.mdx)[]",
+            "description": "An array of publishable API keys details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`null` \\| `string`",
+                "description": "The unique identifier of the user that created the key.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The key's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "revoked_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the key was revoked.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "revoked_by",
+                "type": "`null` \\| `string`",
+                "description": "The unique identifier of the user that revoked the key.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "title",
+                "type": "`string`",
+                "description": "The key's title.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### listSalesChannels
+
+List the sales channels associated with a publishable API key. The sales channels can be filtered by fields such as `q` passed in the `query` parameter.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.listSalesChannels()
+.then(({ sales_channels }) => {
+  console.log(sales_channels.length)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the publishable API key.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "query",
+    "type": "[GetPublishableApiKeySalesChannelsParams](../../medusa/classes/medusa.GetPublishableApiKeySalesChannelsParams.mdx)",
+    "description": "Filters to apply on the retrieved sales channels.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "limit",
+        "type": "`number`",
+        "description": "Limit the number of items returned in the list.",
+        "optional": true,
+        "defaultValue": "20",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "offset",
+        "type": "`number`",
+        "description": "The number of items to skip when retrieving a list.",
+        "optional": true,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "q",
+        "type": "`string`",
+        "description": "Search term to search sales channels' names and descriptions.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysListSalesChannelsRes&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of sales channels.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "sales_channels",
+        "type": "[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)[]",
+        "description": "An array of sales channels details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`null` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`null` \\| `string`",
+            "description": "The description of the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The sales channel's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_disabled",
+            "type": "`boolean`",
+            "description": "Specify if the sales channel is enabled or disabled.",
+            "optional": false,
+            "defaultValue": "false",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "locations",
+            "type": "[SalesChannelLocation](../../entities/classes/entities.SalesChannelLocation.mdx)[]",
+            "description": "The details of the stock locations related to the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "`null` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The Sales Channel Stock Location's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "location_id",
+                "type": "`string`",
+                "description": "The ID of the Location Stock.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)",
+                "description": "The details of the sales channel the location is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "`string`",
+                "description": "The ID of the Sales Channel",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "metadata",
+            "type": "`null` \\| `Record<string, unknown>`",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve a publishable API key's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.retrieve(publishableApiKeyId)
+.then(({ publishable_api_key }) => {
+  console.log(publishable_api_key.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the publishable API key.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "query",
+    "type": "`Record<string, any>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the publishable API key's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "publishable_api_key",
+        "type": "[PublishableApiKey](../../entities/classes/entities.PublishableApiKey.mdx)",
+        "description": "Publishable API key details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that created the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The key's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the key was revoked.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that revoked the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The key's title.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### revoke
+
+Revoke a publishable API key. Revoking the publishable API Key can't be undone, and the key can't be used in future requests.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
+.then(({ publishable_api_key }) => {
+  console.log(publishable_api_key.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the publishable API key.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the publishbale API key's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "publishable_api_key",
+        "type": "[PublishableApiKey](../../entities/classes/entities.PublishableApiKey.mdx)",
+        "description": "Publishable API key details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that created the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The key's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the key was revoked.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that revoked the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The key's title.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### update
+
+Update a publishable API key's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.publishableApiKeys.update(publishableApiKeyId, {
+  title: "new title"
+})
+.then(({ publishable_api_key }) => {
+  console.log(publishable_api_key.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the publishable API key.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[AdminPostPublishableApiKeysPublishableApiKeyReq](../../medusa/classes/medusa.AdminPostPublishableApiKeysPublishableApiKeyReq.mdx)",
+    "description": "The attributes to update in the publishable API key.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "The title of the Publishable API Key.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "`Record<string, any>`",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "ResponsePromise&#60;AdminPublishableApiKeysRes&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the publishbale API key's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "publishable_api_key",
+        "type": "[PublishableApiKey](../../entities/classes/entities.PublishableApiKey.mdx)",
+        "description": "Publishable API key details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "created_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that created the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The key's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the key was revoked.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "revoked_by",
+            "type": "`null` \\| `string`",
+            "description": "The unique identifier of the user that revoked the key.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The key's title.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

@@ -7,6 +7,7 @@ import {
   IntersectionType,
   IntrinsicType,
   LiteralType,
+  ProjectReflection,
   QueryType,
   ReferenceType,
   ReflectionType,
@@ -21,116 +22,164 @@ import {
 import * as Handlebars from "handlebars"
 import { ReflectionParameterType } from "../types"
 import { escapeChars, getHTMLChar } from "../utils"
+import { getProjectChild } from "utils"
 
 export type Collapse = "object" | "function" | "all" | "none"
 
-export default function getType(
-  reflectionType: SomeType,
-  collapse: Collapse = "none",
-  wrapBackticks = true,
-  hideLink = false,
+export type TypeOptions<T = SomeType> = {
+  reflectionType: T
+  collapse?: Collapse
+  wrapBackticks?: boolean
+  hideLink?: boolean
   escape?: boolean
-): string {
+  project?: ProjectReflection
+}
+
+export default function getType({
+  reflectionType,
+  ...options
+}: TypeOptions): string {
   if (reflectionType instanceof ReferenceType) {
-    return getReferenceType(reflectionType, wrapBackticks, hideLink, escape)
+    return getReferenceType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof ArrayType && reflectionType.elementType) {
-    return getArrayType(reflectionType, wrapBackticks, hideLink, escape)
+    return getArrayType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof UnionType && reflectionType.types) {
-    return getUnionType(reflectionType, wrapBackticks, hideLink, escape)
+    return getUnionType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof IntersectionType && reflectionType.types) {
-    return getIntersectionType(reflectionType, wrapBackticks, hideLink, escape)
+    return getIntersectionType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof TupleType && reflectionType.elements) {
-    return getTupleType(reflectionType, wrapBackticks, hideLink, escape)
+    return getTupleType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof IntrinsicType && reflectionType.name) {
-    return getIntrinsicType(reflectionType, wrapBackticks, escape)
+    return getIntrinsicType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof ReflectionType) {
-    return getReflectionType(
-      reflectionType.declaration,
-      collapse,
-      wrapBackticks,
-      hideLink
-    )
+    return getReflectionType({
+      reflectionType: reflectionType.declaration,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof DeclarationReflection) {
-    return getReflectionType(reflectionType, collapse, wrapBackticks, hideLink)
+    return getReflectionType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof TypeOperatorType) {
-    return getTypeOperatorType(reflectionType, wrapBackticks, hideLink, escape)
+    return getTypeOperatorType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof QueryType) {
-    return getQueryType(reflectionType, wrapBackticks, hideLink, escape)
+    return getQueryType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof ConditionalType) {
-    return getConditionalType(reflectionType, wrapBackticks, hideLink, escape)
+    return getConditionalType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof IndexedAccessType) {
-    return getIndexAccessType(reflectionType, wrapBackticks, hideLink, escape)
+    return getIndexAccessType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof UnknownType) {
-    return getUnknownType(reflectionType, escape)
+    return getUnknownType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof InferredType) {
-    return getInferredType(reflectionType, escape)
+    return getInferredType({
+      reflectionType,
+      ...options,
+    })
   }
 
   if (reflectionType instanceof LiteralType) {
-    return getLiteralType(reflectionType, wrapBackticks, escape)
+    return getLiteralType({
+      reflectionType,
+      ...options,
+    })
   }
 
   return reflectionType ? escapeChars(reflectionType.toString()) : ""
 }
 
-export function getReflectionType(
-  model: ReflectionParameterType,
-  collapse: Collapse,
+export function getReflectionType({
+  reflectionType: model,
+  collapse,
   wrapBackticks = true,
-  hideLink = false
-): string {
+  hideLink = false,
+}: TypeOptions<ReflectionParameterType>): string {
   if ("signatures" in model && model.signatures) {
     return collapse === "function" || collapse === "all"
       ? `${wrapBackticks ? "`" : ""}fn${wrapBackticks ? "`" : ""}`
-      : getFunctionType(
-          model.signatures,
+      : getFunctionType({
+          modelSignatures: model.signatures,
           wrapBackticks,
           hideLink,
-          !wrapBackticks
-        )
+          escape: !wrapBackticks,
+        })
   }
   return collapse === "object" || collapse === "all"
     ? `${wrapBackticks ? "`" : ""}object${wrapBackticks ? "`" : ""}`
-    : `${wrapBackticks ? "`" : ""}${getDeclarationType(
-        model as DeclarationReflection,
+    : `${wrapBackticks ? "`" : ""}${getDeclarationType({
+        reflectionType: model as DeclarationReflection,
         wrapBackticks,
         hideLink,
-        !wrapBackticks
-      )}${wrapBackticks ? "`" : ""}`
+        escape: !wrapBackticks,
+      })}${wrapBackticks ? "`" : ""}`
 }
 
-export function getDeclarationType(
-  model: DeclarationReflection,
+export function getDeclarationType({
+  reflectionType: model,
   wrapBackticks = true,
   hideLink = false,
-  escape?: boolean
-): string {
+  escape,
+  ...options
+}: TypeOptions<DeclarationReflection>): string {
   escape = getShouldEscape(wrapBackticks, escape)
 
   if (model.indexSignature || model.children) {
@@ -143,13 +192,13 @@ export function getDeclarationType(
           )
         : ""
       const obj = declarationIndexSignature.type
-        ? getType(
-            declarationIndexSignature.type,
-            "none",
-            false,
+        ? getType({
+            reflectionType: declarationIndexSignature.type,
+            wrapBackticks: false,
             hideLink,
-            escape
-          )
+            escape,
+            ...options,
+          })
         : ""
       indexSignature = `${key}: ${obj}; `
     }
@@ -158,7 +207,13 @@ export function getDeclarationType(
       model.children.map((obj) => {
         return `${obj.name}${obj.flags.isOptional ? "?" : ""}: ${
           obj.type
-            ? getType(obj.type, "none", false, hideLink, escape)
+            ? getType({
+                reflectionType: obj.type,
+                wrapBackticks: false,
+                hideLink,
+                escape,
+                ...options,
+              })
             : getFormattedStr(obj.toString(), false, escape)
         } ${
           obj.defaultValue && obj.defaultValue !== "..."
@@ -179,12 +234,15 @@ export function getDeclarationType(
   return getFormattedStr("{}", wrapBackticks, escape)
 }
 
-export function getFunctionType(
-  modelSignatures: SignatureReflection[],
-  wrapBackticks: boolean,
+export function getFunctionType({
+  modelSignatures,
+  wrapBackticks = true,
   hideLink = false,
-  escape?: boolean
-): string {
+  escape,
+  ...options
+}: Omit<TypeOptions, "reflectionType"> & {
+  modelSignatures: SignatureReflection[]
+}): string {
   escape = getShouldEscape(wrapBackticks, escape)
 
   const functions = modelSignatures.map((fn) => {
@@ -201,24 +259,36 @@ export function getFunctionType(
             wrapBackticks ? "`" : ""
           }: ${
             param.type
-              ? getType(param.type, "none", wrapBackticks, hideLink, escape)
+              ? getType({
+                  reflectionType: param.type,
+                  wrapBackticks,
+                  hideLink,
+                  escape,
+                  ...options,
+                })
               : getFormattedStr(param.toString(), wrapBackticks, escape)
           }`
         })
       : []
     const returns = fn.type
-      ? getType(fn.type, "none", wrapBackticks, hideLink, escape)
+      ? getType({
+          reflectionType: fn.type,
+          wrapBackticks,
+          hideLink,
+          escape,
+          ...options,
+        })
       : getFormattedStr(fn.toString(), wrapBackticks, escape)
     return typeParams + `(${params.join(", ")}) => ${returns}`
   })
   return functions.join("")
 }
 
-export function getLiteralType(
-  model: LiteralType,
-  wrapBackticks: boolean,
-  escape?: boolean
-): string {
+export function getLiteralType({
+  reflectionType: model,
+  wrapBackticks = true,
+  escape,
+}: TypeOptions<LiteralType>): string {
   escape = getShouldEscape(wrapBackticks, escape)
 
   return getFormattedStr(
@@ -228,26 +298,33 @@ export function getLiteralType(
   )
 }
 
-export function getReferenceType(
-  model: ReferenceType,
+export function getReferenceType({
+  reflectionType: model,
   wrapBackticks = true,
   hideLink = false,
-  escape?: boolean
-): string {
+  escape,
+  project,
+  ...options
+}: TypeOptions<ReferenceType>): string {
   escape = getShouldEscape(wrapBackticks, escape)
 
   const shouldShowLink = !hideLink && model.name !== "Record"
   const wrappedInBackticks = wrapBackticks && !shouldShowLink
-  if (model.reflection || (model.name && model.typeArguments)) {
+  let modelReflection = model.reflection
+  if (!modelReflection && project) {
+    // try to load reflection
+    modelReflection = getProjectChild(project!, model.name)
+  }
+  if (modelReflection || (model.name && model.typeArguments)) {
     const reflection: string[] = [wrappedInBackticks ? "`" : ""]
 
-    if (model.reflection?.url) {
+    if (modelReflection?.url) {
       reflection.push(
         shouldShowLink
-          ? `[${model.reflection.name}](${Handlebars.helpers.relativeURL(
-              model.reflection.url
+          ? `[${modelReflection.name}](${Handlebars.helpers.relativeURL(
+              modelReflection.url
             )})`
-          : getFormattedStr(model.reflection.name, false, escape)
+          : getFormattedStr(modelReflection.name, false, escape)
       )
     } else {
       reflection.push(
@@ -262,7 +339,13 @@ export function getReferenceType(
       reflection.push(
         `${wrappedInBackticks ? "<" : getHTMLChar("<")}${model.typeArguments
           .map((typeArgument) =>
-            getType(typeArgument, "none", false, hideLink, false)
+            getType({
+              reflectionType: typeArgument,
+              wrapBackticks: false,
+              hideLink,
+              escape: false,
+              ...options,
+            })
           )
           .join(", ")}${wrappedInBackticks ? ">" : getHTMLChar(">")}`
       )
@@ -281,151 +364,191 @@ export function getReferenceType(
     : getFormattedStr(model.name, wrapBackticks, escape)
 }
 
-export function getArrayType(
-  model: ArrayType,
-  wrapBackticks: boolean,
+export function getArrayType({
+  reflectionType: model,
   hideLink = false,
-  escape?: boolean
-): string {
-  const arrayType = getType(
-    model.elementType,
-    "none",
-    wrapBackticks,
+  ...options
+}: TypeOptions<ArrayType>): string {
+  const arrayType = getType({
+    reflectionType: model.elementType,
     hideLink,
-    escape
-  )
+    ...options,
+  })
   return model.elementType.type === "union"
     ? `(${arrayType})[]`
     : `${arrayType}[]`
 }
 
-export function getUnionType(
-  model: UnionType,
-  wrapBackticks: boolean,
+export function getUnionType({
+  reflectionType: model,
   hideLink = false,
-  escape?: boolean
-): string {
+  ...options
+}: TypeOptions<UnionType>): string {
   return model.types
     .map((unionType) =>
-      getType(unionType, "none", wrapBackticks, hideLink, escape)
+      getType({
+        reflectionType: unionType,
+        hideLink,
+        ...options,
+      })
     )
     .join(` \\| `)
 }
 
-export function getIntersectionType(
-  model: IntersectionType,
-  wrapBackticks: boolean,
+export function getIntersectionType({
+  reflectionType: model,
   hideLink = false,
-  escape?: boolean
-): string {
+  ...options
+}: TypeOptions<IntersectionType>): string {
   return model.types
     .map((intersectionType) =>
-      getType(intersectionType, "none", wrapBackticks, hideLink, escape)
+      getType({
+        reflectionType: intersectionType,
+        hideLink,
+        ...options,
+      })
     )
     .join(" & ")
 }
 
-export function getTupleType(
-  model: TupleType,
-  wrapBackticks: boolean,
+export function getTupleType({
+  reflectionType: model,
   hideLink = false,
-  escape?: boolean
-): string {
+  ...options
+}: TypeOptions<TupleType>): string {
   return `[${model.elements
-    .map((element) => getType(element, "none", wrapBackticks, hideLink, escape))
+    .map((element) =>
+      getType({
+        reflectionType: element,
+        hideLink,
+        ...options,
+      })
+    )
     .join(", ")}]`
 }
 
-export function getIntrinsicType(
-  model: IntrinsicType,
-  wrapBackticks: boolean,
-  escape?: boolean
-): string {
+export function getIntrinsicType({
+  reflectionType: model,
+  wrapBackticks = true,
+  escape,
+}: TypeOptions<IntrinsicType>): string {
   escape = getShouldEscape(wrapBackticks, escape)
 
   return getFormattedStr(model.name, wrapBackticks, escape)
 }
 
-export function getTypeOperatorType(
-  model: TypeOperatorType,
-  wrapBackticks: boolean,
+export function getTypeOperatorType({
+  reflectionType: model,
   hideLink = false,
-  escape?: boolean
-): string {
-  return `${model.operator} ${getType(
-    model.target,
-    "none",
-    wrapBackticks,
+  ...options
+}: TypeOptions<TypeOperatorType>): string {
+  return `${model.operator} ${getType({
+    reflectionType: model.target,
     hideLink,
-    escape
-  )}`
+    ...options,
+  })}`
 }
 
-export function getQueryType(
-  model: QueryType,
-  wrapBackticks: boolean,
+export function getQueryType({
+  reflectionType: model,
   hideLink = false,
-  escape?: boolean
-): string {
-  return `typeof ${getType(
-    model.queryType,
-    "none",
-    wrapBackticks,
+  ...options
+}: TypeOptions<QueryType>): string {
+  return `typeof ${getType({
+    reflectionType: model.queryType,
     hideLink,
-    escape
-  )}`
+    ...options,
+  })}`
 }
 
-export function getInferredType(model: InferredType, escape?: boolean): string {
+export function getInferredType({
+  reflectionType: model,
+  escape,
+}: TypeOptions<InferredType>): string {
   escape = getShouldEscape(false, escape)
 
   return `infer ${getFormattedStr(model.name, false, escape)}`
 }
 
-export function getUnknownType(model: UnknownType, escape?: boolean): string {
+export function getUnknownType({
+  reflectionType: model,
+  escape,
+}: TypeOptions<UnknownType>): string {
   escape = getShouldEscape(false, escape)
 
   return getFormattedStr(model.name, false, escape)
 }
 
-export function getConditionalType(
-  model: ConditionalType,
-  wrapBackticks: boolean,
+export function getConditionalType({
+  reflectionType: model,
   hideLink = false,
-  escape?: boolean
-): string {
+  ...options
+}: TypeOptions<ConditionalType>): string {
   const md: string[] = []
   if (model.checkType) {
-    md.push(getType(model.checkType, "none", wrapBackticks, hideLink, escape))
+    md.push(
+      getType({
+        reflectionType: model.checkType,
+        hideLink,
+        ...options,
+      })
+    )
   }
   md.push("extends")
   if (model.extendsType) {
-    md.push(getType(model.extendsType, "none", wrapBackticks, hideLink, escape))
+    md.push(
+      getType({
+        reflectionType: model.extendsType,
+        hideLink,
+        ...options,
+      })
+    )
   }
   md.push("?")
   if (model.trueType) {
-    md.push(getType(model.trueType, "none", wrapBackticks, hideLink, escape))
+    md.push(
+      getType({
+        reflectionType: model.trueType,
+        hideLink,
+        ...options,
+      })
+    )
   }
   md.push(":")
   if (model.falseType) {
-    md.push(getType(model.falseType, "none", wrapBackticks, hideLink, escape))
+    md.push(
+      getType({
+        reflectionType: model.falseType,
+        hideLink,
+        ...options,
+      })
+    )
   }
   return md.join(" ")
 }
 
-export function getIndexAccessType(
-  model: IndexedAccessType,
-  wrapBackticks: boolean,
+export function getIndexAccessType({
+  reflectionType: model,
   hideLink = false,
-  escape?: boolean
-): string {
+  ...options
+}: TypeOptions<IndexedAccessType>): string {
   const md: string[] = []
   if (model.objectType) {
-    md.push(getType(model.objectType, "none", wrapBackticks, hideLink, escape))
+    md.push(
+      getType({
+        reflectionType: model.objectType,
+        hideLink,
+        ...options,
+      })
+    )
   }
   if (model.indexType) {
     md.push(
-      `[${getType(model.indexType, "none", wrapBackticks, hideLink, escape)}]`
+      `[${getType({
+        reflectionType: model.indexType,
+        hideLink,
+        ...options,
+      })}]`
     )
   }
   return md.join("")

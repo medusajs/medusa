@@ -1,0 +1,66 @@
+---
+displayed_sidebar: pricingReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# CreatePriceRuleDTO
+
+A price rule to create.
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the price rule.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "price_set_id",
+    "type": "`string`",
+    "description": "The ID of the associated price set.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "price_set_money_amount_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priority",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rule_type_id",
+    "type": "`string`",
+    "description": "The ID of the associated rule type.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`string`",
+    "description": "The value of the price rule.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

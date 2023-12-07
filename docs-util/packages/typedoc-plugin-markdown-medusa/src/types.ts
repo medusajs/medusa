@@ -76,6 +76,7 @@ export type FormattingOptionType = {
   parameterStyle?: ParameterStyle
   frontmatterData?: Record<string, unknown>
   parameterComponent?: string
+  parameterComponentExtraProps?: Record<string, unknown>
   mdxImports?: string[]
   maxLevel?: number
 }

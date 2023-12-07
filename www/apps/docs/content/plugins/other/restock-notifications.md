@@ -157,6 +157,6 @@ export const config: SubscriberConfig = {
 The handler function receives in the `data` property of the first parameter the following properties:
 
 - `variant_id`: The ID of the variant that has been restocked.
-- `emails`: An array of strings indicating the email addresses subscribed to the restocked variant. Here, you pass it along to the SendGrid plugin directly to send the email to everyone subscribed. If necessary, you can also retrieve the customer of that email using the `CustomerService`'s [retrieveByEmail](../../references/services/classes/CustomerService.mdx#retrievebyemail) method.
+- `emails`: An array of strings indicating the email addresses subscribed to the restocked variant. Here, you pass it along to the SendGrid plugin directly to send the email to everyone subscribed. If necessary, you can also retrieve the customer of that email using the `CustomerService`'s [retrieveByEmail](../../references/services/classes/services.CustomerService.mdx#retrievebyemail) method.
 
 In the handler function, you retrieve the variant by its ID using the `ProductVariantService`, then send the email using the SendGrid plugins' `SendGridService`.
