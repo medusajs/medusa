@@ -3,6 +3,7 @@
 "@medusajs/core-flows": patch
 "@medusajs/medusa": patch
 "@medusajs/utils": patch
+
 ---
 
-feat: MedusaV2 publishable key <> sales channel
+feat: PubKey <> SC joiner config
