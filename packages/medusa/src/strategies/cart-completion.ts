@@ -263,7 +263,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           "region.tax_rates",
           "region.payment_providers",
           "payment_sessions",
-          "payment_session",
           "customer",
         ],
       })
