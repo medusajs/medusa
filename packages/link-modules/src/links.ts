@@ -28,4 +28,10 @@ export const LINKS = {
     "salesChannelService",
     "sales_channel_id"
   ),
+  PublishableApiKeySalesChannel: composeLinkName(
+    Modules.PRODUCT,
+    "publishable_api_key_id",
+    "salesChannelService",
+    "sales_channel_id"
+  ),
 }
