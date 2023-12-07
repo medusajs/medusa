@@ -1,3 +1,4 @@
+import { FlagRouter } from "@medusajs/utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import EventBusService from "../event-bus"
 
@@ -35,25 +36,20 @@ describe("PublishableApiKeyService", () => {
       publishableApiKeySalesChannelRepository,
     publishableApiKeyRepository: publishableApiKeyRepository,
     eventBusService: EventBusServiceMock as unknown as EventBusService,
+    featureFlagRouter: new FlagRouter({}),
   })
 
   it("should retrieve a publishable api key and call the repository with the right arguments", async () => {
     await publishableApiKeyService.retrieve(
       IdMap.getId("order-edit-with-changes")
     )
-    expect(
-      publishableApiKeyRepository.findOne
-    ).toHaveBeenCalledTimes(1)
-    expect(
-      publishableApiKeyRepository.findOne
-    ).toHaveBeenCalledWith(
-      {
-        relationLoadStrategy: "query",
-        where: {
-          id: IdMap.getId("order-edit-with-changes")
-        }
-      }
-    )
+    expect(publishableApiKeyRepository.findOne).toHaveBeenCalledTimes(1)
+    expect(publishableApiKeyRepository.findOne).toHaveBeenCalledWith({
+      relationLoadStrategy: "query",
+      where: {
+        id: IdMap.getId("order-edit-with-changes"),
+      },
+    })
   })
 
   it("should create a publishable api key and call the repository with the right arguments as well as the event bus service", async () => {
