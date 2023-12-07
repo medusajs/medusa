@@ -8023,7 +8023,7 @@ __metadata:
     chromatic: ^6.20.0
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.3
-    cva: beta
+    cva: 1.0.0-beta.1
     date-fns: ^2.30.0
     eslint: ^7.32.0
     eslint-plugin-storybook: ^0.6.12
@@ -23174,7 +23174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cva@npm:beta":
+"cva@npm:1.0.0-beta.1":
   version: 1.0.0-beta.1
   resolution: "cva@npm:1.0.0-beta.1"
   dependencies:
