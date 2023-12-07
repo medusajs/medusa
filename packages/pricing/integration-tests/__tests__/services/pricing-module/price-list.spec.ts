@@ -69,6 +69,7 @@ describe("PriceList Service", () => {
         }),
       ])
     })
+  })
 
   describe("listAndCount", () => {
     it("should return pricelists and count", async () => {
