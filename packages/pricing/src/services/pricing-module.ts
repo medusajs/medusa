@@ -54,6 +54,7 @@ import {
 } from "@services"
 import { joinerConfig } from "../joiner-config"
 import { CreatePriceListRuleValueDTO, PricingRepositoryService } from "../types"
+import { validatePriceListDates } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -1429,6 +1430,7 @@ export default class PricingModuleService<
 
     for (const priceListData of data) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       const { rules = {}, 
       prices = [],
       ...priceListOnlyData } = priceListData
@@ -1444,6 +1446,11 @@ export default class PricingModuleService<
         prices = [],
         ...priceListOnlyData
       } = priceListData
+=======
+      const { rules = {}, prices = [], ...priceListOnlyData } = priceListData
+
+      validatePriceListDates(priceListData)
+>>>>>>> 554423ac6 (make string optional)
 
       const [createdPriceList] = (await this.priceListService_.create(
         [
@@ -1566,6 +1573,8 @@ export default class PricingModuleService<
         ruleAttributes.push(...Object.keys(priceListData.rules))
         priceListIds.push(priceListData.id)
       }
+
+      validatePriceListDates(priceListData)
     }
 
     const existingPriceLists = await this.listPriceLists(
