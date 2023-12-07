@@ -3,6 +3,7 @@ import { Brackets, In } from "typeorm"
 import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 import { dataSource } from "../loaders/database"
 import SalesChannelRepository from "./sales-channel"
+import { generateEntityId } from "../utils"
 
 const publishableApiKeySalesChannelAlias = "PublishableKeySalesChannel"
 
@@ -59,20 +60,29 @@ export const PublishableApiKeySalesChannelRepository = dataSource
      *
      * @param publishableApiKeyId - publishable key id
      * @param salesChannelIds - an array of SC ids
+     * @param isMedusaV2Enabled - are Medusa modules enabled
      */
     async addSalesChannels(
       publishableApiKeyId: string,
-      salesChannelIds: string[]
+      salesChannelIds: string[],
+      isMedusaV2Enabled?: boolean
     ): Promise<void> {
+      let valuesToInsert = salesChannelIds.map((id) => ({
+        sales_channel_id: id,
+        publishable_key_id: publishableApiKeyId,
+      }))
+
+      if (isMedusaV2Enabled) {
+        valuesToInsert = valuesToInsert.map((v) => ({
+          ...v,
+          id: generateEntityId(undefined, "pksc"),
+        }))
+      }
+
       await this.createQueryBuilder()
         .insert()
         .into(PublishableApiKeySalesChannel)
-        .values(
-          salesChannelIds.map((id) => ({
-            sales_channel_id: id,
-            publishable_key_id: publishableApiKeyId,
-          }))
-        )
+        .values(valuesToInsert)
         .orIgnore()
         .execute()
     },
