@@ -49,7 +49,10 @@ export default function (theme: MarkdownTheme) {
 
 function getListMarkdownContent(properties: DeclarationReflection[]) {
   const items = properties.map((property) =>
-    reflectionFormatter(property, "list")
+    reflectionFormatter({
+      reflection: property,
+      type: "list",
+    })
   )
 
   return items.join("\n")
@@ -61,7 +64,12 @@ function getComponentMarkdownContent(
   maxLevel?: number | undefined
 ) {
   const parameters = properties.map((property) =>
-    reflectionFormatter(property, "component", 1, maxLevel)
+    reflectionFormatter({
+      reflection: property,
+      type: "component",
+      level: 1,
+      maxLevel,
+    })
   )
 
   return `<${parameterComponent} parameters={${JSON.stringify(

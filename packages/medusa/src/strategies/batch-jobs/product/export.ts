@@ -497,11 +497,17 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
       const columnNameNameValue = columnNameValueBuilder(i)
 
+      // option values are not guaranteed to keep the same order as options on product. Pick them in the same order as product options
       this.columnsDefinition[columnNameNameValue] = {
         name: columnNameNameValue,
         exportDescriptor: {
-          accessor: (variant: ProductVariant) =>
-            variant?.options[i]?.value ?? "",
+          accessor: (
+            variant: ProductVariant,
+            context?: { product?: Product }
+          ) =>
+            variant?.options.find(
+              (ov) => ov.option_id === context!.product!.options[i]?.id
+            )?.value ?? "",
           entityName: "variant",
         },
       }
@@ -597,7 +603,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         }
         if (columnSchema.entityName === "variant") {
           const formattedContent = csvCellContentFormatter(
-            columnSchema.accessor(variant)
+            columnSchema.accessor(variant, { product: product })
           )
           variantLineData.push(formattedContent)
         }
