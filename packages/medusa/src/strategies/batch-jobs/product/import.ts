@@ -173,7 +173,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const variantsUpdate: TParsedProductImportRowData[] = []
 
     for (const row of csvData) {
-      if ((row["variant.prices"] as Record<string, any>[]).length) {
+      if ((row["variant.prices"] as Record<string, any>[])?.length) {
         await this.prepareVariantPrices(row)
       }
 
@@ -283,6 +283,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
     let totalOperationCount = 0
     const operationsCounts = {}
+
     Object.keys(ops).forEach((key) => {
       operationsCounts[key] = ops[key].length
       totalOperationCount += ops[key].length
