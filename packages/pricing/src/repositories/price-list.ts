@@ -1,9 +1,9 @@
 import { Context, DAL, UpdatePriceListDTO } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 
 import { CreatePriceListDTO } from "../types"
@@ -72,14 +72,17 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const priceLists = data.map((priceListData: any) => {
-
       if (!!priceListData.starts_at) {
-        priceListData.starts_at = 
-          priceListData.starts_at
-        .toISOString()
+        if (typeof priceListData.starts_at === "string") {
+          priceListData.starts_at = new Date(priceListData.starts_at)
+        }
+        priceListData.starts_at = priceListData.starts_at.toISOString()
       }
-      
+
       if (!!priceListData.ends_at) {
+        if (typeof priceListData.ends_at === "string") {
+          priceListData.ends_at = new Date(priceListData.ends_at)
+        }
         priceListData.ends_at = priceListData.ends_at.toISOString()
       }
 
@@ -124,14 +127,18 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
           `PriceList with id "${priceListData.id}" not found`
         )
       }
-      
+
       if (!!priceListData.starts_at) {
-        priceListData.starts_at = 
-          priceListData.starts_at
-        .toISOString()
+        if (typeof priceListData.starts_at === "string") {
+          priceListData.starts_at = new Date(priceListData.starts_at)
+        }
+        priceListData.starts_at = priceListData.starts_at.toISOString()
       }
-      
+
       if (!!priceListData.ends_at) {
+        if (typeof priceListData.ends_at === "string") {
+          priceListData.ends_at = new Date(priceListData.ends_at)
+        }
         priceListData.ends_at = priceListData.ends_at.toISOString()
       }
 
