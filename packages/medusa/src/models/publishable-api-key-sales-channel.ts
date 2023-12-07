@@ -2,12 +2,12 @@ import { BeforeInsert, Column, Entity } from "typeorm"
 import { BaseEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
 
-@Entity()
+@Entity("publishable_api_key_sales_channel")
 export class PublishableApiKeySalesChannel extends BaseEntity {
-  @Column({ type: "varchar" })
+  @Column({ type: "text" })
   sales_channel_id: string
 
-  @Column({ type: "varchar" })
+  @Column({ type: "text" })
   publishable_key_id: string
 
   /**

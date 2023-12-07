@@ -81,7 +81,11 @@ export const PublishableApiKeySalesChannelRepository = dataSource
 
       await this.createQueryBuilder()
         .insert()
-        .into(PublishableApiKeySalesChannel)
+        .into(
+          isMedusaV2Enabled
+            ? PublishableApiKeySalesChannel
+            : "publishable_api_key_sales_channel"
+        )
         .values(valuesToInsert)
         .orIgnore()
         .execute()
