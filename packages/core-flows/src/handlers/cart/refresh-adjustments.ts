@@ -1,7 +1,5 @@
 import { CartWorkflow } from "@medusajs/types"
-import { SalesChannelFeatureFlag } from "@medusajs/utils"
-
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type HandlerInputData = {
   line_items?: CartWorkflow.CreateLineItemInputDTO[]
@@ -34,10 +32,7 @@ export async function refreshAdjustments({
       "discounts.rule",
       "region",
     ],
-    select: [
-      "id", 
-      "sales_channel_id"
-    ]
+    select: ["id", "sales_channel_id"],
   })
 
   await cartServiceTx.refreshAdjustments(cart)

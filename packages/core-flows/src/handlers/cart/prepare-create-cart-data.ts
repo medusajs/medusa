@@ -1,8 +1,5 @@
-import { WorkflowTypes } from "@medusajs/types"
-import { WorkflowArguments } from "../../helper"
-import { findOrCreateAddresses } from "../address"
-import { CreateCartWorkflowInputDTO } from "@medusajs/types/dist/workflow/cart"
-import { AddressDTO } from "@medusajs/types"
+import { AddressDTO, WorkflowTypes } from "@medusajs/types"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type AddressesDTO = {
   shipping_address_id?: string

@@ -1,8 +1,8 @@
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -22,13 +22,13 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -50,13 +50,13 @@ import {
 } from "."
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { isEmpty, isEqual } from "lodash"
 
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll, validateEmail } from "@medusajs/utils"
 import { LineItemRepository } from "../repositories/line-item"
 import MedusaV2Flag from "../loaders/feature-flags/medusa-v2"
 import { PaymentSessionInput } from "../types/payment"

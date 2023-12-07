@@ -1,6 +1,6 @@
 import { CartWorkflow } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "@medusajs/workflows-sdk";
 
 enum Aliases {
   LineItems = "line_items",

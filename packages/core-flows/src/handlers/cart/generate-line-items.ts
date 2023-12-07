@@ -1,6 +1,5 @@
 import { CartWorkflow } from "@medusajs/types"
-
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "@medusajs/workflows-sdk";
 
 type HandlerInputData = {
   line_items: {

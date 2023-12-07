@@ -1,8 +1,8 @@
 import { MedusaError } from "@medusajs/utils"
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
-enum Aliases { 
-  Cart= "cart",
+enum Aliases {
+  Cart = "cart",
   LineItems = "line_items",
 }
 
@@ -10,7 +10,7 @@ export async function validateLineItemsForCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<void> {
+}: WorkflowArguments<{}>): Promise<void> {
   const { manager } = context
   const cartService = container.resolve("cartService")
   const cartServiceTx = cartService.withTransaction(manager)
@@ -18,17 +18,14 @@ export async function validateLineItemsForCart({
   const cart = data[Aliases.Cart]
   const items = data[Aliases.LineItems]
 
-  if(!items?.length){ 
-    return 
+  if (!items?.length) {
+    return
   }
-  
+
   const areValid = await Promise.all(
     items.map(async (item) => {
       if (item.variant_id) {
-        return await cartServiceTx.validateLineItem(
-          cart,
-          item
-        )
+        return await cartServiceTx.validateLineItem(cart, item)
       }
       return true
     })

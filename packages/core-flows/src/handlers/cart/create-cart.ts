@@ -17,7 +17,7 @@ export async function createCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<HandlerOutputData> {
+}: WorkflowArguments<{}>): Promise<HandlerOutputData> {
   const { manager } = context
   const cartService = container.resolve("cartService")
 

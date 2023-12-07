@@ -1,4 +1,3 @@
-import { WorkflowArguments } from "../../helper"
 
 enum Aliases {
   LineItems = "created_line_items",
@@ -8,7 +7,7 @@ export async function removeLineItems({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<void> {
+}): Promise<void> {
   const { manager } = context
 
   const lineItemService = container.resolve("lineItemService")

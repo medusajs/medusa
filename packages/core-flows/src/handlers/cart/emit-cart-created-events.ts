@@ -1,6 +1,6 @@
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
-enum Aliases { 
+enum Aliases {
   Cart = "cart",
 }
 

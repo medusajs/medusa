@@ -1,4 +1,4 @@
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 enum Aliases {
   CreatedLineItems = "created_line_items",
