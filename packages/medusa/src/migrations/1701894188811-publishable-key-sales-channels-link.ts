@@ -14,7 +14,7 @@ export class PublishableKeySalesChannelLink1701894188811
 
         ALTER TABLE "publishable_api_key_sales_channel" DROP CONSTRAINT IF EXISTS "PK_68eaeb14bdac8954460054c567c";
 
-        ALTER TABLE "publishable_api_key_sales_channel" ADD CONSTRAINT "PK_68eaeb14bdac8954460054c567c" PRIMARY KEY (id);
+        ALTER TABLE "publishable_api_key_sales_channel" ADD CONSTRAINT "publishable_api_key_sales_channel_id_pk" PRIMARY KEY (id);
 
         ALTER TABLE "product_sales_channel" ADD COLUMN IF NOT EXISTS "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
         ALTER TABLE "product_sales_channel" ADD COLUMN IF NOT EXISTS "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
@@ -24,9 +24,9 @@ export class PublishableKeySalesChannelLink1701894188811
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        ALTER TABLE publishable_api_key_sales_channel DROP CONSTRAINT IF EXISTS "PK_68eaeb14bdac8954460054c567c";
+        ALTER TABLE "publishable_api_key_sales_channel" DROP CONSTRAINT IF EXISTS "publishable_api_key_sales_channel_id_pk";
 
-        ALTER TABLE publishable_api_key_sales_channel drop column if exists "id";
+        ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "id";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "created_at";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "updated_at";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "deleted_at";
