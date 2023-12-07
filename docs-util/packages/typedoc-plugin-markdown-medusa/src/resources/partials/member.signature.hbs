@@ -1,5 +1,15 @@
 {{{signatureTitle accessor}}}
 
+{{#if (getFormattingOption "expandMembers")}}
+
+{{#if (hasMoreThanOneSignature parent)}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/if}}
+
 {{#if (sectionEnabled "member_signature_comment")}}
 
 {{#with comment}}
@@ -16,7 +26,7 @@
 
 {{#if (sectionEnabled "member_signature_example")}}
 
-{{{example this commentLevel}}}
+{{{example this}}}
 
 {{/if}}
 
@@ -24,7 +34,7 @@
 
 {{#if typeParameters}}
 
-{{{titleLevel commentLevel}}} Type Parameters
+{{{titleLevel}}} Type Parameters
 
 {{#with typeParameters}}
 
@@ -40,7 +50,7 @@
 
 {{#if parameters}}
 
-{{{titleLevel commentLevel}}} Parameters
+{{{titleLevel}}} Parameters
 
 {{#with parameters}}
 
@@ -56,7 +66,7 @@
 
 {{#if type}}
 
-{{{titleLevel commentLevel}}} Returns
+{{{titleLevel}}} Returns
 
 {{#if (sectionEnabled "member_signature_returns")}}
 
@@ -76,11 +86,15 @@
 
 {{#if declaration.signatures}}
 
+{{incrementCurrentTitleLevel}}
+
 {{#each declaration.signatures}}
 
-{{> member.signature showSources=false commentLevel=commentLevel }}
+{{> member.signature showSources=false }}
 
 {{/each}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/if}}
 
@@ -112,7 +126,7 @@
 
 {{#if hasVisibleComponent}}
 
-{{{comments this false true commentLevel ..}}}
+{{{comments this false true ..}}}
 
 {{/if}}
 
@@ -124,7 +138,21 @@
 
 {{#if showSources}}
 
+{{incrementCurrentTitleLevel}}
+
 {{> member.sources}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (getFormattingOption "expandMembers")}}
+
+{{#if (hasMoreThanOneSignature parent)}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/if}}
 

@@ -449,6 +449,69 @@ const paths: LearningPathType[] = [
       },
     },
   },
+  {
+    name: "integrate-ecommerce-stack",
+    label: "Integrate Ecommerce Stack",
+    description:
+      "Use Medusa’s architecture and functionalities to integrate third-party systems and build flows around them.",
+    steps: [
+      {
+        title: "Connect to External Systems with Services",
+        path: "/development/services/create-service",
+        descriptionJSX: (
+          <>
+            Medusa’s Services let you implement a client that connects and
+            performs functionalities with your third-party system.
+            <br />
+            <br />
+            You can then use the service to connect to your third-party system
+            in other resources, such as a Workflow or an API Route.
+          </>
+        ),
+      },
+      {
+        title: "Build Flows Across Systems",
+        path: "/development/workflows",
+        descriptionJSX: (
+          <>
+            With Medusa’s workflows, you can build flows with steps that may
+            perform actions on different systems. Workflows can be executed from
+            anywhere.
+            <br />
+            <br />
+            For example, you can create a workflow that updates the product’s
+            details in integrated systems like ERPs, WMSs, and CMSs. Then, you
+            can listen to the
+            <code>product.updated</code> event using a{" "}
+            <Link to="/development/events/create-subscriber">Subscriber</Link>{" "}
+            and execute the workflow whenever the event is triggered.
+          </>
+        ),
+      },
+      {
+        title: "Create Webhook Listeners",
+        path: "/development/api-routes/create",
+        descriptionJSX: (
+          <>
+            You can provide webhook listeners that your external systems call
+            when their data is updated. This lets you synchronize data between
+            your systems.
+            <br />
+            <br />
+            Webhook listeners can be created in Medusa using API Routes.
+          </>
+        ),
+      },
+    ],
+    finish: {
+      type: "rating",
+      step: {
+        title: "Congratulations on integrating your ecommerce stack!",
+        description: "Please rate your experience using this recipe.",
+        eventName: "rating_path_integrate-ecommerce-stack",
+      },
+    },
+  },
   // TODO: Eventually remove these learning paths
   {
     name: "rbac",

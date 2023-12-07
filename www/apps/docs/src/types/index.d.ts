@@ -207,4 +207,17 @@ declare module "@medusajs/docs" {
   export declare type MedusaDocusaurusContext = DocusaurusContext & {
     siteConfig: MedusaDocusaurusConfig
   }
+
+  export declare type Diagram2Code = {
+    diagram: string
+    code: string
+  }
+
+  export declare type Diagram2CodeSpec = {
+    [k: string]: Diagram2Code
+  }
+
+  export declare type Diagram2CodeSpecs = {
+    [k: string]: Diagram2CodeSpec
+  }
 }

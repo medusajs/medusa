@@ -10,7 +10,13 @@ ___
 
 {{#unless (getFormattingOption "expandMembers")}}
 
-## {{title}} {{../title}}
+{{#ifCanShowConstructorTitle}}
+
+{{titleLevel}} {{title}} {{../title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
 
 {{/unless}}
 
@@ -26,11 +32,21 @@ ___
 
 {{#each children}}
 
-{{> member commentLevel=5}}
+{{> member }}
 
 {{/each}}
 
 {{/if}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
 
 {{/each}}
 
@@ -38,7 +54,13 @@ ___
 
 {{#unless (getFormattingOption "expandMembers")}}
 
-## {{title}}
+{{#ifCanShowConstructorTitle}}
+
+{{titleLevel}} {{title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
 
 {{/unless}}
 
@@ -54,11 +76,21 @@ ___
 
 {{#each children}}
 
-{{> member commentLevel=5}}
+{{> member}}
 
 {{/each}}
 
 {{/if}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
 
 {{/if}}
 

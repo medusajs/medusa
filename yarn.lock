@@ -7739,7 +7739,6 @@ __metadata:
     pg: ^8.11.2
     qs: ^6.11.2
     randomatic: ^3.1.1
-    redis: ^3.0.2
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
     request-ip: ^3.3.0
@@ -7771,6 +7770,7 @@ __metadata:
     "@medusajs/utils": ^1.11.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
+    graphql: ^16.6.0
     jest: ^29.6.3
     knex: 2.4.2
     pg: ^8.11.2
