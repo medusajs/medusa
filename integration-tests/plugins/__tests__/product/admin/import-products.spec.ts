@@ -315,19 +315,18 @@ describe("Product import batch job", () => {
           profile_id: expect.any(String),
           variants: expect.arrayContaining([
             // UPDATED VARIANT
-            // TODO: figure out why this isn't being returned
-            // expect.objectContaining({
-            //   id: "existing-variant-id",
-            //   title: "Test variant changed",
-            //   sku: "test-sku-4",
-            //   barcode: "test-barcode-4",
-            //   options: [
-            //     expect.objectContaining({
-            //       value: "Large",
-            //       option_id: "opt-1-id",
-            //     }),
-            //   ],
-            // }),
+            expect.objectContaining({
+              id: "existing-variant-id",
+              title: "Test variant changed",
+              sku: "test-sku-4",
+              barcode: "test-barcode-4",
+              options: [
+                expect.objectContaining({
+                  value: "Large",
+                  option_id: "opt-1-id",
+                }),
+              ],
+            }),
             // CREATED VARIANT
             expect.objectContaining({
               title: "Test variant",
