@@ -48,7 +48,7 @@ You can learn more about Middlewares and their capabilities in [Express’s docu
 
 Here's an example of a middleware:
 
-```ts title=src/api/middlewares/custom-middleware.ts
+```ts title="src/api/middlewares/custom-middleware.ts"
 export function customMiddleware(req, res, next) {
   // TODO perform an action
   
@@ -66,7 +66,7 @@ The examples used here don't apply Cross-Origin Resource Origin (CORS) options f
 
 :::
 
-```ts title=src/api/index.ts
+```ts title="src/api/index.ts"
 import { Router } from "express"
 import { 
   customMiddleware,
@@ -118,7 +118,7 @@ If you want to register a logged-in user and access it in your resources, you ca
 
 To register a new resource in the dependency container, use the `req.scope.register` method:
 
-```ts title=src/api/middlewares/custom-middleware.ts
+```ts title="src/api/middlewares/custom-middleware.ts"
 export function customMiddleware(req, res, next) {
   // TODO perform an action
   
@@ -136,7 +136,7 @@ You can then load this new resource within other resources. For example, to load
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/services/custom-service.ts
+```ts title="src/services/custom-service.ts"
 import { TransactionBaseService } from "@medusajs/medusa"
 
 class CustomService extends TransactionBaseService {

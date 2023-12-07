@@ -1,0 +1,41 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ShippingOptionPricing
+
+ **ShippingOptionPricing**: `Object`
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "price_incl_tax",
+    "type": "`number` \\| `null`",
+    "description": "Price including taxes",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_amount",
+    "type": "`number`",
+    "description": "The taxes applied.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_rates",
+    "type": "[TaxServiceRate](medusa.TaxServiceRate.mdx)[] \\| `null`",
+    "description": "An array of applied tax rates",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

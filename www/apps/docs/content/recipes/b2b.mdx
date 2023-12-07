@@ -271,7 +271,7 @@ Medusa allows you to create custom API Routes exposed as REST APIs.
 
   For example, create the following API Route that allows you to check the customer’s group and whether it has the `is_b2b` flag enabled:
       
-  ```ts title=src/api/store/customers/is-b2b/route.ts
+  ```ts title="src/api/store/customers/is-b2b/route.ts"
   import type { 
     CustomerService, 
     MedusaRequest, 
@@ -303,7 +303,7 @@ Medusa allows you to create custom API Routes exposed as REST APIs.
 
   Then add the `requireCustomerAuthentication` middleware in `src/api/middlewares.ts` that ensures only authenticated customer can access this API Route:
 
-  ```ts title=src/api/middlewares.ts
+  ```ts title="src/api/middlewares.ts"
   import { 
     requireCustomerAuthentication, 
     type MiddlewaresConfig,

@@ -1,0 +1,30 @@
+---
+displayed_sidebar: inventoryReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# SharedContext
+
+A shared context object that is used to share resources between the application and the module.
+
+<ParameterTypes parameters={[
+  {
+    "name": "manager",
+    "type": "`EntityManager`",
+    "description": "An instance of an entity manager.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "An instance of a transaction manager.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -4,6 +4,10 @@
 
 {{#with model}}
 
-{{> member showSources=false commentLevel=4}}
+{{incrementCurrentTitleLevel}}
+
+{{> member showSources=false}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/with}}

@@ -10,7 +10,6 @@ export default function () {
       comment: Comment,
       showSummary = true,
       showTags = true,
-      commentLevel = 4,
       parent = null
     ) {
       const md: string[] = []
@@ -24,11 +23,7 @@ export default function () {
           (tag) => !EXCLUDED_TAGS.includes(tag.tag)
         )
         const tags = filteredTags.map((tag) => {
-          return Handlebars.helpers.commentTag(
-            tag,
-            commentLevel,
-            parent || comment
-          )
+          return Handlebars.helpers.commentTag(tag, parent || comment)
         })
         md.push(tags.join("\n\n"))
       }

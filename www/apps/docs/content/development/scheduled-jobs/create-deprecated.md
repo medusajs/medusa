@@ -43,7 +43,7 @@ For the example in this tutorial, you can create the file `src/loaders/publish.t
 
 To create a scheduled job, add the following code in the file you created, which is `src/loaders/publish.ts` in this example:
 
-```ts title=src/loaders/publish.ts
+```ts title="src/loaders/publish.ts"
 import { MedusaContainer } from "@medusajs/medusa"
 
 const publishJob = async (
@@ -88,7 +88,7 @@ You then resolve the `JobSchedulerService` and use the `jobSchedulerService.crea
 - The first parameter is a unique name to give to the scheduled job. In the example above, you use the name `publish-products`.
 - The second parameter is an object which can be used to [pass data to the job](#pass-data-to-the-scheduled-job).
 - The third parameter is the scheduled job expression pattern. In this example, it will execute the scheduled job once a day at 12 AM.
-- The fourth parameter is the function to execute. This is where you add the code to execute once the scheduled job runs. In this example, you retrieve the draft products using the [ProductService](../../references/services/classes/ProductService.mdx) and update the status of each of these products to `published`.
+- The fourth parameter is the function to execute. This is where you add the code to execute once the scheduled job runs. In this example, you retrieve the draft products using the [ProductService](../../references/services/classes/services.ProductService.mdx) and update the status of each of these products to `published`.
 
 :::tip
 

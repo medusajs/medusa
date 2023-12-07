@@ -37,7 +37,7 @@ To subscribe to an event, you must create a [subscriber](../../../development/ev
 
 Create the file `src/subscribers/order-placed.ts` with the following content:
 
-```ts title=src/subscribers/order-placed.ts
+```ts title="src/subscribers/order-placed.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -74,7 +74,7 @@ This example is only used to illustrate how the functionality can be implemented
 
 For example, you can implement this subscriber to send emails using [SendGrid](../../../plugins/notifications/sendgrid.mdx):
 
-```ts title=src/subscribers/order-placed.ts
+```ts title="src/subscribers/order-placed.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -129,7 +129,7 @@ If the notification provider you’re using already implements the logic to hand
 
 For example:
 
-```ts title=src/loaders/customer-confirmation.ts
+```ts title="src/loaders/customer-confirmation.ts"
 import { 
   MedusaContainer, 
   NotificationService,

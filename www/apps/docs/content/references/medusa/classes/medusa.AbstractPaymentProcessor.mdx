@@ -1,0 +1,741 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AbstractPaymentProcessor
+
+Payment processor in charge of creating , managing and processing a payment
+
+## constructor
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "container",
+    "type": "[MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "createScope",
+        "type": "() => [MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "registerAdd",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "config",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+___
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "config",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "container",
+    "type": "[MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "createScope",
+        "type": "() => [MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "registerAdd",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "identifier",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+___
+
+## Methods
+
+### authorizePayment
+
+Authorize an existing session if it is not already authorized
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| object&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PaymentProcessorError \\| object",
+        "type": "[PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| `object`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### cancelPayment
+
+Cancel an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Record&#60;string, unknown&#62; \\| PaymentProcessorError",
+        "type": "`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### capturePayment
+
+Capture an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Record&#60;string, unknown&#62; \\| PaymentProcessorError",
+        "type": "`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### deletePayment
+
+Delete an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Record&#60;string, unknown&#62; \\| PaymentProcessorError",
+        "type": "`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getIdentifier
+
+Return a unique identifier to retrieve the payment plugin provider
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getPaymentStatus
+
+Return the status of the session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PaymentSessionStatus",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### initiatePayment
+
+Initiate a payment session with the external provider
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "context",
+    "type": "[PaymentProcessorContext](../types/medusa.PaymentProcessorContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "amount",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "billing_address",
+        "type": "[Address](../../entities/classes/entities.Address.mdx) \\| `null`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "context",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer",
+        "type": "[Customer](../../entities/classes/entities.Customer.mdx)",
+        "description": "A customer can make purchases in your store and manage their profile.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentSessionData",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "resource_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../types/medusa.PaymentProcessorSessionResponse.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PaymentProcessorError \\| PaymentProcessorSessionResponse",
+        "type": "[PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../types/medusa.PaymentProcessorSessionResponse.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### refundPayment
+
+Refund an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "refundAmount",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Record&#60;string, unknown&#62; \\| PaymentProcessorError",
+        "type": "`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrievePayment
+
+Retrieve an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Record&#60;string, unknown&#62; \\| PaymentProcessorError",
+        "type": "`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### updatePayment
+
+Update an existing payment session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "context",
+    "type": "[PaymentProcessorContext](../types/medusa.PaymentProcessorContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "amount",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "billing_address",
+        "type": "[Address](../../entities/classes/entities.Address.mdx) \\| `null`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "context",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer",
+        "type": "[Customer](../../entities/classes/entities.Customer.mdx)",
+        "description": "A customer can make purchases in your store and manage their profile.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentSessionData",
+        "type": "`Record<string, unknown>`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "resource_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../types/medusa.PaymentProcessorSessionResponse.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "void \\| PaymentProcessorError \\| PaymentProcessorSessionResponse",
+        "type": "`void` \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../types/medusa.PaymentProcessorSessionResponse.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### updatePaymentData
+
+Update the session data for a payment session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "sessionId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Record&#60;string, unknown&#62; \\| PaymentProcessorError",
+        "type": "`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

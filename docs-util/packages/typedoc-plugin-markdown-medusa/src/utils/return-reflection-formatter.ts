@@ -14,6 +14,7 @@ import {
   reflectionComponentFormatter,
 } from "./reflection-formatter"
 import { MarkdownTheme } from "../theme"
+import { getProjectChild, getTypeChildren } from "utils"
 
 type ReturnReflectionComponentFormatterParams = {
   reflectionType: SomeType
@@ -30,8 +31,18 @@ export function returnReflectionComponentFormatter({
   level = 1,
   maxLevel,
 }: ReturnReflectionComponentFormatterParams): Parameter[] {
-  const typeName = getType(reflectionType, "object", false, true)
-  const type = getType(reflectionType, "object")
+  const typeName = getType({
+    reflectionType,
+    collapse: "object",
+    wrapBackticks: false,
+    hideLink: true,
+    project,
+  })
+  const type = getType({
+    reflectionType: reflectionType,
+    collapse: "object",
+    project,
+  })
   const componentItem: Parameter[] = []
   const canRetrieveChildren = level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   if (reflectionType.type === "reference") {
@@ -57,8 +68,8 @@ export function returnReflectionComponentFormatter({
       const typeArgs = reflectionType.typeArguments
         ? reflectionType.typeArguments
         : "typeParameters" in reflectionType
-        ? (reflectionType.typeParameters as TypeParameterReflection[])
-        : undefined
+          ? (reflectionType.typeParameters as TypeParameterReflection[])
+          : undefined
       if (
         typeArgs &&
         !isOnlyVoid(typeArgs as unknown as SomeType[]) &&
@@ -82,27 +93,52 @@ export function returnReflectionComponentFormatter({
       }
     } else {
       const reflection = (reflectionType.reflection ||
-        project.getChildByName(reflectionType.name)) as DeclarationReflection
+        getProjectChild(project, reflectionType.name)) as DeclarationReflection
       if (reflection) {
-        if (reflection.children?.length) {
-          reflection.children.forEach((childItem) => {
+        const reflectionChildren = canRetrieveChildren
+          ? reflection.children ||
+            getTypeChildren(reflectionType, project, level)
+          : undefined
+        if (reflectionChildren?.length) {
+          reflectionChildren.forEach((childItem) => {
             componentItem.push(
-              reflectionComponentFormatter(
-                childItem as DeclarationReflection,
+              reflectionComponentFormatter({
+                reflection: childItem as DeclarationReflection,
                 level,
-                maxLevel
-              )
+                maxLevel,
+                project,
+              })
             )
           })
         } else {
           componentItem.push(
-            reflectionComponentFormatter(
-              reflection as DeclarationReflection,
+            reflectionComponentFormatter({
+              reflection,
               level,
-              maxLevel
-            )
+              maxLevel,
+              project,
+            })
           )
         }
+      } else {
+        componentItem.push({
+          name: "name" in reflectionType ? reflectionType.name : typeName,
+          type,
+          optional:
+            "flags" in reflectionType
+              ? (reflectionType.flags as ReflectionFlags).isOptional
+              : false,
+          defaultValue:
+            "declaration" in reflectionType
+              ? getDefaultValue(
+                  reflectionType.declaration as DeclarationReflection
+                ) || ""
+              : "",
+          description: comment ? getReturnComment(comment) : "",
+          expandable: comment?.hasModifier(`@expandable`) || false,
+          featureFlag: Handlebars.helpers.featureFlag(comment),
+          children: [],
+        })
       }
     }
   } else if (reflectionType.type === "array") {

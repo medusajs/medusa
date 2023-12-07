@@ -40,7 +40,7 @@ In the file you created, which in this case is `src/api/index.ts`, add the follo
 
 <!-- eslint-disable max-len -->
 
-```ts title=src/api/index.ts
+```ts title="src/api/index.ts"
 import { registerOverriddenValidators } from "@medusajs/medusa"
 import {
    AdminPostProductsReq as MedusaAdminPostProductsReq,
