@@ -7,6 +7,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-plugin-meilisearch"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "files": [
     "dist"
   ],
