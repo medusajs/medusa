@@ -1,7 +1,7 @@
 "use client"
 
 import { Eye, EyeSlash, MagnifyingGlassMini } from "@medusajs/icons"
-import { VariantProps, cva } from "class-variance-authority"
+import { VariantProps, cva } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
@@ -13,23 +13,21 @@ const inputBaseStyles = clx(
   "aria-[invalid=true]:!shadow-borders-error  invalid:!shadow-borders-error"
 )
 
-const inputVariants = cva(
-  clx(
+const inputVariants = cva({
+  base: clx(
     inputBaseStyles,
     "[&::--webkit-search-cancel-button]:hidden [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
   ),
-  {
-    variants: {
-      size: {
-        base: "txt-compact-medium h-10 px-3 py-[9px]",
-        small: "txt-compact-small h-8 px-2 py-[5px]",
-      },
+  variants: {
+    size: {
+      base: "txt-compact-medium h-10 px-3 py-[9px]",
+      small: "txt-compact-small h-8 px-2 py-[5px]",
     },
-    defaultVariants: {
-      size: "base",
-    },
-  }
-)
+  },
+  defaultVariants: {
+    size: "base",
+  },
+})
 
 const Input = React.forwardRef<
   HTMLInputElement,

@@ -5,26 +5,24 @@ import Primitive from "react-currency-input-field"
 
 import { Text } from "@/components/text"
 import { clx } from "@/utils/clx"
-import { VariantProps, cva } from "class-variance-authority"
+import { VariantProps, cva } from "cva"
 
-const currencyInputVariants = cva(
-  clx(
+const currencyInputVariants = cva({
+  base: clx(
     "flex items-center gap-x-1",
     "bg-ui-bg-field hover:bg-ui-bg-field-hover shadow-buttons-neutral placeholder-ui-fg-muted text-ui-fg-base transition-fg relative w-full rounded-md",
     "focus-within:shadow-borders-interactive-with-active"
   ),
-  {
-    variants: {
-      size: {
-        base: "txt-compact-medium h-10 px-3",
-        small: "txt-compact-small h-8 px-2",
-      },
+  variants: {
+    size: {
+      base: "txt-compact-medium h-10 px-3",
+      small: "txt-compact-small h-8 px-2",
     },
-    defaultVariants: {
-      size: "base",
-    },
-  }
-)
+  },
+  defaultVariants: {
+    size: "base",
+  },
+})
 
 interface CurrencyInputProps
   extends Omit<
