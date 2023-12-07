@@ -1,12 +1,13 @@
 "use client"
 
 import * as Primitives from "@radix-ui/react-label"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva, type VariantProps } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
-const labelVariants = cva("font-sans", {
+const labelVariants = cva({
+  base: "font-sans",
   variants: {
     size: {
       xsmall: "txt-compact-xsmall",
