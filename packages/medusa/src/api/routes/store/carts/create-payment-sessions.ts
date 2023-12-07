@@ -89,14 +89,18 @@ export default async (req, res) => {
           const getCart = async () => {
             return await cartService
               .withTransaction(manager)
-              .retrieveWithTotals(id, {
-                select: defaultStoreCartFields,
-                relations: [
-                  ...defaultStoreCartRelations,
-                  "region.tax_rates",
-                  "customer",
-                ],
-              })
+              .retrieveWithTotals(
+                id,
+                {
+                  select: defaultStoreCartFields,
+                  relations: [
+                    ...defaultStoreCartRelations,
+                    "region.tax_rates",
+                    "customer",
+                  ],
+                },
+                { force_taxes: true }
+              )
           }
 
           const cart = await getCart()
