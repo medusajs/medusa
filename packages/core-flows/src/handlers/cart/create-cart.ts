@@ -1,4 +1,4 @@
-import { AddressDTO, CartDTO } from "@medusajs/types"
+import { AddressDTO, CartDTO, CustomerDTO, RegionDTO } from "@medusajs/types"
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 enum Aliases {
@@ -20,12 +20,12 @@ type HandlerInputData = {
     billing_address_id: string
   }
   customer: {
-    customer?: any
+    customer?: CustomerDTO
     customer_id?: string
     email?: string
   }
   region: {
-    region?: any
+    region?: RegionDTO
     region_id: string
   }
   context: {
