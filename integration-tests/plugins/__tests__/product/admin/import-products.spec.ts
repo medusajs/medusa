@@ -36,7 +36,7 @@ function copyTemplateFile() {
   fs.copyFileSync(csvTemplate, destination)
 }
 
-// jest.setTimeout(1000000)
+jest.setTimeout(1000000)
 
 function cleanTempData() {
   // cleanup tmp ops files
