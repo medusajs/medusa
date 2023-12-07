@@ -1,6 +1,6 @@
-import { DataSource } from "typeorm"
-import faker from "faker"
 import { LineItem, LineItemAdjustment, LineItemTaxLine } from "@medusajs/medusa"
+import faker from "faker"
+import { DataSource } from "typeorm"
 
 type TaxLineFactoryData = {
   rate: number
@@ -18,6 +18,7 @@ export type LineItemFactoryData = {
   cart_id?: string
   order_id?: string
   variant_id: string | null
+  product_id: string | null
   title?: string
   description?: string
   thumbnail?: string
@@ -75,7 +76,8 @@ export const simpleLineItemFactory = async (
     adjustments: data.adjustments,
     includes_tax: data.includes_tax,
     order_edit_id: data.order_edit_id,
-    is_giftcard: data.is_giftcard || false
+    is_giftcard: data.is_giftcard || false,
+    product_id: data.product_id,
   })
 
   const line = await manager.save(toSave)

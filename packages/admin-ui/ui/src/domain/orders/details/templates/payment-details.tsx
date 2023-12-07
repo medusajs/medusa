@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { DisplayTotal } from "./display-total"
 
 export const PaymentDetails = ({
@@ -9,6 +10,7 @@ export const PaymentDetails = ({
   paidTotal,
   refundedTotal,
 }) => {
+  const { t } = useTranslation()
   if (swapAmount + manualRefund + swapRefund + returnRefund === 0) {
     return null
   }
@@ -19,35 +21,38 @@ export const PaymentDetails = ({
         <DisplayTotal
           currency={currency}
           totalAmount={swapAmount}
-          totalTitle={"Total for Swaps"}
+          totalTitle={t("templates-total-for-swaps", "Total for Swaps")}
         />
       )}
       {!!swapRefund && (
         <DisplayTotal
           currency={currency}
           totalAmount={returnRefund}
-          totalTitle={"Refunded for Swaps"}
+          totalTitle={t("templates-refunded-for-swaps", "Refunded for Swaps")}
         />
       )}
       {!!returnRefund && (
         <DisplayTotal
           currency={currency}
           totalAmount={returnRefund}
-          totalTitle={"Refunded for Returns"}
+          totalTitle={t(
+            "templates-refunded-for-returns",
+            "Refunded for Returns"
+          )}
         />
       )}
       {!!manualRefund && (
         <DisplayTotal
           currency={currency}
           totalAmount={manualRefund}
-          totalTitle={"Manually refunded"}
+          totalTitle={t("templates-manually-refunded", "Manually refunded")}
         />
       )}
       <DisplayTotal
         variant={"bold"}
         currency={currency}
         totalAmount={paidTotal - refundedTotal}
-        totalTitle={"Net Total"}
+        totalTitle={t("templates-net-total", "Net Total")}
       />
     </>
   )

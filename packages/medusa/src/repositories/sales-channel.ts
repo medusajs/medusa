@@ -1,4 +1,4 @@
-import { Brackets, DeleteResult, FindOptionsWhere, In, ILike } from "typeorm"
+import { DeleteResult, FindOptionsWhere, ILike, In } from "typeorm"
 import { SalesChannel } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
@@ -75,6 +75,27 @@ export const SalesChannelRepository = dataSource
         .values(valuesToInsert)
         .orIgnore()
         .execute()
+    },
+
+    async listProductIdsBySalesChannelIds(
+      salesChannelIds: string | string[]
+    ): Promise<{ [salesChannelId: string]: string[] }> {
+      salesChannelIds = Array.isArray(salesChannelIds)
+        ? salesChannelIds
+        : [salesChannelIds]
+
+      const result = await this.createQueryBuilder()
+        .select(["sales_channel_id", "product_id"])
+        .from(productSalesChannelTable, "psc")
+        .where({ sales_channel_id: In(salesChannelIds) })
+        .execute()
+
+      return result.reduce((acc, curr) => {
+        acc[curr.sales_channel_id] ??= []
+        acc[curr.sales_channel_id].push(curr.product_id)
+
+        return acc
+      }, {})
     },
   })
 

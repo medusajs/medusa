@@ -54,7 +54,10 @@ export abstract class AbstractBaseRepository<T = any>
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 
-  abstract restore(ids: string[], context?: Context): Promise<T[]>
+  abstract restore(
+    ids: string[],
+    context?: Context
+  ): Promise<[T[], Record<string, unknown[]>]>
 
   abstract getFreshManager<TManager = unknown>(): TManager
 

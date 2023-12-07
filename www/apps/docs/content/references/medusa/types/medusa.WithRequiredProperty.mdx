@@ -1,0 +1,34 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# WithRequiredProperty
+
+ **WithRequiredProperty**: `T` & &#123; [Property in K]-?: T[Property] &#125;
+
+Utility type used to remove some optional attributes (coming from K) from a type T
+
+## Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "K",
+    "type": "keyof `T`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

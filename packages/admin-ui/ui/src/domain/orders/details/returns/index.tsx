@@ -16,6 +16,7 @@ import {
   useAdminStockLocations,
   useMedusa,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import Button from "../../../../components/fundamentals/button"
 import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
@@ -45,6 +46,7 @@ type LineItem = Omit<RawLineItem, "beforeInsert">
 
 const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
   const { client } = useMedusa()
+  const { t } = useTranslation()
   const layeredModalContext = useContext(LayeredModalContext)
   const { isFeatureEnabled } = useFeatureFlag()
   const isLocationFulfillmentEnabled =
@@ -215,9 +217,22 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
       .mutateAsync(data)
       .then(() => onDismiss())
       .then(() =>
-        notification("Success", "Successfully returned order", "success")
+        notification(
+          t("returns-success", "Success"),
+          t(
+            "returns-successfully-returned-order",
+            "Successfully returned order"
+          ),
+          "success"
+        )
       )
-      .catch((error) => notification("Error", getErrorMessage(error), "error"))
+      .catch((error) =>
+        notification(
+          t("returns-error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
+      )
       .finally(() => setSubmitting(false))
   }
 
@@ -256,11 +271,15 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
     <LayeredModal context={layeredModalContext} handleClose={onDismiss}>
       <Modal.Body>
         <Modal.Header handleClose={onDismiss}>
-          <h2 className="inter-xlarge-semibold">Request Return</h2>
+          <h2 className="inter-xlarge-semibold">
+            {t("returns-request-return", "Request Return")}
+          </h2>
         </Modal.Header>
         <Modal.Content>
           <div className="mb-7">
-            <h3 className="inter-base-semibold">Items to return</h3>
+            <h3 className="inter-base-semibold">
+              {t("returns-items-to-return", "Items to return")}
+            </h3>
             <RMASelectProductTable
               order={order}
               allItems={allItems}
@@ -273,11 +292,17 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
             <div className="mb-8">
               <h3 className="inter-base-semibold ">Location</h3>
               <p className="inter-base-regular text-grey-50">
-                Choose which location you want to return the items to.
+                {t(
+                  "returns-choose-which-location-you-want-to-return-the-items-to",
+                  "Choose which location you want to return the items to."
+                )}
               </p>
               <Select
                 className="mt-2"
-                placeholder="Select Location to Return to"
+                placeholder={t(
+                  "returns-select-location-to-return-to",
+                  "Select Location to Return to"
+                )}
                 value={selectedLocation}
                 isMulti={false}
                 onChange={setSelectedLocation}
@@ -294,7 +319,10 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                     <WarningCircleIcon size={20} fillType="solid" />
                   </div>
                   <div>
-                    {`The selected location does not have inventory levels for the selected items. The return can be requested but can't be received until an inventory level is created for the selected location.`}
+                    {t(
+                      "returns-selected-location-has-no-inventory-levels",
+                      "The selected location does not have inventory levels for the selected items. The return can be requested but can't be received until an inventory level is created for the selected location."
+                    )}
                   </div>
                 </div>
               )}
@@ -302,9 +330,14 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
           )}
 
           <div>
-            <h3 className="inter-base-semibold ">Shipping</h3>
+            <h3 className="inter-base-semibold ">
+              {t("returns-shipping", "Shipping")}
+            </h3>
             <p className="inter-base-regular text-grey-50">
-              Choose which shipping method you want to use for this return.
+              {t(
+                "returns-choose-retur,-shipping-method",
+                "Choose which shipping method you want to use for this return."
+              )}
             </p>
             {shippingLoading ? (
               <div className="flex justify-center">
@@ -341,7 +374,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
             <div className="mt-10">
               {!useCustomShippingPrice && shippingMethod && (
                 <div className="inter-small-regular mb-4 flex justify-between">
-                  <span>Shipping</span>
+                  <span>{t("returns-shipping", "Shipping")}</span>
                   <div>
                     {displayAmount(order.currency_code, shippingPrice || 0)}{" "}
                     <span className="text-grey-40 ml-3">
@@ -351,7 +384,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 </div>
               )}
               <div className="inter-base-semibold flex w-full justify-between">
-                <span>Total Refund</span>
+                <span>{t("returns-total-refund", "Total Refund")}</span>
                 <div className="flex items-center">
                   {!refundEdited && (
                     <>
@@ -377,7 +410,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   readOnly
                 >
                   <CurrencyInput.Amount
-                    label={"Amount"}
+                    label={t("returns-amount", "Amount")}
                     amount={refundAmount}
                     onChange={handleRefundUpdated}
                   />
@@ -410,8 +443,13 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 type="checkbox"
               />
               <span className="gap-x-xsmall text-grey-90 ml-3 flex items-center">
-                Send notifications
-                <IconTooltip content="Notify customer of created return" />
+                {t("returns-send-notifications", "Send notifications")}
+                <IconTooltip
+                  content={t(
+                    "returns-notify-customer-of-created-return",
+                    "Notify customer of created return"
+                  )}
+                />
               </span>
             </div>
             <div className="gap-x-xsmall flex">
@@ -422,7 +460,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 size="small"
                 variant="ghost"
               >
-                Back
+                {t("returns-back", "Back")}
               </Button>
               <Button
                 onClick={onSubmit}
@@ -433,7 +471,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 variant="primary"
                 disabled={Object.keys(toReturn).length === 0}
               >
-                Submit
+                {t("returns-submit", "Submit")}
               </Button>
             </div>
           </div>

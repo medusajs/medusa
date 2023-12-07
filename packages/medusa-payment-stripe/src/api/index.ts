@@ -22,11 +22,11 @@ export default (rootDirectory) => {
   }
 
   app.use(
-    `/admin/orders/stripe-payments/:id`,
+    `/admin/orders/stripe-payments/:order_id`,
     cors(corsOptions),
     authenticate()
   )
-  app.get(`/admin/orders/stripe-payments/:id`, async (req, res) => {
+  app.get(`/admin/orders/stripe-payments/:order_id`, async (req, res) => {
     const payments = await getStripePayments(req)
     res.json({ payments })
   })

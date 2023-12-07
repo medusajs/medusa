@@ -1,10 +1,14 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
+  LinkModuleDefinition,
   LoadedModule,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleDefinition,
   ModuleExports,
+  ModuleJoinerConfig,
   ModuleResolution,
 } from "@medusajs/types"
 import {
@@ -12,7 +16,11 @@ import {
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
-import { moduleLoader, registerMedusaModule } from "./loaders"
+import {
+  moduleLoader,
+  registerMedusaLinkModule,
+  registerMedusaModule,
+} from "./loaders"
 
 import { asValue } from "awilix"
 import { loadModuleMigrations } from "./loaders/utils"
@@ -36,14 +44,34 @@ declare global {
 type ModuleAlias = {
   key: string
   hash: string
+  isLink: boolean
   alias?: string
   main?: boolean
+}
+
+export type ModuleBootstrapOptions = {
+  moduleKey: string
+  defaultPath: string
+  declaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  moduleExports?: ModuleExports
+  sharedContainer?: MedusaContainer
+  moduleDefinition?: ModuleDefinition
+  injectedDependencies?: Record<string, any>
+}
+
+export type LinkModuleBootstrapOptions = {
+  definition: LinkModuleDefinition
+  declaration?: InternalModuleDeclaration
+  moduleExports?: ModuleExports
+  injectedDependencies?: Record<string, any>
 }
 
 export class MedusaModule {
   private static instances_: Map<string, any> = new Map()
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
+  private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
+  private static moduleResolutions_: Map<string, ModuleResolution> = new Map()
 
   public static getLoadedModules(
     aliases?: Map<string, string>
@@ -60,6 +88,8 @@ export class MedusaModule {
   public static clearInstances(): void {
     MedusaModule.instances_.clear()
     MedusaModule.modules_.clear()
+    MedusaModule.joinerConfig_.clear()
+    MedusaModule.moduleResolutions_.clear()
   }
 
   public static isInstalled(moduleKey: string, alias?: string): boolean {
@@ -71,6 +101,40 @@ export class MedusaModule {
     }
 
     return MedusaModule.modules_.has(moduleKey)
+  }
+
+  public static getJoinerConfig(moduleKey: string): ModuleJoinerConfig {
+    return MedusaModule.joinerConfig_.get(moduleKey)!
+  }
+
+  public static getAllJoinerConfigs(): ModuleJoinerConfig[] {
+    return [...MedusaModule.joinerConfig_.values()]
+  }
+
+  public static getModuleResolutions(moduleKey: string): ModuleResolution {
+    return MedusaModule.moduleResolutions_.get(moduleKey)!
+  }
+
+  public static getAllModuleResolutions(): ModuleResolution[] {
+    return [...MedusaModule.moduleResolutions_.values()]
+  }
+
+  public static setModuleResolution(
+    moduleKey: string,
+    resolution: ModuleResolution
+  ): ModuleResolution {
+    MedusaModule.moduleResolutions_.set(moduleKey, resolution)
+
+    return resolution
+  }
+
+  public static setJoinerConfig(
+    moduleKey: string,
+    config: ModuleJoinerConfig
+  ): ModuleJoinerConfig {
+    MedusaModule.joinerConfig_.set(moduleKey, config)
+
+    return config
   }
 
   public static getModuleInstance(
@@ -120,13 +184,15 @@ export class MedusaModule {
     MedusaModule.modules_.set(moduleKey, modules!)
   }
 
-  public static async bootstrap<T>(
-    moduleKey: string,
-    defaultPath: string,
-    declaration?: InternalModuleDeclaration | ExternalModuleDeclaration,
-    moduleExports?: ModuleExports,
-    injectedDependencies?: Record<string, any>
-  ): Promise<{
+  public static async bootstrap<T>({
+    moduleKey,
+    defaultPath,
+    declaration,
+    moduleExports,
+    sharedContainer,
+    moduleDefinition,
+    injectedDependencies,
+  }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
     const hashKey = simpleHash(
@@ -157,13 +223,131 @@ export class MedusaModule {
 
     if (declaration?.scope !== MODULE_SCOPE.EXTERNAL) {
       modDeclaration = {
-        scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
+        scope: declaration?.scope || MODULE_SCOPE.INTERNAL,
+        resources: declaration?.resources || MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: defaultPath,
-        options: declaration,
+        options: declaration?.options ?? declaration,
         alias: declaration?.alias,
         main: declaration?.main,
       }
+    }
+
+    const container = createMedusaContainer({}, sharedContainer)
+
+    if (injectedDependencies) {
+      for (const service in injectedDependencies) {
+        container.register(service, asValue(injectedDependencies[service]))
+        if (!container.hasRegistration(service)) {
+          container.register(service, asValue(injectedDependencies[service]))
+        }
+      }
+    }
+
+    const moduleResolutions = registerMedusaModule(
+      moduleKey,
+      modDeclaration!,
+      moduleExports,
+      moduleDefinition
+    )
+
+    try {
+      await moduleLoader({
+        container,
+        moduleResolutions,
+        logger,
+      })
+    } catch (err) {
+      errorLoading(err)
+      throw err
+    }
+
+    const services = {}
+
+    for (const resolution of Object.values(
+      moduleResolutions
+    ) as ModuleResolution[]) {
+      const keyName = resolution.definition.key
+      const registrationName = resolution.definition.registrationName
+
+      services[keyName] = container.resolve(registrationName)
+      services[keyName].__definition = resolution.definition
+
+      if (resolution.definition.isQueryable) {
+        const joinerConfig: ModuleJoinerConfig = await services[
+          keyName
+        ].__joinerConfig()
+
+        services[keyName].__joinerConfig = joinerConfig
+        MedusaModule.setJoinerConfig(keyName, joinerConfig)
+      }
+
+      MedusaModule.setModuleResolution(keyName, resolution)
+
+      MedusaModule.registerModule(keyName, {
+        key: keyName,
+        hash: hashKey,
+        alias: modDeclaration.alias ?? hashKey,
+        main: !!modDeclaration.main,
+        isLink: false,
+      })
+    }
+
+    MedusaModule.instances_.set(hashKey, services)
+    finishLoading(services)
+    MedusaModule.loading_.delete(hashKey)
+
+    return services
+  }
+
+  public static async bootstrapLink({
+    definition,
+    declaration,
+    moduleExports,
+    injectedDependencies,
+  }: LinkModuleBootstrapOptions): Promise<{
+    [key: string]: unknown
+  }> {
+    const moduleKey = definition.key
+    const hashKey = simpleHash(stringifyCircular({ moduleKey, declaration }))
+
+    if (MedusaModule.instances_.has(hashKey)) {
+      return { [moduleKey]: MedusaModule.instances_.get(hashKey) }
+    }
+
+    if (MedusaModule.loading_.has(hashKey)) {
+      return MedusaModule.loading_.get(hashKey)
+    }
+
+    let finishLoading: any
+    let errorLoading: any
+    MedusaModule.loading_.set(
+      hashKey,
+      new Promise((resolve, reject) => {
+        finishLoading = resolve
+        errorLoading = reject
+      })
+    )
+
+    let modDeclaration =
+      declaration ?? ({} as Partial<InternalModuleDeclaration>)
+
+    const moduleDefinition: ModuleDefinition = {
+      key: definition.key,
+      registrationName: definition.key,
+      dependencies: definition.dependencies,
+      defaultPackage: "",
+      label: definition.label,
+      canOverride: true,
+      isRequired: false,
+      isQueryable: true,
+      defaultModuleDeclaration: definition.defaultModuleDeclaration,
+    }
+
+    modDeclaration = {
+      resolve: "",
+      options: declaration,
+      alias: declaration?.alias,
+      main: declaration?.main,
     }
 
     const container = createMedusaContainer()
@@ -174,9 +358,9 @@ export class MedusaModule {
       }
     }
 
-    const moduleResolutions = registerMedusaModule(
-      moduleKey,
-      modDeclaration!,
+    const moduleResolutions = registerMedusaLinkModule(
+      moduleDefinition,
+      modDeclaration as InternalModuleDeclaration,
       moduleExports
     )
 
@@ -203,16 +387,27 @@ export class MedusaModule {
       services[keyName].__definition = resolution.definition
 
       if (resolution.definition.isQueryable) {
-        services[keyName].__joinerConfig = await services[
+        const joinerConfig: ModuleJoinerConfig = await services[
           keyName
         ].__joinerConfig()
+
+        services[keyName].__joinerConfig = joinerConfig
+        MedusaModule.setJoinerConfig(keyName, joinerConfig)
+
+        if (!joinerConfig.isLink) {
+          throw new Error(
+            "MedusaModule.bootstrapLink must be used only for Link Modules"
+          )
+        }
       }
 
+      MedusaModule.setModuleResolution(keyName, resolution)
       MedusaModule.registerModule(keyName, {
         key: keyName,
         hash: hashKey,
         alias: modDeclaration.alias ?? hashKey,
         main: !!modDeclaration.main,
+        isLink: true,
       })
     }
 

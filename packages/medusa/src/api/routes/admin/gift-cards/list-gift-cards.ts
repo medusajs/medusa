@@ -29,15 +29,16 @@ import { isDefined } from "medusa-core-utils"
  *       medusa.admin.giftCards.list()
  *       .then(({ gift_cards, limit, offset, count }) => {
  *         console.log(gift_cards.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/gift-cards' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Gift Cards
  * responses:
@@ -78,17 +79,31 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved gift cards.
+ */
 export class AdminGetGiftCardsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * Search term to search gift cards by their code and display ID.
+   */
   @IsOptional()
   @IsString()
   q?: string

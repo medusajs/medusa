@@ -38,6 +38,7 @@ export default (app) => {
 /**
  * @schema AdminUserRes
  * type: object
+ * description: "The user's details."
  * required:
  *   - user
  * properties:
@@ -52,6 +53,7 @@ export type AdminUserRes = {
 /**
  * @schema AdminUsersListRes
  * type: object
+ * description: "The list of users."
  * required:
  *   - users
  * properties:

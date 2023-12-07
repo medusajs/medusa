@@ -51,12 +51,12 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  *       })
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/shipping-options/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "requirements": [
@@ -69,6 +69,7 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Shipping Options
  * responses:
@@ -138,10 +139,12 @@ class OptionRequirement {
  *     description: "The name of the Shipping Option"
  *     type: string
  *   amount:
- *     description: "The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used."
+ *     description: >-
+ *       The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used.
  *     type: integer
  *   admin_only:
- *     description: If set to `true`, the shipping option can only be used when creating draft orders.
+ *     description: >-
+ *       If set to `true`, the shipping option can only be used when creating draft orders.
  *     type: boolean
  *   metadata:
  *     description: "An optional set of key-value pairs with additional information."

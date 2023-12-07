@@ -1,0 +1,33 @@
+{
+  "name": "@medusajs/toolbox",
+  "private": true,
+  "version": "0.0.1",
+  "description": "CLI tool for importing Figma designs for Medusa UI",
+  "license": "MIT",
+  "author": "Kasper Kristensen <kasper@medusajs.com>",
+  "bin": "./bin/toolbox.js",
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@svgr/core": "8.0.0",
+    "@svgr/plugin-jsx": "8.0.1",
+    "@svgr/plugin-prettier": "8.0.1",
+    "@svgr/plugin-svgo": "8.0.1",
+    "axios": "^0.24.0",
+    "commander": "11.0.0",
+    "dotenv": "16.3.1",
+    "fs-extra": "11.1.1",
+    "picocolors": "^1.0.0",
+    "retry-axios": "^2.6.0",
+    "ts-dedent": "2.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "11.0.1",
+    "@types/react": "^18.2.14",
+    "eslint": "7.32.0",
+    "react": "^18.2.0",
+    "tsup": "7.1.0",
+    "typescript": "5.1.6"
+  }
+}

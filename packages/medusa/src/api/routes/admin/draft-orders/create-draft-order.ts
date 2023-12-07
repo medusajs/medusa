@@ -63,12 +63,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/draft-orders' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
@@ -87,6 +87,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Draft Orders
  * responses:
@@ -172,7 +173,8 @@ enum Status {
  *   - shipping_methods
  * properties:
  *   status:
- *     description: "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid."
+ *     description: >-
+ *       The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.
  *     type: string
  *     enum: [open, completed]
  *   email:

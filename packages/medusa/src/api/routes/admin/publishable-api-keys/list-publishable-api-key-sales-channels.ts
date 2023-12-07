@@ -24,17 +24,18 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.listSalesChannels()
- *         .then(({ sales_channels }) => {
- *           console.log(sales_channels.length)
- *         })
+ *       .then(({ sales_channels }) => {
+ *         console.log(sales_channels.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/publishable-api-keys/{id}/sales-channels' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Publishable Api Keys
  * responses:
@@ -74,7 +75,13 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter the sales channels.
+ */
 export class GetPublishableApiKeySalesChannelsParams extends extendedFindParamsMixin() {
+  /**
+   * Search term to search sales channels' names and descriptions.
+   */
   @IsOptional()
   @IsString()
   q?: string

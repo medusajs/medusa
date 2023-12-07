@@ -1,4 +1,13 @@
-import { PricingService, ProductService } from "../../../../services"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
+
+import { MedusaError, MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import { FindParams } from "../../../../types/common"
+import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /admin/products/{id}
@@ -20,15 +29,16 @@ import { PricingService, ProductService } from "../../../../services"
  *       medusa.admin.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/products/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -56,8 +66,24 @@ export default async (req, res) => {
 
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
+
+  let rawProduct
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(
+      req,
+      id,
+      req.retrieveConfig
+    )
+  } else {
+    rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  }
 
   // We only set prices if variants.prices are requested
   const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
@@ -66,9 +92,61 @@ export default async (req, res) => {
 
   const product = rawProduct
 
-  if (!shouldSetPricing) {
-    await pricingService.setProductPrices([product])
+  const decoratePromises: Promise<any>[] = []
+  if (shouldSetPricing) {
+    decoratePromises.push(pricingService.setAdminProductPricing([product]))
   }
+
+  const shouldSetAvailability =
+    req.retrieveConfig.relations?.includes("variants")
+
+  if (shouldSetAvailability) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
+
+    decoratePromises.push(
+      productVariantInventoryService.setProductAvailability(
+        [product],
+        salesChannelsIds.map((salesChannel) => salesChannel.id)
+      )
+    )
+  }
+  await promiseAll(decoratePromises)
 
   res.json({ product })
 }
+
+export async function getProductWithIsolatedProductModule(
+  req,
+  id,
+  retrieveConfig
+) {
+  // TODO: Add support for fields/expands
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultAdminProductRemoteQueryObject,
+    },
+  }
+
+  const [product] = await remoteQuery(query)
+
+  if (!product) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product with id: ${id} not found`
+    )
+  }
+
+  product.profile_id = product.profile?.id
+
+  return product
+}
+
+export class AdminGetProductParams extends FindParams {}

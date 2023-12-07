@@ -1,12 +1,13 @@
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 
-import { PricedVariant } from "../../../../types/pricing"
 import { Router } from "express"
-import { StoreGetVariantsParams } from "./list-variants"
-import { StoreGetVariantsVariantParams } from "./get-variant"
+import { PricedVariant } from "../../../../types/pricing"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
-import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
+import { withDefaultSalesChannel } from "../../../middlewares/with-default-sales-channel"
+import { StoreGetVariantsVariantParams } from "./get-variant"
+import { StoreGetVariantsParams } from "./list-variants"
 
 const route = Router()
 
@@ -17,6 +18,7 @@ export default (app) => {
 
   route.get(
     "/",
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetVariantsParams, {
       defaultRelations: defaultStoreVariantRelations,
       allowedRelations: allowedStoreVariantRelations,
@@ -26,6 +28,7 @@ export default (app) => {
   )
   route.get(
     "/:id",
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetVariantsVariantParams, {
       defaultRelations: defaultStoreVariantRelations,
       allowedRelations: allowedStoreVariantRelations,
@@ -45,6 +48,7 @@ export const allowedStoreVariantRelations = [
 /**
  * @schema StoreVariantsRes
  * type: object
+ * description: "The product variant's details."
  * x-expanded-relations:
  *   field: variant
  *   relations:
@@ -67,6 +71,7 @@ export type StoreVariantsRes = {
 /**
  * @schema StoreVariantsListRes
  * type: object
+ * description: "The list of product variants."
  * x-expanded-relations:
  *   field: variants
  *   relations:
@@ -88,5 +93,5 @@ export type StoreVariantsListRes = {
   variants: PricedVariant[]
 }
 
-export * from "./list-variants"
 export * from "./get-variant"
+export * from "./list-variants"

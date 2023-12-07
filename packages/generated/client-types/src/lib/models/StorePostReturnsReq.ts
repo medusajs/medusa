@@ -21,7 +21,7 @@ export interface StorePostReturnsReq {
      */
     quantity: number
     /**
-     * The ID of the return reason. Return reasons can be retrieved from the List Return Reasons endpoint.
+     * The ID of the return reason. Return reasons can be retrieved from the List Return Reasons API Route.
      */
     reason_id?: string
     /**

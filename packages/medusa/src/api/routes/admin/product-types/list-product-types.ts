@@ -95,15 +95,16 @@ import ProductTypeService from "../../../../services/product-type"
  *       medusa.admin.productTypes.list()
  *       .then(({ product_types }) => {
  *         console.log(product_types.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/product-types' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Types
  * responses:
@@ -146,32 +147,56 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product types.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetProductTypesParams extends FindPaginationParams {
+  /**
+   * IDs to filter product types by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   id?: string | string[] | StringComparisonOperator
 
+  /**
+   * Search terms to search product types' value.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Values to filter product types by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   value?: string | string[] | StringComparisonOperator
 
+  /**
+   * Date filters to apply on the product types' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product types' `updated_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   updated_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Filter product types by their associated discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string

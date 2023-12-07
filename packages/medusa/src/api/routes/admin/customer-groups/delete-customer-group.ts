@@ -23,15 +23,16 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.customerGroups.delete(customerGroupId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/customer-groups/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customer Groups
  * responses:

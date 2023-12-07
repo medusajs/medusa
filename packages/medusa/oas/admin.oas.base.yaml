@@ -9,10 +9,10 @@ tags:
   - name: Apps Oauth
     description: |
       Some plugins may require to authenticate with third-party services and store authentication details, such as the authentication token. To do that, they can create an Oauth provider within the plugin that handles the authentication.
-      The Apps Oauth endpoints allows admins to manage and generate token for an app using its oauth provider.
+      The Apps Oauth API Routes allows admins to manage and generate token for an app using its oauth provider.
   - name: Auth
     description: |
-      Authentication endpoints allow admin users to manage their session, such as login or log out.
+      Authentication API Routes allow admin users to manage their session, such as login or log out.
       When an admin user is logged in, the cookie header is set indicating the admin's login session.
     externalDocs:
       description: How to implement user profiles
@@ -20,14 +20,14 @@ tags:
   - name: Batch Jobs
     description: |
       A batch job is a task that is performed by the Medusa backend asynchronusly. For example, the Import Product feature is implemented using batch jobs.
-      Batch Job endpoints allows admins to manage the batch jobs and their state.
+      Batch Job API Routes allow admins to manage the batch jobs and their state.
     externalDocs:
       description: How to import products
       url: https://docs.medusajs.com/modules/products/admin/import-products
   - name: Currencies
     description: |
       A store can use unlimited currencies, and each region must be associated with at least one currency.
-      Currencies are defined within the Medusa backend. Currency endpoints allow admins to list and update currencies.
+      Currencies are defined within the Medusa backend. Currency API Routes allow admins to list and update currencies.
     externalDocs:
       description: How to manage currencies
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
@@ -47,7 +47,7 @@ tags:
   - name: Discounts
     description: |
       Admins can create discounts with conditions and rules, providing them with advanced settings for variety of cases.
-      The Discount endpoints can be used to manage discounts, their conditions, resources, and more.
+      The Discount API Routes can be used to manage discounts, their conditions, resources, and more.
     externalDocs:
       description: How to manage discounts
       url: https://docs.medusajs.com/modules/discounts/admin/manage-discounts
@@ -60,7 +60,7 @@ tags:
   - name: Gift Cards
     description: |
       Admins can create gift cards and send them directly to customers, specifying options like their balance, region, and more.
-      These gift cards are different than the saleable gift cards in a store, which are created and managed through Product endpoints.
+      These gift cards are different than the saleable gift cards in a store, which are created and managed through Product API Routes.
     externalDocs:
       description: How to manage gift cards
       url: https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-custom-gift-cards
@@ -134,14 +134,14 @@ tags:
   - name: Product Variants
     description: |
       Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
-      Product variants can be managed through the Products endpoints.
+      Product variants can be managed through the Products API Routes.
     externalDocs:
       description: How to manage product variants
       url: https://docs.medusajs.com/modules/products/admin/manage-products#manage-product-variants
   - name: Publishable API Keys
     description: |
       Publishable API Keys can be used to scope Store API calls with an API key, determining what resources are retrieved when querying the API.
-      For example, a publishable API key can be associated with one or more sales channels. When it is passed in the header of a request to the List Product store endpoint,
+      For example, a publishable API key can be associated with one or more sales channels. When it is passed in the header of a request to the List Product store API Route,
       the sales channels are inferred from the key and only products associated with those sales channels are retrieved.
       Admins can manage publishable API keys and their associated resources. Currently, only Sales Channels are supported as a resource.
     externalDocs:
@@ -194,7 +194,7 @@ tags:
       A shipping profile is used to group products that can be shipped in the same manner.
       They are created by the admin and they're not associated with a fulfillment provider.
     externalDocs:
-      description: Shipping Option architecture
+      description: Shipping Profile architecture
       url: https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-profile
   - name: Stock Locations
     description: |
@@ -222,7 +222,7 @@ tags:
       url: https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates
   - name: Uploads
     description: |
-      The upload endpoints are used to upload any type of resources. For example, they can be used to upload CSV files that are used to import products into the store.
+      The upload API Routes are used to upload any type of resources. For example, they can be used to upload CSV files that are used to import products into the store.
     externalDocs:
       description: How to upload CSV file when importing a product.
       url: https://docs.medusajs.com/modules/products/admin/import-products#1-upload-csv-file
@@ -233,6 +233,7 @@ tags:
       description: How to manage users
       url: https://docs.medusajs.com/modules/users/admin/manage-users
 servers:
+  - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 paths: { }
 components:
@@ -366,89 +367,16 @@ components:
         type: "unknown_error"
   securitySchemes:
     api_token:
-      type: http
+      type: apiKey
       x-displayName: API Token
-      description: |
-        Use a user's API Token to send authenticated requests.
-
-        ### How to Add API Token to a User
-
-        At the moment, there's no direct way of adding an API Token for a user. The only way it can be done is through directly editing the database.
-
-        If you're using a PostgreSQL database, you can run the following commands in your command line to add API token:
-        
-        ```bash
-        psql -d <DB_NAME> -U <DB_USER>
-        UPDATE public.user SET api_token='<API_TOKEN>' WHERE email='<USER_EMAIL>';
-        ```
-
-        Where:
-        - `<DB_NAME>` is the name of the database schema you use for the Medusa server.
-        - `<DB_USER>` is the name of the user that has privileges over the database schema.
-        - `<API_TOKEN>` is the API token you want to associate with the user. You can use [this tool to generate a random token](https://randomkeygen.com/).
-        - `<USER_EMAIL>` is the email address of the admin user you want to have this API token.
-
-        ### How to Use the API Token
-
-        The API token can be used for Bearer Authentication. It's passed in the `Authorization` header as the following:
-        
-        ```
-        Authorization: Bearer {api_token}
-        ```
-
-        In this API reference, you'll find in the cURL request samples the use of `{api_token}`. This is where you must pass the API token.
-
-        If you're following along with the JS Client request samples, you must provide the `apiKey` option when creating the Medusa client:
-
-        ```ts
-        const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3, apiKey: '{api_token}' })
-        ```
-
-        If you're using Medusa React, you can pass the `apiKey` prop to `MedusaProvider`:
-        
-        ```tsx
-        <MedusaProvider
-          apiKey='api_token}'
-          //...
-        >
-        ```
+      in: header
+      name: x-medusa-access-token
+    jwt_token:
+      type: http
+      x-displayName: JWT Token
       scheme: bearer
     cookie_auth:
       type: apiKey
       in: cookie
       name: connect.sid
       x-displayName: Cookie Session ID
-      description: |
-        Use a cookie session to send authenticated requests.
-
-        ### How to Obtain the Cookie Session
-
-        If you're sending requests through a browser, using JS Client, or using tools like Postman, the cookie session should be automatically set when the admin user is logged in.
-
-        If you're sending requests using cURL, you must set the Session ID in the cookie manually.
-
-        To do that, send a request to [authenticate the user](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
-
-        ```bash
-        curl -v --location --request POST 'https://medusa-url.com/admin/auth' \
-        --header 'Content-Type: application/json' \
-        --data-raw '{
-          "email": "user@example.com",
-          "password": "supersecret"
-        }'
-        ```
-
-        The headers will be logged in the terminal as well as the response. You should find in the headers a Cookie header similar to this:
-
-        ```bash
-        Set-Cookie: connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
-        ```
-
-        Copy the value after `connect.sid` (without the `;` at the end) and pass it as a cookie in subsequent requests as the following:
-
-        ```bash
-        curl --location --request GET 'https://medusa-url.com/admin/products' \
-        --header 'Cookie: connect.sid={sid}'
-        ```
-        
-        Where `{sid}` is the value of `connect.sid` that you copied.

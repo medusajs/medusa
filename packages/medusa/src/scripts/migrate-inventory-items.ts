@@ -10,6 +10,7 @@ import { ProductVariant } from "../models"
 import dotenv from "dotenv"
 import express from "express"
 import loaders from "../loaders"
+import { promiseAll } from "@medusajs/utils"
 
 dotenv.config()
 
@@ -99,7 +100,7 @@ const processBatch = async (
 ) => {
   const manager = container.resolve("manager")
   return await manager.transaction(async (transactionManager) => {
-    await Promise.all(
+    await promiseAll(
       variants.map(async (variant) => {
         await migrateProductVariant(variant, locationId, {
           container,

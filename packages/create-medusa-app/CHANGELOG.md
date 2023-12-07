@@ -1,5 +1,48 @@
 # Change Log
 
+## 1.2.5
+
+### Patch Changes
+
+- [#5547](https://github.com/medusajs/medusa/pull/5547) [`09ab1d1be`](https://github.com/medusajs/medusa/commit/09ab1d1be6ec0c50e3fcc828c740265debd2222b) Thanks [@egormkn](https://github.com/egormkn)! - feat(create-medusa-app): print error message for failed database connection
+
+## 1.2.4
+
+### Patch Changes
+
+- [#5474](https://github.com/medusajs/medusa/pull/5474) [`03959c3e3`](https://github.com/medusajs/medusa/commit/03959c3e3a38c155607647e70668ee250b76fda9) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): improve spinner style
+
+## 1.2.3
+
+### Patch Changes
+
+- [#5404](https://github.com/medusajs/medusa/pull/5404) [`a1807aea8`](https://github.com/medusajs/medusa/commit/a1807aea83a5bf82c4221839a1fa57b41d2cc6ac) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add tracking for selected options
+
+## 1.2.2
+
+### Patch Changes
+
+- [#5189](https://github.com/medusajs/medusa/pull/5189) [`18a05dee8`](https://github.com/medusajs/medusa/commit/18a05dee86f55366c92a2669eacbccf526373ff5) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix inconsistency in checking errors in migrations
+
+## 1.2.1
+
+### Patch Changes
+
+- [#5061](https://github.com/medusajs/medusa/pull/5061) [`5b09f816c`](https://github.com/medusajs/medusa/commit/5b09f816cbb44d457c8cbdee803d9f84bd3fed0d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix command for windows OS
+
+## 1.2.0
+
+### Minor Changes
+
+- [#4968](https://github.com/medusajs/medusa/pull/4968) [`240b03800`](https://github.com/medusajs/medusa/commit/240b038006924d4872de068c98e2d6862145cb52) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add install Next.js storefront option
+
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`c58588904`](https://github.com/medusajs/medusa/commit/c58588904c5631111603b15afacf7cdc4c738cc4)]:
+  - medusa-telemetry@0.0.17
+
 ## 1.1.0
 
 ### Minor Changes

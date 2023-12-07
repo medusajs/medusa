@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,10 +6,11 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
-import { IsOptional, IsString } from "class-validator"
 
+import { MedusaError, MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { cleanResponseData } from "../../../../utils"
+import { defaultStoreProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /store/products/{id}
@@ -52,7 +54,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -90,7 +92,14 @@ export default async (req, res) => {
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
-  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+
+  let rawProduct
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(req, id)
+  } else {
+    rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  }
 
   let sales_channel_id = validated.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
@@ -146,11 +155,37 @@ export default async (req, res) => {
 
   // We can run them concurrently as the new properties are assigned to the references
   // of the appropriate entity
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({
     product: cleanResponseData(decoratedProduct, req.allowedProperties || []),
   })
+}
+
+async function getProductWithIsolatedProductModule(req, id: string) {
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultStoreProductRemoteQueryObject,
+    },
+  }
+
+  const [product] = await remoteQuery(query)
+
+  if (!product) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product with id: ${id} not found`
+    )
+  }
+
+  product.profile_id = product.profile?.id
+
+  return product
 }
 
 export class StoreGetProductsProductParams extends PriceSelectionParams {

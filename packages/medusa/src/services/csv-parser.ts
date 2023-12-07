@@ -146,7 +146,8 @@ class CsvParser<
     tupleKey: string,
     columnMap: Record<string, TSchema["columns"][number]>
   ): TSchema["columns"][number] | undefined {
-    if (columnMap[tupleKey]) {
+    // @ts-ignore
+    if (columnMap[tupleKey] && !columnMap[tupleKey].match) {
       return columnMap[tupleKey]
     }
 

@@ -1,5 +1,8 @@
 import {
+  AfterLoad,
+  AfterUpdate,
   BeforeInsert,
+  BeforeUpdate,
   Check,
   Column,
   Entity,
@@ -9,11 +12,15 @@ import {
   OneToMany,
 } from "typeorm"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { BaseEntity } from "../interfaces"
+import { featureFlagRouter } from "../loaders/feature-flags"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { generateEntityId } from "../utils"
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { DbAwareColumn, generateEntityId } from "../utils"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
 import { LineItemAdjustment } from "./line-item-adjustment"
@@ -124,6 +131,9 @@ export class LineItem extends BaseEntity {
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
+  @FeatureFlagColumn(MedusaV2Flag.key, { nullable: true, type: "text" })
+  product_id: string | null
+
   @Column({ type: "int" })
   quantity: number
 
@@ -152,9 +162,51 @@ export class LineItem extends BaseEntity {
   raw_discount_total?: number | null
   gift_card_total?: number | null
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "item")
+
+    // This is to maintain compatibility while isolating the product domain
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      if (
+        this.variant &&
+        Object.keys(this.variant).length === 1 &&
+        this.variant.product_id
+      ) {
+        this.variant = undefined as any
+      }
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @FeatureFlagDecorators(MedusaV2Flag.key, [BeforeUpdate()])
+  beforeUpdate(): void {
+    if (
+      this.variant &&
+      Object.keys(this.variant).length === 1 &&
+      this.variant.product_id
+    ) {
+      this.variant = undefined as any
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @FeatureFlagDecorators(MedusaV2Flag.key, [AfterLoad(), AfterUpdate()])
+  afterUpdateOrLoad(): void {
+    if (this.variant) {
+      return
+    }
+
+    if (this.product_id) {
+      this.variant = { product_id: this.product_id } as any
+    }
   }
 }
 

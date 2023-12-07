@@ -1,6 +1,7 @@
 import { omit } from "lodash"
 import qs from "qs"
 import { useMemo, useReducer, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { relativeDateFormatToTimestamp } from "../../../utils/time"
 
 type OrderDateFilter = null | {
@@ -156,6 +157,8 @@ export const useOrderFilters = (
   existing?: string,
   defaultFilters: OrderDefaultFilters | null = null
 ) => {
+  const { t } = useTranslation()
+
   if (existing && existing[0] === "?") {
     existing = existing.substring(1)
   }
@@ -365,11 +368,11 @@ export const useOrderFilters = (
   const availableTabs = useMemo(() => {
     return [
       {
-        label: "Complete",
+        label: t("order-table-filters-complete", "Complete"),
         value: "complete",
       },
       {
-        label: "Incomplete",
+        label: t("order-table-filters-incomplete", "Incomplete"),
         value: "incomplete",
       },
       ...tabs,
@@ -422,7 +425,6 @@ export const useOrderFilters = (
     const repObj = getRepresentationObject({ ...filters })
     const clean = omit(repObj, ["limit", "offset"])
     const repString = qs.stringify(clean, { skipNulls: true })
-
 
     const storedString = localStorage.getItem("orders::filters")
 

@@ -11,6 +11,7 @@ import {
 import ProductVariantService from "../../../../services/product-variant"
 import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import { joinLevels } from "../inventory-items/utils/join-levels"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/variants/{id}/inventory
@@ -29,18 +30,19 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.variants.list()
- *       .then(({ variants, limit, offset, count }) => {
- *         console.log(variants.length)
+ *       medusa.admin.variants.getInventory(variantId)
+ *       .then(({ variant }) => {
+ *         console.log(variant.inventory, variant.sales_channel_availability)
  *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl '{backend_url}/admin/variants' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/variants/{id}/inventory' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Variants
  * responses:
@@ -49,11 +51,7 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variant:
- *               type: object
- *               $ref: "#/components/schemas/AdminGetVariantsVariantInventoryRes"
+ *           $ref: "#/components/schemas/AdminGetVariantsVariantInventoryRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -95,7 +93,7 @@ export default async (req, res) => {
   }
 
   const [rawChannels] = await channelService.listAndCount({})
-  const channels: SalesChannelDTO[] = await Promise.all(
+  const channels: SalesChannelDTO[] = await promiseAll(
     rawChannels.map(async (channel) => {
       const locationIds = await channelLocationService.listLocationIds(
         channel.id
@@ -115,7 +113,7 @@ export default async (req, res) => {
   responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
   if (inventory.length) {
-    responseVariant.sales_channel_availability = await Promise.all(
+    responseVariant.sales_channel_availability = await promiseAll(
       channels.map(async (channel) => {
         if (!channel.locations.length) {
           return {
@@ -194,7 +192,7 @@ export type ResponseInventoryItem = Partial<InventoryItemDTO> & {
  *     $ref: "#/components/schemas/ResponseInventoryItem"
  *   sales_channel_availability:
  *     type: array
- *     description: An array of details about the variant's inventory availability in sales channels.
+ *     description: Details about the variant's inventory availability in sales channels.
  *     items:
  *       type: object
  *       required:
@@ -225,10 +223,11 @@ export type VariantInventory = {
 /**
  * @schema AdminGetVariantsVariantInventoryRes
  * type: object
+ * description: "The variant's inventory details."
  * properties:
  *   variant:
  *     type: object
- *     description: "The product variant's."
+ *     description: "The product variant's inventory details."
  *     $ref: "#/components/schemas/VariantInventory"
  */
 export type AdminGetVariantsVariantInventoryRes = {

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/types",
-  "version": "1.10.2",
+  "version": "1.11.8",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     "ioredis": "^5.2.5",
     "rimraf": "^5.0.1",
     "typeorm": "^0.3.16",
-    "typescript": "^4.4.4",
+    "typescript": "^5.1.6",
     "winston": "^3.8.2"
   },
   "scripts": {

@@ -21,15 +21,16 @@ import { TaxRateService } from "../../../../services"
  *       medusa.admin.taxRates.delete(taxRateId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/tax-rates/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Tax Rates
  * responses:

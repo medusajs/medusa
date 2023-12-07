@@ -2,6 +2,7 @@ import { Order } from "@medusajs/medusa"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import clsx from "clsx"
 import { FieldArrayWithId, useFieldArray } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import { NestedForm } from "../../../../utils/nested-form"
 import { useAddAdditionalItemsScreen } from "./add-additional-items-screen"
@@ -38,6 +39,7 @@ type Props = {
 }
 
 const ItemsToSendForm = ({ form, order }: Props) => {
+  const { t } = useTranslation()
   const { control, path } = form
 
   const { fields, append, remove } = useFieldArray({
@@ -68,7 +70,9 @@ const ItemsToSendForm = ({ form, order }: Props) => {
       })}
     >
       <div className="flex w-full items-center">
-        <h2 className="inter-base-semibold">Items to send</h2>
+        <h2 className="inter-base-semibold">
+          {t("items-to-send-form-items-to-send", "Items to send")}
+        </h2>
       </div>
       {fields.length > 0 && <AdditionalItemsTable instance={tableInstance} />}
 
@@ -86,7 +90,7 @@ const ItemsToSendForm = ({ form, order }: Props) => {
             })
           }
         >
-          Add products
+          {t("items-to-send-form-add-products", "Add products")}
         </Button>
       </div>
     </div>

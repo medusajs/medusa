@@ -1,5 +1,9 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
+import { IProductModuleService } from "@medusajs/types"
+import { kebabCase } from "@medusajs/utils"
+import { knex } from "knex"
 import { initialize } from "../../src"
+import { EventBusService } from "../__fixtures__/event-bus"
 import * as CustomRepositories from "../__fixtures__/module"
 import {
   buildProductAndRelationsData,
@@ -7,10 +11,6 @@ import {
 } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
-import { kebabCase } from "@medusajs/utils"
-import { IProductModuleService } from "@medusajs/types"
-import { knex } from "knex"
-import { EventBusService } from "../__fixtures__/event-bus"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -66,7 +66,7 @@ describe("Product module", function () {
 
     it("should return a list of product", async () => {
       const products = await module.list()
-      expect(products).toHaveLength(2)
+      expect(products).toHaveLength(3)
     })
   })
 

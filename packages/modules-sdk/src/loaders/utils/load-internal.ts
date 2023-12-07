@@ -1,10 +1,8 @@
 import {
-  Constructor,
   InternalModuleDeclaration,
   Logger,
   MedusaContainer,
   MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
@@ -30,9 +28,14 @@ export async function loadInternalModule(
     // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
     // does not need to import the package that is currently being loaded as it would create a
     // circular reference.
-    loadedModule =
-      resolution.moduleExports ??
-      (await import(resolution.resolutionPath as string)).default
+    const path = resolution.resolutionPath as string
+
+    if (resolution.moduleExports) {
+      loadedModule = resolution.moduleExports
+    } else {
+      loadedModule = await import(path)
+      loadedModule = (loadedModule as any).default
+    }
   } catch (error) {
     if (
       resolution.definition.isRequired &&
@@ -57,18 +60,6 @@ export async function loadInternalModule(
       error: new Error(
         "No service found in module. Make sure your module exports a service."
       ),
-    }
-  }
-
-  if (
-    scope === MODULE_SCOPE.INTERNAL &&
-    resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
-    const moduleModels = loadedModule?.models || null
-    if (moduleModels) {
-      moduleModels.map((val: Constructor<unknown>) => {
-        container.registerAdd("db_entities", asValue(val))
-      })
     }
   }
 
@@ -134,7 +125,8 @@ export async function loadModuleMigrations(
 ): Promise<[Function | undefined, Function | undefined]> {
   let loadedModule: ModuleExports
   try {
-    loadedModule = (await import(resolution.resolutionPath as string)).default
+    loadedModule = await import(resolution.resolutionPath as string)
+
     return [loadedModule.runMigrations, loadedModule.revertMigration]
   } catch {
     return [undefined, undefined]

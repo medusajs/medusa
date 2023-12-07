@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import CornerDownRightIcon from "../../../../components/fundamentals/icons/corner-down-right-icon"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
 
@@ -14,6 +15,7 @@ export const SummaryShippingLine = ({
   price,
   currencyCode,
 }: ShippingLineProps) => {
+  const { t } = useTranslation()
   return (
     <div className="flex items-center justify-between">
       <div className="gap-x-base flex items-center">
@@ -34,7 +36,7 @@ export const SummaryShippingLine = ({
               amount: price,
               currency: currencyCode,
             })
-          : "Free"}
+          : t("rma-summaries-free", "Free")}
       </p>
     </div>
   )

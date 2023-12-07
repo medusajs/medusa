@@ -42,12 +42,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/adasda/refund' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "amount": 1000,
@@ -56,6 +56,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -118,7 +119,8 @@ export default async (req, res) => {
  *     description: A note with additional details about the Refund.
  *     type: string
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Refund.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Refund.
  *     type: boolean
  */
 export class AdminPostOrdersOrderRefundsReq {

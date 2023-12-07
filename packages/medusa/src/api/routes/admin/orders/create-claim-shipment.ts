@@ -8,7 +8,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/claims/{claim_id}/shipments
  * operationId: "PostOrdersOrderClaimsClaimShipments"
  * summary: "Ship a Claim's Fulfillment"
- * description: "Mark a claim's fulfillment as shipped. This changes the claim's fulfillment status to either `shipped` or `partially_shipped`, depending on
+ * description: "Create a shipment for the claim and mark its fulfillment as shipped. This changes the claim's fulfillment status to either `partially_shipped` or `shipped`, depending on
  *  whether all the items were shipped."
  * x-authenticated: true
  * externalDocs:
@@ -39,12 +39,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/{id}/claims/{claim_id}/shipments' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "fulfillment_id": "{fulfillment_id}"
@@ -52,6 +52,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

@@ -4,8 +4,8 @@ import {
   FilterableStockLocationProps,
   FindConfig,
   IEventBusService,
-  JoinerServiceConfig,
   MODULE_RESOURCE_TYPE,
+  ModuleJoinerConfig,
   SharedContext,
   StockLocationAddressInput,
   UpdateStockLocationInput,
@@ -50,7 +50,7 @@ export default class StockLocationService {
     this.eventBusService_ = eventBusService
   }
 
-  __joinerConfig(): JoinerServiceConfig {
+  __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
 

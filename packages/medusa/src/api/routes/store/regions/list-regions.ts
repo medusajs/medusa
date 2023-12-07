@@ -11,7 +11,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /store/regions
  * operationId: GetRegions
  * summary: List Regions
- * description: "Retrieve a list of regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated. This endpoint is useful to
+ * description: "Retrieve a list of regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated. This API Route is useful to
  *  show the customer all available regions to choose from."
  * externalDocs:
  *   description: "How to use regions in a storefront"
@@ -73,9 +73,9 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.regions.list()
- *       .then(({ regions }) => {
+ *       .then(({ regions, count, limit, offset }) => {
  *         console.log(regions.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

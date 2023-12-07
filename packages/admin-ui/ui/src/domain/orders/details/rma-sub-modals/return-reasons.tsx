@@ -1,5 +1,6 @@
 import { useAdminReturnReasons } from "medusa-react"
 import React, { useContext, useState } from "react"
+import { useTranslation } from "react-i18next"
 import FileUploadField from "../../../../components/atoms/file-upload-field"
 import Button from "../../../../components/fundamentals/button"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
@@ -28,6 +29,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
   images,
 }) => {
   const { pop } = useContext(LayeredModalContext)
+  const { t } = useTranslation()
   const { return_reasons } = useAdminReturnReasons()
   const [note, setNote] = useState(existingNote || "")
   const [files, setFiles] = useState<any[]>([])
@@ -57,9 +59,11 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
     <>
       <Modal.Content>
         <div className="h-full">
-          <h2 className="inter-base-semibold mb-4">Reason for Return</h2>
+          <h2 className="inter-base-semibold mb-4">
+            {t("rma-sub-modals-reason-for-return", "Reason for Return")}
+          </h2>
           <Select
-            label="Reason"
+            label={t("rma-sub-modals-reason", "Reason")}
             value={selectedReason}
             onChange={setSelectedReason}
             options={
@@ -69,7 +73,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
             }
           />
           <InputField
-            label={"Note"}
+            label={t("rma-sub-modals-note", "Note")}
             value={note}
             className="my-4"
             onChange={(val) => onChange(val)}
@@ -135,7 +139,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
             className="w-[112px]"
             onClick={() => pop()}
           >
-            Back
+            {t("rma-sub-modals-back", "Back")}
           </Button>
           <Button
             variant="primary"
@@ -147,7 +151,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
               pop()
             }}
           >
-            Add
+            {t("rma-sub-modals-add", "Add")}
           </Button>
         </div>
       </Modal.Footer>

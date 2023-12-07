@@ -40,8 +40,8 @@ export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
   /**
    * Sets a feature flag.
    * Flags take two shapes:
-   * setFlag("myFeatureFlag", true)
-   * setFlag("myFeatureFlag", { nestedFlag: true })
+   * `setFlag("myFeatureFlag", true)`
+   * `setFlag("myFeatureFlag", { nestedFlag: true })`
    * These shapes are used for top-level and nested flags respectively, as explained in isFeatureEnabled.
    * @param key - The key of the flag to set.
    * @param value - The value of the flag to set.

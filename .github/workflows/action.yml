@@ -10,12 +10,12 @@ jobs:
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: "16.10.0"
           cache: "yarn"
@@ -36,17 +36,17 @@ jobs:
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
       - name: Checkout
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: "16.10.0"
           cache: "yarn"
@@ -97,17 +97,17 @@ jobs:
 
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
       - name: Checkout
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: "16"
           cache: "yarn"
@@ -125,7 +125,6 @@ jobs:
         env:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
-          SPLIT: ${{ steps['split-tests'].outputs['split'] }}
 
   integration-tests-api:
     needs: setup
@@ -159,17 +158,17 @@ jobs:
 
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
       - name: Checkout
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: "16.10.0"
           cache: "yarn"
@@ -186,7 +185,8 @@ jobs:
         run: yarn test:integration:api
         env:
           DB_PASSWORD: postgres
-          SPLIT: ${{ steps['split-tests'].outputs['split'] }}
+          DB_USERNAME: postgres
+
 
   integration-tests-plugins:
     needs: setup
@@ -211,17 +211,17 @@ jobs:
 
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
       - name: Checkout
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: "16.10.0"
           cache: "yarn"
@@ -237,7 +237,9 @@ jobs:
       - name: Run plugin integration tests
         run: yarn test:integration:plugins
         env:
+          DB_USERNAME: postgres
           DB_PASSWORD: postgres
+          NODE_OPTIONS: "--max_old_space_size=4096"
 
   integration-tests-repositories:
     needs: setup
@@ -262,17 +264,17 @@ jobs:
 
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
       - name: Checkout
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           node-version: "16.10.0"
           cache: "yarn"
@@ -285,4 +287,5 @@ jobs:
       - name: Run repository integration tests
         run: yarn test:integration:repositories
         env:
+          DB_USERNAME: postgres
           DB_PASSWORD: postgres

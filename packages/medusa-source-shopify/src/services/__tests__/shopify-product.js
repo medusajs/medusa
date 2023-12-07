@@ -18,7 +18,7 @@ describe("ShopifyProductService", () => {
       jest.clearAllMocks()
     })
 
-    it("succesfully normalizes a product from Shopify", async () => {
+    it("successfully normalizes a product from Shopify", async () => {
       const data = await ShopifyClientServiceMock.get({ path: "products/ipod" })
 
       const normalized = shopifyProductService.normalizeProduct_(data)
@@ -41,7 +41,7 @@ describe("ShopifyProductService", () => {
       jest.clearAllMocks()
     })
 
-    it("succesfully creates a product from Shopify", async () => {
+    it("successfully creates a product from Shopify", async () => {
       const data = shopifyProducts.new_ipod
 
       const product = await shopifyProductService.create(data)

@@ -32,13 +32,13 @@ export class addTableProductShippingProfile1680857773273
         DROP INDEX IF EXISTS "idx_product_shipping_profile_product_id";
         DROP INDEX IF EXISTS "idx_product_shipping_profile_profile_id";
 
-        DROP TABLE IF EXISTS "product_shipping_profile";
-
         ALTER TABLE "product" ADD COLUMN IF NOT EXISTS "profile_id";
 
         UPDATE "product" SET "profile_id" = "product_shipping_profile"."profile_id"
             FROM "product_shipping_profile"
         WHERE "product"."id" = "product_shipping_profile"."product_id";
+
+        DROP TABLE IF EXISTS "product_shipping_profile";
 
         ALTER TABLE "product" ALTER COLUMN profile_id SET NOT NULL;
 

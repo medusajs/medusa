@@ -1,4 +1,5 @@
 import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin"
+import CopyPlugin from "copy-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import path from "node:path"
@@ -29,6 +30,7 @@ export function getWebpackConfig({
   env,
   options,
   template,
+  publicFolder,
   reporting = "fancy",
 }: WebpackConfigArgs): Configuration {
   const isProd = env === "production"
@@ -52,12 +54,11 @@ export function getWebpackConfig({
           fancy: reporting === "fancy",
         }),
       ]
-    : [new MiniCssExtractPlugin()]
+    : [new MiniCssExtractPlugin(), new ReactRefreshPlugin()]
 
   return {
     mode: env,
-    bail: !!isProd,
-    devtool: isProd ? false : "eval-source-map",
+    devtool: isProd ? false : "inline-source-map",
     entry: [entry],
     output: {
       path: dest,
@@ -89,6 +90,8 @@ export function getWebpackConfig({
                 transform: {
                   react: {
                     runtime: "automatic",
+                    development: !isProd,
+                    refresh: !isProd,
                   },
                 },
               },
@@ -145,11 +148,6 @@ export function getWebpackConfig({
           type: "asset/resource",
         },
         {
-          test: /\.(js|mjs)(\.map)?$/,
-          enforce: "pre",
-          use: ["source-map-loader"],
-        },
-        {
           test: /\.m?jsx?$/,
           resolve: {
             fullySpecified: false,
@@ -177,9 +175,17 @@ export function getWebpackConfig({
 
       new webpack.DefinePlugin(envVars),
 
-      !isProd && new ReactRefreshPlugin(),
+      new CopyPlugin({
+        patterns: [
+          {
+            from: publicFolder || path.resolve(__dirname, "..", "ui", "public"),
+            to: path.resolve(dest, "public"),
+          },
+        ],
+      }),
 
       ...webpackPlugins,
     ].filter(Boolean),
+    stats: isProd ? "errors-only" : "errors-warnings",
   }
 }

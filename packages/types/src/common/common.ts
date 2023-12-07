@@ -4,11 +4,11 @@ import {
   FindOperator,
   FindOptionsSelect,
   FindOptionsWhere,
-  OrderByCondition,
-} from "typeorm"
+  OrderByCondition
+} from "typeorm";
 
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
-import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder";
+import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations";
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -40,12 +40,38 @@ export type Writable<T> = {
     | FindOperator<string[]>
 }
 
+/**
+ * @interface
+ *
+ * An object that is used to configure how an entity is retrieved from the database. It accepts as a typed parameter an `Entity` class,
+ * which provides correct typing of field names in its properties.
+ */
 export interface FindConfig<Entity> {
+  /**
+   * An array of strings, each being attribute names of the entity to retrieve in the result.
+   */
   select?: (keyof Entity | string)[]
-  skip?: number
-  take?: number
+  /**
+   * A number indicating the number of records to skip before retrieving the results.
+   */
+  skip?: number | null | undefined
+  /**
+   * A number indicating the number of records to return in the result.
+   */
+  take?: number | null | undefined
+  /**
+   * An array of strings, each being relation names of the entity to retrieve in the result.
+   */
   relations?: string[]
+  /**
+   * An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`
+   * to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.
+   */
   order?: { [K: string]: "ASC" | "DESC" }
+  /**
+   * A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the
+   * `SoftDeletableEntity` class.
+   */
   withDeleted?: boolean
 }
 
@@ -120,13 +146,26 @@ export type PaginatedResponse = {
   count: number
 }
 
+/**
+ * The fields returned in the response of a DELETE request.
+ */
 export type DeleteResponse = {
+  /**
+   * The ID of the item that was deleted.
+   */
   id: string
+  /**
+   * The type of the item that was deleted.
+   */
   object: string
+  /**
+   * Whether the item was deleted successfully.
+   */
   deleted: boolean
 }
 
 export interface EmptyQueryParams {}
+
 // TODO: Build a tree repository options from this
 export interface RepositoryTransformOptions {}
 

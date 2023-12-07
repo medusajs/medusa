@@ -18,15 +18,16 @@ import { PaymentProviderService } from "../../../../services"
  *       medusa.admin.store.listPaymentProviders()
  *       .then(({ payment_providers }) => {
  *         console.log(payment_providers.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/store/payment-providers' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:

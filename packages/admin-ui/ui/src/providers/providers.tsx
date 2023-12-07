@@ -11,6 +11,7 @@ import { PollingProvider } from "./polling-provider"
 import { RouteProvider } from "./route-provider"
 import { SettingProvider } from "./setting-provider"
 import { WidgetProvider } from "./widget-provider"
+import { ImportRefresh } from "./import-refresh"
 
 type Props = PropsWithChildren<{
   widgetRegistry: WidgetRegistry
@@ -32,17 +33,19 @@ export const Providers = ({
       <MedusaProvider>
         <FeatureFlagProvider>
           <PollingProvider>
-            <SteppedProvider>
-              <LayeredModalProvider>
-                <WidgetProvider registry={widgetRegistry}>
-                  <RouteProvider registry={routeRegistry}>
-                    <SettingProvider registry={settingRegistry}>
-                      {children}
-                    </SettingProvider>
-                  </RouteProvider>
-                </WidgetProvider>
-              </LayeredModalProvider>
-            </SteppedProvider>
+            <ImportRefresh>
+              <SteppedProvider>
+                <LayeredModalProvider>
+                  <WidgetProvider registry={widgetRegistry}>
+                    <RouteProvider registry={routeRegistry}>
+                      <SettingProvider registry={settingRegistry}>
+                        {children}
+                      </SettingProvider>
+                    </RouteProvider>
+                  </WidgetProvider>
+                </LayeredModalProvider>
+              </SteppedProvider>
+            </ImportRefresh>
           </PollingProvider>
         </FeatureFlagProvider>
       </MedusaProvider>

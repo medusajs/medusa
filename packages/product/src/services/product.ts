@@ -1,4 +1,3 @@
-import { Product } from "@models"
 import {
   Context,
   DAL,
@@ -15,10 +14,10 @@ import {
   ModulesSdkUtils,
   ProductUtils,
 } from "@medusajs/utils"
+import { Product } from "@models"
 import { ProductRepository } from "@repositories"
 
 import { ProductServiceTypes } from "../types/services"
-import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -72,17 +71,17 @@ export default class ProductService<TEntity extends Product = Product> {
     config: FindConfig<ProductTypes.ProductDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    if (filters.category_ids) {
-      if (Array.isArray(filters.category_ids)) {
+    if (filters.category_id) {
+      if (Array.isArray(filters.category_id)) {
         filters.categories = {
-          id: { $in: filters.category_ids },
+          id: { $in: filters.category_id },
         }
       } else {
         filters.categories = {
-          id: filters.category_ids,
+          id: filters.category_id,
         }
       }
-      delete filters.category_ids
+      delete filters.category_id
     }
 
     const queryOptions = ModulesSdkUtils.buildQuery<Product>(filters, config)
@@ -98,17 +97,17 @@ export default class ProductService<TEntity extends Product = Product> {
     config: FindConfig<ProductTypes.ProductDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    if (filters.category_ids) {
-      if (Array.isArray(filters.category_ids)) {
+    if (filters.category_id) {
+      if (Array.isArray(filters.category_id)) {
         filters.categories = {
-          id: { $in: filters.category_ids },
+          id: { $in: filters.category_id },
         }
       } else {
         filters.categories = {
-          id: filters.category_ids,
+          id: filters.category_id,
         }
       }
-      delete filters.category_ids
+      delete filters.category_id
     }
 
     const queryOptions = ModulesSdkUtils.buildQuery<Product>(filters, config)
@@ -118,7 +117,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async create(
     data: ProductTypes.CreateProductOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -138,7 +137,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async update(
     data: ProductServiceTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -154,7 +153,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -164,7 +163,7 @@ export default class ProductService<TEntity extends Product = Product> {
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async softDelete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -174,11 +173,11 @@ export default class ProductService<TEntity extends Product = Product> {
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async restore(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
     return await this.productRepository_.restore(productIds, {
       transactionManager: sharedContext.transactionManager,
     })

@@ -8,7 +8,7 @@ import { FindParams } from "../../../../types/common"
  * @oas [delete] /admin/discounts/{discount_id}/conditions/{condition_id}
  * operationId: "DeleteDiscountsDiscountConditionsCondition"
  * summary: "Delete a Condition"
- * description: "Deletes a Discount Condition. This does not delete resources associated to the discount condition."
+ * description: "Delete a Discount Condition. This does not delete resources associated to the discount condition."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Discount
@@ -28,15 +28,16 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.deleteCondition(discountId, conditionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/discounts/{id}/conditions/{condition_id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:

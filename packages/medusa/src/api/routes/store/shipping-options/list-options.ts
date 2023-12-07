@@ -1,8 +1,13 @@
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
-import { PricingService, ProductService } from "../../../../services"
+import { defaultRelations } from "."
+import {
+  PricingService,
+  ProductService,
+  ShippingProfileService,
+} from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
-import { defaultRelations } from "."
 
 /**
  * @oas [get] /store/shipping-options
@@ -25,7 +30,7 @@ import { defaultRelations } from "."
  *       medusa.shippingOptions.list()
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -61,6 +66,10 @@ export default async (req, res) => {
   const shippingOptionService: ShippingOptionService = req.scope.resolve(
     "shippingOptionService"
   )
+  const shippingProfileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   // should be selector
   const query: Record<string, unknown> = {}
@@ -76,8 +85,15 @@ export default async (req, res) => {
   query.admin_only = false
 
   if (productIds.length) {
-    const prods = await productService.list({ id: productIds })
-    query.profile_id = prods.map((p) => p.profile_id)
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+      const productShippinProfileMap =
+        await shippingProfileService.getMapProfileIdsByProductIds(productIds)
+
+      query.profile_id = [...productShippinProfileMap.values()]
+    } else {
+      const prods = await productService.list({ id: productIds })
+      query.profile_id = prods.map((p) => p.profile_id)
+    }
   }
 
   const options = await shippingOptionService.list(query, {
@@ -89,15 +105,27 @@ export default async (req, res) => {
   res.status(200).json({ shipping_options: data })
 }
 
+/**
+ * Filters to apply on the retrieved shipping options.
+ */
 export class StoreGetShippingOptionsParams {
+  /**
+   * Product ID that is used to filter shipping options by whether they can be used to ship that product.
+   */
   @IsOptional()
   @IsString()
   product_ids?: string
 
+  /**
+   * Filter the shipping options by the ID of their associated region.
+   */
   @IsOptional()
   @IsString()
   region_id?: string
 
+  /**
+   * Filter the shipping options by whether they're return shipping options.
+   */
   @IsOptional()
   @IsBooleanString()
   is_return?: string

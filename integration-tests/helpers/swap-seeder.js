@@ -264,7 +264,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(li2)
 
-  const swapReturn = await manager.create(Return, {
+  const swapReturn = manager.create(Return, {
     swap_id: swap.id,
     order_id: orderWithSwap.id,
     item_id: li.id,

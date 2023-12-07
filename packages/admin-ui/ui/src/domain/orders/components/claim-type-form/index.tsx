@@ -1,4 +1,5 @@
 import { Controller } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import RadioGroup from "../../../../components/organisms/radio-group"
 import { NestedForm } from "../../../../utils/nested-form"
 
@@ -11,6 +12,7 @@ type Props = {
 }
 
 const ClaimTypeForm = ({ form }: Props) => {
+  const { t } = useTranslation()
   const { control, path } = form
 
   return (
@@ -26,12 +28,12 @@ const ClaimTypeForm = ({ form }: Props) => {
               className="flex items-center"
             >
               <RadioGroup.SimpleItem
-                label="Refund"
+                label={t("claim-type-form-refund", "Refund")}
                 value="refund"
                 onChange={onChange}
               />
               <RadioGroup.SimpleItem
-                label="Replace"
+                label={t("claim-type-form-replace", "Replace")}
                 value="replace"
                 onChange={onChange}
               />

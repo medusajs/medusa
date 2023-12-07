@@ -43,9 +43,11 @@ describe("/store/products", () => {
     let internalCategoryWithProduct
     let nestedCategoryWithProduct
     let nested2CategoryWithProduct
+    let categoryWithMultipleProducts
     const nestedCategoryWithProductId = "nested-category-with-product-id"
     const nested2CategoryWithProductId = "nested2-category-with-product-id"
     const categoryWithProductId = "category-with-product-id"
+    const categoryWithMultipleProductsId = "category-with-multiple-products-id"
     const categoryWithoutProductId = "category-without-product-id"
     const inactiveCategoryWithProductId = "inactive-category-with-product-id"
     const internalCategoryWithProductId = "inactive-category-with-product-id"
@@ -61,6 +63,17 @@ describe("/store/products", () => {
 
       await productSeeder(dbConnection, defaultSalesChannel)
       await adminSeeder(dbConnection)
+
+      categoryWithMultipleProducts = await simpleProductCategoryFactory(
+        dbConnection,
+        {
+          id: categoryWithMultipleProductsId,
+          name: "category with multiple Products",
+          products: [{ id: testProductId }, { id: testProductId1 }],
+          is_active: true,
+          is_internal: false,
+        }
+      )
 
       categoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
         id: categoryWithProductId,
@@ -147,6 +160,32 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual([
         expect.objectContaining({
           id: testProductId,
+        }),
+      ])
+    })
+
+    it("should return a list of products queried by category_id and q", async () => {
+      const api = useApi()
+      const productName = "Test product1"
+      // The other product under this category is with the title "Test product"
+      // By querying for "Test product1", the "Test product" should not be shown
+      const params = `category_id[]=${categoryWithMultipleProductsId}&q=${productName}&expand=categories`
+      const response = await api.get(`/store/products?${params}`)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: testProductId1,
+          title: productName,
+          categories: [
+            expect.objectContaining({
+              id: categoryWithMultipleProductsId,
+            }),
+            expect.objectContaining({
+              id: nestedCategoryWithProductId,
+            }),
+          ],
         }),
       ])
     })

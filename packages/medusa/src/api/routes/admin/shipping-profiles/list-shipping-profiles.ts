@@ -18,15 +18,16 @@ import { ShippingProfileService } from "../../../../services"
  *       medusa.admin.shippingProfiles.list()
  *       .then(({ shipping_profiles }) => {
  *         console.log(shipping_profiles.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/shipping-profiles' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Shipping Profiles
  * responses:

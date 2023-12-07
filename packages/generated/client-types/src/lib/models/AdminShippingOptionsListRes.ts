@@ -6,6 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Region } from "./Region"
 import type { ShippingOption } from "./ShippingOption"
 
+/**
+ * The list of shipping options with pagination fields.
+ */
 export interface AdminShippingOptionsListRes {
   /**
    * An array of shipping options details.

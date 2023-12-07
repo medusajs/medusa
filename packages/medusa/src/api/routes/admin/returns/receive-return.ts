@@ -44,12 +44,12 @@ import { defaultRelations } from "."
  *       })
  *       .then((data) => {
  *         console.log(data.return.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/returns/{id}/receive' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "items": [
@@ -62,6 +62,7 @@ import { defaultRelations } from "."
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Returns
  * responses:
@@ -164,6 +165,9 @@ class Item {
  *   refund:
  *     description: The amount to refund.
  *     type: number
+ *   location_id:
+ *     description: The ID of the location to return items from.
+ *     type: string
  */
 export class AdminPostReturnsReturnReceiveReq {
   @IsArray()

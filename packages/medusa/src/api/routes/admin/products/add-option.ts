@@ -1,9 +1,9 @@
 import { PricingService, ProductService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/products/{id}/options
@@ -32,12 +32,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/products/{id}/options' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Size"
@@ -45,6 +45,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -90,7 +91,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }

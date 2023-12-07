@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import BackButton from "../../../components/atoms/back-button"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../../components/organisms/body-card"
@@ -7,6 +8,7 @@ import UserTable from "../../../components/templates/user-table"
 import Medusa from "../../../services/api"
 
 const Users: React.FC = () => {
+  const { t } = useTranslation()
   const [users, setUsers] = useState([])
   const [invites, setInvites] = useState([])
   const [shouldRefetch, setShouldRefetch] = useState(0)
@@ -33,7 +35,7 @@ const Users: React.FC = () => {
 
   const actionables = [
     {
-      label: "Invite Users",
+      label: t("users-invite-users", "Invite Users"),
       onClick: () => setShowInviteModal(true),
       icon: (
         <span className="text-grey-90">
@@ -48,12 +50,15 @@ const Users: React.FC = () => {
       <div className="flex w-full grow flex-col">
         <BackButton
           path="/a/settings"
-          label="Back to settings"
+          label={t("users-back-to-settings", "Back to settings")}
           className="mb-xsmall"
         />
         <BodyCard
-          title="The Team"
-          subtitle="Manage users of your Medusa Store"
+          title={t("users-the-team", "The Team")}
+          subtitle={t(
+            "users-manage-users-of-your-medusa-store",
+            "Manage users of your Medusa Store"
+          )}
           actionables={actionables}
         >
           <div className="flex grow flex-col justify-between">
@@ -63,8 +68,7 @@ const Users: React.FC = () => {
               triggerRefetch={triggerRefetch}
             />
             <p className="inter-small-regular text-grey-50">
-              {users.length} member
-              {users.length === 1 ? "" : "s"}
+              {t("users-count", "{{count}}", { count: users.length })}
             </p>
           </div>
           {showInviteModal && (

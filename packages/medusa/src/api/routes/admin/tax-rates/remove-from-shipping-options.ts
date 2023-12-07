@@ -54,12 +54,12 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/tax-rates/{id}/shipping-options/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "shipping_options": [
@@ -69,6 +69,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Tax Rates
  * responses:
@@ -138,11 +139,20 @@ export class AdminDeleteTaxRatesTaxRateShippingOptionsReq {
   shipping_options: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminDeleteTaxRatesTaxRateShippingOptionsParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

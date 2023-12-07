@@ -1,63 +1,64 @@
 import { IInventoryService } from "@medusajs/types"
 import {
-    buildRelations,
-    buildSelects,
-    FlagRouter,
-    isDefined,
-    MedusaError,
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  isDefined,
+  MedusaError,
+  promiseAll,
 } from "@medusajs/utils"
 import {
-    EntityManager,
-    FindManyOptions,
-    FindOptionsWhere,
-    ILike,
-    IsNull,
-    Not,
-    Raw,
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+  Not,
+  Raw,
 } from "typeorm"
 import {
-    CartService,
-    CustomerService,
-    DiscountService,
-    DraftOrderService,
-    FulfillmentProviderService,
-    FulfillmentService,
-    GiftCardService,
-    LineItemService,
-    NewTotalsService,
-    PaymentProviderService,
-    ProductVariantInventoryService,
-    RegionService,
-    ShippingOptionService,
-    ShippingProfileService,
-    TaxProviderService,
-    TotalsService,
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService,
 } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-    Address,
-    Cart,
-    ClaimOrder,
-    Fulfillment,
-    FulfillmentItem,
-    FulfillmentStatus,
-    GiftCard,
-    LineItem,
-    Order,
-    OrderStatus,
-    Payment,
-    PaymentStatus,
-    Return,
-    Swap,
-    TrackingLink,
+  Address,
+  Cart,
+  ClaimOrder,
+  Fulfillment,
+  FulfillmentItem,
+  FulfillmentStatus,
+  GiftCard,
+  LineItem,
+  Order,
+  OrderStatus,
+  Payment,
+  PaymentStatus,
+  Return,
+  Swap,
+  TrackingLink,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
-    CreateFulfillmentOrder,
-    FulFillmentItemType,
+  CreateFulfillmentOrder,
+  FulFillmentItemType,
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
@@ -302,7 +303,7 @@ class OrderService extends TransactionBaseService {
 
     const raw = await orderRepo.findWithRelations(rels, query)
     const count = await orderRepo.count(query)
-    const orders = await Promise.all(
+    const orders = await promiseAll(
       raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
 
@@ -725,15 +726,18 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const giftCardableAmount =
-        (cart.region?.gift_cards_taxable
-          ? cart.subtotal! - cart.discount_total!
-          : cart.total! + cart.gift_card_total!) || 0 // we re add the gift card total to compensate the fact that the decorate total already removed this amount from the total
+      let giftCardableAmountBalance = cart.gift_card_total ?? 0
 
-      let giftCardableAmountBalance = giftCardableAmount
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
-      for (const giftCard of cart.gift_cards) {
+      // Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
+      const orderedGiftCards = cart.gift_cards.sort((a, b) => {
+        const aEnd = a.ends_at ?? new Date(2100, 1, 1)
+        const bEnd = b.ends_at ?? new Date(2100, 1, 1)
+        return aEnd.getTime() - bEnd.getTime() || a.balance - b.balance
+      })
+
+      for (const giftCard of orderedGiftCards) {
         const newGiftCardBalance = Math.max(
           0,
           giftCard.balance - giftCardableAmountBalance
@@ -755,28 +759,32 @@ class OrderService extends TransactionBaseService {
 
         giftCardableAmountBalance =
           giftCardableAmountBalance - giftCardBalanceUsed
+
+        if (giftCardableAmountBalance == 0) {
+          break
+        }
       }
 
       const shippingOptionServiceTx =
         this.shippingOptionService_.withTransaction(manager)
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         [
-          cart.items.map((lineItem): unknown[] => {
-            const toReturn: unknown[] = [
+          cart.items.map((lineItem): Promise<unknown>[] => {
+            const toReturn: Promise<unknown>[] = [
               lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
             ]
 
             if (lineItem.is_giftcard) {
               toReturn.push(
-                this.createGiftCardsFromLineItem_(order, lineItem, manager)
+                ...this.createGiftCardsFromLineItem_(order, lineItem, manager)
               )
             }
 
             return toReturn
           }),
-          cart.shipping_methods.map(async (method) => {
+          cart.shipping_methods.map(async (method): Promise<unknown> => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
@@ -850,8 +858,7 @@ class OrderService extends TransactionBaseService {
    * have been created in regards to the shipment.
    * @param orderId - the id of the order that has been shipped
    * @param fulfillmentId - the fulfillment that has now been shipped
-   * @param trackingLinks - array of tracking numebers
-   *   associated with the shipment
+   * @param trackingLinks - array of tracking numbers associated with the shipment
    * @param config - the config of the order that has been shipped
    * @return the resulting order following the update.
    */
@@ -1219,7 +1226,7 @@ class OrderService extends TransactionBaseService {
       const inventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         order.items.map(async (item) => {
           if (item.variant_id) {
             return await inventoryServiceTx.deleteReservationsByLineItem(
@@ -1538,7 +1545,7 @@ class OrderService extends TransactionBaseService {
     transformer: (item: LineItem | undefined, quantity: number) => unknown
   ): Promise<LineItem[]> {
     return (
-      await Promise.all(
+      await promiseAll(
         items.map(async ({ item_id, quantity }) => {
           const item = order.items.find((i) => i.id === item_id)
           return transformer(item, quantity)
@@ -1656,7 +1663,7 @@ class OrderService extends TransactionBaseService {
         await this.totalsService_.getCalculationContext(order, {
           exclude_shipping: true,
         })
-      order.items = await Promise.all(
+      order.items = await promiseAll(
         (order.items || []).map(async (item) => {
           const itemTotals = await this.totalsService_.getLineItemTotals(
             item,
@@ -1889,8 +1896,20 @@ class OrderService extends TransactionBaseService {
       }
     )
 
+    order.item_tax_total = item_tax_total
+    order.shipping_tax_total = shipping_tax_total
+    order.tax_total = item_tax_total + shipping_tax_total
+
+    const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({
+      gift_cards_taxable: order.region?.gift_cards_taxable,
+      subtotal: order.subtotal,
+      discount_total: order.discount_total,
+      shipping_total: order.shipping_total,
+      tax_total: order.tax_total,
+    })
+
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
-      order.subtotal - order.discount_total,
+      giftCardableAmount,
       {
         region: order.region,
         giftCards: order.gift_cards,
@@ -1900,8 +1919,7 @@ class OrderService extends TransactionBaseService {
     order.gift_card_total = giftCardTotal.total || 0
     order.gift_card_tax_total = giftCardTotal.tax_total || 0
 
-    order.tax_total =
-      item_tax_total + shipping_tax_total - order.gift_card_tax_total
+    order.tax_total -= order.gift_card_tax_total
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {
@@ -1957,8 +1975,8 @@ class OrderService extends TransactionBaseService {
    * Handles receiving a return. This will create a
    * refund to the customer. If the returned items don't match the requested
    * items the return status will be updated to requires_action. This behaviour
-   * is useful in sitautions where a custom refund amount is requested, but the
-   * retuned items are not matching the requested items. Setting the
+   * is useful in situations where a custom refund amount is requested, but the
+   * returned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
    * @param orderId - the order to return.

@@ -1,18 +1,17 @@
-import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { ProductVariantRepository } from "@repositories"
 import {
   InjectManager,
   InjectTransactionManager,
-  isString,
   MedusaContext,
   ModulesSdkUtils,
+  isString,
   retrieveEntity,
 } from "@medusajs/utils"
+import { Product, ProductVariant } from "@models"
+import { ProductVariantRepository } from "@repositories"
 
 import { ProductVariantServiceTypes } from "../types/services"
 import ProductService from "./product"
-import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -86,7 +85,7 @@ export default class ProductVariantService<
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async create(
     productOrId: TProduct | string,
     data: ProductTypes.CreateProductVariantOnlyDTO[],
@@ -97,7 +96,7 @@ export default class ProductVariantService<
     if (isString(productOrId)) {
       product = await this.productService_.retrieve(
         productOrId,
-        {},
+        { relations: ["variants"] },
         sharedContext
       )
     }
@@ -106,6 +105,8 @@ export default class ProductVariantService<
 
     const data_ = [...data]
     data_.forEach((variant) => {
+      delete variant?.product_id
+
       Object.assign(variant, {
         variant_rank: computedRank++,
         product,
@@ -119,7 +120,7 @@ export default class ProductVariantService<
     })) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async update(
     productOrId: TProduct | string,
     data: ProductVariantServiceTypes.UpdateProductVariantDTO[],
@@ -145,12 +146,32 @@ export default class ProductVariantService<
     })) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     return await this.productVariantRepository_.delete(ids, {
+      transactionManager: sharedContext.transactionManager,
+    })
+  }
+
+  @InjectTransactionManager("productVariantRepository_")
+  async softDelete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productVariantRepository_.softDelete(ids, {
+      transactionManager: sharedContext.transactionManager,
+    })
+  }
+
+  @InjectTransactionManager("productVariantRepository_")
+  async restore(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.productVariantRepository_.restore(ids, {
       transactionManager: sharedContext.transactionManager,
     })
   }

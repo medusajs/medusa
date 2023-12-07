@@ -24,15 +24,16 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.discounts.deleteDynamicCode(discountId, code)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/discounts/{id}/dynamic-codes/{code}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:

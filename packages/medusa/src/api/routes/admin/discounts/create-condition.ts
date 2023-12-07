@@ -36,16 +36,17 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.discounts.createCondition(discountId, {
- *         operator: DiscountConditionOperator.IN
+ *         operator: DiscountConditionOperator.IN,
+ *         products: [productId]
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/discounts/{id}/conditions' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "operator": "in"
@@ -53,6 +54,7 @@ import { FindParams } from "../../../../types/common"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:
@@ -106,8 +108,9 @@ export default async (req: Request, res: Response) => {
  *   - operator
  * properties:
  *   operator:
- *      description: "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
- *       discountable resources are everything but the specified resources."
+ *      description: >-
+ *        Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *        discountable resources are everything but the specified resources.
  *      type: string
  *      enum: [in, not_in]
  *   products:

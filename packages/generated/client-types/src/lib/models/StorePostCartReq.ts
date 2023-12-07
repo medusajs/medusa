@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the cart to be created.
+ */
 export interface StorePostCartReq {
   /**
    * The ID of the Region to create the Cart in. Setting the cart's region can affect the pricing of the items in the cart as well as the used currency. If this parameter is not provided, the first region in the store is used by default.
@@ -13,7 +16,7 @@ export interface StorePostCartReq {
    */
   sales_channel_id?: string
   /**
-   * The 2 character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address.
+   * The two character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address.
    */
   country_code?: string
   /**

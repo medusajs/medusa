@@ -1,9 +1,14 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { IsInt, IsOptional } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-steps"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
@@ -31,7 +36,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -68,6 +73,9 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   await manager.transaction(async (m) => {
     // If the quantity is 0 that is effectively deletion
     if (validated.quantity === 0) {
@@ -90,6 +98,7 @@ export default async (req, res) => {
         region_id: cart.region_id,
         quantity: validated.quantity,
         metadata: validated.metadata || {},
+        should_calculate_prices: true,
       }
 
       await cartService
@@ -111,6 +120,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }

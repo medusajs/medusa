@@ -25,15 +25,16 @@ import { EntityManager } from "typeorm"
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/invites/{invite_id}/resend' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Invites
  * responses:

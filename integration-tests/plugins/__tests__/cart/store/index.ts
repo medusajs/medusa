@@ -1,4 +1,9 @@
-import { MoneyAmount, PriceList, Region } from "@medusajs/medusa"
+import {
+  MoneyAmount,
+  PriceList,
+  ProductVariantMoneyAmount,
+  Region,
+} from "@medusajs/medusa"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import {
@@ -11,6 +16,7 @@ import { Customer } from "@medusajs/medusa"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import path from "path"
 import setupServer from "../../../../environment-helpers/setup-server"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 
 jest.setTimeout(30000)
 
@@ -19,9 +25,9 @@ const getApi = () => {
 }
 
 describe("/store/carts", () => {
-  let medusaProcess
   let dbConnection
   let appContainer
+  let shutdownServer
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -31,19 +37,13 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-    setPort(port)
-    app.listen(port, () => {
-      process.send?.(port)
-    })
+    shutdownServer = await startBootstrapApp({ cwd })
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   describe("POST /store/carts", () => {
@@ -161,7 +161,6 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
@@ -169,7 +168,13 @@ describe("/store/carts", () => {
 
       await dbConnection.manager.save(ma_sale_1)
 
-      const api = getApi()
+      await dbConnection.manager.insert(ProductVariantMoneyAmount, {
+        id: "pvma-test",
+        variant_id: prodSale.variants[0].id,
+        money_amount_id: ma_sale_1.id,
+      })
+
+      const api = useApi()
 
       const response = await api.post("/store/carts", {
         items: [

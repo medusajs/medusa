@@ -30,15 +30,16 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *       medusa.admin.stockLocations.retrieve(stockLocationId)
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/stock-locations/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Stock Locations
  * responses:

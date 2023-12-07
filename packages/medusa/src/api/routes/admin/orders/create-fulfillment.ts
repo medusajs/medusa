@@ -19,12 +19,14 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
 import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /admin/orders/{id}/fulfillment
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
- * description: "Create a Fulfillment of an Order using the fulfillment provider."
+ * description: "Create a Fulfillment of an Order using the fulfillment provider, and change the order's fulfillment status to either `partially_fulfilled` or `fulfilled`, depending on
+ *  whether all the items were fulfilled."
  * x-authenticated: true
  * externalDocs:
  *   description: Fulfillments of orders
@@ -58,12 +60,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/{id}/fulfillment' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "items": [
@@ -76,6 +78,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -166,7 +169,7 @@ export const updateInventoryAndReservations = async (
 ) => {
   const { inventoryService, locationId } = context
 
-  await Promise.all(
+  await promiseAll(
     fulfillments.map(async ({ items }) => {
       await inventoryService.validateInventoryAtLocation(
         items.map(({ item, quantity }) => ({ ...item, quantity } as LineItem)),
@@ -175,9 +178,9 @@ export const updateInventoryAndReservations = async (
     })
   )
 
-  await Promise.all(
+  await promiseAll(
     fulfillments.map(async ({ items }) => {
-      await Promise.all(
+      await promiseAll(
         items.map(async ({ item, quantity }) => {
           if (!item.variant_id) {
             return
@@ -204,6 +207,7 @@ export const updateInventoryAndReservations = async (
 /**
  * @schema AdminPostOrdersOrderFulfillmentsReq
  * type: object
+ * description: "The details of the fulfillment to be created."
  * required:
  *   - items
  * properties:
@@ -222,8 +226,12 @@ export const updateInventoryAndReservations = async (
  *         quantity:
  *           description: The quantity of the Line Item to fulfill.
  *           type: integer
+ *   location_id:
+ *     type: string
+ *     description: "The ID of the location where the items will be fulfilled from."
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this fulfillment.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this fulfillment.
  *     type: boolean
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.

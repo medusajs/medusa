@@ -101,6 +101,7 @@ export default (app) => {
 /**
  * @schema AdminOrderEditsRes
  * type: object
+ * description: "The order edit details."
  * x-expanded-relations:
  *   field: order_edit
  *   relations:
@@ -150,6 +151,7 @@ export type AdminOrderEditsRes = {
 /**
  * @schema AdminOrderEditsListRes
  * type: object
+ * description: "The list of order edits with pagination fields."
  * x-expanded-relations:
  *   field: order_edits
  *   relations:
@@ -235,6 +237,7 @@ export type AdminOrderEditDeleteRes = DeleteResponse
 /**
  * @schema AdminOrderEditItemChangeDeleteRes
  * type: object
+ * description: "The details of deleting order edit item changes."
  * required:
  *   - id
  *   - object

@@ -23,15 +23,16 @@ import { defaultAdminCollectionsRelations } from "."
  *       medusa.admin.collections.retrieve(collectionId)
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/collections/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Collections
  * responses:

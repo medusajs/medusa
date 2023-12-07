@@ -1,10 +1,13 @@
 const path = require("path")
 
 const {
-  bootstrapApp,
+  startBootstrapApp,
 } = require("../../../../environment-helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../../environment-helpers/use-db")
-const { setPort, useApi } = require("../../../../environment-helpers/use-api")
+const {
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
 const adminSeeder = require("../../../../helpers/admin-seeder")
 
@@ -14,12 +17,15 @@ const {
   simpleProductFactory,
   simpleOrderFactory,
 } = require("../../../../factories")
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("Inventory Items endpoints", () => {
   let appContainer
   let dbConnection
-  let express
+  let shutdownServer
 
   let variantId
   let inventoryItems
@@ -30,13 +36,14 @@ describe("Inventory Items endpoints", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
+  })
 
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
@@ -122,7 +129,7 @@ describe("Inventory Items endpoints", () => {
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {
@@ -345,7 +352,7 @@ describe("Inventory Items endpoints", () => {
 
       const inventoryItemCreateRes = await api.post(
         `/admin/inventory-items`,
-        { variant_id: variantId },
+        { variant_id: variantId, sku: "attach_this_to_variant" },
         adminHeaders
       )
 
@@ -682,7 +689,7 @@ describe("Inventory Items endpoints", () => {
           ],
           prices: [{ currency_code: "usd", amount: 100 }],
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       const secondVariantId = response.data.product.variants.find(
@@ -720,7 +727,7 @@ describe("Inventory Items endpoints", () => {
       ).toHaveLength(2)
 
       await api.delete(`/admin/inventory-items/${invItem2.id}`, {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { "x-medusa-access-token": "test_token" },
       })
 
       expect(

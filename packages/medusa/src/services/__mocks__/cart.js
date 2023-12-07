@@ -1,5 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
 import { IdMap } from "medusa-test-utils"
+import { MedusaError } from "medusa-core-utils"
 
 export const carts = {
   emptyCart: {
@@ -66,6 +66,7 @@ export const carts = {
     id: IdMap.getId("regionCart"),
     name: "Product 1",
     region_id: IdMap.getId("testRegion"),
+    items: [],
   },
   frCart: {
     id: IdMap.getId("fr-cart"),
@@ -77,6 +78,7 @@ export const carts = {
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
+        variant_id: IdMap.getId("eur-10-us-12"),
         unit_price: 10,
         variant: {
           id: IdMap.getId("eur-10-us-12"),

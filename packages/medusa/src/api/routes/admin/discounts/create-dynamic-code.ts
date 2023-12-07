@@ -39,12 +39,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/discounts/{id}/dynamic-codes' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "code": "TEST"
@@ -52,6 +52,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:

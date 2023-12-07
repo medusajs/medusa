@@ -1,6 +1,7 @@
 import { useAdminUpdateOrder } from "medusa-react"
 import React from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
 import Button from "../../../components/fundamentals/button"
 import Input from "../../../components/molecules/input"
@@ -23,6 +24,7 @@ const EmailModal: React.FC<EmailModalProps> = ({
   email,
   handleClose,
 }) => {
+  const { t } = useTranslation()
   const { mutate: updateEmail, isLoading } = useAdminUpdateOrder(orderId)
   const { register, handleSubmit } = useForm<EmailModalFormData>({
     defaultValues: { email },
@@ -35,8 +37,11 @@ const EmailModal: React.FC<EmailModalProps> = ({
     return updateEmail(updateObj, {
       onSuccess: () => {
         notification(
-          "Success",
-          "Successfully updated the email address",
+          t("details-success", "Success"),
+          t(
+            "details-successfully-updated-the-email-address",
+            "Successfully updated the email address"
+          ),
           "success"
         )
         handleClose()
@@ -50,15 +55,17 @@ const EmailModal: React.FC<EmailModalProps> = ({
       <form onSubmit={handleSubmit(handleUpdateEmail)}>
         <Modal.Body>
           <Modal.Header handleClose={handleClose}>
-            <span className="inter-xlarge-semibold">Email Address</span>
+            <span className="inter-xlarge-semibold">
+              {t("details-email-address", "Email Address")}
+            </span>
           </Modal.Header>
           <Modal.Content>
             <div className="space-y-4">
               <div className="mt-4 flex space-x-4">
                 <Input
-                  label="Email"
+                  label={t("details-email", "Email")}
                   {...register("email")}
-                  placeholder="Email"
+                  placeholder={t("details-email", "Email")}
                 />
               </div>
             </div>
@@ -72,7 +79,7 @@ const EmailModal: React.FC<EmailModalProps> = ({
                 type="button"
                 onClick={handleClose}
               >
-                Cancel
+                {t("details-cancel", "Cancel")}
               </Button>
               <Button
                 size="large"
@@ -82,7 +89,7 @@ const EmailModal: React.FC<EmailModalProps> = ({
                 disabled={isLoading}
                 type="submit"
               >
-                Save
+                {t("details-save", "Save")}
               </Button>
             </div>
           </Modal.Footer>
