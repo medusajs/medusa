@@ -1,9 +1,9 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
-import { WorkflowDefinition, WorkflowManager } from "./workflow-manager"
-
-import { createMedusaContainer } from "@medusajs/utils"
+import { createContainerLike, createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
+
 import { DistributedTransaction } from "../transaction"
+import { WorkflowDefinition, WorkflowManager } from "./workflow-manager"
 
 export class GlobalWorkflow extends WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
@@ -20,11 +20,7 @@ export class GlobalWorkflow extends WorkflowManager {
 
     if (!Array.isArray(modulesLoaded) && modulesLoaded) {
       if (!("cradle" in modulesLoaded)) {
-        container = {
-          resolve: (key) => {
-            return modulesLoaded[key]
-          },
-        }
+        container = createContainerLike(modulesLoaded)
       } else {
         container = modulesLoaded
       }

@@ -1,5 +1,5 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import { createContainerLike, createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
   DistributedTransaction,
@@ -43,11 +43,7 @@ export class LocalWorkflow {
 
     if (!Array.isArray(modulesLoaded) && modulesLoaded) {
       if (!("cradle" in modulesLoaded)) {
-        container = {
-          resolve: (key) => {
-            return modulesLoaded[key]
-          },
-        }
+        container = createContainerLike(modulesLoaded)
       } else {
         container = modulesLoaded
       }

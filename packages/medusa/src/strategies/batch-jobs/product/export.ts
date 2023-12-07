@@ -1,5 +1,5 @@
 import { MedusaContainer } from "@medusajs/types"
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag, createContainerLike } from "@medusajs/utils"
 import { humanizeAmount } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultAdminProductRelations } from "../../../api"
@@ -153,14 +153,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       const { list_config = {}, filterable_fields = {} } = batchJob.context
       let productList: Product[] = []
       let count = 0
+      const container = createContainerLike(
+        this.__container__
+      ) as MedusaContainer
 
       if (isMedusaV2Enabled) {
-        const container = {
-          resolve: (key) => {
-            return this.__container__[key]
-          },
-        } as MedusaContainer
-
         ;[productList, count] = await listProducts(
           container,
           filterable_fields,
@@ -191,7 +188,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         if (!products?.length) {
           if (isMedusaV2Enabled) {
             ;[productList, count] = await listProducts(
-              this.__container__,
+              container,
               filterable_fields,
               {
                 ...list_config,
