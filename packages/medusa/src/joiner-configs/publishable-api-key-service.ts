@@ -3,7 +3,7 @@ import { ModuleJoinerConfig } from "@medusajs/types"
 export default {
   serviceName: "publishableApiKeyService",
   primaryKeys: ["id"],
-  linkableKeys: { publishable_api_key_id: "PublishableApiKey" },
+  linkableKeys: { publishable_key_id: "PublishableApiKey" },
   schema: `
       scalar Date
       scalar JSON
