@@ -3,7 +3,13 @@ const { spawn } = require("child_process")
 const { setPort, useExpressServer } = require("./use-api")
 const { setContainer } = require("./use-container")
 
-module.exports = async ({ cwd, redisUrl, uploadDir, verbose, env }) => {
+module.exports = async ({
+  cwd,
+  redisUrl = undefined,
+  uploadDir,
+  verbose,
+  env = {},
+}) => {
   const serverPath = path.join(__dirname, "test-server.js")
 
   // in order to prevent conflicts in redis, use a different db for each worker

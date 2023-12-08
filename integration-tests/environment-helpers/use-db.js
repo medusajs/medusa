@@ -87,7 +87,7 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd, database_extra, env }) {
+  initDb: async function ({ cwd, database_extra = {}, env = {} }) {
     if (isObject(env)) {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }

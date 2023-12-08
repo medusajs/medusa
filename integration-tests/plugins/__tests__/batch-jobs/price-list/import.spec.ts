@@ -1,22 +1,18 @@
-const fs = require("fs")
-const path = require("path")
+import fs from "fs"
+import path from "path"
 
-const setupServer = require("../../../../environment-helpers/setup-server")
-const { useApi } = require("../../../../environment-helpers/use-api")
-const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+import setupServer from "../../../../environment-helpers/setup-server"
 
-const adminSeeder = require("../../../../helpers/admin-seeder")
-const {
-  simpleRegionFactory,
-  simplePriceListFactory,
+// const setupServer = require("../../../../environment-helpers/setup-server")
+import { useApi } from "../../../../environment-helpers/use-api"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
+import adminSeeder from "../../../../helpers/admin-seeder"
+
+import {
   simpleProductFactory,
-} = require("../../../../factories")
-const {
-  startBootstrapApp,
-} = require("../../../../environment-helpers/bootstrap-app")
-const {
-  createVariantPriceSet,
-} = require("../../../helpers/create-variant-price-set")
+  simpleRegionFactory,
+} from "../../../../factories"
 
 const adminReqConfig = {
   headers: {
@@ -71,8 +67,6 @@ describe("Price list import batch job", () => {
       },
     })
 
-    cleanTempData() // cleanup if previous process didn't manage to do it
-
     medusaProcess = await setupServer({
       cwd,
       verbose: true,
@@ -93,6 +87,8 @@ describe("Price list import batch job", () => {
   })
 
   beforeEach(async () => {
+    cleanTempData() // cleanup if previous process didn't manage to do it
+
     await adminSeeder(dbConnection)
 
     await dbConnection.manager
