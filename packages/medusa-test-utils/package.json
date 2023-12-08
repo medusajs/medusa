@@ -8,6 +8,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-test-utils"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "prepare": "cross-env NODE_ENV=production yarn run build",
