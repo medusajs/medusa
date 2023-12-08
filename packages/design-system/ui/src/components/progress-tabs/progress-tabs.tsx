@@ -53,13 +53,16 @@ interface ProgressTabsTriggerProps
     React.ComponentPropsWithoutRef<typeof ProgressTabsPrimitives.Trigger>,
     "asChild"
   > {
+    /**
+     * The status of the tab.
+     */
   status?: ProgressStatus
 }
 
 const ProgressTabsTrigger = React.forwardRef<
   React.ElementRef<typeof ProgressTabsPrimitives.Trigger>,
   ProgressTabsTriggerProps
->(({ className, children, status = "not-started", ...props }, ref) => (
+>(({ className, children, status = "not-started", ...props }: ProgressTabsTriggerProps, ref) => (
   <ProgressTabsPrimitives.Trigger
     ref={ref}
     className={clx(

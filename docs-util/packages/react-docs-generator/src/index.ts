@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 import { program } from "commander"
 import generate from "./commands/generate.js"
+import path from "path"
+import { fileURLToPath } from "url"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 program
   .description("Generate React specs used for documentation purposes.")
@@ -17,7 +22,17 @@ program
   .option(
     "--tsconfigPath <tsconfigPath>",
     "Path to TSConfig file.",
-    "/Users/shahednasser/medusa/packages/design-system/ui/tsconfig.esm.json"
+    path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "packages",
+      "design-system",
+      "ui",
+      "tsconfig.esm.json"
+    )
   )
   .parse()
 
