@@ -73,7 +73,7 @@ export default class TypedocManager {
     spec: Documentation,
     reflectionPathName: string[]
   ): Documentation {
-    if (!this.project || !this.mappedReflectionSignatures || !spec.props) {
+    if (!this.isProjectSetUp() || !spec.props) {
       return spec
     }
     // since the component may be a child of an exported component
@@ -87,13 +87,7 @@ export default class TypedocManager {
     }
 
     const mappedSignature = reflection.sources?.length
-      ? this.mappedReflectionSignatures.find(({ source }) => {
-          return (
-            source.fileName === reflection.sources![0].fileName &&
-            source.line === reflection.sources![0].line &&
-            source.character === reflection.sources![0].character
-          )
-        })
+      ? this.getMappedSignatureFromSource(reflection.sources[0])
       : undefined
 
     if (
@@ -122,6 +116,22 @@ export default class TypedocManager {
     }
 
     return spec
+  }
+
+  isProjectSetUp() {
+    return this.project && this.mappedReflectionSignatures
+  }
+
+  getMappedSignatureFromSource(
+    origSource: SourceReference
+  ): MappedReflectionSignature | undefined {
+    return this.mappedReflectionSignatures.find(({ source }) => {
+      return (
+        source.fileName === origSource.fileName &&
+        source.line === origSource.line &&
+        source.character === origSource.character
+      )
+    })
   }
 
   getTsType(reflectionType: SomeType): TsType | undefined {
