@@ -12,7 +12,7 @@ const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"
 
 export const OrderRepository = dataSource.getRepository(Order).extend({
-  async findWithRelationsAndCount(
+  async findWithRelationsAndCount_(
     relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {},
     { shouldCount }: { shouldCount?: boolean } = { shouldCount: true }
@@ -50,7 +50,16 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
     ).then(flatten)
 
     const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
-    return mergeEntitiesWithRelations<Order>(entitiesAndRelations)
+    return [mergeEntitiesWithRelations<Order>(entitiesAndRelations), count]
+  },
+
+  async findWithRelationsAndCount(
+    relations: FindOptionsRelations<Order> = {},
+    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
+  ): Promise<[Order[], number]> {
+    return this.findWithRelationsAndCount_(relations, optionsWithoutRelations, {
+      shouldCount: true,
+    })
   },
 
   async findOneWithRelations(
@@ -60,11 +69,13 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
     // Limit 1
     optionsWithoutRelations.take = 1
 
-    const result = await this.findWithRelations(
+    const result = await this.findWithRelationsAndCount_(
       relations,
-      optionsWithoutRelations
+      optionsWithoutRelations,
+      { shouldCount: false }
     )
-    return result[0]
+
+    return result[0][0]
   },
 })
 
