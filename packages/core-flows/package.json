@@ -12,6 +12,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "files": [
     "dist"
   ],
