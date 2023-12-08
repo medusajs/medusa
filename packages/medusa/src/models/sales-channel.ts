@@ -4,6 +4,7 @@ import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { DbAwareColumn, generateEntityId } from "../utils"
 import { SalesChannelLocation } from "./sales-channel-location"
+import { PublishableApiKey } from "./publishable-api-key"
 import { Product } from "./product"
 
 @FeatureFlagEntity("sales_channels")
@@ -33,6 +34,20 @@ export class SalesChannel extends SoftDeletableEntity {
     },
   })
   products: Product[]
+
+  @ManyToMany(() => PublishableApiKey)
+  @JoinTable({
+    name: "publishable_api_key_sales_channel",
+    inverseJoinColumn: {
+      name: "publishable_key_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "sales_channel_id",
+      referencedColumnName: "id",
+    },
+  })
+  publishableKeys: PublishableApiKey[]
 
   @OneToMany(
     () => SalesChannelLocation,

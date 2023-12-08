@@ -6,6 +6,7 @@ import SalesChannelRepository from "./sales-channel"
 import { generateEntityId } from "../utils"
 
 const publishableApiKeySalesChannelAlias = "PublishableKeySalesChannel"
+const publishableKeySalesChannelTable = "publishable_api_key_sales_channel"
 
 export const PublishableApiKeySalesChannelRepository = dataSource
   .getRepository(PublishableApiKeySalesChannel)
@@ -84,7 +85,7 @@ export const PublishableApiKeySalesChannelRepository = dataSource
         .into(
           isMedusaV2Enabled
             ? PublishableApiKeySalesChannel
-            : "publishable_api_key_sales_channel"
+            : publishableKeySalesChannelTable
         )
         .values(valuesToInsert)
         .orIgnore()
