@@ -21,6 +21,7 @@ import {
   MedusaError,
   PriceListType,
   removeNullish,
+  validatePriceListDates,
 } from "@medusajs/utils"
 
 import {
@@ -52,7 +53,6 @@ import {
 } from "@services"
 import { joinerConfig } from "../joiner-config"
 import { CreatePriceListRuleValueDTO, PricingRepositoryService } from "../types"
-import { validatePriceListDates } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
