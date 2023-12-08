@@ -15,13 +15,24 @@ const iconBadgeVariants = cva({
   },
 })
 
+/**
+ * @prop color - The badge's color.
+ * @prop size - The badge's size.
+ */
 interface IconBadgeProps
   extends Omit<React.ComponentPropsWithoutRef<"span">, "color">,
     VariantProps<typeof badgeColorVariants>,
     VariantProps<typeof iconBadgeVariants> {
+  /**
+   * Whether to remove the wrapper `span` element and use the
+   * passed child element instead.
+   */
   asChild?: boolean
 }
 
+/**
+ * This component is based on the `span` element and supports all props of this element.
+ */
 const IconBadge = React.forwardRef<HTMLSpanElement, IconBadgeProps>(
   (
     {
@@ -31,7 +42,7 @@ const IconBadge = React.forwardRef<HTMLSpanElement, IconBadgeProps>(
       size = "base",
       asChild = false,
       ...props
-    },
+    }: IconBadgeProps,
     ref
   ) => {
     const Component = asChild ? Slot : "span"

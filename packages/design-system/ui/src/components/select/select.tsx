@@ -9,6 +9,9 @@ import { clx } from "@/utils/clx"
 
 interface SelectProps
   extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root> {
+  /**
+   * The select's size.
+   */
   size?: "base" | "small"
 }
 
@@ -28,6 +31,9 @@ const useSelectContext = () => {
   return context
 }
 
+/**
+ * This component is based on [Radix UI Select](https://www.radix-ui.com/primitives/docs/components/select).
+ */
 const Root = ({ children, size = "base", ...props }: SelectProps) => {
   return (
     <SelectContext.Provider value={React.useMemo(() => ({ size }), [size])}>
@@ -35,10 +41,16 @@ const Root = ({ children, size = "base", ...props }: SelectProps) => {
     </SelectContext.Provider>
   )
 }
+Root.displayName = "Select"
 
 const Group = SelectPrimitive.Group
+Group.displayName = "Select.Group"
 
+/**
+ * Displays the selected value, or a placeholder if no value is selected.
+ */
 const Value = SelectPrimitive.Value
+Value.displayName = "Select.Value"
 
 const triggerVariants = cva({
   base: clx(
@@ -59,6 +71,9 @@ const triggerVariants = cva({
   },
 })
 
+/**
+ * The trigger that toggles the select.
+ */
 const Trigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
@@ -78,7 +93,7 @@ const Trigger = React.forwardRef<
     </SelectPrimitive.Trigger>
   )
 })
-Trigger.displayName = SelectPrimitive.Trigger.displayName
+Trigger.displayName = "Select.Trigger"
 
 const Content = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,

@@ -6,14 +6,38 @@ import { Input } from "@/components/input"
 import { Label } from "@/components/label"
 import { Prompt } from "@/components/prompt"
 
-export type RenderPromptProps = {
+export interface RenderPromptProps {
+  /**
+   * Whether the prompt is open
+   */
   open: boolean
+  /**
+   * The prompt's title.
+   */
   title: string
+  /**
+   * The prompt's description.
+   */
   description: string
+  /**
+   * The text the user has to input in order to confirm the action.
+   */
   verificationText?: string
+  /**
+   * The label for the Cancel button.
+   */
   cancelText?: string
+  /**
+   * Label for the Confirm button.
+   */
   confirmText?: string
+  /**
+   * A function to handle the confirmation.
+   */
   onConfirm: () => void
+  /**
+   * A function to handle the cancelation.
+   */
   onCancel: () => void
 }
 

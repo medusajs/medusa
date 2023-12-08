@@ -30,6 +30,10 @@
     {
       "tagName": "@docHideSignature",
       "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@reactComponent",
+      "syntaxKind": "modifier"
     }
   ]
 }

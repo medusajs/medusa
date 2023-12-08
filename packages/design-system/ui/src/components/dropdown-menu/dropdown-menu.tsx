@@ -7,7 +7,7 @@ import * as React from "react"
 import { clx } from "@/utils/clx"
 
 const Root = Primitives.Root
-Root.displayName = "DropdownMenu.Root"
+Root.displayName = "DropdownMenu"
 
 const Trigger = Primitives.Trigger
 Trigger.displayName = "DropdownMenu.Trigger"

@@ -2,6 +2,9 @@ import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the `kbd` element and supports all props of this element.
+ */
 const Kbd = React.forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<"kbd">

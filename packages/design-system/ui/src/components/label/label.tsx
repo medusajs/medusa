@@ -26,12 +26,19 @@ const labelVariants = cva({
   },
 })
 
+/**
+ * @prop size - The label's size.
+ * @prop weight - The label's font weight.
+ */
 interface LabelProps
   extends React.ComponentPropsWithoutRef<"label">,
     VariantProps<typeof labelVariants> {}
 
+/**
+ * This component is based on the [Radix UI Label](https://www.radix-ui.com/primitives/docs/components/label) primitive.
+ */
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
-  ({ className, size = "base", weight = "regular", ...props }, ref) => {
+  ({ className, size = "base", weight = "regular", ...props }: LabelProps, ref) => {
     return (
       <Primitives.Root
         ref={ref}

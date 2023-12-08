@@ -212,6 +212,7 @@ const PresetContainer = <TPreset extends Preset, TValue>({
     </ul>
   )
 }
+PresetContainer.displayName = "DatePicker.PresetContainer"
 
 const formatDate = (date: Date, includeTime?: boolean) => {
   const usesAmPm = !isBrowserLocaleClockType24h()
@@ -522,9 +523,21 @@ const SingleDatePicker = ({
 }
 
 interface RangeProps extends PickerProps {
+  /**
+   * Provide selectable preset configurations.
+   */
   presets?: DateRangePreset[]
+  /**
+   * The date range selected by default.
+   */
   defaultValue?: DateRange
+  /**
+   * The selected date range.
+   */
   value?: DateRange
+  /**
+   * A function to handle the change in the selected date range.
+   */
   onChange?: (dateRange: DateRange | undefined) => void
 }
 

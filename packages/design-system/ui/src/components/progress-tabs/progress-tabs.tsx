@@ -11,6 +11,9 @@ import * as React from "react"
 import { ProgressStatus } from "@/types"
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the [Radix UI Tabs](https://radix-ui.com/primitives/docs/components/tabs) primitves.
+ */
 const ProgressTabsRoot = (props: ProgressTabsPrimitives.TabsProps) => {
   return <ProgressTabsPrimitives.Root {...props} />
 }
@@ -47,6 +50,7 @@ const ProgressIndicator = ({ status, className, ...props }: IndicatorProps) => {
     </span>
   )
 }
+ProgressIndicator.displayName = "ProgressTabs.ProgressIndicator"
 
 interface ProgressTabsTriggerProps
   extends Omit<

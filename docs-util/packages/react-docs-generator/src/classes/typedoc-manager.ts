@@ -146,7 +146,14 @@ export default class TypedocManager {
             propDetails.description =
               this.getDescription(reflectionPropType) || propDetails.description
           }
-          if (!propDetails.tsType) {
+          // tsType is set/replaced if the spec doesn't have it
+          // or if it just has a name of a reflection.
+          const shouldReplaceTsType =
+            !propDetails.tsType ||
+            (this.doesOnlyHaveName(propDetails.tsType) &&
+              reflectionPropType.type?.type === "reference")
+
+          if (shouldReplaceTsType) {
             propDetails.tsType = reflectionPropType.type
               ? this.getTsType(reflectionPropType.type)
               : reflectionPropType.signatures?.length
@@ -360,5 +367,35 @@ export default class TypedocManager {
       : undefined
 
     return typeData
+  }
+
+  doesOnlyHaveName(obj: TsType): boolean {
+    const keys = Object.keys(obj)
+
+    return keys.length === 1 && keys[0] === "name"
+  }
+
+  isReactComponent(name: string): boolean {
+    if (!this.project) {
+      return false
+    }
+
+    const reflection = Object.values(this.project!.reflections).find(
+      (ref) => ref.name === name
+    )
+
+    if (
+      !reflection ||
+      !(reflection instanceof DeclarationReflection) ||
+      !reflection.signatures
+    ) {
+      return false
+    }
+
+    return reflection.signatures.some(
+      (signature) =>
+        signature.type?.type === "reference" &&
+        signature.type.name === "ReactNode"
+    )
   }
 }

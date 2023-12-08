@@ -13,6 +13,9 @@ import { ProgressStatus } from "@/types"
 import { clx } from "@/utils/clx"
 import { IconButton } from "../icon-button"
 
+/**
+ * This component is based on the [Radix UI Accordion](https://radix-ui.com/primitives/docs/components/accordion) primitves.
+ */
 const Root = (props: React.ComponentPropsWithoutRef<typeof Primitves.Root>) => {
   return <Primitves.Root {...props} />
 }
@@ -37,10 +40,16 @@ Item.displayName = "ProgressAccordion.Item"
 
 interface HeaderProps
   extends React.ComponentPropsWithoutRef<typeof Primitves.Header> {
+  /**
+   * The status shown in the header
+   */
   status?: ProgressStatus
 }
 
 interface StatusIndicatorProps extends React.ComponentPropsWithoutRef<"span"> {
+  /**
+   * The current status.
+   */
   status: ProgressStatus
 }
 
@@ -67,11 +76,12 @@ const ProgressIndicator = ({ status, ...props }: StatusIndicatorProps) => {
     </span>
   )
 }
+ProgressIndicator.displayName = "ProgressAccordion.ProgressIndicator"
 
 const Header = React.forwardRef<
   React.ElementRef<typeof Primitves.Header>,
   HeaderProps
->(({ className, status = "not-started", children, ...props }, ref) => {
+>(({ className, status = "not-started", children, ...props }: HeaderProps, ref) => {
   return (
     <Primitves.Header
       ref={ref}
