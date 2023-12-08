@@ -2,14 +2,12 @@
 
 import * as React from "react"
 import { createRoot } from "react-dom/client"
-import { DialogProps } from "./dialog"
+import { RenderPrompt, RenderPromptProps } from "./render-prompt"
 
-import Dialog from "./dialog"
-
-type PromptProps = Omit<DialogProps, "onConfirm" | "onCancel" | "open">
+type UsePromptProps = Omit<RenderPromptProps, "onConfirm" | "onCancel" | "open">
 
 const usePrompt = () => {
-  const dialog = async (props: PromptProps): Promise<boolean> => {
+  const prompt = async (props: UsePromptProps): Promise<boolean> => {
     return new Promise((resolve) => {
       let open = true
 
@@ -29,7 +27,7 @@ const usePrompt = () => {
 
       const render = () => {
         mountRoot.render(
-          <Dialog
+          <RenderPrompt
             open={open}
             onConfirm={onConfirm}
             onCancel={onCancel}
@@ -42,7 +40,7 @@ const usePrompt = () => {
     })
   }
 
-  return dialog
+  return prompt
 }
 
 export { usePrompt }
