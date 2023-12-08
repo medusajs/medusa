@@ -1,0 +1,44 @@
+---
+displayed_sidebar: pricingReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# BaseFilterable
+
+An object used to allow specifying flexible queries with and/or conditions.
+
+## Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+<ParameterTypes parameters={[
+  {
+    "name": "$and",
+    "type": "(`T` \\| [BaseFilterable](pricing.BaseFilterable.mdx)&#60;T&#62;)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "$or",
+    "type": "(`T` \\| [BaseFilterable](pricing.BaseFilterable.mdx)&#60;T&#62;)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

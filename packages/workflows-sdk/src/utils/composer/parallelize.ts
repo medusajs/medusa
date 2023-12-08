@@ -9,7 +9,6 @@ import { SymbolMedusaWorkflowComposerContext } from "./helpers"
  * @returns The step results. The results are ordered in the array by the order they're passed in the function's parameter.
  *
  * @example
- * ```ts
  * import {
  *   createWorkflow,
  *   parallelize

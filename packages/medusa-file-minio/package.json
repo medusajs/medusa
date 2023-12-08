@@ -11,6 +11,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-file-minio"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Edin Skeja",
   "license": "MIT",
   "devDependencies": {
