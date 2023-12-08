@@ -2,6 +2,7 @@ import { useAdminDraftOrders } from "medusa-react"
 import { Fragment, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
 import useDraftOrderTableColumns from "./use-draft-order-column"
@@ -11,6 +12,7 @@ const DEFAULT_PAGE_SIZE = 15
 
 const DraftOrderTable = () => {
   const location = useLocation()
+  const { t } = useTranslation()
 
   const {
     reset,
@@ -107,7 +109,7 @@ const DraftOrderTable = () => {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + rows.length,
-        title: "Draft Orders",
+        title: t("draft-order-table-draft-orders", "Draft Orders"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,

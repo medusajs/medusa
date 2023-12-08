@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Holds mapping between Publishable API keys and Sales Channels
+ * This represents the association between the Publishable API keys and Sales Channels
  */
 export interface PublishableApiKeySalesChannel {
   /**

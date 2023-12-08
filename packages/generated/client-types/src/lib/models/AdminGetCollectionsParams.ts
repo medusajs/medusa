@@ -9,27 +9,27 @@ export interface AdminGetCollectionsParams {
    */
   limit?: number
   /**
-   * The number of collections to skip before the results.
+   * The number of collections to skip when retrieving the collections.
    */
   offset?: number
   /**
-   * The title of collections to return.
+   * Filter collections by their title.
    */
   title?: string
   /**
-   * The handle of collections to return.
+   * Filter collections by their handle.
    */
   handle?: string
   /**
-   * a search term to search titles and handles.
+   * a term to search collections by their title or handle.
    */
   q?: string
   /**
-   * The discount condition id on which to filter the product collections.
+   * Filter collections by a discount condition ID associated with them.
    */
   discount_condition_id?: string
   /**
-   * Date comparison for when resulting collections were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -50,7 +50,7 @@ export interface AdminGetCollectionsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -71,7 +71,7 @@ export interface AdminGetCollectionsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were deleted.
+   * Filter by a deletion date range.
    */
   deleted_at?: {
     /**

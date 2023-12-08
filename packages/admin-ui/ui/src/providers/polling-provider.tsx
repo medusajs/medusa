@@ -97,3 +97,16 @@ export const usePolling = () => {
 
   return context
 }
+
+/**
+ * Return active product import batch job if there is any.
+ */
+export const useActiveProductImportBatchJob = () => {
+  const { batchJobs } = usePolling()
+
+  return batchJobs?.find(
+    (job) =>
+      job.type === "product-import" &&
+      (job.status === "confirmed" || job.status === "processing")
+  )
+}

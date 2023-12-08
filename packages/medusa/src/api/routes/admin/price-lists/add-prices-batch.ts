@@ -1,21 +1,24 @@
+import { MedusaV2Flag } from "@medusajs/utils"
+import { updatePriceLists } from "@medusajs/core-flows"
+import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
+import { EntityManager } from "typeorm"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-
-import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import { Type } from "class-transformer"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
+import { MedusaContainer } from "@medusajs/types"
+import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [post] /admin/price-lists/{id}/prices/batch
  * operationId: "PostPriceListsPriceListPricesBatch"
- * summary: "Update Prices"
- * description: "Batch update prices for a Price List"
+ * summary: "Add or Update Prices"
+ * description: "Add or update a list of prices in a Price List."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List to update prices for.
+ *   - (path) id=* {string} The ID of the Price List.
  * requestBody:
  *  content:
  *    application/json:
@@ -30,24 +33,24 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.addPrices(price_list_id, {
+ *       medusa.admin.priceLists.addPrices(priceListId, {
  *         prices: [
  *           {
  *             amount: 1000,
  *             variant_id,
- *             currency_code: 'eur'
+ *             currency_code: "eur"
  *           }
  *         ]
  *       })
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/price-lists/{id}/prices/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/price-lists/{id}/prices/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "prices": [
  *             {
@@ -60,6 +63,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:
@@ -84,23 +88,48 @@ import { EntityManager } from "typeorm"
  */
 export default async (req, res) => {
   const { id } = req.params
-
-  const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
-
+  let priceList
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const manager: EntityManager = req.scope.resolve("manager")
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .addPrices(id, validated.prices, validated.override)
-  })
+  const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const updatePriceListWorkflow = updatePriceLists(req.scope)
+
+    const input = {
+      price_lists: [
+        {
+          id,
+          ...validated,
+        },
+      ],
+    }
+
+    await updatePriceListWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    priceList = await getPriceListPricingModule(id, {
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await priceListService
+        .withTransaction(transactionManager)
+        .addPrices(id, validated.prices, validated.override)
+    })
+
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.json({ price_list: priceList })
 }
@@ -122,10 +151,10 @@ export default async (req, res) => {
  *           description: The ID of the price.
  *           type: string
  *         region_id:
- *           description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+ *           description: The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
  *           type: string
  *         currency_code:
- *           description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *           description: The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
  *           type: string
  *           externalDocs:
  *             url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
@@ -143,7 +172,8 @@ export default async (req, res) => {
  *           description: The maximum quantity for which the price will be used.
  *           type: integer
  *   override:
- *     description: "If true the prices will replace all existing prices associated with the Price List."
+ *     description: >-
+ *       If set to `true`, the prices will replace all existing prices associated with the Price List.
  *     type: boolean
  */
 export class AdminPostPriceListPricesPricesReq {

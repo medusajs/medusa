@@ -13,13 +13,14 @@ import { FindParams } from "../../../../types/common"
  * @oas [post] /admin/discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
  * summary: "Add Batch Resources"
- * description: "Add a batch of resources to a discount condition."
+ * description: "Add a batch of resources to a discount condition. The type of resource depends on the type of discount condition. For example, if the discount condition's type is `products`,
+ * the resources being added should be products."
  * x-authenticated: true
  * parameters:
- *   - (path) discount_id=* {string} The ID of the Product.
- *   - (path) condition_id=* {string} The ID of the condition on which to add the item.
- *   - (query) expand {string} (Comma separated) Which relations should be expanded in each discount of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each discount of the result.
+ *   - (path) discount_id=* {string} The ID of the discount the condition belongs to.
+ *   - (path) condition_id=* {string} The ID of the discount condition on which to add the item.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned discount.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned discount.
  * requestBody:
  *   content:
  *     application/json:
@@ -35,24 +36,25 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.addConditionResourceBatch(discount_id, condition_id, {
- *         resources: [{ id: item_id }]
+ *       medusa.admin.discounts.addConditionResourceBatch(discountId, conditionId, {
+ *         resources: [{ id: itemId }]
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/discounts/{id}/conditions/{condition_id}/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "resources": [{ "id": "item_id" }]
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:
@@ -126,7 +128,7 @@ export default async (req: Request, res: Response) => {
  *         - id
  *       properties:
  *         id:
- *           description: The id of the item
+ *           description: The ID of the item
  *           type: string
  */
 export class AdminPostDiscountsDiscountConditionsConditionBatchReq {

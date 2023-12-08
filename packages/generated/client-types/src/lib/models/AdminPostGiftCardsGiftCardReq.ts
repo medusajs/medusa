@@ -9,11 +9,11 @@ export interface AdminPostGiftCardsGiftCardReq {
    */
   balance?: number
   /**
-   * Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers.
+   * Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.
    */
   is_disabled?: boolean
   /**
-   * The time at which the Gift Card should no longer be available.
+   * The date and time at which the Gift Card should no longer be available.
    */
   ends_at?: string
   /**

@@ -1,0 +1,10 @@
+type: object
+description: The list of sales channel.
+required:
+  - sales_channels
+properties:
+  sales_channels:
+    description: An array of sales channels details.
+    type: array
+    items:
+      $ref: ./SalesChannel.yaml

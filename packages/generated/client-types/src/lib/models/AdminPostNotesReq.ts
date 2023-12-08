@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostNotesReq {
   /**
-   * The ID of the resource which the Note relates to.
+   * The ID of the resource which the Note relates to. For example, an order ID.
    */
   resource_id: string
   /**
-   * The type of resource which the Note relates to.
+   * The type of resource which the Note relates to. For example, `order`.
    */
   resource_type: string
   /**

@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import TotalsService from "../totals"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 import { calculatePriceTaxAmount } from "../../utils"

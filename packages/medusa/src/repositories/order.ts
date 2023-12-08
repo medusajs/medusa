@@ -1,8 +1,12 @@
-import { objectToStringPath } from "@medusajs/utils"
-import { flatten, groupBy, map, merge } from "lodash"
+import { objectToStringPath, promiseAll } from "@medusajs/utils"
+import { flatten } from "lodash"
 import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
 import { dataSource } from "../loaders/database"
 import { Order } from "../models"
+import {
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+} from "../utils/repository"
 
 const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"
@@ -29,17 +33,9 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
 
     const entitiesIds = entities.map(({ id }) => id)
 
-    const groupedRelations: { [topLevel: string]: string[] } = {}
-    for (const rel of objectToStringPath(relations)) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
-      }
-    }
+    const groupedRelations = getGroupedRelations(objectToStringPath(relations))
 
-    const entitiesIdsWithRelations = await Promise.all(
+    const entitiesIdsWithRelations = await promiseAll(
       Object.entries(groupedRelations).map(async ([topLevel, rels]) => {
         // If top level is region or items then get deleted region as well
         return this.find({
@@ -53,27 +49,8 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
       })
     ).then(flatten)
 
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-
-    const orders = map(entities, (e) =>
-      merge({}, ...entitiesAndRelationsById[e.id])
-    )
-    return [orders, count]
-  },
-
-  async findWithRelations(
-    relations: FindOptionsRelations<Order> = {},
-    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
-  ): Promise<Order[]> {
-    const [orders] = await this.findWithRelationsAndCount(
-      relations,
-      optionsWithoutRelations,
-      { shouldCount: false }
-    )
-
-    return orders
+    const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
+    return mergeEntitiesWithRelations<Order>(entitiesAndRelations)
   },
 
   async findOneWithRelations(

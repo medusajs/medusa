@@ -94,10 +94,12 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
 /**
  * @schema AdminPostDraftOrdersDraftOrderRegisterPaymentRes
  * type: object
+ * description: "The order's details."
  * required:
  *   - order
  * properties:
  *   order:
+ *     description: Order's details.
  *     $ref: "#/components/schemas/Order"
  */
 export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
@@ -106,6 +108,7 @@ export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
 /**
  * @schema AdminDraftOrdersRes
  * type: object
+ * description: "The list of draft orders."
  * x-expanded-relations:
  *   field: draft_order
  *   relations:
@@ -139,6 +142,7 @@ export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
  *     - cart.items.tax_lines
  *     - cart.items.variant
  *     - cart.items.variant.product
+ *     - cart.items.variant.product.profiles
  *     - cart.region
  *     - cart.region.tax_rates
  *     - cart.shipping_address
@@ -168,6 +172,7 @@ export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
  *   - draft_order
  * properties:
  *   draft_order:
+ *     description: Draft order's details.
  *     $ref: "#/components/schemas/DraftOrder"
  */
 export type AdminDraftOrdersRes = {
@@ -191,13 +196,14 @@ export type AdminDraftOrdersRes = {
  *     default: draft-order
  *   deleted:
  *     type: boolean
- *     description: Whether the draft order was deleted successfully or not.
+ *     description: Whether the draft order was deleted successfully.
  *     default: true
  */
 export type AdminDraftOrdersDeleteRes = DeleteResponse
 
 /**
  * @schema AdminDraftOrdersListRes
+ * description: "The list of draft orders with pagination fields."
  * type: object
  * x-expanded-relations:
  *   field: draft_orders
@@ -214,6 +220,7 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
  * properties:
  *   draft_orders:
  *     type: array
+ *     description: An array of draft order's details.
  *     items:
  *       $ref: "#/components/schemas/DraftOrder"
  *   count:
@@ -221,7 +228,7 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of draft orders skipped when retrieving the draft orders.
  *   limit:
  *     type: integer
  *     description: The number of items per page

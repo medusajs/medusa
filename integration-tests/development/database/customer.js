@@ -3,7 +3,7 @@ const { Customer } = require("@medusajs/medusa")
 module.exports = async (connection) => {
   const manager = connection.manager
 
-  const customer = await manager.create(Customer, {
+  const customer = manager.create(Customer, {
     id: "customer-1",
     email: "test1@email.com",
     first_name: "John",

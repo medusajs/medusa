@@ -5,19 +5,20 @@ import {
   FindConfig,
   IEventBusService,
   MODULE_RESOURCE_TYPE,
+  ModuleJoinerConfig,
   SharedContext,
   StockLocationAddressInput,
   UpdateStockLocationInput,
 } from "@medusajs/types"
 import {
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  isDefined,
   setMetadata,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
-
+import { joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
 import { buildQuery } from "../utils/build-query"
 
@@ -47,6 +48,10 @@ export default class StockLocationService {
   ) {
     this.manager_ = manager
     this.eventBusService_ = eventBusService
+  }
+
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
   }
 
   /**

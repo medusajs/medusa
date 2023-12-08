@@ -13,7 +13,7 @@ export interface AdminPostSalesChannelsReq {
    */
   description?: string
   /**
-   * Whether the Sales Channel is disabled or not.
+   * Whether the Sales Channel is disabled.
    */
   is_disabled?: boolean
 }

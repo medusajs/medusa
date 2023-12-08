@@ -14,7 +14,7 @@ import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class ReturnReason extends SoftDeletableEntity {
-  @Index({ unique: true })
+  @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   value: string
 
@@ -41,6 +41,9 @@ export class ReturnReason extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "rr")
@@ -50,7 +53,7 @@ export class ReturnReason extends SoftDeletableEntity {
 /**
  * @schema ReturnReason
  * title: "Return Reason"
- * description: "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned."
+ * description: "A Return Reason is a value defined by an admin. It can be used on Return Items in order to indicate why a Line Item was returned."
  * type: object
  * required:
  *   - created_at
@@ -86,11 +89,13 @@ export class ReturnReason extends SoftDeletableEntity {
  *     type: string
  *     example: null
  *   parent_return_reason:
- *     description: Available if the relation `parent_return_reason` is expanded.
+ *     description: The details of the parent reason.
+ *     x-expandable: "parent_return_reason"
  *     nullable: true
  *     $ref: "#/components/schemas/ReturnReason"
  *   return_reason_children:
- *     description: Available if the relation `return_reason_children` is expanded.
+ *     description: The details of the child reasons.
+ *     x-expandable: "return_reason_children"
  *     $ref: "#/components/schemas/ReturnReason"
  *   created_at:
  *     description: The date with timezone at which the resource was created.
@@ -110,4 +115,7 @@ export class ReturnReason extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

@@ -4,15 +4,15 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Represents a fulfillment provider plugin and holds its installation status.
+ * A fulfillment provider represents a fulfillment service installed in the Medusa backend, either through a plugin or backend customizations. It holds the fulfillment service's installation status.
  */
 export interface FulfillmentProvider {
   /**
-   * The id of the fulfillment provider as given by the plugin.
+   * The ID of the fulfillment provider as given by the fulfillment service.
    */
   id: string
   /**
-   * Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`.
+   * Whether the fulfillment service is installed in the current version. If a fulfillment service is no longer installed, the `is_installed` attribute is set to `false`.
    */
   is_installed: boolean
 }

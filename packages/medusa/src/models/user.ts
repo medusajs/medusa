@@ -4,9 +4,23 @@ import { DbAwareColumn } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
+/**
+ * @enum
+ * 
+ * The user's role. These roles don't change the user's capabilities or provide access-control features.
+ */
 export enum UserRoles {
+  /**
+   * The user is an admin.
+   */
   ADMIN = "admin",
+  /**
+   * The user is a team member.
+   */
   MEMBER = "member",
+  /**
+   * The user is a developer.
+   */
   DEVELOPER = "developer",
 }
 
@@ -30,6 +44,9 @@ export class User extends SoftDeletableEntity {
   @Column({ nullable: true })
   last_name: string
 
+  /**
+   * @apiIgnore
+   */
   @Column({ nullable: true, select: false })
   password_hash: string
 
@@ -39,6 +56,9 @@ export class User extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "usr")
@@ -48,7 +68,7 @@ export class User extends SoftDeletableEntity {
 /**
  * @schema User
  * title: "User"
- * description: "Represents a User who can manage store settings."
+ * description: "A User is an administrator who can manage store settings and data."
  * type: object
  * required:
  *   - api_token
@@ -67,7 +87,7 @@ export class User extends SoftDeletableEntity {
  *     type: string
  *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
  *   role:
- *     description: The user's role
+ *     description: The user's role. These roles don't provide any different privileges.
  *     type: string
  *     enum:
  *       - admin
@@ -111,4 +131,7 @@ export class User extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

@@ -6,13 +6,16 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { BatchJob } from "./BatchJob"
 
 export interface AdminBatchJobListRes {
+  /**
+   * An array of batch job details.
+   */
   batch_jobs: Array<BatchJob>
   /**
    * The total number of items available
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of batch jobs skipped when retrieving the batch jobs.
    */
   offset: number
   /**

@@ -5,7 +5,7 @@ import { FindParams } from "../../../../types/common"
  * @oas [get] /admin/payments/{id}
  * operationId: "GetPaymentsPayment"
  * summary: "Get Payment details"
- * description: "Retrieves the Payment details"
+ * description: "Retrieve a Payment's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Payment.
@@ -19,18 +19,19 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.payments.retrieve(payment_id)
+ *       medusa.admin.payments.retrieve(paymentId)
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/payments/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/payments/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payments
  * responses:

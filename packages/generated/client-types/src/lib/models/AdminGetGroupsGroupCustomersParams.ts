@@ -5,19 +5,19 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetGroupsGroupCustomersParams {
   /**
-   * The number of items to return.
+   * The number of customers to return.
    */
   limit?: number
   /**
-   * The items to skip before result.
+   * The number of customers to skip when retrieving the customers.
    */
   offset?: number
   /**
-   * (Comma separated) Which fields should be expanded in each customer.
+   * Comma-separated relations that should be expanded in the returned customers.
    */
   expand?: string
   /**
-   * a search term to search email, first_name, and last_name.
+   * a term to search customers by email, first_name, and last_name.
    */
   q?: string
 }

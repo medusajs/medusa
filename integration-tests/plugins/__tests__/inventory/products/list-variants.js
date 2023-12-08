@@ -1,43 +1,41 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
-
 const {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} = require("@medusajs/medusa")
+  startBootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const {
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const { simpleProductFactory } = require("../../../../factories")
+const { simpleSalesChannelFactory } = require("../../../../factories")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("List Variants", () => {
   let appContainer
   let dbConnection
-  let express
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {
@@ -67,7 +65,9 @@ describe("List Variants", () => {
         name: "test-location",
       })
 
-      const salesChannel = await simpleSalesChannelFactory(dbConnection, {})
+      const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        is_default: true,
+      })
 
       const product = await simpleProductFactory(dbConnection, {
         variants: [{ id: variantId }],
@@ -82,6 +82,7 @@ describe("List Variants", () => {
       invItem = await inventoryService.createInventoryItem({
         sku: "test-sku",
       })
+
       const invItemId = invItem.id
 
       await prodVarInventoryService.attachInventoryItem(variantId, invItem.id)
@@ -126,6 +127,21 @@ describe("List Variants", () => {
           ],
         })
       )
+    })
+
+    it("sets availability correctly", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/variants?ids=${variantId}`)
+
+      expect(response.data).toEqual({
+        variants: [
+          expect.objectContaining({
+            purchasable: true,
+            inventory_quantity: 10,
+          }),
+        ],
+      })
     })
   })
 })

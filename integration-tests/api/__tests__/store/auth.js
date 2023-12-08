@@ -1,8 +1,8 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 const { Customer } = require("@medusajs/medusa")
 
@@ -129,6 +129,27 @@ describe("/store/auth", () => {
       } catch (err) {
         expect(err.response.status).toEqual(401)
       }
+    })
+
+    it("creates customer JWT token correctly", async () => {
+      const api = useApi()
+
+      const authResponse = await api.post("/store/auth/token", {
+        email: "oli@test.dk",
+        password: "test",
+      })
+
+      const token = authResponse.data.access_token;
+
+      expect(token).toEqual(expect.any(String))
+
+      const me = await api.get("/store/auth", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      expect(me.status).toEqual(200)
     })
   })
 })

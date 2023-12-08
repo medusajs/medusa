@@ -24,7 +24,7 @@ export interface Currency {
    */
   name: string
   /**
-   * [EXPERIMENTAL] Does the currency prices include tax
+   * Whether the currency prices include tax
    */
   includes_tax?: boolean
 }

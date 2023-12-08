@@ -9,7 +9,13 @@ import type { LineItem } from "./LineItem"
 import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
+/**
+ * The swap's details.
+ */
 export interface AdminSwapsRes {
+  /**
+   * Swap details.
+   */
   swap: Merge<
     SetRelation<
       Swap,

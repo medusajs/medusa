@@ -7,7 +7,7 @@ import { ProductVariantInventoryService } from "../../../../services"
  * @oas [delete] /admin/inventory-items/{id}
  * operationId: "DeleteInventoryItemsInventoryItem"
  * summary: "Delete an Inventory Item"
- * description: "Delete an Inventory Item"
+ * description: "Delete an Inventory Item. This does not delete the associated product variant."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item to delete.
@@ -21,17 +21,18 @@ import { ProductVariantInventoryService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.inventoryItems.delete(inventoryItemId)
- *         .then(({ id, object, deleted }) => {
- *           console.log(id)
- *         })
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/inventory-items/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:

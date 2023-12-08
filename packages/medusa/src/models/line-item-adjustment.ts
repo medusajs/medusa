@@ -46,6 +46,9 @@ export class LineItemAdjustment {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "lia")
@@ -55,7 +58,7 @@ export class LineItemAdjustment {
 /**
  * @schema LineItemAdjustment
  * title: "Line Item Adjustment"
- * description: "Represents a Line Item Adjustment"
+ * description: "A Line Item Adjustment includes details on discounts applied on a line item."
  * type: object
  * required:
  *   - amount
@@ -74,7 +77,8 @@ export class LineItemAdjustment {
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   item:
- *     description: Available if the relation `item` is expanded.
+ *     description: The details of the line item.
+ *     x-expandable: "item"
  *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   description:
@@ -87,7 +91,8 @@ export class LineItemAdjustment {
  *     type: string
  *     example: disc_01F0YESMW10MGHWJKZSDDMN0VN
  *   discount:
- *     description: Available if the relation `discount` is expanded.
+ *     description: The details of the discount associated with the adjustment.
+ *     x-expandable: "discount"
  *     nullable: true
  *     $ref: "#/components/schemas/Discount"
  *   amount:
@@ -99,4 +104,7 @@ export class LineItemAdjustment {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

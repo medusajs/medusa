@@ -18,6 +18,7 @@ import PlusIcon from "../../fundamentals/icons/plus-icon"
 import InputHeader from "../../fundamentals/input-header"
 import Input from "../../molecules/input"
 import Select from "../../molecules/select"
+import { useTranslation } from "react-i18next"
 
 type CurrencyInputProps = {
   currencyCodes?: string[]
@@ -74,6 +75,7 @@ const Root: React.FC<CurrencyInputProps> = ({
       label: code.toUpperCase(),
       value: code,
     })) ?? []
+  const { t } = useTranslation()
 
   const [selectedCurrency, setSelectedCurrency] = useState<
     CurrencyType | undefined
@@ -132,7 +134,7 @@ const Root: React.FC<CurrencyInputProps> = ({
             {!readOnly ? (
               <Select
                 enableSearch
-                label="Currency"
+                label={t("currency-input-currency", "Currency")}
                 value={value}
                 onChange={onCurrencyChange}
                 options={options}
@@ -140,7 +142,7 @@ const Root: React.FC<CurrencyInputProps> = ({
               />
             ) : (
               <Input
-                label="Currency"
+                label={t("currency-input-currency", "Currency")}
                 value={value?.label}
                 readOnly
                 className="pointer-events-none"
@@ -172,6 +174,8 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
     }: AmountInputProps,
     ref
   ) => {
+    const { t } = useTranslation()
+
     const { currencyInfo } = useContext(CurrencyContext)
     const [invalid, setInvalid] = useState<boolean>(false)
     const [formattedValue, setFormattedValue] = useState<string | undefined>(
@@ -250,7 +254,10 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
             <Tooltip
               open={invalid}
               side={"top"}
-              content={invalidMessage || "Amount is not valid"}
+              content={
+                invalidMessage ||
+                t("currency-input-amount-is-not-valid", "Amount is not valid")
+              }
             >
               <span className="inter-base-regular text-grey-40 mr-xsmall">
                 {currencyInfo.symbol_native}

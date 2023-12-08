@@ -1,5 +1,12 @@
+import {
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  objectToStringPath,
+  promiseAll,
+} from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -11,6 +18,7 @@ import {
   ProductType,
   ProductVariant,
   SalesChannel,
+  ShippingProfile,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
@@ -32,13 +40,8 @@ import {
   UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
-import {
-  buildRelations,
-  buildSelects,
-  objectToStringPath,
-} from "@medusajs/utils"
+import { CreateProductVariantInput } from "../types/product-variant"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -430,6 +433,7 @@ class ProductService extends TransactionBaseService {
         tags,
         type,
         images,
+        variants,
         sales_channels: salesChannels,
         categories: categories,
         ...rest
@@ -445,6 +449,10 @@ class ProductService extends TransactionBaseService {
       }
 
       let product = productRepo.create(rest)
+
+      if (rest.profile_id) {
+        product.profiles = [{ id: rest.profile_id! }] as ShippingProfile[]
+      }
 
       if (images?.length) {
         product.images = await imageRepo.upsertImages(images)
@@ -487,7 +495,7 @@ class ProductService extends TransactionBaseService {
 
       product = await productRepo.save(product)
 
-      product.options = await Promise.all(
+      product.options = await promiseAll(
         (options ?? []).map(async (option) => {
           const res = optionRepo.create({
             ...option,
@@ -497,6 +505,27 @@ class ProductService extends TransactionBaseService {
           return res
         })
       )
+
+      if (variants) {
+        const toCreate = variants.map((variant) => {
+          return {
+            ...variant,
+            options:
+              variant.options?.map((option, index) => {
+                return {
+                  option_id: product.options[index].id,
+                  ...option,
+                }
+              }) ?? [],
+          }
+        })
+        product.variants = await this.productVariantService_
+          .withTransaction(manager)
+          .create(
+            product.id,
+            toCreate as unknown as CreateProductVariantInput[]
+          )
+      }
 
       const result = await this.retrieve(product.id, {
         relations: ["options"],
@@ -563,6 +592,10 @@ class ProductService extends TransactionBaseService {
         ...rest
       } = update
 
+      if (rest.profile_id) {
+        product.profiles = [{ id: rest.profile_id! }] as ShippingProfile[]
+      }
+
       if (!product.thumbnail && !update.thumbnail && images?.length) {
         product.thumbnail = images[0]
       }
@@ -626,7 +659,7 @@ class ProductService extends TransactionBaseService {
         }
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
 
       const result = await productRepo.save(product)
 
@@ -892,7 +925,7 @@ class ProductService extends TransactionBaseService {
           (o) => o.option_id === optionId
         )?.value
 
-        const equalsFirst = await Promise.all(
+        const equalsFirst = await promiseAll(
           product.variants.map(async (v) => {
             const option = v.options.find((o) => o.option_id === optionId)
             return option?.value === valueToMatch
@@ -918,21 +951,33 @@ class ProductService extends TransactionBaseService {
   }
 
   /**
-   *
+   * Assign a product to a profile, if a profile id null is provided then detach the product from the profile
    * @param productIds ID or IDs of the products to update
    * @param profileId Shipping profile ID to update the shipping options with
-   * @returns updated shipping options
+   * @returns updated products
    */
   async updateShippingProfile(
     productIds: string | string[],
-    profileId: string
+    profileId: string | null
   ): Promise<Product[]> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.withRepository(this.productRepository_)
 
       const ids = isString(productIds) ? [productIds] : productIds
 
-      const products = await productRepo.upsertShippingProfile(ids, profileId)
+      let products = (
+        await this.list(
+          { id: In(ids) },
+          { relations: ["profiles"], select: ["id"] }
+        )
+      ).map((product) => {
+        product.profiles = !profileId
+          ? []
+          : ([{ id: profileId }] as ShippingProfile[])
+        return product
+      })
+
+      products = await productRepo.save(products)
 
       await this.eventBus_
         .withTransaction(manager)

@@ -26,7 +26,7 @@ export class FulfillmentItem {
 /**
  * @schema FulfillmentItem
  * title: "Fulfillment Item"
- * description: "Correlates a Line Item with a Fulfillment, keeping track of the quantity of the Line Item."
+ * description: "This represents the association between a Line Item and a Fulfillment."
  * type: object
  * required:
  *   - fulfillment_id
@@ -34,19 +34,21 @@ export class FulfillmentItem {
  *   - quantity
  * properties:
  *   fulfillment_id:
- *     description: The id of the Fulfillment that the Fulfillment Item belongs to.
+ *     description: The ID of the Fulfillment that the Fulfillment Item belongs to.
  *     type: string
  *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
  *   item_id:
- *     description: The id of the Line Item that the Fulfillment Item references.
+ *     description: The ID of the Line Item that the Fulfillment Item references.
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   fulfillment:
- *     description: A fulfillment object. Available if the relation `fulfillment` is expanded.
+ *     description: The details of the fulfillment.
+ *     x-expandable: "fulfillment"
  *     nullable: true
  *     $ref: "#/components/schemas/Fulfillment"
  *   item:
- *     description: Available if the relation `item` is expanded.
+ *     description: The details of the line item.
+ *     x-expandable: "item"
  *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   quantity:

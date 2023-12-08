@@ -1,5 +1,5 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 import DiscountService from "../discount"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"

@@ -1,5 +1,25 @@
 # Change Log
 
+## 1.3.0
+
+### Minor Changes
+
+- [`e91bd9e1c`](https://github.com/medusajs/medusa/commit/e91bd9e1c1746ff2fe915d169077bf9bf2710dcf) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor-bumping file plugins
+
+## 1.2.3
+
+### Patch Changes
+
+- [#4788](https://github.com/medusajs/medusa/pull/4788) [`d8a6e3e0d`](https://github.com/medusajs/medusa/commit/d8a6e3e0d8a86aba7209f4a767cd08ebe3e49c26) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa-file-local): local file service streaming methods
+
+- [#4771](https://github.com/medusajs/medusa/pull/4771) [`edf9ed4e5`](https://github.com/medusajs/medusa/commit/edf9ed4e593063622aa39cdbebef4810bf2a5fb1) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa-interfaces, medusa-file-\*): add `ìsPrivate` flag to the streaming methods, fix minio default bucket
+
+## 1.2.2
+
+### Patch Changes
+
+- [#4540](https://github.com/medusajs/medusa/pull/4540) [`950a58169`](https://github.com/medusajs/medusa/commit/950a5816909b2038a5bee5d8e6912290e5c7c53b) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-file-minio): default getUploadDescriptor to private
+
 ## 1.2.1
 
 ### Patch Changes

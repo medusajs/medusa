@@ -5,6 +5,7 @@ import { DeleteResponse } from "../../../../types/common"
 import middlewares, { transformBody } from "../../../middlewares"
 import { AdminDeleteUploadsReq } from "./delete-upload"
 import { AdminPostUploadsDownloadUrlReq } from "./get-download-url"
+import { FileServiceUploadResult } from "@medusajs/types"
 
 const route = Router()
 const upload = multer({ dest: "uploads/" })
@@ -42,23 +43,29 @@ export default (app) => {
 /**
  * @schema AdminUploadsRes
  * type: object
+ * description: "The list of uploaded files."
  * required:
  *   - uploads
  * properties:
  *   uploads:
  *     type: array
+ *     description: "Uploaded files details."
  *     items:
  *       type: object
  *       required:
  *         - url
+ *         - key
  *       properties:
  *         url:
  *           description: The URL of the uploaded file.
  *           type: string
  *           format: uri
+ *         key:
+ *           description: The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.
+ *           type: string
  */
 export type AdminUploadsRes = {
-  uploads: { url: string }[]
+  uploads: FileServiceUploadResult[]
 }
 
 /**
@@ -86,6 +93,7 @@ export type AdminDeleteUploadsRes = DeleteResponse
 /**
  * @schema AdminUploadsDownloadUrlRes
  * type: object
+ * description: "The download URL details."
  * required:
  *   - download_url
  * properties:

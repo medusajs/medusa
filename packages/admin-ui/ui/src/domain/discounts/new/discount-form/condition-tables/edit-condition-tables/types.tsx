@@ -1,5 +1,6 @@
 import { useAdminProductTypes } from "medusa-react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import Modal from "../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../hooks/use-query-filters"
@@ -11,6 +12,7 @@ import { TypeRow, TypesHeader, useTypesColumns } from "../shared/types"
 import EditConditionFooter from "./edit-condition-footer"
 
 const EditTypeConditionSelector = ({ onClose }) => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
   const { conditions } = useDiscountForm()
   const [items, setItems] = useState(conditions.product_types?.items || [])
@@ -43,7 +45,10 @@ const EditTypeConditionSelector = ({ onClose }) => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search by type...",
+            searchPlaceholder: t(
+              "edit-condition-tables-search-by-type",
+              "Search by type..."
+            ),
           }}
           resourceName="Types"
           totalCount={count || 0}

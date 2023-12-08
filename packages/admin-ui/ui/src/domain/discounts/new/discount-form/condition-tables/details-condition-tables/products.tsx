@@ -1,5 +1,6 @@
 import { useAdminProducts } from "medusa-react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import Modal from "../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../hooks/use-query-filters"
@@ -20,6 +21,7 @@ import DetailsConditionFooter from "./details-condition-footer"
 const DetailsProductConditionSelector = ({
   onClose,
 }: AddConditionSelectorProps) => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
 
   const { conditions } = useConditions()
@@ -55,7 +57,10 @@ const DetailsProductConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search products...",
+            searchPlaceholder: t(
+              "details-condition-tables-search-products",
+              "Search products..."
+            ),
           }}
           resourceName="Products"
           totalCount={count || 0}

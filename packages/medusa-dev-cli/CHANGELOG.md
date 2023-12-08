@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.32
+
+### Patch Changes
+
+- [#4421](https://github.com/medusajs/medusa/pull/4421) [`5a4580b6a`](https://github.com/medusajs/medusa/commit/5a4580b6a8c305b7803c8d929843ca1f39677404) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa-dev-cli): Cleanup plugin setup
+
 ## 0.0.31
 
 ### Patch Changes

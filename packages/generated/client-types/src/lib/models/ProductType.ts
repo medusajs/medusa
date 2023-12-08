@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Product Type can be added to Products for filtering and reporting purposes.
+ * A Product Type can be added to Products for filtering and reporting purposes.
  */
 export interface ProductType {
   /**

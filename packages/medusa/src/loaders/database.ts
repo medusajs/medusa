@@ -40,12 +40,17 @@ export default async ({
 }: Options): Promise<DataSource> => {
   const entities = container.resolve("db_entities")
 
+  const connectionString = configModule.projectConfig.database_url
+  const database = configModule.projectConfig.database_database
+  const extra: any = configModule.projectConfig.database_extra || {}
+  const schema = configModule.projectConfig.database_schema || "public"
+
   dataSource = new DataSource({
     type: "postgres",
-    url: configModule.projectConfig.database_url,
-    database: configModule.projectConfig.database_database,
-    extra: configModule.projectConfig.database_extra || {},
-    schema: configModule.projectConfig.database_schema,
+    url: connectionString,
+    database: database,
+    extra,
+    schema,
     entities,
     migrations: customOptions?.migrations,
     logging:

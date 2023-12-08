@@ -1,8 +1,8 @@
 # Checks for outdated documentation content and sends notification about it
 name: Docs Freshness Check
-on: 
+on:
   schedule:
-    - cron: '0 0 1 * *' # once a month
+    - cron: "0 0 1 * *" # once a month
 
 jobs:
   freshness-check:
@@ -12,19 +12,19 @@ jobs:
       LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
       - name: Checkout
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -32,5 +32,10 @@ jobs:
         with:
           extension: docs-freshness-check
 
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: docs-util
+
       - name: Perform Freshness Check
         run: yarn check:freshness
+        working-directory: docs-util/packages/scripts

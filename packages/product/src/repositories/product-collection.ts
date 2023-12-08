@@ -1,74 +1,147 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductCollection } from "@models"
+import { Context, DAL, ProductTypes } from "@medusajs/types"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { deduplicateIfNecessary } from "../utils"
-import { DAL } from "@medusajs/types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ProductCollection } from "@models"
 
-export class ProductCollectionRepository implements DAL.RepositoryService {
+type UpdateProductCollection = ProductTypes.UpdateProductCollectionDTO & {
+  products?: string[]
+}
+
+type CreateProductCollection = ProductTypes.CreateProductCollectionDTO & {
+  products?: string[]
+}
+
+// eslint-disable-next-line max-len
+export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
-  constructor({ manager }) {
-    this.manager_ = manager.fork()
+
+  constructor({ manager }: { manager: SqlEntityManager }) {
+    // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
+    super(...arguments)
+    this.manager_ = manager
   }
 
-  async find<T = ProductCollection>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
-    context: { transaction?: any } = {}
-  ): Promise<T[]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
+  async find(
+    findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
+    context: Context = {}
+  ): Promise<ProductCollection[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
-
-    if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
-    }
-
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.find(
+    return await manager.find(
       ProductCollection,
       findOptions_.where as MikroFilterQuery<ProductCollection>,
       findOptions_.options as MikroOptions<ProductCollection>
-    )) as unknown as T[]
+    )
   }
 
-  async findAndCount<T = ProductCollection>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
-    context: { transaction?: any } = {}
-  ): Promise<[T[], number]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
+  async findAndCount(
+    findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
+    context: Context = {}
+  ): Promise<[ProductCollection[], number]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
-
-    if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
-    }
-
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.findAndCount(
+    return await manager.findAndCount(
       ProductCollection,
       findOptions_.where as MikroFilterQuery<ProductCollection>,
       findOptions_.options as MikroOptions<ProductCollection>
-    )) as unknown as [T[], number]
+    )
+  }
+
+  async delete(collectionIds: string[], context: Context = {}): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    await manager.nativeDelete(
+      ProductCollection,
+      { id: { $in: collectionIds } },
+      {}
+    )
+  }
+
+  async create(
+    data: CreateProductCollection[],
+    context: Context = {}
+  ): Promise<ProductCollection[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
+      }
+
+      return manager.create(ProductCollection, collectionData)
+    })
+
+    manager.persist(productCollections)
+
+    return productCollections
+  }
+
+  async update(
+    data: UpdateProductCollection[],
+    context: Context = {}
+  ): Promise<ProductCollection[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const collectionIds = data.map((collectionData) => collectionData.id)
+    const existingCollections = await this.find(
+      {
+        where: {
+          id: {
+            $in: collectionIds,
+          },
+        },
+      },
+      context
+    )
+
+    const existingCollectionsMap = new Map(
+      existingCollections.map<[string, ProductCollection]>((collection) => [
+        collection.id,
+        collection,
+      ])
+    )
+
+    const productCollections = data.map((collectionData) => {
+      const existingCollection = existingCollectionsMap.get(collectionData.id)
+
+      if (!existingCollection) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `ProductCollection with id "${collectionData.id}" not found`
+        )
+      }
+
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
+      }
+
+      return manager.assign(existingCollection, collectionData)
+    })
+
+    manager.persist(productCollections)
+
+    return productCollections
   }
 }

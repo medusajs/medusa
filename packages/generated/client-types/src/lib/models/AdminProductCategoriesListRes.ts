@@ -5,7 +5,13 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { ProductCategory } from "./ProductCategory"
 
+/**
+ * The list of product categories with pagination fields.
+ */
 export interface AdminProductCategoriesListRes {
+  /**
+   * An array of product category details.
+   */
   product_categories: Array<
     SetRelation<ProductCategory, "category_children" | "parent_category">
   >
@@ -14,7 +20,7 @@ export interface AdminProductCategoriesListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of product categories skipped when retrieving the product categories.
    */
   offset: number
   /**

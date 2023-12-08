@@ -5,11 +5,11 @@ const {
   ShippingProfileType,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const orderSeeder = require("../../helpers/order-seeder")
+const orderSeeder = require("../../../helpers/order-seeder")
 
 jest.setTimeout(30000)
 

@@ -2,29 +2,29 @@ import { EntityManager } from "typeorm"
 
 import { humanizeAmount } from "medusa-core-utils"
 
+import { FlagRouter } from "@medusajs/utils"
+import { defaultAdminProductRelations } from "../../../api"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { Product, ProductVariant } from "../../../models"
 import { BatchJobService, ProductService } from "../../../services"
 import { BatchJobStatus, CreateBatchJobInput } from "../../../types/batch-job"
-import { defaultAdminProductRelations } from "../../../api"
+import { FindProductConfig } from "../../../types/product"
+import { csvCellContentFormatter } from "../../../utils"
 import { prepareListQuery } from "../../../utils/get-query-config"
 import {
-  DynamicProductExportDescriptor,
-  ProductExportBatchJob,
-  ProductExportBatchJobContext,
-  ProductExportInjectedDependencies,
-  ProductExportPriceData,
+    DynamicProductExportDescriptor,
+    ProductExportBatchJob,
+    ProductExportBatchJobContext,
+    ProductExportInjectedDependencies,
+    ProductExportPriceData,
 } from "./types"
-import { FindProductConfig } from "../../../types/product"
-import { FlagRouter } from "../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
-import { csvCellContentFormatter } from "../../../utils"
 import {
-  productCategoriesColumnsDefinition,
-  productColumnsDefinition,
-  productSalesChannelColumnsDefinition,
+    productCategoriesColumnsDefinition,
+    productColumnsDefinition,
+    productSalesChannelColumnsDefinition,
 } from "./types/columns-definition"
-import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
 
 export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   public static identifier = "product-export-strategy"
@@ -497,11 +497,17 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
       const columnNameNameValue = columnNameValueBuilder(i)
 
+      // option values are not guaranteed to keep the same order as options on product. Pick them in the same order as product options
       this.columnsDefinition[columnNameNameValue] = {
         name: columnNameNameValue,
         exportDescriptor: {
-          accessor: (variant: ProductVariant) =>
-            variant?.options[i]?.value ?? "",
+          accessor: (
+            variant: ProductVariant,
+            context?: { product?: Product }
+          ) =>
+            variant?.options.find(
+              (ov) => ov.option_id === context!.product!.options[i]?.id
+            )?.value ?? "",
           entityName: "variant",
         },
       }
@@ -597,7 +603,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         }
         if (columnSchema.entityName === "variant") {
           const formattedContent = csvCellContentFormatter(
-            columnSchema.accessor(variant)
+            columnSchema.accessor(variant, { product: product })
           )
           variantLineData.push(formattedContent)
         }

@@ -7,23 +7,23 @@ import type { ShippingOption } from "./ShippingOption"
 import type { TaxRate } from "./TaxRate"
 
 /**
- * Associates a tax rate with a shipping option to indicate that the shipping option is taxed in a certain way
+ * This represents the tax rates applied on a shipping option.
  */
 export interface ShippingTaxRate {
   /**
-   * The ID of the Shipping Option
+   * The ID of the shipping option.
    */
   shipping_option_id: string
   /**
-   * Available if the relation `shipping_option` is expanded.
+   * The details of the shipping option.
    */
   shipping_option?: ShippingOption | null
   /**
-   * The ID of the Tax Rate
+   * The ID of the associated tax rate.
    */
   rate_id: string
   /**
-   * Available if the relation `tax_rate` is expanded.
+   * The details of the associated tax rate.
    */
   tax_rate?: TaxRate | null
   /**

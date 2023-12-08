@@ -238,7 +238,7 @@ describe("POST /admin/discounts", () => {
     })
   })
 
-  describe("succesfully creates a dynamic discount without setting valid duration", () => {
+  describe("successfully creates a dynamic discount without setting valid duration", () => {
     let subject
 
     beforeAll(async () => {

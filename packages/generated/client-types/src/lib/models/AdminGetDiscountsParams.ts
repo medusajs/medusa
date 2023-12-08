@@ -5,40 +5,40 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetDiscountsParams {
   /**
-   * Search query applied on the code field.
+   * term to search discounts' code field.
    */
   q?: string
   /**
-   * Discount Rules filters to apply on the search
+   * Filter discounts by rule fields.
    */
   rule?: {
     /**
-     * The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.
+     * Filter discounts by type.
      */
     type?: "fixed" | "percentage" | "free_shipping"
     /**
-     * The value that the discount represents; this will depend on the type of the discount
+     * Filter discounts by allocation type.
      */
     allocation?: "total" | "item"
   }
   /**
-   * Return only dynamic discounts.
+   * Filter discounts by whether they're dynamic or not.
    */
   is_dynamic?: boolean
   /**
-   * Return only disabled discounts.
+   * Filter discounts by whether they're disabled or not.
    */
   is_disabled?: boolean
   /**
-   * The number of items in the response
+   * The number of discounts to return
    */
   limit?: number
   /**
-   * The offset of items in response
+   * The number of discounts to skip when retrieving the discounts.
    */
   offset?: number
   /**
-   * Comma separated list of relations to include in the results.
+   * Comma-separated relations that should be expanded in each returned discount.
    */
   expand?: string
 }

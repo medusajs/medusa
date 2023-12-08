@@ -61,6 +61,9 @@ export class Address extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "addr")
@@ -70,7 +73,7 @@ export class Address extends SoftDeletableEntity {
 /**
  * @schema Address
  * title: "Address"
- * description: "An address."
+ * description: "An address is used across the Medusa backend within other schemas and object types. For example, a customer's billing and shipping addresses both use the Address entity."
  * type: object
  * required:
  *   - address_1
@@ -142,7 +145,8 @@ export class Address extends SoftDeletableEntity {
  *      description: See a list of codes.
  *    example: st
  *  country:
- *    description: A country object. Available if the relation `country` is expanded.
+ *    description: A country object.
+ *    x-expandable: "country"
  *    nullable: true
  *    $ref: "#/components/schemas/Country"
  *  province:
@@ -178,4 +182,7 @@ export class Address extends SoftDeletableEntity {
  *    nullable: true
  *    type: object
  *    example: {car: "white"}
+ *    externalDocs:
+ *      description: "Learn about the metadata attribute, and how to delete and update it."
+ *      url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

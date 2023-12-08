@@ -25,10 +25,12 @@ export default (app) => {
 /**
  * @schema AdminNotesRes
  * type: object
+ * description: "The note's details."
  * required:
  *   - note
  * properties:
  *   note:
+ *     description: Note details.
  *     $ref: "#/components/schemas/Note"
  */
 export type AdminNotesRes = {
@@ -60,6 +62,7 @@ export type AdminNotesDeleteRes = DeleteResponse
 /**
  * @schema AdminNotesListRes
  * type: object
+ * description: "The list of notes with pagination fields."
  * required:
  *   - notes
  *   - count
@@ -68,6 +71,7 @@ export type AdminNotesDeleteRes = DeleteResponse
  * properties:
  *   notes:
  *     type: array
+ *     description: An array of notes
  *     items:
  *       $ref: "#/components/schemas/Note"
  *   count:
@@ -75,7 +79,7 @@ export type AdminNotesDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of notes skipped when retrieving the notes.
  *   limit:
  *     type: integer
  *     description: The number of items per page

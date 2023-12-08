@@ -1,12 +1,15 @@
 {
   "name": "medusa-plugin-segment",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "Segment Analytics",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-plugin-segment"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",

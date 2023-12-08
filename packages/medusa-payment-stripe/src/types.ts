@@ -1,3 +1,5 @@
+import { Region } from "@medusajs/medusa"
+
 export interface StripeOptions {
   api_key: string
   webhook_secret: string
@@ -37,4 +39,18 @@ export const PaymentProviderKeys = {
   GIROPAY: "stripe-giropay",
   IDEAL: "stripe-ideal",
   PRZELEWY_24: "stripe-przelewy24",
+}
+
+export type WidgetPayment = {
+  id: string
+  amount: number
+  created: number
+  risk_score: number | null
+  risk_level: string | null
+  region: Region
+  type: "order" | "swap"
+}
+
+export type ListStripeIntentRes = {
+  payments: WidgetPayment[]
 }

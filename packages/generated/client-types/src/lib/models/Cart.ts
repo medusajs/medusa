@@ -15,7 +15,7 @@ import type { SalesChannel } from "./SalesChannel"
 import type { ShippingMethod } from "./ShippingMethod"
 
 /**
- * Represents a user cart
+ * A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.
  */
 export interface Cart {
   /**
@@ -31,7 +31,7 @@ export interface Cart {
    */
   billing_address_id: string | null
   /**
-   * Available if the relation `billing_address` is expanded.
+   * The details of the billing address associated with the cart.
    */
   billing_address?: Address | null
   /**
@@ -39,11 +39,11 @@ export interface Cart {
    */
   shipping_address_id: string | null
   /**
-   * Available if the relation `shipping_address` is expanded.
+   * The details of the shipping address associated with the cart.
    */
   shipping_address?: Address | null
   /**
-   * Available if the relation `items` is expanded.
+   * The line items added to the cart.
    */
   items?: Array<LineItem>
   /**
@@ -51,15 +51,15 @@ export interface Cart {
    */
   region_id: string
   /**
-   * A region object. Available if the relation `region` is expanded.
+   * The details of the region associated with the cart.
    */
   region?: Region | null
   /**
-   * Available if the relation `discounts` is expanded.
+   * An array of details of all discounts applied to the cart.
    */
   discounts?: Array<Discount>
   /**
-   * Available if the relation `gift_cards` is expanded.
+   * An array of details of all gift cards applied to the cart.
    */
   gift_cards?: Array<GiftCard>
   /**
@@ -67,15 +67,15 @@ export interface Cart {
    */
   customer_id: string | null
   /**
-   * A customer object. Available if the relation `customer` is expanded.
+   * The details of the customer the cart belongs to.
    */
   customer?: Customer | null
   /**
-   * The selected payment session in the cart.
+   * The details of the selected payment session in the cart.
    */
   payment_session: PaymentSession | null
   /**
-   * The payment sessions created on the cart.
+   * The details of all payment sessions created on the cart.
    */
   payment_sessions?: Array<PaymentSession>
   /**
@@ -83,11 +83,11 @@ export interface Cart {
    */
   payment_id: string | null
   /**
-   * Available if the relation `payment` is expanded.
+   * The details of the payment associated with the cart.
    */
   payment?: Payment | null
   /**
-   * The shipping methods added to the cart.
+   * The details of the shipping methods added to the cart.
    */
   shipping_methods?: Array<ShippingMethod>
   /**
@@ -115,7 +115,7 @@ export interface Cart {
    */
   sales_channel_id?: string | null
   /**
-   * A sales channel object. Available if the relation `sales_channel` is expanded.
+   * The details of the sales channel associated with the cart.
    */
   sales_channel?: SalesChannel | null
   /**

@@ -18,7 +18,7 @@ import FileIcon from "../../fundamentals/icons/file-icon"
 import MedusaIcon from "../../fundamentals/icons/medusa-icon"
 import { ActivityCard } from "../../molecules/activity-card"
 import BatchJobFileCard from "../../molecules/batch-job-file-card"
-import { batchJobDescriptionBuilder, BatchJobOperation } from "./utils"
+import { batchJobDescriptionBuilder } from "./utils"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 
 /**
@@ -48,7 +48,13 @@ function useBatchJob(initialData: BatchJob): BatchJob {
     setBatchJob(batch_job)
   }, [batch_job])
 
-  return useMemo(() => batchJob!, [batchJob?.status, batchJob?.result])
+  return useMemo(
+    () =>
+      new Date(initialData.updated_at) > new Date(batch_job.updated_at)
+        ? initialData
+        : batchJob,
+    [initialData.updated_at, batchJob?.updated_at]
+  )
 }
 
 const BatchJobActivityList = ({ batchJobs }: { batchJobs?: BatchJob[] }) => {
@@ -80,12 +86,8 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
     to: batchJob.created_at,
   })
 
-  const operation = {
-    "product-import": BatchJobOperation.Import,
-    "price-list-import": BatchJobOperation.Import,
-    "product-export": BatchJobOperation.Export,
-    "order-export": BatchJobOperation.Export,
-  }[batchJob.type]
+  let operation = batchJob.type.split("-").pop()
+  operation = operation.charAt(0).toUpperCase() + operation.slice(1)
 
   const batchJobActivityDescription = batchJobDescriptionBuilder(
     batchJob,

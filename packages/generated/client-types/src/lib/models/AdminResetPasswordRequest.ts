@@ -5,15 +5,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminResetPasswordRequest {
   /**
-   * The Users email.
+   * The User's email.
    */
   email?: string
   /**
-   * The token generated from the 'password-token' endpoint.
+   * The password-reset token generated when the password reset was requested.
    */
   token: string
   /**
-   * The Users new password.
+   * The User's new password.
    */
   password: string
 }

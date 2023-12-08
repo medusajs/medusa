@@ -237,6 +237,7 @@ export const defaultStoreCartRelations = [
 /**
  * @schema StoreCartsRes
  * type: object
+ * description: "The cart's details."
  * x-expanded-relations:
  *   field: cart
  *   relations:
@@ -262,6 +263,7 @@ export const defaultStoreCartRelations = [
  *      - items
  *      - items.variant
  *      - items.variant.product
+ *      - items.variant.product.profiles
  *      - items.tax_lines
  *      - items.adjustments
  *      - gift_cards
@@ -296,6 +298,7 @@ export const defaultStoreCartRelations = [
  *   - cart
  * properties:
  *   cart:
+ *     description: "Cart details."
  *     $ref: "#/components/schemas/Cart"
  */
 export type StoreCartsRes = {
@@ -305,13 +308,17 @@ export type StoreCartsRes = {
 /**
  * @schema StoreCompleteCartRes
  * type: object
+ * description: "If the cart is completed successfully, this will have the created order or the swap's details, based on the cart's type. Otherwise, it'll be the cart's details."
  * required:
  *   - type
  *   - data
  * properties:
  *   type:
  *     type: string
- *     description: The type of the data property.
+ *     description: >-
+ *       The type of the data property. If the cart completion fails, type will be `cart` and the data object will be the cart's details.
+ *       If the cart completion is successful and the cart is used for checkout, type will be `order` and the data object will be the order's details.
+ *       If the cart completion is successful and the cart is used for swap creation, type will be `swap` and the data object will be the swap's details.
  *     enum: [order, cart, swap]
  *   data:
  *     type: object
@@ -327,7 +334,7 @@ export type StoreCartsRes = {
  *           - $ref: "#/components/schemas/Cart"
  *       - type: object
  *         allOf:
- *           - description: When cart is used for a swap and it has been completed successfully.
+ *           - description: Cart was used for a swap and it has been completed successfully.
  *           - $ref: "#/components/schemas/Swap"
  */
 export type StoreCompleteCartRes =

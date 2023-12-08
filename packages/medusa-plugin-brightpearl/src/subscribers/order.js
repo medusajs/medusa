@@ -102,6 +102,7 @@ class OrderSubscriber {
         "additional_items.tax_lines",
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
       ],
     })
@@ -148,6 +149,7 @@ class OrderSubscriber {
         "additional_items.variant.product",
         "additional_items.tax_lines",
         "shipping_address",
+        "shipping_methods.shipping_option",
         "shipping_methods",
       ],
     })
@@ -190,7 +192,7 @@ class OrderSubscriber {
   registerReturn = async (data) => {
     const { id, return_id } = data
 
-    const relations = ["discounts", "region", "swaps", "payments"]
+    const relations = ["discounts", "discounts.rule", "region", "swaps", "payments"]
     if (this.featureFlagRouter.isFeatureEnabled("sales_channels")) {
       relations.push("sales_channel")
     }

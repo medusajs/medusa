@@ -9,7 +9,7 @@ import type { ShippingOptionRequirement } from "./ShippingOptionRequirement"
 import type { ShippingProfile } from "./ShippingProfile"
 
 /**
- * Shipping Options represent a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.
+ * A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.
  */
 export interface ShippingOption {
   /**
@@ -21,27 +21,27 @@ export interface ShippingOption {
    */
   name: string
   /**
-   * The region's ID
+   * The ID of the region this shipping option can be used in.
    */
   region_id: string
   /**
-   * A region object. Available if the relation `region` is expanded.
+   * The details of the region this shipping option can be used in.
    */
   region?: Region | null
   /**
-   * The ID of the Shipping Profile that the shipping option belongs to. Shipping Profiles have a set of defined Shipping Options that can be used to Fulfill a given set of Products.
+   * The ID of the Shipping Profile that the shipping option belongs to.
    */
   profile_id: string
   /**
-   * Available if the relation `profile` is expanded.
+   * The details of the shipping profile that the shipping option belongs to.
    */
   profile?: ShippingProfile | null
   /**
-   * The id of the Fulfillment Provider, that will be used to process Fulfillments from the Shipping Option.
+   * The ID of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.
    */
   provider_id: string
   /**
-   * Available if the relation `provider` is expanded.
+   * The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.
    */
   provider?: FulfillmentProvider | null
   /**
@@ -61,7 +61,7 @@ export interface ShippingOption {
    */
   admin_only: boolean
   /**
-   * The requirements that must be satisfied for the Shipping Option to be available for a Cart. Available if the relation `requirements` is expanded.
+   * The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.
    */
   requirements?: Array<ShippingOptionRequirement>
   /**
@@ -69,7 +69,7 @@ export interface ShippingOption {
    */
   data: Record<string, any>
   /**
-   * [EXPERIMENTAL] Does the shipping option price include tax
+   * Whether the shipping option price include tax
    */
   includes_tax?: boolean
   /**

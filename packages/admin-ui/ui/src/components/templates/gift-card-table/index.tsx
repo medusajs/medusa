@@ -5,6 +5,7 @@ import qs from "qs"
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { usePagination, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import Spinner from "../../atoms/spinner"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
@@ -17,6 +18,7 @@ const defaultQueryProps = {}
 
 const GiftCardTable = () => {
   const location = useLocation()
+  const { t } = useTranslation()
 
   const {
     reset,
@@ -130,7 +132,7 @@ const GiftCardTable = () => {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + rows.length,
-        title: "Gift cards",
+        title: t("gift-card-table-gift-cards", "Gift cards"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,

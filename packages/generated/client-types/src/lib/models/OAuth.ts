@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Represent an OAuth app
+ * An Oauth app is typically created by a plugin to handle authentication to third-party services.
  */
 export interface OAuth {
   /**

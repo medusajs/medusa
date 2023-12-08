@@ -50,7 +50,7 @@ describe("GET /admin/orders", () => {
             }
           ),
           // TODO [MEDUSA_FF_SALES_CHANNELS]: Remove when sales channel flag is removed entirely
-          relations: [...defaultAdminOrdersRelations, "sales_channel"],
+          relations: [...defaultAdminOrdersRelations, "sales_channel"].sort(),
         },
         {
           includes: undefined,

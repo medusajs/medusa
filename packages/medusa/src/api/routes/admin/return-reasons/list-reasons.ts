@@ -10,7 +10,7 @@ import { Selector } from "../../../../types/common"
  * @oas [get] /admin/return-reasons
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
- * description: "Retrieves a list of Return Reasons."
+ * description: "Retrieve a list of Return Reasons."
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -24,15 +24,16 @@ import { Selector } from "../../../../types/common"
  *       medusa.admin.returnReasons.list()
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/return-reasons' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/return-reasons' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Return Reasons
  * responses:

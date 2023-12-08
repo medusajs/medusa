@@ -7,7 +7,7 @@ import type { Order } from "./Order"
 import type { Payment } from "./Payment"
 
 /**
- * Refund represent an amount of money transfered back to the Customer for a given reason. Refunds may occur in relation to Returns, Swaps and Claims, but can also be initiated by a store operator.
+ * A refund represents an amount of money transfered back to the customer for a given reason. Refunds may occur in relation to Returns, Swaps and Claims, but can also be initiated by an admin for an order.
  */
 export interface Refund {
   /**
@@ -15,19 +15,19 @@ export interface Refund {
    */
   id: string
   /**
-   * The id of the Order that the Refund is related to.
+   * The ID of the order this refund was created for.
    */
   order_id: string | null
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order this refund was created for.
    */
   order?: Order | null
   /**
-   * The payment's ID if available
+   * The payment's ID, if available.
    */
   payment_id: string | null
   /**
-   * Available if the relation `payment` is expanded.
+   * The details of the payment associated with the refund.
    */
   payment?: Payment | null
   /**

@@ -1,8 +1,8 @@
 import {
   DateComparisonOperator,
+  extendedFindParamsMixin,
   NumericalComparisonOperator,
   StringComparisonOperator,
-  extendedFindParamsMixin,
 } from "../../../../types/common"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
@@ -14,19 +14,20 @@ import { LineItemService } from "../../../../services"
 import { Type } from "class-transformer"
 import { joinInventoryItems } from "./utils/join-inventory-items"
 import { joinLineItems } from "./utils/join-line-items"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/reservations
  * operationId: "GetReservations"
  * summary: "List Reservations"
- * description: "Retrieve a list of Reservations."
+ * description: "Retrieve a list of Reservations. The reservations can be filtered by fields such as `location_id` or `quantity`. The reservations can also be paginated."
  * x-authenticated: true
  * parameters:
  *   - in: query
  *     name: location_id
  *     style: form
  *     explode: false
- *     description: Location ids to search for.
+ *     description: Filter by location ID
  *     schema:
  *       type: array
  *       items:
@@ -35,7 +36,7 @@ import { joinLineItems } from "./utils/join-line-items"
  *     name: inventory_item_id
  *     style: form
  *     explode: false
- *     description: Inventory Item ids to search for.
+ *     description: Filter by inventory item ID.
  *     schema:
  *       type: array
  *       items:
@@ -44,7 +45,7 @@ import { joinLineItems } from "./utils/join-line-items"
  *     name: line_item_id
  *     style: form
  *     explode: false
- *     description: Line Item ids to search for.
+ *     description: Filter by line item ID.
  *     schema:
  *       type: array
  *       items:
@@ -69,10 +70,11 @@ import { joinLineItems } from "./utils/join-line-items"
  *           description: filter by reservation quantity greater than or equal to this number
  *   - in: query
  *     name: description
- *     description: A param for search reservation descriptions
+ *     description: Filter by description.
  *     schema:
  *       oneOf:
  *         - type: string
+ *           description: description value to filter by.
  *         - type: object
  *           properties:
  *             contains:
@@ -86,7 +88,7 @@ import { joinLineItems } from "./utils/join-line-items"
  *               description: filter by reservation description ending with search string.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting reservations were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -106,10 +108,10 @@ import { joinLineItems } from "./utils/join-line-items"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) offset=0 {integer} How many Reservations to skip in the result.
- *   - (query) limit=20 {integer} Limit the number of Reservations returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
+ *   - (query) offset=0 {integer} The number of reservations to skip when retrieving the reservations.
+ *   - (query) limit=20 {integer} Limit the number of reservations returned.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned reservations.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned reservations.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetReservationsParams
@@ -127,11 +129,12 @@ import { joinLineItems } from "./utils/join-line-items"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-categories' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/product-categories' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Reservations
  * responses:
@@ -196,46 +199,70 @@ export default async (req: Request, res: Response) => {
     promises.push(joinLineItems(reservations, lineItemService))
   }
 
-  await Promise.all(promises)
+  await promiseAll(promises)
 
   const { limit, offset } = req.validatedQuery
 
   res.json({ reservations, count, limit, offset })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved reservations.
+ */
 export class AdminGetReservationsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Location IDs to filter reservations by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   location_id?: string | string[]
 
+  /**
+   * Inventory item IDs to filter reservations by.
+   */
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   inventory_item_id?: string[]
 
+  /**
+   * Line item IDs to filter reservations by.
+   */
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   line_item_id?: string[]
 
+  /**
+   * "Create by" user IDs to filter reservations by.
+   */
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   created_by?: string[]
 
+  /**
+   * Numerical filters to apply on the reservations' `quantity` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => NumericalComparisonOperator)
   quantity?: NumericalComparisonOperator
 
+  /**
+   * Date filters to apply on the reservations' `created_at` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * String filters tp apply on the reservations' `description` field.
+   */
   @IsOptional()
   @IsType([StringComparisonOperator, String])
   description?: string | StringComparisonOperator

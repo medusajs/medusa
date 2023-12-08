@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { SalesChannel } from "./SalesChannel"
 
 /**
- * Sales Channel Stock Location link sales channels with stock locations.
+ * This represents the association between a sales channel and a stock locations.
  */
 export interface SalesChannelLocation {
   /**
@@ -14,15 +14,15 @@ export interface SalesChannelLocation {
    */
   id: string
   /**
-   * The id of the Sales Channel
+   * The ID of the Sales Channel
    */
   sales_channel_id: string
   /**
-   * The id of the Location Stock.
+   * The ID of the Location Stock.
    */
   location_id: string
   /**
-   * The sales channel the location is associated with. Available if the relation `sales_channel` is expanded.
+   * The details of the sales channel the location is associated with.
    */
   sales_channel?: SalesChannel | null
   /**

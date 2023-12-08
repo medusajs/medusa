@@ -17,28 +17,28 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  * operationId: "GetDiscounts"
  * summary: "List Discounts"
  * x-authenticated: true
- * description: "Retrieves a list of Discounts"
+ * description: "Retrieve a list of Discounts. The discounts can be filtered by fields such as `rule` or `is_dynamic`. The discounts can also be paginated."
  * parameters:
- *   - (query) q {string} Search query applied on the code field.
+ *   - (query) q {string} term to search discounts' code field.
  *   - in: query
  *     name: rule
- *     description: Discount Rules filters to apply on the search
+ *     description: Filter discounts by rule fields.
  *     schema:
  *       type: object
  *       properties:
  *         type:
  *           type: string
  *           enum: [fixed, percentage, free_shipping]
- *           description: "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers."
+ *           description: "Filter discounts by type."
  *         allocation:
  *           type: string
  *           enum: [total, item]
- *           description: "The value that the discount represents; this will depend on the type of the discount"
- *   - (query) is_dynamic {boolean} Return only dynamic discounts.
- *   - (query) is_disabled {boolean} Return only disabled discounts.
- *   - (query) limit=20 {number} The number of items in the response
- *   - (query) offset=0 {number} The offset of items in response
- *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *           description: "Filter discounts by allocation type."
+ *   - (query) is_dynamic {boolean} Filter discounts by whether they're dynamic or not.
+ *   - (query) is_disabled {boolean} Filter discounts by whether they're disabled or not.
+ *   - (query) limit=20 {number} The number of discounts to return
+ *   - (query) offset=0 {number} The number of discounts to skip when retrieving the discounts.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in each returned discount.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetDiscountsParams
@@ -52,15 +52,16 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       medusa.admin.discounts.list()
  *       .then(({ discounts, limit, offset, count }) => {
  *         console.log(discounts.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/discounts' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/discounts' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:
@@ -102,24 +103,39 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved discounts.
+ */
 export class AdminGetDiscountsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Filter discounts by their associated rule.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => AdminGetDiscountsDiscountRuleParams)
   rule?: AdminGetDiscountsDiscountRuleParams
 
+  /**
+   * Search terms to search discounts' code fields.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Filter discounts by whether they're dynamic.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_dynamic?: boolean
 
+  /**
+   * Filter discounts by whether they're disabled.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))

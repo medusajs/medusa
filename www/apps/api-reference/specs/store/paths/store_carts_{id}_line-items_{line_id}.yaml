@@ -1,0 +1,103 @@
+post:
+  operationId: PostCartsCartLineItemsItem
+  summary: Update a Line Item
+  description: Update a line item's quantity.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Cart.
+      schema:
+        type: string
+    - in: path
+      name: line_id
+      required: true
+      description: The ID of the Line Item.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCartsCartLineItemsItemReq.yaml
+  x-codegen:
+    method: updateLineItem
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_carts_{id}_line-items_{line_id}/post.sh
+  tags:
+    - Carts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCartsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+delete:
+  operationId: DeleteCartsCartLineItemsItem
+  summary: Delete a Line Item
+  description: >-
+    Delete a Line Item from a Cart. The payment sessions will be updated and the
+    totals will be recalculated.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Cart.
+      schema:
+        type: string
+    - in: path
+      name: line_id
+      required: true
+      description: The ID of the Line Item.
+      schema:
+        type: string
+  x-codegen:
+    method: deleteLineItem
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/delete.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_carts_{id}_line-items_{line_id}/delete.sh
+  tags:
+    - Carts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCartsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

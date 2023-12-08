@@ -38,10 +38,12 @@ export default (app) => {
 /**
  * @schema AdminUserRes
  * type: object
+ * description: "The user's details."
  * required:
  *   - user
  * properties:
  *   user:
+ *     description: "User details."
  *     $ref: "#/components/schemas/User"
  */
 export type AdminUserRes = {
@@ -51,11 +53,13 @@ export type AdminUserRes = {
 /**
  * @schema AdminUsersListRes
  * type: object
+ * description: "The list of users."
  * required:
  *   - users
  * properties:
  *   users:
  *     type: array
+ *     description: "An array of users details."
  *     items:
  *       $ref: "#/components/schemas/User"
  */

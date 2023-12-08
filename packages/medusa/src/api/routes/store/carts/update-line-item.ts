@@ -1,18 +1,22 @@
-import { IsInt } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
+import { IsInt, IsOptional } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
  * operationId: PostCartsCartLineItemsItem
  * summary: Update a Line Item
- * description: "Updates a Line Item if the desired quantity can be fulfilled."
+ * description: "Update a line item's quantity."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) line_id=* {string} The id of the Line Item.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) line_id=* {string} The ID of the Line Item.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,17 +30,17 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.lineItems.update(cart_id, line_id, {
+ *       medusa.carts.lineItems.update(cartId, lineId, {
  *         quantity: 1
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/line-items/{line_id}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "quantity": 1
  *       }'
@@ -68,14 +72,17 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   await manager.transaction(async (m) => {
     // If the quantity is 0 that is effectively deletion
     if (validated.quantity === 0) {
       await cartService.withTransaction(m).removeLineItem(id, line_id)
     } else {
-      const cart = await cartService
-        .withTransaction(m)
-        .retrieve(id, { relations: ["items", "items.variant"] })
+      const cart = await cartService.withTransaction(m).retrieve(id, {
+        relations: ["items", "items.variant", "shipping_methods"],
+      })
 
       const existing = cart.items.find((i) => i.id === line_id)
       if (!existing) {
@@ -89,7 +96,8 @@ export default async (req, res) => {
         variant_id: existing.variant.id,
         region_id: cart.region_id,
         quantity: validated.quantity,
-        metadata: existing.metadata || {},
+        metadata: validated.metadata || {},
+        should_calculate_prices: true,
       }
 
       await cartService
@@ -112,6 +120,11 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
+
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
@@ -123,9 +136,18 @@ export default async (req, res) => {
  * properties:
  *   quantity:
  *     type: number
- *     description: The quantity to set the Line Item to.
+ *     description: The quantity of the line item in the cart.
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details about the Line Item. If omitted, the metadata will remain unchanged."
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class StorePostCartsCartLineItemsItemReq {
   @IsInt()
   quantity: number
+
+  @IsOptional()
+  metadata?: Record<string, unknown> | undefined
 }

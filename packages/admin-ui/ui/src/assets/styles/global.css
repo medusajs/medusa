@@ -12,6 +12,14 @@
 
 @font-face {
   font-family: "Inter";
+  src: url("../../fonts/Inter-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
   src: url("../../fonts/Inter-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
@@ -42,129 +50,129 @@
 
 @layer components {
   .inter-5xlarge-regular {
-    @apply font-sans text-5xlarge leading-4xlarge font-normal;
+    @apply text-5xlarge leading-4xlarge font-sans font-normal;
   }
   .inter-5xlarge-semibold {
-    @apply font-sans text-5xlarge leading-4xlarge font-semibold;
+    @apply text-5xlarge leading-4xlarge font-sans font-semibold;
   }
 
   .inter-4xlarge-regular {
-    @apply font-sans text-4xlarge leading-3xlarge font-normal;
+    @apply text-4xlarge leading-3xlarge font-sans font-normal;
   }
   .inter-4xlarge-semibold {
-    @apply font-sans text-4xlarge leading-3xlarge font-semibold;
+    @apply text-4xlarge leading-3xlarge font-sans font-semibold;
   }
 
   .inter-3xlarge-regular {
-    @apply font-sans text-3xlarge leading-2xlarge font-normal;
+    @apply text-3xlarge leading-2xlarge font-sans font-normal;
   }
   .inter-3xlarge-semibold {
-    @apply font-sans text-3xlarge leading-2xlarge font-semibold;
+    @apply text-3xlarge leading-2xlarge font-sans font-semibold;
   }
 
   .inter-2xlarge-regular {
-    @apply font-sans text-2xlarge leading-xlarge font-normal;
+    @apply text-2xlarge leading-xlarge font-sans font-normal;
   }
   .inter-2xlarge-semibold {
-    @apply font-sans text-2xlarge leading-xlarge font-semibold;
+    @apply text-2xlarge leading-xlarge font-sans font-semibold;
   }
 
   .inter-xlarge-regular {
-    @apply font-sans text-xlarge leading-large font-normal;
+    @apply text-xlarge leading-large font-sans font-normal;
   }
   .inter-xlarge-semibold {
-    @apply font-sans text-xlarge leading-large font-semibold;
+    @apply text-xlarge leading-large font-sans font-semibold;
   }
 
   .inter-large-regular {
-    @apply font-sans text-large leading-base font-normal;
+    @apply text-large leading-base font-sans font-normal;
   }
   .inter-large-semibold {
-    @apply font-sans text-large leading-base font-semibold;
+    @apply text-large leading-base font-sans font-semibold;
   }
 
   .inter-base-regular {
-    @apply font-sans text-base leading-base font-normal;
+    @apply leading-base font-sans text-base font-normal;
   }
   .inter-base-semibold {
-    @apply font-sans text-base leading-base font-semibold;
+    @apply leading-base font-sans text-base font-semibold;
   }
 
   .inter-small-regular {
-    @apply font-sans text-small leading-small font-normal;
+    @apply text-small leading-small font-sans font-normal;
   }
   .inter-small-semibold {
-    @apply font-sans text-small leading-small font-semibold;
+    @apply text-small leading-small font-sans font-semibold;
   }
 
   .inter-xsmall-regular {
-    @apply font-sans text-xsmall leading-xsmall font-normal;
+    @apply text-xsmall leading-xsmall font-sans font-normal;
   }
   .inter-xsmall-semibold {
-    @apply font-sans text-xsmall leading-xsmall font-semibold;
+    @apply text-xsmall leading-xsmall font-sans font-semibold;
   }
 
   .mono-5xlarge-regular {
-    @apply font-mono text-5xlarge leading-4xlarge font-normal;
+    @apply text-5xlarge leading-4xlarge font-mono font-normal;
   }
   .mono-5xlarge-semibold {
-    @apply font-mono text-5xlarge leading-4xlarge font-bold;
+    @apply text-5xlarge leading-4xlarge font-mono font-bold;
   }
 
   .mono-4xlarge-regular {
-    @apply font-mono text-4xlarge leading-3xlarge font-normal;
+    @apply text-4xlarge leading-3xlarge font-mono font-normal;
   }
   .mono-4xlarge-semibold {
-    @apply font-mono text-4xlarge leading-3xlarge font-bold;
+    @apply text-4xlarge leading-3xlarge font-mono font-bold;
   }
 
   .mono-3xlarge-regular {
-    @apply font-mono text-3xlarge leading-2xlarge font-normal;
+    @apply text-3xlarge leading-2xlarge font-mono font-normal;
   }
   .mono-3xlarge-semibold {
-    @apply font-mono text-3xlarge leading-2xlarge font-bold;
+    @apply text-3xlarge leading-2xlarge font-mono font-bold;
   }
 
   .mono-2xlarge-regular {
-    @apply font-mono text-2xlarge leading-xlarge font-normal;
+    @apply text-2xlarge leading-xlarge font-mono font-normal;
   }
   .mono-2xlarge-semibold {
-    @apply font-mono text-2xlarge leading-xlarge font-bold;
+    @apply text-2xlarge leading-xlarge font-mono font-bold;
   }
 
   .mono-xlarge-regular {
-    @apply font-mono text-xlarge leading-large font-normal;
+    @apply text-xlarge leading-large font-mono font-normal;
   }
   .mono-xlarge-semibold {
-    @apply font-mono text-xlarge leading-large font-bold;
+    @apply text-xlarge leading-large font-mono font-bold;
   }
 
   .mono-large-regular {
-    @apply font-mono text-large leading-base font-normal;
+    @apply text-large leading-base font-mono font-normal;
   }
   .mono-large-semibold {
-    @apply font-mono text-large leading-base font-bold;
+    @apply text-large leading-base font-mono font-bold;
   }
 
   .mono-base-regular {
-    @apply font-mono text-base leading-base font-normal;
+    @apply leading-base font-mono text-base font-normal;
   }
   .mono-base-semibold {
-    @apply font-mono text-base leading-base font-bold;
+    @apply leading-base font-mono text-base font-bold;
   }
 
   .mono-small-regular {
-    @apply font-mono text-small leading-small font-normal;
+    @apply text-small leading-small font-mono font-normal;
   }
   .mono-small-semibold {
-    @apply font-mono text-small leading-small font-bold;
+    @apply text-small leading-small font-mono font-bold;
   }
 
   .mono-xsmall-regular {
-    @apply font-mono text-xsmall leading-xsmall font-normal;
+    @apply text-xsmall leading-xsmall font-mono font-normal;
   }
   .mono-xsmall-semibold {
-    @apply font-mono text-xsmall leading-xsmall font-bold;
+    @apply text-xsmall leading-xsmall font-mono font-bold;
   }
 
   .radio-outer-ring > span.indicator[data-state="checked"] {
@@ -178,7 +186,7 @@
 
 @layer components {
   .react-select-container {
-    @apply p-0 -mx-3 border-0 mb-1 cursor-text h-6;
+    @apply -mx-3 mb-1 h-6 cursor-text border-0 p-0;
 
     .react-select__control {
       @apply border-0 bg-inherit shadow-none;
@@ -187,17 +195,17 @@
     .react-select__control,
     .react-select__control--is-focused,
     .react-select__control--menu-is-open {
-      @apply h-6 p-0 m-0 !important;
+      @apply m-0 h-6 p-0 !important;
     }
 
     .react-select__value-container--is-multi,
     .react-select__value-container--has-value {
-      @apply h-6 pl-3 p-0 m-0 !important;
+      @apply m-0 h-6 p-0 pl-3 !important;
     }
 
     .react-select__menu,
     .react-select__menu-list {
-      @apply rounded-t-none mt-0 z-[110] !important;
+      @apply z-[110] mt-0 rounded-t-none !important;
     }
 
     .react-select__value-container {
@@ -205,7 +213,7 @@
     }
 
     .react-select__indicators {
-      @apply p-0 h-full items-center flex pr-3;
+      @apply flex h-full items-center p-0 pr-3;
 
       .react-select__indicator {
         @apply p-0;
@@ -213,7 +221,7 @@
     }
 
     .react-select__input {
-      @apply w-full mt-0 min-w-[120px] pt-0 !important;
+      @apply mt-0 w-full min-w-[120px] pt-0 !important;
     }
 
     .react-select__option,
@@ -231,15 +239,15 @@
 
 @layer components {
   .badge {
-    @apply w-min py-0.5 px-2 rounded-rounded inter-small-semibold;
+    @apply rounded-rounded inter-small-semibold w-min py-0.5 px-2;
   }
 
   .badge-disabled {
-    @apply bg-grey-50 bg-opacity-10 text-grey-50;
+    @apply bg-grey-50 text-grey-50 bg-opacity-10;
   }
 
   .badge-primary {
-    @apply bg-violet-60 bg-opacity-10 text-violet-60;
+    @apply bg-violet-60 text-violet-60 bg-opacity-10;
   }
 
   .badge-danger {
@@ -251,11 +259,11 @@
   }
 
   .badge-warning {
-    @apply bg-yellow-40 bg-opacity-20 text-yellow-60;
+    @apply bg-yellow-40 text-yellow-60 bg-opacity-20;
   }
 
   .badge-ghost {
-    @apply text-grey-90 border border-grey-20 whitespace-nowrap;
+    @apply text-grey-90 border-grey-20 whitespace-nowrap border;
   }
 
   .badge-default {
@@ -263,7 +271,7 @@
   }
 
   .btn {
-    @apply flex items-center justify-center rounded-rounded focus:outline-none focus:shadow-cta;
+    @apply rounded-rounded focus:shadow-cta flex items-center justify-center focus:outline-none;
   }
 
   .btn-large {
@@ -279,23 +287,23 @@
   }
 
   .btn-primary {
-    @apply bg-violet-60 text-grey-0 hover:bg-violet-50 active:bg-violet-70  disabled:bg-grey-20 disabled:text-grey-40;
+    @apply bg-violet-60 text-grey-0 active:bg-violet-70 disabled:bg-grey-20  disabled:text-grey-40 hover:bg-violet-50;
   }
 
   .btn-secondary {
-    @apply bg-grey-0 text-grey-90 border border-grey-20 hover:bg-grey-5 active:bg-grey-5 active:text-violet-60  focus:border-violet-60 disabled:bg-grey-0 disabled:text-grey-30;
+    @apply bg-grey-0 text-grey-90 border-grey-20 hover:bg-grey-5 active:bg-grey-5 active:text-violet-60 focus:border-violet-60  disabled:bg-grey-0 disabled:text-grey-30 border;
   }
 
   .btn-danger {
-    @apply bg-grey-0 text-rose-50 border border-grey-20 hover:bg-grey-10 active:bg-grey-20 disabled:bg-grey-0 disabled:text-grey-30;
+    @apply bg-grey-0 border-grey-20 hover:bg-grey-10 active:bg-grey-20 disabled:bg-grey-0 disabled:text-grey-30 border text-rose-50;
   }
 
   .btn-nuclear {
-    @apply bg-rose-50 text-grey-0 hover:bg-rose-40 active:bg-rose-60 disabled:bg-grey-20 disabled:text-grey-40;
+    @apply text-grey-0 hover:bg-rose-40 active:bg-rose-60 disabled:bg-grey-20 disabled:text-grey-40 bg-rose-50;
   }
 
   .btn-ghost {
-    @apply bg-transparent text-grey-90 hover:bg-grey-5 active:bg-grey-5 active:text-violet-60  focus:border-violet-60 disabled:bg-transparent disabled:text-grey-30;
+    @apply text-grey-90 hover:bg-grey-5 active:bg-grey-5 active:text-violet-60 focus:border-violet-60  disabled:text-grey-30 bg-transparent disabled:bg-transparent;
   }
 
   .btn-primary-large {
@@ -329,11 +337,11 @@
 
 @layer components {
   .date-picker {
-    @apply border-0 outline-none pt-6 !important;
+    @apply border-0 pt-6 outline-none !important;
 
     .react-datepicker__month-container {
       .react-datepicker__header {
-        @apply bg-inherit border-0;
+        @apply border-0 bg-inherit;
       }
     }
 
@@ -341,7 +349,7 @@
       @apply inter-base-semibold pt-4;
 
       .react-datepicker__day-name {
-        @apply w-[40px] m-0;
+        @apply m-0 w-[40px];
       }
     }
 
@@ -361,7 +369,7 @@
     }
 
     .date {
-      @apply text-grey-90 m-[0px] w-[38px] h-[38px] align-middle relative leading-none pt-3;
+      @apply text-grey-90 relative m-[0px] h-[38px] w-[38px] pt-3 align-middle leading-none;
       :hover {
         @apply cursor-pointer;
       }
@@ -396,7 +404,7 @@
   }
 
   .vice-city {
-    @apply bg-gradient-to-tr from-vice-start to-vice-stop;
+    @apply from-vice-start to-vice-stop bg-gradient-to-tr;
   }
 
   .hidden-actions[data-state="open"] {
@@ -426,9 +434,10 @@
     @apply bg-grey-40;
   }
 
-  .accordion-margin-transition {
+  /* TODO: Fix this as it breaks builds when using preset */
+  /* .accordion-margin-transition {
     @apply transition-[margin] duration-300 ease-[cubic-bezier(0.87,0,0.13,1)];
-  }
+  } */
 
   .col-tree:last-child .bottom-half-dash {
     @apply border-none;

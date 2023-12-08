@@ -1,6 +1,7 @@
 import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import useNotification from "../../../hooks/use-notification"
 import { FormImage } from "../../../types/shared"
@@ -23,6 +24,7 @@ type ThumbnailFormWrapper = {
 }
 
 const ThumbnailModal = ({ product, open, onClose }: Props) => {
+  const { t } = useTranslation()
   const { onUpdate, updating } = useEditProductActions(product.id)
   const form = useForm<ThumbnailFormWrapper>({
     defaultValues: getDefaultValues(product),
@@ -51,18 +53,27 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
     try {
       preppedImages = await prepareImages(data.thumbnail.images)
     } catch (error) {
-      let errorMessage =
+      let errorMessage = t(
+        "product-thumbnail-section-upload-thumbnail-error",
         "Something went wrong while trying to upload the thumbnail."
+      )
       const response = (error as any).response as Response
 
       if (response.status === 500) {
         errorMessage =
           errorMessage +
           " " +
-          "You might not have a file service configured. Please contact your administrator"
+          t(
+            "product-thumbnail-section-you-might-not-have-a-file-service-configured-please-contact-your-administrator",
+            "You might not have a file service configured. Please contact your administrator"
+          )
       }
 
-      notification("Error", errorMessage, "error")
+      notification(
+        t("product-thumbnail-section-error", "Error"),
+        errorMessage,
+        "error"
+      )
       return
     }
     const url = preppedImages?.[0]?.url
@@ -80,14 +91,23 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={onReset} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
-          <h1 className="inter-xlarge-semibold m-0">Upload Thumbnail</h1>
+          <h1 className="inter-xlarge-semibold m-0">
+            {t(
+              "product-thumbnail-section-upload-thumbnail",
+              "Upload Thumbnail"
+            )}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
-            <h2 className="inter-large-semibold mb-2xsmall">Thumbnail</h2>
+            <h2 className="inter-large-semibold mb-2xsmall">
+              {t("product-thumbnail-section-thumbnail", "Thumbnail")}
+            </h2>
             <p className="inter-base-regular text-grey-50 mb-large">
-              Used to represent your product during checkout, social sharing and
-              more.
+              {t(
+                "product-thumbnail-section-used-to-represent-your-product-during-checkout-social-sharing-and-more",
+                "Used to represent your product during checkout, social sharing and more."
+              )}
             </p>
             <ThumbnailForm form={nestedForm(form, "thumbnail")} />
           </Modal.Content>
@@ -99,7 +119,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                Cancel
+                {t("product-thumbnail-section-cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -108,7 +128,10 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                Save and close
+                {t(
+                  "product-thumbnail-section-save-and-close",
+                  "Save and close"
+                )}
               </Button>
             </div>
           </Modal.Footer>

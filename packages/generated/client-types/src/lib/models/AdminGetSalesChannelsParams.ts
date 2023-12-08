@@ -5,27 +5,27 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetSalesChannelsParams {
   /**
-   * ID of the sales channel
+   * Filter by a sales channel ID.
    */
   id?: string
   /**
-   * Name of the sales channel
+   * Filter by name.
    */
   name?: string
   /**
-   * Description of the sales channel
+   * Filter by description.
    */
   description?: string
   /**
-   * Query used for searching sales channels' names and descriptions.
+   * term used to search sales channels' names and descriptions.
    */
   q?: string
   /**
-   * The field to order the results by.
+   * A sales-channel field to sort-order the retrieved sales channels by.
    */
   order?: string
   /**
-   * Date comparison for when resulting collections were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -46,7 +46,7 @@ export interface AdminGetSalesChannelsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -67,7 +67,7 @@ export interface AdminGetSalesChannelsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were deleted.
+   * Filter by a deletion date range.
    */
   deleted_at?: {
     /**
@@ -88,7 +88,7 @@ export interface AdminGetSalesChannelsParams {
     gte?: string
   }
   /**
-   * How many sales channels to skip in the result.
+   * The number of sales channels to skip when retrieving the sales channels.
    */
   offset?: number
   /**
@@ -96,11 +96,11 @@ export interface AdminGetSalesChannelsParams {
    */
   limit?: number
   /**
-   * (Comma separated) Which fields should be expanded in each sales channel of the result.
+   * Comma-separated relations that should be expanded in the returned sales channels.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in each sales channel of the result.
+   * Comma-separated fields that should be included in the returned sales channels.
    */
   fields?: string
 }

@@ -7,7 +7,13 @@ import type { LineItem } from "./LineItem"
 import type { OrderEdit } from "./OrderEdit"
 import type { OrderItemChange } from "./OrderItemChange"
 
+/**
+ * The list of order edits with pagination fields.
+ */
 export interface AdminOrderEditsListRes {
+  /**
+   * An array of order edit details
+   */
   order_edits: Array<
     Merge<
       SetRelation<
@@ -58,7 +64,7 @@ export interface AdminOrderEditsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of order edits skipped when retrieving the order edits.
    */
   offset: number
   /**

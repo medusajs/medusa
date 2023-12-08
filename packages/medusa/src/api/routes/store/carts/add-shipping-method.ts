@@ -1,15 +1,18 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /store/carts/{id}/shipping-methods
  * operationId: "PostCartsCartShippingMethod"
- * description: "Adds a Shipping Method to the Cart."
- * summary: "Add a Shipping Method"
+ * summary: "Add Shipping Method"
+ * description: "Add a Shipping Method to the Cart. The validation of the `data` field is handled by the fulfillment provider of the chosen shipping option."
  * parameters:
  *   - (path) id=* {string} The cart ID.
  * requestBody:
@@ -25,17 +28,17 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.addShippingMethod(cart_id, {
+ *       medusa.carts.addShippingMethod(cartId, {
  *         option_id
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/shipping-methods' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/shipping-methods' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "option_id": "{option_id}",
  *       }'
@@ -66,6 +69,8 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)
@@ -91,6 +96,11 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
+
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
@@ -102,10 +112,10 @@ export default async (req, res) => {
  * properties:
  *   option_id:
  *     type: string
- *     description: ID of the shipping option to create the method from
+ *     description: ID of the shipping option to create the method from.
  *   data:
  *     type: object
- *     description: Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
+ *     description: Used to hold any data that the shipping method may need to process the fulfillment of the order. This depends on the fulfillment provider you're using.
  */
 export class StorePostCartsCartShippingMethodReq {
   @IsString()

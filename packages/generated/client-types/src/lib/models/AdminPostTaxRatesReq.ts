@@ -5,23 +5,23 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostTaxRatesReq {
   /**
-   * A code to identify the tax type by
+   * The code of the tax rate.
    */
   code: string
   /**
-   * A human friendly name for the tax
+   * The name of the tax rate.
    */
   name: string
   /**
-   * The ID of the Region that the rate belongs to
+   * The ID of the Region that the tax rate belongs to.
    */
   region_id: string
   /**
-   * The numeric rate to charge
+   * The numeric rate to charge.
    */
   rate?: number
   /**
-   * The IDs of the products associated with this tax rate
+   * The IDs of the products associated with this tax rate.
    */
   products?: Array<string>
   /**

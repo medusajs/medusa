@@ -1,0 +1,237 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# IPriceSelectionStrategy
+
+## Methods
+
+### calculateVariantPrice
+
+Calculate the original and discount price for a given variant in a set of
+circumstances described in the context.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`object`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variantId",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)",
+    "description": "Details relevant to determine the correct pricing of the variant",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "cart_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "ignore_cache",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "include_discount_prices",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;Map&#60;string, [PriceSelectionResult](../types/medusa.PriceSelectionResult.mdx)&#62;&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "pricing details in an object containing the calculated lowest price,\nthe default price an all valid prices for the given variant",
+    "expandable": false,
+    "children": [
+      {
+        "name": "Map",
+        "type": "Map&#60;string, [PriceSelectionResult](../types/medusa.PriceSelectionResult.mdx)&#62;",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### onVariantsPricesUpdate
+
+Notify price selection strategy that variants prices have been updated.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantIds",
+    "type": "`string`[]",
+    "description": "The ids of the updated variants",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "calculateVariantPrice",
+    "type": "(`data`: ``{ quantity?: number ; variantId: string  }``[], `context`: [PriceSelectionContext](../types/medusa.PriceSelectionContext.mdx)) => Promise&#60;Map&#60;string, [PriceSelectionResult](../types/medusa.PriceSelectionResult.mdx)&#62;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "onVariantsPricesUpdate",
+    "type": "(`variantIds`: `string`[]) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "withTransaction",
+    "type": "(`transactionManager?`: `EntityManager`) => [IPriceSelectionStrategy](medusa.IPriceSelectionStrategy.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

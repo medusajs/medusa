@@ -1,3 +1,7 @@
-export * from "./query"
-export * from "./create-connection"
-export * from "./load-database-config"
+export function shouldForceTransaction(): boolean {
+  return true
+}
+
+export function doNotForceTransaction(): boolean {
+  return false
+}

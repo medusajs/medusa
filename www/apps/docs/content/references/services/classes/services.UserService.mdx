@@ -1,0 +1,732 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# UserService
+
+Provides layer to manipulate users.
+
+## constructor
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "`UserServiceProps`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "analyticsConfigService_",
+    "type": "[AnalyticsConfigService](services.AnalyticsConfigService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[EventBusService](services.EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "`FlagRouter`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "userRepository_",
+    "type": "Repository&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"user.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"user.deleted\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PASSWORD_RESET",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"user.password_reset\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"user.updated\"",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Methods
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;TResult&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+Creates a user with username being validated.
+Fails if email is not a valid format.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "user",
+    "type": "`CreateUserInput`",
+    "description": "the user to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "password",
+    "type": "`string`",
+    "description": "user's password to hash",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of create",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+Deletes a user from a given user id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "the id of the user to delete. Must be\n  castable as an ObjectId",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the delete operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### generateResetPasswordToken
+
+Generate a JSON Web token, that will be sent to a user, that wishes to
+reset password.
+The token will be signed with the users current password hash as a secret
+a long side a payload with userId and the expiry time for the token, which
+is always 15 minutes.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "the id of the user to reset password for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;string&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the generated JSON web token",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### hashPassword\_
+
+Hashes a password
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "password",
+    "type": "`string`",
+    "description": "the value to hash",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;string&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "hashed password",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "`FilterableUserProps`",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "`object`",
+    "description": "the configuration object for the query",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[User](../../entities/classes/entities.User.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+Gets a user by id.
+Throws in case of DB Error and if user was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "the id of the user to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "description": "query configs",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the user document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByApiToken
+
+Gets a user by api token.
+Throws in case of DB Error and if user was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "apiToken",
+    "type": "`string`",
+    "description": "the token of the user to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "relations",
+    "type": "`string`[]",
+    "description": "relations to include with the user.",
+    "optional": false,
+    "defaultValue": "[]",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the user document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByEmail
+
+Gets a user by email.
+Throws in case of DB Error and if user was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "email",
+    "type": "`string`",
+    "description": "the email of the user to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "description": "query config",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the user document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setPassword\_
+
+Sets a password for a user
+Fails if no user exists with userId and if the hashing of the new
+password does not work.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "the userId to set password for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "password",
+    "type": "`string`",
+    "description": "the old password to set",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "`Record<string, unknown>` \\| `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+Updates a user.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "id of the user to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "`UpdateUserInput`",
+    "description": "the values to be updated on the user",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[User](../../entities/classes/entities.User.mdx)&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of create",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "UserService",
+    "type": "`object`",
+    "description": "Provides layer to manipulate users.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

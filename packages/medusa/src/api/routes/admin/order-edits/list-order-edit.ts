@@ -6,16 +6,16 @@ import { IsOptional, IsString } from "class-validator"
 /**
  * @oas [get] /admin/order-edits
  * operationId: "GetOrderEdits"
- * summary: "List OrderEdits"
- * description: "List OrderEdits."
+ * summary: "List Order Edits"
+ * description: "Retrieve a list of order edits. The order edits can be filtered by fields such as `q` or `order_id`. The order edits can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching order edit internal note.
- *   - (query) order_id {string} List order edits by order id.
- *   - (query) limit=20 {number} The number of items in the response
- *   - (query) offset=0 {number} The offset of items in response
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) q {string} term to search order edits' internal note.
+ *   - (query) order_id {string} Filter by order ID
+ *   - (query) limit=20 {number} Limit the number of order edits returned.
+ *   - (query) offset=0 {number} The number of order edits to skip when retrieving the order edits.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in each returned order edit.
+ *   - (query) fields {string} Comma-separated fields that should be included in each returned order edit.
  * x-codegen:
  *   method: list
  *   queryParams: GetOrderEditsParams
@@ -27,17 +27,18 @@ import { IsOptional, IsString } from "class-validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.list()
- *         .then(({ order_edits, count, limit, offset }) => {
- *           console.log(order_edits.length)
- *         })
+ *       .then(({ order_edits, count, limit, offset }) => {
+ *         console.log(order_edits.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/order-edits' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/order-edits' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Order Edits
  * responses:
@@ -84,14 +85,23 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved order edits.
+ */
 export class GetOrderEditsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Search term to search order edits by their internal note.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Filter the order edits by their associated order's ID.
+   */
   @IsString()
   @IsOptional()
   order_id?: string

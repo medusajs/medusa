@@ -1,4 +1,5 @@
 import { IInventoryService, IStockLocationService } from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { SalesChannelLocationService } from "../../../../services"
 
@@ -6,10 +7,10 @@ import { SalesChannelLocationService } from "../../../../services"
  * @oas [delete] /admin/stock-locations/{id}
  * operationId: "DeleteStockLocationsStockLocation"
  * summary: "Delete a Stock Location"
- * description: "Delete a Stock Location"
+ * description: "Delete a Stock Location."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Stock Location to delete.
+ *   - (path) id=* {string} The ID of the Stock Location.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -17,18 +18,19 @@ import { SalesChannelLocationService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.stockLocations.delete(stock_location_id)
+ *       medusa.admin.stockLocations.delete(stockLocationId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id)
  *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/stock-locations/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/stock-locations/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Stock Locations
  * responses:
@@ -37,19 +39,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Stock Location.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               format: stock_location
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Stock Location was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminStockLocationsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  */
@@ -75,7 +65,7 @@ export default async (req, res) => {
     await stockLocationService.delete(id)
 
     if (inventoryService) {
-      await Promise.all([
+      await promiseAll([
         inventoryService.deleteInventoryItemLevelByLocationId(id),
         inventoryService.deleteReservationItemByLocationId(id),
       ])

@@ -6,7 +6,13 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Product } from "./Product"
 import type { ProductVariant } from "./ProductVariant"
 
+/**
+ * The list of products with pagination fields.
+ */
 export interface AdminPriceListsProductsListRes {
+  /**
+   * An array of products details.
+   */
   products: Array<
     Merge<
       SetRelation<
@@ -29,7 +35,7 @@ export interface AdminPriceListsProductsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of price lists skipped when retrieving the price lists.
    */
   offset: number
   /**

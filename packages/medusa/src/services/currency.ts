@@ -1,3 +1,4 @@
+import { FlagRouter } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -7,7 +8,6 @@ import { CurrencyRepository } from "../repositories/currency"
 import { FindConfig, Selector } from "../types/common"
 import { UpdateCurrencyInput } from "../types/currency"
 import { buildQuery } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {

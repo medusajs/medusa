@@ -16,7 +16,7 @@ import {
 } from "../models"
 import { TaxRateListByConfig } from "../types/tax-rate"
 import { isDefined } from "medusa-core-utils"
-import { objectToStringPath } from "@medusajs/utils"
+import { objectToStringPath, promiseAll } from "@medusajs/utils"
 import { dataSource } from "../loaders/database"
 
 const resolveableFields = [
@@ -34,7 +34,8 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
     if (isDefined(findOptions.select)) {
       const selectableCols: (keyof TaxRate)[] = []
       const legacySelect = objectToStringPath(
-        findOptions.select as FindOptionsSelect<TaxRate>
+        findOptions.select as FindOptionsSelect<TaxRate>,
+        { includeParentPropertyFields: false }
       ) as (keyof TaxRate)[]
       for (const k of legacySelect) {
         if (!resolveableFields.includes(k)) {
@@ -67,7 +68,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
 
   async findAndCountWithResolution(findOptions: FindManyOptions<TaxRate>) {
     const qb = this.getFindQueryBuilder(findOptions)
-    return await Promise.all([qb.getMany(), qb.getCount()])
+    return await promiseAll([qb.getMany(), qb.getCount()])
   },
 
   applyResolutionsToQueryBuilder(
@@ -245,7 +246,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       })
     }
 
-    const results = await Promise.all([
+    const results = await promiseAll([
       productRates.getMany(),
       typeRates.getMany(),
     ])

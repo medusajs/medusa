@@ -23,6 +23,9 @@ export class ShippingMethodTaxLine extends TaxLine {
   @JoinColumn({ name: "shipping_method_id" })
   shipping_method: ShippingMethod
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "smtl")
@@ -32,7 +35,7 @@ export class ShippingMethodTaxLine extends TaxLine {
 /**
  * @schema ShippingMethodTaxLine
  * title: "Shipping Method Tax Line"
- * description: "Shipping Method Tax Line"
+ * description: "A Shipping Method Tax Line represents the taxes applied on a shipping method in a cart."
  * type: object
  * required:
  *   - code
@@ -66,7 +69,8 @@ export class ShippingMethodTaxLine extends TaxLine {
  *     type: string
  *     example: sm_01F0YET7DR2E7CYVSDHM593QG2
  *   shipping_method:
- *     description: Available if the relation `shipping_method` is expanded.
+ *     description: The details of the associated shipping method.
+ *     x-expandable: "shipping_method"
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingMethod"
  *   created_at:
@@ -82,4 +86,7 @@ export class ShippingMethodTaxLine extends TaxLine {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

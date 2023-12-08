@@ -1,19 +1,21 @@
 const path = require("path")
+
 import { ReturnReason, ShippingMethod } from "@medusajs/medusa"
+
 import { createReturnableOrder } from "../claims"
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const orderSeeder = require("../../helpers/order-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const orderSeeder = require("../../../helpers/order-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
 const authHeader = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -77,7 +79,7 @@ describe("/admin/returns", () => {
       const manager = dbConnection.manager
 
       // add a shipping method so we can fulfill the swap
-      const sm = await manager.create(ShippingMethod, {
+      const sm = manager.create(ShippingMethod, {
         id: "test-method-swap-cart",
         swap_id: sid,
         shipping_option_id: "test-option",
@@ -179,7 +181,7 @@ describe("/admin/returns", () => {
         {},
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )

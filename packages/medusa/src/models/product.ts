@@ -1,5 +1,7 @@
 import {
+  AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
@@ -23,12 +25,29 @@ import { SalesChannel } from "./sales-channel"
 import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
-import { generateEntityId } from "../utils/generate-entity-id"
+import { generateEntityId } from "../utils"
 
+/**
+ * @enum
+ * 
+ * The status of a product.
+ */
 export enum ProductStatus {
+  /**
+   * The product is a draft. It's not viewable by customers.
+   */
   DRAFT = "draft",
+  /**
+   * The product is proposed, but not yet published.
+   */
   PROPOSED = "proposed",
+  /**
+   * The product is published.
+   */
   PUBLISHED = "published",
+  /**
+   * The product is rejected. It's not viewable by customers.
+   */
   REJECTED = "rejected",
 }
 
@@ -92,13 +111,25 @@ export class Product extends SoftDeletableEntity {
   })
   categories: ProductCategory[]
 
-  @Index()
-  @Column()
   profile_id: string
 
-  @ManyToOne(() => ShippingProfile)
-  @JoinColumn({ name: "profile_id" })
   profile: ShippingProfile
+
+  @ManyToMany(() => ShippingProfile, {
+    cascade: ["remove", "soft-remove"],
+  })
+  @JoinTable({
+    name: "product_shipping_profile",
+    joinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "profile_id",
+      referencedColumnName: "id",
+    },
+  })
+  profiles: ShippingProfile[]
 
   @Column({ type: "int", nullable: true })
   weight: number | null
@@ -177,13 +208,40 @@ export class Product extends SoftDeletableEntity {
   ])
   sales_channels: SalesChannel[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) return
-
     this.id = generateEntityId(this.id, "prod")
+
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
+    }
+
+    if (this.profile_id) {
+      this.profiles = [{ id: this.profile_id }] as ShippingProfile[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.profile_id) {
+      this.profiles = [{ id: this.profile_id }] as ShippingProfile[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @AfterLoad()
+  private afterLoad(): void {
+    if (this.profiles) {
+      this.profile = this.profiles[this.profiles.length - 1]!
+      this.profile_id = this.profile?.id
     }
   }
 }
@@ -191,7 +249,7 @@ export class Product extends SoftDeletableEntity {
 /**
  * @schema Product
  * title: "Product"
- * description: "Products are a grouping of Product Variants that have common properties such as images and descriptions. Products can have multiple options which define the properties that Product Variants differ by."
+ * description: "A product is a saleable item that holds general information such as name or description. It must include at least one Product Variant, where each product variant defines different options to purchase the product with (for example, different sizes or colors). The prices and inventory of the product are defined on the variant level."
  * type: object
  * required:
  *   - collection_id
@@ -256,8 +314,9 @@ export class Product extends SoftDeletableEntity {
  *       - rejected
  *     default: draft
  *   images:
- *     description: Images of the Product. Available if the relation `images` is expanded.
+ *     description: The details of the product's images.
  *     type: array
+ *     x-expandable: "images"
  *     items:
  *       $ref: "#/components/schemas/Image"
  *   thumbnail:
@@ -266,28 +325,39 @@ export class Product extends SoftDeletableEntity {
  *     type: string
  *     format: uri
  *   options:
- *     description: The Product Options that are defined for the Product. Product Variants of the Product will have a unique combination of Product Option Values. Available if the relation `options` is expanded.
+ *     description: The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.
  *     type: array
+ *     x-expandable: "options"
  *     items:
  *       $ref: "#/components/schemas/ProductOption"
  *   variants:
- *     description: The Product Variants that belong to the Product. Each will have a unique combination of Product Option Values. Available if the relation `variants` is expanded.
+ *     description: The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.
  *     type: array
+ *     x-expandable: "variants"
  *     items:
  *       $ref: "#/components/schemas/ProductVariant"
  *   categories:
- *     description: The product's associated categories. Available if the relation `categories` are expanded.
+ *     description: The details of the product categories that this product belongs to.
  *     type: array
+ *     x-expandable: "categories"
+ *     x-featureFlag: "product_categories"
  *     items:
  *       $ref: "#/components/schemas/ProductCategory"
  *   profile_id:
- *     description: The ID of the Shipping Profile that the Product belongs to. Shipping Profiles have a set of defined Shipping Options that can be used to Fulfill a given set of Products.
+ *     description: The ID of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.
  *     type: string
  *     example: sp_01G1G5V239ENSZ5MV4JAR737BM
  *   profile:
- *     description: Available if the relation `profile` is expanded.
+ *     description: The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.
+ *     x-expandable: "profile"
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingProfile"
+ *   profiles:
+ *     description: Available if the relation `profiles` is expanded.
+ *     nullable: true
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ShippingProfile"
  *   weight:
  *     description: The weight of the Product Variant. May be used in shipping rate calculations.
  *     nullable: true
@@ -329,26 +399,29 @@ export class Product extends SoftDeletableEntity {
  *     type: string
  *     example: null
  *   collection_id:
- *     description: The Product Collection that the Product belongs to
+ *     description: The ID of the product collection that the product belongs to.
  *     nullable: true
  *     type: string
  *     example: pcol_01F0YESBFAZ0DV6V831JXWH0BG
  *   collection:
- *     description: A product collection object. Available if the relation `collection` is expanded.
+ *     description: The details of the product collection that the product belongs to.
+ *     x-expandable: "collection"
  *     nullable: true
  *     $ref: "#/components/schemas/ProductCollection"
  *   type_id:
- *     description: The Product type that the Product belongs to
+ *     description: The ID of the product type that the product belongs to.
  *     nullable: true
  *     type: string
  *     example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   type:
- *     description: Available if the relation `type` is expanded.
+ *     description: The details of the product type that the product belongs to.
+ *     x-expandable: "type"
  *     nullable: true
  *     $ref: "#/components/schemas/ProductType"
  *   tags:
- *     description: The Product Tags assigned to the Product. Available if the relation `tags` is expanded.
+ *     description: The details of the product tags used in this product.
  *     type: array
+ *     x-expandable: "type"
  *     items:
  *       $ref: "#/components/schemas/ProductTag"
  *   discountable:
@@ -361,8 +434,9 @@ export class Product extends SoftDeletableEntity {
  *     type: string
  *     example: null
  *   sales_channels:
- *     description: The sales channels the product is associated with. Available if the relation `sales_channels` is expanded.
+ *     description: The details of the sales channels this product is available in.
  *     type: array
+ *     x-expandable: "sales_channels"
  *     items:
  *       $ref: "#/components/schemas/SalesChannel"
  *   created_at:
@@ -383,4 +457,7 @@ export class Product extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

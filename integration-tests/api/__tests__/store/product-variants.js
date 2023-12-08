@@ -1,12 +1,12 @@
 const { ProductVariant } = require("@medusajs/medusa")
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const { simpleProductFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { simpleProductFactory } = require("../../../factories")
 
-const productSeeder = require("../../helpers/product-seeder")
-const storeProductSeeder = require("../../helpers/store-product-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
+const storeProductSeeder = require("../../../helpers/store-product-seeder")
 jest.setTimeout(30000)
 describe("/store/variants", () => {
   let medusaProcess
@@ -225,6 +225,7 @@ describe("/store/variants", () => {
             {
               created_at: expect.any(String),
               updated_at: expect.any(String),
+              value: expect.any(String),
             },
           ],
           prices: [
@@ -361,6 +362,7 @@ describe("/store/variants", () => {
                 id: expect.any(String),
                 option_id: expect.any(String),
                 variant_id: expect.any(String),
+                value: expect.any(String),
               },
             ],
             prices: [
@@ -373,6 +375,39 @@ describe("/store/variants", () => {
             ],
             product: expect.any(Object),
             product_id: expect.any(String),
+          },
+        ],
+      })
+    })
+
+    it("should list variants with id using fields param", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/variants?fields=id&expand=&limit=1")
+        .catch((err) => console.log(err))
+
+      expect(response.data).toEqual({
+        variants: [
+          {
+            id: expect.any(String),
+            created_at: expect.any(String),
+            // tax rates, prices, and calculated prices are added regardless of fields and expand
+            calculated_price: null,
+            calculated_price_incl_tax: null,
+            calculated_tax: null,
+            original_price: null,
+            original_price_incl_tax: null,
+            original_tax: null,
+            tax_rates: null,
+            prices: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                variant_id: expect.any(String),
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              }),
+            ]),
           },
         ],
       })

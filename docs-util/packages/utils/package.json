@@ -1,0 +1,26 @@
+{
+  "name": "utils",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "yarn clean && tsc",
+    "lint": "eslint --ext .ts src",
+    "clean": "rimraf dist"
+  },
+  "peerDependencies": {
+    "typedoc": "0.25.x"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.10",
+    "typescript": "5.2"
+  },
+  "dependencies": {
+    "rimraf": "^5.0.5"
+  }
+}

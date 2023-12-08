@@ -1,4 +1,5 @@
-import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
+import { MedusaContainer } from "@medusajs/modules-sdk"
+import { Logger } from "@medusajs/types"
 import MeiliSearchService from "../services/meilisearch"
 import { MeilisearchPluginOptions } from "../types"
 

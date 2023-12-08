@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { useAdminDeleteDiscount, useAdminUpdateDiscount } from "medusa-react"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
@@ -11,6 +12,7 @@ import useCopyPromotion from "./use-copy-promotion"
 import { useNavigate } from "react-router-dom"
 
 const usePromotionActions = (promotion) => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const notification = useNotification()
   const dialog = useImperativeDialog()
@@ -22,8 +24,11 @@ const usePromotionActions = (promotion) => {
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: "Delete Discount",
-      text: "Are you sure you want to delete this Discount?",
+      heading: t("discount-table-delete-discount", "Delete Discount"),
+      text: t(
+        "discount-table-confirm-delete",
+        "Are you sure you want to delete this Discount?"
+      ),
     })
 
     if (shouldDelete) {
@@ -39,7 +44,9 @@ const usePromotionActions = (promotion) => {
         onClick: () => navigate(`/a/discounts/${promotion.id}`),
       },
       {
-        label: promotion.is_disabled ? "Publish" : "Unpublish",
+        label: promotion.is_disabled
+          ? t("discount-table-publish", "Publish")
+          : t("discount-table-unpublish", "Unpublish"),
         icon: promotion.is_disabled ? (
           <PublishIcon size={20} />
         ) : (
@@ -53,26 +60,36 @@ const usePromotionActions = (promotion) => {
             {
               onSuccess: () => {
                 notification(
-                  "Success",
-                  `Successfully ${
-                    promotion.is_disabled ? "published" : "unpublished"
-                  } discount`,
+                  t("discount-table-success", "Success"),
+                  promotion.is_disabled
+                    ? t(
+                        "discount-table-successfully-published-discount",
+                        "Successfully published discount"
+                      )
+                    : t(
+                        "discount-table-successfully-unpublished-discount",
+                        "Successfully unpublished discount"
+                      ),
                   "success"
                 )
               },
               onError: (err) =>
-                notification("Error", getErrorMessage(err), "error"),
+                notification(
+                  t("discount-table-error", "Error"),
+                  getErrorMessage(err),
+                  "error"
+                ),
             }
           )
         },
       },
       {
-        label: "Duplicate",
+        label: t("discount-table-duplicate", "Duplicate"),
         icon: <DuplicateIcon size={20} />,
         onClick: () => copyPromotion(promotion),
       },
       {
-        label: "Delete",
+        label: t("discount-table-delete", "Delete"),
         icon: <TrashIcon size={20} />,
         variant: "danger",
         onClick: handleDelete,

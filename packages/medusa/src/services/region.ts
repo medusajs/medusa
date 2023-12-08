@@ -1,21 +1,20 @@
-import { DeepPartial, EntityManager } from "typeorm"
-
 import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager } from "typeorm"
+import { Country, Currency, Region } from "../models"
+import { FindConfig, Selector } from "../types/common"
+import { CreateRegionInput, UpdateRegionInput } from "../types/region"
+import { buildQuery, setMetadata } from "../utils"
 
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { Country, Currency, Region } from "../models"
 import { CountryRepository } from "../repositories/country"
 import { CurrencyRepository } from "../repositories/currency"
 import { FulfillmentProviderRepository } from "../repositories/fulfillment-provider"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
 import { RegionRepository } from "../repositories/region"
 import { TaxProviderRepository } from "../repositories/tax-provider"
-import { FindConfig, Selector } from "../types/common"
-import { CreateRegionInput, UpdateRegionInput } from "../types/region"
-import { buildQuery, setMetadata } from "../utils"
 import { countries } from "../utils/countries"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 import FulfillmentProviderService from "./fulfillment-provider"
 import { PaymentProviderService } from "./index"
@@ -261,7 +260,7 @@ class RegionService extends TransactionBaseService {
     }
 
     if (regionData.countries) {
-      region.countries = await Promise.all(
+      region.countries = await promiseAll(
         regionData.countries!.map(async (countryCode) =>
           this.validateCountry(countryCode, id!)
         )
@@ -283,7 +282,7 @@ class RegionService extends TransactionBaseService {
     }
 
     if (regionData.payment_providers) {
-      region.payment_providers = await Promise.all(
+      region.payment_providers = await promiseAll(
         regionData.payment_providers.map(async (pId) => {
           const pp = await ppRepository.findOne({ where: { id: pId } })
           if (!pp) {
@@ -299,7 +298,7 @@ class RegionService extends TransactionBaseService {
     }
 
     if (regionData.fulfillment_providers) {
-      region.fulfillment_providers = await Promise.all(
+      region.fulfillment_providers = await promiseAll(
         regionData.fulfillment_providers.map(async (fId) => {
           const fp = await fpRepository.findOne({ where: { id: fId } })
           if (!fp) {
@@ -511,12 +510,31 @@ class RegionService extends TransactionBaseService {
       take: 10,
     }
   ): Promise<Region[]> {
+    const [regions] = await this.listAndCount(selector, config)
+    return regions
+  }
+
+  /**
+   * Lists all regions based on a query and returns them along with count
+   *
+   * @param {object} selector - query object for find
+   * @param {object} config - configuration settings
+   * @return {Promise} result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Region> = {},
+    config: FindConfig<Region> = {
+      relations: [],
+      skip: 0,
+      take: 10,
+    }
+  ): Promise<[Region[], number]> {
     const regionRepo = this.activeManager_.withRepository(
       this.regionRepository_
     )
 
     const query = buildQuery(selector, config)
-    return regionRepo.find(query)
+    return await regionRepo.findAndCount(query)
   }
 
   /**

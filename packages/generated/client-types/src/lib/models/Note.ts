@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { User } from "./User"
 
 /**
- * Notes are elements which we can use in association with different resources to allow users to describe additional information in relation to these.
+ * A Note is an element that can be used in association with different resources to allow admin users to describe additional information. For example, they can be used to add additional information about orders.
  */
 export interface Note {
   /**
@@ -26,11 +26,11 @@ export interface Note {
    */
   value: string
   /**
-   * The ID of the author (user)
+   * The ID of the user that created the note.
    */
   author_id: string | null
   /**
-   * Available if the relation `author` is expanded.
+   * The details of the user that created the note.
    */
   author?: User | null
   /**

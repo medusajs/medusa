@@ -11,15 +11,16 @@ import {
 import ProductVariantService from "../../../../services/product-variant"
 import ProductVariantInventoryService from "../../../../services/product-variant-inventory"
 import { joinLevels } from "../inventory-items/utils/join-levels"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/variants/{id}/inventory
  * operationId: "GetVariantsVariantInventory"
- * summary: "Get inventory of Variant."
- * description: "Returns the available inventory of a Variant."
+ * summary: "Get Variant's Inventory"
+ * description: "Retrieve the available inventory of a Product Variant."
  * x-authenticated: true
  * parameters:
- *   - (path) id {string} The Product Variant id to get inventory for.
+ *   - (path) id {string} The Product Variant ID.
  * x-codegen:
  *   method: getInventory
  * x-codeSamples:
@@ -29,31 +30,28 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.variants.list()
- *         .then(({ variants, limit, offset, count }) => {
- *           console.log(variants.length)
- *         })
+ *       medusa.admin.variants.getInventory(variantId)
+ *       .then(({ variant }) => {
+ *         console.log(variant.inventory, variant.sales_channel_availability)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/variants' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/variants/{id}/inventory' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
- *   - Variants
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variant:
- *               type: object
- *               $ref: "#/components/schemas/AdminGetVariantsVariantInventoryRes"
+ *           $ref: "#/components/schemas/AdminGetVariantsVariantInventoryRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -95,7 +93,7 @@ export default async (req, res) => {
   }
 
   const [rawChannels] = await channelService.listAndCount({})
-  const channels: SalesChannelDTO[] = await Promise.all(
+  const channels: SalesChannelDTO[] = await promiseAll(
     rawChannels.map(async (channel) => {
       const locationIds = await channelLocationService.listLocationIds(
         channel.id
@@ -115,7 +113,7 @@ export default async (req, res) => {
   responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
   if (inventory.length) {
-    responseVariant.sales_channel_availability = await Promise.all(
+    responseVariant.sales_channel_availability = await promiseAll(
       channels.map(async (channel) => {
         if (!channel.locations.length) {
           return {
@@ -159,11 +157,20 @@ export type LevelWithAvailability = InventoryLevelDTO & {
  * allOf:
  *   - $ref: "#/components/schemas/InventoryItemDTO"
  *   - type: object
- *     required:
- *      - available_quantity
  *     properties:
- *       available_quantity:
- *         type: number
+ *       location_levels:
+ *         type: array
+ *         description: The inventory's location levels.
+ *         items:
+ *           allOf:
+ *             - $ref: "#/components/schemas/InventoryItemDTO"
+ *             - type: object
+ *               required:
+ *                 - available_quantity
+ *               properties:
+ *                 available_quantity:
+ *                   description: The available quantity in the inventory location.
+ *                   type: number
  */
 export type ResponseInventoryItem = Partial<InventoryItemDTO> & {
   location_levels?: LevelWithAvailability[]
@@ -172,26 +179,36 @@ export type ResponseInventoryItem = Partial<InventoryItemDTO> & {
 /**
  * @schema VariantInventory
  * type: object
+ * required:
+ *   - id
+ *   - inventory
+ *   - sales_channel_availability
  * properties:
  *   id:
- *     description: the id of the variant
+ *     description: the ID of the variant
  *     type: string
  *   inventory:
- *     description: the stock location address ID
+ *     description: The inventory details.
  *     $ref: "#/components/schemas/ResponseInventoryItem"
  *   sales_channel_availability:
- *     type: object
- *     description: An optional key-value map with additional details
- *     properties:
- *       channel_name:
- *         description: Sales channel name
- *         type: string
- *       channel_id:
- *         description: Sales channel id
- *         type: string
- *       available_quantity:
- *         description: Available quantity in sales channel
- *         type: number
+ *     type: array
+ *     description: Details about the variant's inventory availability in sales channels.
+ *     items:
+ *       type: object
+ *       required:
+ *         - channel_name
+ *         - channel_id
+ *         - available_quantity
+ *       properties:
+ *         channel_name:
+ *           description: Sales channel's name
+ *           type: string
+ *         channel_id:
+ *           description: Sales channel's ID
+ *           type: string
+ *         available_quantity:
+ *           description: Available quantity in the sales channel
+ *           type: number
  */
 export type VariantInventory = {
   id: string
@@ -206,9 +223,11 @@ export type VariantInventory = {
 /**
  * @schema AdminGetVariantsVariantInventoryRes
  * type: object
+ * description: "The variant's inventory details."
  * properties:
  *   variant:
  *     type: object
+ *     description: "The product variant's inventory details."
  *     $ref: "#/components/schemas/VariantInventory"
  */
 export type AdminGetVariantsVariantInventoryRes = {

@@ -25,6 +25,7 @@ export default class InventoryLevelService {
     CREATED: "inventory-level.created",
     UPDATED: "inventory-level.updated",
     DELETED: "inventory-level.deleted",
+    RESTORED: "inventory-level.restored",
   }
 
   protected readonly manager_: EntityManager
@@ -120,24 +121,28 @@ export default class InventoryLevelService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateInventoryLevelInput,
+    data: CreateInventoryLevelInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryLevel> {
+  ): Promise<InventoryLevel[]> {
     const manager = context.transactionManager!
+
+    const toCreate = data.map((d) => {
+      return {
+        location_id: d.location_id,
+        inventory_item_id: d.inventory_item_id,
+        stocked_quantity: d.stocked_quantity,
+        reserved_quantity: d.reserved_quantity,
+        incoming_quantity: d.incoming_quantity,
+      }
+    })
 
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    const inventoryLevel = levelRepository.create({
-      location_id: data.location_id,
-      inventory_item_id: data.inventory_item_id,
-      stocked_quantity: data.stocked_quantity,
-      reserved_quantity: data.reserved_quantity,
-      incoming_quantity: data.incoming_quantity,
-    })
+    const inventoryLevels = levelRepository.create(toCreate)
 
-    const saved = await levelRepository.save(inventoryLevel)
+    const saved = await levelRepository.save(inventoryLevels)
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.CREATED, {
-      id: saved.id,
+      ids: saved.map((i) => i.id),
     })
 
     return saved
@@ -227,9 +232,33 @@ export default class InventoryLevelService {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    await levelRepository.delete({ inventory_item_id: In(ids) })
+    await levelRepository.softDelete({ inventory_item_id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
+      inventory_item_id: inventoryItemId,
+    })
+  }
+
+  /**
+   * Restores inventory levels by inventory Item ID.
+   * @param inventoryItemId - The ID or IDs of the inventory item to restore inventory levels for.
+   * @param context
+   */
+  @InjectEntityManager()
+  async restoreByInventoryItemId(
+    inventoryItemId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const ids = Array.isArray(inventoryItemId)
+      ? inventoryItemId
+      : [inventoryItemId]
+
+    const manager = context.transactionManager!
+    const levelRepository = manager.getRepository(InventoryLevel)
+
+    await levelRepository.restore({ inventory_item_id: In(ids) })
+
+    await this.eventBusService_?.emit?.(InventoryLevelService.Events.RESTORED, {
       inventory_item_id: inventoryItemId,
     })
   }
@@ -251,10 +280,10 @@ export default class InventoryLevelService {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    await levelRepository.delete({ id: In(ids) })
+    await levelRepository.softDelete({ id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-      id: inventoryLevelId,
+      ids: inventoryLevelId,
     })
   }
 
@@ -265,16 +294,18 @@ export default class InventoryLevelService {
    */
   @InjectEntityManager()
   async deleteByLocationId(
-    locationId: string,
+    locationId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    await levelRepository.delete({ location_id: locationId })
+    const ids = Array.isArray(locationId) ? locationId : [locationId]
+
+    await levelRepository.softDelete({ location_id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-      location_id: locationId,
+      location_ids: ids,
     })
   }
 

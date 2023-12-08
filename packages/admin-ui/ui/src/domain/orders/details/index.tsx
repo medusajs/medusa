@@ -29,10 +29,13 @@ import { capitalize } from "lodash"
 import moment from "moment"
 import { useEffect, useMemo, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
+import { useTranslation } from "react-i18next"
 import Avatar from "../../../components/atoms/avatar"
 import BackButton from "../../../components/atoms/back-button"
+import Spacer from "../../../components/atoms/spacer"
 import Spinner from "../../../components/atoms/spinner"
 import Tooltip from "../../../components/atoms/tooltip"
+import WidgetContainer from "../../../components/extensions/widget-container"
 import Button from "../../../components/fundamentals/button"
 import DetailsIcon from "../../../components/fundamentals/details-icon"
 import CancelIcon from "../../../components/fundamentals/icons/cancel-icon"
@@ -54,6 +57,7 @@ import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { useWidgets } from "../../../providers/widget-provider"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import { getErrorMessage } from "../../../utils/error-messages"
 import extractCustomerName from "../../../utils/extract-customer-name"
@@ -124,6 +128,7 @@ const gatherAllFulfillments = (order) => {
 
 const OrderDetails = () => {
   const { id } = useParams()
+  const { t } = useTranslation()
 
   const dialog = useImperativeDialog()
 
@@ -184,24 +189,41 @@ const OrderDetails = () => {
 
   const [, handleCopy] = useClipboard(`${order?.display_id!}`, {
     successDuration: 5500,
-    onCopied: () => notification("Success", "Order ID copied", "success"),
+    onCopied: () =>
+      notification(
+        t("details-success", "Success"),
+        t("details-order-id-copied", "Order ID copied"),
+        "success"
+      ),
   })
 
   const [, handleCopyEmail] = useClipboard(order?.email!, {
     successDuration: 5500,
-    onCopied: () => notification("Success", "Email copied", "success"),
+    onCopied: () =>
+      notification(
+        t("details-success", "Success"),
+        t("details-email-copied", "Email copied"),
+        "success"
+      ),
   })
 
   // @ts-ignore
   useHotkeys("esc", () => navigate("/a/orders"))
   useHotkeys("command+i", handleCopy)
 
+  const { getWidgets } = useWidgets()
+
   const handleDeleteOrder = async () => {
     const shouldDelete = await dialog({
-      heading: "Cancel order",
-      text: "Are you sure you want to cancel the order?",
+      heading: t("details-cancel-order-heading", "Cancel order"),
+      text: t(
+        "details-are-you-sure-you-want-to-cancel-the-order",
+        "Are you sure you want to cancel the order?"
+      ),
       extraConfirmation: true,
-      entityName: `order #${order?.display_id}`,
+      entityName: t("order-details-display-id", "order #{{display_id}}", {
+        display_id: order.display_id,
+      }),
     })
 
     if (!shouldDelete) {
@@ -210,8 +232,20 @@ const OrderDetails = () => {
 
     return cancelOrder.mutate(undefined, {
       onSuccess: () =>
-        notification("Success", "Successfully canceled order", "success"),
-      onError: (err) => notification("Error", getErrorMessage(err), "error"),
+        notification(
+          t("details-success", "Success"),
+          t(
+            "details-successfully-canceled-order",
+            "Successfully canceled order"
+          ),
+          "success"
+        ),
+      onError: (err) =>
+        notification(
+          t("details-error", "Error"),
+          getErrorMessage(err),
+          "error"
+        ),
     })
   }
 
@@ -219,19 +253,19 @@ const OrderDetails = () => {
 
   const customerActionables: ActionType[] = [
     {
-      label: "Go to Customer",
+      label: t("details-go-to-customer", "Go to Customer"),
       icon: <DetailsIcon size={"20"} />,
       onClick: () => navigate(`/a/customers/${order?.customer.id}`),
     },
     {
-      label: "Transfer ownership",
+      label: t("details-transfer-ownership", "Transfer ownership"),
       icon: <RefreshIcon size={"20"} />,
       onClick: () => toggleTransferOrderModal(),
     },
   ]
 
   customerActionables.push({
-    label: "Edit Shipping Address",
+    label: t("details-edit-shipping-address", "Edit Shipping Address"),
     icon: <TruckIcon size={"20"} />,
     onClick: () => {
       setAddressModal({
@@ -243,7 +277,7 @@ const OrderDetails = () => {
   })
 
   customerActionables.push({
-    label: "Edit Billing Address",
+    label: t("details-edit-billing-address", "Edit Billing Address"),
     icon: <DollarSignIcon size={"20"} />,
     onClick: () => {
       setAddressModal({
@@ -256,7 +290,7 @@ const OrderDetails = () => {
 
   if (order?.email) {
     customerActionables.push({
-      label: "Edit Email Address",
+      label: t("details-edit-email-address", "Edit Email Address"),
       icon: <MailIcon size={"20"} />,
       onClick: () => {
         setEmailModal({
@@ -287,7 +321,7 @@ const OrderDetails = () => {
       <OrderEditProvider orderId={id!}>
         <BackButton
           path="/a/orders"
-          label="Back to Orders"
+          label={t("details-back-to-orders", "Back to Orders")}
           className="mb-xsmall"
         />
         {isLoading || !order ? (
@@ -296,10 +330,22 @@ const OrderDetails = () => {
           </BodyCard>
         ) : (
           <>
+            <div>
+              {getWidgets("order.details.before").map((widget, i) => {
+                return (
+                  <WidgetContainer
+                    key={i}
+                    injectionZone={"order.details.before"}
+                    widget={widget}
+                    entity={order}
+                  />
+                )
+              })}
+            </div>
             <div className="flex space-x-4">
-              <div className="flex h-full w-7/12 flex-col">
+              <div className="gap-y-base flex h-full w-7/12 flex-col">
                 <BodyCard
-                  className={"mb-4 min-h-[200px] w-full"}
+                  className={"min-h-[200px] w-full"}
                   customHeader={
                     <Tooltip side="top" content={"Copy ID"}>
                       <button
@@ -317,7 +363,7 @@ const OrderDetails = () => {
                   forceDropdown={true}
                   actionables={[
                     {
-                      label: "Cancel Order",
+                      label: t("details-cancel-order", "Cancel Order"),
                       icon: <CancelIcon size={"20"} />,
                       variant: "danger",
                       onClick: () => handleDeleteOrder(),
@@ -327,7 +373,7 @@ const OrderDetails = () => {
                   <div className="mt-6 flex space-x-6 divide-x">
                     <div className="flex flex-col">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
-                        Email
+                        {t("details-email", "Email")}
                       </div>
                       <button
                         className="text-grey-90 active:text-violet-90 flex cursor-pointer items-center gap-x-1"
@@ -339,13 +385,13 @@ const OrderDetails = () => {
                     </div>
                     <div className="flex flex-col pl-6">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
-                        Phone
+                        {t("details-phone", "Phone")}
                       </div>
                       <div>{order.shipping_address?.phone || "N/A"}</div>
                     </div>
                     <div className="flex flex-col pl-6">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
-                        Payment
+                        {t("details-payment", "Payment")}
                       </div>
                       <div>
                         {order.payments
@@ -359,8 +405,8 @@ const OrderDetails = () => {
                 <SummaryCard order={order} reservations={reservations || []} />
 
                 <BodyCard
-                  className={"mb-4 h-auto min-h-0 w-full"}
-                  title="Payment"
+                  className={"h-auto min-h-0 w-full"}
+                  title={t("details-payment", "Payment")}
                   status={
                     <PaymentStatusComponent status={order.payment_status} />
                   }
@@ -390,7 +436,7 @@ const OrderDetails = () => {
                                 <CornerDownRightIcon />
                               </div>
                               <div className="inter-small-regular text-grey-90">
-                                Refunded
+                                {t("details-refunded", "Refunded")}
                               </div>
                             </div>
                             <div className="flex">
@@ -411,7 +457,7 @@ const OrderDetails = () => {
                     ))}
                     <div className="mt-4 flex justify-between">
                       <div className="inter-small-semibold text-grey-90">
-                        Total Paid
+                        {t("details-total-paid", "Total Paid")}
                       </div>
                       <div className="flex">
                         <div className="inter-small-semibold text-grey-90 mr-3">
@@ -428,8 +474,8 @@ const OrderDetails = () => {
                   </div>
                 </BodyCard>
                 <BodyCard
-                  className={"mb-4 h-auto min-h-0 w-full"}
-                  title="Fulfillment"
+                  className={"h-auto min-h-0 w-full"}
+                  title={t("details-fulfillment", "Fulfillment")}
                   status={
                     <FulfillmentStatusComponent
                       status={order.fulfillment_status}
@@ -443,7 +489,7 @@ const OrderDetails = () => {
                         size="small"
                         onClick={() => setShowFulfillment(true)}
                       >
-                        Create Fulfillment
+                        {t("details-create-fulfillment", "Create Fulfillment")}
                       </Button>
                     )
                   }
@@ -452,7 +498,7 @@ const OrderDetails = () => {
                     {order.shipping_methods.map((method) => (
                       <div className="flex flex-col" key={method.id}>
                         <span className="inter-small-regular text-grey-50">
-                          Shipping Method
+                          {t("details-shipping-method", "Shipping Method")}
                         </span>
                         <span className="inter-small-regular text-grey-90 mt-2">
                           {method?.shipping_option?.name || ""}
@@ -475,8 +521,8 @@ const OrderDetails = () => {
                   </div>
                 </BodyCard>
                 <BodyCard
-                  className={"mb-4 h-auto min-h-0 w-full"}
-                  title="Customer"
+                  className={"h-auto min-h-0 w-full"}
+                  title={t("details-customer", "Customer")}
                   actionables={customerActionables}
                 >
                   <div className="mt-6">
@@ -507,7 +553,7 @@ const OrderDetails = () => {
                     <div className="mt-6 flex space-x-6 divide-x">
                       <div className="flex flex-col">
                         <div className="inter-small-regular text-grey-50 mb-1">
-                          Contact
+                          {t("details-contact", "Contact")}
                         </div>
                         <div className="inter-small-regular flex flex-col">
                           <span>{order.email}</span>
@@ -515,19 +561,33 @@ const OrderDetails = () => {
                         </div>
                       </div>
                       <FormattedAddress
-                        title={"Shipping"}
+                        title={t("details-shipping", "Shipping")}
                         addr={order.shipping_address}
                       />
                       <FormattedAddress
-                        title={"Billing"}
+                        title={t("details-billing", "Billing")}
                         addr={order.billing_address}
                       />
                     </div>
                   </div>
                 </BodyCard>
-                <div className="mt-large">
-                  <RawJSON data={order} title="Raw order" />
+                <div>
+                  {getWidgets("order.details.after").map((widget, i) => {
+                    return (
+                      <WidgetContainer
+                        key={i}
+                        injectionZone={"order.details.after"}
+                        widget={widget}
+                        entity={order}
+                      />
+                    )
+                  })}
                 </div>
+                <RawJSON
+                  data={order}
+                  title={t("details-raw-order", "Raw order")}
+                />
+                <Spacer />
               </div>
               <Timeline orderId={order.id} />
             </div>

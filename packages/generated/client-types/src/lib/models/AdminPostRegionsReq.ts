@@ -9,31 +9,31 @@ export interface AdminPostRegionsReq {
    */
   name: string
   /**
-   * The 3 character ISO currency code to use for the Region.
+   * The 3 character ISO currency code to use in the Region.
    */
   currency_code: string
   /**
-   * An optional tax code the Region.
+   * The tax code of the Region.
    */
   tax_code?: string
   /**
-   * The tax rate to use on Orders in the Region.
+   * The tax rate to use in the Region.
    */
   tax_rate: number
   /**
-   * A list of Payment Provider IDs that should be enabled for the Region
+   * A list of Payment Provider IDs that can be used in the Region
    */
   payment_providers: Array<string>
   /**
-   * A list of Fulfillment Provider IDs that should be enabled for the Region
+   * A list of Fulfillment Provider IDs that can be used in the Region
    */
   fulfillment_providers: Array<string>
   /**
-   * A list of countries' 2 ISO Characters that should be included in the Region.
+   * A list of countries' 2 ISO characters that should be included in the Region.
    */
   countries: Array<string>
   /**
-   * [EXPERIMENTAL] Tax included in prices of region
+   * Whether taxes are included in the prices of the region.
    */
   includes_tax?: boolean
 }
