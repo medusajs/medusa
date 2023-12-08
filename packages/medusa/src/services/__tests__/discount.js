@@ -108,7 +108,7 @@ describe("DiscountService", () => {
 
       expect(discountRepository.save).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit.mock.calls[0][0]).toEqual(DiscountService.Events.CREATED)
+      expect(eventBusService.emit).toHaveBeenCalledWith(DiscountService.Events.CREATED, {id: undefined})
     })
 
     it("successfully creates discount with start and end dates", async () => {
