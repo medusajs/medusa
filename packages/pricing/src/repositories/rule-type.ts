@@ -6,7 +6,7 @@ import {
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
 
-import { RepositoryTypes } from "@moduleTypes"
+import { RepositoryTypes } from "@types"
 import { RuleType } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 

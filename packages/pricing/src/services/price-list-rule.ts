@@ -10,7 +10,7 @@ import {
 } from "@medusajs/utils"
 import { PriceListRule } from "@models"
 import { PriceListRuleRepository } from "@repositories"
-import { ServiceTypes } from "@moduleTypes"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   priceListRuleRepository: DAL.RepositoryService

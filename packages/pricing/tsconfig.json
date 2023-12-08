@@ -32,7 +32,7 @@
       "@repositories": [
         "./src/repositories"
       ],
-      "@moduleTypes": [
+      "@types": [
         "./src/types"
       ]
     }

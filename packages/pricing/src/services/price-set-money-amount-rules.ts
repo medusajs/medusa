@@ -7,7 +7,7 @@ import {
   retrieveEntity,
 } from "@medusajs/utils"
 import { PriceSetMoneyAmountRules } from "@models"
-import { ServiceTypes } from "@moduleTypes"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   priceSetMoneyAmountRulesRepository: DAL.RepositoryService

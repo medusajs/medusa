@@ -7,7 +7,7 @@ import {
 } from "@medusajs/modules-sdk"
 import { IPricingModuleService, ModulesSdkTypes } from "@medusajs/types"
 
-import { InitializeModuleInjectableDependencies } from "@moduleTypes"
+import { InitializeModuleInjectableDependencies } from "@types"
 import { moduleDefinition } from "../module-definition"
 
 export const initialize = async (
