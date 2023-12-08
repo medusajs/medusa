@@ -3,10 +3,8 @@ import { Brackets, In } from "typeorm"
 import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 import { dataSource } from "../loaders/database"
 import SalesChannelRepository from "./sales-channel"
-import { generateEntityId } from "../utils"
 
 const publishableApiKeySalesChannelAlias = "PublishableKeySalesChannel"
-const publishableKeySalesChannelTable = "publishable_api_key_sales_channel"
 
 export const PublishableApiKeySalesChannelRepository = dataSource
   .getRepository(PublishableApiKeySalesChannel)
@@ -73,20 +71,9 @@ export const PublishableApiKeySalesChannelRepository = dataSource
         publishable_key_id: publishableApiKeyId,
       }))
 
-      if (isMedusaV2Enabled) {
-        valuesToInsert = valuesToInsert.map((v) => ({
-          ...v,
-          id: generateEntityId(undefined, "pksc"),
-        }))
-      }
-
       await this.createQueryBuilder()
         .insert()
-        .into(
-          isMedusaV2Enabled
-            ? PublishableApiKeySalesChannel
-            : publishableKeySalesChannelTable
-        )
+        .into(PublishableApiKeySalesChannel)
         .values(valuesToInsert)
         .orIgnore()
         .execute()

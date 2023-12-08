@@ -1,7 +1,4 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import { MedusaV2Flag } from "@medusajs/utils"
-
-export const featureFlag = MedusaV2Flag.key
 
 export class PublishableKeySalesChannelLink1701894188811
   implements MigrationInterface
@@ -13,8 +10,8 @@ export class PublishableKeySalesChannelLink1701894188811
         ALTER TABLE "publishable_api_key_sales_channel" ALTER COLUMN "id" SET NOT NULL;
 
         ALTER TABLE "publishable_api_key_sales_channel" DROP CONSTRAINT IF EXISTS "PK_68eaeb14bdac8954460054c567c";
-
         ALTER TABLE "publishable_api_key_sales_channel" ADD CONSTRAINT "publishable_api_key_sales_channel_id_pk" PRIMARY KEY (id);
+        CREATE INDEX IF NOT EXISTS "IDX_id_publishable_api_key_sales_channel" ON "publishable_api_key_sales_channel" ("id");
 
         ALTER TABLE "product_sales_channel" ADD COLUMN IF NOT EXISTS "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
         ALTER TABLE "product_sales_channel" ADD COLUMN IF NOT EXISTS "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
@@ -26,6 +23,7 @@ export class PublishableKeySalesChannelLink1701894188811
     await queryRunner.query(`
         ALTER TABLE "publishable_api_key_sales_channel" DROP CONSTRAINT IF EXISTS "publishable_api_key_sales_channel_id_pk";
 
+        DROP INDEX  IF EXISTS "IDX_id_publishable_api_key_sales_channel";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "id";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "created_at";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "updated_at";

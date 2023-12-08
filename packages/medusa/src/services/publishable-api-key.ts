@@ -12,13 +12,11 @@ import {
 } from "../types/publishable-api-key"
 import { buildQuery, isString } from "../utils"
 import EventBusService from "./event-bus"
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
 
   eventBusService: EventBusService
-  featureFlagRouter: FlagRouter
   publishableApiKeyRepository: typeof PublishableApiKeyRepository
   // eslint-disable-next-line max-len
   publishableApiKeySalesChannelRepository: typeof PublishableApiKeySalesChannelRepository
@@ -33,7 +31,6 @@ class PublishableApiKeyService extends TransactionBaseService {
     REVOKED: "publishable_api_key.revoked",
   }
 
-  protected readonly featureFlagRouter_: FlagRouter
   protected readonly eventBusService_: EventBusService
   // eslint-disable-next-line max-len
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
@@ -42,7 +39,6 @@ class PublishableApiKeyService extends TransactionBaseService {
 
   constructor({
     eventBusService,
-    featureFlagRouter,
     publishableApiKeyRepository,
     publishableApiKeySalesChannelRepository,
   }: InjectedDependencies) {
@@ -50,7 +46,6 @@ class PublishableApiKeyService extends TransactionBaseService {
     super(arguments[0])
 
     this.eventBusService_ = eventBusService
-    this.featureFlagRouter_ = featureFlagRouter
     this.publishableApiKeyRepository_ = publishableApiKeyRepository
     this.publishableApiKeySalesChannelRepository_ =
       publishableApiKeySalesChannelRepository
@@ -275,14 +270,9 @@ class PublishableApiKeyService extends TransactionBaseService {
         this.publishableApiKeySalesChannelRepository_
       )
 
-      const isMedusaV2Enabled = this.featureFlagRouter_.isFeatureEnabled(
-        MedusaV2Flag.key
-      )
-
       await pubKeySalesChannelRepo.addSalesChannels(
         publishableApiKeyId,
-        salesChannelIds,
-        isMedusaV2Enabled
+        salesChannelIds
       )
     })
   }

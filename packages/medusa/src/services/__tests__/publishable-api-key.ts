@@ -1,4 +1,3 @@
-import { FlagRouter } from "@medusajs/utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import EventBusService from "../event-bus"
 
@@ -36,7 +35,6 @@ describe("PublishableApiKeyService", () => {
       publishableApiKeySalesChannelRepository,
     publishableApiKeyRepository: publishableApiKeyRepository,
     eventBusService: EventBusServiceMock as unknown as EventBusService,
-    featureFlagRouter: new FlagRouter({}),
   })
 
   it("should retrieve a publishable api key and call the repository with the right arguments", async () => {
