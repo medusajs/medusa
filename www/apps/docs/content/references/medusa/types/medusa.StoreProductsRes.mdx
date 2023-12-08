@@ -1,0 +1,33 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# StoreProductsRes
+
+ **StoreProductsRes**: `Object`
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "product",
+    "type": "[PricedProduct](medusa.PricedProduct.mdx)",
+    "description": "Product details.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "variants",
+        "type": "[PricedVariant](medusa.PricedVariant.mdx)[]",
+        "description": "The product variants and their prices.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

@@ -1,0 +1,97 @@
+{{#if (sectionEnabled "members_group_categories")}}
+
+{{#if categories}}
+
+{{#each categories}}
+
+{{#unless @first}}
+___
+{{/unless}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{titleLevel}} {{title}} {{../title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
+
+{{#if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent}}}
+
+{{/with}}
+
+{{else}}
+
+{{#each children}}
+
+{{> member }}
+
+{{/each}}
+
+{{/if}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
+
+{{/each}}
+
+{{else}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{titleLevel}} {{title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
+
+{{#if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent}}}
+
+{{/with}}
+
+{{else}}
+
+{{#each children}}
+
+{{> member}}
+
+{{/each}}
+
+{{/if}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
+
+{{/if}}
+
+{{/if}}

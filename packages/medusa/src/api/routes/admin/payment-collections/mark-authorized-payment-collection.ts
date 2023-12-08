@@ -19,17 +19,18 @@ import { PaymentCollectionService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.paymentCollections.markAsAuthorized(paymentCollectionId)
- *         .then(({ payment_collection }) => {
- *           console.log(payment_collection.id)
- *         })
+ *       .then(({ payment_collection }) => {
+ *         console.log(payment_collection.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/payment-collections/{id}/authorize' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:

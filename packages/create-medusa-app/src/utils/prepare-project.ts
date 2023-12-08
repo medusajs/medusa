@@ -7,6 +7,7 @@ import { EOL } from "os"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
 import ProcessManager from "./process-manager.js"
 import { clearProject } from "./clear-project.js"
+import type { Client } from "pg"
 
 type PrepareOptions = {
   directory: string
@@ -23,6 +24,7 @@ type PrepareOptions = {
   migrations?: boolean
   onboardingType?: "default" | "nextjs"
   nextjsDirectory?: string
+  client: Client | null
 }
 
 export default async ({
@@ -38,6 +40,7 @@ export default async ({
   migrations,
   onboardingType = "default",
   nextjsDirectory = "",
+  client,
 }: PrepareOptions) => {
   // initialize execution options
   const execOptions = {
@@ -145,13 +148,27 @@ export default async ({
           npxOptions
         )
 
-        // ensure that migrations actually ran in case of an uncaught error
-        if (!proc.stdout.includes("Migrations completed")) {
-          throw new Error(
-            `An error occurred while running migrations: ${
-              proc.stderr || proc.stdout
-            }`
-          )
+        if (client) {
+          // check the migrations table is in the database
+          // to ensure that migrations ran
+          let errorOccurred = false
+          try {
+            const migrations = await client.query(`SELECT * FROM "migrations"`)
+            errorOccurred = migrations.rowCount == 0
+          } catch (e) {
+            // avoid error thrown if the migrations table
+            // doesn't exist
+            errorOccurred = true
+          }
+
+          // ensure that migrations actually ran in case of an uncaught error
+          if (errorOccurred) {
+            throw new Error(
+              `An error occurred while running migrations: ${
+                proc.stderr || proc.stdout
+              }`
+            )
+          }
         }
       },
     })

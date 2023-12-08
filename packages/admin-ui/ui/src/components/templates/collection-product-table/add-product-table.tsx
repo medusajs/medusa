@@ -1,6 +1,7 @@
 import { useAdminProducts } from "medusa-react"
 import React, { useEffect, useState } from "react"
 import { usePagination, useRowSelect, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import { useDebounce } from "../../../hooks/use-debounce"
 import Button from "../../fundamentals/button"
 import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox"
@@ -21,6 +22,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
   onClose,
 }) => {
   const PAGE_SIZE = 10
+  const { t } = useTranslation()
   const [query, setQuery] = useState("")
   const [offset, setOffset] = useState(0)
   const [numPages, setNumPages] = useState(0)
@@ -157,7 +159,9 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
     <Modal handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h3 className="inter-xlarge-semibold">Add Products</h3>
+          <h3 className="inter-xlarge-semibold">
+            {t("collection-product-table-add-products", "Add Products")}
+          </h3>
         </Modal.Header>
         <Modal.Content>
           <TableContainer
@@ -168,7 +172,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               count: count!,
               offset: offset,
               pageSize: offset + rows.length,
-              title: "Products",
+              title: t("collection-product-table-products", "Products"),
               currentPage: pageIndex + 1,
               pageCount: pageCount,
               nextPage: handleNext,
@@ -181,7 +185,10 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               enableSearch
               handleSearch={handleSearch}
               searchValue={query}
-              searchPlaceholder="Search Products"
+              searchPlaceholder={t(
+                "collection-product-table-search-products",
+                "Search Products"
+              )}
               {...getTableProps()}
               className="flex-grow"
             >
@@ -212,7 +219,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               className="w-eventButton"
               onClick={onClose}
             >
-              Cancel
+              {t("collection-product-table-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -221,7 +228,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               onClick={handleSubmit}
               disabled={disabled}
             >
-              Save
+              {t("collection-product-table-save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

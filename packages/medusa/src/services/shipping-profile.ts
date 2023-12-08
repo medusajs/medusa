@@ -1,8 +1,12 @@
-import { FlagRouter, isDefined } from "@medusajs/utils"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  isDefined,
+  promiseAll,
+} from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import {
   Cart,
   CustomShippingOption,
@@ -154,6 +158,36 @@ class ShippingProfileService extends TransactionBaseService {
     }
 
     return profile
+  }
+
+  async retrieveForProducts(
+    productIds: string | string[]
+  ): Promise<{ [product_id: string]: ShippingProfile[] }> {
+    if (!isDefined(productIds)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productIds" must be defined`
+      )
+    }
+
+    productIds = isString(productIds) ? [productIds] : productIds
+
+    const profileRepository = this.activeManager_.withRepository(
+      this.shippingProfileRepository_
+    )
+
+    const productProfilesMap = await profileRepository.findByProducts(
+      productIds
+    )
+
+    if (!Object.keys(productProfilesMap)?.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `No Profile found for products with id: ${productIds.join(", ")}`
+      )
+    }
+
+    return productProfilesMap
   }
 
   async retrieveDefault(): Promise<ShippingProfile | null> {
@@ -468,7 +502,7 @@ class ShippingProfileService extends TransactionBaseService {
       }
 
       return (
-        await Promise.all(
+        await promiseAll(
           rawOpts.map(async (so) => {
             return await this.shippingOptionService_
               .withTransaction(manager)
@@ -488,11 +522,7 @@ class ShippingProfileService extends TransactionBaseService {
   protected async getProfilesInCart(cart: Cart): Promise<string[]> {
     let profileIds = new Set<string>()
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       const productShippinProfileMap = await this.getMapProfileIdsByProductIds(
         cart.items.map((item) => item.variant?.product_id)
       )

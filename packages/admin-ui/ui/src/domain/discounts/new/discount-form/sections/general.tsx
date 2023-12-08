@@ -2,6 +2,7 @@ import { Discount } from "@medusajs/medusa"
 import { useAdminRegions } from "medusa-react"
 import React, { useEffect, useMemo, useState } from "react"
 import { Controller, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Checkbox from "../../../../../components/atoms/checkbox"
 import IconTooltip from "../../../../../components/molecules/icon-tooltip"
 import InputField from "../../../../../components/molecules/input"
@@ -17,6 +18,7 @@ type GeneralProps = {
 const General: React.FC<GeneralProps> = ({ discount }) => {
   const initialCurrency = discount?.regions?.[0].currency_code || undefined
 
+  const { t } = useTranslation()
   const [fixedRegionCurrency, setFixedRegionCurrency] = useState<
     string | undefined
   >(initialCurrency)
@@ -59,7 +61,10 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
             name="regions"
             control={control}
             rules={{
-              required: "At least one region is required",
+              required: t(
+                "sections-at-least-one-region-is-required",
+                "At least one region is required"
+              ),
               validate: (value) =>
                 Array.isArray(value) ? value.length > 0 : !!value,
             }}
@@ -70,7 +75,10 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                   onChange={(value) => {
                     onChange(type === "fixed" ? [value] : value)
                   }}
-                  label="Choose valid regions"
+                  label={t(
+                    "sections-choose-valid-regions",
+                    "Choose valid regions"
+                  )}
                   isMulti={type !== "fixed"}
                   selectAll={type !== "fixed"}
                   isSearchable
@@ -82,11 +90,13 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
           />
           <div className="gap-x-base gap-y-base my-base flex">
             <InputField
-              label="Code"
+              label={t("sections-code", "Code")}
               className="flex-1"
-              placeholder="SUMMERSALE10"
+              placeholder={t("sections-summersale-10", "SUMMERSALE10")}
               required
-              {...register("code", { required: "Code is required" })}
+              {...register("code", {
+                required: t("sections-code-is-required", "Code is required"),
+              })}
             />
 
             {type !== "free_shipping" && (
@@ -103,13 +113,16 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                         name="rule.value"
                         control={control}
                         rules={{
-                          required: "Amount is required",
+                          required: t(
+                            "sections-amount-is-required",
+                            "Amount is required"
+                          ),
                           min: 1,
                         }}
                         render={({ field: { value, onChange } }) => {
                           return (
                             <CurrencyInput.Amount
-                              label={"Amount"}
+                              label={t("sections-amount", "Amount")}
                               required
                               amount={value}
                               onChange={onChange}
@@ -122,7 +135,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                 ) : (
                   <div className="flex-1">
                     <InputField
-                      label="Percentage"
+                      label={t("sections-percentage", "Percentage")}
                       min={0}
                       required
                       type="number"
@@ -141,15 +154,22 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
 
           <div className="text-grey-50 inter-small-regular mb-6 flex flex-col">
             <span>
-              The code your customers will enter during checkout. This will
-              appear on your customer’s invoice.
+              {t(
+                "sections-customer-invoice-code",
+                "The code your customers will enter during checkout. This will appear on your customer\u2019s invoice."
+              )}
             </span>
-            <span>Uppercase letters and numbers only.</span>
+            <span>
+              {t(
+                "sections-uppercase-letters-and-numbers-only",
+                "Uppercase letters and numbers only."
+              )}
+            </span>
           </div>
           <TextArea
-            label="Description"
+            label={t("sections-description", "Description")}
             required
-            placeholder="Summer Sale 2022"
+            placeholder={t("sections-summer-sale-2022", "Summer Sale 2022")}
             rows={1}
             {...register("rule.description", {
               required: true,
@@ -162,7 +182,10 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <Checkbox
-                    label="This is a template discount"
+                    label={t(
+                      "sections-this-is-a-template-discount",
+                      "This is a template discount"
+                    )}
                     name="is_dynamic"
                     id="is_dynamic"
                     checked={value}
@@ -172,9 +195,10 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
               }}
             />
             <IconTooltip
-              content={
+              content={t(
+                "sections-template-discounts-description",
                 "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same."
-              }
+              )}
             />
           </div>
         </>

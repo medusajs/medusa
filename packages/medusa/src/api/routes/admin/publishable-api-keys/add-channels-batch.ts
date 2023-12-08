@@ -10,7 +10,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * @oas [post] /admin/publishable-api-keys/{id}/sales-channels/batch
  * operationId: "PostPublishableApiKeySalesChannelsChannelsBatch"
  * summary: "Add Sales Channels"
- * description: "Assign a list of sales channels to a publishable API key."
+ * description: "Add a list of sales channels to a publishable API key."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Publishable Api Key.
@@ -37,12 +37,12 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       })
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/publishable-api-keys/{pak_id}/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "sales_channel_ids": [
@@ -54,6 +54,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Publishable Api Keys
  * responses:

@@ -1,0 +1,204 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AbstractTaxService
+
+Interface to be implemented by tax provider plugins. The interface defines a
+single method `getTaxLines` that returns numerical rates to apply to line
+items and shipping methods.
+
+## constructor
+
+___
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "identifier",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+___
+
+## Methods
+
+### getIdentifier
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getTaxLines
+
+Retrieves the numerical tax lines for a calculation context.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "itemLines",
+    "type": "[ItemTaxCalculationLine](../types/medusa.ItemTaxCalculationLine.mdx)[]",
+    "description": "the line item calculation lines",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "item",
+        "type": "[LineItem](../../entities/classes/entities.LineItem.mdx)",
+        "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "shippingLines",
+    "type": "[ShippingTaxCalculationLine](../types/medusa.ShippingTaxCalculationLine.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "rates",
+        "type": "[TaxServiceRate](../types/medusa.TaxServiceRate.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_method",
+        "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)",
+        "description": "A Shipping Method represents a way in which an Order or Return can be shipped. Shipping Methods are created from a Shipping Option, but may contain additional details that can be necessary for the Fulfillment Provider to handle the shipment. If the shipping method is created for a return, it may be associated with a claim or a swap that the return is part of.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "context",
+    "type": "[TaxCalculationContext](../types/medusa.TaxCalculationContext.mdx)",
+    "description": "other details relevant to the tax determination",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allocation_map",
+        "type": "[LineAllocationsMap](../types/medusa.LineAllocationsMap.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer",
+        "type": "[Customer](../../entities/classes/entities.Customer.mdx)",
+        "description": "A customer can make purchases in your store and manage their profile.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "is_return",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region",
+        "type": "[Region](../../entities/classes/entities.Region.mdx)",
+        "description": "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_address",
+        "type": "[Address](../../entities/classes/entities.Address.mdx) \\| `null`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_methods",
+        "type": "[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProviderTaxLine](../types/medusa.ProviderTaxLine.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "numerical tax rates that should apply to the provided calculation\n  lines",
+    "expandable": false,
+    "children": [
+      {
+        "name": "ProviderTaxLine[]",
+        "type": "[ProviderTaxLine](../types/medusa.ProviderTaxLine.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

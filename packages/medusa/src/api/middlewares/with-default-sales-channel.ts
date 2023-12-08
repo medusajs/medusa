@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
 import { SalesChannelService } from "../../services"
 
@@ -23,6 +23,8 @@ export function withDefaultSalesChannel(
 
     if (
       !featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) ||
+      // Do not attach the default SC if the isolate product domain feature flag is enabled
+      featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key) ||
       req.query.sales_channel_id?.length ||
       req.get("x-publishable-api-key")
     ) {

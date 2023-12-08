@@ -20,16 +20,17 @@ import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
  *       // must be previously logged in or use api token
  *       medusa.admin.returns.cancel(returnId)
  *       .then(({ order }) => {
- *         console.log(order.id);
- *       });
+ *         console.log(order.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/returns/{id}/cancel' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Returns
  * responses:

@@ -27,16 +27,17 @@ import { validator } from "../../../../utils/validator"
  *       // must be previously logged in or use api token
  *       medusa.admin.returns.list()
  *       .then(({ returns, limit, offset, count }) => {
- *         console.log(returns.length);
- *       });
+ *         console.log(returns.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/returns' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Returns
  * responses:
@@ -85,12 +86,23 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class AdminGetReturnsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)

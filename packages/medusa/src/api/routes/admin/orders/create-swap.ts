@@ -61,12 +61,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/{id}/swaps' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "return_items": [
@@ -79,6 +79,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -318,6 +319,9 @@ export default async (req, res) => {
  *         quantity:
  *           description: The quantity of the Product Variant.
  *           type: integer
+ *   sales_channel_id:
+ *     type: string
+ *     description: "The ID of the sales channel associated with the swap."
  *   custom_shipping_options:
  *     description: An array of custom shipping options to potentially create a Shipping Method from to send the additional items.
  *     type: array
@@ -334,10 +338,15 @@ export default async (req, res) => {
  *           description: The custom price of the Shipping Option.
  *           type: integer
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Swap.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Swap.
  *     type: boolean
+ *   return_location_id:
+ *     type: string
+ *     description: "The ID of the location used for the associated return."
  *   allow_backorder:
- *     description: If set to `true`, swaps can be completed with items out of stock
+ *     description: >-
+ *       If set to `true`, swaps can be completed with items out of stock
  *     type: boolean
  *     default: true
  */
@@ -402,11 +411,20 @@ class ReturnItem {
   note?: string
 }
 
+/**
+ * The return's shipping method details.
+ */
 class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
   @IsString()
   @IsNotEmpty()
   option_id: string
 
+  /**
+   * The shipping method's price.
+   */
   @IsInt()
   @IsOptional()
   price?: number

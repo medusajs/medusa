@@ -22,15 +22,16 @@ import { SalesChannelService } from "../../../../services"
  *       medusa.admin.salesChannels.retrieve(salesChannelId)
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/sales-channels/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Sales Channels
  * responses:

@@ -34,6 +34,7 @@ export const defaultAdminProductTagsRelations = []
 /**
  * @schema AdminProductTagsListRes
  * type: object
+ * description: "The list of product tags with pagination fields."
  * required:
  *   - product_tags
  *   - count

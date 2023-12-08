@@ -17,7 +17,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: "PostDraftOrdersDraftOrderLineItemsItem"
  * summary: "Update a Line Item"
- * description: "Update a Line Item in a Draft Order"
+ * description: "Update a Line Item in a Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
@@ -41,12 +41,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/draft-orders/{id}/line-items/{line_id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "quantity": 1
@@ -54,6 +54,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Draft Orders
  * responses:

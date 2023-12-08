@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { Controller, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Spinner from "../../../../components/atoms/spinner"
 import Button from "../../../../components/fundamentals/button"
 import AlertIcon from "../../../../components/fundamentals/icons/alert-icon"
@@ -11,6 +12,7 @@ import { extractOptionPrice } from "../../../../utils/prices"
 import { useNewOrderForm } from "../form"
 
 const SelectShippingMethod = () => {
+  const { t } = useTranslation()
   const { disableNextPage, enableNextPage } = useContext(SteppedContext)
   const [showCustomPrice, setShowCustomPrice] = useState(false)
 
@@ -55,7 +57,9 @@ const SelectShippingMethod = () => {
       <span className="inter-base-semibold">
         Shipping method{" "}
         <span className="inter-base-regular text-grey-50">
-          (To {region!.name})
+          {t("select-shipping-to-name", "(To {{name}})", {
+            name: region!.name,
+          })}
         </span>
       </span>
 
@@ -66,10 +70,13 @@ const SelectShippingMethod = () => {
               <AlertIcon size={20} />
             </div>
             <div className="flex flex-col">
-              <span className="inter-small-semibold">Attention!</span>
-              You don't have any options for orders without shipping. Please add
-              one (e.g. "In-store fulfillment") with "Show on website" unchecked
-              in region settings and continue.
+              <span className="inter-small-semibold">
+                {t("components-attention", "Attention!")}
+              </span>
+              {t(
+                "components-no-options-for-orders-without-shipping",
+                'You don\'t have any options for orders without shipping. Please add one (e.g. "In-store fulfillment") with "Show on website" unchecked in region settings and continue.'
+              )}
             </div>
           </div>
         ) : (
@@ -80,7 +87,10 @@ const SelectShippingMethod = () => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <Select
-                    label="Choose a shipping method"
+                    label={t(
+                      "components-choose-a-shipping-method",
+                      "Choose a shipping method"
+                    )}
                     onChange={onChange}
                     value={value}
                     options={
@@ -106,7 +116,7 @@ const SelectShippingMethod = () => {
                     disabled={!selectedShippingOption}
                     onClick={() => setShowCustomPrice(true)}
                   >
-                    Set custom price
+                    {t("components-set-custom-price", "Set custom price")}
                   </Button>
                 </div>
               )}
@@ -124,7 +134,10 @@ const SelectShippingMethod = () => {
                             currentCurrency={region.currency_code}
                           >
                             <CurrencyInput.Amount
-                              label="Custom Price"
+                              label={t(
+                                "components-custom-price",
+                                "Custom Price"
+                              )}
                               amount={value}
                               onChange={onChange}
                             />

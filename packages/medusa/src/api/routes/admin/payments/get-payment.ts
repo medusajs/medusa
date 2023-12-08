@@ -22,15 +22,16 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.payments.retrieve(paymentId)
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/payments/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payments
  * responses:

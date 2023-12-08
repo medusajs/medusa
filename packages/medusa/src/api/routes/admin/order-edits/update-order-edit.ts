@@ -12,7 +12,7 @@ import {
  * @oas [post] /admin/order-edits/{id}
  * operationId: "PostOrderEditsOrderEdit"
  * summary: "Update an Order Edit"
- * description: "Updates an Order Edit's details."
+ * description: "Update an Order Edit's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
@@ -33,14 +33,14 @@ import {
  *       medusa.admin.orderEdits.update(orderEditId, {
  *         internal_note: "internal reason XY"
  *       })
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/order-edits/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "internal_note": "internal reason XY"
@@ -48,6 +48,7 @@ import {
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Order Edits
  * responses:

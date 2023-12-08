@@ -43,7 +43,7 @@ describe("/admin/customers", () => {
       const response = await api
         .get("/admin/customers", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -76,7 +76,7 @@ describe("/admin/customers", () => {
       const response = await api
         .get("/admin/customers?has_account=true", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -97,7 +97,7 @@ describe("/admin/customers", () => {
       const response = await api
         .get("/admin/customers?groups[]=test-group-5", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -127,7 +127,7 @@ describe("/admin/customers", () => {
       const response = await api
         .get("/admin/customers?q=est2@", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -152,7 +152,7 @@ describe("/admin/customers", () => {
       const response = await api
         .get("/admin/customers?q=test1@email.com&expand=shipping_addresses", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -202,7 +202,7 @@ describe("/admin/customers", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -246,7 +246,7 @@ describe("/admin/customers", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -278,7 +278,7 @@ describe("/admin/customers", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -301,7 +301,7 @@ describe("/admin/customers", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -329,7 +329,7 @@ describe("/admin/customers", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -350,7 +350,7 @@ describe("/admin/customers", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -389,7 +389,7 @@ describe("/admin/customers", () => {
       const response = await api
         .get("/admin/customers/test-customer-1", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -417,7 +417,7 @@ describe("/admin/customers", () => {
       const response = await api
         .get("/admin/customers/test-customer-1?expand=billing_address,groups", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {

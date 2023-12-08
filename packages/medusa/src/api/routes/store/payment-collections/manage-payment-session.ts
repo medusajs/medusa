@@ -28,8 +28,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.managePaymentSession(payment_id, { provider_id: "stripe" })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
- *
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -40,6 +39,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       }'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:

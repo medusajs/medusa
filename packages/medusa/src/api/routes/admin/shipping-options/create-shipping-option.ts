@@ -45,12 +45,12 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/shipping-options' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "PostFake",
@@ -62,6 +62,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Shipping Options
  * responses:
@@ -144,13 +145,15 @@ class OptionRequirement {
  *     description: "The data needed for the Fulfillment Provider to handle shipping with this Shipping Option."
  *     type: object
  *   price_type:
- *     description: "The type of the Shipping Option price. `flat_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider."
+ *     description: >-
+ *       The type of the Shipping Option price. `flat_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider.
  *     type: string
  *     enum:
  *       - flat_rate
  *       - calculated
  *   amount:
- *     description: "The amount to charge for the Shipping Option. If the `price_type` is set to `calculated`, this amount will not actually be used."
+ *     description: >-
+ *       The amount to charge for the Shipping Option. If the `price_type` is set to `calculated`, this amount will not actually be used.
  *     type: integer
  *   requirements:
  *     description: "The requirements that must be satisfied for the Shipping Option to be available."
@@ -175,7 +178,8 @@ class OptionRequirement {
  *     type: boolean
  *     default: false
  *   admin_only:
- *     description: If set to `true`, the shipping option can only be used when creating draft orders.
+ *     description: >-
+ *       If set to `true`, the shipping option can only be used when creating draft orders.
  *     type: boolean
  *     default: false
  *   metadata:

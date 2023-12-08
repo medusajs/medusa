@@ -8,11 +8,11 @@ export const LINKS = {
     Modules.INVENTORY,
     "inventory_item_id"
   ),
-  ProductVariantMoneyAmount: composeLinkName(
+  ProductVariantPriceSet: composeLinkName(
     Modules.PRODUCT,
     "variant_id",
     Modules.PRICING,
-    "money_amount_id"
+    "price_set_id"
   ),
 
   // Internal services

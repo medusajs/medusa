@@ -1,0 +1,38 @@
+import { CodeTabs } from "docs-ui"
+import Space from "@/components/Space"
+import DownloadFull from "@/components/DownloadFull"
+
+### Just Getting Started?
+
+Check out the [quickstart guide](https://docs.medusajs.com/create-medusa-app).
+
+<Space bottom={8} />
+
+### Client Libraries
+
+<CodeTabs 
+  tabs={[
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `npm install @medusajs/medusa-js`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `npm install medusa-react @tanstack/react-query @medusajs/medusa`,
+        lang: `bash`,
+      }
+    }
+  ]}
+/>
+
+### Download Full Reference
+
+Download this reference as an OpenApi YAML file. You can import this file to tools like Postman and start sending requests directly to your Medusa backend.
+
+<DownloadFull />

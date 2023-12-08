@@ -9,8 +9,6 @@ import {
 import { MoneyAmount } from "@models"
 import { MoneyAmountRepository } from "@repositories"
 
-import { doNotForceTransaction, shouldForceTransaction } from "@medusajs/utils"
-
 type InjectedDependencies = {
   moneyAmountRepository: DAL.RepositoryService
 }
@@ -45,8 +43,13 @@ export default class MoneyAmountService<
     config: FindConfig<PricingTypes.MoneyAmountDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<MoneyAmount>(
+      filters,
+      config
+    )
+
     return (await this.moneyAmountRepository_.find(
-      this.buildQueryForList(filters, config),
+      queryOptions,
       sharedContext
     )) as TEntity[]
   }
@@ -57,29 +60,18 @@ export default class MoneyAmountService<
     config: FindConfig<PricingTypes.MoneyAmountDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.moneyAmountRepository_.findAndCount(
-      this.buildQueryForList(filters, config),
-      sharedContext
-    )) as [TEntity[], number]
-  }
-
-  private buildQueryForList(
-    filters: PricingTypes.FilterableMoneyAmountProps = {},
-    config: FindConfig<PricingTypes.MoneyAmountDTO> = {}
-  ) {
     const queryOptions = ModulesSdkUtils.buildQuery<MoneyAmount>(
       filters,
       config
     )
 
-    if (filters.id) {
-      queryOptions.where["id"] = { $in: filters.id }
-    }
-
-    return queryOptions
+    return (await this.moneyAmountRepository_.findAndCount(
+      queryOptions,
+      sharedContext
+    )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "moneyAmountRepository_")
+  @InjectTransactionManager("moneyAmountRepository_")
   async create(
     data: PricingTypes.CreateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -90,7 +82,7 @@ export default class MoneyAmountService<
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "moneyAmountRepository_")
+  @InjectTransactionManager("moneyAmountRepository_")
   async update(
     data: PricingTypes.UpdateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -101,7 +93,7 @@ export default class MoneyAmountService<
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "moneyAmountRepository_")
+  @InjectTransactionManager("moneyAmountRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

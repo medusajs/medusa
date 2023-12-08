@@ -24,15 +24,16 @@ import { ProductService } from "../../../../services"
  *       medusa.admin.products.deleteOption(productId, optionId)
  *       .then(({ option_id, object, deleted, product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/products/{id}/options/{option_id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

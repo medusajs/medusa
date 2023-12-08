@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/customer-groups
  * operationId: "PostCustomerGroups"
  * summary: "Create a Customer Group"
- * description: "Creates a Customer Group."
+ * description: "Create a Customer Group."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -30,12 +30,12 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/customer-groups' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "VIP"
@@ -43,6 +43,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customer Groups
  * responses:

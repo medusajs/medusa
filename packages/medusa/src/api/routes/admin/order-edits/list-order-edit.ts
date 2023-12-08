@@ -27,17 +27,18 @@ import { IsOptional, IsString } from "class-validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.list()
- *         .then(({ order_edits, count, limit, offset }) => {
- *           console.log(order_edits.length)
- *         })
+ *       .then(({ order_edits, count, limit, offset }) => {
+ *         console.log(order_edits.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/order-edits' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Order Edits
  * responses:
@@ -84,14 +85,23 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved order edits.
+ */
 export class GetOrderEditsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Search term to search order edits by their internal note.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Filter the order edits by their associated order's ID.
+   */
   @IsString()
   @IsOptional()
   order_id?: string

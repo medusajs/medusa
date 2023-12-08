@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
 import { LayeredModalContext } from "../../../components/molecules/modal/layered-modal"
@@ -33,6 +34,7 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
   onSubmit,
 }) => {
   const isLocked = type && items
+  const { t } = useTranslation()
 
   const { pop } = useContext(LayeredModalContext)
   const [selectedType, setSelectedType] = useState<string>(
@@ -73,7 +75,9 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
         <div className="min-h-[680px]">
           {!isLocked && (
             <>
-              <div className="inter-base-semibold mb-large">Type</div>
+              <div className="inter-base-semibold mb-large">
+                {t("taxes-type", "Type")}
+              </div>
               <RadioGroup.Root
                 className="gap-base flex"
                 value={selectedType}
@@ -81,20 +85,29 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
               >
                 <RadioGroup.Item
                   className="flex-1"
-                  label={"Products"}
-                  description={"Select individual products"}
+                  label={t("taxes-products", "Products")}
+                  description={t(
+                    "taxes-select-individual-products",
+                    "Select individual products"
+                  )}
                   value={TaxRuleType.PRODUCTS}
                 />
                 <RadioGroup.Item
                   className="flex-1"
-                  label={"Product Types"}
-                  description={"Select product types"}
+                  label={t("taxes-product-types", "Product Types")}
+                  description={t(
+                    "taxes-select-product-types",
+                    "Select product types"
+                  )}
                   value={TaxRuleType.PRODUCT_TYPES}
                 />
                 <RadioGroup.Item
                   className="flex-1"
-                  label={"Shipping Options"}
-                  description={"Select shipping options"}
+                  label={t("taxes-shipping-options", "Shipping Options")}
+                  description={t(
+                    "taxes-select-shipping-options",
+                    "Select shipping options"
+                  )}
                   value={TaxRuleType.SHIPPING_OPTIONS}
                 />
               </RadioGroup.Root>
@@ -129,7 +142,7 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
             className="w-[112px]"
             onClick={() => pop()}
           >
-            Back
+            {t("taxes-back", "Back")}
           </Button>
           <Button
             variant="primary"
@@ -137,7 +150,7 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
             size="small"
             onClick={handleSubmit}
           >
-            Add
+            {t("taxes-add", "Add")}
           </Button>
         </div>
       </Modal.Footer>

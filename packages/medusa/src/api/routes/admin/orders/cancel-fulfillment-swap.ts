@@ -13,7 +13,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersSwapFulfillmentsCancel"
  * summary: "Cancel Swap's Fulfilmment"
- * description: "Cancel a swap's fulfillment and change its status."
+ * description: "Cancel a swap's fulfillment and change its fulfillment status to `canceled`."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the order the swap is associated with.
@@ -34,15 +34,16 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.cancelSwapFulfillment(orderId, swapId, fulfillmentId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

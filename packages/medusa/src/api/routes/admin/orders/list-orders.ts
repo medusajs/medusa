@@ -165,15 +165,16 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.list()
  *       .then(({ orders, limit, offset, count }) => {
  *         console.log(orders.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/orders' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -216,21 +217,38 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved orders.
+ */
 export class AdminGetOrdersParams extends AdminListOrdersSelector {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string

@@ -33,12 +33,12 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/stock-locations/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Main Warehouse"
@@ -46,6 +46,7 @@ import { FindParams } from "../../../../types/common"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Stock Locations
  * responses:
@@ -85,33 +86,60 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ stock_location: stockLocation })
 }
 
+/**
+ * The attributes of a stock location address to create or update.
+ */
 class StockLocationAddress {
+  /**
+   * First line address.
+   */
   @IsString()
   address_1: string
 
+  /**
+   * Second line address.
+   */
   @IsOptional()
   @IsString()
   address_2?: string
 
+  /**
+   * Company.
+   */
   @IsOptional()
   @IsString()
   company?: string
 
+  /**
+   * City.
+   */
   @IsOptional()
   @IsString()
   city?: string
 
+  /**
+   * Country code.
+   */
   @IsString()
   country_code: string
 
+  /**
+   * Phone.
+   */
   @IsOptional()
   @IsString()
   phone?: string
 
+  /**
+   * Postal code.
+   */
   @IsOptional()
   @IsString()
   postal_code?: string
 
+  /**
+   * Province.
+   */
   @IsOptional()
   @IsString()
   province?: string
@@ -135,6 +163,7 @@ class StockLocationAddress {
  *       description: "Learn about the metadata attribute, and how to delete and update it."
  *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   address:
+ *     description: The data of an associated address to create or update.
  *     $ref: "#/components/schemas/StockLocationAddressInput"
  */
 export class AdminPostStockLocationsLocationReq {

@@ -18,15 +18,16 @@ import InviteService from "../../../../services/invite"
  *       medusa.admin.invites.list()
  *       .then(({ invites }) => {
  *         console.log(invites.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/invites' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Invites
  * responses:

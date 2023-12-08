@@ -41,12 +41,12 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/discounts/{id}/conditions/{condition_id}/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "resources": [{ "id": "item_id" }]
@@ -54,6 +54,7 @@ import { FindParams } from "../../../../types/common"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:
@@ -127,7 +128,7 @@ export default async (req: Request, res: Response) => {
  *         - id
  *       properties:
  *         id:
- *           description: The id of the item
+ *           description: The ID of the item
  *           type: string
  */
 export class AdminPostDiscountsDiscountConditionsConditionBatchReq {

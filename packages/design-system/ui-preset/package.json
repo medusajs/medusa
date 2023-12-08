@@ -1,0 +1,41 @@
+{
+  "name": "@medusajs/ui-preset",
+  "version": "1.0.2",
+  "description": "Medusa UI preset",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/design-system/ui-preset"
+  },
+  "author": "Kasper Kristensen <kasper@medusajs.com>",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsup",
+    "generate": "toolbox tokens -o './src/theme'"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "tailwindcss-animate": "^1.0.6"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=3.0.0"
+  },
+  "devDependencies": {
+    "@medusajs/toolbox": "^0.0.1",
+    "tailwindcss": "^3.3.2",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

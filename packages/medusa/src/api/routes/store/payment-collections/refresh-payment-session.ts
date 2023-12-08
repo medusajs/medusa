@@ -21,13 +21,14 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.refreshPaymentSession(paymentCollectionId, sessionId)
  *       .then(({ payment_session }) => {
  *         console.log(payment_session.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/store/payment-collections/{id}/sessions/{session_id}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:

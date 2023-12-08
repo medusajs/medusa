@@ -6,7 +6,7 @@ import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
-describe("PricingModuleService currency", () => {
+describe("PricingModule Service - Currency", () => {
   let service: IPricingModuleService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager

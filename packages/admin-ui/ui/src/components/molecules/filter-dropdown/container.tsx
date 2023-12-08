@@ -8,8 +8,8 @@ import React, {
   useState,
 } from "react"
 
-import Button from "../../fundamentals/button"
 import { useWindowDimensions } from "../../../hooks/use-window-dimensions"
+import Button from "../../fundamentals/button"
 
 type FilterDropdownContainerProps = {
   submitFilters: () => void
@@ -17,6 +17,9 @@ type FilterDropdownContainerProps = {
   triggerElement: ReactNode
 }
 
+/**
+ * @deprecated Use `FilterMenu` instead
+ */
 const FilterDropdownContainer = ({
   submitFilters,
   clearFilters,

@@ -1,5 +1,6 @@
 import { useAdminProductTypes } from "medusa-react"
 import { useContext, useState } from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../../../components/fundamentals/button"
 import Modal from "../../../../../../../components/molecules/modal"
 import { LayeredModalContext } from "../../../../../../../components/molecules/modal/layered-modal"
@@ -14,6 +15,7 @@ import {
 import { useEditConditionContext } from "../../edit-condition-provider"
 
 const AddTypesConditionsScreen = () => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
 
   const { pop } = useContext(LayeredModalContext)
@@ -40,7 +42,7 @@ const AddTypesConditionsScreen = () => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search...",
+            searchPlaceholder: t("product-types-search", "Search..."),
           }}
           resourceName="Types"
           totalCount={count ?? 0}
@@ -57,21 +59,21 @@ const AddTypesConditionsScreen = () => {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            Cancel
+            {t("product-types-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndGoBack(selectedResources, () => refetch())}
           >
-            Save and go back
+            {t("product-types-save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndClose(selectedResources)}
           >
-            Save and close
+            {t("product-types-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

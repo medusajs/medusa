@@ -27,6 +27,9 @@ export class ProductVariantInventoryItem extends SoftDeletableEntity {
   @Column({ type: "int", default: 1 })
   required_quantity: number
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "pvitem")

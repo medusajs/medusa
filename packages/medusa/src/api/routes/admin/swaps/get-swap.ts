@@ -22,15 +22,16 @@ import { SwapService } from "../../../../services"
  *       medusa.admin.swaps.retrieve(swapId)
  *       .then(({ swap }) => {
  *         console.log(swap.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/swaps/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Swaps
  * responses:

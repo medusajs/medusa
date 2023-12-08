@@ -20,7 +20,7 @@ jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -666,7 +666,7 @@ describe("/admin/discounts", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -770,7 +770,7 @@ describe("/admin/discounts", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1381,7 +1381,7 @@ describe("/admin/discounts", () => {
 
       const resultingDiscount = await api.get(
         "/admin/discounts/test-discount",
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(resultingDiscount.status).toEqual(200)

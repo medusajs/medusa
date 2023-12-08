@@ -1,7 +1,0 @@
-type: object
-required:
-  - tax_rate
-properties:
-  tax_rate:
-    description: Tax rate details.
-    $ref: ./TaxRate.yaml

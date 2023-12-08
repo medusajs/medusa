@@ -19,7 +19,7 @@ import {
 import * as linkDefinitions from "../definitions"
 import { getMigration } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
-import { composeLinkName } from "../utils"
+import { composeLinkName, generateGraphQLSchema } from "../utils"
 import { getLinkModuleDefinition } from "./module-definition"
 
 export const initialize = async (
@@ -98,6 +98,8 @@ export const initialize = async (
       continue
     }
 
+    definition.schema = generateGraphQLSchema(definition, primary, foreign)
+
     const moduleDefinition = getLinkModuleDefinition(
       definition,
       primary,
@@ -118,12 +120,12 @@ export const initialize = async (
       },
     }
 
-    const loaded = await MedusaModule.bootstrapLink(
-      linkModuleDefinition,
-      options as InternalModuleDeclaration,
-      moduleDefinition,
-      injectedDependencies
-    )
+    const loaded = await MedusaModule.bootstrapLink({
+      definition: linkModuleDefinition,
+      declaration: options as InternalModuleDeclaration,
+      moduleExports: moduleDefinition,
+      injectedDependencies,
+    })
 
     allLinks[serviceKey as string] = Object.values(loaded)[0]
   }
@@ -169,19 +171,15 @@ export async function runMigrations(
         )
     )
 
-    if (modulesLoadedKeys.includes(serviceKey)) {
-      continue
-    } else if (allLinks.has(serviceKey)) {
+    if (allLinks.has(serviceKey)) {
       throw new Error(`Link module ${serviceKey} already exists.`)
     }
 
     allLinks.add(serviceKey)
 
     if (
-      (!primary.isInternalService &&
-        !modulesLoadedKeys.includes(primary.serviceName)) ||
-      (!foreign.isInternalService &&
-        !modulesLoadedKeys.includes(foreign.serviceName))
+      !modulesLoadedKeys.includes(primary.serviceName) ||
+      !modulesLoadedKeys.includes(foreign.serviceName)
     ) {
       continue
     }

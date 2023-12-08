@@ -1,10 +1,15 @@
-import { FlagRouter } from "@medusajs/utils"
+import {
+  FlagRouter,
+  isDefined,
+  MedusaError,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -12,6 +17,7 @@ import {
   LineItemService,
   NewTotalsService,
   PaymentProviderService,
+  PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
@@ -24,13 +30,12 @@ import {
   TotalsService,
 } from "."
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -40,18 +45,13 @@ import {
   SalesChannel,
   ShippingMethod,
 } from "../models"
-import { AddressRepository } from "../repositories/address"
-import { CartRepository } from "../repositories/cart"
-import { LineItemRepository } from "../repositories/line-item"
-import { PaymentSessionRepository } from "../repositories/payment-session"
-import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -59,8 +59,14 @@ import {
   TotalField,
   WithRequiredProperty,
 } from "../types/common"
-import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
+
+import { AddressRepository } from "../repositories/address"
+import { CartRepository } from "../repositories/cart"
+import { LineItemRepository } from "../repositories/line-item"
+import { PaymentSessionRepository } from "../repositories/payment-session"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
+import { PaymentSessionInput } from "../types/payment"
 import { validateEmail } from "../utils/is-email"
 
 type InjectedDependencies = {
@@ -91,6 +97,7 @@ type InjectedDependencies = {
   lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
+  pricingService: PricingService
 }
 
 type TotalsConfig = {
@@ -134,6 +141,7 @@ class CartService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly pricingService_: PricingService
 
   constructor({
     cartRepository,
@@ -162,6 +170,7 @@ class CartService extends TransactionBaseService {
     featureFlagRouter,
     storeService,
     productVariantInventoryService,
+    pricingService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -192,6 +201,7 @@ class CartService extends TransactionBaseService {
     this.featureFlagRouter_ = featureFlagRouter
     this.storeService_ = storeService
     this.productVariantInventoryService_ = productVariantInventoryService
+    this.pricingService_ = pricingService
   }
 
   /**
@@ -228,11 +238,7 @@ class CartService extends TransactionBaseService {
       )
     }
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       if (Array.isArray(options.relations)) {
         for (let i = 0; i < options.relations.length; i++) {
           if (options.relations[i].startsWith("items.variant")) {
@@ -316,11 +322,7 @@ class CartService extends TransactionBaseService {
 
     const opt = { ...options, relations }
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       if (Array.isArray(opt.relations)) {
         for (let i = 0; i < opt.relations.length; i++) {
           if (opt.relations[i].startsWith("items.variant")) {
@@ -362,11 +364,15 @@ class CartService extends TransactionBaseService {
           ).id
         }
 
-        if (data.customer_id) {
-          const customer = await this.customerService_
-            .withTransaction(transactionManager)
-            .retrieve(data.customer_id)
-            .catch(() => undefined)
+        if (data.customer_id || data.customer) {
+          const customer =
+            (data.customer ??
+            (data.customer_id &&
+              (await this.customerService_
+                .withTransaction(transactionManager)
+                .retrieve(data.customer_id)
+                .catch(() => undefined)))) as Customer
+
           rawCart.customer = customer
           rawCart.customer_id = customer?.id
           rawCart.email = customer?.email
@@ -791,7 +797,7 @@ class CartService extends TransactionBaseService {
   ): Promise<void> {
     const items: LineItem[] = Array.isArray(lineItems) ? lineItems : [lineItems]
 
-    const select: (keyof Cart)[] = ["id"]
+    const select: (keyof Cart)[] = ["id", "customer_id", "region_id"]
 
     if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
       select.push("sales_channel_id")
@@ -806,7 +812,7 @@ class CartService extends TransactionBaseService {
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
-            const areValid = await Promise.all(
+            const areValid = await promiseAll(
               items.map(async (item) => {
                 if (item.variant_id) {
                   return await this.validateLineItem(
@@ -894,9 +900,32 @@ class CartService extends TransactionBaseService {
           }
 
           if (currentItem) {
+            const variantsPricing = await this.pricingService_
+              .withTransaction(transactionManager)
+              .getProductVariantsPricing(
+                [
+                  {
+                    variantId: item.variant_id!,
+                    quantity: item.quantity,
+                  },
+                ],
+                {
+                  region_id: cart.region_id,
+                  customer_id: cart.customer_id,
+                  include_discount_prices: true,
+                }
+              )
+
+            const { calculated_price } =
+              variantsPricing[currentItem.variant_id!]
+
             lineItemsToUpdate[currentItem.id] = {
               quantity: item.quantity,
               has_shipping: false,
+            }
+
+            if (isDefined(calculated_price)) {
+              lineItemsToUpdate[currentItem.id].unit_price = calculated_price
             }
           } else {
             // Since the variant is eager loaded, we are removing it before the line item is being created.
@@ -911,7 +940,7 @@ class CartService extends TransactionBaseService {
 
         // Update all items that needs to be updated
         if (itemKeysToUpdate.length) {
-          await Promise.all(
+          await promiseAll(
             itemKeysToUpdate.map(async (id) => {
               return await lineItemServiceTx.update(id, lineItemsToUpdate[id])
             })
@@ -971,11 +1000,12 @@ class CartService extends TransactionBaseService {
   async updateLineItem(
     cartId: string,
     lineItemId: string,
-    lineItemUpdate: LineItemUpdate
+    update: LineItemUpdate
   ): Promise<Cart> {
+    const { should_calculate_prices, ...lineItemUpdate } = update
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const select: (keyof Cart)[] = ["id"]
+        const select: (keyof Cart)[] = ["id", "region_id", "customer_id"]
         if (
           this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
@@ -1011,8 +1041,30 @@ class CartService extends TransactionBaseService {
             if (!hasInventory) {
               throw new MedusaError(
                 MedusaError.Types.NOT_ALLOWED,
-                "Inventory doesn't cover the desired quantity"
+                "Inventory doesn't cover the desired quantity",
+                MedusaError.Codes.INSUFFICIENT_INVENTORY
               )
+            }
+
+            if (should_calculate_prices) {
+              const variantsPricing = await this.pricingService_
+                .withTransaction(transactionManager)
+                .getProductVariantsPricing(
+                  [
+                    {
+                      variantId: lineItem.variant_id,
+                      quantity: lineItemUpdate.quantity,
+                    },
+                  ],
+                  {
+                    region_id: cart.region_id,
+                    customer_id: cart.customer_id,
+                    include_discount_prices: true,
+                  }
+                )
+
+              const { calculated_price } = variantsPricing[lineItem.variant_id]
+              lineItemUpdate.unit_price = calculated_price ?? undefined
             }
           }
         }
@@ -1079,7 +1131,7 @@ class CartService extends TransactionBaseService {
           }
         )
       } else {
-        await Promise.all(
+        await promiseAll(
           cart.shipping_methods.map(async (shippingMethod) => {
             // if free shipping discount is removed, we adjust the shipping
             // back to its original amount
@@ -1098,7 +1150,7 @@ class CartService extends TransactionBaseService {
     }
   }
 
-  async update(cartId: string, data: CartUpdateProps): Promise<Cart> {
+  async update(cartOrId: string | Cart, data: CartUpdateProps): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cartRepo = transactionManager.withRepository(this.cartRepository_)
@@ -1117,9 +1169,11 @@ class CartService extends TransactionBaseService {
           "discounts.rule",
         ]
 
-        const cart = await this.retrieve(cartId, {
-          relations,
-        })
+        const cart = !isString(cartOrId)
+          ? cartOrId
+          : await this.retrieve(cartOrId, {
+              relations,
+            })
 
         const originalCartCustomer = { ...(cart.customer ?? {}) }
         if (data.customer_id) {
@@ -1208,7 +1262,7 @@ class CartService extends TransactionBaseService {
         if ("gift_cards" in data) {
           cart.gift_cards = []
 
-          await Promise.all(
+          await promiseAll(
             (data.gift_cards ?? []).map(async ({ code }) => {
               return this.applyGiftCard_(cart, code)
             })
@@ -1284,7 +1338,7 @@ class CartService extends TransactionBaseService {
     })
 
     if (itemsToRemove.length) {
-      const results = await Promise.all(
+      const results = await promiseAll(
         itemsToRemove.map(async (item) => {
           return this.removeLineItem(cart.id, item.id)
         })
@@ -1885,7 +1939,7 @@ class CartService extends TransactionBaseService {
         // In the case of a cart that has a total <= 0 we can return prematurely.
         // we are deleting the sessions, and we don't need to create or update anything from now on.
         if (total <= 0) {
-          await Promise.all(
+          await promiseAll(
             cart.payment_sessions.map(async (session) => {
               return deleteSessionAppropriately(session)
             })
@@ -1909,7 +1963,7 @@ class CartService extends TransactionBaseService {
           amount: total,
         }
 
-        await Promise.all(
+        await promiseAll(
           cart.payment_sessions.map(async (session) => {
             if (!providerSet.has(session.provider_id)) {
               /**
@@ -1990,7 +2044,7 @@ class CartService extends TransactionBaseService {
           return
         }
 
-        await Promise.all(
+        await promiseAll(
           region.payment_providers.map(async (paymentProvider) => {
             if (alreadyConsumedProviderIds.has(paymentProvider.id)) {
               return
@@ -2190,11 +2244,7 @@ class CartService extends TransactionBaseService {
 
           let productShippinProfileMap = new Map<string, string>()
 
-          if (
-            this.featureFlagRouter_.isFeatureEnabled(
-              IsolateProductDomainFeatureFlag.key
-            )
-          ) {
+          if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
             productShippinProfileMap =
               await this.shippingProfileService_.getMapProfileIdsByProductIds(
                 cart.items.map((item) => item.variant.product_id)
@@ -2208,7 +2258,7 @@ class CartService extends TransactionBaseService {
             )
           }
 
-          await Promise.all(
+          await promiseAll(
             cart.items.map(async (item) => {
               return lineItemServiceTx.update(item.id, {
                 has_shipping: this.validateLineItemShipping_(
@@ -2312,7 +2362,7 @@ class CartService extends TransactionBaseService {
       })
 
     cart.items = (
-      await Promise.all(
+      await promiseAll(
         cart.items.map(async (item) => {
           if (!item.variant_id) {
             return item
@@ -2698,8 +2748,21 @@ class CartService extends TransactionBaseService {
       }
     )
 
+    cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
+
+    cart.raw_discount_total = cart.discount_total
+    cart.discount_total = Math.round(cart.discount_total)
+
+    const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({
+      gift_cards_taxable: cart.region?.gift_cards_taxable,
+      subtotal: cart.subtotal,
+      discount_total: cart.discount_total,
+      shipping_total: cart.shipping_total,
+      tax_total: cart.tax_total,
+    })
+
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
-      cart.subtotal - cart.discount_total,
+      giftCardableAmount,
       {
         region: cart.region,
         giftCards: cart.gift_cards,
@@ -2708,11 +2771,6 @@ class CartService extends TransactionBaseService {
 
     cart.gift_card_total = giftCardTotal.total || 0
     cart.gift_card_tax_total = giftCardTotal.tax_total || 0
-
-    cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
-
-    cart.raw_discount_total = cart.discount_total
-    cart.discount_total = Math.round(cart.discount_total)
 
     cart.total =
       cart.subtotal +

@@ -3,7 +3,7 @@ const { Customer, Address, CustomerGroup } = require("@medusajs/medusa")
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
-  const testAddr = await manager.create(Address, {
+  const testAddr = manager.create(Address, {
     id: "test-address",
     first_name: "Lebron",
     last_name: "James",
@@ -11,7 +11,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(testAddr)
 
-  const customer = await manager.create(Customer, {
+  const customer = manager.create(Customer, {
     id: "test-customer-1",
     email: "test1@email.com",
   })
@@ -36,25 +36,25 @@ module.exports = async (dataSource, data = {}) => {
     has_account: true,
   })
 
-  const customer5 = await manager.create(Customer, {
+  const customer5 = manager.create(Customer, {
     id: "test-customer-5",
     email: "test5@email.com",
   })
   await manager.save(customer5)
 
-  const customer6 = await manager.create(Customer, {
+  const customer6 = manager.create(Customer, {
     id: "test-customer-6",
     email: "test6@email.com",
   })
   await manager.save(customer6)
 
-  const customer7 = await manager.create(Customer, {
+  const customer7 = manager.create(Customer, {
     id: "test-customer-7",
     email: "test7@email.com",
   })
   await manager.save(customer7)
 
-  const deletionCustomer = await manager.create(Customer, {
+  const deletionCustomer = manager.create(Customer, {
     id: "test-customer-delete-cg",
     email: "test-deletetion-cg@email.com",
   })
@@ -81,13 +81,13 @@ module.exports = async (dataSource, data = {}) => {
     name: "test-group-4",
   })
 
-  const c_group_5 = await manager.create(CustomerGroup, {
+  const c_group_5 = manager.create(CustomerGroup, {
     id: "test-group-5",
     name: "test-group-5",
   })
   await manager.save(c_group_5)
 
-  const c_group_6 = await manager.create(CustomerGroup, {
+  const c_group_6 = manager.create(CustomerGroup, {
     id: "test-group-6",
     name: "test-group-6",
   })
@@ -102,7 +102,7 @@ module.exports = async (dataSource, data = {}) => {
   customer7.groups = [c_group_5, c_group_6]
   await manager.save(customer7)
 
-  const c_group_delete = await manager.create(CustomerGroup, {
+  const c_group_delete = manager.create(CustomerGroup, {
     id: "test-group-delete",
     name: "test-group-delete",
   })

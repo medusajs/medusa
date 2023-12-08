@@ -20,15 +20,16 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  *       medusa.admin.giftCards.retrieve(giftCardId)
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/gift-cards/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Gift Cards
  * responses:

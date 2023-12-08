@@ -12,7 +12,8 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/users/reset-password
  * operationId: "PostUsersUserPassword"
  * summary: "Reset Password"
- * description: "Reset the password of an admin User using their reset password token. A user must request to reset their password first before attempting to reset their password with this request."
+ * description: "Reset the password of an admin User using their reset password token. A user must request to reset their password first before attempting to reset their
+ * password with this request."
  * externalDocs:
  *   description: How to reset a user's password
  *   url: https://docs.medusajs.com/modules/users/admin/manage-profile#reset-password
@@ -36,12 +37,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/users/reset-password' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "token": "supersecrettoken",
@@ -50,6 +51,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Users
  * responses:

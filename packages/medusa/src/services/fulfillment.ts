@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantInventoryService, ShippingProfileService } from "."
@@ -89,7 +90,7 @@ class FulfillmentService extends TransactionBaseService {
       const methodProfile = method.shipping_option.profile_id
 
       temp.items = items.filter(({ variant }) => {
-        variant.product.profile_id === methodProfile
+        return variant.product.profile_id === methodProfile
       })
       partitioned.push(temp)
     }
@@ -110,7 +111,7 @@ class FulfillmentService extends TransactionBaseService {
     order: CreateFulfillmentOrder,
     items: FulFillmentItemType[]
   ): Promise<(LineItem | null)[]> {
-    const toReturn = await Promise.all(
+    const toReturn = await promiseAll(
       items.map(async ({ item_id, quantity }) => {
         const item = order.items.find((i) => i.id === item_id)
         return this.validateFulfillmentLineItem_(item, quantity)
@@ -222,7 +223,7 @@ class FulfillmentService extends TransactionBaseService {
         lineItems as LineItem[]
       )
 
-      const created = await Promise.all(
+      const created = await promiseAll(
         fulfillments.map(async ({ shipping_method, items }) => {
           const ful = fulfillmentRepository.create({
             ...custom,
@@ -283,7 +284,7 @@ class FulfillmentService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         fulfillment.items.map(async (fItem) => {
           const item = await lineItemServiceTx.retrieve(fItem.item_id)
           const fulfilledQuantity = item.fulfilled_quantity! - fItem.quantity

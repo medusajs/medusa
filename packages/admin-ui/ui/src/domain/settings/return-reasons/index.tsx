@@ -1,5 +1,6 @@
 import { useAdminReturnReasons } from "medusa-react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -13,6 +14,7 @@ import ReturnReasonDetail from "./detail"
 const ReturnReasons = () => {
   const { state: isOpen, open, close } = useModal()
   const [selectedReason, setSelectedReason] = useState<any>(null)
+  const { t } = useTranslation()
   const { isLoading, return_reasons } = useAdminReturnReasons({
     onSuccess: (data) => {
       // sorting is done in place
@@ -32,15 +34,15 @@ const ReturnReasons = () => {
     <div>
       <BackButton
         path="/a/settings"
-        label="Back to settings"
+        label={t("return-reasons-back-to-settings", "Back to settings")}
         className="mb-xsmall"
       />
       <TwoSplitPane>
         <BodyCard
-          title="Return Reasons"
+          title={t("return-reasons-return-reasons", "Return Reasons")}
           actionables={[
             {
-              label: "Add reason",
+              label: t("return-reasons-add-reason-label", "Add reason"),
               icon: (
                 <span className="text-grey-90">
                   <PlusIcon size={20} />
@@ -49,7 +51,10 @@ const ReturnReasons = () => {
               onClick: open,
             },
           ]}
-          subtitle="Manage reasons for returned items"
+          subtitle={t(
+            "return-reasons-manage-reasons-for-returned-items",
+            "Manage reasons for returned items"
+          )}
         >
           <div className="mt-large">
             {isLoading ? (

@@ -1,9 +1,0 @@
-type: object
-required:
-  - users
-properties:
-  users:
-    type: array
-    description: An array of users details.
-    items:
-      $ref: ./User.yaml

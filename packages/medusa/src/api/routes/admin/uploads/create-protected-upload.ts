@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import fs from "fs"
 import { IFileService } from "../../../../interfaces"
 
@@ -26,18 +27,19 @@ import { IFileService } from "../../../../interfaces"
  *       medusa.admin.uploads.createProtected(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/uploads/protected' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: image/jpeg' \
  *       --form 'files=@"<FILE_PATH_1>"' \
  *       --form 'files=@"<FILE_PATH_1>"'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Uploads
  * responses:
@@ -63,7 +65,7 @@ import { IFileService } from "../../../../interfaces"
 export default async (req, res) => {
   const fileService: IFileService = req.scope.resolve("fileService")
 
-  const result = await Promise.all(
+  const result = await promiseAll(
     req.files.map(async (f) => {
       return fileService.uploadProtected(f).then((result) => {
         fs.unlinkSync(f.path)

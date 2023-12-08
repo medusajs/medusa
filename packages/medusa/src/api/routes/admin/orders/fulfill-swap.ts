@@ -15,7 +15,8 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments
  * operationId: "PostOrdersOrderSwapsSwapFulfillments"
  * summary: "Create a Swap Fulfillment"
- * description: "Create a Fulfillment for a Swap."
+ * description: "Create a Fulfillment for a Swap and change its fulfillment status to `fulfilled`. If it requires any additional actions,
+ * its fulfillment status may change to `requires_action`."
  * x-authenticated: true
  * externalDocs:
  *   description: Handling a swap's fulfillment
@@ -45,15 +46,16 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/{id}/swaps/{swap_id}/fulfillments' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -156,6 +158,9 @@ export default async (req, res) => {
  *   no_notification:
  *     description: If set to `true`, no notification will be sent to the customer related to this swap.
  *     type: boolean
+ *   location_id:
+ *     description: "The ID of the fulfillment's location."
+ *     type: string
  */
 export class AdminPostOrdersOrderSwapsSwapFulfillmentsReq {
   @IsObject()

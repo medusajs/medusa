@@ -22,16 +22,17 @@ import { SalesChannelService } from "../../../../services/"
  *       // must be previously logged in or use api token
  *       medusa.admin.salesChannels.delete(salesChannelId)
  *       .then(({ id, object, deleted }) => {
- *         console.log(id);
- *       });
+ *         console.log(id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/sales-channels/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Sales Channels
  * responses:

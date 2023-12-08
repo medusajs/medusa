@@ -1,7 +1,0 @@
-type: object
-required:
-  - collection
-properties:
-  collection:
-    description: Product collection details.
-    $ref: ./ProductCollection.yaml

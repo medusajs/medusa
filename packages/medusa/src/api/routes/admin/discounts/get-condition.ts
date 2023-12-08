@@ -26,15 +26,16 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.getCondition(discountId, conditionId)
  *       .then(({ discount_condition }) => {
  *         console.log(discount_condition.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/discounts/{id}/conditions/{condition_id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:

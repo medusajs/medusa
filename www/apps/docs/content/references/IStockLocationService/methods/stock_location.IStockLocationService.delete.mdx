@@ -1,0 +1,83 @@
+---
+displayed_sidebar: stockLocationReference
+slug: /references/stock-location/delete
+sidebar_label: delete
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# delete - Stock Location Module Reference
+
+This documentation provides a reference to the `delete` method. This belongs to the Stock Location Module.
+
+This method is used to delete a stock location.
+
+## Example
+
+```ts
+import { 
+  initialize as initializeStockLocationModule,
+} from "@medusajs/stock-location"
+
+async function deleteStockLocation (id:string) {
+  const stockLocationModule = await initializeStockLocationModule({})
+
+  await stockLocationModule.delete(id)
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the stock location.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[SharedContext](../../stock_location/interfaces/stock_location.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "manager",
+        "type": "`EntityManager`",
+        "description": "An instance of an entity manager.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`EntityManager`",
+        "description": "An instance of a transaction manager.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;void&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves when the stock location is successfully deleted.",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -34,15 +34,16 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.draftOrders.list()
  *       .then(({ draft_orders, limit, offset, count }) => {
  *         console.log(draft_orders.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/draft-orders' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Draft Orders
  * responses:
@@ -99,16 +100,28 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved draft orders.
+ */
 export class AdminGetDraftOrdersParams {
+  /**
+   * Search term to search draft orders by their display IDs and emails.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)

@@ -54,12 +54,12 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/tax-rates/{id}/product-types/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "product_types": [
@@ -69,6 +69,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Tax Rates
  * responses:
@@ -124,6 +125,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteTaxRatesTaxRateProductTypesReq
  * type: object
+ * description: "Product types to remove from the tax rates."
  * required:
  *   - product_types
  * properties:
@@ -138,11 +140,20 @@ export class AdminDeleteTaxRatesTaxRateProductTypesReq {
   product_types: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminDeleteTaxRatesTaxRateProductTypesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

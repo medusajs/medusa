@@ -1,7 +1,7 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   DeepPartial,
   EntityManager,
@@ -200,7 +200,7 @@ class DiscountService extends TransactionBaseService {
         )
       }
       if (discount.regions) {
-        discount.regions = (await Promise.all(
+        discount.regions = (await promiseAll(
           discount.regions.map(async (regionId) =>
             this.regionService_.withTransaction(manager).retrieve(regionId)
           )
@@ -225,7 +225,7 @@ class DiscountService extends TransactionBaseService {
       const result = await discountRepo.save(created)
 
       if (conditions?.length) {
-        await Promise.all(
+        await promiseAll(
           conditions.map(async (cond) => {
             await this.discountConditionService_
               .withTransaction(manager)
@@ -380,7 +380,7 @@ class DiscountService extends TransactionBaseService {
       }
 
       if (conditions?.length) {
-        await Promise.all(
+        await promiseAll(
           conditions.map(async (cond) => {
             await this.discountConditionService_
               .withTransaction(manager)
@@ -390,7 +390,7 @@ class DiscountService extends TransactionBaseService {
       }
 
       if (regions) {
-        discount.regions = await Promise.all(
+        discount.regions = await promiseAll(
           regions.map(async (regionId) =>
             this.regionService_.retrieve(regionId)
           )
@@ -682,7 +682,7 @@ class DiscountService extends TransactionBaseService {
   ): Promise<void> {
     const discounts = Array.isArray(discount) ? discount : [discount]
     return await this.atomicPhase_(async () => {
-      await Promise.all(
+      await promiseAll(
         discounts.map(async (disc) => {
           if (this.hasReachedLimit(disc)) {
             throw new MedusaError(
