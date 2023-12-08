@@ -42,13 +42,25 @@ const badgeSizeVariants = cva({
   },
 })
 
+/**
+ * @prop size - The badge's size.
+ * @prop rounded - The style of the badge's border radius.
+ * @prop color - The badge's color.
+ */
 interface BadgeProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, "color">,
     VariantProps<typeof badgeSizeVariants>,
     VariantProps<typeof badgeColorVariants> {
+  /**
+   * Whether to remove the wrapper `span` element and use the
+   * passed child element instead.
+   */
   asChild?: boolean
 }
 
+/**
+ * This component is based on the `div` element and supports all props of this element.
+ */
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   (
     {
@@ -58,7 +70,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       color = "grey",
       asChild = false,
       ...props
-    },
+    }: BadgeProps,
     ref
   ) => {
     const Component = asChild ? Slot : "span"

@@ -6,9 +6,14 @@ import {
   ReflectionType,
 } from "typedoc"
 import * as Handlebars from "handlebars"
-import { stripCode, stripLineBreaks } from "../utils"
+import { stripCode } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
-import { getReflectionType, getType, getTypeChildren } from "utils"
+import {
+  getReflectionType,
+  getType,
+  getTypeChildren,
+  stripLineBreaks,
+} from "utils"
 import { MarkdownTheme } from "../theme"
 
 const ALLOWED_KINDS: ReflectionKind[] = [

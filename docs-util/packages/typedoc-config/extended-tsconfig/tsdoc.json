@@ -15,8 +15,9 @@
       "syntaxKind": "block"
     },
     {
-      "tagName": "@reactProp",
-      "syntaxKind": "block"
+      "tagName": "@showReactProp",
+      "syntaxKind": "block",
+      "allowMultiple": true
     },
     {
       "tagName": "@apiIgnore",

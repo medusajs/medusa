@@ -7,8 +7,8 @@ import {
   ReflectionType,
 } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import { memberSymbol, stripComments, stripLineBreaks } from "../../utils"
-import { escapeChars } from "utils"
+import { memberSymbol, stripComments } from "../../utils"
+import { escapeChars, stripLineBreaks } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(

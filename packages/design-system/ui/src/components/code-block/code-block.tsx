@@ -6,10 +6,25 @@ import { Copy } from "@/components/copy"
 import { clx } from "@/utils/clx"
 
 export type CodeSnippet = {
+  /**
+   * The label of the code snippet's tab.
+   */
   label: string
+  /**
+   * The language of the code snippet. For example, `tsx`.
+   */
   language: string
+  /**
+   * The code snippet.
+   */
   code: string
+  /**
+   * Whether to hide the line numbers shown as the side of the code snippet.
+   */
   hideLineNumbers?: boolean
+  /**
+   * Whether to hide the copy button.
+   */
   hideCopy?: boolean
 }
 
@@ -33,9 +48,15 @@ const useCodeBlockContext = () => {
 }
 
 type RootProps = {
+  /**
+   * The code snippets.
+   */
   snippets: CodeSnippet[]
 }
 
+/**
+ * This component is based on the `div` element and supports all props of this element.
+ */
 const Root = ({
   snippets,
   className,
@@ -58,11 +79,18 @@ const Root = ({
     </CodeBlockContext.Provider>
   )
 }
+Root.displayName = "CodeBlock"
 
 type HeaderProps = {
+  /**
+   * Whether to hide the code snippets' labels.
+   */
   hideLabels?: boolean
 }
 
+/**
+ * This component is based on the `div` element and supports all props of this element.
+ */
 const HeaderComponent = ({
   children,
   className,
@@ -98,7 +126,11 @@ const HeaderComponent = ({
     </div>
   )
 }
+HeaderComponent.displayName = "CodeBlock.Header"
 
+/**
+ * This component is based on the `div` element and supports all props of this element.
+ */
 const Meta = ({
   className,
   ...props
@@ -110,9 +142,13 @@ const Meta = ({
     />
   )
 }
+Meta.displayName = "CodeBlock.Header.Meta"
 
 const Header = Object.assign(HeaderComponent, { Meta })
 
+/**
+ * This component is based on the `div` element and supports all props of this element.
+ */
 const Body = ({
   className,
   ...props
@@ -240,6 +276,7 @@ const Body = ({
     </div>
   )
 }
+Body.displayName = "CodeBlock.Body"
 
 const CodeBlock = Object.assign(Root, { Body, Header, Meta })
 

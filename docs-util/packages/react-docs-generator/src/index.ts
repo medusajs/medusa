@@ -26,14 +26,13 @@ program
       __dirname,
       "..",
       "..",
-      "..",
-      "..",
-      "packages",
-      "design-system",
-      "ui",
-      "tsconfig.esm.json"
+      "typedoc-config",
+      "extended-tsconfig",
+      "ui.json"
     )
   )
+  .option("--disable-typedoc", "Whether to disable Typedoc", false)
+  .option("--verbose-typedoc", "Whether to show Typedoc logs.", false)
   .parse()
 
 void generate(program.opts())

@@ -44,7 +44,7 @@ const innerVariants = cva({
 
 /**
  * @prop variant - The style of the avatar.
- * @prop size - The size of the avatar.
+ * @prop size - The size of the avatar's border radius.
  */
 interface AvatarProps
   extends Omit<
@@ -62,6 +62,9 @@ interface AvatarProps
   fallback: string
 }
 
+/**
+ * This component is based on the [Radix UI Avatar](https://www.radix-ui.com/primitives/docs/components/avatar) primitive.
+ */
 const Avatar = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   AvatarProps

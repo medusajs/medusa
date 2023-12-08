@@ -7,15 +7,25 @@ import { Slot } from "@radix-ui/react-slot"
 import copy from "copy-to-clipboard"
 import React, { useState } from "react"
 
-type CopyProps = {
+type CopyProps = React.HTMLAttributes<HTMLButtonElement> & {
+  /**
+   * The content to copy.
+   */
   content: string
+  /**
+   * Whether to remove the wrapper `button` element and use the
+   * passed child element instead.
+   */
   asChild?: boolean
 }
 
+/**
+ * This component is based on the `button` element and supports all props of this element.
+ */
 const Copy = React.forwardRef<
   HTMLButtonElement,
-  React.HTMLAttributes<HTMLButtonElement> & CopyProps
->(({ children, className, content, asChild = false, ...props }, ref) => {
+  CopyProps
+>(({ children, className, content, asChild = false, ...props }: CopyProps, ref) => {
   const [done, setDone] = useState(false)
   const [open, setOpen] = useState(false)
   const [text, setText] = useState("Copy")

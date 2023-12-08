@@ -3,12 +3,15 @@ import readFiles from "../utils/read-files.js"
 import { parse, builtinResolvers } from "react-docgen"
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "fs"
 import TypedocManager from "../classes/TypedocManager.js"
+import chalk from "chalk"
 
 type GenerateOptions = {
   src: string
   output: string
   clean?: boolean
   tsconfigPath: string
+  disableTypedoc: boolean
+  verboseTypedoc: boolean
 }
 
 export default async function ({
@@ -16,6 +19,8 @@ export default async function ({
   output,
   clean,
   tsconfigPath,
+  disableTypedoc,
+  verboseTypedoc,
 }: GenerateOptions) {
   const fileContents = readFiles(src)
   let outputExists = existsSync(output)
@@ -33,6 +38,8 @@ export default async function ({
 
   const typedocManager = new TypedocManager({
     tsconfigPath,
+    disable: disableTypedoc,
+    verbose: verboseTypedoc,
   })
 
   // use typedoc to retrieve signatures which can be used later
@@ -51,9 +58,10 @@ export default async function ({
       })
 
       specs.forEach((spec) => {
-        const specName =
-          spec.displayName ?? path.parse(path.basename(fileContent)).name
-        const specNameSplit = specName.split(".")
+        if (!spec.displayName) {
+          return
+        }
+        const specNameSplit = spec.displayName.split(".")
         let filePath = output
 
         spec = typedocManager.tryFillWithTypedocData(spec, specNameSplit)
@@ -66,12 +74,14 @@ export default async function ({
 
         // write spec to output path
         writeFileSync(
-          path.join(filePath, `${specName}.json`),
+          path.join(filePath, `${spec.displayName}.json`),
           JSON.stringify(spec, null, 2)
         )
+
+        console.log(chalk.green(`Created spec file for ${spec.displayName}.`))
       })
     } catch (e) {
-      console.error(`Failed to parse ${filePath}: ${e}`)
+      console.error(chalk.red(`Failed to parse ${filePath}: ${e}`))
     }
   }
 }

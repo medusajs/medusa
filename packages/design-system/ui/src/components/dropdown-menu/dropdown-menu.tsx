@@ -177,6 +177,9 @@ const Separator = React.forwardRef<
 ))
 Separator.displayName = "DropdownMenu.Separator"
 
+/**
+ * This component is based on the `span` element and supports all props of this element.
+ */
 const Shortcut = ({
   className,
   ...props
@@ -193,6 +196,9 @@ const Shortcut = ({
 }
 Shortcut.displayName = "DropdownMenu.Shortcut"
 
+/**
+ * This component is based on the `span` element and supports all props of this element.
+ */
 const Hint = ({
   className,
   ...props

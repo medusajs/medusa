@@ -122,6 +122,7 @@ const Header = ({
     />
   )
 }
+Header.displayName = "Prompt.Header"
 
 const Footer = ({
   className,
@@ -134,6 +135,7 @@ const Footer = ({
     />
   )
 }
+Footer.displayName = "Prompt.Footer"
 
 const Prompt = Object.assign(Root, {
   Trigger,

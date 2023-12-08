@@ -6,6 +6,7 @@ import {
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
+import { stripLineBreaks } from "utils"
 
 export function formatContents(contents: string) {
   return (
@@ -42,17 +43,6 @@ export function stripComments(str: string) {
     .replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:^\s*\/\/(?:.*)$)/g, " ")
     .replace(/\n/g, "")
     .replace(/^\s+|\s+$|(\s)+/g, "$1")
-}
-
-export function stripLineBreaks(str: string) {
-  return str
-    ? str
-        .replace(/\n/g, " ")
-        .replace(/\r/g, " ")
-        .replace(/\t/g, " ")
-        .replace(/[\s]{2,}/g, " ")
-        .trim()
-    : ""
 }
 
 export function stripCode(str: string) {
