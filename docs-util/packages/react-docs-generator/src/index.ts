@@ -14,6 +14,11 @@ program
     "Clean the output directory before creating the new specs",
     false
   )
+  .option(
+    "--tsconfigPath <tsconfigPath>",
+    "Path to TSConfig file.",
+    "/Users/shahednasser/medusa/packages/design-system/ui/tsconfig.esm.json"
+  )
   .parse()
 
 void generate(program.opts())

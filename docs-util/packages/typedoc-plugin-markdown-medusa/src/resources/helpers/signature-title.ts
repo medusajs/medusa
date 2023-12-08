@@ -4,8 +4,9 @@ import {
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
-import { getHTMLChar, memberSymbol } from "../../utils"
+import { memberSymbol } from "../../utils"
 import { MarkdownTheme } from "../../theme"
+import { getHTMLChar } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(

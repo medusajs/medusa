@@ -8,8 +8,7 @@ import {
 import * as Handlebars from "handlebars"
 import { stripCode, stripLineBreaks } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
-import getType, { getReflectionType } from "./type-utils"
-import { getTypeChildren } from "utils"
+import { getReflectionType, getType, getTypeChildren } from "utils"
 import { MarkdownTheme } from "../theme"
 
 const ALLOWED_KINDS: ReflectionKind[] = [
@@ -124,12 +123,14 @@ export function reflectionComponentFormatter({
           reflectionType: reflection.type,
           collapse: "object",
           project: reflection.project,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         })
       : getReflectionType({
           reflectionType: reflection,
           collapse: "object",
           wrapBackticks: true,
           project: reflection.project,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         }),
     description: comments
       ? Handlebars.helpers.comments(comments, true, false)

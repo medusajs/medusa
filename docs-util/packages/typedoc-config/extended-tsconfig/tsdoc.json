@@ -15,6 +15,10 @@
       "syntaxKind": "block"
     },
     {
+      "tagName": "@reactProp",
+      "syntaxKind": "block"
+    },
+    {
       "tagName": "@apiIgnore",
       "syntaxKind": "modifier"
     },

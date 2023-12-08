@@ -13,16 +13,22 @@
   "version": "0.0.0",
   "type": "module",
   "exports": "./dist/index.js",
-  "bin": {
-    "react-docs-generator": "dist/index.js"
-  },
+  "bin": "dist/index.js",
   "dependencies": {
     "commander": "^11.1.0",
     "glob": "^10.3.10",
+    "react-docgen": "^7.0.1",
+    "resolve": "^1.22.8",
     "ts-node": "^10.9.1",
-    "typescript": "5.2"
+    "typedoc": "^0.25.4",
+    "typedoc-plugin-custom": "*",
+    "typescript": "5.2",
+    "utils": "*"
   },
   "devDependencies": {
     "@types/node": "^20.9.4"
+  },
+  "peerDependencies": {
+    "typedoc": "0.25.x"
   }
 }

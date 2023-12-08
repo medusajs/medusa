@@ -1,10 +1,11 @@
 import * as Handlebars from "handlebars"
 import { DeclarationReflection, ReflectionType } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import { escapeChars, stripLineBreaks } from "../../utils"
+import { stripLineBreaks } from "../../utils"
 import { parseParams } from "../../utils/params-utils"
 import { ReflectionParameterType } from "../../types"
 import reflectionFormatter from "../../utils/reflection-formatter"
+import { escapeChars } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(

@@ -7,6 +7,7 @@ import {
   IntersectionType,
   IntrinsicType,
   LiteralType,
+  ParameterReflection,
   ProjectReflection,
   QueryType,
   ReferenceType,
@@ -19,10 +20,13 @@ import {
   UnionType,
   UnknownType,
 } from "typedoc"
-import * as Handlebars from "handlebars"
-import { ReflectionParameterType } from "../types"
-import { escapeChars, getHTMLChar } from "../utils"
-import { getProjectChild } from "utils"
+import { escapeChars, getHTMLChar } from "./str-utils"
+import { getProjectChild } from "./get-project-child"
+
+export type ReflectionParameterType =
+  | ParameterReflection
+  | DeclarationReflection
+  | TypeParameterReflection
 
 export type Collapse = "object" | "function" | "all" | "none"
 
@@ -33,12 +37,10 @@ export type TypeOptions<T = SomeType> = {
   hideLink?: boolean
   escape?: boolean
   project?: ProjectReflection
+  getRelativeUrlMethod?: (url: string) => string
 }
 
-export default function getType({
-  reflectionType,
-  ...options
-}: TypeOptions): string {
+export function getType({ reflectionType, ...options }: TypeOptions): string {
   if (reflectionType instanceof ReferenceType) {
     return getReferenceType({
       reflectionType,
@@ -304,6 +306,7 @@ export function getReferenceType({
   hideLink = false,
   escape,
   project,
+  getRelativeUrlMethod,
   ...options
 }: TypeOptions<ReferenceType>): string {
   escape = getShouldEscape(wrapBackticks, escape)
@@ -321,9 +324,9 @@ export function getReferenceType({
     if (modelReflection?.url) {
       reflection.push(
         shouldShowLink
-          ? `[${modelReflection.name}](${Handlebars.helpers.relativeURL(
-              modelReflection.url
-            )})`
+          ? `[${modelReflection.name}](${
+              getRelativeUrlMethod?.(modelReflection.url) || modelReflection.url
+            })`
           : getFormattedStr(modelReflection.name, false, escape)
       )
     } else {
