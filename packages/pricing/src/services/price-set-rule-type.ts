@@ -8,7 +8,7 @@ import {
 } from "@medusajs/utils"
 import { PriceSet, PriceSetRuleType } from "@models"
 import { PriceSetRuleTypeRepository } from "src/repositories/price-set-rule-type"
-import { ServiceTypes } from "../types"
+import { ServiceTypes } from "@moduleTypes"
 
 type InjectedDependencies = {
   priceSetRuleTypeRepository: DAL.RepositoryService

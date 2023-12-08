@@ -31,6 +31,9 @@
       ],
       "@repositories": [
         "./src/repositories"
+      ],
+      "@moduleTypes": [
+        "./src/types"
       ]
     }
   },

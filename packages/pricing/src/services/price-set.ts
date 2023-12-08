@@ -9,7 +9,7 @@ import {
 import { PriceSet } from "@models"
 import { PriceSetRepository } from "@repositories"
 
-import { ServiceTypes } from "../types"
+import { ServiceTypes } from "@moduleTypes"
 
 type InjectedDependencies = {
   priceSetRepository: DAL.RepositoryService

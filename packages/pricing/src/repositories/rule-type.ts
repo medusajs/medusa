@@ -1,13 +1,14 @@
 import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError, validateRuleAttributes } from "@medusajs/utils"
 import {
+  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  LoadStrategy,
 } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+
+import { RepositoryTypes } from "@moduleTypes"
 import { RuleType } from "@models"
-import { RepositoryTypes } from "../types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager

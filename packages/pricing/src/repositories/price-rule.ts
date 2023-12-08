@@ -1,14 +1,14 @@
 import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
+  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  LoadStrategy,
 } from "@mikro-orm/core"
-import { PriceRule } from "@models"
 
+import { PriceRule } from "@models"
+import { RepositoryTypes } from "@moduleTypes"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { RepositoryTypes } from "../types"
 
 export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager

@@ -8,7 +8,7 @@ import {
 } from "@medusajs/utils"
 import { PriceSet, PriceSetMoneyAmount } from "@models"
 import { PriceSetMoneyAmountRepository } from "@repositories"
-import { ServiceTypes } from "../types"
+import { ServiceTypes } from "@moduleTypes"
 
 type InjectedDependencies = {
   priceSetMoneyAmountRepository: DAL.RepositoryService

@@ -51,7 +51,7 @@ import {
   RuleTypeService,
 } from "@services"
 import { joinerConfig } from "../joiner-config"
-import { RepositoryTypes} from "../types"
+import { RepositoryTypes} from "@moduleTypes"
 import { validatePriceListDates } from "../utils"
 
 type InjectedDependencies = {
