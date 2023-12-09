@@ -193,4 +193,14 @@ describe("SendGridService", () => {
     })
     expect(mockedSendGrid.send).toBeCalled()
   })
+
+  it("should send message to non predefined template", async () => {
+    sendGridService = new SendGridService({}, { "send-otp": "test-template" })
+
+    await sendGridService.sendNotification("send-otp", {
+      otp: "test",
+      validity: "12-01-2020",
+    })
+    expect(mockedSendGrid.send).toBeCalled()
+  })
 })
