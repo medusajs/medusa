@@ -51,13 +51,9 @@ export async function handlePaymentHook({
   container,
   paymentIntent,
 }: {
-  event: { type: string; id: string }
+  event: Stripe.Event
   container: AwilixContainer
-  paymentIntent: {
-    id: string
-    metadata: { cart_id?: string; resource_id?: string }
-    last_payment_error?: { message: string }
-  }
+  paymentIntent: Stripe.PaymentIntent
 }): Promise<{ statusCode: number }> {
   const logger = container.resolve("logger")
 
