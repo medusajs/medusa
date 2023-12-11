@@ -9,7 +9,6 @@ on:
       - "docs/**"
       - "www/**"
       - ".github/**"
-      
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -21,10 +20,10 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: "20.10.0"
 
       - name: Creating .npmrc
         run: |
@@ -33,8 +32,8 @@ jobs:
           EOF
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          
-      - name: Configure npm node prepend 
+
+      - name: Configure npm node prepend
         run: npm config set scripts-prepend-node-path auto
 
       - name: Install Dependencies
@@ -50,6 +49,6 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install --no-immutable
-        
+
       - name: Publish packages under next tag
         run: yarn release:next

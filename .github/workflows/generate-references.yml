@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       referenceName:
-        description: 'Reference to Generate. Use either `all` to generate all references, `api` to generate the API reference, or a name of a config file in `docs-util/packages/typedoc-config` such as `product`'
+        description: "Reference to Generate. Use either `all` to generate all references, `api` to generate the API reference, or a name of a config file in `docs-util/packages/typedoc-config` such as `product`"
         required: false
-        default: 'all'
+        default: "all"
   release:
     types: [published]
 
@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "20.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -93,7 +93,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "20.10.0"
           cache: "yarn"
 
       - name: Install dependencies
