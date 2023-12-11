@@ -3,6 +3,7 @@ module.exports = {
     "^@models": "<rootDir>/src/models",
     "^@services": "<rootDir>/src/services",
     "^@repositories": "<rootDir>/src/repositories",
+    "^@utils": "<rootDir>/src/utils",
   },
   transform: {
     "^.+\\.[jt]s?$": [
