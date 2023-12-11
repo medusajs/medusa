@@ -14,14 +14,14 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
-  arrayDifference,
-  deduplicate,
-  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
+  arrayDifference,
+  deduplicate,
+  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -155,7 +155,7 @@ export default class PricingModuleService<
       pricingFilters.id.map(
         (priceSetId: string): PricingTypes.CalculatedPriceSet => {
           // This is where we select prices, for now we just do a first match based on the database results
-          // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
+          // which is prioritized by rules_count first for exact match and then deafult_priority of the rule_type
           // inject custom price selection here
           const prices = pricesSetPricesMap.get(priceSetId) || []
           const priceListPrice = prices.find((p) => p.price_list_id)
@@ -391,7 +391,7 @@ export default class PricingModuleService<
           price_set: createdPriceSets[index],
           money_amount: createdMoneyAmounts[moneyAmountIndex++],
           title: "test", // TODO: accept title
-          number_rules: numberOfRules,
+          rules_count: numberOfRules,
         }
         priceSetMoneyAmountData.push(priceSetMoneyAmount)
 
@@ -416,7 +416,7 @@ export default class PricingModuleService<
 
     // Update price set money amount references
     for (let i = 0, j = 0; i < priceSetMoneyAmountData.length; i++) {
-      const rulesCount = (priceSetMoneyAmountData[i] as any).number_rules
+      const rulesCount = (priceSetMoneyAmountData[i] as any).rules_count
       for (let k = 0; k < rulesCount; k++, j++) {
         ;(priceRulesData[j] as any).price_set_money_amount =
           createdPriceSetMoneyAmounts[i]
@@ -642,7 +642,7 @@ export default class PricingModuleService<
             price_set: priceSetId,
             money_amount: ma,
             title: "test", // TODO: accept title
-            number_rules: numberOfRules,
+            rules_count: numberOfRules,
           }
         })
     )
@@ -1432,7 +1432,7 @@ export default class PricingModuleService<
 
       priceListsToCreate.push({
         ...priceListOnlyData,
-        number_rules: Object.keys(rules).length,
+        rules_count: Object.keys(rules).length,
       })
     }
 
@@ -1492,7 +1492,7 @@ export default class PricingModuleService<
                 price_list: priceList,
                 money_amount: moneyAmount,
                 title: "test",
-                number_rules: Object.keys(priceRules).length,
+                rules_count: Object.keys(priceRules).length,
               },
             ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
             sharedContext
@@ -1592,7 +1592,7 @@ export default class PricingModuleService<
       }
 
       if (typeof rules === "object") {
-        updatePriceListData.number_rules = Object.keys(rules).length
+        updatePriceListData.rules_count = Object.keys(rules).length
       }
 
       const [updatedPriceList] = (await this.priceListService_.update(
@@ -1885,7 +1885,7 @@ export default class PricingModuleService<
                 money_amount: moneyAmount.id,
                 title: "test",
                 price_list: priceList.id,
-                number_rules: noOfRules,
+                rules_count: noOfRules,
               },
             ],
             sharedContext

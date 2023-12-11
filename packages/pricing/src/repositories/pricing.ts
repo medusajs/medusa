@@ -6,8 +6,8 @@ import {
 } from "@medusajs/types"
 import { MedusaError, MikroOrmBase } from "@medusajs/utils"
 
-import { PricingRepositoryService } from "../types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { PricingRepositoryService } from "../types"
 
 export class PricingRepository
   extends MikroOrmBase
@@ -68,9 +68,9 @@ export class PricingRepository
         id: "psma1.id",
         price_set_id: "psma1.price_set_id",
         money_amount_id: "psma1.money_amount_id",
-        number_rules: "psma1.number_rules",
+        rules_count: "psma1.rules_count",
         price_list_id: "psma1.price_list_id",
-        pl_number_rules: "pl.number_rules",
+        pl_rules_count: "pl.rules_count",
         pl_type: "pl.type",
         has_price_list: knex.raw(
           "case when psma1.price_list_id IS NULL then False else True end"
@@ -88,18 +88,18 @@ export class PricingRepository
       .leftJoin("rule_type as plrt", "plrt.id", "plr.rule_type_id")
       .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .orderBy([
-        { column: "number_rules", order: "desc" },
-        { column: "pl.number_rules", order: "desc" },
+        { column: "rules_count", order: "desc" },
+        { column: "pl.rules_count", order: "desc" },
       ])
       .groupBy("psma1.id", "pl.id")
       .having(
         knex.raw(
-          "count(DISTINCT rt.rule_attribute) = psma1.number_rules AND psma1.price_list_id IS NULL"
+          "count(DISTINCT rt.rule_attribute) = psma1.rules_count AND psma1.price_list_id IS NULL"
         )
       )
       .orHaving(
         knex.raw(
-          "count(DISTINCT plrt.rule_attribute) = pl.number_rules AND psma1.price_list_id IS NOT NULL"
+          "count(DISTINCT plrt.rule_attribute) = pl.rules_count AND psma1.price_list_id IS NOT NULL"
         )
       )
 
@@ -110,7 +110,7 @@ export class PricingRepository
           "pr.value": value,
         })
       }
-      q.orWhere("psma1.number_rules", "=", 0)
+      q.orWhere("psma1.rules_count", "=", 0)
       q.whereNull("psma1.price_list_id")
     })
 
@@ -131,7 +131,7 @@ export class PricingRepository
               this.whereIn("plrv.value", [value])
             }
 
-            this.orWhere("pl.number_rules", "=", 0)
+            this.orWhere("pl.rules_count", "=", 0)
           })
 
           this.andWhere(function () {
@@ -142,9 +142,9 @@ export class PricingRepository
                   "pr.value": value,
                 })
               }
-              this.andWhere("psma1.number_rules", ">", 0)
+              this.andWhere("psma1.rules_count", ">", 0)
             })
-            this.orWhere("psma1.number_rules", "=", 0)
+            this.orWhere("psma1.rules_count", "=", 0)
           })
         })
     })
@@ -160,8 +160,8 @@ export class PricingRepository
         max_quantity: "ma.max_quantity",
         currency_code: "ma.currency_code",
         default_priority: "rt.default_priority",
-        number_rules: "psma.number_rules",
-        pl_number_rules: "psma.pl_number_rules",
+        rules_count: "psma.rules_count",
+        pl_rules_count: "psma.pl_rules_count",
         price_list_type: "psma.pl_type",
         price_list_id: "psma.price_list_id",
       })
@@ -175,7 +175,7 @@ export class PricingRepository
       .orderBy([
         { column: "psma.has_price_list", order: "asc" },
         { column: "amount", order: "asc" },
-        { column: "number_rules", order: "desc" },
+        { column: "rules_count", order: "desc" },
         { column: "default_priority", order: "desc" },
       ])
 
