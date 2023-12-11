@@ -27,6 +27,12 @@ export const IdempotencyKeyService = {
       }
     }
   }),
+  update: jest.fn().mockImplementation(async (key, data) => {
+    return {
+      ...data,
+      idempotency_key: key,
+    }
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
