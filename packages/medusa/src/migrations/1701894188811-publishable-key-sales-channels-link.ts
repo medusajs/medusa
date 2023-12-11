@@ -13,9 +13,9 @@ export class PublishableKeySalesChannelLink1701894188811
         ALTER TABLE "publishable_api_key_sales_channel" ADD CONSTRAINT "publishable_api_key_sales_channel_id_pk" PRIMARY KEY (id);
         CREATE INDEX IF NOT EXISTS "IDX_id_publishable_api_key_sales_channel" ON "publishable_api_key_sales_channel" ("id");
 
-        ALTER TABLE "product_sales_channel" ADD COLUMN IF NOT EXISTS "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
-        ALTER TABLE "product_sales_channel" ADD COLUMN IF NOT EXISTS "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
-        ALTER TABLE "product_sales_channel" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMP WITH TIME ZONE;
+        ALTER TABLE "publishable_api_key_sales_channel" ADD COLUMN IF NOT EXISTS "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
+        ALTER TABLE "publishable_api_key_sales_channel" ADD COLUMN IF NOT EXISTS "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
+        ALTER TABLE "publishable_api_key_sales_channel" ADD COLUMN IF NOT EXISTS "deleted_at" TIMESTAMP WITH TIME ZONE;
     `)
   }
 
