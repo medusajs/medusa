@@ -860,6 +860,22 @@ export default class PricingModuleService<
     await this.moneyAmountService_.delete(ids, sharedContext)
   }
 
+  @InjectTransactionManager("baseRepository_")
+  async softDeleteMoneyAmounts(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.moneyAmountService_.softDelete(ids, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restoreDeletedMoneyAmounts(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.moneyAmountService_.restore(ids, sharedContext)
+  }
+
   @InjectManager("baseRepository_")
   async retrieveCurrency(
     code: string,

@@ -100,4 +100,20 @@ export default class MoneyAmountService<
   ): Promise<void> {
     await this.moneyAmountRepository_.delete(ids, sharedContext)
   }
+
+  @InjectTransactionManager("moneyAmountRepository_")
+  async softDelete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.moneyAmountRepository_.softDelete(ids, sharedContext)
+  }
+
+  @InjectTransactionManager("moneyAmountRepository_")
+  async restore(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.moneyAmountRepository_.restore(ids, sharedContext)
+  }
 }

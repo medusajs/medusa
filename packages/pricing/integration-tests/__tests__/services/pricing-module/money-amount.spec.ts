@@ -264,6 +264,34 @@ describe("PricingModule Service - MoneyAmount", () => {
     })
   })
 
+  describe("softDeleteMoneyAmounts", () => {
+    const id = "money-amount-USD"
+
+    it("should softDelete moneyAmounts given an id", async () => {
+      await service.softDeleteMoneyAmounts([id])
+
+      const moneyAmounts = await service.listMoneyAmounts({
+        id: [id],
+      })
+
+      expect(moneyAmounts).toHaveLength(0)
+    })
+  })
+  describe("restoreDeletedMoneyAmounts", () => {
+    const id = "money-amount-USD"
+
+    it("should restore soft-deleted moneyAmounts given an id", async () => {
+      await service.softDeleteMoneyAmounts([id])
+      await service.restoreDeletedMoneyAmounts([id])
+
+      const moneyAmounts = await service.listMoneyAmounts({
+        id: [id],
+      })
+
+      expect(moneyAmounts).toHaveLength(1)
+    })
+  })
+
   describe("updateMoneyAmounts", () => {
     const id = "money-amount-USD"
 

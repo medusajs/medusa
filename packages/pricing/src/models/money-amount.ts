@@ -1,8 +1,9 @@
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
+  Filter,
   Index,
   ManyToMany,
   ManyToOne,
@@ -17,6 +18,7 @@ import { PriceSetMoneyAmount } from "./index"
 import PriceSet from "./price-set"
 
 @Entity()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class MoneyAmount {
   [OptionalProps]?:
     | "created_at"
