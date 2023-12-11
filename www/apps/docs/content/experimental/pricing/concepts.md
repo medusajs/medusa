@@ -24,13 +24,13 @@ A `PriceSet` represents a collection of money amounts that are linked to a resou
 
 ### Rule Type
 
-Each money amount within a price set can be a price that’s applied for different conditions. These conditions are represented as rule types.
+Each money amount within a price set can be a price that’s applied for different conditions. These conditions are represented as rule types. 
 
 A `RuleType` defines custom conditions. Each rule type has a unique `rule_attribute`, referenced in rule values, such as when setting a rule of a money amount.
 
 ### Price Rule
 
-Each rule of a money amount within a price set is represented by the `PriceRule` entity, which holds the value of a rule type. The `PriceSetMoneyAmount` has a `rules_count` attribute, which indicates how many rules, represented by `PriceRule`, are applied to the money amount.
+Each rule of a money amount within a price set is represented by the `PriceRule` entity, which holds the value of a rule type. The `PriceSetMoneyAmount` has a `number_rules` attribute, which indicates how many rules, represented by `PriceRule`, are applied to the money amount.
 
 ![A diagram showcasing the relation between the PriceRule, PriceSet, MoneyAmount, RuleType, and PriceSetMoneyAmount](https://res.cloudinary.com/dza7lstvk/image/upload/v1700573982/Medusa%20Docs/Diagrams/price-rule-1_mcnnts.jpg)
 
@@ -64,7 +64,7 @@ A `PriceList` is a group of prices only enabled if their rules are satisfied. A 
 
 Its associated prices are represented by the `PriceSetMoneyAmount` entity, which is used to store the money amounts of a price set.
 
-Each rule that can be applied to a price list is represented by the `PriceListRule` entity. The `rules_count` attribute of a `PriceList` indicates how many rules are applied to it.
+Each rule that can be applied to a price list is represented by the `PriceListRule` entity. The `number_rules` attribute of a `PriceList` indicates how many rules are applied to it.
 
 Each rule of a price list can have more than one value, representing its values by the `PriceListRuleValue` entity.
 
