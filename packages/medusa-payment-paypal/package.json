@@ -11,6 +11,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
