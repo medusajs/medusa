@@ -1,8 +1,8 @@
-import { BaseFilterable } from "../../dal";
-import { MoneyAmountDTO } from "./money-amount";
-import { PriceListDTO } from "./price-list";
-import { PriceRuleDTO } from "./price-rule";
-import { PriceSetDTO } from "./price-set";
+import { BaseFilterable } from "../../dal"
+import { MoneyAmountDTO } from "./money-amount"
+import { PriceListDTO } from "./price-list"
+import { PriceRuleDTO } from "./price-rule"
+import { PriceSetDTO } from "./price-set"
 
 /**
  * @interface
@@ -60,7 +60,7 @@ export interface CreatePriceSetMoneyAmountDTO {
   price_set?: PriceSetDTO | string
   price_list?: PriceListDTO | string
   money_amount?: MoneyAmountDTO | string
-  number_rules?: number
+  rules_count?: number
 }
 
 /**

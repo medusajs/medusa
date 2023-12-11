@@ -1,8 +1,8 @@
-import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount";
+import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount"
 
-import { BaseFilterable } from "../../dal";
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
-import { RuleTypeDTO } from "./rule-type";
+import { BaseFilterable } from "../../dal"
+import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
+import { RuleTypeDTO } from "./rule-type"
 
 /**
  * @enum
@@ -65,7 +65,7 @@ export interface PriceListDTO {
   /**
    * The number of rules associated with this price list.
    */
-  number_rules?: number
+  rules_count?: number
   /**
    * The associated price set money amounts.
    *
@@ -168,7 +168,7 @@ export interface CreatePriceListDTO {
   /**
    * The number of rules associated with the price list.
    */
-  number_rules?: number
+  rules_count?: number
   /**
    * The rules to be created and associated with the price list.
    */
@@ -208,7 +208,7 @@ export interface UpdatePriceListDTO {
   /**
    * The number of rules associated with the price list.
    */
-  number_rules?: number
+  rules_count?: number
   /**
    * The rules to be created and associated with the price list.
    */
@@ -241,7 +241,7 @@ export interface FilterablePriceListProps
   /**
    * The number of rules to filter price lists by.
    */
-  number_rules?: number[]
+  rules_count?: number[]
 }
 
 /**

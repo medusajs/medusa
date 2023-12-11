@@ -289,7 +289,7 @@ describe("PriceList Service", () => {
         await service.updatePriceLists([
           {
             id: "does-not-exist",
-            number_rules: 2,
+            rules_count: 2,
           },
         ])
       } catch (e) {
@@ -450,7 +450,7 @@ describe("PriceList Service", () => {
           select: [
             "id",
             "price_set_money_amounts.price_rules.value",
-            "price_set_money_amounts.number_rules",
+            "price_set_money_amounts.rules_count",
             "price_set_money_amounts.money_amount.amount",
             "price_set_money_amounts.money_amount.currency_code",
             "price_set_money_amounts.money_amount.price_list_id",
@@ -465,7 +465,7 @@ describe("PriceList Service", () => {
           id: expect.any(String),
           price_set_money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              number_rules: 1,
+              rules_count: 1,
               price_rules: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
@@ -481,7 +481,7 @@ describe("PriceList Service", () => {
               }),
             }),
             expect.objectContaining({
-              number_rules: 0,
+              rules_count: 0,
               price_rules: [],
               price_list: expect.objectContaining({
                 id: expect.any(String),
@@ -593,7 +593,7 @@ describe("PriceList Service", () => {
           select: [
             "id",
             "price_set_money_amounts.price_rules.value",
-            "price_set_money_amounts.number_rules",
+            "price_set_money_amounts.rules_count",
             "price_set_money_amounts.money_amount.amount",
             "price_set_money_amounts.money_amount.currency_code",
             "price_set_money_amounts.money_amount.price_list_id",
@@ -608,7 +608,7 @@ describe("PriceList Service", () => {
           id: expect.any(String),
           price_set_money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              number_rules: 0,
+              rules_count: 0,
               price_list: expect.objectContaining({
                 id: expect.any(String),
               }),
@@ -706,7 +706,7 @@ describe("PriceList Service", () => {
             "id",
             "price_set_money_amounts.price_rules.value",
             "price_set_money_amounts.price_rules.rule_type.rule_attribute",
-            "price_set_money_amounts.number_rules",
+            "price_set_money_amounts.rules_count",
             "price_set_money_amounts.money_amount.amount",
             "price_set_money_amounts.money_amount.currency_code",
             "price_set_money_amounts.money_amount.price_list_id",
@@ -721,7 +721,7 @@ describe("PriceList Service", () => {
           id: expect.any(String),
           price_set_money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              number_rules: 1,
+              rules_count: 1,
               price_list: expect.objectContaining({
                 id: expect.any(String),
               }),
