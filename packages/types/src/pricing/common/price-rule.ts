@@ -62,7 +62,7 @@ export interface CreatePriceRuleDTO {
    */
   price_set_id?: string
   /**
-   * The ID of the associated price set.
+   * The ID or object of the associated price set.
    */
   price_set?: string | PriceSetDTO
   /**
@@ -77,8 +77,17 @@ export interface CreatePriceRuleDTO {
    * The value of the price rule.
    */
   value: string
+  /**
+   * The priority of the price rule in comparison to other applicable price rules.
+   */
   priority?: number
+  /**
+   * The ID of the associated price set money amount.
+   */
   price_set_money_amount_id?: string
+  /**
+   * The ID or object of the associated price set money amount.
+   */
   price_set_money_amount?: string | PriceSetMoneyAmountDTO
 }
 
