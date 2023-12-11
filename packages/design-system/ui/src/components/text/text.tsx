@@ -1,10 +1,10 @@
 import { Slot } from "@radix-ui/react-slot"
-import { VariantProps, cva } from "class-variance-authority"
+import { VariantProps, cva } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
-const textVariants = cva("", {
+const textVariants = cva({
   variants: {
     size: {
       xsmall: "",
