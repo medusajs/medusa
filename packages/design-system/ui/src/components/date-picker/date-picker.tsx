@@ -34,13 +34,27 @@ const displayVariants = cva({
   },
 })
 
+interface DisplayProps extends React.ComponentProps<"button"> {
+  placeholder?: string
+  size?: "small" | "base"
+}
+
 const Display = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<"button"> & {
-    placeholder?: string
-    size?: "small" | "base"
-  }
->(({ className, children, placeholder, size = "base", ...props }, ref) => {
+  DisplayProps
+>(({ 
+    className, 
+    children, 
+    /**
+     * Placeholder of the date picker's input.
+     */
+    placeholder, 
+    /**
+     * The size of the date picker's input.
+     */
+    size = "base", 
+    ...props 
+  }: DisplayProps, ref) => {
   return (
     <Primitives.Trigger asChild>
       <button
@@ -115,8 +129,17 @@ type PresetContainerProps<TPreset extends Preset, TValue> = {
 }
 
 const PresetContainer = <TPreset extends Preset, TValue>({
+  /**
+   * Selectable preset configurations.
+   */
   presets,
+  /**
+   * A function that handles the event when a preset is selected.
+   */
   onSelect,
+  /**
+   * The currently selected preset.
+   */
   currentValue,
 }: PresetContainerProps<TPreset, TValue>) => {
   const isDateRangePresets = (preset: any): preset is DateRangePreset => {
@@ -523,30 +546,30 @@ const SingleDatePicker = ({
 }
 
 interface RangeProps extends PickerProps {
-  /**
-   * Provide selectable preset configurations.
-   */
   presets?: DateRangePreset[]
-  /**
-   * The date range selected by default.
-   */
   defaultValue?: DateRange
-  /**
-   * The selected date range.
-   */
   value?: DateRange
-  /**
-   * A function to handle the change in the selected date range.
-   */
   onChange?: (dateRange: DateRange | undefined) => void
 }
 
 const RangeDatePicker = ({
+  /**
+   * The date range selected by default.
+   */
   defaultValue,
+  /**
+   * The selected date range.
+   */
   value,
+  /**
+   * A function to handle the change in the selected date range.
+   */
   onChange,
   size = "base",
   showTimePicker,
+  /**
+   * Provide selectable preset configurations.
+   */
   presets,
   disabled,
   className,
@@ -811,7 +834,6 @@ const RangeDatePicker = ({
 /**
  * @interface
  * 
- * @prop mode - The date picker's mode.
  * @prop presets - Provide selectable preset configurations.
  * @prop defaultValue - The date selected by default.
  * @prop value - The selected date.
@@ -979,13 +1001,14 @@ const validatePresets = (
 /**
  * This component is based on the [Calendar](https://docs.medusajs.com/ui/components/calendar)
  * component and [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover).
- * 
- * @showReactProp presets
- * @showReactProp defaultValue
- * @showReactProp value
- * @showReactProp onChange
  */
-const DatePicker = ({ mode = "single", ...props }: DatePickerProps) => {
+const DatePicker = ({ 
+  /**
+   * The date picker's mode.
+   */
+  mode = "single", 
+  ...props
+}: DatePickerProps) => {
   if (props.presets) {
     validatePresets(props.presets, props)
   }

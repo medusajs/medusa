@@ -52,35 +52,37 @@ const buttonVariants = cva({
   },
 })
 
-/**
- * @prop variant - The button's style.
- * @prop size - The button's size.
- */
 interface ButtonProps
   extends React.ComponentPropsWithoutRef<"button">,
     VariantProps<typeof buttonVariants> {
-  /**
-   * Whether to show a loading spinner.
-   */
   isLoading?: boolean
-  /**
-   * Whether to remove the wrapper `button` element and use the
-   * passed child element instead.
-   */
   asChild?: boolean
 }
 
 /**
- * This component is based on the `button` element and supports all props of this element.
+ * This component is based on the `button` element and supports all of its props
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
+      /**
+       * The button's style.
+       */
       variant = "primary",
+      /**
+       * The button's size.
+       */
       size = "base",
       className,
+      /**
+       * Whether to remove the wrapper `button` element and use the
+       * passed child element instead.
+       */
       asChild = false,
       children,
+      /**
+       * Whether to show a loading spinner.
+       */
       isLoading = false,
       disabled,
       ...props

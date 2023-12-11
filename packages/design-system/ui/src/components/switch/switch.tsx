@@ -40,10 +40,20 @@ interface SwitchProps
     >,
     VariantProps<typeof switchVariants> {}
 
+/**
+ * This component is based on the [Radix UI Switch](https://www.radix-ui.com/primitives/docs/components/switch) primitive.
+ */
 const Switch = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   SwitchProps
->(({ className, size = "base", ...props }, ref) => (
+>(({ 
+    className, 
+    /**
+     * The switch's size.
+     */
+    size = "base", 
+    ...props 
+  }, ref) => (
   <Primitives.Root
     className={clx(switchVariants({ size }), className)}
     {...props}

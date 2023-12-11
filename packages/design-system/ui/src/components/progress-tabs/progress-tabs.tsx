@@ -13,6 +13,8 @@ import { clx } from "@/utils/clx"
 
 /**
  * This component is based on the [Radix UI Tabs](https://radix-ui.com/primitives/docs/components/tabs) primitves.
+ * 
+ * @excludeExternal
  */
 const ProgressTabsRoot = (props: ProgressTabsPrimitives.TabsProps) => {
   return <ProgressTabsPrimitives.Root {...props} />
@@ -21,10 +23,17 @@ ProgressTabsRoot.displayName = "ProgressTabs"
 
 interface IndicatorProps
   extends Omit<React.ComponentPropsWithoutRef<"span">, "children"> {
+  /**
+   * The current status.
+   */
   status?: ProgressStatus
 }
 
-const ProgressIndicator = ({ status, className, ...props }: IndicatorProps) => {
+const ProgressIndicator = ({ 
+  status, 
+  className, 
+  ...props 
+}: IndicatorProps) => {
   const Icon = React.useMemo(() => {
     switch (status) {
       case "not-started":
@@ -57,9 +66,6 @@ interface ProgressTabsTriggerProps
     React.ComponentPropsWithoutRef<typeof ProgressTabsPrimitives.Trigger>,
     "asChild"
   > {
-    /**
-     * The status of the tab.
-     */
   status?: ProgressStatus
 }
 

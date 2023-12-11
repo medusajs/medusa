@@ -40,20 +40,20 @@ Item.displayName = "ProgressAccordion.Item"
 
 interface HeaderProps
   extends React.ComponentPropsWithoutRef<typeof Primitves.Header> {
-  /**
-   * The status shown in the header
-   */
   status?: ProgressStatus
 }
 
 interface StatusIndicatorProps extends React.ComponentPropsWithoutRef<"span"> {
-  /**
-   * The current status.
-   */
   status: ProgressStatus
 }
 
-const ProgressIndicator = ({ status, ...props }: StatusIndicatorProps) => {
+const ProgressIndicator = ({ 
+  /**
+   * The current status.
+   */
+  status, 
+  ...props 
+}: StatusIndicatorProps) => {
   const Icon = React.useMemo(() => {
     switch (status) {
       case "not-started":
@@ -81,25 +81,34 @@ ProgressIndicator.displayName = "ProgressAccordion.ProgressIndicator"
 const Header = React.forwardRef<
   React.ElementRef<typeof Primitves.Header>,
   HeaderProps
->(({ className, status = "not-started", children, ...props }: HeaderProps, ref) => {
-  return (
-    <Primitves.Header
-      ref={ref}
-      className={clx(
-        "h3-core text-ui-fg-base group flex w-full flex-1 items-center gap-4 px-8",
-        className
-      )}
-      {...props}
-    >
-      <ProgressIndicator status={status} />
-      {children}
-      <Primitves.Trigger asChild className="ml-auto">
-        <IconButton variant="transparent">
-          <Plus className="transform transition-transform group-data-[state=open]:rotate-45" />
-        </IconButton>
-      </Primitves.Trigger>
-    </Primitves.Header>
-  )
+>((
+  { 
+    className, 
+    /**
+     * The current status.
+     */
+    status = "not-started", 
+    children, 
+    ...props 
+  }: HeaderProps, ref) => {
+    return (
+      <Primitves.Header
+        ref={ref}
+        className={clx(
+          "h3-core text-ui-fg-base group flex w-full flex-1 items-center gap-4 px-8",
+          className
+        )}
+        {...props}
+      >
+        <ProgressIndicator status={status} />
+        {children}
+        <Primitves.Trigger asChild className="ml-auto">
+          <IconButton variant="transparent">
+            <Plus className="transform transition-transform group-data-[state=open]:rotate-45" />
+          </IconButton>
+        </Primitves.Trigger>
+      </Primitves.Header>
+    )
 })
 Header.displayName = "ProgressAccordion.Header"
 

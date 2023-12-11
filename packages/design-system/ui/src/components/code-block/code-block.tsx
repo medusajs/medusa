@@ -48,16 +48,16 @@ const useCodeBlockContext = () => {
 }
 
 type RootProps = {
-  /**
-   * The code snippets.
-   */
   snippets: CodeSnippet[]
 }
 
 /**
- * This component is based on the `div` element and supports all props of this element.
+ * This component is based on the `div` element and supports all of its props
  */
 const Root = ({
+  /**
+   * The code snippets.
+   */
   snippets,
   className,
   children,
@@ -82,18 +82,18 @@ const Root = ({
 Root.displayName = "CodeBlock"
 
 type HeaderProps = {
-  /**
-   * Whether to hide the code snippets' labels.
-   */
   hideLabels?: boolean
 }
 
 /**
- * This component is based on the `div` element and supports all props of this element.
+ * This component is based on the `div` element and supports all of its props
  */
 const HeaderComponent = ({
   children,
   className,
+  /**
+   * Whether to hide the code snippets' labels.
+   */
   hideLabels = false,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & HeaderProps) => {
@@ -129,7 +129,7 @@ const HeaderComponent = ({
 HeaderComponent.displayName = "CodeBlock.Header"
 
 /**
- * This component is based on the `div` element and supports all props of this element.
+ * This component is based on the `div` element and supports all of its props
  */
 const Meta = ({
   className,
@@ -147,7 +147,7 @@ Meta.displayName = "CodeBlock.Header.Meta"
 const Header = Object.assign(HeaderComponent, { Meta })
 
 /**
- * This component is based on the `div` element and supports all props of this element.
+ * This component is based on the `div` element and supports all of its props
  */
 const Body = ({
   className,

@@ -15,11 +15,6 @@
       "syntaxKind": "block"
     },
     {
-      "tagName": "@showReactProp",
-      "syntaxKind": "block",
-      "allowMultiple": true
-    },
-    {
       "tagName": "@apiIgnore",
       "syntaxKind": "modifier"
     },
@@ -32,7 +27,11 @@
       "syntaxKind": "modifier"
     },
     {
-      "tagName": "@reactComponent",
+      "tagName": "@keep",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@excludeExternal",
       "syntaxKind": "modifier"
     }
   ]

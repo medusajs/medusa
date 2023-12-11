@@ -7,48 +7,48 @@ import { Label } from "@/components/label"
 import { Prompt } from "@/components/prompt"
 
 export interface RenderPromptProps {
-  /**
-   * Whether the prompt is open
-   */
   open: boolean
-  /**
-   * The prompt's title.
-   */
   title: string
-  /**
-   * The prompt's description.
-   */
   description: string
-  /**
-   * The text the user has to input in order to confirm the action.
-   */
   verificationText?: string
-  /**
-   * The label for the Cancel button.
-   */
   cancelText?: string
-  /**
-   * Label for the Confirm button.
-   */
   confirmText?: string
-  /**
-   * A function to handle the confirmation.
-   */
   onConfirm: () => void
-  /**
-   * A function to handle the cancelation.
-   */
   onCancel: () => void
 }
 
 export const RenderPrompt = ({
+  /**
+   * @ignore
+   */
   open,
+  /**
+   * The prompt's title.
+   */
   title,
+  /**
+   * The prompt's description.
+   */
   description,
+  /**
+   * The text the user has to input in order to confirm the action.
+   */
   verificationText,
+  /**
+   * The label for the Cancel button.
+   */
   cancelText = "Cancel",
+  /**
+   * Label for the Confirm button.
+   */
   confirmText = "Confirm",
+  /**
+   * @ignore
+   */
   onConfirm,
+  /**
+   * @ignore
+   */
   onCancel,
 }: RenderPromptProps) => {
   const [userInput, setUserInput] = React.useState("")
@@ -132,3 +132,4 @@ export const RenderPrompt = ({
     </Prompt>
   )
 }
+RenderPrompt.displayName = "RenderPrompt"

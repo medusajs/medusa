@@ -9,9 +9,6 @@ import { clx } from "@/utils/clx"
 
 interface SelectProps
   extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root> {
-  /**
-   * The select's size.
-   */
   size?: "base" | "small"
 }
 
@@ -33,8 +30,16 @@ const useSelectContext = () => {
 
 /**
  * This component is based on [Radix UI Select](https://www.radix-ui.com/primitives/docs/components/select).
+ * It also accepts all props of the HTML `select` component.
  */
-const Root = ({ children, size = "base", ...props }: SelectProps) => {
+const Root = ({
+  children, 
+  /**
+   * The select's size.
+   */
+  size = "base", 
+  ...props
+}: SelectProps) => {
   return (
     <SelectContext.Provider value={React.useMemo(() => ({ size }), [size])}>
       <SelectPrimitive.Root {...props}>{children}</SelectPrimitive.Root>
@@ -43,11 +48,15 @@ const Root = ({ children, size = "base", ...props }: SelectProps) => {
 }
 Root.displayName = "Select"
 
+/**
+ * Groups multiple items together.
+ */
 const Group = SelectPrimitive.Group
 Group.displayName = "Select.Group"
 
 /**
  * Displays the selected value, or a placeholder if no value is selected.
+ * It's based on [Radix UI Select Value](https://www.radix-ui.com/primitives/docs/components/select#value).
  */
 const Value = SelectPrimitive.Value
 Value.displayName = "Select.Value"
@@ -142,8 +151,11 @@ const Content = React.forwardRef<
     </SelectPrimitive.Portal>
   )
 )
-Content.displayName = SelectPrimitive.Content.displayName
+Content.displayName = "Select.Content"
 
+/**
+ * Used to label a group of items.
+ */
 const Label = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
@@ -157,8 +169,11 @@ const Label = React.forwardRef<
     {...props}
   />
 ))
-Label.displayName = SelectPrimitive.Label.displayName
+Label.displayName = "Select.Label"
 
+/**
+ * An item in the select.
+ */
 const Item = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
@@ -192,7 +207,7 @@ const Item = React.forwardRef<
     </SelectPrimitive.Item>
   )
 })
-Item.displayName = SelectPrimitive.Item.displayName
+Item.displayName = "Select.Item"
 
 const Separator = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Separator>,
@@ -204,7 +219,7 @@ const Separator = React.forwardRef<
     {...props}
   />
 ))
-Separator.displayName = SelectPrimitive.Separator.displayName
+Separator.displayName = "Select.Separator"
 
 const Select = Object.assign(Root, {
   Group,

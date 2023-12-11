@@ -1,15 +1,19 @@
 import { visitors } from "@babel/traverse"
 import { utils, builtinResolvers, FileState, NodePath } from "react-docgen"
 import { ComponentNodePath } from "react-docgen/dist/resolver/index.js"
-import TypedocManager from "./typedoc-manager.js"
-import { ArrowFunctionExpression } from "@babel/types"
+import TypedocManager from "../classes/typedoc-manager.js"
 
 type State = {
   foundDefinitions: Set<ComponentNodePath>
 }
 /**
- * Given an AST, this function tries to find all object expressions that are
- * passed to `React.createClass` calls, by resolving all references properly.
+ * This resolver extends react-docgen's FindAllDefinitionsResolver
+ * + adds the ability to resolve variable components such as:
+ *
+ * ```tsx
+ * const Value = SelectPrimitive.Value
+ * Value.displayName = "Select.Value"
+ * ```
  */
 export default class CustomResolver
   implements builtinResolvers.FindAllDefinitionsResolver

@@ -17,17 +17,21 @@ const headingVariants = cva({
   },
 })
 
-/**
- * @prop level - The heading level which specifies which heading element is used.
- */
 interface HeadingProps extends VariantProps<typeof headingVariants>,
   React.HTMLAttributes<HTMLHeadingElement> {}
 
 /**
  * This component is based on the heading element (`h1`, `h2`, etc...) depeneding on the specified level
- * and supports all props of this element.
+ * and supports all of its props
  */
-const Heading = ({ level = "h1", className, ...props }: HeadingProps) => {
+const Heading = ({ 
+  /**
+   * The heading level which specifies which heading element is used.
+   */
+  level = "h1", 
+  className, 
+  ...props
+}: HeadingProps) => {
   const Component = level || "h1"
 
   return (

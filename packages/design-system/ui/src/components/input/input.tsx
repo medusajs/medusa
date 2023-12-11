@@ -29,19 +29,24 @@ const inputVariants = cva({
   },
 })
 
-/**
- * @prop size - The input's size.
- */
 interface InputProps extends VariantProps<typeof inputVariants>,
   Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {}
 
 /**
- * This component is based on the `input` element and supports all props of this element.
+ * This component is based on the `input` element and supports all of its props
  */
 const Input = React.forwardRef<
   HTMLInputElement,
   InputProps
->(({ className, type, size = "base", ...props }: InputProps, ref) => {
+>(({ 
+    className, 
+    type, 
+    /**
+     * The input's size.
+     */
+    size = "base", 
+    ...props 
+  }: InputProps, ref) => {
   const [typeState, setTypeState] = React.useState(type)
 
   const isPassword = type === "password"

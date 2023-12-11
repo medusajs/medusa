@@ -6,6 +6,7 @@ import {
   TSFunctionSignatureType,
   TypeDescriptor,
 } from "react-docgen/dist/Documentation.js"
+import { Comment } from "typedoc"
 import {
   Application,
   CommentTag,
@@ -24,6 +25,7 @@ import {
   getType,
   getTypeChildren,
   stripLineBreaks,
+  // stripLineBreaks,
 } from "utils"
 
 type MappedReflectionSignature = {
@@ -44,6 +46,15 @@ type MissingReactPropsOptions = {
   comments: CommentTag[]
   exisitingProps: DeclarationReflection[]
 }
+
+type ExcludeExternalOptions = {
+  parentReflection: DeclarationReflection
+  childReflection: DeclarationReflection
+  signature?: SignatureReflection
+  propDescription?: string
+}
+
+const MAX_LEVEL = 3
 
 export default class TypedocManager {
   private app: Application | undefined
@@ -127,52 +138,107 @@ export default class TypedocManager {
         this.project
       )
 
-      if (signature.comment) {
-        // add missing props to the spec if they're included in the `@showReactProp` tag
-        // of the signature.
-        spec = this.addMissingReactProps({
-          spec,
-          comments: signature.comment.blockTags,
-          exisitingProps: props,
-        })
-      }
+      // if (signature.comment) {
+      //   // add missing props to the spec if they're included in the `@showReactProp` tag
+      //   // of the signature.
+      //   spec = this.addMissingReactProps({
+      //     spec,
+      //     comments: signature.comment.blockTags,
+      //     exisitingProps: props,
+      //   })
+      // }
+
+      const propsToRemove = new Set<string>()
 
       Object.entries(spec.props!).forEach(([propName, propDetails]) => {
         const reflectionPropType = props.find(
           (propType) => propType.name === propName
         )
-        if (reflectionPropType) {
+        if (!reflectionPropType) {
           if (!propDetails.description) {
-            propDetails.description =
-              this.getDescription(reflectionPropType) || propDetails.description
+            propsToRemove.add(propName)
           }
-          // tsType is set/replaced if the spec doesn't have it
-          // or if it just has a name of a reflection.
-          const shouldReplaceTsType =
-            !propDetails.tsType ||
-            (this.doesOnlyHaveName(propDetails.tsType) &&
-              reflectionPropType.type?.type === "reference")
-
-          if (shouldReplaceTsType) {
-            propDetails.tsType = reflectionPropType.type
-              ? this.getTsType(reflectionPropType.type)
-              : reflectionPropType.signatures?.length
-                ? this.getFunctionTsType(reflectionPropType.signatures[0])
-                : undefined
-
-            if (!propDetails.tsType) {
-              delete propDetails.tsType
-            }
-          }
+          return
         }
+        if (
+          this.shouldExcludeExternal({
+            parentReflection: reflection,
+            childReflection: reflectionPropType,
+            propDescription: propDetails.description,
+            signature,
+          })
+        ) {
+          propsToRemove.add(propName)
+          return
+        }
+        propDetails.description =
+          propDetails.description || this.getDescription(reflectionPropType)
+        if (!propDetails.description) {
+          propsToRemove.add(propName)
+        } else {
+          propDetails.description = this.normalizeDescription(
+            propDetails.description
+          )
+        }
+        // if (reflectionPropType) {
+        // tsType is set/replaced if the spec doesn't have it
+        // or if it just has a name of a reflection.
+        // TODO remove
+        //   const shouldReplaceTsType =
+        //     !propDetails.tsType ||
+        //     (this.doesOnlyHaveName(propDetails.tsType) &&
+        //       reflectionPropType.type?.type === "reference")
+        //   if (shouldReplaceTsType) {
+        //     propDetails.tsType = reflectionPropType.type
+        //       ? this.getTsType(reflectionPropType.type)
+        //       : reflectionPropType.signatures?.length
+        //         ? this.getFunctionTsType(reflectionPropType.signatures[0])
+        //         : undefined
+        //     if (!propDetails.tsType) {
+        //       delete propDetails.tsType
+        //     }
+        //   }
+        // }
       })
-    }
 
-    // remove `@showReactProp` tag from the spec's description
-    // if any
-    spec.description = stripLineBreaks(
-      spec.description?.replaceAll(/@showReactProp .*/g, "") || ""
-    )
+      propsToRemove.forEach((prop) => delete spec.props![prop])
+
+      // try to add missing props
+      props
+        .filter(
+          (prop) =>
+            !Object.hasOwn(spec.props!, prop.name) &&
+            !propsToRemove.has(prop.name) &&
+            this.getReflectionComment(prop) &&
+            !this.isFromReact(prop) &&
+            !this.shouldExcludeExternal({
+              parentReflection: reflection,
+              childReflection: prop,
+              signature,
+            })
+        )
+        .forEach((prop) => {
+          const description = this.normalizeDescription(
+            this.getDescription(prop)
+          )
+          if (!description) {
+            return
+          }
+          spec.props![prop.name] = {
+            description: this.normalizeDescription(this.getDescription(prop)),
+            required: !prop.flags.isOptional,
+            tsType: prop.type
+              ? this.getTsType(prop.type)
+              : prop.signatures?.length
+                ? this.getFunctionTsType(prop.signatures[0])
+                : undefined,
+          }
+
+          if (!spec.props![prop.name].tsType) {
+            delete spec.props![prop.name].tsType
+          }
+        })
+    }
 
     return spec
   }
@@ -199,14 +265,14 @@ export default class TypedocManager {
     exisitingProps,
   }: MissingReactPropsOptions) {
     comments
-      .filter((tag) => tag.tag === `@showReactProp`)
-      .map((tag) => tag.content.map(({ text }) => text).join())
+      .filter((tag) => tag.tag === `@prop` && tag.name !== undefined)
+      .map((tag) => tag.name)
       .forEach((propName) => {
         const reflectionProp = exisitingProps.find(
           (prop) => prop.name === propName
         )
-        if (!Object.hasOwn(spec.props!, propName) && reflectionProp) {
-          spec.props![propName] = {
+        if (!Object.hasOwn(spec.props!, propName!) && reflectionProp) {
+          spec.props![propName!] = {
             required: !reflectionProp.flags.isOptional,
           }
         }
@@ -215,14 +281,19 @@ export default class TypedocManager {
     return spec
   }
 
-  getTsType(reflectionType: SomeType): TsType {
+  getTsType(reflectionType: SomeType, level = 1): TsType {
     const rawValue = getType({
       reflectionType,
       ...this.getTypeOptions,
     })
+    if (level > MAX_LEVEL) {
+      return {
+        name: rawValue,
+      }
+    }
     switch (reflectionType.type) {
       case "array": {
-        const elements = this.getTsType(reflectionType.elementType)
+        const elements = this.getTsType(reflectionType.elementType, level + 1)
         return {
           name: "Array",
           elements: [elements],
@@ -240,10 +311,10 @@ export default class TypedocManager {
               return
             }
 
-            elements.push(this.getTsType(child.type))
+            elements.push(this.getTsType(child.type, level + 1))
           })
         } else if (referenceReflection?.type) {
-          elements.push(this.getTsType(referenceReflection.type))
+          elements.push(this.getTsType(referenceReflection.type, level + 1))
         }
         return {
           name: reflectionType.name,
@@ -253,7 +324,11 @@ export default class TypedocManager {
       case "reflection":
         const reflection = reflectionType.declaration
         if (reflection.signatures?.length) {
-          return this.getFunctionTsType(reflection.signatures[0], rawValue)
+          return this.getFunctionTsType(
+            reflection.signatures[0],
+            rawValue,
+            level + 1
+          )
         } else {
           const typeData: ObjectSignatureType = {
             name: "signature",
@@ -268,13 +343,11 @@ export default class TypedocManager {
             typeData.signature.properties.push({
               key: property.name,
               value: property.type
-                ? this.getTsType(property.type)
+                ? this.getTsType(property.type, level + 1)
                 : {
                     name: "unknown",
                   },
-              description: property.comment?.summary
-                .map(({ text }) => text)
-                .join(" "),
+              description: this.getDescription(property),
             })
           })
 
@@ -295,13 +368,13 @@ export default class TypedocManager {
         return {
           name: reflectionType.type,
           raw: rawValue,
-          elements: this.getElementsTypes(reflectionType.types),
+          elements: this.getElementsTypes(reflectionType.types, level),
         }
       case "tuple":
         return {
           name: "tuple",
           raw: rawValue,
-          elements: this.getElementsTypes(reflectionType.elements),
+          elements: this.getElementsTypes(reflectionType.elements, level),
         }
       default:
         return {
@@ -310,31 +383,44 @@ export default class TypedocManager {
     }
   }
 
-  getElementsTypes(elements: SomeType[]): TsType[] {
+  getElementsTypes(elements: SomeType[], level = 1): TsType[] {
     const elementData: TsType[] = []
 
     elements.forEach((element) => {
-      elementData.push(this.getTsType(element))
+      elementData.push(this.getTsType(element, level + 1))
     })
 
     return elementData
   }
 
+  normalizeDescription(description: string): string {
+    return stripLineBreaks(
+      description
+        .replace("@keep", "")
+        .replace("@ignore", "")
+        .replace("@excludeExternal", "")
+    )
+  }
+
   getDescription(reflection: DeclarationReflection): string {
-    let commentDisplay = reflection.comment?.summary
+    let commentDisplay = this.getReflectionComment(reflection)?.summary
     if (!commentDisplay) {
       const signature = reflection.signatures?.find(
-        (sig) => sig.comment?.summary.length
+        (sig) => this.getReflectionComment(sig)?.summary.length
       )
       if (signature) {
-        commentDisplay = signature.comment!.summary
+        commentDisplay = this.getReflectionComment(signature)!.summary
       }
     }
 
     return commentDisplay?.map(({ text }) => text).join("") || ""
   }
 
-  getFunctionTsType(signature: SignatureReflection, rawValue?: string): TsType {
+  getFunctionTsType(
+    signature: SignatureReflection,
+    rawValue?: string,
+    level = 1
+  ): TsType {
     if (!rawValue) {
       rawValue = getFunctionType({
         modelSignatures: [signature],
@@ -344,7 +430,7 @@ export default class TypedocManager {
     const typeData: FunctionSignatureType = {
       name: "signature",
       type: "function",
-      raw: rawValue,
+      raw: rawValue!,
       signature: {
         arguments: [],
         return: undefined,
@@ -353,7 +439,7 @@ export default class TypedocManager {
 
     signature.parameters?.forEach((parameter) => {
       const parameterType = parameter.type
-        ? this.getTsType(parameter.type)
+        ? this.getTsType(parameter.type, level + 1)
         : undefined
       typeData.signature.arguments.push({
         name: parameter.name,
@@ -363,7 +449,7 @@ export default class TypedocManager {
     })
 
     typeData.signature.return = signature.type
-      ? this.getTsType(signature.type)
+      ? this.getTsType(signature.type, level + 1)
       : undefined
 
     return typeData
@@ -375,14 +461,12 @@ export default class TypedocManager {
     return keys.length === 1 && keys[0] === "name"
   }
 
+  // retrieves a reflection by the provided name
+  // and check if its type is ReactNode
+  // this is useful for the CustomResolver to check
+  // if a variable is a React component.
   isReactComponent(name: string): boolean {
-    if (!this.project) {
-      return false
-    }
-
-    const reflection = Object.values(this.project!.reflections).find(
-      (ref) => ref.name === name
-    )
+    const reflection = this.getReflectionByName(name)
 
     if (
       !reflection ||
@@ -397,5 +481,111 @@ export default class TypedocManager {
         signature.type?.type === "reference" &&
         signature.type.name === "ReactNode"
     )
+  }
+
+  resolveChildType(reflectionName: string, childName: string): TsType | null {
+    if (!this.project) {
+      return null
+    }
+
+    const reflection = this.getReflectionByName(reflectionName)
+
+    if (!reflection) {
+      return null
+    }
+
+    let childReflection: DeclarationReflection | undefined
+
+    if (reflection.children) {
+      childReflection = reflection.getChildByName(
+        childName
+      ) as DeclarationReflection
+    } else if (reflection.type) {
+      getTypeChildren(reflection.type, this.project).some((child) => {
+        if (child.name === childName) {
+          childReflection = child
+          return true
+        }
+
+        return false
+      })
+    }
+
+    if (
+      !childReflection ||
+      !("type" in childReflection) ||
+      (this.isFromReact(childReflection as DeclarationReflection) &&
+        !this.getReflectionComment(childReflection)?.summary)
+    ) {
+      return null
+    }
+
+    return this.getTsType(childReflection.type as SomeType)
+  }
+
+  // used to check if a reflection (typically of a prop)
+  // is inherited from React (for example, the className prop)
+  isFromReact(reflection: DeclarationReflection) {
+    // check first if the reflection has the `@keep` modifier
+    if (this.getReflectionComment(reflection)?.hasModifier("@keep")) {
+      return false
+    }
+    return reflection.sources?.some((source) =>
+      source.fileName.includes("@types/react")
+    )
+  }
+
+  shouldExcludeExternal({
+    parentReflection,
+    childReflection,
+    propDescription,
+    signature,
+  }: ExcludeExternalOptions): boolean {
+    const parentHasExcludeExternalsModifier =
+      this.getReflectionComment(parentReflection)?.hasModifier(
+        "@excludeExternal"
+      ) ||
+      (signature &&
+        this.getReflectionComment(signature)?.hasModifier(
+          "@excludeExternal"
+        )) ||
+      false
+    const childHasKeepModifier =
+      this.getReflectionComment(childReflection)?.hasModifier("@keep") ||
+      propDescription?.includes("@keep")
+    const childHasExternalSource =
+      childReflection.sources?.some((source) =>
+        source.fileName.startsWith("node_modules")
+      ) || false
+    return (
+      parentHasExcludeExternalsModifier &&
+      !childHasKeepModifier &&
+      childHasExternalSource
+    )
+  }
+
+  getReflectionComment(reflection: Reflection): Comment | undefined {
+    if (reflection.comment) {
+      return reflection.comment
+    }
+
+    if (
+      reflection instanceof DeclarationReflection &&
+      reflection.signatures?.length
+    ) {
+      return reflection.signatures.find(
+        (signature) => signature.comment !== undefined
+      )?.comment
+    }
+
+    return undefined
+  }
+
+  getReflectionByName(name: string): DeclarationReflection | undefined {
+    return this.project
+      ? (Object.values(this.project?.reflections || {}).find(
+          (ref) => ref.name === name
+        ) as DeclarationReflection)
+      : undefined
   }
 }

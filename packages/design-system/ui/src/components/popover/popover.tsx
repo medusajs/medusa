@@ -37,13 +37,11 @@ const Close = React.forwardRef<
 })
 Close.displayName = "Popover.Close"
 
-/**
- * @prop sideOffset - The distance in pixels from the anchor.
- * @prop side - The preferred side of the anchor to render against when open. Will be reversed when collisions occur and `avoidCollisions` is enabled.
- * @prop align - The preferred alignment against the anchor. May change when collisions occur.
- */
 interface ContentProps extends React.ComponentPropsWithoutRef<typeof Primitives.Content> {}
 
+/**
+ * @excludeExternal
+ */
 const Content = React.forwardRef<
   React.ElementRef<typeof Primitives.Content>,
   ContentProps
@@ -51,8 +49,18 @@ const Content = React.forwardRef<
   (
     {
       className,
+      /**
+       * The distance in pixels from the anchor.
+       */
       sideOffset = 8,
+      /**
+       * The preferred side of the anchor to render against when open.
+       * Will be reversed when collisions occur and `avoidCollisions` is enabled.
+       */
       side = "bottom",
+      /**
+       * The preferred alignment against the anchor. May change when collisions occur.
+       */
       align = "start",
       collisionPadding,
       ...props

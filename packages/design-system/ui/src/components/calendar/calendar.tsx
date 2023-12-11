@@ -24,9 +24,6 @@ type RangeProps = OmitKeys<DayPickerRangeProps, KeysToOmit>
 
 /**
  * @interface
- * 
- * @prop mode - The calendar's mode.
- * @prop showOutsideDays - Whether to show days of previous and next months.
  */
 type CalendarProps =
   | ({
@@ -41,11 +38,27 @@ type CalendarProps =
 
 /**
  * This component is based on the [react-date-picker](https://www.npmjs.com/package/react-date-picker) package.
+ * 
+ * @excludeExternal
  */
 const Calendar = ({
+  /**
+   * @ignore
+   */
   className,
+  /**
+   * @ignore
+   */
   classNames,
+  /**
+   * The calendar's mode.
+   */
   mode = "single",
+  /**
+   * Whether to show days of previous and next months.
+   * 
+   * @keep
+   */
   showOutsideDays = true,
   ...props
 }: CalendarProps) => {

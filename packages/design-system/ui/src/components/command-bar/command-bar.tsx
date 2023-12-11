@@ -8,21 +8,9 @@ import { Kbd } from "@/components/kbd"
 import { clx } from "@/utils/clx"
 
 interface CommandBarProps extends React.PropsWithChildren {
-  /**
-   * Whether to open (show) the command bar.
-   */
   open?: boolean
-  /**
-   * Specify a function to handle the change of `open`'s value.
-   */
   onOpenChange?: (open: boolean) => void
-  /**
-   * Whether the command bar is open by default.
-   */
   defaultOpen?: boolean
-  /**
-   * Whether to disable focusing automatically on the command bar when it's opened.
-   */
   disableAutoFocus?: boolean
 }
 
@@ -30,9 +18,21 @@ interface CommandBarProps extends React.PropsWithChildren {
  * The root component of the command bar. This component manages the state of the command bar.
  */
 const Root = ({
+  /**
+   * Whether to open (show) the command bar.
+   */
   open = false,
+  /**
+   * Specify a function to handle the change of `open`'s value.
+   */
   onOpenChange,
+  /**
+   * Whether the command bar is open by default.
+   */
   defaultOpen = false,
+  /**
+   * Whether to disable focusing automatically on the command bar when it's opened.
+   */
   disableAutoFocus = true,
   children,
 }: CommandBarProps) => {
@@ -127,25 +127,13 @@ const Seperator = React.forwardRef<
 })
 Seperator.displayName = "CommandBar.Seperator"
 
-/**
- * @prop type - The type of the command's underlying button.
- */
 interface CommandProps
   extends Omit<
     React.ComponentPropsWithoutRef<"button">,
     "children" | "onClick"
   > {
-    /**
-     * The function to execute when the command is triggered.
-     */
   action: () => void | Promise<void>
-  /**
-   * The command's label.
-   */
   label: string
-  /**
-   * The command's shortcut
-   */
   shortcut: string
 }
 
@@ -154,7 +142,24 @@ interface CommandProps
  */
 const Command = React.forwardRef<HTMLButtonElement, CommandProps>(
   (
-    { className, type = "button", label, action, shortcut, disabled, ...props }: CommandProps,
+    {
+      className, 
+      type = "button", 
+      /**
+       * The command's label.
+       */
+      label, 
+      /**
+       * The function to execute when the command is triggered.
+       */
+      action, 
+      /**
+       * The command's shortcut
+       */
+      shortcut, 
+      disabled, 
+      ...props
+    }: CommandProps,
     ref
   ) => {
     React.useEffect(() => {

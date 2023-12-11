@@ -42,23 +42,13 @@ const innerVariants = cva({
   },
 })
 
-/**
- * @prop variant - The style of the avatar.
- * @prop size - The size of the avatar's border radius.
- */
 interface AvatarProps
   extends Omit<
       React.ComponentPropsWithoutRef<typeof Primitives.Root>,
       "asChild" | "children" | "size"
     >,
     VariantProps<typeof avatarVariants> {
-  /**
-   * The URL of the image used in the Avatar.
-   */
   src?: string
-  /**
-   * Text to show in the avatar if the URL provided in `src` can't be opened.
-   */
   fallback: string
 }
 
@@ -70,7 +60,26 @@ const Avatar = React.forwardRef<
   AvatarProps
 >(
   (
-    { src, fallback, variant = "rounded", size = "base", className, ...props }: AvatarProps,
+    { 
+      /**
+       * The URL of the image used in the Avatar.
+       */
+      src, 
+      /**
+       * Text to show in the avatar if the URL provided in `src` can't be opened.
+       */
+      fallback, 
+      /**
+       * The style of the avatar.
+       */
+      variant = "rounded", 
+      /**
+       * The size of the avatar's border radius.
+       */
+      size = "base",
+      className, 
+      ...props
+    }: AvatarProps,
     ref
   ) => {
     return (

@@ -39,35 +39,37 @@ const iconButtonVariants = cva({
   },
 })
 
-/**
- * @prop variant - The button's style.
- * @prop size - The button's size.
- */
 interface IconButtonProps
   extends React.ComponentPropsWithoutRef<"button">,
     VariantProps<typeof iconButtonVariants> {
-  /**
-   * Whether to remove the wrapper `button` element and use the
-   * passed child element instead.
-   */
   asChild?: boolean
-  /**
-   * Whether to show a loading spinner.
-   */
   isLoading?: boolean
 }
 
 /**
- * This component is based on the `button` element and supports all props of this element.
+ * This component is based on the `button` element and supports all of its props
  */
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   (
     {
+      /**
+       * The button's style.
+       */
       variant = "primary",
+      /**
+       * The button's size.
+       */
       size = "base",
+      /**
+       * Whether to remove the wrapper `button` element and use the
+       * passed child element instead.
+       */
       asChild = false,
       className,
       children,
+      /**
+       * Whether to show a loading spinner.
+       */
       isLoading = false,
       disabled,
       ...props

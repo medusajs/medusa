@@ -24,31 +24,41 @@ const currencyInputVariants = cva({
   },
 })
 
-/**
- * @prop size - The input's size.
- */
 interface CurrencyInputProps
   extends Omit<
       React.ComponentPropsWithoutRef<typeof Primitive>,
       "prefix" | "suffix" | "size"
     >,
     VariantProps<typeof currencyInputVariants> {
-  /**
-   * The symbol to show in the input.
-   */
   symbol: string
-  /**
-   * The currency code to show as the input's placeholder.
-   */
   code: string
 }
 
 /**
- * This component is based on the input element and supports all props of this element.
+ * This component is based on the input element and supports all of its props
+ * 
+ * @excludeExternal
  */
 const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
   (
-    { size = "base", symbol, code, disabled, onInvalid, className, ...props }: CurrencyInputProps,
+    { 
+      /**
+       * The input's size.
+       */
+      size = "base", 
+      /**
+       * The symbol to show in the input.
+       */
+      symbol, 
+      /**
+       * The currency code to show as the input's placeholder.
+       */
+      code, 
+      disabled, 
+      onInvalid, 
+      className, 
+      ...props
+    }: CurrencyInputProps,
     ref
   ) => {
     const innerRef = React.useRef<HTMLInputElement>(null)

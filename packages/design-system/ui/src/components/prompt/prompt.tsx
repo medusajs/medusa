@@ -115,7 +115,7 @@ const Cancel = React.forwardRef<
 Cancel.displayName = "Prompt.Cancel"
 
 /**
- * This component is based on the `div` element and supports all props of this element.
+ * This component is based on the `div` element and supports all of its props
  */
 const Header = ({
   className,
@@ -131,7 +131,7 @@ const Header = ({
 Header.displayName = "Prompt.Header"
 
 /**
- * This component is based on the `div` element and supports all props of this element.
+ * This component is based on the `div` element and supports all of its props
  */
 const Footer = ({
   className,

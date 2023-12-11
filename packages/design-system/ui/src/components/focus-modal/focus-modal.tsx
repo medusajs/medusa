@@ -19,10 +19,6 @@ interface FocusModalRootProps
 
 /**
  * This component is based on the [Radix UI Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) primitives.
- * 
- * @showReactProp defaultOpen
- * @showReactProp open
- * @showReactProp onOpenChange
  */
 const FocusModalRoot = (
   props: FocusModalRootProps
@@ -89,7 +85,7 @@ const FocusModalContent = React.forwardRef<
 FocusModalContent.displayName = "FocusModal.Content"
 
 /**
- * This component is based on the `div` element and supports all props of this element.
+ * This component is based on the `div` element and supports all of its props
  */
 const FocusModalHeader = React.forwardRef<
   HTMLDivElement,
@@ -119,7 +115,7 @@ const FocusModalHeader = React.forwardRef<
 FocusModalHeader.displayName = "FocusModal.Header"
 
 /**
- * This component is based on the `div` element and supports all props of this element.
+ * This component is based on the `div` element and supports all of its props
  */
 const FocusModalBody = React.forwardRef<
   HTMLDivElement,

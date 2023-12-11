@@ -5,7 +5,7 @@ import { clx } from "@/utils/clx"
 import React from "react"
 
 /**
- * This component is based on the div element and supports all props of this element.
+ * This component is based on the div element and supports all of its props
  */
 const CommandComponent = ({
   className,

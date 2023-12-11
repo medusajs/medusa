@@ -3,7 +3,7 @@ import * as React from "react"
 import { clx } from "@/utils/clx"
 
 /**
- * This component is based on the `kbd` element and supports all props of this element.
+ * This component is based on the `kbd` element and supports all of its props
  */
 const Kbd = React.forwardRef<
   HTMLElement,

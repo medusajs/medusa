@@ -1,10 +1,11 @@
 import path from "path"
 import readFiles from "../utils/read-files.js"
-import { parse } from "react-docgen"
+import { builtinHandlers, parse } from "react-docgen"
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "fs"
 import TypedocManager from "../classes/typedoc-manager.js"
 import chalk from "chalk"
-import CustomResolver from "../classes/custom-resolver.js"
+import CustomResolver from "../resolvers/custom-resolver.js"
+import argsPropHandler from "../handlers/argsPropHandler.js"
 
 type GenerateOptions = {
   src: string
@@ -53,6 +54,22 @@ export default async function ({
       const specs = parse(fileContent, {
         filename: relativePath,
         resolver: new CustomResolver(typedocManager),
+        handlers: [
+          // Built-in handlers
+          builtinHandlers.childContextTypeHandler,
+          builtinHandlers.codeTypeHandler,
+          builtinHandlers.componentDocblockHandler,
+          builtinHandlers.componentMethodsHandler,
+          builtinHandlers.contextTypeHandler,
+          builtinHandlers.defaultPropsHandler,
+          builtinHandlers.displayNameHandler,
+          builtinHandlers.propDocblockHandler,
+          builtinHandlers.propTypeCompositionHandler,
+          builtinHandlers.propTypeHandler,
+          // Custom handlers
+          (documentation, componentPath) =>
+            argsPropHandler(documentation, componentPath, typedocManager),
+        ],
         babelOptions: {
           ast: true,
         },
