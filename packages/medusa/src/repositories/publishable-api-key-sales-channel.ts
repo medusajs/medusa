@@ -3,6 +3,7 @@ import { Brackets, In } from "typeorm"
 import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 import { dataSource } from "../loaders/database"
 import SalesChannelRepository from "./sales-channel"
+import { generateEntityId } from "../utils"
 
 const publishableApiKeySalesChannelAlias = "PublishableKeySalesChannel"
 
@@ -66,7 +67,8 @@ export const PublishableApiKeySalesChannelRepository = dataSource
       salesChannelIds: string[],
       isMedusaV2Enabled?: boolean
     ): Promise<void> {
-      let valuesToInsert = salesChannelIds.map((id) => ({
+      const valuesToInsert = salesChannelIds.map((id) => ({
+        id: generateEntityId(undefined, "pksc"),
         sales_channel_id: id,
         publishable_key_id: publishableApiKeyId,
       }))

@@ -338,14 +338,14 @@ describe("Publishable API keys", () => {
       expect(response.status).toBe(200)
 
       expect(mappings).toEqual([
-        {
+        expect.objectContaining({
           sales_channel_id: salesChannel1.id,
           publishable_key_id: pubKeyId,
-        },
-        {
+        }),
+        expect.objectContaining({
           sales_channel_id: salesChannel2.id,
           publishable_key_id: pubKeyId,
-        },
+        }),
       ])
 
       expect(response.data.publishable_api_key).toMatchObject({
