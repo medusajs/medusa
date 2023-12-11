@@ -23,7 +23,7 @@ jobs:
       - name: Setup Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: "20.10.0"
+          node-version: "21.1.0"
 
       - name: Creating .npmrc
         run: |
