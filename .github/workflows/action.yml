@@ -14,10 +14,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js 20 environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "20.10.0"
           cache: "yarn"
 
       - name: Assert changed
@@ -45,10 +45,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js 20 environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "20.10.0"
           cache: "yarn"
 
       - name: Assert changed
@@ -106,10 +106,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js 20 environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -167,10 +167,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js 20 environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "20.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -186,7 +186,6 @@ jobs:
         env:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
-
 
   integration-tests-plugins:
     needs: setup
@@ -220,10 +219,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js 20 environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "20.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -273,10 +272,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js 20 environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "20.10.0"
           cache: "yarn"
 
       - name: Install dependencies
