@@ -1,5 +1,5 @@
 import { Context, DAL, UpdatePriceListDTO } from "@medusajs/types"
-import { DALUtils, isoFormatDate, MedusaError } from "@medusajs/utils"
+import { DALUtils, GetIsoStringFromDate, MedusaError } from "@medusajs/utils"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
@@ -73,11 +73,11 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
 
     const priceLists = data.map((priceListData: any) => {
       if (!!priceListData.starts_at) {
-        priceListData.starts_at = isoFormatDate(priceListData.starts_at)
+        priceListData.starts_at = GetIsoStringFromDate(priceListData.starts_at)
       }
 
       if (!!priceListData.ends_at) {
-        priceListData.ends_at = isoFormatDate(priceListData.ends_at)
+        priceListData.ends_at = GetIsoStringFromDate(priceListData.ends_at)
       }
 
       return manager.create(PriceList, priceListData)
@@ -123,11 +123,11 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
       }
 
       if (!!priceListData.starts_at) {
-        priceListData.starts_at = isoFormatDate(priceListData.starts_at)
+        priceListData.starts_at = GetIsoStringFromDate(priceListData.starts_at)
       }
 
       if (!!priceListData.ends_at) {
-        priceListData.ends_at = isoFormatDate(priceListData.ends_at)
+        priceListData.ends_at = GetIsoStringFromDate(priceListData.ends_at)
       }
 
       return manager.assign(existingPriceList, priceListData)
