@@ -1,8 +1,8 @@
-import { isString } from "./is-string"
+import { isDate } from "./is-date"
 
 export const isoFormatDate = (date: Date | string) => {
-  if (isString(date)) {
+  if (isDate(date)) {
     date = new Date(date)
   }
-  return date.toISOString()
+  return (date as Date).toISOString()
 }
