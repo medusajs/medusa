@@ -147,7 +147,7 @@ const CustomersGroupsWidget = ({customer}: CustomersGroupsWidgetType) => {
                   {!!g.metadata?._change_to &&
                     <Button
                       variant="secondary"
-                      size="small"
+                      size="base"
                       className="px-2 py-0 text-xs font-normal"
                       title="Change group"
                       onClick={()=>{changeGroup(g.id, g.metadata?._change_to as string)}}
@@ -176,7 +176,7 @@ const CustomersGroupsWidget = ({customer}: CustomersGroupsWidgetType) => {
           {!!fields.length &&
             <div className="mt-6 grid grid-cols-2 gap-4">
               {fields.map(f=>
-                <FieldView title={f.name} key={f.id}>{f.value}</FieldView>
+                <FieldView title={f.name} key={f.id} islink={f.islink}>{f.value}</FieldView>
               )}
             </div>
           }
