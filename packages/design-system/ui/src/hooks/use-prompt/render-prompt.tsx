@@ -6,7 +6,7 @@ import { Input } from "@/components/input"
 import { Label } from "@/components/label"
 import { Prompt } from "@/components/prompt"
 
-export type DialogProps = {
+export type RenderPromptProps = {
   open: boolean
   title: string
   description: string
@@ -17,7 +17,7 @@ export type DialogProps = {
   onCancel: () => void
 }
 
-const Dialog = ({
+export const RenderPrompt = ({
   open,
   title,
   description,
@@ -26,7 +26,7 @@ const Dialog = ({
   confirmText = "Confirm",
   onConfirm,
   onCancel,
-}: DialogProps) => {
+}: RenderPromptProps) => {
   const [userInput, setUserInput] = React.useState("")
 
   const handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,5 +108,3 @@ const Dialog = ({
     </Prompt>
   )
 }
-
-export default Dialog

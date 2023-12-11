@@ -2,7 +2,7 @@
 
 import { ChevronUpDown, EllipseMiniSolid } from "@medusajs/icons"
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { cva } from "class-variance-authority"
+import { cva } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
@@ -40,8 +40,8 @@ const Group = SelectPrimitive.Group
 
 const Value = SelectPrimitive.Value
 
-const triggerVariants = cva(
-  clx(
+const triggerVariants = cva({
+  base: clx(
     "bg-ui-bg-field txt-compact-medium shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none",
     "data-[placeholder]:text-ui-fg-muted text-ui-fg-base",
     "hover:bg-ui-bg-field-hover",
@@ -51,15 +51,13 @@ const triggerVariants = cva(
     "disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
     "group/trigger"
   ),
-  {
-    variants: {
-      size: {
-        base: "h-10 px-3 py-[9px]",
-        small: "h-8 px-2 py-[5px]",
-      },
+  variants: {
+    size: {
+      base: "h-10 px-3 py-[9px]",
+      small: "h-8 px-2 py-[5px]",
     },
-  }
-)
+  },
+})
 
 const Trigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
