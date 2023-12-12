@@ -1,5 +1,12 @@
-import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces";
-import { BatchJobService, PriceListService, ProductVariantService, RegionService } from "../../../services";
+import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import {
+  BatchJobService,
+  PriceListService,
+  ProductVariantService,
+  RegionService,
+} from "../../../services"
+import { FlagRouter, MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import { IPricingModuleService, RemoteQueryFunction } from "@medusajs/types"
 import {
   InjectedProps,
   OperationType,
@@ -9,19 +16,17 @@ import {
   PriceListImportOperation,
   PriceListImportOperationPrice,
   TBuiltPriceListImportLine,
-  TParsedPriceListImportRowData
-} from "./types";
-import { computerizeAmount, MedusaError } from "medusa-core-utils";
+  TParsedPriceListImportRowData,
+} from "./types"
+import { MedusaError, computerizeAmount } from "medusa-core-utils"
 
-import { BatchJob } from "../../../models";
-import { CreateBatchJobInput } from "../../../types/batch-job";
-import CsvParser from "../../../services/csv-parser";
-import { EntityManager } from "typeorm";
-import { PriceListPriceCreateInput } from "../../../types/price-list";
-import { TParsedProductImportRowData } from "../product/types";
-import { FlagRouter, MedusaV2Flag, promiseAll } from "@medusajs/utils";
-import { IPricingModuleService, RemoteQueryFunction } from "@medusajs/types";
-import { importPriceListWorkflow } from "@medusajs/core-flows";
+import { BatchJob } from "../../../models"
+import { CreateBatchJobInput } from "../../../types/batch-job"
+import CsvParser from "../../../services/csv-parser"
+import { EntityManager } from "typeorm"
+import { PriceListPriceCreateInput } from "../../../types/price-list"
+import { TParsedProductImportRowData } from "../product/types"
+import { importPriceListWorkflow } from "@medusajs/core-flows"
 
 /*
  * Default strategy class used for a batch import of products/variants.
@@ -199,6 +204,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
         { select: ["id", "sku"] }
       )
     }
+
     const skuVariantMap = new Map(skuVariants.map(({ id, sku }) => [sku, id]))
     const variantIdSet = new Set(idVariants.map(({ id }) => id))
 
@@ -233,12 +239,12 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
     }
 
     if (invalidVariantIds.length || invalidVariantSkus.length) {
-      const invalidVariantIdsError = `Variants with ids: ${invalidVariantIds.join(
-        ", "
-      )} not found`
-      const invalidVariantSkusError = `Variants with skus: ${invalidVariantSkus.join(
-        ", "
-      )} not found`
+      const invalidVariantIdsError =
+        invalidVariantIds.length &&
+        `Variants with ids: ${invalidVariantIds.join(", ")} not found`
+      const invalidVariantSkusError =
+        invalidVariantSkus.length &&
+        `Variants with skus: ${invalidVariantSkus.join(", ")} not found`
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Invalid input data ${[

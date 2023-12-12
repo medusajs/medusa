@@ -1,19 +1,19 @@
-import { Readable, PassThrough } from "stream"
-import { EntityManager } from "typeorm"
-
-import { FileService } from "medusa-interfaces"
-import { MockManager } from "medusa-test-utils"
-
-import { User } from "../../../../models"
-import { BatchJobStatus } from "../../../../types/batch-job"
-import PriceListImportStrategy from "../../../batch-jobs/price-list/import"
 import {
-  PriceListService,
   BatchJobService,
+  PriceListService,
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { PassThrough, Readable } from "stream"
+
+import { BatchJobStatus } from "../../../../types/batch-job"
+import { EntityManager } from "typeorm"
+import { FileService } from "medusa-interfaces"
+import { FlagRouter } from "@medusajs/utils"
 import { InjectedProps } from "../../../batch-jobs/price-list/types"
+import { MockManager } from "medusa-test-utils"
+import PriceListImportStrategy from "../../../batch-jobs/price-list/import"
+import { User } from "../../../../models"
 
 let fakeJob = {
   id: "batch_plimport",
@@ -87,8 +87,25 @@ const batchJobServiceMock = {
 
 const productVariantServiceMock = {
   withTransaction: function () {
-    return this
+    return productVariantServiceMock
   },
+  list: jest.fn().mockImplementation((filters, config) => {
+    if (filters.sku) {
+      return Promise.resolve(
+        filters.sku
+          .filter((sku) => !!sku && sku !== "null")
+          .map((sku) => ({ sku, id: sku }))
+      )
+    } else if (filters.id) {
+      return Promise.resolve(
+        filters.id.filter((id) => !!id && id !== "null").map((id) => ({ id }))
+      )
+    }
+    return Promise.resolve([
+      { id: "retrieved-by-sku" },
+      { id: "retrieved-by-id" },
+    ])
+  }),
   retrieve: jest.fn().mockImplementation(() =>
     Promise.resolve({
       id: "retrieved-by-id",
@@ -103,8 +120,48 @@ const productVariantServiceMock = {
 
 const regionServiceMock = {
   withTransaction: function () {
-    return this
+    return regionServiceMock
   },
+  list: jest.fn().mockImplementation(() => {
+    return Promise.resolve([
+      {
+        id: "reg_HMnixPlOicAs7aBlXuchAGxd",
+        name: "Denmark",
+        currency_code: "DKK",
+        currency: "DKK",
+        tax_rate: 0.25,
+        tax_code: null,
+        countries: [
+          {
+            id: "1001",
+            iso_2: "DK",
+            iso_3: "DNK",
+            num_code: "208",
+            name: "denmark",
+            display_name: "Denmark",
+          },
+        ],
+      },
+      {
+        id: "reg_HMnixPlOicAs7aBlXuchAGxe",
+        name: "NA",
+        currency_code: "USD",
+        currency: "USD",
+        tax_rate: 0.25,
+        tax_code: null,
+        countries: [
+          {
+            id: "1002",
+            iso_2: "US",
+            iso_3: "USA",
+            num_code: "204",
+            name: "usa",
+            display_name: "USA",
+          },
+        ],
+      },
+    ])
+  }),
   retrieveByName: jest.fn().mockImplementation(() =>
     Promise.resolve({
       id: "reg_HMnixPlOicAs7aBlXuchAGxd",
@@ -127,6 +184,8 @@ const regionServiceMock = {
   ),
 }
 
+const featureFlagRouter = new FlagRouter({})
+
 const managerMock = MockManager
 
 /* ******************** PRICE LIST IMPORT STRATEGY TESTS ******************** */
@@ -144,6 +203,7 @@ describe("Price List import strategy", () => {
     productVariantService:
       productVariantServiceMock as unknown as ProductVariantService,
     regionService: regionServiceMock as unknown as RegionService,
+    featureFlagRouter,
   } as unknown as InjectedProps)
 
   it("`preProcessBatchJob` should generate import ops and upload them to a bucket using the file service", async () => {
