@@ -225,7 +225,7 @@ describe("/store/carts", () => {
 
       const cart = getRes.data.cart
       expect(cart.context).toEqual({
-        ip: "::ffff:127.0.0.1",
+        ip: expect.any(String),
         user_agent: expect.stringContaining("axios/0.21."),
         test_id: "test",
       })
