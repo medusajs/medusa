@@ -69,13 +69,13 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
     // Limit 1
     optionsWithoutRelations.take = 1
 
-    const result = await this.findWithRelationsAndCount_(
+    const [orders] = await this.findWithRelationsAndCount_(
       relations,
       optionsWithoutRelations,
       { shouldCount: false }
     )
 
-    return result[0][0]
+    return orders[0]
   },
 })
 
