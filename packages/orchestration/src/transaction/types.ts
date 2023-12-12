@@ -36,8 +36,16 @@ export enum TransactionState {
   SKIPPED = "skipped",
 }
 
+export type TransactionModelOptions = {
+  timeout?: number
+  storeExecution?: boolean
+  retentionTime?: number
+  strictCheckpoints?: boolean
+}
+
 export type TransactionModel = {
   id: string
   flow: TransactionStepsDefinition
   hash: string
+  options?: TransactionModelOptions
 }

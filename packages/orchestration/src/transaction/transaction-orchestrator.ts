@@ -6,16 +6,18 @@ import {
 import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
   TransactionHandlerType,
+  TransactionModelOptions,
   TransactionState,
-  TransactionStepsDefinition,
   TransactionStepStatus,
+  TransactionStepsDefinition,
 } from "./types"
 
-import { EventEmitter } from "events"
 import { promiseAll } from "@medusajs/utils"
+import { EventEmitter } from "events"
 
 export type TransactionFlow = {
   modelId: string
+  options?: TransactionModelOptions
   definition: TransactionStepsDefinition
   transactionId: string
   hasFailedSteps: boolean
@@ -38,7 +40,8 @@ export class TransactionOrchestrator extends EventEmitter {
   public static DEFAULT_RETRIES = 0
   constructor(
     public id: string,
-    private definition: TransactionStepsDefinition
+    private definition: TransactionStepsDefinition,
+    private options?: TransactionModelOptions
   ) {
     super()
   }
@@ -266,7 +269,8 @@ export class TransactionOrchestrator extends EventEmitter {
       step.changeState(TransactionState.DONE)
     }
 
-    if (step.definition.async) {
+    const flow = transaction.getFlow()
+    if (step.definition.async || flow.options?.strictCheckpoints) {
       await transaction.saveCheckpoint()
     }
   }
@@ -281,6 +285,7 @@ export class TransactionOrchestrator extends EventEmitter {
 
     step.changeStatus(TransactionStepStatus.TEMPORARY_FAILURE)
 
+    const flow = transaction.getFlow()
     if (step.failures > maxRetries) {
       step.changeState(TransactionState.FAILED)
       step.changeStatus(TransactionStepStatus.PERMANENT_FAILURE)
@@ -294,7 +299,6 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
       if (!step.isCompensating()) {
-        const flow = transaction.getFlow()
         if (step.definition.continueOnPermanentFailure) {
           for (const childStep of step.next) {
             const child = flow.steps[childStep]
@@ -306,7 +310,7 @@ export class TransactionOrchestrator extends EventEmitter {
       }
     }
 
-    if (step.definition.async) {
+    if (step.definition.async || flow.options?.strictCheckpoints) {
       await transaction.saveCheckpoint()
     }
   }
@@ -349,10 +353,6 @@ export class TransactionOrchestrator extends EventEmitter {
       const payload = new TransactionPayload(
         {
           model_id: flow.modelId,
-          reply_to_topic: TransactionOrchestrator.getKeyName(
-            "trans",
-            flow.modelId
-          ),
           idempotency_key: TransactionOrchestrator.getKeyName(
             flow.transactionId,
             step.definition.action!,
@@ -368,6 +368,10 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
       if (!step.definition.async) {
+        if (flow.options?.strictCheckpoints) {
+          await transaction.saveCheckpoint()
+        }
+
         execution.push(
           transaction
             .handler(step.definition.action + "", type, payload, transaction)
@@ -462,18 +466,28 @@ export class TransactionOrchestrator extends EventEmitter {
     await this.executeNext(transaction)
   }
 
-  private async createTransactionFlow(
-    transactionId: string
-  ): Promise<TransactionFlow> {
-    return {
+  private createTransactionFlow(transactionId: string): TransactionFlow {
+    const [steps, hasAsyncSteps] = TransactionOrchestrator.buildSteps(
+      this.definition
+    )
+
+    if (hasAsyncSteps) {
+      this.options ??= {}
+      this.options.storeExecution = true
+    }
+
+    const flow = {
       modelId: this.id,
+      options: this.options,
       transactionId: transactionId,
       hasFailedSteps: false,
       hasSkippedSteps: false,
       state: TransactionState.NOT_STARTED,
       definition: this.definition,
-      steps: TransactionOrchestrator.buildSteps(this.definition),
+      steps,
     }
+
+    return flow
   }
 
   private static async loadTransactionById(
@@ -485,10 +499,12 @@ export class TransactionOrchestrator extends EventEmitter {
 
     if (transaction !== null) {
       const flow = transaction.flow
-      transaction.flow.steps = TransactionOrchestrator.buildSteps(
+      const [steps] = TransactionOrchestrator.buildSteps(
         flow.definition,
         flow.steps
       )
+
+      transaction.flow.steps = steps
       return transaction
     }
 
@@ -498,7 +514,7 @@ export class TransactionOrchestrator extends EventEmitter {
   private static buildSteps(
     flow: TransactionStepsDefinition,
     existingSteps?: { [key: string]: TransactionStep }
-  ): { [key: string]: TransactionStep } {
+  ): [{ [key: string]: TransactionStep }, boolean] {
     const states: { [key: string]: TransactionStep } = {
       [TransactionOrchestrator.ROOT_STEP]: {
         id: TransactionOrchestrator.ROOT_STEP,
@@ -511,6 +527,7 @@ export class TransactionOrchestrator extends EventEmitter {
       { obj: flow, level: [TransactionOrchestrator.ROOT_STEP] },
     ]
 
+    let hasAsyncSteps = false
     while (queue.length > 0) {
       const { obj, level } = queue.shift()
 
@@ -537,6 +554,10 @@ export class TransactionOrchestrator extends EventEmitter {
           const definitionCopy = { ...obj }
           delete definitionCopy.next
 
+          if (definitionCopy.async) {
+            hasAsyncSteps = true
+          }
+
           states[id] = Object.assign(
             new TransactionStep(),
             existingSteps?.[id] || {
@@ -562,7 +583,7 @@ export class TransactionOrchestrator extends EventEmitter {
       }
     }
 
-    return states
+    return [states, hasAsyncSteps]
   }
 
   /** Create a new transaction
@@ -575,13 +596,14 @@ export class TransactionOrchestrator extends EventEmitter {
     handler: TransactionStepHandler,
     payload?: unknown
   ): Promise<DistributedTransaction> {
-    const existingTransaction =
-      await TransactionOrchestrator.loadTransactionById(transactionId)
+    const existingTransaction = this.options?.storeExecution
+      ? await TransactionOrchestrator.loadTransactionById(transactionId)
+      : null
 
     let newTransaction = false
-    let modelFlow
+    let modelFlow: TransactionFlow
     if (!existingTransaction) {
-      modelFlow = await this.createTransactionFlow(transactionId)
+      modelFlow = this.createTransactionFlow(transactionId)
       newTransaction = true
     } else {
       modelFlow = existingTransaction.flow

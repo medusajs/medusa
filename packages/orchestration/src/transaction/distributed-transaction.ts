@@ -6,7 +6,6 @@ import { TransactionHandlerType, TransactionState } from "./types"
 /**
  * @typedef TransactionMetadata
  * @property model_id - The id of the model_id that created the transaction (modelId).
- * @property reply_to_topic - The topic to reply to for the transaction.
  * @property idempotency_key - The idempotency key of the transaction.
  * @property action - The action of the transaction.
  * @property action_type - The type of the transaction.
@@ -15,7 +14,6 @@ import { TransactionHandlerType, TransactionState } from "./types"
  */
 export type TransactionMetadata = {
   model_id: string
-  reply_to_topic: string
   idempotency_key: string
   action: string
   action_type: TransactionHandlerType
@@ -165,7 +163,12 @@ export class DistributedTransaction {
 
   public static keyValueStore: any = {} // TODO: Use Key/Value db
   private static keyPrefix = "dtrans:"
-  public async saveCheckpoint(): Promise<TransactionCheckpoint> {
+  public async saveCheckpoint(): Promise<TransactionCheckpoint | undefined> {
+    const options = this.getFlow().options
+    if (!options?.storeExecution) {
+      return
+    }
+
     // TODO: Use Key/Value db to save transactions
     const key = DistributedTransaction.keyPrefix + this.transactionId
     const data = new TransactionCheckpoint(
@@ -191,6 +194,11 @@ export class DistributedTransaction {
   }
 
   public async deleteCheckpoint(): Promise<void> {
+    const options = this.getFlow().options
+    if (!options?.storeExecution) {
+      return
+    }
+
     // TODO: Delete from Key/Value db
     const key = DistributedTransaction.keyPrefix + this.transactionId
     delete DistributedTransaction.keyValueStore[key]

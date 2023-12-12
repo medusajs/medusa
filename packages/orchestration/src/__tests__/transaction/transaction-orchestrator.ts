@@ -70,7 +70,6 @@ describe("Transaction Orchestrator", () => {
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
-          reply_to_topic: "trans:transaction-name",
           idempotency_key: "transaction_id_123:firstMethod:invoke",
           action: "firstMethod",
           action_type: "invoke",
@@ -85,7 +84,6 @@ describe("Transaction Orchestrator", () => {
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
-          reply_to_topic: "trans:transaction-name",
           idempotency_key: "transaction_id_123:secondMethod:invoke",
           action: "secondMethod",
           action_type: "invoke",
