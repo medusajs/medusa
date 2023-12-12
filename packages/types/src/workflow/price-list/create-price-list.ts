@@ -8,7 +8,7 @@ export interface CreatePriceListDTO {
   starts_at?: string
   ends_at?: string
   status?: PriceListStatus
-  number_rules?: number
+  rules_count?: number
   rules?: PriceListRuleDTO[]
   prices?: {
     amount: number
@@ -63,7 +63,7 @@ export interface CreatePriceListWorkflowDTO {
   starts_at?: string
   ends_at?: string
   status?: PriceListStatus
-  number_rules?: number
+  rules_count?: number
   prices: InputPrice[]
   rules?: CreatePriceListRules
 }

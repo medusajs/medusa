@@ -142,7 +142,6 @@ describe("POST /admin/products/:id", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
     })

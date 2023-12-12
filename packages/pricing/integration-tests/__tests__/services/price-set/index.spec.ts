@@ -36,7 +36,6 @@ describe("PriceSet Service", () => {
           id: "money-amount-USD",
           currency_code: "EUR",
           amount: 100,
-          rules: {},
         },
       ],
     },
