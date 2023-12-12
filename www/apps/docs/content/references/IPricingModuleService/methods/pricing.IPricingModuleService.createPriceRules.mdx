@@ -1,0 +1,206 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/createPriceRules
+sidebar_label: createPriceRules
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# createPriceRules - Pricing Module Reference
+
+This documentation provides a reference to the `createPriceRules` method. This belongs to the Pricing Module.
+
+This method is used to create new price rules based on the provided data.
+
+## Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function createPriceRules (
+  id: string,
+  priceSetId: string,
+  ruleTypeId: string,
+  value: string,
+  priceSetMoneyAmountId: string,
+  priceListId: string
+) {
+  const pricingService = await initializePricingModule()
+
+  const priceRules = await pricingService.createPriceRules([
+    {
+      id,
+      price_set_id: priceSetId,
+      rule_type_id: ruleTypeId,
+      value,
+      price_set_money_amount_id: priceSetMoneyAmountId,
+      price_list_id: priceListId
+    }
+  ])
+
+  // do something with the price rules or return them
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[CreatePriceRuleDTO](../../pricing/interfaces/pricing.CreatePriceRuleDTO.mdx)[]",
+    "description": "The price rules to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the price rule.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price_set_id",
+        "type": "`string`",
+        "description": "The ID of the associated price set.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "price_set_money_amount_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "priority",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rule_type_id",
+        "type": "`string`",
+        "description": "The ID of the associated rule type.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "value",
+        "type": "`string`",
+        "description": "The value of the price rule.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../pricing/interfaces/pricing.Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "A string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[PriceRuleDTO](../../pricing/interfaces/pricing.PriceRuleDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of created price rules.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "PriceRuleDTO[]",
+        "type": "[PriceRuleDTO](../../pricing/interfaces/pricing.PriceRuleDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "PriceRuleDTO",
+            "type": "`object`",
+            "description": "A price rule's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

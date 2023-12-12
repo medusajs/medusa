@@ -7,5 +7,5 @@ export interface CreatePriceListDTO {
   ends_at?: string
   status?: PriceListStatus
   type?: PriceListType
-  number_rules?: number
+  rules_count?: number
 }
