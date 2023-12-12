@@ -6,6 +6,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=16"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
@@ -33,6 +36,7 @@
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808",
   "keywords": [
     "medusa-plugin",
-    "medusa-plugin-file"
+    "medusa-plugin-file",
+    "medusa-plugin-storage"
   ]
 }

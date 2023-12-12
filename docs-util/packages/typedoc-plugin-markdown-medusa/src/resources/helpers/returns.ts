@@ -88,7 +88,12 @@ function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
             commentPart.target instanceof DeclarationReflection
           ) {
             const content = commentPart.target.children?.map((childItem) =>
-              reflectionFormatter(childItem, parameterStyle, 1, maxLevel)
+              reflectionFormatter({
+                reflection: childItem,
+                type: parameterStyle,
+                level: 1,
+                maxLevel,
+              })
             )
             result +=
               parameterStyle === "component"

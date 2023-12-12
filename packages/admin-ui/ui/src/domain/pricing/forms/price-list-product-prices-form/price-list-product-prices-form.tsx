@@ -1395,7 +1395,7 @@ const PriceListProductPricesForm = ({
               <Adjustments className="text-ui-fg-subtle" />
               {t(
                 "price-list-product-prices-form-column-visibility-button",
-                "View"
+                "Currencies"
               )}
             </Button>
           </DropdownMenu.Trigger>

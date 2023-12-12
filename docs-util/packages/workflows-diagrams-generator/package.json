@@ -1,0 +1,29 @@
+{
+  "name": "workflows-diagram-generator",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.0.0",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "bin": {
+    "workflow-diagrams-generator": "dist/index.js"
+  },
+  "dependencies": {
+    "@medusajs/workflows-sdk": "latest",
+    "@mermaid-js/mermaid-cli": "^10.6.1",
+    "commander": "^11.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.4"
+  }
+}
