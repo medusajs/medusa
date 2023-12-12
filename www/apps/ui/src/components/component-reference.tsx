@@ -18,14 +18,6 @@ const ComponentReference = ({
   componentsToShow = [mainComponent],
   specsSrc,
 }: ComponentReferenceProps) => {
-  // const { data } = useSWR<{
-  //   specs: Documentation[]
-  // }>(basePathUrl(`/api/specs/${mainComponent}`), swrFetcher, {
-  //   errorRetryInterval: 2000,
-  // })
-
-  // const specs = data?.specs || []
-
   if (!specsSrc) {
     return <></>
   }
