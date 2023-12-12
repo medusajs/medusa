@@ -53,7 +53,7 @@ import {
 } from "@services"
 import { joinerConfig } from "../joiner-config"
 import { RepositoryTypes } from "@types"
-import { validatePriceListDates } from "../utils"
+import { validatePriceListDates } from "@utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService

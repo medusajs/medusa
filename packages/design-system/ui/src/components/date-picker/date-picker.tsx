@@ -13,28 +13,26 @@ import { TimeInput } from "@/components/time-input"
 import type { DateRange } from "@/types"
 import { clx } from "@/utils/clx"
 import { isBrowserLocaleClockType24h } from "@/utils/is-browser-locale-hour-cycle-24h"
-import { cva } from "class-variance-authority"
+import { cva } from "cva"
 
-const displayVariants = cva(
-  clx(
+const displayVariants = cva({
+  base: clx(
     "text-ui-fg-base bg-ui-bg-field transition-fg shadow-buttons-neutral flex w-full items-center gap-x-2 rounded-md outline-none",
     "hover:bg-ui-bg-field-hover",
     "focus:shadow-borders-interactive-with-active data-[state=open]:shadow-borders-interactive-with-active",
     "disabled:bg-ui-bg-disabled disabled:text-ui-fg-disabled disabled:shadow-buttons-neutral",
     "aria-[invalid=true]:!shadow-borders-error"
   ),
-  {
-    variants: {
-      size: {
-        base: "txt-compact-medium h-10 px-3 py-2.5",
-        small: "txt-compact-small h-8 px-2 py-1.5",
-      },
+  variants: {
+    size: {
+      base: "txt-compact-medium h-10 px-3 py-2.5",
+      small: "txt-compact-small h-8 px-2 py-1.5",
     },
-    defaultVariants: {
-      size: "base",
-    },
-  }
-)
+  },
+  defaultVariants: {
+    size: "base",
+  },
+})
 
 const Display = React.forwardRef<
   HTMLButtonElement,
