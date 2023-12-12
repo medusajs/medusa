@@ -22,6 +22,9 @@
   ],
   "author": "Sebastian Rindom",
   "license": "MIT",
+  "dependencies": {
+    "@medusajs/utils": "^1.10.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",

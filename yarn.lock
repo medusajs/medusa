@@ -35757,6 +35757,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/preset-typescript": ^7.13.0
     "@babel/runtime": ^7.9.6
+    "@medusajs/utils": ^1.10.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0

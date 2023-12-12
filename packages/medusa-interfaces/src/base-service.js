@@ -1,9 +1,5 @@
 // Import from dist to avoid circular deps which result in the base service to be undefined
-import {
-  buildQuery,
-  setMetadata,
-  validateId,
-} from "@medusajs/medusa/dist/utils"
+import { buildQuery, setMetadata, validateId } from "@medusajs/utils"
 
 /**
  * Common functionality for Services
