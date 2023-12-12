@@ -10,6 +10,7 @@ import {
   PriceSetDTO,
   PricingContext,
   PricingFilters,
+  PricingRepositoryService,
   PricingTypes,
   RuleTypeDTO,
 } from "@medusajs/types"
@@ -51,12 +52,12 @@ import {
   RuleTypeService,
 } from "@services"
 import { joinerConfig } from "../joiner-config"
-import { RepositoryTypes} from "@types"
+import { RepositoryTypes } from "@types"
 import { validatePriceListDates } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  pricingRepository: RepositoryTypes.PricingRepositoryService
+  pricingRepository: PricingRepositoryService
   currencyService: CurrencyService<any>
   moneyAmountService: MoneyAmountService<any>
   priceSetService: PriceSetService<any>
@@ -85,7 +86,7 @@ export default class PricingModuleService<
 > implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly pricingRepository_: RepositoryTypes.PricingRepositoryService
+  protected readonly pricingRepository_: PricingRepositoryService
   protected readonly currencyService_: CurrencyService<TCurrency>
   protected readonly moneyAmountService_: MoneyAmountService<TMoneyAmount>
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
