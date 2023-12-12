@@ -33,24 +33,25 @@ export default async function ({
     outputExists = false
   }
 
-  // create out directory if it doesn't exist
+  // create output directory if it doesn't exist
   if (!outputExists) {
     mkdirSync(output)
   }
 
+  // optionally use typedoc to add missing props, descriptions
+  // or types.
   const typedocManager = new TypedocManager({
     tsconfigPath,
     disable: disableTypedoc,
     verbose: verboseTypedoc,
   })
 
-  // use typedoc to retrieve signatures which can be used later
-  // to find missing description/types
   await typedocManager.setup(src)
 
   for (const [filePath, fileContent] of fileContents) {
     try {
       const relativePath = path.resolve(filePath)
+      // retrieve the specs of a file
       const specs = parse(fileContent, {
         filename: relativePath,
         resolver: new CustomResolver(typedocManager),
@@ -75,6 +76,7 @@ export default async function ({
         },
       })
 
+      // write each of the specs into output directory
       specs.forEach((spec) => {
         if (!spec.displayName) {
           return
@@ -82,9 +84,11 @@ export default async function ({
         const specNameSplit = spec.displayName.split(".")
         let filePath = output
 
+        // if typedoc isn't disabled, this method will try to fill
+        // missing descriptions and types, and add missing props.
         spec = typedocManager.tryFillWithTypedocData(spec, specNameSplit)
 
-        // put the specs in a sub-directory
+        // put the spec in a sub-directory
         filePath = path.join(filePath, specNameSplit[0])
         if (!existsSync(filePath)) {
           mkdirSync(filePath)

@@ -9,7 +9,6 @@ import {
 import { Comment } from "typedoc"
 import {
   Application,
-  CommentTag,
   Context,
   Converter,
   DeclarationReflection,
@@ -25,7 +24,6 @@ import {
   getType,
   getTypeChildren,
   stripLineBreaks,
-  // stripLineBreaks,
 } from "utils"
 
 type MappedReflectionSignature = {
@@ -40,12 +38,6 @@ type Options = {
 }
 
 type TsType = TypeDescriptor<TSFunctionSignatureType>
-
-type MissingReactPropsOptions = {
-  spec: Documentation
-  comments: CommentTag[]
-  exisitingProps: DeclarationReflection[]
-}
 
 type ExcludeExternalOptions = {
   parentReflection: DeclarationReflection
@@ -124,6 +116,8 @@ export default class TypedocManager {
       return spec
     }
 
+    // retrieve the signature of the reflection
+    // this is helpful to retrieve the props of the component
     const mappedSignature = reflection.sources?.length
       ? this.getMappedSignatureFromSource(reflection.sources[0])
       : undefined
@@ -133,33 +127,36 @@ export default class TypedocManager {
       mappedSignature.signatures[0].parameters[0].type
     ) {
       const signature = mappedSignature.signatures[0]
+      // get the props of the component from the
+      // first parameter in the signature.
       const props = getTypeChildren(
         signature.parameters![0].type!,
         this.project
       )
 
-      // if (signature.comment) {
-      //   // add missing props to the spec if they're included in the `@showReactProp` tag
-      //   // of the signature.
-      //   spec = this.addMissingReactProps({
-      //     spec,
-      //     comments: signature.comment.blockTags,
-      //     exisitingProps: props,
-      //   })
-      // }
-
+      // this stores props that should be removed from the
+      // spec
       const propsToRemove = new Set<string>()
 
+      // loop over props in the spec to either add missing descriptions or
+      // push a prop into the `propsToRemove` set.
       Object.entries(spec.props!).forEach(([propName, propDetails]) => {
+        // retrieve the reflection of the prop
         const reflectionPropType = props.find(
           (propType) => propType.name === propName
         )
         if (!reflectionPropType) {
+          // if the reflection doesn't exist and the
+          // prop doesn't have a description, it should
+          // be removed.
           if (!propDetails.description) {
             propsToRemove.add(propName)
           }
           return
         }
+        // if the component has the `@excludeExternal` tag,
+        // the prop is external, and it doesn't have the
+        // `@keep` tag, the prop is removed.
         if (
           this.shouldExcludeExternal({
             parentReflection: reflection,
@@ -171,8 +168,10 @@ export default class TypedocManager {
           propsToRemove.add(propName)
           return
         }
+        // if the prop doesn't have description, retrieve it using Typedoc
         propDetails.description =
           propDetails.description || this.getDescription(reflectionPropType)
+        // if the prop still doesn't have description, remove it.
         if (!propDetails.description) {
           propsToRemove.add(propName)
         } else {
@@ -180,33 +179,20 @@ export default class TypedocManager {
             propDetails.description
           )
         }
-        // if (reflectionPropType) {
-        // tsType is set/replaced if the spec doesn't have it
-        // or if it just has a name of a reflection.
-        // TODO remove
-        //   const shouldReplaceTsType =
-        //     !propDetails.tsType ||
-        //     (this.doesOnlyHaveName(propDetails.tsType) &&
-        //       reflectionPropType.type?.type === "reference")
-        //   if (shouldReplaceTsType) {
-        //     propDetails.tsType = reflectionPropType.type
-        //       ? this.getTsType(reflectionPropType.type)
-        //       : reflectionPropType.signatures?.length
-        //         ? this.getFunctionTsType(reflectionPropType.signatures[0])
-        //         : undefined
-        //     if (!propDetails.tsType) {
-        //       delete propDetails.tsType
-        //     }
-        //   }
-        // }
       })
 
+      // delete props in the `propsToRemove` set from the specs.
       propsToRemove.forEach((prop) => delete spec.props![prop])
 
       // try to add missing props
       props
         .filter(
           (prop) =>
+            // Filter out props that are already in the
+            // specs, are already in the `propsToRemove` set
+            // (meaning they've been removed), don't have a
+            // comment, are React props, and are external props (if
+            // the component excludes them).
             !Object.hasOwn(spec.props!, prop.name) &&
             !propsToRemove.has(prop.name) &&
             this.getReflectionComment(prop) &&
@@ -218,6 +204,8 @@ export default class TypedocManager {
             })
         )
         .forEach((prop) => {
+          // If the prop has description (retrieved)
+          // through Typedoc, it's added into the spec.
           const description = this.normalizeDescription(
             this.getDescription(prop)
           )
@@ -259,28 +247,8 @@ export default class TypedocManager {
     })
   }
 
-  addMissingReactProps({
-    spec,
-    comments,
-    exisitingProps,
-  }: MissingReactPropsOptions) {
-    comments
-      .filter((tag) => tag.tag === `@prop` && tag.name !== undefined)
-      .map((tag) => tag.name)
-      .forEach((propName) => {
-        const reflectionProp = exisitingProps.find(
-          (prop) => prop.name === propName
-        )
-        if (!Object.hasOwn(spec.props!, propName!) && reflectionProp) {
-          spec.props![propName!] = {
-            required: !reflectionProp.flags.isOptional,
-          }
-        }
-      })
-
-    return spec
-  }
-
+  // Retrieves the `tsType` stored in a spec's prop
+  // The format is based on the expected format of React Docgen.
   getTsType(reflectionType: SomeType, level = 1): TsType {
     const rawValue = getType({
       reflectionType,
@@ -383,6 +351,8 @@ export default class TypedocManager {
     }
   }
 
+  // Retrieves the TsType of nested elements. (Helpful for
+  // Reflection types like `intersection` or `union`).
   getElementsTypes(elements: SomeType[], level = 1): TsType[] {
     const elementData: TsType[] = []
 
@@ -393,6 +363,9 @@ export default class TypedocManager {
     return elementData
   }
 
+  // Removes tags like `@keep` and `@ignore` from a
+  // prop or component's description. These aren't removed
+  // by React Docgen.
   normalizeDescription(description: string): string {
     return stripLineBreaks(
       description
@@ -402,6 +375,8 @@ export default class TypedocManager {
     )
   }
 
+  // Retrieve the description of a reflection (component or prop)
+  // through its summary.
   getDescription(reflection: DeclarationReflection): string {
     let commentDisplay = this.getReflectionComment(reflection)?.summary
     if (!commentDisplay) {
@@ -416,6 +391,7 @@ export default class TypedocManager {
     return commentDisplay?.map(({ text }) => text).join("") || ""
   }
 
+  // Retrieves the TsType for a function
   getFunctionTsType(
     signature: SignatureReflection,
     rawValue?: string,
@@ -455,6 +431,7 @@ export default class TypedocManager {
     return typeData
   }
 
+  // Checks if a TsType only has a `name` field.
   doesOnlyHaveName(obj: TsType): boolean {
     const keys = Object.keys(obj)
 
@@ -483,6 +460,7 @@ export default class TypedocManager {
     )
   }
 
+  // Returns the TsType of a child of a reflection.
   resolveChildType(reflectionName: string, childName: string): TsType | null {
     if (!this.project) {
       return null
@@ -535,6 +513,10 @@ export default class TypedocManager {
     )
   }
 
+  // Checks if a parent reflection has the `@excludeExternal`
+  // which means external child reflections should be ignored.
+  // external child reflections aren't ignored if they have the
+  // `@keep` tag.
   shouldExcludeExternal({
     parentReflection,
     childReflection,
@@ -564,6 +546,7 @@ export default class TypedocManager {
     )
   }
 
+  // Gets comments of a reflection.
   getReflectionComment(reflection: Reflection): Comment | undefined {
     if (reflection.comment) {
       return reflection.comment
@@ -581,6 +564,7 @@ export default class TypedocManager {
     return undefined
   }
 
+  // Gets a reflection by its name.
   getReflectionByName(name: string): DeclarationReflection | undefined {
     return this.project
       ? (Object.values(this.project?.reflections || {}).find(

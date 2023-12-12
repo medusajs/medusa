@@ -39,9 +39,9 @@ function resolveDocumentation(
       // remove property if it doesn't have a description or
       // if its description includes the `@ignore` tag.
       if (!propExists || shouldRemoveProp) {
-        // if props should be removed, remove it from the documentation
         if (shouldRemoveProp && propExists) {
-          // props are removed if its descriptor is empty
+          // prop is removed if its descriptor is empty,
+          // so we empty it to remove it.
           emptyPropDescriptor(propDescriptor)
         }
         return
@@ -70,8 +70,8 @@ function resolveDocumentation(
           }
         }
       } else if (
-        propDescriptor.tsType?.name &&
-        Object.keys(propDescriptor.tsType).length === 1
+        propDescriptor.tsType &&
+        typedocManager?.doesOnlyHaveName(propDescriptor.tsType)
       ) {
         // see if the type needs to be resolved.
         const typeReflection = typedocManager?.getReflectionByName(
@@ -118,7 +118,7 @@ const argsPropHandler = (
       return
     }
 
-    // set description of prop
+    // set description and type of prop
     resolveDocumentation(documentation, resolvedParam, typedocManager)
   })
 }
