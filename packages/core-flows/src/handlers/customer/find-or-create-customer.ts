@@ -1,8 +1,10 @@
 import { validateEmail } from "@medusajs/utils"
 
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
+import { CustomerTypes } from "@medusajs/types"
 
-type CustomerDTO = {
+type CustomerResultDTO = {
+  customer?: CustomerTypes.CustomerDTO
   customer_id?: string
   email?: string
 }
@@ -22,12 +24,12 @@ export async function findOrCreateCustomer({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInputData>): Promise<CustomerDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<CustomerResultDTO> {
   const { manager } = context
 
   const customerService = container.resolve("customerService")
 
-  const customerDTO: CustomerDTO = {}
+  const customerDataDTO: CustomerResultDTO = {}
   const customerId = data[Aliases.Customer].customer_id
   const customerServiceTx = customerService.withTransaction(manager)
 
@@ -36,8 +38,9 @@ export async function findOrCreateCustomer({
       .retrieve(customerId)
       .catch(() => undefined)
 
-    customerDTO.customer_id = customer?.id
-    customerDTO.email = customer?.email
+    customerDataDTO.customer = customer
+    customerDataDTO.customer_id = customer?.id
+    customerDataDTO.email = customer?.email
   }
 
   const customerEmail = data[Aliases.Customer].email
@@ -53,11 +56,12 @@ export async function findOrCreateCustomer({
       customer = await customerServiceTx.create({ email: validatedEmail })
     }
 
-    customerDTO.customer_id = customer.id
-    customerDTO.email = customer.email
+    customerDataDTO.customer = customer
+    customerDataDTO.customer_id = customer.id
+    customerDataDTO.email = customer.email
   }
 
-  return customerDTO
+  return customerDataDTO
 }
 
 findOrCreateCustomer.aliases = Aliases

@@ -10,7 +10,11 @@ export default function (theme: MarkdownTheme) {
       const { parameterComponent, maxLevel } =
         theme.getFormattingOptionsForLocation()
       const parameters = this.map((parameter) =>
-        reflectionComponentFormatter(parameter, 1, maxLevel)
+        reflectionComponentFormatter({
+          reflection: parameter,
+          level: 1,
+          maxLevel,
+        })
       )
 
       return `<${parameterComponent} parameters={${JSON.stringify(

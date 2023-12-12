@@ -1,0 +1,369 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# MiddlewareService
+
+Orchestrates dynamic middleware registered through the Medusa Middleware API
+
+## constructor
+
+___
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "postAuthentication_",
+    "type": "`middlewareType`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "preAuthentication_",
+    "type": "`middlewareType`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "preCartCreation_",
+    "type": "RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "routers",
+    "type": "`Record<string, Router[]>`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## Methods
+
+### addPostAuthentication
+
+Adds a middleware function to be called after authentication is completed.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "middleware",
+    "type": "`middlewareHandlerType`",
+    "description": "the middleware function. Should return a\n  middleware function.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`Record<string, unknown>`",
+    "description": "the arguments that will be passed to the\n  middleware",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "void",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### addPreAuthentication
+
+Adds a middleware function to be called before authentication is completed.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "middleware",
+    "type": "`middlewareHandlerType`",
+    "description": "the middleware function. Should return a\n  middleware function.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`Record<string, unknown>`",
+    "description": "the arguments that will be passed to the\n  middleware",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "void",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### addPreCartCreation
+
+Adds a middleware function to be called before cart creation
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "middleware",
+    "type": "RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;",
+    "description": "the middleware function. Should return a\n  middleware function.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### addRouter
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "path",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "router",
+    "type": "`Router`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getRouters
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "path",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Router[]",
+    "type": "`Router`[]",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### usePostAuthentication
+
+Adds post authentication middleware to an express app.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "app",
+    "type": "`Router`",
+    "description": "the express app to add the middleware to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### usePreAuthentication
+
+Adds pre authentication middleware to an express app.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "app",
+    "type": "`Router`",
+    "description": "the express app to add the middleware to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### usePreCartCreation
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]",
+    "type": "RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateMiddleware\_
+
+Validates a middleware function, throws if fn is not of type function.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fn",
+    "type": "`unknown`",
+    "description": "the middleware function to validate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "nothing if the middleware is a function",
+    "expandable": false,
+    "children": []
+  }
+]} />
