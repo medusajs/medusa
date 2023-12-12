@@ -21,7 +21,7 @@ import RuleType from "./rule-type"
 type OptionalFields =
   | "status"
   | "type"
-  | "number_rules"
+  | "rules_count"
   | "starts_at"
   | "ends_at"
   | "created_at"
@@ -82,7 +82,7 @@ export default class PriceList {
   rule_types = new Collection<RuleType>(this)
 
   @Property({ columnType: "integer", default: 0 })
-  number_rules?: number
+  rules_count?: number
 
   @Property({
     onCreate: () => new Date(),
