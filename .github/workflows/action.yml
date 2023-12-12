@@ -14,7 +14,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 20 environment
+      - name: Setup Node.js 21 environment
         uses: actions/setup-node@v3
         with:
           node-version: "21.1.0"
@@ -45,7 +45,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 20 environment
+      - name: Setup Node.js 21 environment
         uses: actions/setup-node@v3
         with:
           node-version: "21.1.0"
@@ -106,7 +106,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 20 environment
+      - name: Setup Node.js 21 environment
         uses: actions/setup-node@v3
         with:
           node-version: "21.1.0"
@@ -167,7 +167,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 20 environment
+      - name: Setup Node.js 21 environment
         uses: actions/setup-node@v3
         with:
           node-version: "21.1.0"
@@ -219,7 +219,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 20 environment
+      - name: Setup Node.js 21 environment
         uses: actions/setup-node@v3
         with:
           node-version: "21.1.0"
@@ -272,7 +272,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 20 environment
+      - name: Setup Node.js 21 environment
         uses: actions/setup-node@v3
         with:
           node-version: "21.1.0"
