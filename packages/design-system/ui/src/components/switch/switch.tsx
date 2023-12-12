@@ -53,7 +53,7 @@ const Switch = React.forwardRef<
      */
     size = "base", 
     ...props 
-  }, ref) => (
+  }: SwitchProps, ref) => (
   <Primitives.Root
     className={clx(switchVariants({ size }), className)}
     {...props}

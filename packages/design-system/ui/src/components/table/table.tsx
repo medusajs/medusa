@@ -100,7 +100,7 @@ interface TablePaginationProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * This component is based on the div element and supports all of its props
+ * This component is based on the `div` element and supports all of its props
  */
 const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
   (

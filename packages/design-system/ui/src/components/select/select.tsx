@@ -172,7 +172,8 @@ const Label = React.forwardRef<
 Label.displayName = "Select.Label"
 
 /**
- * An item in the select.
+ * An item in the select. It's based on [Radix UI Select Item](https://www.radix-ui.com/primitives/docs/components/select#item)
+ * and accepts its props.
  */
 const Item = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,

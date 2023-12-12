@@ -84,6 +84,12 @@ export default async function ({
         const specNameSplit = spec.displayName.split(".")
         let filePath = output
 
+        if (spec.description) {
+          spec.description = typedocManager.normalizeDescription(
+            spec.description
+          )
+        }
+
         // if typedoc isn't disabled, this method will try to fill
         // missing descriptions and types, and add missing props.
         spec = typedocManager.tryFillWithTypedocData(spec, specNameSplit)

@@ -23,7 +23,7 @@ import {
   getProjectChild,
   getType,
   getTypeChildren,
-  stripLineBreaks,
+  // stripLineBreaks,
 } from "utils"
 
 type MappedReflectionSignature = {
@@ -367,12 +367,11 @@ export default class TypedocManager {
   // prop or component's description. These aren't removed
   // by React Docgen.
   normalizeDescription(description: string): string {
-    return stripLineBreaks(
-      description
-        .replace("@keep", "")
-        .replace("@ignore", "")
-        .replace("@excludeExternal", "")
-    )
+    return description
+      .replace("@keep", "")
+      .replace("@ignore", "")
+      .replace("@excludeExternal", "")
+      .trim()
   }
 
   // Retrieve the description of a reflection (component or prop)
@@ -433,9 +432,14 @@ export default class TypedocManager {
 
   // Checks if a TsType only has a `name` field.
   doesOnlyHaveName(obj: TsType): boolean {
+    const primitiveTypes = ["string", "number", "object", "boolean", "function"]
     const keys = Object.keys(obj)
 
-    return keys.length === 1 && keys[0] === "name"
+    return (
+      keys.length === 1 &&
+      keys[0] === "name" &&
+      !primitiveTypes.includes(obj.name)
+    )
   }
 
   // retrieves a reflection by the provided name
