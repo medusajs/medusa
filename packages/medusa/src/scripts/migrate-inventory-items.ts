@@ -11,7 +11,7 @@ import dotenv from "dotenv"
 import express from "express"
 import loaders from "../loaders"
 import { promiseAll } from "@medusajs/utils"
-import Logger from "../loaders/Logger";
+import Logger from "../loaders/logger"
 
 dotenv.config()
 

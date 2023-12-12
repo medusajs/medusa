@@ -3,7 +3,7 @@ import { createConnection, SelectQueryBuilder } from "typeorm"
 import { LineItem } from "../models/line-item"
 import { LineItemAdjustment } from "../models/line-item-adjustment"
 import { typeormConfig } from "./db-config"
-import Logger from "../loaders/Logger"
+import Logger from "../loaders/logger"
 
 dotenv.config()
 

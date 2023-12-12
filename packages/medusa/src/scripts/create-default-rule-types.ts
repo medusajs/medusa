@@ -2,7 +2,7 @@ import { createDefaultRuleTypes } from "./utils/create-default-rule-types"
 import dotenv from "dotenv"
 import express from "express"
 import loaders from "../loaders"
-import Logger from "../loaders/Logger"
+import Logger from "../loaders/logger"
 
 dotenv.config()
 
