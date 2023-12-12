@@ -1,7 +1,26 @@
+<<<<<<< HEAD
 import { BaseFilterable } from "../../dal";
 import { CreateMoneyAmountDTO, FilterableMoneyAmountProps, MoneyAmountDTO } from "./money-amount";
 import { RuleTypeDTO } from "./rule-type";
 import { CreatePriceSetPriceRules } from "./price-list";
+=======
+import { BaseFilterable } from "../../dal"
+import {
+  CreateMoneyAmountDTO,
+  FilterableMoneyAmountProps,
+  MoneyAmountDTO,
+} from "./money-amount"
+import { RuleTypeDTO } from "./rule-type"
+import { Context } from "../../shared-context"
+
+export interface PricingRepositoryService {
+  calculatePrices(
+    pricingFilters: PricingFilters,
+    pricingContext: PricingContext,
+    context: Context
+  ): Promise<CalculatedPriceSetDTO[]>
+}
+>>>>>>> 463cf148f (feat(pricing): Separate Pricing Module internal types from `@medusajs/types` (#5777))
 
 /**
  * @interface
