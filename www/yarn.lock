@@ -21994,18 +21994,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swr@npm:^2.2.4":
-  version: 2.2.4
-  resolution: "swr@npm:2.2.4"
-  dependencies:
-    client-only: ^0.0.1
-    use-sync-external-store: ^1.2.0
-  peerDependencies:
-    react: ^16.11.0 || ^17.0.0 || ^18.0.0
-  checksum: ad7d3205f2b4969f6727b25819f2f999af792083b63a25c54fae10bc841c94827fb06652764ef94fa7a46cf9dda25a41f088809919d070dd0fec5b0005a3e839
-  languageName: node
-  linkType: hard
-
 "symbol-tree@npm:^3.2.4":
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
@@ -22759,7 +22747,6 @@ __metadata:
     react-docgen: ^7.0.1
     react-dom: 18.2.0
     remark: ^14.0.3
-    swr: ^2.2.4
     tailwind: "*"
     tailwindcss: 3.3.3
     ts-node: ^10.9.1
