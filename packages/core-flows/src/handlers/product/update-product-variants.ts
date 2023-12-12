@@ -21,7 +21,7 @@ export async function updateProductVariants({
   for (const [
     product_id,
     variantsUpdateData = [],
-  ] of productVariantsMap.entries()) {
+  ] of productVariantsMap) {
     updateVariantsData.push(
       ...(variantsUpdateData as unknown as UpdateProductVariantOnlyDTO[]).map(
         (update) => ({ ...update, product_id })
