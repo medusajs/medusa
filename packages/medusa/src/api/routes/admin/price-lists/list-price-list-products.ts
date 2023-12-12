@@ -19,7 +19,7 @@ import { pickBy } from "lodash"
 import { ProductStatus } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
 import { FilterableProductProps } from "../../../../types/product"
-import { listAndCountProductWithIsolatedProductModule } from "../products/list-products"
+import { listProducts } from "../../../../utils"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -196,8 +196,8 @@ export default async (req: Request, res) => {
   }
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    ;[products, count] = await listAndCountProductWithIsolatedProductModule(
-      req,
+    ;[products, count] = await listProducts(
+      req.scope,
       filterableFields,
       req.listConfig
     )
