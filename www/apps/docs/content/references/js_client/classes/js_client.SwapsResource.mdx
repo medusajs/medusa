@@ -11,7 +11,7 @@ This class is used to send requests to [Store Swap API Routes](https://docs.medu
 are available in the JS Client under the `medusa.swaps` property.
 
 A swap is created by a customer or an admin to exchange an item with a new one.
-Creating a swap implicitly includes creating a return for the item being exchanged.
+Creating a swap implicitely includes creating a return for the item being exchanged.
 
 Related Guide: [How to create a swap in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-swap)
 
@@ -2094,7 +2094,7 @@ medusa.swaps.create({
               {
                 "name": "DIFFERENCE_REFUNDED",
                 "type": "`\"difference_refunded\"`",
-                "description": "The negative difference amount between the returned item(s) and the new one(s) has been refunded.",
+                "description": "The negative difference amount between the returned item(s) and the new one(s) has been refuneded.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -2112,7 +2112,7 @@ medusa.swaps.create({
               {
                 "name": "PARTIALLY_REFUNDED",
                 "type": "`\"partially_refunded\"`",
-                "description": "Some of the negative difference amount between the returned item(s) and the new one(s) has been refunded.",
+                "description": "Some of the negative difference amount between the returned item(s) and the new one(s) has been refuneded.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -2266,7 +2266,7 @@ medusa.swaps.create({
               {
                 "name": "shipping_data",
                 "type": "`Record<string, unknown>`",
-                "description": "Data about the return shipment as provided by the Fulfillment Provider that handles the return shipment.",
+                "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -4673,7 +4673,7 @@ medusa.swaps.retrieveByCartId(cartId)
               {
                 "name": "DIFFERENCE_REFUNDED",
                 "type": "`\"difference_refunded\"`",
-                "description": "The negative difference amount between the returned item(s) and the new one(s) has been refunded.",
+                "description": "The negative difference amount between the returned item(s) and the new one(s) has been refuneded.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -4691,7 +4691,7 @@ medusa.swaps.retrieveByCartId(cartId)
               {
                 "name": "PARTIALLY_REFUNDED",
                 "type": "`\"partially_refunded\"`",
-                "description": "Some of the negative difference amount between the returned item(s) and the new one(s) has been refunded.",
+                "description": "Some of the negative difference amount between the returned item(s) and the new one(s) has been refuneded.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -4845,7 +4845,7 @@ medusa.swaps.retrieveByCartId(cartId)
               {
                 "name": "shipping_data",
                 "type": "`Record<string, unknown>`",
-                "description": "Data about the return shipment as provided by the Fulfillment Provider that handles the return shipment.",
+                "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
