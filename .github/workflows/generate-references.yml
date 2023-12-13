@@ -155,7 +155,7 @@ jobs:
         working-directory: docs-util
 
       - name: Generate UI Specs
-        run: yarn start --src ../../../packages/design-system/ui --output ../../../www/apps/ui/src/specs --clean
+        run: yarn generate:ui
         working-directory: docs-util/packages/react-docs-generator
 
       - name: Create Pull Request

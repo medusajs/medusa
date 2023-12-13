@@ -23,7 +23,6 @@ import {
   getProjectChild,
   getType,
   getTypeChildren,
-  // stripLineBreaks,
 } from "utils"
 
 type MappedReflectionSignature = {

@@ -15,7 +15,7 @@
       "tsType": {
         "name": "string"
       },
-      "description": "The currency code to show as the input's placeholder."
+      "description": "The currency code to show in the input."
     },
     "size": {
       "defaultValue": {

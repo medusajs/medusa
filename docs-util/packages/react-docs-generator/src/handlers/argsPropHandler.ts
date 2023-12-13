@@ -15,7 +15,7 @@ function resolveDocumentation(
     return
   }
   path.get("properties").forEach((propertyPath) => {
-    if (propertyPath.isSpreadElement()) {
+    if (propertyPath.isSpreadElement() || propertyPath.isRestElement()) {
       const resolvedValuePath = utils.resolveToValue(
         propertyPath.get("argument")
       ) as NodePath<ComponentNode>

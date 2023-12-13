@@ -307,25 +307,10 @@ interface PickerProps extends CalendarProps {
    * Whether to show a time picker along with the date picker.
    */
   showTimePicker?: boolean
-  /**
-   * The element ID of the date picker input.
-   */
   id?: string
-  /**
-   * Whether the selected value is invalid.
-   */
   "aria-invalid"?: boolean
-  /**
-   * The label of the date picker.
-   */
   "aria-label"?: string
-  /**
-   * The ID of the element labeling the date picker.
-   */
   "aria-labelledby"?: string
-  /**
-   * Whether the date picker is required.
-   */
   "aria-required"?: boolean
 }
 
