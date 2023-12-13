@@ -94,7 +94,7 @@ You can create a cart with the following code snippet:
   <TabItem value="fetch" label="Fetch API">
 
     ```ts
-    fetch(`<BACKEND_URLL>/store/carts`, {
+    fetch(`<BACKEND_URL>/store/carts`, {
       method: "POST",
       credentials: "include",
     })
@@ -161,7 +161,7 @@ Otherwise, you can assign it a specific region during creation:
   <TabItem value="fetch" label="Fetch API">
 
     ```jsx
-    fetch(`<BACKEND_URLL>/store/carts`, {
+    fetch(`<BACKEND_URL>/store/carts`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -236,7 +236,7 @@ You can retrieve the cart at any given point using its ID with the following cod
     const id = localStorage.getItem("cart_id")
 
     if (id) {
-      fetch(`<BACKEND_URLL>/store/carts/${id}`, {
+      fetch(`<BACKEND_URL>/store/carts/${id}`, {
         credentials: "include",
       })
       .then((response) => response.json())
@@ -302,7 +302,7 @@ You can use the following snippet to update any of the cart’s data:
   <TabItem value="fetch" label="Fetch API">
 
     ```ts
-    fetch(`<BACKEND_URLL>/store/carts/${cartId}`, {
+    fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -368,7 +368,7 @@ You can do that using the same update operation:
   <TabItem value="fetch" label="Fetch API">
 
     ```ts
-    fetch(`<BACKEND_URLL>/store/carts/${cartId}`, {
+    fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -430,7 +430,7 @@ You can do that using the same update operation:
   <TabItem value="fetch" label="Fetch API">
 
     ```ts
-    fetch(`<BACKEND_URLL>/store/carts/${cartId}`, {
+    fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -492,7 +492,7 @@ To create a line item of a product and add it to a cart, you can use the followi
   <TabItem value="fetch" label="Fetch API">
 
     ```jsx
-    fetch(`<BACKEND_URLL>/store/carts/${cartId}/line-items`, {
+    fetch(`<BACKEND_URL>/store/carts/${cartId}/line-items`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -568,7 +568,7 @@ To update a line item's quantity in the cart, you can use the following code sni
 <!-- eslint-disable max-len -->
 
     ```ts
-    fetch(`<BACKEND_URLL>/store/carts/${cartId}/line-items/${lineItemId}`, {
+    fetch(`<BACKEND_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -632,7 +632,7 @@ To delete a line item from the cart, you can use the following code snippet:
 <!-- eslint-disable max-len -->
 
     ```ts
-    fetch(`<BACKEND_URLL>/store/carts/${cartId}/line-items/${lineItemId}`, {
+    fetch(`<BACKEND_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
       method: "DELETE",
       credentials: "include",
     })
