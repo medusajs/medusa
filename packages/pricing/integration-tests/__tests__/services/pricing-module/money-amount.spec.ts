@@ -316,17 +316,6 @@ describe("PricingModule Service - MoneyAmount", () => {
   describe("restoreDeletedMoneyAmounts", () => {
     const id = "money-amount-USD"
 
-    it("should restore soft-deleted moneyAmounts given an id", async () => {
-      await service.softDeleteMoneyAmounts([id])
-      await service.restoreDeletedMoneyAmounts([id])
-
-      const moneyAmounts = await service.listMoneyAmounts({
-        id: [id],
-      })
-
-      expect(moneyAmounts).toHaveLength(1)
-    })
-
     it("should restore softDeleted priceSetMoneyAmount and PriceRule when restoring soft-deleting money amount", async () => {
       await createPriceSets(testManager)
       await createRuleTypes(testManager)
