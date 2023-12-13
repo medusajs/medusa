@@ -21,7 +21,7 @@ For example:
 
 ```ts
 import {
-  initialize as initializePricingModule
+  initialize as initializePricingModule,
 } from "@medusajs/pricing"
 async function calculatePrice(
   priceSetId: string,
@@ -46,7 +46,7 @@ For example:
 
 ```ts
 import {
-  initialize as initializePricingModule
+  initialize as initializePricingModule,
 } from "@medusajs/pricing"
 async function calculatePrice(
   priceSetId: string,
@@ -105,11 +105,17 @@ After the original and calculated prices are selected, the method will use them 
 ```ts
 const price = {
   id: priceSetId,
-  is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
-  calculated_amount: parseInt(calculatedPrice?.amount || "") || null,
+  is_calculated_price_price_list: 
+    !!calculatedPrice?.price_list_id,
+  calculated_amount: parseInt(
+    calculatedPrice?.amount || ""
+  ) || null,
 
-  is_original_price_price_list: !!originalPrice?.price_list_id,
-  original_amount: parseInt(originalPrice?.amount || "") || null,
+  is_original_price_price_list: 
+    !!originalPrice?.price_list_id,
+  original_amount: parseInt(
+    originalPrice?.amount || ""
+  ) || null,
 
   currency_code: calculatedPrice?.currency_code || null,
 
@@ -117,16 +123,24 @@ const price = {
     money_amount_id: calculatedPrice?.id || null,
     price_list_id: calculatedPrice?.price_list_id || null,
     price_list_type: calculatedPrice?.price_list_type || null,
-    min_quantity: parseInt(calculatedPrice?.min_quantity || "") || null,
-    max_quantity: parseInt(calculatedPrice?.max_quantity || "") || null,
+    min_quantity: parseInt(
+      calculatedPrice?.min_quantity || ""
+    ) || null,
+    max_quantity: parseInt(
+      calculatedPrice?.max_quantity || ""
+    ) || null,
   },
 
   original_price: {
     money_amount_id: originalPrice?.id || null,
     price_list_id: originalPrice?.price_list_id || null,
     price_list_type: originalPrice?.price_list_type || null,
-    min_quantity: parseInt(originalPrice?.min_quantity || "") || null,
-    max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
+    min_quantity: parseInt(
+      originalPrice?.min_quantity || ""
+    ) || null,
+    max_quantity: parseInt(
+      originalPrice?.max_quantity || ""
+    ) || null,
   },
 }
 ```
@@ -165,7 +179,7 @@ const ruleTypes = await pricingService.createRuleTypes([
 const priceSet = await service.create({
   rules: [
     { rule_attribute: "region_id" },
-    { rule_attribute: "city" }
+    { rule_attribute: "city" },
   ],
   prices: [
     //default
