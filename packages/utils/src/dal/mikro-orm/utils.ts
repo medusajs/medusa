@@ -1,3 +1,5 @@
+import { SoftDeletableFilterKey } from "./mikro-orm-soft-deletable-filter"
+
 export const mikroOrmUpdateDeletedAtRecursively = async <
   T extends object = any
 >(
@@ -35,7 +37,9 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
 
         relationEntities = await entityRelation.getItems({
           filters: {
-            withDeleted: true,
+            [SoftDeletableFilterKey]: {
+              withDeleted: true,
+            },
           },
         })
       } else {
