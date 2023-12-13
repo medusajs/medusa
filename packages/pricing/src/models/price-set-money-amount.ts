@@ -61,6 +61,7 @@ export default class PriceSetMoneyAmount {
 
   @ManyToOne(() => PriceList, {
     index: "IDX_price_rule_price_list_id",
+    onDelete: "cascade",
     cascade: [Cascade.REMOVE, "soft-remove"] as any,
     nullable: true,
   })
