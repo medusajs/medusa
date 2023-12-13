@@ -497,6 +497,7 @@
           "localTableName": "public.price_set_money_amount",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.price_list",
+          "updateRule": "cascade",
           "deleteRule": "cascade"
         }
       }
@@ -889,6 +890,7 @@
           "localTableName": "public.price_rule",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.price_set_money_amount",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
