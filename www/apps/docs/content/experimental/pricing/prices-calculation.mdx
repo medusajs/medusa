@@ -20,8 +20,13 @@ The context is an object passed to the method. It must contain at least the `cur
 For example:
 
 ```ts
-import { initialize as initializePricingModule } from "@medusajs/pricing"
-async function calculatePrice(priceSetId: string, currencyCode: string) {
+import {
+  initialize as initializePricingModule
+} from "@medusajs/pricing"
+async function calculatePrice(
+  priceSetId: string,
+  currencyCode: string
+) {
   const pricingService = await initializePricingModule()
 
   const price = await pricingService.calculatePrices(
@@ -40,8 +45,13 @@ The context object can also contain any custom rules, with the key being the `ru
 For example:
 
 ```ts
-import { initialize as initializePricingModule } from "@medusajs/pricing"
-async function calculatePrice(priceSetId: string, currencyCode: string) {
+import {
+  initialize as initializePricingModule
+} from "@medusajs/pricing"
+async function calculatePrice(
+  priceSetId: string,
+  currencyCode: string
+) {
   const pricingService = await initializePricingModule()
 
   const price = await pricingService.calculatePrices(
@@ -153,7 +163,10 @@ const ruleTypes = await pricingService.createRuleTypes([
 ])
 
 const priceSet = await service.create({
-  rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
+  rules: [
+    { rule_attribute: "region_id" },
+    { rule_attribute: "city" }
+  ],
   prices: [
     //default
     {
