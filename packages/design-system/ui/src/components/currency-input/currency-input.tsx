@@ -51,7 +51,7 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
        */
       symbol, 
       /**
-       * The currency code to show as the input's placeholder.
+       * The currency code to show in the input.
        */
       code, 
       disabled, 
