@@ -18,9 +18,7 @@ export const TrackingLink = ({ trackingLink }: TProps) => {
           href={trackingLink.url}
           rel="noreferrer"
         >
-          <div className="text-blue-60 ml-2">
-            {trackingLink.tracking_number}
-          </div>
+          <div className="text-blue-60">{trackingLink.tracking_number}</div>
         </a>
         &nbsp;-&nbsp;
         {trackingLink?.metadata?.labelBase64PDF &&
