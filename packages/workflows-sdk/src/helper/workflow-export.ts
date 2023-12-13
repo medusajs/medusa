@@ -19,10 +19,61 @@ export type FlowRunOptions<TData = unknown> = {
   throwOnError?: boolean
 }
 
+export type FlowRegisterStepSuccessOptions<TData = unknown> = {
+  idempotencyKey: string
+  response?: TData
+  context?: Context
+  resultFrom?: string | string[]
+  throwOnError?: boolean
+}
+
+export type FlowRegisterStepFailureOptions<TData = unknown> = {
+  idempotencyKey: string
+  response?: TData
+  context?: Context
+  resultFrom?: string | string[]
+  throwOnError?: boolean
+}
+
 export type WorkflowResult<TResult = unknown> = {
   errors: TransactionStepError[]
   transaction: DistributedTransaction
   result: TResult
+}
+
+export type ExportedWorkflow<
+  TData = unknown,
+  TResult = unknown,
+  TDataOverride = undefined,
+  TResultOverride = undefined
+> = {
+  run: (
+    args?: FlowRunOptions<
+      TDataOverride extends undefined ? TData : TDataOverride
+    >
+  ) => Promise<
+    WorkflowResult<
+      TResultOverride extends undefined ? TResult : TResultOverride
+    >
+  >
+  registerStepSuccess: (
+    args?: FlowRegisterStepSuccessOptions<
+      TDataOverride extends undefined ? TData : TDataOverride
+    >
+  ) => Promise<
+    WorkflowResult<
+      TResultOverride extends undefined ? TResult : TResultOverride
+    >
+  >
+  registerStepFailure: (
+    args?: FlowRegisterStepFailureOptions<
+      TDataOverride extends undefined ? TData : TDataOverride
+    >
+  ) => Promise<
+    WorkflowResult<
+      TResultOverride extends undefined ? TResult : TResultOverride
+    >
+  >
 }
 
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
@@ -32,17 +83,11 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 ) => {
   return function <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
-  ): Omit<LocalWorkflow, "run"> & {
-    run: (
-      args?: FlowRunOptions<
-        TDataOverride extends undefined ? TData : TDataOverride
-      >
-    ) => Promise<
-      WorkflowResult<
-        TResultOverride extends undefined ? TResult : TResultOverride
-      >
-    >
-  } {
+  ): Omit<
+    LocalWorkflow,
+    "run" | "registerStepSuccess" | "registerStepFailure"
+  > &
+    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride> {
     if (!container) {
       container = MedusaModule.getLoadedModules().map(
         (mod) => Object.values(mod)[0]
@@ -52,36 +97,15 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     const flow = new LocalWorkflow(workflowId, container)
 
     const originalRun = flow.run.bind(flow)
-    const newRun = async (
-      { input, context, throwOnError, resultFrom }: FlowRunOptions = {
-        throwOnError: true,
-        resultFrom: defaultResult,
-      }
+    const originalRegisterStepSuccess = flow.registerStepSuccess.bind(flow)
+    const originalRegisterStepFailure = flow.registerStepFailure.bind(flow)
+
+    const originalExecution = async (
+      method,
+      { throwOnError, resultFrom },
+      ...args
     ) => {
-      resultFrom ??= defaultResult
-      throwOnError ??= true
-
-      if (typeof dataPreparation === "function") {
-        try {
-          const copyInput = input ? JSON.parse(JSON.stringify(input)) : input
-          input = await dataPreparation(copyInput as TData)
-        } catch (err) {
-          if (throwOnError) {
-            throw new Error(
-              `Data preparation failed: ${err.message}${EOL}${err.stack}`
-            )
-          }
-          return {
-            errors: [err],
-          }
-        }
-      }
-
-      const transaction = await originalRun(
-        context?.transactionId ?? ulid(),
-        input,
-        context
-      )
+      const transaction = await method.apply(method, args)
 
       const errors = transaction.getErrors(TransactionHandlerType.INVOKE)
 
@@ -113,18 +137,95 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         result,
       }
     }
+
+    const newRun = async (
+      { input, context, throwOnError, resultFrom }: FlowRunOptions = {
+        throwOnError: true,
+        resultFrom: defaultResult,
+      }
+    ) => {
+      resultFrom ??= defaultResult
+      throwOnError ??= true
+
+      if (typeof dataPreparation === "function") {
+        try {
+          const copyInput = input ? JSON.parse(JSON.stringify(input)) : input
+          input = await dataPreparation(copyInput as TData)
+        } catch (err) {
+          if (throwOnError) {
+            throw new Error(
+              `Data preparation failed: ${err.message}${EOL}${err.stack}`
+            )
+          }
+          return {
+            errors: [err],
+          }
+        }
+      }
+
+      return await originalExecution(
+        originalRun,
+        { throwOnError, resultFrom },
+        context?.transactionId ?? ulid(),
+        input,
+        context
+      )
+    }
     flow.run = newRun as any
 
-    return flow as unknown as LocalWorkflow & {
-      run: (
-        args?: FlowRunOptions<
-          TDataOverride extends undefined ? TData : TDataOverride
-        >
-      ) => Promise<
-        WorkflowResult<
-          TResultOverride extends undefined ? TResult : TResultOverride
-        >
-      >
+    const newRegisterStepSuccess = async (
+      {
+        response,
+        idempotencyKey,
+        context,
+        throwOnError,
+        resultFrom,
+      }: FlowRegisterStepSuccessOptions = {
+        idempotencyKey: "",
+        throwOnError: true,
+        resultFrom: defaultResult,
+      }
+    ) => {
+      resultFrom ??= defaultResult
+      throwOnError ??= true
+
+      return await originalExecution(
+        originalRegisterStepSuccess,
+        { throwOnError, resultFrom },
+        idempotencyKey,
+        response,
+        context
+      )
     }
+    flow.registerStepSuccess = newRegisterStepSuccess as any
+
+    const newRegisterStepFailure = async (
+      {
+        response,
+        idempotencyKey,
+        context,
+        throwOnError,
+        resultFrom,
+      }: FlowRegisterStepFailureOptions = {
+        idempotencyKey: "",
+        throwOnError: true,
+        resultFrom: defaultResult,
+      }
+    ) => {
+      resultFrom ??= defaultResult
+      throwOnError ??= true
+
+      return await originalExecution(
+        originalRegisterStepFailure,
+        { throwOnError, resultFrom },
+        idempotencyKey,
+        response,
+        context
+      )
+    }
+    flow.registerStepFailure = newRegisterStepFailure as any
+
+    return flow as unknown as LocalWorkflow &
+      ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
   }
 }

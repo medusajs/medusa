@@ -4,7 +4,12 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { FlowRunOptions, WorkflowResult, exportWorkflow } from "../../helper"
+import {
+  ExportedWorkflow,
+  FlowRunOptions,
+  WorkflowResult,
+  exportWorkflow,
+} from "../../helper"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
@@ -70,17 +75,11 @@ global[SymbolMedusaWorkflowComposerContext] = null
 type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
-  ): Omit<LocalWorkflow, "run"> & {
-    run: (
-      args?: FlowRunOptions<
-        TDataOverride extends undefined ? TData : TDataOverride
-      >
-    ) => Promise<
-      WorkflowResult<
-        TResultOverride extends undefined ? TResult : TResultOverride
-      >
-    >
-  }
+  ): Omit<
+    LocalWorkflow,
+    "run" | "registerStepSuccess" | "registerStepFailure"
+  > &
+    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 } & THooks & {
     getName: () => string
   }
@@ -208,37 +207,45 @@ export function createWorkflow<
     container?: LoadedModule[] | MedusaContainer
   ) => {
     const workflow_ = workflow<TDataOverride, TResultOverride>(container)
-    const originalRun = workflow_.run
 
-    workflow_.run = (async (
-      args?: FlowRunOptions<
-        TDataOverride extends undefined ? TData : TDataOverride
-      >
-    ): Promise<
-      WorkflowResult<
-        TResultOverride extends undefined ? TResult : TResultOverride
-      >
-    > => {
-      args ??= {}
-      args.resultFrom ??=
-        returnedStep?.__type === SymbolWorkflowStep
-          ? returnedStep.__step__
-          : undefined
+    const originalMethod = (method) => {
+      return async (
+        args?: FlowRunOptions<
+          TDataOverride extends undefined ? TData : TDataOverride
+        >
+      ): Promise<
+        WorkflowResult<
+          TResultOverride extends undefined ? TResult : TResultOverride
+        >
+      > => {
+        args ??= {}
+        args.resultFrom ??=
+          returnedStep?.__type === SymbolWorkflowStep
+            ? returnedStep.__step__
+            : undefined
 
-      // Forwards the input to the ref object on composer.apply
-      const workflowResult = (await originalRun(
-        args
-      )) as unknown as WorkflowResult<
-        TResultOverride extends undefined ? TResult : TResultOverride
-      >
+        const workflowResult = (await method(
+          args
+        )) as unknown as WorkflowResult<
+          TResultOverride extends undefined ? TResult : TResultOverride
+        >
 
-      workflowResult.result = await resolveValue(
-        workflowResult.result || returnedStep,
-        workflowResult.transaction.getContext()
-      )
+        workflowResult.result = await resolveValue(
+          workflowResult.result || returnedStep,
+          workflowResult.transaction.getContext()
+        )
 
-      return workflowResult
-    }) as any
+        return workflowResult
+      }
+    }
+
+    workflow_.run = originalMethod(workflow_.run)
+    workflow_.registerStepSuccess = originalMethod(
+      workflow_.registerStepSuccess
+    )
+    workflow_.registerStepFailure = originalMethod(
+      workflow_.registerStepFailure
+    )
 
     return workflow_
   }
