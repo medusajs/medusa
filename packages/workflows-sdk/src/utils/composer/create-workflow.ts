@@ -4,12 +4,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import {
-  ExportedWorkflow,
-  FlowRunOptions,
-  WorkflowResult,
-  exportWorkflow,
-} from "../../helper"
+import { ExportedWorkflow, WorkflowResult, exportWorkflow } from "../../helper"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
@@ -210,9 +205,7 @@ export function createWorkflow<
 
     const originalMethod = (method) => {
       return async (
-        args?: FlowRunOptions<
-          TDataOverride extends undefined ? TData : TDataOverride
-        >
+        args?: any
       ): Promise<
         WorkflowResult<
           TResultOverride extends undefined ? TResult : TResultOverride
