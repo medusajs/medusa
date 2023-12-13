@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 import { BaseFilterable } from "../../dal"
 import { PriceSetDTO } from "./price-set"
 import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
-=======
-import { BaseFilterable } from "../../dal";
-import { PriceSetDTO } from "./price-set";
-import { RuleTypeDTO } from "./rule-type";
->>>>>>> 0a6c2f3b5 (fix up pr)
 
 /**
  * @interface
