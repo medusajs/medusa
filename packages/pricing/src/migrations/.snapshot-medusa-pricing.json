@@ -489,6 +489,7 @@
           "localTableName": "public.price_set_money_amount",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.money_amount",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "price_set_money_amount_price_list_id_foreign": {
