@@ -70,6 +70,10 @@ export class TransactionStep {
     return this.stepFailed
   }
 
+  public isInvoking() {
+    return !this.stepFailed
+  }
+
   public changeState(toState: TransactionState) {
     const allowed = {
       [TransactionState.DORMANT]: [TransactionState.NOT_STARTED],

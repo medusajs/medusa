@@ -1,4 +1,9 @@
 import { isDefined } from "@medusajs/utils"
+import { EventEmitter } from "events"
+import {
+  IDistributedTransactionStorage,
+  InMemoryDistributedTransactionStorage,
+} from "./datastore/in-memory-storage"
 import { TransactionFlow } from "./transaction-orchestrator"
 import { TransactionStepHandler } from "./transaction-step"
 import { TransactionHandlerType, TransactionState } from "./types"
@@ -68,7 +73,7 @@ export class TransactionPayload {
  * DistributedTransaction represents a distributed transaction, which is a transaction that is composed of multiple steps that are executed in a specific order.
  */
 
-export class DistributedTransaction {
+export class DistributedTransaction extends EventEmitter {
   public modelId: string
   public transactionId: string
 
@@ -83,6 +88,8 @@ export class DistributedTransaction {
     errors?: TransactionStepError[],
     context?: TransactionContext
   ) {
+    super()
+
     this.transactionId = flow.transactionId
     this.modelId = flow.modelId
 
@@ -154,6 +161,7 @@ export class DistributedTransaction {
       this.getFlow().state === TransactionState.INVOKING
     )
   }
+
   public canRevert(): boolean {
     return (
       this.getFlow().state === TransactionState.DONE ||
@@ -161,22 +169,28 @@ export class DistributedTransaction {
     )
   }
 
-  public static keyValueStore: any = {} // TODO: Use Key/Value db
+  private static keyValueStore: IDistributedTransactionStorage
+  public static setStorage(storage: IDistributedTransactionStorage) {
+    DistributedTransaction.keyValueStore = storage
+  }
+
   private static keyPrefix = "dtrans:"
-  public async saveCheckpoint(): Promise<TransactionCheckpoint | undefined> {
+  public async saveCheckpoint(
+    ttl = 0
+  ): Promise<TransactionCheckpoint | undefined> {
     const options = this.getFlow().options
     if (!options?.storeExecution) {
       return
     }
 
-    // TODO: Use Key/Value db to save transactions
-    const key = DistributedTransaction.keyPrefix + this.transactionId
     const data = new TransactionCheckpoint(
       this.getFlow(),
       this.getContext(),
       this.getErrors()
     )
-    DistributedTransaction.keyValueStore[key] = JSON.stringify(data)
+
+    const key = DistributedTransaction.keyPrefix + this.transactionId
+    await DistributedTransaction.keyValueStore.set(key, data, ttl)
 
     return data
   }
@@ -184,10 +198,11 @@ export class DistributedTransaction {
   public static async loadTransaction(
     transactionId: string
   ): Promise<TransactionCheckpoint | null> {
-    // TODO: Use Key/Value db to load transactions
     const key = DistributedTransaction.keyPrefix + transactionId
-    if (DistributedTransaction.keyValueStore[key]) {
-      return JSON.parse(DistributedTransaction.keyValueStore[key])
+
+    const loadedData = await DistributedTransaction.keyValueStore.get(key)
+    if (loadedData) {
+      return loadedData
     }
 
     return null
@@ -199,8 +214,9 @@ export class DistributedTransaction {
       return
     }
 
-    // TODO: Delete from Key/Value db
     const key = DistributedTransaction.keyPrefix + this.transactionId
-    delete DistributedTransaction.keyValueStore[key]
+    await DistributedTransaction.keyValueStore.delete(key)
   }
 }
+
+DistributedTransaction.setStorage(new InMemoryDistributedTransactionStorage())

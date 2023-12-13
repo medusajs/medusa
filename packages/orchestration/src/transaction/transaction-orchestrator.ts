@@ -20,6 +20,7 @@ export type TransactionFlow = {
   options?: TransactionModelOptions
   definition: TransactionStepsDefinition
   transactionId: string
+  hasAsyncSteps: boolean
   hasFailedSteps: boolean
   hasSkippedSteps: boolean
   state: TransactionState
@@ -34,6 +35,7 @@ export type TransactionFlow = {
  */
 export class TransactionOrchestrator extends EventEmitter {
   private static ROOT_STEP = "_root"
+  public static DEFAULT_TTL = 30
   private invokeSteps: string[] = []
   private compensateSteps: string[] = []
 
@@ -273,6 +275,8 @@ export class TransactionOrchestrator extends EventEmitter {
     if (step.definition.async || flow.options?.strictCheckpoints) {
       await transaction.saveCheckpoint()
     }
+
+    transaction.emit("success", { step, transaction })
   }
 
   private static async setStepFailure(
@@ -313,6 +317,8 @@ export class TransactionOrchestrator extends EventEmitter {
     if (step.definition.async || flow.options?.strictCheckpoints) {
       await transaction.saveCheckpoint()
     }
+
+    transaction.emit("failure", { step, transaction })
   }
 
   private async executeNext(
@@ -326,6 +332,7 @@ export class TransactionOrchestrator extends EventEmitter {
     const nextSteps = this.checkAllSteps(transaction)
     const execution: Promise<void | unknown>[] = []
 
+    let hasSyncSteps = false
     for (const step of nextSteps.next) {
       const curState = step.getStates()
       const type = step.isCompensating()
@@ -367,11 +374,10 @@ export class TransactionOrchestrator extends EventEmitter {
         transaction.getContext()
       )
 
-      if (!step.definition.async) {
-        if (flow.options?.strictCheckpoints) {
-          await transaction.saveCheckpoint()
-        }
+      transaction.emit("step", { step, transaction })
 
+      if (!step.definition.async) {
+        hasSyncSteps = true
         execution.push(
           transaction
             .handler(step.definition.action + "", type, payload, transaction)
@@ -407,6 +413,10 @@ export class TransactionOrchestrator extends EventEmitter {
           )
         )
       }
+    }
+
+    if (hasSyncSteps && flow.options?.strictCheckpoints) {
+      await transaction.saveCheckpoint()
     }
 
     await promiseAll(execution)
@@ -480,6 +490,7 @@ export class TransactionOrchestrator extends EventEmitter {
       modelId: this.id,
       options: this.options,
       transactionId: transactionId,
+      hasAsyncSteps,
       hasFailedSteps: false,
       hasSkippedSteps: false,
       state: TransactionState.NOT_STARTED,
@@ -616,8 +627,11 @@ export class TransactionOrchestrator extends EventEmitter {
       existingTransaction?.errors,
       existingTransaction?.context
     )
-    if (newTransaction) {
-      await transaction.saveCheckpoint()
+
+    if (newTransaction && this.options?.storeExecution) {
+      await transaction.saveCheckpoint(
+        modelFlow.hasAsyncSteps ? 0 : TransactionOrchestrator.DEFAULT_TTL
+      )
     }
 
     return transaction
