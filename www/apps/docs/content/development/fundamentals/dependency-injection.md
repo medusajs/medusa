@@ -231,7 +231,7 @@ Every fulfillment provider is registered under two names:
 </td>
 <td>
 
-By default, it's `SINGLETON` unless defined differently within the fulfillemnt provider service.
+By default, it's `SINGLETON` unless defined differently within the fulfillment provider service.
 
 </td>
 </tr>

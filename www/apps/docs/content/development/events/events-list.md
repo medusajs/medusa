@@ -112,7 +112,7 @@ Object of the following format:
 </td>
 <td>
 
-Triggered after the `preProcessBatchJob` of a batch job stategy is done executing.
+Triggered after the `preProcessBatchJob` of a batch job strategy is done executing.
 
 </td>
 <td>
@@ -2012,7 +2012,7 @@ In addition, an error object is passed within the same object as the Payment Pro
   //... other payment fields
   error: {
     name, //string
-    nessage, //string
+    message, //string
     stack, //(optional) string
   }
 }
