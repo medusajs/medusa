@@ -1,5 +1,6 @@
-import { MedusaV2Flag } from "@medusajs/utils"
 import { updatePriceLists } from "@medusajs/core-flows"
+import { MedusaContainer } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { EntityManager } from "typeorm"
@@ -8,7 +9,6 @@ import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
-import { MedusaContainer } from "@medusajs/types"
 import { getPriceListPricingModule } from "./modules-queries"
 
 /**

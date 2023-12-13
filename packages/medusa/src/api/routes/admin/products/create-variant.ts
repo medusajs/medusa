@@ -1,6 +1,7 @@
+import { CreateProductVariants } from "@medusajs/core-flows"
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-import { CreateProductVariants } from "@medusajs/core-flows"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -10,7 +11,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { EntityManager } from "typeorm"
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
 import {
   PricingService,
   ProductService,
@@ -21,10 +27,7 @@ import {
   CreateProductVariantInput,
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
-import { validator } from "../../../../utils/validator"
-import { getProductWithIsolatedProductModule } from "./get-product"
+import { retrieveProduct, validator } from "../../../../utils"
 import { createVariantsTransaction } from "./transaction/create-product-variant"
 
 /**
@@ -157,10 +160,10 @@ export default async (req, res) => {
       },
     })
 
-    rawProduct = await getProductWithIsolatedProductModule(
-      req,
+    rawProduct = await retrieveProduct(
+      req.scope,
       id,
-      req.retrieveConfig
+      defaultAdminProductRemoteQueryObject
     )
   } else {
     await manager.transaction(async (transactionManager) => {

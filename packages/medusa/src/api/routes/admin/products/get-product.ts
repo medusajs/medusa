@@ -5,8 +5,9 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
-import { MedusaError, MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { FindParams } from "../../../../types/common"
+import { retrieveProduct } from "../../../../utils"
 import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
@@ -76,10 +77,10 @@ export default async (req, res) => {
 
   let rawProduct
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    rawProduct = await getProductWithIsolatedProductModule(
-      req,
+    rawProduct = await retrieveProduct(
+      req.scope,
       id,
-      req.retrieveConfig
+      defaultAdminProductRemoteQueryObject
     )
   } else {
     rawProduct = await productService.retrieve(id, req.retrieveConfig)
@@ -116,37 +117,6 @@ export default async (req, res) => {
   await promiseAll(decoratePromises)
 
   res.json({ product })
-}
-
-export async function getProductWithIsolatedProductModule(
-  req,
-  id,
-  retrieveConfig
-) {
-  // TODO: Add support for fields/expands
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const [product] = await remoteQuery(query)
-
-  if (!product) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Product with id: ${id} not found`
-    )
-  }
-
-  product.profile_id = product.profile?.id
-
-  return product
 }
 
 export class AdminGetProductParams extends FindParams {}

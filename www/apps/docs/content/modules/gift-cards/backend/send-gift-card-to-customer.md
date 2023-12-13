@@ -35,7 +35,7 @@ To send an email or another type of notification method, you must have a notific
 
 ---
 
-## Methed 1: Using a Subscriber
+## Method 1: Using a Subscriber
 
 To subscribe to and handle an event, you must create a [subscriber](../../../development/events/subscribers.mdx).
 

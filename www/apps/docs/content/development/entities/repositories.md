@@ -10,7 +10,7 @@ In this document, you'll learn what repositories are, how to use them within you
 
 Repositories provide generic helper methods for entities. For example, you can use the `find` method to retrieve all entities with pagination, or `findOne` to retrieve a single entity record.
 
-Repostories are [Typeorm repositories](https://typeorm.io/working-with-repository), so you can refer to Typeorm's documentation on all available methods.
+Repositories are [Typeorm repositories](https://typeorm.io/working-with-repository), so you can refer to Typeorm's documentation on all available methods.
 
 By default, you don't need to create a repository for your custom entities. You can retrieve the default repository of an entity using the Entity Manager. You should only create a repository if you want to implement custom methods in it.
 

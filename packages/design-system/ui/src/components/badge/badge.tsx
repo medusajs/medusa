@@ -1,10 +1,10 @@
 import { Slot } from "@radix-ui/react-slot"
-import { VariantProps, cva } from "class-variance-authority"
+import { VariantProps, cva } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
-const badgeColorVariants = cva("", {
+const badgeColorVariants = cva({
   variants: {
     color: {
       green:
@@ -23,7 +23,8 @@ const badgeColorVariants = cva("", {
   },
 })
 
-const badgeSizeVariants = cva("inline-flex items-center gap-x-0.5 border", {
+const badgeSizeVariants = cva({
+  base: "inline-flex items-center gap-x-0.5 border",
   variants: {
     size: {
       small: "txt-compact-xsmall-plus px-1.5",
