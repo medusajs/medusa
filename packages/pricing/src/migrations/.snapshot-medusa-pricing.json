@@ -416,6 +416,38 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_set_money_amount",
@@ -458,6 +490,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_money_amount_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "price_set_money_amount_pkey",
           "columnNames": [
             "id"
@@ -492,7 +533,6 @@
             "id"
           ],
           "referencedTableName": "public.money_amount",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "price_set_money_amount_price_list_id_foreign": {
@@ -505,8 +545,7 @@
             "id"
           ],
           "referencedTableName": "public.price_list",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
+          "deleteRule": "cascade"
         }
       }
     },
@@ -793,16 +832,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "is_dynamic": {
-          "name": "is_dynamic",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "boolean"
-        },
         "value": {
           "name": "value",
           "type": "text",
@@ -830,6 +859,38 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_rule",
@@ -859,6 +920,15 @@
           ],
           "composite": false,
           "keyName": "IDX_price_rule_price_set_money_amount_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_deleted_at",
           "primary": false,
           "unique": false
         },
@@ -909,7 +979,6 @@
             "id"
           ],
           "referencedTableName": "public.price_set_money_amount",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

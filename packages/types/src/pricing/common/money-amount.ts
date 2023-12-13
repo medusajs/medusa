@@ -18,7 +18,7 @@ export interface MoneyAmountDTO {
   currency_code?: string
   /**
    * The money amount's currency.
-   * 
+   *
    * @expandable
    */
   currency?: CurrencyDTO
@@ -38,6 +38,10 @@ export interface MoneyAmountDTO {
    * The details of the relation between the money amount and its associated price set.
    */
   price_set_money_amount?: PriceSetMoneyAmountDTO
+
+  created_at?: null | Date
+  updated_at?: null | Date
+  deleted_at?: null | Date
 }
 
 /**

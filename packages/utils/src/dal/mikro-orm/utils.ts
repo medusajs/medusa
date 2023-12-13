@@ -1,5 +1,3 @@
-import { SoftDeletableFilterKey } from "./mikro-orm-soft-deletable-filter"
-
 export const mikroOrmUpdateDeletedAtRecursively = async <
   T extends object = any
 >(
@@ -22,20 +20,30 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
     )
 
     for (const relation of relationsToCascade) {
-      let collectionRelation = entity[relation.name]
+      const entityRelation = entity[relation.name]
 
-      if (!collectionRelation.isInitialized()) {
-        await collectionRelation.init()
+      // Handle optional relationships
+      if (relation.nullable && !entityRelation) {
+        continue
       }
 
-      const relationEntities = await collectionRelation.getItems({
-        filters: {
-          [SoftDeletableFilterKey]: {
+      const isCollection = "toArray" in entityRelation
+      let relationEntities: any[] = []
+
+      if (isCollection && !entityRelation.isInitialized()) {
+        await entityRelation.init()
+
+        relationEntities = await entityRelation.getItems({
+          filters: {
             withDeleted: true,
           },
-        },
-      })
+        })
+      } else {
+        const initializedEntityRelation = await entityRelation.__helper?.init()
+        relationEntities = [initializedEntityRelation]
+      }
 
+      console.warn("test")
       await mikroOrmUpdateDeletedAtRecursively(manager, relationEntities, value)
     }
 

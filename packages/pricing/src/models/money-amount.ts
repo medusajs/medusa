@@ -41,6 +41,7 @@ class MoneyAmount {
   @OneToOne({
     entity: () => PriceSetMoneyAmount,
     mappedBy: (psma) => psma.money_amount,
+    cascade: ["soft-remove"] as any,
   })
   price_set_money_amount: PriceSetMoneyAmount
 
