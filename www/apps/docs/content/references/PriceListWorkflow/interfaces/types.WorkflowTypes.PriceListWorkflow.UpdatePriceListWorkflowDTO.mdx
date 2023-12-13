@@ -1,0 +1,109 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# UpdatePriceListWorkflowDTO
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "customer_groups",
+    "type": "`object`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "ends_at",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prices",
+    "type": "[PriceListVariantPriceDTO](../types/types.WorkflowTypes.PriceListWorkflow.PriceListVariantPriceDTO.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rules",
+    "type": "[CreatePriceListRules](../../types/interfaces/types.CreatePriceListRules.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "starts_at",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "[PriceListStatus](../../types/enums/types.PriceListStatus.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "ACTIVE",
+        "type": "`\"active\"`",
+        "description": "The price list is enabled and its prices can be used.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "DRAFT",
+        "type": "`\"draft\"`",
+        "description": "The price list is disabled, meaning its prices can't be used yet.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

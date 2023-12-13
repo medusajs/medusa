@@ -9,6 +9,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/workflows"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "publishConfig": {
     "access": "public"
   },

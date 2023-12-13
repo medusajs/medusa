@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the [Radix UI Dropdown Menu SubContent](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#subcontent) primitive.",
+  "methods": [],
+  "displayName": "DropdownMenu.SubMenuContent",
+  "props": {}
+}

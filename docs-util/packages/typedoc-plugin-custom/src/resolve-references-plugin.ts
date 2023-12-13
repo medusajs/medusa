@@ -9,6 +9,7 @@ import {
   Reflection,
   DeclarationReflection,
   ProjectReflection,
+  ParameterType,
 } from "typedoc"
 
 declare module "typedoc" {
@@ -21,11 +22,21 @@ let hasMonkeyPatched = false
 
 export function load(app: Application) {
   if (hasMonkeyPatched) {
-    throw new Error(
-      "typedoc-plugin-missing-exports cannot be loaded multiple times"
-    )
+    throw new Error("typedoc-plugin-custom cannot be loaded multiple times")
   }
   hasMonkeyPatched = true
+
+  app.options.addDeclaration({
+    name: "internalModule",
+    help: "Define the name of the module that internal symbols which are not exported should be placed into.",
+  })
+
+  app.options.addDeclaration({
+    name: "enableInternalResolve",
+    help: "Whether to run this plugin or not.",
+    type: ParameterType.Boolean,
+    defaultValue: false,
+  })
 
   let activeReflection: Reflection | undefined
   const referencedSymbols = new Map<ts.Program, Set<ts.Symbol>>()
@@ -58,6 +69,9 @@ export function load(app: Application) {
   // Monkey patch the constructor for references so that we can get every
   const origCreateSymbolReference = ReferenceType.createSymbolReference
   ReferenceType.createSymbolReference = function (symbol, context, name) {
+    if (!app.options.getValue("enableInternalResolve")) {
+      return origCreateSymbolReference.call(this, symbol, context, name)
+    }
     ok(activeReflection, "active reflection has not been set")
     const set = referencedSymbols.get(context.program)
     symbolToActiveRefl.set(symbol, activeReflection)
@@ -69,14 +83,12 @@ export function load(app: Application) {
     return origCreateSymbolReference.call(this, symbol, context, name)
   }
 
-  app.options.addDeclaration({
-    name: "internalModule",
-    help: "Define the name of the module that internal symbols which are not exported should be placed into.",
-  })
-
   app.converter.on(
     Converter.EVENT_CREATE_DECLARATION,
     (context: Context, refl: Reflection) => {
+      if (!app.options.getValue("enableInternalResolve")) {
+        return
+      }
       if (refl.kindOf(ReflectionKind.Project | ReflectionKind.Module)) {
         knownPrograms.set(refl, context.program)
         activeReflection = refl
@@ -87,6 +99,9 @@ export function load(app: Application) {
   app.converter.on(
     Converter.EVENT_RESOLVE_BEGIN,
     function onResolveBegin(context: Context) {
+      if (!app.options.getValue("enableInternalResolve")) {
+        return
+      }
       const modules: (DeclarationReflection | ProjectReflection)[] =
         context.project.getChildrenByKind(ReflectionKind.Module)
       if (modules.length === 0) {
