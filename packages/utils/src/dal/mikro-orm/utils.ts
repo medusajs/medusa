@@ -20,7 +20,7 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
     )
 
     for (const relation of relationsToCascade) {
-      const entityRelation = entity[relation.name]
+      let entityRelation = entity[relation.name]
 
       // Handle optional relationships
       if (relation.nullable && !entityRelation) {
@@ -30,10 +30,10 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
       const isCollection = "toArray" in entityRelation
       let relationEntities: any[] = []
 
-      if (isCollection && !entityRelation.isInitialized()) {
-        const coll = await entityRelation.init({ populate: true })
-        relationEntities = coll.getItems()
-      } else if (isCollection) {
+      if (isCollection) {
+        if (!entityRelation.isInitialized()) {
+          entityRelation = await entityRelation.init({ populate: true })
+        }
         relationEntities = entityRelation.getItems()
       } else {
         const initializedEntityRelation = await entityRelation.__helper?.init()
