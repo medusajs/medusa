@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import { BaseFilterable } from "../../dal"
 import { PriceSetDTO } from "./price-set"
 import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
+=======
+import { BaseFilterable } from "../../dal";
+import { PriceSetDTO } from "./price-set";
+import { RuleTypeDTO } from "./rule-type";
+>>>>>>> 0a6c2f3b5 (fix up pr)
 
 /**
  * @interface
@@ -48,6 +54,18 @@ export interface PriceRuleDTO {
    * The ID of the associated price list.
    */
   price_list_id: string
+  /**
+   * When the price_rule was created.
+   */
+  created_at?: null | Date
+  /**
+   * When the price_rule was updated.
+   */
+  updated_at?: null | Date
+  /**
+   * When the price_rule was deleted.
+   */
+  deleted_at?: null | Date
 }
 
 /**

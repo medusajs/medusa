@@ -752,6 +752,16 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "is_dynamic": {
+          "name": "is_dynamic",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
         "value": {
           "name": "value",
           "type": "text",
