@@ -22,6 +22,9 @@ type KeysToOmit = "showWeekNumber" | "captionLayout" | "mode"
 type SingleProps = OmitKeys<DayPickerSingleProps, KeysToOmit>
 type RangeProps = OmitKeys<DayPickerRangeProps, KeysToOmit>
 
+/**
+ * @interface
+ */
 type CalendarProps =
   | ({
       mode: "single"
@@ -33,10 +36,29 @@ type CalendarProps =
       mode: "range"
     } & RangeProps)
 
+/**
+ * This component is based on the [react-date-picker](https://www.npmjs.com/package/react-date-picker) package.
+ * 
+ * @excludeExternal
+ */
 const Calendar = ({
+  /**
+   * @ignore
+   */
   className,
+  /**
+   * @ignore
+   */
   classNames,
+  /**
+   * The calendar's mode.
+   */
   mode = "single",
+  /**
+   * Whether to show days of previous and next months.
+   * 
+   * @keep
+   */
   showOutsideDays = true,
   ...props
 }: CalendarProps) => {

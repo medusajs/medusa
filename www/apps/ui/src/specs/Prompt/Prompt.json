@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the [Radix UI Alert Dialog](https://www.radix-ui.com/primitives/docs/components/alert-dialog) primitives.",
+  "methods": [],
+  "displayName": "Prompt",
+  "props": {}
+}
