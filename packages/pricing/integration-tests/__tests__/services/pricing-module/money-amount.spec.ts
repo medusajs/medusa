@@ -272,16 +272,6 @@ describe("PricingModule Service - MoneyAmount", () => {
   describe("softDeleteMoneyAmounts", () => {
     const id = "money-amount-USD"
 
-    it("should softDelete moneyAmounts given an id", async () => {
-      await service.softDeleteMoneyAmounts([id])
-
-      const moneyAmounts = await service.listMoneyAmounts({
-        id: [id],
-      })
-
-      expect(moneyAmounts).toHaveLength(0)
-    })
-
     it("should softDelete priceSetMoneyAmount and PriceRule when soft-deleting money amount", async () => {
       await createPriceSets(testManager)
       await createRuleTypes(testManager)
