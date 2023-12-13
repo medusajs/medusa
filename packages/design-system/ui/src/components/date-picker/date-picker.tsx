@@ -34,13 +34,27 @@ const displayVariants = cva({
   },
 })
 
+interface DisplayProps extends React.ComponentProps<"button"> {
+  placeholder?: string
+  size?: "small" | "base"
+}
+
 const Display = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<"button"> & {
-    placeholder?: string
-    size?: "small" | "base"
-  }
->(({ className, children, placeholder, size = "base", ...props }, ref) => {
+  DisplayProps
+>(({ 
+    className, 
+    children, 
+    /**
+     * Placeholder of the date picker's input.
+     */
+    placeholder, 
+    /**
+     * The size of the date picker's input.
+     */
+    size = "base", 
+    ...props 
+  }: DisplayProps, ref) => {
   return (
     <Primitives.Trigger asChild>
       <button
@@ -88,14 +102,23 @@ const Flyout = React.forwardRef<
 Flyout.displayName = "DatePicker.Flyout"
 
 interface Preset {
+  /**
+   * The preset's label.
+   */
   label: string
 }
 
 interface DatePreset extends Preset {
+  /**
+   * The preset's selected date.
+   */
   date: Date
 }
 
 interface DateRangePreset extends Preset {
+  /**
+   * The preset's selected date range.
+   */
   dateRange: DateRange
 }
 
@@ -106,8 +129,17 @@ type PresetContainerProps<TPreset extends Preset, TValue> = {
 }
 
 const PresetContainer = <TPreset extends Preset, TValue>({
+  /**
+   * Selectable preset configurations.
+   */
   presets,
+  /**
+   * A function that handles the event when a preset is selected.
+   */
   onSelect,
+  /**
+   * The currently selected preset.
+   */
   currentValue,
 }: PresetContainerProps<TPreset, TValue>) => {
   const isDateRangePresets = (preset: any): preset is DateRangePreset => {
@@ -203,6 +235,7 @@ const PresetContainer = <TPreset extends Preset, TValue>({
     </ul>
   )
 }
+PresetContainer.displayName = "DatePicker.PresetContainer"
 
 const formatDate = (date: Date, includeTime?: boolean) => {
   const usesAmPm = !isBrowserLocaleClockType24h()
@@ -219,21 +252,60 @@ const formatDate = (date: Date, includeTime?: boolean) => {
 }
 
 type CalendarProps = {
+  /**
+   * The year to start showing the dates from.
+   */
   fromYear?: number
+  /**
+   * The year to show dates to.
+   */
   toYear?: number
+  /**
+   * The month to start showing dates from.
+   */
   fromMonth?: Date
+  /**
+   * The month to show dates to.
+   */
   toMonth?: Date
+  /**
+   * The day to start showing dates from.
+   */
   fromDay?: Date
+  /**
+   * The day to show dates to.
+   */
   toDay?: Date
+  /**
+   * The date to show dates from.
+   */
   fromDate?: Date
+  /**
+   * The date to show dates to.
+   */
   toDate?: Date
 }
 
 interface PickerProps extends CalendarProps {
+  /**
+   * The class name to apply on the date picker.
+   */
   className?: string
+  /**
+   * Whether the date picker's input is disabled.
+   */
   disabled?: boolean
+  /**
+   * Whether the date picker's input is required.
+   */
   required?: boolean
+  /**
+   * The date picker's size.
+   */
   size?: "small" | "base"
+  /**
+   * Whether to show a time picker along with the date picker.
+   */
   showTimePicker?: boolean
   id?: string
   "aria-invalid"?: boolean
@@ -466,11 +538,23 @@ interface RangeProps extends PickerProps {
 }
 
 const RangeDatePicker = ({
+  /**
+   * The date range selected by default.
+   */
   defaultValue,
+  /**
+   * The selected date range.
+   */
   value,
+  /**
+   * A function to handle the change in the selected date range.
+   */
   onChange,
   size = "base",
   showTimePicker,
+  /**
+   * Provide selectable preset configurations.
+   */
   presets,
   disabled,
   className,
@@ -732,6 +816,14 @@ const RangeDatePicker = ({
   )
 }
 
+/**
+ * @interface
+ * 
+ * @prop presets - Provide selectable preset configurations.
+ * @prop defaultValue - The date selected by default.
+ * @prop value - The selected date.
+ * @prop onChange - A function to handle the change in the selected date.
+ */
 type DatePickerProps = (
   | {
       mode?: "single"
@@ -891,7 +983,17 @@ const validatePresets = (
   }
 }
 
-const DatePicker = ({ mode = "single", ...props }: DatePickerProps) => {
+/**
+ * This component is based on the [Calendar](https://docs.medusajs.com/ui/components/calendar)
+ * component and [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover).
+ */
+const DatePicker = ({ 
+  /**
+   * The date picker's mode.
+   */
+  mode = "single", 
+  ...props
+}: DatePickerProps) => {
   if (props.presets) {
     validatePresets(props.presets, props)
   }

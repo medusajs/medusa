@@ -52,12 +52,34 @@ interface AvatarProps
   fallback: string
 }
 
+/**
+ * This component is based on the [Radix UI Avatar](https://www.radix-ui.com/primitives/docs/components/avatar) primitive.
+ */
 const Avatar = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   AvatarProps
 >(
   (
-    { src, fallback, variant = "rounded", size = "base", className, ...props },
+    { 
+      /**
+       * The URL of the image used in the Avatar.
+       */
+      src, 
+      /**
+       * Text to show in the avatar if the URL provided in `src` can't be opened.
+       */
+      fallback, 
+      /**
+       * The style of the avatar.
+       */
+      variant = "rounded", 
+      /**
+       * The size of the avatar's border radius.
+       */
+      size = "base",
+      className, 
+      ...props
+    }: AvatarProps,
     ref
   ) => {
     return (
