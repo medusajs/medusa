@@ -34,9 +34,31 @@ interface CurrencyInputProps
   code: string
 }
 
+/**
+ * This component is based on the input element and supports all of its props
+ * 
+ * @excludeExternal
+ */
 const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
   (
-    { size = "base", symbol, code, disabled, onInvalid, className, ...props },
+    { 
+      /**
+       * The input's size.
+       */
+      size = "base", 
+      /**
+       * The symbol to show in the input.
+       */
+      symbol, 
+      /**
+       * The currency code to show in the input.
+       */
+      code, 
+      disabled, 
+      onInvalid, 
+      className, 
+      ...props
+    }: CurrencyInputProps,
     ref
   ) => {
     const innerRef = React.useRef<HTMLInputElement>(null)

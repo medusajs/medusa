@@ -59,18 +59,34 @@ interface ButtonProps
   asChild?: boolean
 }
 
+/**
+ * This component is based on the `button` element and supports all of its props
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
+      /**
+       * The button's style.
+       */
       variant = "primary",
+      /**
+       * The button's size.
+       */
       size = "base",
       className,
+      /**
+       * Whether to remove the wrapper `button` element and use the
+       * passed child element instead.
+       */
       asChild = false,
       children,
+      /**
+       * Whether to show a loading spinner.
+       */
       isLoading = false,
       disabled,
       ...props
-    },
+    }: ButtonProps,
     ref
   ) => {
     const Component = asChild ? Slot : "button"

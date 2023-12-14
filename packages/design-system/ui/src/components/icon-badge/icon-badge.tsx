@@ -22,16 +22,29 @@ interface IconBadgeProps
   asChild?: boolean
 }
 
+/**
+ * This component is based on the `span` element and supports all of its props
+ */
 const IconBadge = React.forwardRef<HTMLSpanElement, IconBadgeProps>(
   (
     {
       children,
       className,
+      /**
+       * The badge's color.
+       */
       color = "grey",
+      /**
+       * The badge's size.
+       */
       size = "base",
+      /**
+       * Whether to remove the wrapper `span` element and use the
+       * passed child element instead.
+       */
       asChild = false,
       ...props
-    },
+    }: IconBadgeProps,
     ref
   ) => {
     const Component = asChild ? Slot : "span"
