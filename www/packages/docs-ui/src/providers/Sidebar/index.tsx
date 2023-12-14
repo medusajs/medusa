@@ -80,6 +80,23 @@ export type ActionType = {
   options?: ActionOptionsType
 }
 
+const findItem = (
+  section: SidebarItemType[],
+  item: Partial<SidebarItemType>,
+  checkChildren = true
+): SidebarItemType | undefined => {
+  return section.find((i) => {
+    if (!item.path) {
+      return !i.path && i.title === item.title
+    } else {
+      return (
+        i.path === item.path ||
+        (checkChildren && i.children && findItem(i.children, item))
+      )
+    }
+  })
+}
+
 export const reducer = (
   state: SidebarSectionItemsType,
   { type, items, options }: ActionType
@@ -87,8 +104,19 @@ export const reducer = (
   const {
     section = SidebarItemSections.TOP,
     parent,
+    ignoreExisting = false,
     indexPosition,
   } = options || {}
+
+  if (!ignoreExisting) {
+    const selectedSection =
+      section === SidebarItemSections.BOTTOM ? state.bottom : state.top
+    items = items.filter((item) => !findItem(selectedSection, item))
+  }
+
+  if (!items.length) {
+    return state
+  }
 
   switch (type) {
     case "add":
@@ -155,25 +183,7 @@ export const SidebarProvider = ({
     return scrollableElement || window
   }, [scrollableElement])
 
-  const findItemInSection = useCallback(
-    (
-      section: SidebarItemType[],
-      item: Partial<SidebarItemType>,
-      checkChildren = true
-    ): SidebarItemType | undefined => {
-      return section.find((i) => {
-        if (!item.path) {
-          return !i.path && i.title === item.title
-        } else {
-          return (
-            i.path === item.path ||
-            (checkChildren && i.children && findItemInSection(i.children, item))
-          )
-        }
-      })
-    },
-    []
-  )
+  const findItemInSection = useCallback(findItem, [])
 
   const getActiveItem = useCallback(() => {
     if (activePath === null) {
@@ -199,26 +209,8 @@ export const SidebarProvider = ({
       ignoreExisting?: boolean
     }
   ) => {
-    const {
-      section = SidebarItemSections.TOP,
-      parent,
-      ignoreExisting = false,
-    } = options || {}
-
-    if (!ignoreExisting) {
-      const selectedSection =
-        section === SidebarItemSections.BOTTOM ? items.bottom : items.top
-      newItems = newItems.filter(
-        (item) => !findItemInSection(selectedSection, item)
-      )
-    }
-
-    if (!newItems.length) {
-      return
-    }
-
     dispatch({
-      type: parent ? "update" : "add",
+      type: options?.parent ? "update" : "add",
       items: newItems,
       options,
     })
