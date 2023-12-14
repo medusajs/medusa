@@ -415,60 +415,6 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
         await workflow.run({
           input: { priceListId, operations: priceImportOperations },
         })
-        // const priceSetMoneyAmounts =
-        //   await this.pricingModuleService.listPriceSetMoneyAmounts(
-        //     {
-        //       price_list_id: [priceListId],
-        //     },
-        //     { take: null, relations: ["money_amount"] }
-        //   )
-        //
-        // await this.pricingModuleService.deleteMoneyAmounts(
-        //   priceSetMoneyAmounts.map((psma) => psma.money_amount?.id || "")
-        // )
-        //
-        // const variables = {
-        //   variant_id: priceImportOperations.map((op) => op.variant_id),
-        //   take: null,
-        // }
-        //
-        // const query = {
-        //   product_variant_price_set: {
-        //     __args: variables,
-        //     fields: ["variant_id", "price_set_id"],
-        //   },
-        // }
-        //
-        // const variantPriceSets = await this.remoteQuery(query)
-        //
-        // const variantIdToPriceSetIdMap: Map<string, string> = new Map(
-        //   variantPriceSets.map((variantPriceSet) => [
-        //     variantPriceSet.variant_id,
-        //     variantPriceSet.price_set_id,
-        //   ])
-        // )
-        // const priceInput = {
-        //   priceListId,
-        //   prices: priceImportOperations
-        //     .map((op) =>
-        //       (op.prices as PriceListPriceCreateInput[]).map((p) => {
-        //         const rules: Record<string, string> = {}
-        //         if (p.region_id) {
-        //           rules.region_id = p.region_id
-        //         }
-        //         return {
-        //           ...p,
-        //           rules,
-        //           price_set_id: variantIdToPriceSetIdMap.get(
-        //             op.variant_id as string
-        //           ),
-        //         } as PriceListPriceDTO
-        //       })
-        //     )
-        //     .flat(),
-        // }
-        //
-        // await this.pricingModuleService.addPriceListPrices([priceInput])
       } else {
         await txPriceListService.clearPrices(priceListId)
 

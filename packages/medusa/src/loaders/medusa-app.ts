@@ -1,12 +1,4 @@
 import {
-  MedusaApp,
-  MedusaAppOutput,
-  MedusaModule,
-  MODULE_PACKAGE_NAMES,
-  Modules,
-  ModulesDefinition,
-} from "@medusajs/modules-sdk"
-import {
   CommonTypes,
   InternalModuleDeclaration,
   MedusaContainer,
@@ -15,12 +7,21 @@ import {
 import {
   ContainerRegistrationKeys,
   FlagRouter,
-  isObject,
   MedusaV2Flag,
+  isObject,
 } from "@medusajs/utils"
+import {
+  MODULE_PACKAGE_NAMES,
+  MedusaApp,
+  MedusaAppOutput,
+  MedusaModule,
+  Modules,
+  ModulesDefinition,
+} from "@medusajs/modules-sdk"
+
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from ".."
 import { joinerConfig } from "../joiner-config"
+import { remoteQueryFetchData } from ".."
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
