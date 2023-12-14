@@ -6,4 +6,4 @@ If you use the `--db-url` option with the `create-medusa-app` command and the co
 npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
 ```
 
-- Changing the password to remove special characters. PostgreSQL requires encoding passwords if they have special characters. While we handle this automatically when you specify the password to the `create-medusa-app` command, when you pass a connection URL with the `--db-url` we use that URL as-is. So, you must either encode the special characters in the password yourself, or remove the special characters in the password.
+- Changing the password to remove special characters. PostgreSQL requires encoding passwords if they have special characters. While the `create-medusa-app` command handles this automatically when you specify the password to the `create-medusa-app` command, when you pass a connection URL with the `--db-url` the command uses that URL as-is. So, you must either encode the special characters in the password yourself, or remove the special characters in the password.
