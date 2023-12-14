@@ -22,7 +22,7 @@ Version 1.19 of Medusa ships performance improvements, bug fixes, and some break
 
 ### Change in Cart-Completion Strategy Response
 
-In previous versions, if you attempt to complete a cart that's already completed, it resulted in a response error with code `409`.
+In previous versions, if you attempt to complete a cart that's already completed, you will receive a response with status code`409`, indicating a conflict.
 
 In v1.19 of the Medusa backend, the order or swap associated with the completed cart is returned instead, with no response error:
 
