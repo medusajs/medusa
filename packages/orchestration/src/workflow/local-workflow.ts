@@ -3,6 +3,7 @@ import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
   DistributedTransaction,
+  DistributedTransactionEvents,
   TransactionOrchestrator,
   TransactionStepsDefinition,
 } from "../transaction"
@@ -79,7 +80,62 @@ export class LocalWorkflow {
     return this.workflow.flow_
   }
 
-  async run(uniqueTransactionId: string, input?: unknown, context?: Context) {
+  private registerEventCallbacks(
+    orchestrator: TransactionOrchestrator,
+    transaction?: DistributedTransaction,
+    subscribe?: DistributedTransactionEvents
+  ) {
+    if (subscribe?.onBegin) {
+      orchestrator.on("begin", subscribe.onBegin)
+    }
+
+    if (subscribe?.onResume) {
+      orchestrator.on("resume", subscribe.onResume)
+    }
+
+    if (subscribe?.onCompensate) {
+      orchestrator.on("compensate", subscribe.onCompensate)
+    }
+
+    if (subscribe?.onFinish) {
+      orchestrator.on("finish", subscribe.onFinish)
+    }
+
+    if (transaction) {
+      if (subscribe?.onStepBegin) {
+        transaction.on("stepBegin", subscribe.onStepBegin)
+      }
+
+      if (subscribe?.onStepSuccess) {
+        transaction.on("stepSuccess", subscribe.onStepSuccess)
+      }
+
+      if (subscribe?.onStepFailure) {
+        transaction.on("stepFailure", subscribe.onStepFailure)
+      }
+    } else {
+      orchestrator.once("resume", (transaction) => {
+        if (subscribe?.onStepBegin) {
+          transaction.on("stepBegin", subscribe.onStepBegin)
+        }
+
+        if (subscribe?.onStepSuccess) {
+          transaction.on("stepSuccess", subscribe.onStepSuccess)
+        }
+
+        if (subscribe?.onStepFailure) {
+          transaction.on("stepFailure", subscribe.onStepFailure)
+        }
+      })
+    }
+  }
+
+  async run(
+    uniqueTransactionId: string,
+    input?: unknown,
+    context?: Context,
+    subscribe?: DistributedTransactionEvents
+  ) {
     if (this.flow.hasChanges) {
       this.commit()
     }
@@ -92,6 +148,8 @@ export class LocalWorkflow {
       input
     )
 
+    this.registerEventCallbacks(orchestrator, transaction, subscribe)
+
     await orchestrator.resume(transaction)
 
     return transaction
@@ -100,9 +158,13 @@ export class LocalWorkflow {
   async registerStepSuccess(
     idempotencyKey: string,
     response?: unknown,
-    context?: Context
+    context?: Context,
+    subscribe?: DistributedTransactionEvents
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
+
+    this.registerEventCallbacks(orchestrator, undefined, subscribe)
+
     return await orchestrator.registerStepSuccess(
       idempotencyKey,
       handler(this.container, context),
@@ -114,9 +176,13 @@ export class LocalWorkflow {
   async registerStepFailure(
     idempotencyKey: string,
     error?: Error | any,
-    context?: Context
+    context?: Context,
+    subscribe?: DistributedTransactionEvents
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
+
+    this.registerEventCallbacks(orchestrator, undefined, subscribe)
+
     return await orchestrator.registerStepFailure(
       idempotencyKey,
       error,

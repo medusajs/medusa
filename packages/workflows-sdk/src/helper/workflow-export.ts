@@ -1,5 +1,6 @@
 import {
   DistributedTransaction,
+  DistributedTransactionEvents,
   LocalWorkflow,
   TransactionHandlerType,
   TransactionState,
@@ -22,6 +23,7 @@ export type FlowRunOptions<TData = unknown> = {
   context?: Context
   resultFrom?: string | string[] | Symbol
   throwOnError?: boolean
+  events?: DistributedTransactionEvents
 }
 
 export type FlowRegisterStepSuccessOptions<TData = unknown> = {
@@ -30,6 +32,7 @@ export type FlowRegisterStepSuccessOptions<TData = unknown> = {
   context?: Context
   resultFrom?: string | string[] | Symbol
   throwOnError?: boolean
+  events?: DistributedTransactionEvents
 }
 
 export type FlowRegisterStepFailureOptions<TData = unknown> = {
@@ -38,6 +41,7 @@ export type FlowRegisterStepFailureOptions<TData = unknown> = {
   context?: Context
   resultFrom?: string | string[] | Symbol
   throwOnError?: boolean
+  events?: DistributedTransactionEvents
 }
 
 export type WorkflowResult<TResult = unknown> = {
@@ -154,7 +158,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     }
 
     const newRun = async (
-      { input, context, throwOnError, resultFrom }: FlowRunOptions = {
+      { input, context, throwOnError, resultFrom, events }: FlowRunOptions = {
         throwOnError: true,
         resultFrom: defaultResult,
       }
@@ -183,7 +187,8 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         { throwOnError, resultFrom },
         context?.transactionId ?? ulid(),
         input,
-        context
+        context,
+        events
       )
     }
     flow.run = newRun as any
@@ -195,6 +200,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         context,
         throwOnError,
         resultFrom,
+        events,
       }: FlowRegisterStepSuccessOptions = {
         idempotencyKey: "",
         throwOnError: true,
@@ -209,7 +215,8 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         { throwOnError, resultFrom },
         idempotencyKey,
         response,
-        context
+        context,
+        events
       )
     }
     flow.registerStepSuccess = newRegisterStepSuccess as any
@@ -221,6 +228,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         context,
         throwOnError,
         resultFrom,
+        events,
       }: FlowRegisterStepFailureOptions = {
         idempotencyKey: "",
         throwOnError: true,
@@ -235,7 +243,8 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         { throwOnError, resultFrom },
         idempotencyKey,
         response,
-        context
+        context,
+        events
       )
     }
     flow.registerStepFailure = newRegisterStepFailure as any

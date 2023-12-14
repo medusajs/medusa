@@ -1,3 +1,6 @@
+import { DistributedTransaction } from "./distributed-transaction"
+import { TransactionStep } from "./transaction-step"
+
 export enum TransactionHandlerType {
   INVOKE = "invoke",
   COMPENSATE = "compensate",
@@ -48,4 +51,26 @@ export type TransactionModel = {
   flow: TransactionStepsDefinition
   hash: string
   options?: TransactionModelOptions
+}
+
+export type DistributedTransactionEvents = {
+  onBegin?: (transaction: DistributedTransaction) => void
+  onResume?: (transaction: DistributedTransaction) => void
+  onCompensate?: (transaction: DistributedTransaction) => void
+  onFinish?: (transaction: DistributedTransaction) => void
+
+  onStepBegin?: (args: {
+    step: TransactionStep
+    transaction: DistributedTransaction
+  }) => void
+
+  onStepSuccess?: (args: {
+    step: TransactionStep
+    transaction: DistributedTransaction
+  }) => void
+
+  onStepFailure?: (args: {
+    step: TransactionStep
+    transaction: DistributedTransaction
+  }) => void
 }

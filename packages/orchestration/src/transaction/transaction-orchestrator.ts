@@ -218,8 +218,9 @@ export class TransactionOrchestrator extends EventEmitter {
 
       this.emit("finish", transaction)
 
-      // TODO: check TransactionModel if it should delete the checkpoint when the transaction is done
-      void transaction.deleteCheckpoint()
+      if (flow.options?.retentionTime == undefined) {
+        void transaction.deleteCheckpoint()
+      }
     }
 
     return {
@@ -276,7 +277,7 @@ export class TransactionOrchestrator extends EventEmitter {
       await transaction.saveCheckpoint()
     }
 
-    transaction.emit("success", { step, transaction })
+    transaction.emit("stepSuccess", { step, transaction })
   }
 
   private static async setStepFailure(
@@ -318,7 +319,7 @@ export class TransactionOrchestrator extends EventEmitter {
       await transaction.saveCheckpoint()
     }
 
-    transaction.emit("failure", { step, transaction })
+    transaction.emit("stepFailure", { step, transaction })
   }
 
   private async executeNext(
@@ -374,7 +375,7 @@ export class TransactionOrchestrator extends EventEmitter {
         transaction.getContext()
       )
 
-      transaction.emit("step", { step, transaction })
+      transaction.emit("stepBegin", { step, transaction })
 
       if (!step.definition.async) {
         hasSyncSteps = true
