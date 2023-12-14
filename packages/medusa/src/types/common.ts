@@ -14,13 +14,11 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  Validate,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
 
 import { BaseEntity } from "../interfaces"
 import { ClassConstructor } from "./global"
-import { ExactlyOne } from "./validators/exactly-one"
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 import { transformDate } from "../utils/validators/date-transform"
@@ -70,7 +68,7 @@ export type TreeQuerySelector<TEntity> = QuerySelector<TEntity> & {
   include_descendants_tree?: boolean
 }
 
-export type Selector<TEntity> = {
+type InnerSelector<TEntity> = {
   [key in keyof TEntity]?:
     | TEntity[key]
     | TEntity[key][]
@@ -79,6 +77,10 @@ export type Selector<TEntity> = {
     | NumericalComparisonOperator
     | FindOperator<TEntity[key][] | string | string[]>
 }
+
+export type Selector<TEntity> =
+  | InnerSelector<TEntity>
+  | InnerSelector<TEntity>[]
 
 export type TotalField =
   | "shipping_total"

@@ -756,7 +756,10 @@ export default class OrderEditService extends TransactionBaseService {
 
       const [originalOrderLineItems] = await promiseAll([
         lineItemServiceTx.update(
-          { order_id: orderEdit.order_id, order_edit_id: Not(orderEditId) },
+          [
+            { order_id: orderEdit.order_id, order_edit_id: Not(orderEditId) },
+            { order_id: orderEdit.order_id, order_edit_id: IsNull() },
+          ],
           { order_id: null }
         ),
         lineItemServiceTx.update(

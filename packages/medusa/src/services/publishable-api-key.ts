@@ -12,6 +12,7 @@ import {
 } from "../types/publishable-api-key"
 import { buildQuery, isString } from "../utils"
 import EventBusService from "./event-bus"
+import {selectorConstraintsToString} from "@medusajs/utils";
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -123,9 +124,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     const publishableApiKey = await repo.findOne(query)
 
     if (!publishableApiKey) {
-      const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
