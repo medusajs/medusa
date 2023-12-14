@@ -15,6 +15,7 @@ import {
   FindOptionsWhere,
   ILike,
   IsNull,
+  Not,
 } from "typeorm"
 import { FindConfig, Selector } from "../types/common"
 import {
@@ -753,21 +754,16 @@ export default class OrderEditService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      // Detach the original order line items from the order
-      const originalOrderLineItems = await lineItemServiceTx.update(
-        { order_id: orderEdit.order_id },
-        { order_id: null }
-      )
-
-      const promises: Promise<any>[] = []
-
-      // Attach the order edit item to the order
-      promises.push(
+      const [originalOrderLineItems] = await promiseAll([
+        lineItemServiceTx.update(
+          { order_id: orderEdit.order_id, order_edit_id: Not(orderEditId) },
+          { order_id: null }
+        ),
         lineItemServiceTx.update(
           { order_edit_id: orderEditId },
           { order_id: orderEdit.order_id }
-        )
-      )
+        ),
+      ])
 
       orderEdit.confirmed_at = new Date()
       orderEdit.confirmed_by = context.confirmedBy
@@ -776,14 +772,13 @@ export default class OrderEditService extends TransactionBaseService {
 
       if (this.inventoryService_) {
         const itemsIds = originalOrderLineItems.map((i) => i.id)
-        promises.push(
-          this.inventoryService_!.deleteReservationItemsByLineItem(itemsIds, {
+        await this.inventoryService_!.deleteReservationItemsByLineItem(
+          itemsIds,
+          {
             transactionManager: manager,
-          })
+          }
         )
       }
-
-      await promiseAll(promises)
 
       await this.eventBusService_
         .withTransaction(manager)
