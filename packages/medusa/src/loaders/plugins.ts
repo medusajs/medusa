@@ -445,8 +445,7 @@ async function registerApi(
 }
 
 /**
- * Registers a service at the right location in our container. If the service is
- * a BaseService instance it will be available directly from the container.
+ * Registers a service at the right location in our container.
  * PaymentService instances are added to the paymentProviders array in the
  * container. Names are camelCase formatted and namespaced by the folder i.e:
  * services/example-payments -> examplePaymentsService

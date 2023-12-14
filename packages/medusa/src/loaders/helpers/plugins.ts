@@ -4,7 +4,7 @@ import {
   AbstractPaymentProcessor,
 } from "../../interfaces"
 import { ClassConstructor, MedusaContainer } from "../../types/global"
-import BasePaymentService from "medusa-interfaces/dist/payment-service"
+import { PaymentService } from "medusa-interfaces"
 
 type Context = {
   container: MedusaContainer
@@ -20,7 +20,7 @@ export function registerPaymentProcessorFromClass(
 ): void {
   if (
     !AbstractPaymentProcessor.isPaymentProcessor(klass.prototype) &&
-    !BasePaymentService.isPaymentService(klass.prototype)
+    !PaymentService.isPaymentService(klass.prototype)
   ) {
     return
   }
