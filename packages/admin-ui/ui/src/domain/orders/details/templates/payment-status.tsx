@@ -5,7 +5,12 @@ export const PaymentStatusComponent = ({ status }) => {
   const { t } = useTranslation()
   switch (status) {
     case "captured":
-      return <StatusDot title={t("templates-paid", "Paid")} variant="success" />
+      return (
+        <StatusDot
+          title={t("templates-paid", "Paid")}
+          variant="success"
+        />
+      )
     case "awaiting":
       return (
         <StatusDot
@@ -28,6 +33,20 @@ export const PaymentStatusComponent = ({ status }) => {
             "Requires Action"
           )}
           variant="danger"
+        />
+      )
+    case "refunded":
+      return (
+        <StatusDot
+          title={t("templates-refunded", "Refunded")}
+          variant="danger"
+        />
+      )
+    case "partially_refunded":
+      return (
+        <StatusDot
+          title={t("templates-partially-refunded", "Partially Refunded")}
+          variant="primary"
         />
       )
     default:

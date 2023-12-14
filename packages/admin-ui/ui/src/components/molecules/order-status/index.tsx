@@ -33,6 +33,10 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({ paymentStatus }) => {
       return <StatusIndicator title="Canceled" variant="danger" />
     case "requires_action":
       return <StatusIndicator title="Requires Action" variant="danger" />
+    case "refunded":
+      return <StatusIndicator title="Refunded" variant="danger" />
+    case "partially_refunded":
+      return <StatusIndicator title="Partially Refunded" variant="primary" />
     default:
       return null
   }

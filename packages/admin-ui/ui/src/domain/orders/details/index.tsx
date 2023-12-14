@@ -331,15 +331,8 @@ const OrderDetails = () => {
     (item: LineItem) => item.quantity > (item.fulfilled_quantity ?? 0)
   )
 
-  const invoiceUrl =
-    order?.payment_status === "captured"
-      ? `${MEDUSA_BACKEND_URL_NOSLASH}/admin/invoice/${order?.id}/invoice-${order.display_id}.pdf`
-      : null
-
-  const packingUrl =
-    order?.payment_status === "captured"
-      ? `${MEDUSA_BACKEND_URL_NOSLASH}/admin/packing/${order?.id}/packing-slip-${order.display_id}.pdf`
-      : null
+  const invoiceUrl = `${MEDUSA_BACKEND_URL_NOSLASH}/admin/invoice/${order?.id}/invoice-${order.display_id}.pdf`
+  const packingUrl = `${MEDUSA_BACKEND_URL_NOSLASH}/admin/packing/${order?.id}/packing-slip-${order.display_id}.pdf`
 
   return (
     <div>
