@@ -3092,15 +3092,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/eslint-plugin@npm:latest":
-  version: 2.4.3
-  resolution: "@docusaurus/eslint-plugin@npm:2.4.3"
+"@docusaurus/eslint-plugin@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@docusaurus/eslint-plugin@npm:3.0.1"
   dependencies:
-    "@typescript-eslint/utils": ^5.30.5
-    tslib: ^2.4.0
+    "@typescript-eslint/utils": ^5.62.0
+    tslib: ^2.6.0
   peerDependencies:
     eslint: ">=6"
-  checksum: 9961e2290a3926a64ee16a4f156d04c755ef66a432737f80108b36382c3224843f6e735bfac14cca50d7cd24361fcd88027156dd9157f033b435ae28f3afc8bb
+  checksum: b6c74f1a07d4356d021c78b2d5862b331d158f15cad0b058993067e3a56e070e5a0dd89d3e3be2c73eae8d14aab4bf6826295c05889471b4ed9b6ba7684cac20
   languageName: node
   linkType: hard
 
@@ -3489,13 +3489,6 @@ __metadata:
     fs-extra: ^11.1.1
     tslib: ^2.6.0
   checksum: 1f75dbff7c7835870d857f4f0a9c159d84678f13f31ed76cdade451aa08ab2db53bed983ee1e441e3c308387c63d56fb65ae32ef328cdae04f790e0166d72c2c
-  languageName: node
-  linkType: hard
-
-"@docusaurus/tsconfig@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@docusaurus/tsconfig@npm:3.0.0"
-  checksum: 429db512db045cd3708d794eca3c51b97cf756e36bc16ebcc92144bdbcf2bf5e960600871121a8c177a0520c548e60bdfed5eba551c7ae13aafa409d493855ae
   languageName: node
   linkType: hard
 
@@ -8776,7 +8769,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:5.62.0, @typescript-eslint/utils@npm:^5.30.5":
+"@typescript-eslint/utils@npm:5.62.0, @typescript-eslint/utils@npm:^5.62.0":
   version: 5.62.0
   resolution: "@typescript-eslint/utils@npm:5.62.0"
   dependencies:
@@ -12639,7 +12632,7 @@ __metadata:
   resolution: "eslint-config-docs@workspace:packages/eslint-config-docs"
   dependencies:
     "@babel/eslint-parser": ^7.22.15
-    "@docusaurus/eslint-plugin": latest
+    "@docusaurus/eslint-plugin": 3.0.1
     "@typescript-eslint/eslint-plugin": ^5.55.0
     "@typescript-eslint/parser": ^5.55.0
     eslint: ^8.36.0
@@ -22070,7 +22063,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tsconfig@workspace:packages/tsconfig"
   dependencies:
-    "@docusaurus/tsconfig": 3.0.0
+    "@docusaurus/tsconfig": 3.0.1
   languageName: unknown
   linkType: soft
 
