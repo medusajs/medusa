@@ -17,6 +17,7 @@ import FreshInstallationSection from './troubleshooting/awilix-resolution-error/
 import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
 import InvalidTokenError from './troubleshooting/create-medusa-app-errors/_no-browser-token-error.md'
 import PostgresDockerError from './troubleshooting/database-errors/_docker.md'
+import DbUrlError from './troubleshooting/create-medusa-app-errors/_db-url-error.md'
 
 # Install Medusa with create-medusa-app
 
@@ -217,6 +218,10 @@ Based on what you're building, you can find a development path for you in the Re
 
 <DetailsList
   sections={[
+    {
+      title: 'Can\'t connect to database with --db-url option',
+      content: <DbUrlError />
+    },
     {
       title: 'Error: EADDRINUSE',
       content: <EaddrinuseSection />
