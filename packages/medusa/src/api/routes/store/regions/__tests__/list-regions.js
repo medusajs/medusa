@@ -21,8 +21,8 @@ describe("List regions", () => {
           relations: [
             "countries",
             "currency",
-            "payment_providers",
             "fulfillment_providers",
+            "payment_providers",
           ],
           select: [
             "id",
