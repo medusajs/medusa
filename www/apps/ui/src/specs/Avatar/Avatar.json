@@ -1,0 +1,69 @@
+{
+  "description": "This component is based on the [Radix UI Avatar](https://www.radix-ui.com/primitives/docs/components/avatar) primitive.",
+  "methods": [],
+  "displayName": "Avatar",
+  "props": {
+    "src": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The URL of the image used in the Avatar."
+    },
+    "fallback": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "Text to show in the avatar if the URL provided in `src` can't be opened."
+    },
+    "variant": {
+      "defaultValue": {
+        "value": "\"rounded\"",
+        "computed": false
+      },
+      "description": "The style of the avatar.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"squared\" \\| \"rounded\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"squared\""
+          },
+          {
+            "name": "literal",
+            "value": "\"rounded\""
+          }
+        ]
+      },
+      "required": false
+    },
+    "size": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "The size of the avatar's border radius.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"large\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          }
+        ]
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "Omit",
+    "VariantProps"
+  ]
+}

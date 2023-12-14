@@ -1,5 +1,9 @@
 import { MoneyAmount, Product } from "@medusajs/client-types"
-import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
+import {
+  useAdminRegions,
+  useAdminStore,
+  useAdminUpdateVariant,
+} from "medusa-react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   getAllProductPricesCurrencies,
@@ -52,6 +56,7 @@ function EditPricesModal(props: EditPricesModalProps) {
   const { regions: storeRegions } = useAdminRegions({
     limit: 1000,
   })
+  const { store } = useAdminStore()
 
   const regionCurrenciesMap = useRegionsCurrencyMap()
   const regions = getAllProductPricesRegions(props.product).sort()
@@ -64,7 +69,14 @@ function EditPricesModal(props: EditPricesModalProps) {
     useState(false)
   const [showSaveConfirmationPrompt, setShowSaveConfirmationPrompt] =
     useState(false)
-  const [selectedCurrencies, setSelectedCurrencies] = useState(currencies)
+
+  const initialCurrencies =
+    !currencies.length && !regions.length
+      ? store?.currencies.map((c) => c.code)
+      : currencies
+
+  const [selectedCurrencies, setSelectedCurrencies] =
+    useState(initialCurrencies)
   const [selectedRegions, setSelectedRegions] = useState<string[]>(regions)
 
   const toggleCurrency = (currencyCode: string) => {
