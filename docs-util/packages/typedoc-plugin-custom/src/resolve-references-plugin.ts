@@ -12,12 +12,6 @@ import {
   ParameterType,
 } from "typedoc"
 
-declare module "typedoc" {
-  export interface TypeDocOptionMap {
-    internalModule: string
-  }
-}
-
 let hasMonkeyPatched = false
 
 export function load(app: Application) {
