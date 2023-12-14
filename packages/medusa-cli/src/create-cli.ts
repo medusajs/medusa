@@ -1,13 +1,13 @@
-import path from "path"
-import resolveCwd from "resolve-cwd"
 import { sync as existsSync } from "fs-exists-cached"
 import { setTelemetryEnabled } from "medusa-telemetry"
+import path from "path"
+import resolveCwd from "resolve-cwd"
 
-import { getLocalMedusaVersion } from "./util/version"
 import { didYouMean } from "./did-you-mean"
+import { getLocalMedusaVersion } from "./util/version"
 
-import reporter from "./reporter"
 import { newStarter } from "./commands/new"
+import reporter from "./reporter"
 
 const yargs = require(`yargs`)
 
@@ -224,6 +224,42 @@ function buildLocalCommands(cli, isLocalProject) {
         }),
       handler: handlerP(
         getCommandHandler(`start`, (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          cmd(args)
+          // Return an empty promise to prevent handlerP from exiting early.
+          // The development server shouldn't ever exit until the user directly
+          // kills it so this is fine.
+          return new Promise((resolve) => {})
+        })
+      ),
+    })
+    .command({
+      command: `start-cluster`,
+      desc: `Start development server in cluster mode (beta).`,
+      builder: (_) =>
+        _.option(`H`, {
+          alias: `host`,
+          type: `string`,
+          default: defaultHost,
+          describe: `Set host. Defaults to ${defaultHost}`,
+        })
+          .option(`p`, {
+            alias: `port`,
+            type: `string`,
+            default: process.env.PORT || defaultPort,
+            describe: process.env.PORT
+              ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+              : `Set port. Defaults to ${defaultPort}`,
+          })
+          .option(`c`, {
+            alias: `cpus`,
+            type: `number`,
+            default: process.env.CPUS,
+            describe:
+              "Set number of cpus to use. Defaults to max number of cpus available on the system (set by env.CPUS)",
+          }),
+      handler: handlerP(
+        getCommandHandler(`start-cluster`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           cmd(args)
           // Return an empty promise to prevent handlerP from exiting early.

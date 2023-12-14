@@ -94,7 +94,6 @@ describe("POST /admin/price-lists", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
     })

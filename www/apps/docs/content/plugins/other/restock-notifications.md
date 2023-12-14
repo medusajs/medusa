@@ -44,7 +44,7 @@ npm install medusa-plugin-restock-notification
 
 Then, add the plugin into the plugins array exported as part of the Medusa configuration in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // other plugins...
   {
@@ -110,13 +110,13 @@ After you update the quantity, you can see the `restock-notification.restocked` 
 
 :::note
 
-The SendGrid plugin already listens to and handles the `restock-notification.restocked` event. So, if you install it you don't need to manually create a subscriber that handles this event as explained here. This example is only provided for reference on how you can send a notification to the customer using a Notication plugin.
+The SendGrid plugin already listens to and handles the `restock-notification.restocked` event. So, if you install it you don't need to manually create a subscriber that handles this event as explained here. This example is only provided for reference on how you can send a notification to the customer using a Notification plugin.
 
 :::
 
 Here's an example of a [subscriber](../../development/events/subscribers.mdx) that listens to the `restock-notification.restocked` event and uses the [SendGrid plugin](../notifications/sendgrid.mdx) to send the subscribed customers an email:
 
-```ts title=src/subscribers/restock-notification.ts
+```ts title="src/subscribers/restock-notification.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -157,6 +157,6 @@ export const config: SubscriberConfig = {
 The handler function receives in the `data` property of the first parameter the following properties:
 
 - `variant_id`: The ID of the variant that has been restocked.
-- `emails`: An array of strings indicating the email addresses subscribed to the restocked variant. Here, you pass it along to the SendGrid plugin directly to send the email to everyone subscribed. If necessary, you can also retrieve the customer of that email using the `CustomerService`'s [retrieveByEmail](../../references/services/classes/CustomerService.mdx#retrievebyemail) method.
+- `emails`: An array of strings indicating the email addresses subscribed to the restocked variant. Here, you pass it along to the SendGrid plugin directly to send the email to everyone subscribed. If necessary, you can also retrieve the customer of that email using the `CustomerService`'s [retrieveByEmail](../../references/services/classes/services.CustomerService.mdx#retrievebyemail) method.
 
 In the handler function, you retrieve the variant by its ID using the `ProductVariantService`, then send the email using the SendGrid plugins' `SendGridService`.

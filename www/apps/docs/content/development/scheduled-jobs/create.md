@@ -35,7 +35,7 @@ The scheduled job file exports a default handler function, and the scheduled job
 
 For example:
 
-```ts title=src/loaders/publish.ts
+```ts title="src/loaders/publish.ts"
 import { 
   type ProductService, 
   type ScheduledJobConfig, 
@@ -85,7 +85,7 @@ You can see examples of scheduled job expression patterns on [crontab guru](http
 
 ### Scheduled Job Handler Function
 
-The default-export of the scheduled job file is a handler function that is executed when the events specified in the exported configuration is triggerd.
+The default-export of the scheduled job file is a handler function that is executed when the events specified in the exported configuration is triggered.
 
 The function accepts a parameter of type `ScheduledJobArgs`, which has the following properties:
 

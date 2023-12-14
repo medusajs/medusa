@@ -1,7 +1,7 @@
 "use client"
 
 import { Eye, EyeSlash, MagnifyingGlassMini } from "@medusajs/icons"
-import { VariantProps, cva } from "class-variance-authority"
+import { VariantProps, cva } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
@@ -13,29 +13,40 @@ const inputBaseStyles = clx(
   "aria-[invalid=true]:!shadow-borders-error  invalid:!shadow-borders-error"
 )
 
-const inputVariants = cva(
-  clx(
+const inputVariants = cva({
+  base: clx(
     inputBaseStyles,
     "[&::--webkit-search-cancel-button]:hidden [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
   ),
-  {
-    variants: {
-      size: {
-        base: "txt-compact-medium h-10 px-3 py-[9px]",
-        small: "txt-compact-small h-8 px-2 py-[5px]",
-      },
+  variants: {
+    size: {
+      base: "txt-compact-medium h-10 px-3 py-[9px]",
+      small: "txt-compact-small h-8 px-2 py-[5px]",
     },
-    defaultVariants: {
-      size: "base",
-    },
-  }
-)
+  },
+  defaultVariants: {
+    size: "base",
+  },
+})
 
+interface InputProps extends VariantProps<typeof inputVariants>,
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {}
+
+/**
+ * This component is based on the `input` element and supports all of its props
+ */
 const Input = React.forwardRef<
   HTMLInputElement,
-  VariantProps<typeof inputVariants> &
-    Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">
->(({ className, type, size = "base", ...props }, ref) => {
+  InputProps
+>(({ 
+    className, 
+    type, 
+    /**
+     * The input's size.
+     */
+    size = "base", 
+    ...props 
+  }: InputProps, ref) => {
   const [typeState, setTypeState] = React.useState(type)
 
   const isPassword = type === "password"

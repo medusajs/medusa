@@ -12,6 +12,7 @@ import { SalesChannelRepository } from "../repositories/sales-channel"
 import { buildQuery } from "../utils"
 import EventBusService from "./event-bus"
 import StoreService from "./store"
+import {selectorConstraintsToString} from "@medusajs/utils";
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -67,9 +68,7 @@ class SalesChannelService extends TransactionBaseService {
     })
 
     if (!salesChannel) {
-      const selectorConstraints = Object.entries(selector)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,

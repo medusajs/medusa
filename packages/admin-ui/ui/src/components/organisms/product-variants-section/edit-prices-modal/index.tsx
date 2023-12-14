@@ -1,26 +1,30 @@
 import { MoneyAmount, Product } from "@medusajs/client-types"
 import {
+  useAdminRegions,
+  useAdminStore,
+  useAdminUpdateVariant,
+} from "medusa-react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import {
   getAllProductPricesCurrencies,
   getAllProductPricesRegions,
   getCurrencyPricesOnly,
   getRegionPricesOnly,
 } from "./utils"
-import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
-import { useEffect, useMemo, useRef, useState } from "react"
 
-import Button from "../../../fundamentals/button"
-import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
-import CrossIcon from "../../../fundamentals/icons/cross-icon"
-import DeletePrompt from "../../delete-prompt"
-import EditPricesActions from "./edit-prices-actions"
-import EditPricesTable from "./edit-prices-table"
-import Fade from "../../../atoms/fade-wrapper"
-import Modal from "../../../molecules/modal"
-import SavePrompt from "./save-prompt"
 import mapKeys from "lodash/mapKeys"
 import pick from "lodash/pick"
 import pickBy from "lodash/pickBy"
 import useNotification from "../../../../hooks/use-notification"
+import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
+import Fade from "../../../atoms/fade-wrapper"
+import Button from "../../../fundamentals/button"
+import CrossIcon from "../../../fundamentals/icons/cross-icon"
+import Modal from "../../../molecules/modal"
+import DeletePrompt from "../../delete-prompt"
+import EditPricesActions from "./edit-prices-actions"
+import EditPricesTable from "./edit-prices-table"
+import SavePrompt from "./save-prompt"
 
 type EditPricesModalProps = {
   close: () => void
@@ -52,6 +56,7 @@ function EditPricesModal(props: EditPricesModalProps) {
   const { regions: storeRegions } = useAdminRegions({
     limit: 1000,
   })
+  const { store } = useAdminStore()
 
   const regionCurrenciesMap = useRegionsCurrencyMap()
   const regions = getAllProductPricesRegions(props.product).sort()
@@ -64,7 +69,14 @@ function EditPricesModal(props: EditPricesModalProps) {
     useState(false)
   const [showSaveConfirmationPrompt, setShowSaveConfirmationPrompt] =
     useState(false)
-  const [selectedCurrencies, setSelectedCurrencies] = useState(currencies)
+
+  const initialCurrencies =
+    !currencies.length && !regions.length
+      ? store?.currencies.map((c) => c.code)
+      : currencies
+
+  const [selectedCurrencies, setSelectedCurrencies] =
+    useState(initialCurrencies)
   const [selectedRegions, setSelectedRegions] = useState<string[]>(regions)
 
   const toggleCurrency = (currencyCode: string) => {

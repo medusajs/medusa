@@ -2,7 +2,7 @@
 
 import { ChevronUpDown, EllipseMiniSolid } from "@medusajs/icons"
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { cva } from "class-variance-authority"
+import { cva } from "cva"
 import * as React from "react"
 
 import { clx } from "@/utils/clx"
@@ -28,20 +28,41 @@ const useSelectContext = () => {
   return context
 }
 
-const Root = ({ children, size = "base", ...props }: SelectProps) => {
+/**
+ * This component is based on [Radix UI Select](https://www.radix-ui.com/primitives/docs/components/select).
+ * It also accepts all props of the HTML `select` component.
+ */
+const Root = ({
+  children, 
+  /**
+   * The select's size.
+   */
+  size = "base", 
+  ...props
+}: SelectProps) => {
   return (
     <SelectContext.Provider value={React.useMemo(() => ({ size }), [size])}>
       <SelectPrimitive.Root {...props}>{children}</SelectPrimitive.Root>
     </SelectContext.Provider>
   )
 }
+Root.displayName = "Select"
 
+/**
+ * Groups multiple items together.
+ */
 const Group = SelectPrimitive.Group
+Group.displayName = "Select.Group"
 
+/**
+ * Displays the selected value, or a placeholder if no value is selected.
+ * It's based on [Radix UI Select Value](https://www.radix-ui.com/primitives/docs/components/select#value).
+ */
 const Value = SelectPrimitive.Value
+Value.displayName = "Select.Value"
 
-const triggerVariants = cva(
-  clx(
+const triggerVariants = cva({
+  base: clx(
     "bg-ui-bg-field txt-compact-medium shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none",
     "data-[placeholder]:text-ui-fg-muted text-ui-fg-base",
     "hover:bg-ui-bg-field-hover",
@@ -51,16 +72,17 @@ const triggerVariants = cva(
     "disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
     "group/trigger"
   ),
-  {
-    variants: {
-      size: {
-        base: "h-10 px-3 py-[9px]",
-        small: "h-8 px-2 py-[5px]",
-      },
+  variants: {
+    size: {
+      base: "h-10 px-3 py-[9px]",
+      small: "h-8 px-2 py-[5px]",
     },
-  }
-)
+  },
+})
 
+/**
+ * The trigger that toggles the select.
+ */
 const Trigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
@@ -80,7 +102,7 @@ const Trigger = React.forwardRef<
     </SelectPrimitive.Trigger>
   )
 })
-Trigger.displayName = SelectPrimitive.Trigger.displayName
+Trigger.displayName = "Select.Trigger"
 
 const Content = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
@@ -129,8 +151,11 @@ const Content = React.forwardRef<
     </SelectPrimitive.Portal>
   )
 )
-Content.displayName = SelectPrimitive.Content.displayName
+Content.displayName = "Select.Content"
 
+/**
+ * Used to label a group of items.
+ */
 const Label = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
@@ -144,8 +169,12 @@ const Label = React.forwardRef<
     {...props}
   />
 ))
-Label.displayName = SelectPrimitive.Label.displayName
+Label.displayName = "Select.Label"
 
+/**
+ * An item in the select. It's based on [Radix UI Select Item](https://www.radix-ui.com/primitives/docs/components/select#item)
+ * and accepts its props.
+ */
 const Item = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
@@ -179,7 +208,7 @@ const Item = React.forwardRef<
     </SelectPrimitive.Item>
   )
 })
-Item.displayName = SelectPrimitive.Item.displayName
+Item.displayName = "Select.Item"
 
 const Separator = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Separator>,
@@ -191,7 +220,7 @@ const Separator = React.forwardRef<
     {...props}
   />
 ))
-Separator.displayName = SelectPrimitive.Separator.displayName
+Separator.displayName = "Select.Separator"
 
 const Select = Object.assign(Root, {
   Group,

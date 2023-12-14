@@ -1,5 +1,17 @@
 # @medusajs/ui
 
+## 2.2.4
+
+### Patch Changes
+
+- [#5818](https://github.com/medusajs/medusa/pull/5818) [`591ba2388`](https://github.com/medusajs/medusa/commit/591ba2388d9768f70ca2faf48d353e5a65e4e123) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui): Bump 'class-variance-authority' to 'cva@beta' and update usage to new API. Also fix the naming of usePrompt types
+
+## 2.2.3
+
+### Patch Changes
+
+- [#5692](https://github.com/medusajs/medusa/pull/5692) [`b25b29fe7`](https://github.com/medusajs/medusa/commit/b25b29fe7ba3bc9fca8da7a6b10461437a3e4d2d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(ui): Update the styling of CodeBlock
+
 ## 2.2.2
 
 ### Patch Changes

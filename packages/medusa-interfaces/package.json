@@ -8,6 +8,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-interfaces"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests src",

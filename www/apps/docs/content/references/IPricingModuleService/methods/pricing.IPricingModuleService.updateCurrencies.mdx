@@ -1,0 +1,177 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/updateCurrencies
+sidebar_label: updateCurrencies
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# updateCurrencies - Pricing Module Reference
+
+This documentation provides a reference to the `updateCurrencies` method. This belongs to the Pricing Module.
+
+This method is used to update existing currencies with the provided data. In each currency object, the currency code must be provided to identify which currency to update.
+
+## Example
+
+```ts
+import {
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function updateCurrencies () {
+  const pricingService = await initializePricingModule()
+
+  const currencies = await pricingService.updateCurrencies([
+    {
+      code: "USD",
+      symbol: "$",
+    }
+  ])
+
+  // do something with the currencies or return them
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[UpdateCurrencyDTO](../../pricing/interfaces/pricing.UpdateCurrencyDTO.mdx)[]",
+    "description": "The currencies to update, each having the attributes that should be updated in a currency.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "code",
+        "type": "`string`",
+        "description": "The code of the currency to update.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the currency.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "symbol",
+        "type": "`string`",
+        "description": "The symbol of the currency.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "symbol_native",
+        "type": "`string`",
+        "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[Context](../../pricing/interfaces/pricing.Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "A string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[CurrencyDTO](../../pricing/interfaces/pricing.CurrencyDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of updated currencies.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "CurrencyDTO[]",
+        "type": "[CurrencyDTO](../../pricing/interfaces/pricing.CurrencyDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "CurrencyDTO",
+            "type": "`object`",
+            "description": "A currency's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

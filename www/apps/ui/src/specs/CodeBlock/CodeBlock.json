@@ -1,0 +1,66 @@
+{
+  "description": "This component is based on the `div` element and supports all of its props",
+  "methods": [],
+  "displayName": "CodeBlock",
+  "props": {
+    "snippets": {
+      "required": true,
+      "tsType": {
+        "name": "Array",
+        "elements": [
+          {
+            "name": "signature",
+            "type": "object",
+            "raw": "{\n  /**\n   * The label of the code snippet's tab.\n   */\n  label: string\n  /**\n   * The language of the code snippet. For example, `tsx`.\n   */\n  language: string\n  /**\n   * The code snippet.\n   */\n  code: string\n  /**\n   * Whether to hide the line numbers shown as the side of the code snippet.\n   */\n  hideLineNumbers?: boolean\n  /**\n   * Whether to hide the copy button.\n   */\n  hideCopy?: boolean\n}",
+            "signature": {
+              "properties": [
+                {
+                  "key": "label",
+                  "value": {
+                    "name": "string",
+                    "required": true
+                  },
+                  "description": "The label of the code snippet's tab."
+                },
+                {
+                  "key": "language",
+                  "value": {
+                    "name": "string",
+                    "required": true
+                  },
+                  "description": "The language of the code snippet. For example, `tsx`."
+                },
+                {
+                  "key": "code",
+                  "value": {
+                    "name": "string",
+                    "required": true
+                  },
+                  "description": "The code snippet."
+                },
+                {
+                  "key": "hideLineNumbers",
+                  "value": {
+                    "name": "boolean",
+                    "required": false
+                  },
+                  "description": "Whether to hide the line numbers shown as the side of the code snippet."
+                },
+                {
+                  "key": "hideCopy",
+                  "value": {
+                    "name": "boolean",
+                    "required": false
+                  },
+                  "description": "Whether to hide the copy button."
+                }
+              ]
+            }
+          }
+        ],
+        "raw": "CodeSnippet[]"
+      },
+      "description": "The code snippets."
+    }
+  }
+}

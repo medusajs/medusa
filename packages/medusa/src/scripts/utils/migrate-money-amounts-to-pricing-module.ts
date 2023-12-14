@@ -3,6 +3,7 @@ import { MedusaError, promiseAll } from "@medusajs/utils"
 
 import { ProductVariantService } from "../../services"
 import dotenv from "dotenv"
+import Logger from "../../loaders/logger"
 
 dotenv.config()
 
@@ -78,6 +79,6 @@ export const migrateProductVariantPricing = async function (
     await link.create(links)
 
     processedCount += variants.length
-    console.log(`Processed ${processedCount} of ${totalCount}`)
+    Logger.log(`Processed ${processedCount} of ${totalCount}`)
   }
 }

@@ -37,7 +37,7 @@ To subscribe to an event, you must create a [subscriber](../../../development/ev
 
 Create the file `src/subscribers/invite-created.ts` with the following content:
 
-```ts title=src/subscribers/invite-created.ts
+```ts title="src/subscribers/invite-created.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -78,7 +78,7 @@ In this method, you should typically send an email to the user. You can place an
 
 For example, you can implement this subscriber to send emails using SendGrid:
 
-```ts title=src/subscribers/invite.ts
+```ts title="src/subscribers/invite.ts"
 import { 
   type SubscriberConfig, 
   type SubscriberArgs,
@@ -123,7 +123,7 @@ If the notification provider you’re using already implements the logic to hand
 
 For example:
 
-```ts title=src/loaders/customer-confirmation.ts
+```ts title="src/loaders/customer-confirmation.ts"
 import { 
   MedusaContainer, 
   NotificationService,
