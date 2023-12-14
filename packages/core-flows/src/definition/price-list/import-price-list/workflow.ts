@@ -1,7 +1,7 @@
-import { createWorkflow } from "@medusajs/workflows-sdk"
-import { prepareImportPriceListPrices } from "./prepare-price-list-import"
-import { deletePriceListPrices } from "./delete-existing-price-list-prices"
 import { createPriceListPrices } from "./add-new-prices"
+import { createWorkflow } from "@medusajs/workflows-sdk"
+import { deletePriceListPrices } from "./delete-existing-price-list-prices"
+import { prepareImportPriceListPrices } from "./prepare-price-list-import"
 
 export type workflowInput = {
   priceListId: string
@@ -13,7 +13,7 @@ export const importPriceListWorkflow = createWorkflow<workflowInput, void>(
   function (input) {
     const prep = prepareImportPriceListPrices(input)
 
-    deletePriceListPrices({ prep, input })
+    deletePriceListPrices(prep)
 
     createPriceListPrices({
       input,
