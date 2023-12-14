@@ -6,7 +6,7 @@
   "main": "base.js",
   "dependencies": {
     "@babel/eslint-parser": "^7.22.15",
-    "@docusaurus/eslint-plugin": "latest",
+    "@docusaurus/eslint-plugin": "3.0.1",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "eslint-config-google": "^0.14.0",
