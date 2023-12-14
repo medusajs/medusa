@@ -22,15 +22,13 @@ const Providers = ({ children }: ProvidersProps) => {
       <MobileProvider>
         <ColorModeProvider>
           <ModalProvider>
-            <SidebarProvider>
-              <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
-                <SearchProvider>
-                  <ScrollControllerProvider scrollableSelector="#main">
-                    {children}
-                  </ScrollControllerProvider>
-                </SearchProvider>
-              </NavbarProvider>
-            </SidebarProvider>
+            <ScrollControllerProvider scrollableSelector="#main">
+              <SidebarProvider>
+                <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
+                  <SearchProvider>{children}</SearchProvider>
+                </NavbarProvider>
+              </SidebarProvider>
+            </ScrollControllerProvider>
           </ModalProvider>
         </ColorModeProvider>
       </MobileProvider>
