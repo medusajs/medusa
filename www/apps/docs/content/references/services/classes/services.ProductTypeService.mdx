@@ -13,7 +13,30 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "`Object`",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__namedParameters.productTypeRepository",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ProductTypeService",
+    "type": "`object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -193,10 +216,28 @@ Lists product types
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ProductType](../../entities/classes/entities.ProductType.mdx)&#62; & `object`",
+    "type": "`object`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.discount_condition_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
     "expandable": false,
     "children": []
   },
@@ -236,10 +277,28 @@ Lists product types and adds count.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ProductType](../../entities/classes/entities.ProductType.mdx)&#62; & `object`",
+    "type": "`object`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.discount_condition_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
     "expandable": false,
     "children": []
   },

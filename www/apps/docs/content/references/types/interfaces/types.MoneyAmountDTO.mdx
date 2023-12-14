@@ -224,15 +224,6 @@ A money amount's data. A money amount represents a price.
             "children": []
           },
           {
-            "name": "number_rules",
-            "type": "`number`",
-            "description": "The number of rules associated with this price list.",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
             "name": "price_list_rules",
             "type": "[PriceListRuleDTO](types.PriceListRuleDTO.mdx)[]",
             "description": "The price set's rules.",
@@ -266,6 +257,15 @@ A money amount's data. A money amount represents a price.
             "optional": true,
             "defaultValue": "",
             "expandable": true,
+            "children": []
+          },
+          {
+            "name": "rules_count",
+            "type": "`number`",
+            "description": "The number of rules associated with this price list.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {

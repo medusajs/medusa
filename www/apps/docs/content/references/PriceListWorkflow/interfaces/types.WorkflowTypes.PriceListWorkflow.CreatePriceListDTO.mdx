@@ -34,15 +34,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   },
   {
-    "name": "number_rules",
-    "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "prices",
     "type": "`object`[]",
     "description": "",
@@ -150,15 +141,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
             "children": []
           },
           {
-            "name": "number_rules",
-            "type": "`number`",
-            "description": "The number of rules associated with this price list.",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
             "name": "price_list_rules",
             "type": "[PriceListRuleDTO](../../types/interfaces/types.PriceListRuleDTO.mdx)[]",
             "description": "The price set's rules.",
@@ -192,6 +174,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
             "optional": true,
             "defaultValue": "",
             "expandable": true,
+            "children": []
+          },
+          {
+            "name": "rules_count",
+            "type": "`number`",
+            "description": "The number of rules associated with this price list.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -316,6 +307,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
         "children": []
       }
     ]
+  },
+  {
+    "name": "rules_count",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
   },
   {
     "name": "starts_at",

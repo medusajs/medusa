@@ -24,6 +24,20 @@ Provides layer to manipulate product collections.
   }
 ]} />
 
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ProductCollectionService",
+    "type": "`object`",
+    "description": "Provides layer to manipulate product collections.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
 ___
 
 ## Properties
@@ -376,10 +390,28 @@ Lists product collections
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[ProductCollection](../../entities/classes/entities.ProductCollection.mdx)&#62; & `object`",
+    "type": "`object`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.discount_condition_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
     "expandable": false,
     "children": []
   },

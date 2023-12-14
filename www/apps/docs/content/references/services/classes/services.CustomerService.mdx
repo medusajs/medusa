@@ -24,6 +24,20 @@ Provides layer to manipulate customers.
   }
 ]} />
 
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "CustomerService",
+    "type": "`object`",
+    "description": "Provides layer to manipulate customers.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
 ___
 
 ## Properties
@@ -451,10 +465,28 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`",
+    "type": "`object`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.groups",
+    "type": "`string`[] \\| `object`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
     "expandable": false,
     "children": []
   },
@@ -492,9 +524,27 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`",
+    "type": "`object`",
     "description": "the query object for find",
     "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.groups",
+    "type": "`string`[] \\| `object`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
     "defaultValue": "",
     "expandable": false,
     "children": []

@@ -13,8 +13,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This documentation provides a reference to the `addPrices` method. This belongs to the Pricing Module.
 
-`**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)&#62;`
-
 This method adds prices to a price set.
 
 ## Example
@@ -172,9 +170,9 @@ async function addPricesToPriceSet (priceSetId: string) {
           },
           {
             "name": "rules",
-            "type": "`Record<string, string>`",
+            "type": "[CreatePriceSetPriceRules](../../pricing/interfaces/pricing.CreatePriceSetPriceRules.mdx)",
             "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
-            "optional": false,
+            "optional": true,
             "defaultValue": "",
             "expandable": false,
             "children": []
@@ -383,8 +381,6 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-`**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)[]&#62;`
-
 This method adds prices to multiple price sets.
 
 ## Example
@@ -542,9 +538,9 @@ async function addPricesToPriceSet (priceSetId: string) {
           },
           {
             "name": "rules",
-            "type": "`Record<string, string>`",
+            "type": "[CreatePriceSetPriceRules](../../pricing/interfaces/pricing.CreatePriceSetPriceRules.mdx)",
             "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
-            "optional": false,
+            "optional": true,
             "defaultValue": "",
             "expandable": false,
             "children": []

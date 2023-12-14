@@ -22,6 +22,20 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "OrderEditService",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
 ___
 
 ## Properties
@@ -772,9 +786,18 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[OrderEdit](../../entities/classes/entities.OrderEdit.mdx)&#62; & `object`",
+    "type": "`object`",
     "description": "",
     "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
     "defaultValue": "",
     "expandable": false,
     "children": []

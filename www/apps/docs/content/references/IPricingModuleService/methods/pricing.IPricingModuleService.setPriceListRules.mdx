@@ -227,15 +227,6 @@ async function setPriceListRules (priceListId: string) {
         ]
       },
       {
-        "name": "number_rules",
-        "type": "`number`",
-        "description": "The number of rules associated with this price list.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
         "name": "price_list_rules",
         "type": "[PriceListRuleDTO](../../pricing/interfaces/pricing.PriceListRuleDTO.mdx)[]",
         "description": "The price set's rules.",
@@ -463,6 +454,15 @@ async function setPriceListRules (priceListId: string) {
             "children": []
           }
         ]
+      },
+      {
+        "name": "rules_count",
+        "type": "`number`",
+        "description": "The number of rules associated with this price list.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
       },
       {
         "name": "starts_at",

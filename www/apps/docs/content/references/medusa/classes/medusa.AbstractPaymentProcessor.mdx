@@ -52,6 +52,165 @@ Payment processor in charge of creating , managing and processing a payment
   }
 ]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "constructor",
+    "type": "(`container`: [MedusaContainer](../types/medusa.MedusaContainer-2.mdx), `config?`: `Record<string, unknown>`) => [AbstractPaymentProcessor](medusa.AbstractPaymentProcessor.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "container",
+    "type": "[MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "createScope",
+        "type": "() => [MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "registerAdd",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../types/medusa.MedusaContainer-2.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "identifier",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "authorizePayment",
+    "type": "(`paymentSessionData`: `Record<string, unknown>`, `context`: `Record<string, unknown>`) => Promise&#60;[PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| &#123; data: Record&#60;string, unknown&#62; ; status: [PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)  &#125;&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cancelPayment",
+    "type": "(`paymentSessionData`: `Record<string, unknown>`) => Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "capturePayment",
+    "type": "(`paymentSessionData`: `Record<string, unknown>`) => Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePayment",
+    "type": "(`paymentSessionData`: `Record<string, unknown>`) => Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getIdentifier",
+    "type": "() => `string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getPaymentStatus",
+    "type": "(`paymentSessionData`: `Record<string, unknown>`) => Promise&#60;[PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "initiatePayment",
+    "type": "(`context`: [PaymentProcessorContext](../types/medusa.PaymentProcessorContext.mdx)) => Promise&#60;[PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../types/medusa.PaymentProcessorSessionResponse.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "refundPayment",
+    "type": "(`paymentSessionData`: `Record<string, unknown>`, `refundAmount`: `number`) => Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrievePayment",
+    "type": "(`paymentSessionData`: `Record<string, unknown>`) => Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePayment",
+    "type": "(`context`: [PaymentProcessorContext](../types/medusa.PaymentProcessorContext.mdx)) => Promise&#60;void \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../types/medusa.PaymentProcessorSessionResponse.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePaymentData",
+    "type": "(`sessionId`: `string`, `data`: `Record<string, unknown>`) => Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/medusa.PaymentProcessorError.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
 ___
 
 ## Properties

@@ -22,6 +22,20 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "CustomerGroupService",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
 ___
 
 ## Properties
@@ -363,10 +377,28 @@ List customer groups.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62; & `object`",
+    "type": "`object`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.discount_condition_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
     "expandable": false,
     "children": []
   },
@@ -406,10 +438,28 @@ Retrieve a list of customer groups and total count of records that match the que
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62; & `object`",
+    "type": "`object`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.discount_condition_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector.q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
     "expandable": false,
     "children": []
   },
