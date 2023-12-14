@@ -1,0 +1,62 @@
+{
+  "description": "This component is based on the [Radix UI Label](https://www.radix-ui.com/primitives/docs/components/label) primitive.",
+  "methods": [],
+  "displayName": "Label",
+  "props": {
+    "size": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "The label's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"large\" \\| \"small\" \\| \"xsmall\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"xsmall\""
+          }
+        ]
+      },
+      "required": false
+    },
+    "weight": {
+      "defaultValue": {
+        "value": "\"regular\"",
+        "computed": false
+      },
+      "description": "The label's font weight.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"regular\" \\| \"plus\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"regular\""
+          },
+          {
+            "name": "literal",
+            "value": "\"plus\""
+          }
+        ]
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "VariantProps"
+  ]
+}

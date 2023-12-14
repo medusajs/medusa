@@ -23,7 +23,7 @@
     "glob": "^10.3.10",
     "randomcolor": "^0.6.2",
     "ts-node": "^10.9.1",
-    "typedoc": "0.25.1",
+    "typedoc": "^0.25.4",
     "typedoc-config": "*",
     "typedoc-monorepo-link-types": "^0.0.2",
     "typedoc-plugin-custom": "*",

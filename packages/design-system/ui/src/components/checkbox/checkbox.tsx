@@ -6,6 +6,9 @@ import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the [Radix UI Checkbox](https://www.radix-ui.com/primitives/docs/components/checkbox) primitive.
+ */
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   React.ComponentPropsWithoutRef<typeof Primitives.Root>

@@ -6,21 +6,39 @@ import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu](https://www.radix-ui.com/primitives/docs/components/dropdown-menu) primitive.
+ */
 const Root = Primitives.Root
-Root.displayName = "DropdownMenu.Root"
+Root.displayName = "DropdownMenu"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu Trigger](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#trigger) primitive.
+ */
 const Trigger = Primitives.Trigger
 Trigger.displayName = "DropdownMenu.Trigger"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu Group](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#group) primitive.
+ */
 const Group = Primitives.Group
 Group.displayName = "DropdownMenu.Group"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu Sub](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#sub) primitive.
+ */
 const SubMenu = Primitives.Sub
 SubMenu.displayName = "DropdownMenu.SubMenu"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu RadioGroup](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#radiogroup) primitive.
+ */
 const RadioGroup = Primitives.RadioGroup
 RadioGroup.displayName = "DropdownMenu.RadioGroup"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu SubTrigger](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#subtrigger) primitive.
+ */
 const SubMenuTrigger = React.forwardRef<
   React.ElementRef<typeof Primitives.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof Primitives.SubTrigger>
@@ -39,6 +57,9 @@ const SubMenuTrigger = React.forwardRef<
 ))
 SubMenuTrigger.displayName = "DropdownMenu.SubMenuTrigger"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu SubContent](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#subcontent) primitive.
+ */
 const SubMenuContent = React.forwardRef<
   React.ElementRef<typeof Primitives.SubContent>,
   React.ComponentPropsWithoutRef<typeof Primitives.SubContent>
@@ -58,6 +79,9 @@ const SubMenuContent = React.forwardRef<
 ))
 SubMenuContent.displayName = "DropdownMenu.SubMenuContent"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu Content](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#content) primitive.
+ */
 const Content = React.forwardRef<
   React.ElementRef<typeof Primitives.Content>,
   React.ComponentPropsWithoutRef<typeof Primitives.Content>
@@ -90,6 +114,9 @@ const Content = React.forwardRef<
 )
 Content.displayName = "DropdownMenu.Content"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu Item](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#item) primitive.
+ */
 const Item = React.forwardRef<
   React.ElementRef<typeof Primitives.Item>,
   React.ComponentPropsWithoutRef<typeof Primitives.Item>
@@ -105,6 +132,9 @@ const Item = React.forwardRef<
 ))
 Item.displayName = "DropdownMenu.Item"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu CheckboxItem](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#checkboxitem) primitive.
+ */
 const CheckboxItem = React.forwardRef<
   React.ElementRef<typeof Primitives.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof Primitives.CheckboxItem>
@@ -128,6 +158,9 @@ const CheckboxItem = React.forwardRef<
 ))
 CheckboxItem.displayName = "DropdownMenu.CheckboxItem"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu RadioItem](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#radioitem) primitive.
+ */
 const RadioItem = React.forwardRef<
   React.ElementRef<typeof Primitives.RadioItem>,
   React.ComponentPropsWithoutRef<typeof Primitives.RadioItem>
@@ -150,6 +183,9 @@ const RadioItem = React.forwardRef<
 ))
 RadioItem.displayName = "DropdownMenu.RadioItem"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu Label](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#label) primitive.
+ */
 const Label = React.forwardRef<
   React.ElementRef<typeof Primitives.Label>,
   React.ComponentPropsWithoutRef<typeof Primitives.Label>
@@ -165,6 +201,9 @@ const Label = React.forwardRef<
 ))
 Label.displayName = "DropdownMenu.Label"
 
+/**
+ * This component is based on the [Radix UI Dropdown Menu Separator](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#separator) primitive.
+ */
 const Separator = React.forwardRef<
   React.ElementRef<typeof Primitives.Separator>,
   React.ComponentPropsWithoutRef<typeof Primitives.Separator>
@@ -177,6 +216,9 @@ const Separator = React.forwardRef<
 ))
 Separator.displayName = "DropdownMenu.Separator"
 
+/**
+ * This component is based on the `span` element and supports all of its props
+ */
 const Shortcut = ({
   className,
   ...props
@@ -193,6 +235,9 @@ const Shortcut = ({
 }
 Shortcut.displayName = "DropdownMenu.Shortcut"
 
+/**
+ * This component is based on the `span` element and supports all of its props
+ */
 const Hint = ({
   className,
   ...props

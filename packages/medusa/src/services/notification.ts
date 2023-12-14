@@ -198,7 +198,7 @@ class NotificationService extends TransactionBaseService {
     return promiseAll(
       subs.map(async (providerId) => {
         return this.send(eventName, data, providerId).catch((err) => {
-          console.log(err)
+          this.logger_.log(err)
           this.logger_.warn(
             `An error occured while ${providerId} was processing a notification for ${eventName}: ${err.message}`
           )

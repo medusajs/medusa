@@ -38,26 +38,10 @@ import { CommandBar } from "@medusajs/ui"
 
 ---
 
-### CommandBar
-
-The root component of the command bar. This component manages the state of the command bar.
-
-<ComponentProps component="command-bar" />
-
-### CommandBar.Bar
-
-The bar component of the command bar. This component is used to display the commands.
-
-### CommandBar.Value
-
-The value component of the command bar. This component is used to display a value, such as the number of selected items which the commands will act on.
-
-### CommandBar.Seperator
-
-The seperator component of the command bar. This component is used to display a seperator between commands.
-
-### CommandBar.Command
-
-The command component of the command bar. This component is used to display a command, as well as registering the keyboad shortcut.
-
-<ComponentProps component="command-bar-command" />
+<ComponentReference mainComponent="CommandBar" componentsToShow={[
+  "CommandBar",
+  "CommandBar.Bar",
+  "CommandBar.Value",
+  "CommandBar.Seperator",
+  "CommandBar.Command"
+]} />
