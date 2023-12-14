@@ -135,6 +135,12 @@ export interface PaymentProcessor {
  * Payment processor in charge of creating , managing and processing a payment
  */
 export abstract class AbstractPaymentProcessor implements PaymentProcessor {
+  static _isPaymentProcessor = true
+
+  static isPaymentProcessor(object): boolean {
+    return object?.constructor?._isPaymentProcessor
+  }
+
   protected constructor(
     protected readonly container: MedusaContainer,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function

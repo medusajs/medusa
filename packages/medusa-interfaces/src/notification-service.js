@@ -5,6 +5,12 @@ import BaseService from "./base-service"
  * @interface
  */
 class BaseNotificationService extends BaseService {
+  static _isNotificationService = true
+
+  static isNotificationService(obj) {
+    return obj?.constructor?._isNotificationService
+  }
+
   constructor() {
     super()
   }

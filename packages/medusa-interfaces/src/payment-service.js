@@ -7,6 +7,12 @@ import BaseService from "./base-service"
  * @interface
  */
 class BasePaymentService extends BaseService {
+  static _isPaymentService = true
+
+  static isPaymentService(obj) {
+    return obj?.constructor?._isPaymentService
+  }
+
   constructor() {
     super()
   }

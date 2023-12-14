@@ -5,6 +5,12 @@ import BaseService from "./base-service"
  * @interface
  */
 class SearchService extends BaseService {
+  static _isSearchService = true
+
+  static isSearchService(obj) {
+    return obj?.constructor?._isSearchService
+  }
+
   constructor() {
     super()
   }

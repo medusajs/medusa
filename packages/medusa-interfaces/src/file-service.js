@@ -5,6 +5,12 @@ import BaseService from "./base-service"
  * @interface
  */
 class BaseFileService extends BaseService {
+  static _isFileService = true
+
+  static isFileService(obj) {
+    return obj?.constructor?._isFileService
+  }
+
   constructor() {
     super()
   }
