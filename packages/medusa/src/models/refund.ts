@@ -14,11 +14,31 @@ import { generateEntityId } from "../utils/generate-entity-id"
 import { Order } from "./order"
 import { Payment } from "./payment"
 
+/**
+ * @enum
+ * 
+ * The reason of the refund.
+ */
 export enum RefundReason {
+  /**
+   * The refund is applied as a discount.
+   */
   DISCOUNT = "discount",
+  /**
+   * The refund is applied because of a created return.
+   */
   RETURN = "return",
+  /**
+   * The refund is applied because of a created swap.
+   */
   SWAP = "swap",
+  /**
+   * The refund is applied because of a created claim.
+   */
   CLAIM = "claim",
+  /**
+   * The refund is created for a custom reason.
+   */
   OTHER = "other",
 }
 
@@ -55,6 +75,9 @@ export class Refund extends BaseEntity {
   @Column({ nullable: true })
   idempotency_key: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ref")

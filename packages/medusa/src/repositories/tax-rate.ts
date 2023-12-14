@@ -16,7 +16,7 @@ import {
 } from "../models"
 import { TaxRateListByConfig } from "../types/tax-rate"
 import { isDefined } from "medusa-core-utils"
-import { objectToStringPath } from "@medusajs/utils"
+import { objectToStringPath, promiseAll } from "@medusajs/utils"
 import { dataSource } from "../loaders/database"
 
 const resolveableFields = [
@@ -68,7 +68,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
 
   async findAndCountWithResolution(findOptions: FindManyOptions<TaxRate>) {
     const qb = this.getFindQueryBuilder(findOptions)
-    return await Promise.all([qb.getMany(), qb.getCount()])
+    return await promiseAll([qb.getMany(), qb.getCount()])
   },
 
   applyResolutionsToQueryBuilder(
@@ -246,7 +246,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       })
     }
 
-    const results = await Promise.all([
+    const results = await promiseAll([
       productRates.getMany(),
       typeRates.getMany(),
     ])

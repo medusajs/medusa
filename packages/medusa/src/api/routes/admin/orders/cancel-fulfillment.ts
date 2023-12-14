@@ -10,12 +10,13 @@ import { EntityManager } from "typeorm"
 import { Fulfillment } from "../../../../models"
 import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersOrderFulfillmentsCancel"
  * summary: "Cancel a Fulfilmment"
- * description: "Cancel an order's fulfillment and change its status."
+ * description: "Cancel an order's fulfillment and change its fulfillment status to `canceled`."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
@@ -35,15 +36,16 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/{id}/fulfillments/{fulfillment_id}/cancel' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
@@ -119,7 +121,7 @@ export const adjustInventoryForCancelledFulfillment = async (
   }
 ) => {
   const { productVariantInventoryService } = context
-  await Promise.all(
+  await promiseAll(
     fulfillment.items.map(async ({ item, quantity }) => {
       if (item.variant_id) {
         await productVariantInventoryService.adjustInventory(

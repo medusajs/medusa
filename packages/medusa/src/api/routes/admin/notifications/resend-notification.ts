@@ -34,15 +34,16 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notifications.resend(notificationId)
  *       .then(({ notification }) => {
  *         console.log(notification.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/notifications/{id}/resend' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Notifications
  * responses:
@@ -103,7 +104,8 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   to:
- *     description: "A new address or user identifier that the Notification should be sent to. If not provided, the previous `to` field of the notification will be used."
+ *     description: >-
+ *       A new address or user identifier that the Notification should be sent to. If not provided, the previous `to` field of the notification will be used.
  *     type: string
  */
 export class AdminPostNotificationsNotificationResendReq {

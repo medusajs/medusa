@@ -1,0 +1,42 @@
+---
+title: "Table"
+description: "A Table component for displaying data."
+---
+
+<ComponentExample name="table-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { Table } from "@medusajs/ui"
+```
+
+```tsx
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>#</Table.HeaderCell>
+      <Table.HeaderCell>Customer</Table.HeaderCell>
+      <Table.HeaderCell>Email</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>1</Table.Cell>
+      <Table.Cell>Emil Larsson</Table.Cell>
+      <Table.Cell>emil2738@gmail.com</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+## API Reference
+
+---
+
+<ComponentReference mainComponent="Table" componentsToShow={[
+  "Table",
+  "Table.Pagination"
+]} />

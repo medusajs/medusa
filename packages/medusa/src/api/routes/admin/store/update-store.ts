@@ -29,12 +29,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/store' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Medusa Store"
@@ -42,6 +42,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:
@@ -87,7 +88,8 @@ export default async (req, res) => {
  *     description: "The name of the Store"
  *     type: string
  *   swap_link_template:
- *     description: "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart ID"
+ *     description: >-
+ *       A template for Swap links - use `{{cart_id}}` to insert the Swap Cart ID
  *     type: string
  *     example: "http://example.com/swaps/{{cart_id}}"
  *   payment_link_template:

@@ -2,6 +2,7 @@ import clsx from "clsx"
 import { useAdminRegion, useAdminTaxRates } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import Spinner from "../../../components/atoms/spinner"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import Table from "../../../components/molecules/table"
@@ -24,6 +25,7 @@ export type TaxRateTableEntries = {
 const DEFAULT_PAGESIZE = 10
 
 const TaxDetails = ({ id }) => {
+  const { t } = useTranslation()
   const [pagination, setPagination] = useState<PaginationProps>({
     limit: DEFAULT_PAGESIZE,
     offset: 0,
@@ -88,10 +90,10 @@ const TaxDetails = ({ id }) => {
   return (
     <>
       <BodyCard
-        title="Details"
+        title={t("taxes-details", "Details")}
         actionables={[
           {
-            label: "New Tax Rate",
+            label: t("taxes-new-tax-rate", "New Tax Rate"),
             onClick: () => setShowNew(true),
             icon: <PlusIcon />,
           },
@@ -134,7 +136,7 @@ const TaxDetails = ({ id }) => {
           )}
         </Table>
         <h3 className="inter-large-semibold mt-2xlarge mb-base">
-          Tax Calculation Settings
+          {t("taxes-tax-calculation-settings", "Tax Calculation Settings")}
         </h3>
         <div className="flex flex-1">
           {!regionIsLoading && region && <RegionTaxForm region={region} />}

@@ -10,14 +10,14 @@ import {
 } from "@mikro-orm/core"
 import { ProductOption, ProductVariant } from "./index"
 import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
 
 type OptionalFields =
-  | "created_at"
-  | "updated_at"
   | "allow_backorder"
   | "manage_inventory"
   | "option_id"
   | "variant_id"
+  | DAL.SoftDeletableEntityDateColumns
 type OptionalRelations = "product" | "option" | "variant"
 
 @Entity({ tableName: "product_option_value" })
@@ -52,6 +52,21 @@ class ProductOptionValue {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
+
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
 
   @Index({ name: "IDX_product_option_value_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })

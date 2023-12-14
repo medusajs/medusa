@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "6.0.3",
+  "version": "6.0.6",
   "description": "Stripe Payment provider for Medusa Commerce",
   "main": "dist/index.js",
   "repository": {
@@ -11,6 +11,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
@@ -20,23 +23,28 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/admin": "*",
-    "@medusajs/medusa": "*",
+    "@medusajs/admin": "^7.1.7",
+    "@medusajs/medusa": "^1.17.4",
+    "@tanstack/react-table": "^8.7.9",
     "@types/stripe": "^8.0.417",
     "awilix": "^8.0.1",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-react": "^9.0.4",
+    "medusa-react": "^9.0.11",
     "rimraf": "^5.0.1",
     "typescript": "^4.9.5"
   },
   "peerDependenciesMeta": {
+    "@tanstack/react-table": {
+      "optional": true
+    },
     "medusa-react": {
       "optional": true
     }
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.12.0",
+    "@tanstack/react-table": "^8.7.9",
     "medusa-react": "^9.0.0"
   },
   "dependencies": {

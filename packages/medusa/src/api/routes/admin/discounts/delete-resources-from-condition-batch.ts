@@ -12,7 +12,7 @@ import { FindParams } from "../../../../types/common"
  * @oas [delete] /admin/discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "DeleteDiscountsDiscountConditionsConditionBatch"
  * summary: "Remove Batch Resources"
- * description: "Remove a batch of resources from a discount condition. This will only remove the association between the resource and the discount condition, but not the resource itself."
+ * description: "Remove a batch of resources from a discount condition. This will only remove the association between the resource and the discount condition, not the resource itself."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the discount.
@@ -38,12 +38,12 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/discounts/{id}/conditions/{condition_id}/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "resources": [{ "id": "item_id" }]
@@ -51,6 +51,7 @@ import { FindParams } from "../../../../types/common"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:
@@ -109,12 +110,16 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 // eslint-disable-next-line max-len
 export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends FindParams {}
 
 /**
  * @schema AdminDeleteDiscountsDiscountConditionsConditionBatchReq
  * type: object
+ * description: "The resources to remove."
  * required:
  *   - resources
  * properties:

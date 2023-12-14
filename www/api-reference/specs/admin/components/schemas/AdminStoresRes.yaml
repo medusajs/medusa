@@ -1,7 +1,0 @@
-type: object
-required:
-  - store
-properties:
-  store:
-    description: Store details.
-    $ref: ./Store.yaml

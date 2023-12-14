@@ -18,15 +18,16 @@ import { ProductService } from "../../../../services"
  *       medusa.admin.products.listTags()
  *       .then(({ tags }) => {
  *         console.log(tags.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/products/tag-usage' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

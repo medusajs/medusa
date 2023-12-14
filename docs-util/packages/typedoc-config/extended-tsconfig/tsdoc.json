@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+  "extends": ["typedoc/tsdoc.json"],
+  "tagDefinitions": [
+    {
+      "tagName": "@featureFlag",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@expandable",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@schema",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@apiIgnore",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@mainSignature",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@docHideSignature",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@keep",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@excludeExternal",
+      "syntaxKind": "modifier"
+    }
+  ]
+}

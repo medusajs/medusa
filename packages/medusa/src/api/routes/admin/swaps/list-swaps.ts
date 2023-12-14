@@ -28,15 +28,16 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.swaps.list()
  *       .then(({ swaps }) => {
  *         console.log(swaps.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/swaps' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Swaps
  * responses:
@@ -79,12 +80,21 @@ export default async (req, res) => {
   res.json({ swaps, count, offset, limit })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class AdminGetSwapsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)

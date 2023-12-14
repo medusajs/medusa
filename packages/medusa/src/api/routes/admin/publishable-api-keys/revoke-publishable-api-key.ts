@@ -21,17 +21,18 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
- *         .then(({ publishable_api_key }) => {
- *           console.log(publishable_api_key.id)
- *         })
+ *       .then(({ publishable_api_key }) => {
+ *         console.log(publishable_api_key.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/publishable-api-keys/{id}/revoke' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Publishable Api Keys
  * responses:

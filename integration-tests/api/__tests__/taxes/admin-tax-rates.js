@@ -48,7 +48,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api.get("/admin/tax-rates", {
       headers: {
-        authorization: "Bearer test_token",
+        "x-medusa-access-token": "test_token",
       },
     })
 
@@ -66,7 +66,7 @@ describe("/admin/tax-rates", () => {
       `/admin/tax-rates?fields[]=rate&fields[]=product_count&fields[]=id&expand[]=products&rate[gt]=80`,
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -85,7 +85,7 @@ describe("/admin/tax-rates", () => {
       `/admin/tax-rates?region_id[]=${regions[0].id}&region_id[]=${regions[1].id}`,
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -106,7 +106,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api.get(`/admin/tax-rates/${tax_rates[0].id}`, {
       headers: {
-        authorization: "Bearer test_token",
+        "x-medusa-access-token": "test_token",
       },
     })
 
@@ -129,7 +129,7 @@ describe("/admin/tax-rates", () => {
       `/admin/tax-rates/${tax_rates[0].id}?fields[]=id&fields[]=region_id`,
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -159,7 +159,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -191,7 +191,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -231,7 +231,7 @@ describe("/admin/tax-rates", () => {
         },
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -260,7 +260,7 @@ describe("/admin/tax-rates", () => {
         },
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -294,7 +294,7 @@ describe("/admin/tax-rates", () => {
         },
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -330,7 +330,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -361,7 +361,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -391,7 +391,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -425,7 +425,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -460,7 +460,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -499,7 +499,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -530,7 +530,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -566,7 +566,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -595,7 +595,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
     const response = await api.delete(`/admin/tax-rates/${rate.id}`, {
       headers: {
-        authorization: "Bearer test_token",
+        "x-medusa-access-token": "test_token",
       },
     })
 

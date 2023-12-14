@@ -8,7 +8,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * @oas [post] /admin/publishable-api-keys
  * operationId: "PostPublishableApiKeys"
  * summary: "Create Publishable API Key"
- * description: "Creates a Publishable API Key."
+ * description: "Create a Publishable API Key."
  * requestBody:
  *   content:
  *     application/json:
@@ -34,7 +34,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/publishable-api-keys' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Web API Key"
@@ -42,6 +42,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Publishable Api Keys
  * responses:

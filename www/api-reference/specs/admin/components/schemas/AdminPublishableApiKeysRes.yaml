@@ -1,7 +1,0 @@
-type: object
-required:
-  - publishable_api_key
-properties:
-  publishable_api_key:
-    description: Publishable API key details.
-    $ref: ./PublishableApiKey.yaml

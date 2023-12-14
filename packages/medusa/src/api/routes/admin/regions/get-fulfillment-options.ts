@@ -22,15 +22,16 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.retrieveFulfillmentOptions(regionId)
  *       .then(({ fulfillment_options }) => {
  *         console.log(fulfillment_options.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/regions/{id}/fulfillment-options' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Regions
  * responses:

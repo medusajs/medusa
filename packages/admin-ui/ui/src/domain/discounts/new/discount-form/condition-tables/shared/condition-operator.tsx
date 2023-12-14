@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 import RadioGroup from "../../../../../../components/organisms/radio-group"
 import { DiscountConditionOperator } from "../../../../types"
 
@@ -11,6 +12,7 @@ const ConditionOperator: React.FC<ConditionOperatorProps> = ({
   value,
   onChange,
 }) => {
+  const { t } = useTranslation()
   return (
     <RadioGroup.Root
       value={value}
@@ -21,13 +23,19 @@ const ConditionOperator: React.FC<ConditionOperatorProps> = ({
         className="w-full"
         label="In"
         value={DiscountConditionOperator.IN}
-        description="Applies to the selected items."
+        description={t(
+          "shared-applies-to-the-selected-items",
+          "Applies to the selected items."
+        )}
       />
       <RadioGroup.Item
         className="w-full"
         label="Not in"
         value={DiscountConditionOperator.NOT_IN}
-        description="Applies to all items except the selected items."
+        description={t(
+          "shared-applies-to-all-items-except-the-selected-items",
+          "Applies to all items except the selected items."
+        )}
       />
     </RadioGroup.Root>
   )

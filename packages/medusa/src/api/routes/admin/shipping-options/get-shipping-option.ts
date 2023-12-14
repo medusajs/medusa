@@ -20,15 +20,16 @@ import { defaultFields, defaultRelations } from "."
  *       medusa.admin.shippingOptions.retrieve(optionId)
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/shipping-options/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Shipping Options
  * responses:

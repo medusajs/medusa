@@ -20,10 +20,10 @@ import {
   ReturnItem,
   ReturnStatus,
 } from "../models"
-import { MedusaError, isDefined } from "medusa-core-utils"
-import { FlagRouter } from "@medusajs/utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { buildQuery, setMetadata, calculatePriceTaxAmount } from "../utils"
+import { buildQuery, calculatePriceTaxAmount, setMetadata } from "../utils"
 
 import { OrdersReturnItem } from "../types/orders"
 import { ReturnItemRepository } from "../repositories/return-item"
@@ -129,7 +129,7 @@ class ReturnService extends TransactionBaseService {
       }
     }
 
-    const toReturn = await Promise.all(
+    const toReturn = await promiseAll(
       items.map(async (data) => {
         const item = merged.find((i) => i.id === data.item_id)
         return transformer(item, data.quantity, data)

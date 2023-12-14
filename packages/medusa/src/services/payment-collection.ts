@@ -20,6 +20,7 @@ import {
   PaymentCollectionsSessionsInput,
 } from "../types/payment-collection"
 import EventBusService from "./event-bus"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -336,7 +337,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
           const paymentProviderTx =
             this.paymentProviderService_.withTransaction(manager)
 
-          Promise.all(
+          await promiseAll(
             removeSessions.map(async (sess) =>
               paymentProviderTx.deleteSession(sess)
             )

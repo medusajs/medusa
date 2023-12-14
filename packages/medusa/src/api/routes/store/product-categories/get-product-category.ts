@@ -26,17 +26,18 @@ import { defaultStoreCategoryScope } from "."
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.productCategories.retrieve(productCategoryId)
- *         .then(({ product_category }) => {
- *           console.log(product_category.id);
- *         });
+ *       .then(({ product_category }) => {
+ *         console.log(product_category.id);
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/product-categories/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Categories
  * responses:

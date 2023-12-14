@@ -24,7 +24,7 @@ describe("Currency service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           populate: [],
         },
       },
@@ -48,7 +48,7 @@ describe("Currency service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           populate: [],
           withDeleted: undefined,
         },
@@ -78,7 +78,7 @@ describe("Currency service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           populate: [],
           withDeleted: undefined,
         },
@@ -116,7 +116,7 @@ describe("Currency service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           populate: [],
           withDeleted: undefined,
         },
@@ -154,7 +154,7 @@ describe("Currency service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           withDeleted: undefined,
           populate: ["tags"],
         },
@@ -192,7 +192,7 @@ describe("Currency service", function () {
         options: {
           fields: undefined,
           limit: 15,
-          offset: undefined,
+          offset: 0,
           withDeleted: undefined,
           populate: ["tags"],
         },

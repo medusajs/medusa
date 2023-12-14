@@ -24,15 +24,16 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.deletePaymentProvider(regionId, "manual")
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/regions/{id}/payment-providers/{provider_id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Regions
  * responses:

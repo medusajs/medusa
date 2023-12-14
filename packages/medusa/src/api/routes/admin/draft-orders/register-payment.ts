@@ -14,6 +14,7 @@ import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { Order } from "../../../../models"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/pay
@@ -36,15 +37,16 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.draftOrders.markPaid(draftOrderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/draft-orders/{id}/pay' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Draft Orders
  * responses:
@@ -129,7 +131,7 @@ export const reserveQuantityForDraftOrder = async (
   }
 ) => {
   const { productVariantInventoryService, locationId } = context
-  await Promise.all(
+  await promiseAll(
     order.items.map(async (item) => {
       if (item.variant_id) {
         const inventoryConfirmed =

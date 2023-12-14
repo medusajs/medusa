@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import InputField from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
@@ -15,6 +16,7 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
   onSubmit,
   region,
 }) => {
+  const { t } = useTranslation()
   const [amount, setAmount] = useState(0)
   const { pop } = useContext(LayeredModalContext)
 
@@ -31,8 +33,11 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
       <Modal.Content>
         <div className="gap-y-xsmall min-h-[705px]">
           <InputField
-            placeholder="E.g. Gift wrapping"
-            label="Title"
+            placeholder={t(
+              "components-e-g-gift-wrapping",
+              "E.g. Gift wrapping"
+            )}
+            label={t("components-title", "Title")}
             {...register("title", { required: true })}
             className="my-4"
             required
@@ -44,14 +49,14 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
           >
             <CurrencyInput.Amount
               required
-              label="Price"
+              label={t("components-price", "Price")}
               amount={amount}
               onChange={(value) => setAmount(value || 0)}
             />
           </CurrencyInput.Root>
           <InputField
             className="my-4"
-            label="Quantity"
+            label={t("components-quantity", "Quantity")}
             {...register("quantity", { required: true })}
             type="number"
             required
@@ -66,7 +71,7 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
             className="w-[112px]"
             onClick={() => pop()}
           >
-            Back
+            {t("components-back", "Back")}
           </Button>
           <Button
             variant="primary"
@@ -74,7 +79,7 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
             size="small"
             onClick={handleSubmit(onSubmitItem)}
           >
-            Add
+            {t("components-add", "Add")}
           </Button>
         </div>
       </Modal.Footer>

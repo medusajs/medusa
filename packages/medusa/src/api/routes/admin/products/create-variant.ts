@@ -1,4 +1,6 @@
-import { IInventoryService } from "@medusajs/types"
+import { CreateProductVariants } from "@medusajs/core-flows"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -10,7 +12,11 @@ import {
   ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
 import {
   PricingService,
   ProductService,
@@ -21,7 +27,7 @@ import {
   CreateProductVariantInput,
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
-import { validator } from "../../../../utils/validator"
+import { retrieveProduct, validator } from "../../../../utils"
 import { createVariantsTransaction } from "./transaction/create-product-variant"
 
 /**
@@ -69,7 +75,7 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/products/{id}/variants' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Color",
@@ -89,6 +95,7 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -120,6 +127,8 @@ export default async (req, res) => {
     req.body
   )
 
+  const manager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const inventoryService: IInventoryService | undefined =
     req.scope.resolve("inventoryService")
   const productVariantInventoryService: ProductVariantInventoryService =
@@ -127,31 +136,58 @@ export default async (req, res) => {
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-
-  const manager: EntityManager = req.scope.resolve("manager")
-
-  await manager.transaction(async (transactionManager) => {
-    await createVariantsTransaction(
-      {
-        manager: transactionManager,
-        inventoryService,
-        productVariantInventoryService,
-        productVariantService,
-      },
-      id,
-      [validated as CreateProductVariantInput]
-    )
-  })
-
-  const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  let rawProduct
 
-  const rawProduct = await productService.retrieve(id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const createVariantsWorkflow = CreateProductVariants.createProductVariants(
+      req.scope
+    )
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+    const input = {
+      productVariants: [
+        {
+          product_id: id,
+          ...validated,
+        },
+      ] as WorkflowTypes.ProductWorkflow.CreateProductVariantsInputDTO[],
+    }
+
+    await createVariantsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    rawProduct = await retrieveProduct(
+      req.scope,
+      id,
+      defaultAdminProductRemoteQueryObject
+    )
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await createVariantsTransaction(
+        {
+          manager: transactionManager,
+          inventoryService,
+          productVariantInventoryService,
+          productVariantService,
+        },
+        id,
+        [validated as CreateProductVariantInput]
+      )
+    })
+
+    const productService: ProductService = req.scope.resolve("productService")
+
+    rawProduct = await productService.retrieve(id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+  }
+
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }

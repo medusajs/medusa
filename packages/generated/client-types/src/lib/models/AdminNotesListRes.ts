@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { Note } from "./Note"
 
+/**
+ * The list of notes with pagination fields.
+ */
 export interface AdminNotesListRes {
   /**
    * An array of notes

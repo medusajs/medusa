@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.4.0
+
+### Minor Changes
+
+- [#5291](https://github.com/medusajs/medusa/pull/5291) [`bbd9dd408`](https://github.com/medusajs/medusa/commit/bbd9dd408f04dc95eb7d2d57984fb61e5c015bbc) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - Added config to set S3 prefix
+
+## 1.3.1
+
+### Patch Changes
+
+- [#4884](https://github.com/medusajs/medusa/pull/4884) [`046b0dcfa`](https://github.com/medusajs/medusa/commit/046b0dcfa5acfdbf98f5a5593b42673c7567430d) Thanks [@pevey](https://github.com/pevey)! - Chore(medusa-file-s3): Add cache-control option, fix delete function, update to sdk v3
+
 ## 1.3.0
 
 ### Minor Changes

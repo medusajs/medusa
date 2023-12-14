@@ -24,6 +24,9 @@ export class Oauth {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   data: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "oauth")

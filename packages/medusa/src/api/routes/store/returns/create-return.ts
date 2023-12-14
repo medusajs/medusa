@@ -16,6 +16,7 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
 import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
 import { defaultRelations } from "."
+import { Logger } from "@medusajs/types"
 
 /**
  * @oas [post] /store/returns
@@ -49,7 +50,7 @@ import { defaultRelations } from "."
  *       })
  *       .then((data) => {
  *         console.log(data.return.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -225,7 +226,8 @@ export default async (req, res) => {
 
     res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
   } catch (err) {
-    console.log(err)
+    const logger: Logger = req.scope.resolve("logger")
+    logger.log(err)
     throw err
   }
 }
@@ -280,7 +282,7 @@ class Item {
  *           description: The quantity to return.
  *           type: integer
  *         reason_id:
- *           description: The ID of the return reason. Return reasons can be retrieved from the List Return Reasons endpoint.
+ *           description: The ID of the return reason. Return reasons can be retrieved from the List Return Reasons API Route.
  *           type: string
  *         note:
  *           description: A note to add to the item returned.

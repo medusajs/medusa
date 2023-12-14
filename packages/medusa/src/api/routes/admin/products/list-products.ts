@@ -6,7 +6,10 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
+import { listProducts } from "../../../../utils"
+
 import { IInventoryService } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { Product } from "../../../../models"
 import { PricedProduct } from "../../../../types/pricing"
@@ -195,15 +198,16 @@ import { FilterableProductProps } from "../../../../types/product"
  *       medusa.admin.products.list()
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/products' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -235,16 +239,32 @@ export default async (req, res) => {
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
   const { skip, take, relations } = req.listConfig
 
-  const manager = req.scope.resolve("manager")
+  let rawProducts
+  let count
 
-  const [rawProducts, count] = await productService.listAndCount(
-    req.filterableFields,
-    req.listConfig
-  )
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const [products, count_] = await listProducts(
+      req.scope,
+      req.filterableFields,
+      req.listConfig
+    )
+
+    rawProducts = products
+    count = count_
+  } else {
+    const [products, count_] = await productService.listAndCount(
+      req.filterableFields,
+      req.listConfig
+    )
+
+    rawProducts = products
+    count = count_
+  }
 
   let products: (Product | PricedProduct)[] = rawProducts
 
@@ -254,7 +274,7 @@ export default async (req, res) => {
   )
 
   if (shouldSetPricing) {
-    products = await pricingService.setProductPrices(rawProducts)
+    products = await pricingService.setAdminProductPricing(rawProducts)
   }
 
   // We only set availability if variants are requested
@@ -280,25 +300,45 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved products.
+ */
 export class AdminGetProductsParams extends FilterableProductProps {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string

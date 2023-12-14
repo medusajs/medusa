@@ -1,6 +1,7 @@
 import { humanizeAmount } from "medusa-core-utils"
 import Webshipper from "../utils/webshipper"
 import { AbstractFulfillmentService } from "@medusajs/medusa"
+import { promiseAll } from "@medusajs/utils"
 
 class WebshipperFulfillmentService extends AbstractFulfillmentService {
   static identifier = "webshipper"
@@ -97,6 +98,75 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
     // Calculate prices
   }
 
+  /**
+   * Creates a return order in webshipper and links it to an existing shipment.
+   */
+  async createReturnOrder(shipment, fromOrder) {
+    const fulfillmentData = fromOrder.fulfillments[0]?.data
+
+    if (!shipment?.id || !fulfillmentData?.id) {
+      return
+    }
+
+    const customsLines = shipment.attributes?.packages?.[0]?.customs_lines
+
+    if (!customsLines?.length) {
+      return
+    }
+
+    const returnOrderData = {
+      type: "returns",
+      attributes: {
+        status: "pending",
+        return_lines: customsLines.map(({ ext_ref, quantity }) => ({
+          order_line_id: fulfillmentData.attributes?.order_lines?.find(
+            (order_line) => order_line.ext_ref === ext_ref
+          )?.id,
+          cause_id: this.options_.return_portal?.cause_id || "1",
+          quantity: quantity,
+        })),
+      },
+      relationships: {
+        order: {
+          data: {
+            id: fulfillmentData.id,
+            type: "orders",
+          },
+        },
+        portal: {
+          data: {
+            id: this.options_.return_portal.id || "1",
+            type: "return_portals",
+          },
+        },
+        refund_method: {
+          data: {
+            id: this.options_.return_portal.refund_method_id || "1",
+            type: "return_refund_methods",
+          },
+        },
+        shipping_method: {
+          data: {
+            id: shipment.shipping_method?.data?.webshipper_id || "1",
+            type: "return_shipping_methods",
+          },
+        },
+        shipment: {
+          data: {
+            id: shipment.id,
+            type: "shipments",
+          },
+        },
+      },
+    }
+
+    this.client_.returns.create(returnOrderData)
+  }
+
+  /**
+   * Creates a return shipment in webshipper using the given method data, and
+   * return lines.
+   */
   async createReturn(returnOrder) {
     let orderId
     if (returnOrder.order_id) {
@@ -109,7 +179,13 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
 
     const fromOrder = await this.orderService_.retrieve(orderId, {
       select: ["total"],
-      relations: ["discounts", "discounts.rule", "shipping_address", "returns"],
+      relations: [
+        "discounts",
+        "discounts.rule",
+        "shipping_address",
+        "returns",
+        "fulfillments",
+      ],
     })
 
     const methodData = returnOrder.shipping_method.data
@@ -167,7 +243,7 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
               width: 15,
               length: 15,
             },
-            customs_lines: await Promise.all(
+            customs_lines: await promiseAll(
               returnOrder.items.map(async ({ item, quantity }) => {
                 const customLine = await this.buildWebshipperItem(
                   item,
@@ -204,6 +280,10 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
     return this.client_.shipments
       .create(returnShipment)
       .then((result) => {
+        if (this.options_.return_portal?.id) {
+          this.createReturnOrder(result.data, fromOrder)
+        }
+
         return result.data
       })
       .catch((err) => {
@@ -326,7 +406,7 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
           status: "pending",
           ext_ref,
           visible_ref,
-          order_lines: await Promise.all(
+          order_lines: await promiseAll(
             fulfillmentItems.map(async (item) => {
               const orderLine = await this.buildWebshipperItem(
                 item,

@@ -18,15 +18,16 @@
  *       medusa.admin.batchJobs.retrieve(batchJobId)
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/batch-jobs/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Batch Jobs
  * responses:

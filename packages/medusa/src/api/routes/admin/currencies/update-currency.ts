@@ -33,25 +33,41 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ currency }) => {
  *         console.log(currency.code);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/currencies/{code}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "includes_tax": true
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Currencies
  * responses:
- *   200:
+ *   "200":
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
  *           $ref: "#/components/schemas/AdminCurrenciesRes"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req: ExtendedRequest<Currency>, res) => {
   const code = req.params.code as string

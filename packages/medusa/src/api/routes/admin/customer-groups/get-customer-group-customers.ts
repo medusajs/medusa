@@ -29,15 +29,16 @@ import { Type } from "class-transformer"
  *       medusa.admin.customerGroups.listCustomers(customerGroupId)
  *       .then(({ customers }) => {
  *         console.log(customers.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/customer-groups/{id}/customers' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customer Groups
  * responses:
@@ -74,23 +75,38 @@ export default async (req: Request, res: Response) => {
   res.json(result)
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved customer group's customers.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetGroupsGroupCustomersParams {
+  /**
+   * Search term to search customers by their email, first name, and last name.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsOptional()
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string

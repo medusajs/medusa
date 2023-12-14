@@ -2,11 +2,11 @@ import { ProductType } from "@models"
 import {
   Context,
   CreateProductTypeDTO,
-  UpsertProductTypeDTO,
-  UpdateProductTypeDTO,
   DAL,
   FindConfig,
   ProductTypes,
+  UpdateProductTypeDTO,
+  UpsertProductTypeDTO,
 } from "@medusajs/types"
 import { ProductTypeRepository } from "@repositories"
 import {
@@ -17,7 +17,7 @@ import {
   retrieveEntity,
 } from "@medusajs/utils"
 
-import { doNotForceTransaction, shouldForceTransaction } from "../utils"
+import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productTypeRepository: DAL.RepositoryService
@@ -87,7 +87,7 @@ export default class ProductTypeService<
     return queryOptions
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager("productTypeRepository_")
   async upsert(
     types: UpsertProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -96,7 +96,7 @@ export default class ProductTypeService<
       .upsert!(types, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager("productTypeRepository_")
   async create(
     data: CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -107,7 +107,7 @@ export default class ProductTypeService<
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager("productTypeRepository_")
   async update(
     data: UpdateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -118,7 +118,7 @@ export default class ProductTypeService<
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager("productTypeRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

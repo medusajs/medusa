@@ -28,15 +28,16 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.products.deleteVariant(productId, variantId)
  *       .then(({ variant_id, object, deleted, product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/products/{id}/variants/{variant_id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -80,7 +81,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([data])
+  const [product] = await pricingService.setAdminProductPricing([data])
 
   res.json({
     variant_id,

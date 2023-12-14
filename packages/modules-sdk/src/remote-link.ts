@@ -4,7 +4,7 @@ import {
   ModuleJoinerRelationship,
 } from "@medusajs/types"
 
-import { isObject, toPascalCase } from "@medusajs/utils"
+import { isObject, promiseAll, toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
 
 export type DeleteEntityInput = {
@@ -147,7 +147,10 @@ export class RemoteLink {
 
   private getLinkableKeys(mod: LoadedLinkModule) {
     return (
-      mod.__joinerConfig.linkableKeys ?? mod.__joinerConfig.primaryKeys ?? []
+      (mod.__joinerConfig.linkableKeys &&
+        Object.keys(mod.__joinerConfig.linkableKeys)) ||
+      mod.__joinerConfig.primaryKeys ||
+      []
     )
   }
 
@@ -308,10 +311,10 @@ export class RemoteLink {
           deletePromises.push(...relatedServicesPromises)
         }
 
-        await Promise.all(deletePromises)
+        await promiseAll(deletePromises)
       })
 
-      await Promise.all(servicePromises)
+      await promiseAll(servicePromises)
       return returnIdsList
     }
 
@@ -373,7 +376,7 @@ export class RemoteLink {
       promises.push(service.create(links))
     }
 
-    const created = await Promise.all(promises)
+    const created = await promiseAll(promises)
     return created.flat()
   }
 
@@ -421,7 +424,7 @@ export class RemoteLink {
       promises.push(service.dismiss(links))
     }
 
-    const created = await Promise.all(promises)
+    const created = await promiseAll(promises)
     return created.flat()
   }
 

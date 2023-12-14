@@ -1,10 +1,14 @@
 const path = require("path")
 
 const {
-  bootstrapApp,
+  startBootstrapApp,
 } = require("../../../../environment-helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../../environment-helpers/use-db")
-const { setPort, useApi } = require("../../../../environment-helpers/use-api")
+const {
+  setPort,
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
 const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
@@ -17,32 +21,30 @@ const {
   simpleCartFactory,
   simpleShippingOptionFactory,
 } = require("../../../../factories")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 
 jest.setTimeout(150000)
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("/store/carts", () => {
-  let express
+  let shutdownServer
   let appContainer
   let dbConnection
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    shutdownServer = await startBootstrapApp({ cwd })
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {
@@ -179,7 +181,7 @@ describe("/store/carts", () => {
           stocked_quantity: 100,
         })
 
-        const customer = await simpleCustomerFactory(dbConnection, {})
+        const customer = await simpleCustomerFactory(dbConnection, {}, 100)
 
         const cart = await simpleCartFactory(dbConnection, {
           email: "testme@email.com",

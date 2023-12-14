@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/tax-rates/{id}/product-types/batch
  * operationId: "PostTaxRatesTaxRateProductTypes"
  * summary: "Add to Product Types"
- * description: "Associates a Tax Rate with a list of Product Types"
+ * description: "Add Product Types to a Tax Rate."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
@@ -54,12 +54,12 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/tax-rates/{id}/product-types/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "product_types": [
@@ -69,6 +69,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Tax Rates
  * responses:
@@ -124,6 +125,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateProductTypesReq
  * type: object
+ * description: "The product types to add to the tax rate."
  * required:
  *   - product_types
  * properties:
@@ -138,11 +140,20 @@ export class AdminPostTaxRatesTaxRateProductTypesReq {
   product_types: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesTaxRateProductTypesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

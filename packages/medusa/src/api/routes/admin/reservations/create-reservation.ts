@@ -30,12 +30,12 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       })
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/reservations' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "line_item_id": "item_123",
@@ -46,6 +46,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Reservations
  * responses:
@@ -115,6 +116,9 @@ export default async (req, res) => {
  *   quantity:
  *     description: "The quantity to reserve."
  *     type: number
+ *   description:
+ *     description: "The reservation's description."
+ *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object

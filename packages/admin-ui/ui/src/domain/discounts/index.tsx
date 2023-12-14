@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Route, Routes } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Fade from "../../components/atoms/fade-wrapper"
 import Spacer from "../../components/atoms/spacer"
 import RouteContainer from "../../components/extensions/route-container"
@@ -16,11 +17,12 @@ import DiscountForm from "./new/discount-form"
 import { DiscountFormProvider } from "./new/discount-form/form/discount-form-context"
 
 const DiscountIndex = () => {
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
   const actionables = [
     {
-      label: "Add Discount",
+      label: t("discounts-add-discount", "Add Discount"),
       onClick: () => setIsOpen(true),
       icon: <PlusIcon size={20} />,
     },

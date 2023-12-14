@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 
 import InviteService from "../../../../services/invite"
 import { Type } from "class-transformer"
@@ -38,12 +43,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/invites/accept' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "token": "{token}",
@@ -56,6 +61,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Invites
  * responses:
@@ -89,13 +95,27 @@ export default async (req, res) => {
   res.sendStatus(200)
 }
 
+/**
+ * Details of the use accepting the invite.
+ */
 export class AdminPostInvitesInviteAcceptUserReq {
+  /**
+   * The invite's first name.
+   */
   @IsString()
+  @IsOptional()
   first_name: string
 
+  /**
+   * The invite's last name.
+   */
   @IsString()
+  @IsOptional()
   last_name: string
 
+  /**
+   * The invite's password
+   */
   @IsString()
   password: string
 }
@@ -103,6 +123,7 @@ export class AdminPostInvitesInviteAcceptUserReq {
 /**
  * @schema AdminPostInvitesInviteAcceptReq
  * type: object
+ * description: "The details of the invite to be accepted."
  * required:
  *   - token
  *   - user

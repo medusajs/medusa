@@ -21,24 +21,79 @@ import { Payment } from "./payment"
 import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
 
+/**
+ * @enum
+ * 
+ * The swap's fulfillment status.
+ */
 export enum SwapFulfillmentStatus {
+  /**
+   * The swap's items aren't fulfilled.
+   */
   NOT_FULFILLED = "not_fulfilled",
+  /**
+   * The swap's items are fulfilled.
+   */
   FULFILLED = "fulfilled",
+  /**
+   * The swap's items are shipped.
+   */
   SHIPPED = "shipped",
+  /**
+   * Some of the swap's items are shipped.
+   */
   PARTIALLY_SHIPPED = "partially_shipped",
+  /**
+   * The swap's fulfillments are canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The swap's fulfillments require an action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
+/**
+ * @enum
+ * 
+ * The swap's payment status.
+ */
 export enum SwapPaymentStatus {
+  /**
+   * The swap's additional payment isn't paid.
+   */
   NOT_PAID = "not_paid",
+  /**
+   * The swap is additional awaiting payment.
+   */
   AWAITING = "awaiting",
+  /**
+   * The swap's additional payment is captured.
+   */
   CAPTURED = "captured",
+  /**
+   * The swap's additional payment is confirmed.
+   */
   CONFIRMED = "confirmed",
+  /**
+   * The swap's additional payment is canceled.
+   */
   CANCELED = "canceled",
+  /**
+   * The negative difference amount between the returned item(s) and the new one(s) has been refuneded.
+   */
   DIFFERENCE_REFUNDED = "difference_refunded",
+  /**
+   * Some of the negative difference amount between the returned item(s) and the new one(s) has been refuneded.
+   */
   PARTIALLY_REFUNDED = "partially_refunded",
+  /**
+   * The amount in the associated order has been refunded.
+   */
   REFUNDED = "refunded",
+  /**
+   * The swap's payment requires an action.
+   */
   REQUIRES_ACTION = "requires_action",
 }
 
@@ -112,6 +167,9 @@ export class Swap extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "swap")

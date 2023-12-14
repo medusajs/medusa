@@ -13,6 +13,7 @@ import CustomerGroupsConditionsTable from "./add-condition-resources/customer-gr
 import { Discount, DiscountCondition } from "@medusajs/medusa"
 import { capitalize } from "lodash"
 import { getTitle } from "../../../utils"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   open: boolean
@@ -22,6 +23,7 @@ type Props = {
 }
 
 const EditConditionsModal = ({ open, condition, discount, onClose }: Props) => {
+  const { t } = useTranslation()
   const context = useContext(LayeredModalContext)
 
   const renderModalContext = () => {
@@ -49,7 +51,13 @@ const EditConditionsModal = ({ open, condition, discount, onClose }: Props) => {
         <Modal.Body>
           <Modal.Header handleClose={onClose}>
             <h1 className="inter-xlarge-semibold">
-              Edit {capitalize(getTitle(condition?.type))} in Discount Condition
+              {t(
+                "edit-condition-title",
+                "Edit {{type}} in Discount Condition",
+                {
+                  type: capitalize(getTitle(condition?.type, t)),
+                }
+              )}
             </h1>
           </Modal.Header>
           {renderModalContext()}
@@ -61,7 +69,7 @@ const EditConditionsModal = ({ open, condition, discount, onClose }: Props) => {
                 type="button"
                 onClick={onClose}
               >
-                Close
+                {t("edit-condition-close", "Close")}
               </Button>
             </div>
           </Modal.Footer>

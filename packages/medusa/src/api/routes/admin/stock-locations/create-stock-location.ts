@@ -39,12 +39,12 @@ import { IStockLocationService } from "@medusajs/types"
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/stock-locations' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "App"
@@ -52,6 +52,7 @@ import { IStockLocationService } from "@medusajs/types"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Stock Locations
  * responses:
@@ -114,7 +115,7 @@ export default async (req: Request, res: Response) => {
  *     description: Stock location address' city
  *     example: Mexico city
  *   country_code:
- *     description: "The 2 character ISO code for the country."
+ *     description: "The two character ISO code for the country."
  *     type: string
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements

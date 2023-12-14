@@ -1,6 +1,7 @@
 import { useAdminCreateDraftOrder } from "medusa-react"
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { LayeredModalContext } from "../../../components/molecules/modal/layered-modal"
 import SteppedModal, {
   SteppedContext,
@@ -23,6 +24,7 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
   const steppedContext = React.useContext(SteppedContext)
   const layeredContext = React.useContext(LayeredModalContext)
 
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const notification = useNotification()
   const { mutate } = useAdminCreateDraftOrder()
@@ -99,14 +101,18 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
       },
       {
         onSuccess: ({ draft_order }) => {
-          notification("Success", "Order created", "success")
+          notification(
+            t("new-success", "Success"),
+            t("new-order-created", "Order created"),
+            "success"
+          )
           reset()
           onDismiss()
           steppedContext.reset()
           navigate(`/a/draft-orders/${draft_order.id}`)
         },
         onError: (error) => {
-          notification("Error", error.message, "error")
+          notification(t("new-error", "Error"), error.message, "error")
         },
       }
     )
@@ -126,7 +132,7 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
         <Summary />,
       ]}
       lastScreenIsSummary={true}
-      title={"Create Draft Order"}
+      title={t("new-create-draft-order", "Create Draft Order")}
       handleClose={onDismiss}
     />
   )

@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import { useAdminSalesChannels } from "medusa-react"
 import { SalesChannel } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 
 import SideModal from "../../../components/molecules/modal/side-modal"
 import Button from "../../../components/fundamentals/button"
@@ -40,6 +41,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
 
   const [offset, setOffset] = useState(0)
   const [search, setSearch] = useState("")
+  const { t } = useTranslation()
 
   const {
     sales_channels: data = [],
@@ -77,7 +79,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
 
         <div className="flex items-center justify-between">
           <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
-            Add sales channels
+            {t("modals-add-sales-channels", "Add sales channels")}
           </h3>
           <Button
             variant="secondary"
@@ -97,7 +99,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
               type="string"
               value={search}
               className="h-[32px]"
-              placeholder="Find channels"
+              placeholder={t("modals-find-channels", "Find channels")}
               prefix={<SearchIcon size={16} />}
               onChange={(ev) => setSearch(ev.target.value)}
             />
@@ -125,7 +127,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
 
         <div className="flex justify-end gap-2">
           <Button size="small" variant="ghost" onClick={onClose}>
-            Cancel
+            {t("modals-cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -136,7 +138,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
               selectedChannels
             )}
           >
-            Save and close
+            {t("modals-save-and-close", "Save and close")}
           </Button>
         </div>
       </div>

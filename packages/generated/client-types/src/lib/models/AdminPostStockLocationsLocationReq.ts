@@ -18,5 +18,8 @@ export interface AdminPostStockLocationsLocationReq {
    * An optional key-value map with additional details
    */
   metadata?: Record<string, any>
+  /**
+   * The data of an associated address to create or update.
+   */
   address?: StockLocationAddressInput
 }

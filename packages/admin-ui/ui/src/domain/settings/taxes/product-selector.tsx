@@ -1,11 +1,14 @@
 import { useAdminProducts } from "medusa-react"
 import { useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 import { useDebounce } from "../../../hooks/use-debounce"
 import { SelectableTable } from "./selectable-table"
 
 export const ProductSelector = ({ items, onChange }) => {
   const PAGE_SIZE = 12
+
+  const { t } = useTranslation()
 
   const [pagination, setPagination] = useState({
     limit: PAGE_SIZE,
@@ -33,7 +36,7 @@ export const ProductSelector = ({ items, onChange }) => {
   const columns = useMemo(() => {
     return [
       {
-        Header: "Name",
+        Header: t("taxes-name", "Name"),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return (
@@ -60,7 +63,7 @@ export const ProductSelector = ({ items, onChange }) => {
 
   return (
     <SelectableTable
-      label="Select Products"
+      label={t("taxes-select-products", "Select Products")}
       objectName="Product"
       totalCount={count}
       pagination={pagination}

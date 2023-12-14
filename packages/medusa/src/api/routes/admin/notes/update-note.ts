@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * operationId: "PostNotesNote"
  * summary: "Update a Note"
  * x-authenticated: true
- * description: "Update a Note's details.'"
+ * description: "Update a Note's details."
  * parameters:
  *   - (path) id=* {string} The ID of the Note
  * requestBody:
@@ -30,12 +30,12 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ note }) => {
  *         console.log(note.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/notes/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "value": "We delivered this order"
@@ -43,6 +43,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Notes
  * responses:

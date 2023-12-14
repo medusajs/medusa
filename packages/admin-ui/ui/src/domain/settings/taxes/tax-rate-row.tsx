@@ -1,4 +1,5 @@
 import { useAdminDeleteTaxRate } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import { ActionType } from "../../../components/molecules/actionables"
@@ -20,6 +21,7 @@ export const TaxRateRow = ({ row, onEdit }) => {
   const dialog = useImperativeDialog()
   const notification = useNotification()
   const deleteTaxRate = useAdminDeleteTaxRate(row.original.id)
+  const { t } = useTranslation()
 
   const handleDelete = async (rate: TaxRate) => {
     if (!rate || rate.type !== TaxRateType.RATE) {
@@ -27,8 +29,11 @@ export const TaxRateRow = ({ row, onEdit }) => {
     }
 
     const shouldDelete = await dialog({
-      heading: "Delete tax rate",
-      text: "Are you sure you want to delete this tax rate?",
+      heading: t("taxes-delete-tax-rate-heading", "Delete tax rate"),
+      text: t(
+        "taxes-confirm-delete",
+        "Are you sure you want to delete this tax rate?"
+      ),
     })
 
     if (!shouldDelete) {
@@ -38,16 +43,20 @@ export const TaxRateRow = ({ row, onEdit }) => {
     return deleteTaxRate
       .mutateAsync()
       .then(() => {
-        notification("Success", "Tax rate was deleted.", "success")
+        notification(
+          t("taxes-success", "Success"),
+          t("taxes-tax-rate-was-deleted", "Tax rate was deleted."),
+          "success"
+        )
       })
       .catch((err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(t("taxes-error", "Error"), getErrorMessage(err), "error")
       })
   }
 
   const actions: ActionType[] = [
     {
-      label: "Edit",
+      label: t("taxes-edit", "Edit"),
       onClick: () => onEdit(row.original),
       icon: <EditIcon size={20} />,
     },
@@ -55,7 +64,7 @@ export const TaxRateRow = ({ row, onEdit }) => {
 
   if (row.original.type === TaxRateType.RATE) {
     actions.push({
-      label: "Delete Tax Rate",
+      label: t("taxes-delete-tax-rate", "Delete Tax Rate"),
       variant: "danger",
       onClick: () => handleDelete(row.original),
       icon: <TrashIcon size={20} />,

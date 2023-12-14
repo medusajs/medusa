@@ -38,31 +38,40 @@ const container = {
   },
 } as MedusaContainer
 
-const fetchServiceDataCallback = async (
-  expand: RemoteExpandProperty,
-  pkField: string,
-  ids?: (unknown | unknown[])[],
-  relationship?: any
-) => {
-  const serviceConfig = expand.serviceConfig
-  const moduleRegistryName = !serviceConfig.serviceName.endsWith("Service")
-    ? lowerCaseFirst(serviceConfig.serviceName) + "Service"
-    : serviceConfig.serviceName
+const callbacks = jest.fn()
+const fetchServiceDataCallback = jest.fn(
+  async (
+    expand: RemoteExpandProperty,
+    pkField: string,
+    ids?: (unknown | unknown[])[],
+    relationship?: any
+  ) => {
+    const serviceConfig = expand.serviceConfig
+    const moduleRegistryName = !serviceConfig.serviceName.endsWith("Service")
+      ? lowerCaseFirst(serviceConfig.serviceName) + "Service"
+      : serviceConfig.serviceName
 
-  const service = container.resolve(moduleRegistryName)
-  const methodName = relationship?.inverse
-    ? `getBy${toPascalCase(pkField)}`
-    : "list"
+    const service = container.resolve(moduleRegistryName)
+    const methodName = relationship?.inverse
+      ? `getBy${toPascalCase(pkField)}`
+      : "list"
 
-  return await service[methodName]({
-    fields: expand.fields,
-    args: expand.args,
-    expands: expand.expands,
-    options: {
-      [pkField]: ids,
-    },
-  })
-}
+    callbacks({
+      service: serviceConfig.serviceName,
+      fieds: expand.fields,
+      args: expand.args,
+    })
+
+    return await service[methodName]({
+      fields: expand.fields,
+      args: expand.args,
+      expands: expand.expands,
+      options: {
+        [pkField]: ids,
+      },
+    })
+  }
+)
 
 describe("RemoteJoiner", () => {
   let joiner: RemoteJoiner
@@ -161,13 +170,11 @@ describe("RemoteJoiner", () => {
     }
 
     const data = await joiner.query(query)
-
     expect(data).toEqual([
       {
         email: "johndoe@example.com",
         products: [
           {
-            id: 1,
             product_id: 102,
             product: {
               name: "Product 2",
@@ -180,7 +187,6 @@ describe("RemoteJoiner", () => {
         email: "janedoe@example.com",
         products: [
           {
-            id: 2,
             product_id: [101, 102],
             product: [
               {
@@ -202,7 +208,6 @@ describe("RemoteJoiner", () => {
         email: "444444@example.com",
         products: [
           {
-            id: 4,
             product_id: 103,
             product: {
               name: "Product 3",
@@ -272,7 +277,6 @@ describe("RemoteJoiner", () => {
           email: "444444@example.com",
           products: [
             {
-              id: 4,
               product_id: 103,
               product: {
                 name: "Product 3",
@@ -307,7 +311,6 @@ describe("RemoteJoiner", () => {
           email: "johndoe@example.com",
           products: [
             {
-              id: 1,
               product_id: 102,
               product: {
                 name: "Product 2",
@@ -488,5 +491,253 @@ describe("RemoteJoiner", () => {
         },
       },
     ])
+  })
+
+  it("Should query an field alias and cleanup unused nested levels", async () => {
+    const query = RemoteJoiner.parseQuery(`
+      query {
+        order {
+          product_user_alias {
+            email
+          }
+        }
+      }
+    `)
+    const data = await joiner.query(query)
+
+    expect(data).toEqual([
+      expect.objectContaining({
+        product_user_alias: [
+          {
+            email: "janedoe@example.com",
+            id: 2,
+          },
+          {
+            email: "janedoe@example.com",
+            id: 2,
+          },
+        ],
+      }),
+      expect.objectContaining({
+        product_user_alias: [
+          {
+            email: "janedoe@example.com",
+            id: 2,
+          },
+          {
+            email: "aaa@example.com",
+            id: 3,
+          },
+        ],
+      }),
+    ])
+    expect(data[0].products[0].product).toEqual(undefined)
+  })
+
+  it("Should query an field alias and keep queried nested levels", async () => {
+    const query = RemoteJoiner.parseQuery(`
+      query {
+        order {
+          product_user_alias {
+            email
+          }
+          products {
+            product {
+              name
+            }
+          }
+        }
+      }
+    `)
+    const data = await joiner.query(query)
+
+    expect(data).toEqual([
+      expect.objectContaining({
+        product_user_alias: [
+          {
+            email: "janedoe@example.com",
+            id: 2,
+          },
+          {
+            email: "janedoe@example.com",
+            id: 2,
+          },
+        ],
+      }),
+      expect.objectContaining({
+        product_user_alias: [
+          {
+            email: "janedoe@example.com",
+            id: 2,
+          },
+          {
+            email: "aaa@example.com",
+            id: 3,
+          },
+        ],
+      }),
+    ])
+    expect(data[0].products[0].product).toEqual({
+      name: "Product 1",
+      id: 101,
+      user_id: 2,
+    })
+    expect(data[0].products[0].product.user).toEqual(undefined)
+  })
+
+  it("Should query an field alias and merge requested fields on alias and on the relationship", async () => {
+    const query = RemoteJoiner.parseQuery(`
+      query {
+        order {
+          product_user_alias {
+            email
+          }
+          products {
+            product {
+              user {
+                name
+              }
+            }
+          }
+        }
+      }
+    `)
+    const data = await joiner.query(query)
+
+    expect(data).toEqual([
+      expect.objectContaining({
+        product_user_alias: [
+          {
+            name: "Jane Doe",
+            id: 2,
+            email: "janedoe@example.com",
+          },
+          {
+            name: "Jane Doe",
+            id: 2,
+            email: "janedoe@example.com",
+          },
+        ],
+      }),
+      expect.objectContaining({
+        product_user_alias: [
+          {
+            name: "Jane Doe",
+            id: 2,
+            email: "janedoe@example.com",
+          },
+          {
+            name: "aaa bbb",
+            id: 3,
+            email: "aaa@example.com",
+          },
+        ],
+      }),
+    ])
+    expect(data[0].products[0].product).toEqual({
+      id: 101,
+      user_id: 2,
+      user: {
+        name: "Jane Doe",
+        id: 2,
+        email: "janedoe@example.com",
+      },
+    })
+  })
+
+  it("Should query multiple aliases and pass the arguments where defined on 'forwardArgumentsOnPath'", async () => {
+    const query = RemoteJoiner.parseQuery(`
+      query {
+        order {
+          id
+          product_user_alias (arg: { random: 123 }) {
+            name
+          }
+          products {
+            variant {
+              user_shortcut(arg: 123) {
+                email
+              }
+            }
+          }
+        }
+      }
+    `)
+    const data = await joiner.query(query)
+
+    expect(callbacks.mock.calls).toEqual([
+      [
+        {
+          service: "order",
+          fieds: ["id", "product_user_alias", "products"],
+        },
+      ],
+      [
+        {
+          service: "variantService",
+          fieds: ["user_shortcut", "id", "product_id"],
+        },
+      ],
+      [
+        {
+          service: "product",
+          fieds: ["id", "user_id"],
+          args: [
+            {
+              name: "arg",
+              value: {
+                random: 123,
+              },
+            },
+          ],
+        },
+      ],
+      [
+        {
+          service: "user",
+          fieds: ["name", "id"],
+        },
+      ],
+      [
+        {
+          service: "product",
+          fieds: ["id", "user_id"],
+        },
+      ],
+      [
+        {
+          service: "user",
+          fieds: ["email", "id"],
+        },
+      ],
+    ])
+
+    expect(data[1]).toEqual(
+      expect.objectContaining({
+        product_user_alias: [
+          {
+            id: 2,
+            name: "Jane Doe",
+          },
+          {
+            id: 3,
+            name: "aaa bbb",
+          },
+        ],
+      })
+    )
+
+    expect(data[0].products[0]).toEqual({
+      variant_id: 991,
+      product_id: 101,
+      variant: {
+        id: 991,
+        product_id: 101,
+        user_shortcut: {
+          email: "janedoe@example.com",
+          id: 2,
+        },
+      },
+    })
   })
 })

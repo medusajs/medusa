@@ -1,7 +1,0 @@
-type: object
-required:
-  - note
-properties:
-  note:
-    description: Note details.
-    $ref: ./Note.yaml

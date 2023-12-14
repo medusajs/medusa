@@ -14,7 +14,7 @@ expires_at.setDate(expires_at.getDate() + 8)
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
-  const memberUser = await manager.create(User, {
+  const memberUser = manager.create(User, {
     id: "member-user",
     role: "member",
     email: "member@test.com",
@@ -23,7 +23,7 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(memberUser)
 
-  const memberInvite = await manager.create(Invite, {
+  const memberInvite = manager.create(Invite, {
     id: "memberInvite",
     user_email: "invite-member@test.com",
     role: "member",
@@ -37,7 +37,7 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(memberInvite)
 
-  const adminInvite = await manager.create(Invite, {
+  const adminInvite = manager.create(Invite, {
     id: "adminInvite",
     user_email: "invite-admin@test.com",
     role: "admin",

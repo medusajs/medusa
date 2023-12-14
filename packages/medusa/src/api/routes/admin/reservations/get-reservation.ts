@@ -5,7 +5,7 @@ import { MedusaError } from "@medusajs/utils"
  * @oas [get] /admin/reservations/{id}
  * operationId: "GetReservationsReservation"
  * summary: "Get a Reservation"
- * description: "Retrieve a reservation's details.'"
+ * description: "Retrieve a reservation's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the reservation.
@@ -19,15 +19,16 @@ import { MedusaError } from "@medusajs/utils"
  *       medusa.admin.reservations.retrieve(reservationId)
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/reservations/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Reservations
  * responses:

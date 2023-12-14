@@ -6,15 +6,19 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -41,7 +45,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -75,14 +79,25 @@ export default async (req, res) => {
   const validated = req.validatedBody as StorePostCartsCartReq
 
   const cartService: CartService = req.scope.resolve("cartService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
+
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   if (req.user?.customer_id) {
     validated.customer_id = req.user.customer_id
   }
 
+  let cart
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    cart = await retrieveCartWithIsolatedProductModule(req, id)
+  }
+
   await manager.transaction(async (transactionManager) => {
-    await cartService.withTransaction(transactionManager).update(id, validated)
+    await cartService
+      .withTransaction(transactionManager)
+      .update(cart ?? id, validated)
 
     const updated = await cartService
       .withTransaction(transactionManager)
@@ -101,7 +116,63 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
+
   res.json({ cart: cleanResponseData(data, []) })
+}
+
+async function retrieveCartWithIsolatedProductModule(req, id: string) {
+  const cartService = req.scope.resolve("cartService")
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const relations = [
+    "items",
+    "shipping_methods",
+    "shipping_methods.shipping_option",
+    "shipping_address",
+    "billing_address",
+    "gift_cards",
+    "customer",
+    "region",
+    "payment_sessions",
+    "region.countries",
+    "discounts",
+    "discounts.rule",
+  ]
+
+  const cart = await cartService.retrieve(id, {
+    relations,
+  })
+
+  const products = await remoteQuery({
+    products: {
+      __args: {
+        id: cart.items.map((i) => i.product_id),
+      },
+      fields: ["id"],
+      variants: {
+        fields: ["id"],
+      },
+    },
+  })
+
+  const variantsMap = new Map(
+    products.flatMap((p) => p.variants).map((v) => [v.id, v])
+  )
+
+  cart.items.forEach((item) => {
+    if (!item.variant_id) {
+      return
+    }
+
+    item.variant = variantsMap.get(item.variant_id)
+  })
+
+  return cart
 }
 
 class GiftCard {
@@ -176,7 +247,8 @@ class Discount {
  *     description: "The ID of the Customer to associate the Cart with."
  *     type: string
  *   context:
- *     description: "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *     description: >-
+ *       An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
  *     type: object
  *     example:
  *       ip: "::1"

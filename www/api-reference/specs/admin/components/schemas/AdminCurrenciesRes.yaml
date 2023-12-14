@@ -1,7 +1,0 @@
-type: object
-required:
-  - currency
-properties:
-  currency:
-    description: Currency details.
-    $ref: ./Currency.yaml

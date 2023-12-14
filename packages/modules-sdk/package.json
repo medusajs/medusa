@@ -1,12 +1,15 @@
 {
   "name": "@medusajs/modules-sdk",
-  "version": "1.9.2",
+  "version": "1.12.4",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/modules-sdk"
+  },
+  "engines": {
+    "node": ">=16"
   },
   "publishConfig": {
     "access": "public"
@@ -24,10 +27,13 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/orchestration": "^0.2.0",
-    "@medusajs/types": "^1.10.2",
-    "@medusajs/utils": "^1.9.6",
+    "@graphql-tools/merge": "^9.0.0",
+    "@graphql-tools/schema": "^10.0.0",
+    "@medusajs/orchestration": "^0.5.0",
+    "@medusajs/types": "^1.11.8",
+    "@medusajs/utils": "^1.11.1",
     "awilix": "^8.0.0",
+    "graphql": "^16.6.0",
     "knex": "2.4.2",
     "pg": "^8.11.2",
     "resolve-cwd": "^3.0.0"

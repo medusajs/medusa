@@ -1,8 +1,9 @@
-import { MedusaError, humanizeAmount } from "medusa-core-utils"
+import { humanizeAmount, MedusaError } from "medusa-core-utils"
 
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
 import { updateInventoryAndReservations } from "@medusajs/medusa"
+import { promiseAll } from "@medusajs/utils"
 
 class BrightpearlService extends BaseService {
   constructor(
@@ -117,7 +118,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -195,7 +196,7 @@ class BrightpearlService extends BaseService {
             variants.filter((variant) => !!variant.sku).map((v) => [v.sku, v])
           )
 
-          const variantUpdates = await Promise.all(
+          const variantUpdates = await promiseAll(
             bpProducts.map(async (bpProduct) => {
               const { SKU: sku, productId } = bpProduct
 
@@ -278,7 +279,7 @@ class BrightpearlService extends BaseService {
 
           this.logger_.info("Synchronizing inventory levels")
 
-          await Promise.all(
+          await promiseAll(
             bpProducts.map(async (bpProduct, index) => {
               if (index % 100 === 0) {
                 this.logger_.info(
@@ -291,7 +292,7 @@ class BrightpearlService extends BaseService {
               const productAvailability = availabilities[productId]
 
               if (productAvailability) {
-                await Promise.all(
+                await promiseAll(
                   locations.map(async (location) => {
                     const warehouseData =
                       productAvailability.warehouses[
@@ -302,7 +303,7 @@ class BrightpearlService extends BaseService {
                       .get(sku)
                       ?.get(location.id)
 
-                    if (!inventoryLevel || !warehouseData) {
+                    if (!inventoryLevel) {
                       return
                     }
 
@@ -342,20 +343,20 @@ class BrightpearlService extends BaseService {
 
   async adjustMedusaLocationLevel_(location, inventoryLevel, warehouseData) {
     const manager = this.transactionManager_ ?? this.manager_
+    const bpOnHand = warehouseData?.onHand || 0
+    const bpinStock = warehouseData?.inStock || 0
 
-    if (inventoryLevel.stocked_quantity !== warehouseData.inStock) {
+    if (inventoryLevel.stocked_quantity !== bpinStock) {
       await this.inventoryService_.updateInventoryLevel(
         inventoryLevel.inventory_item_id,
         inventoryLevel.location_id,
-        { stocked_quantity: warehouseData.inStock },
+        { stocked_quantity: bpinStock },
         { transactionManager: manager }
       )
     }
 
     const externallyReservedQuantityAdjustment =
-      warehouseData.inStock -
-      warehouseData.onHand -
-      inventoryLevel.reserved_quantity
+      bpinStock - bpOnHand - inventoryLevel.reserved_quantity
 
     if (externallyReservedQuantityAdjustment === 0) {
       return
@@ -453,17 +454,13 @@ class BrightpearlService extends BaseService {
         productAvailability.warehouses[`${location.metadata.bp_id}`]
     )
 
-    await Promise.all(
+    await promiseAll(
       locations.map(async (location) => {
         // TODO: Assuming we have a 1 to 1 mapping of inventory items
         const inventoryLevel = inventoryMap[location.id][0]
 
         const warehouseData =
           productAvailability.warehouses[`${location.metadata.bp_id}`]
-
-        if (!warehouseData) {
-          return
-        }
 
         await this.adjustMedusaLocationLevel_(
           location,
@@ -705,7 +702,7 @@ class BrightpearlService extends BaseService {
       order.metadata.brightpearl_sales_order_id
     )
 
-    const rows = await Promise.all(
+    const rows = await promiseAll(
       lineItems.map(async (item) => {
         const reservations = lineItemReservationsMap.get(item.id)
         const variant = variantMap.get(item.variant_id)
@@ -1339,7 +1336,7 @@ class BrightpearlService extends BaseService {
 
   async gatherRowsFromOrderIds(ids) {
     const client = await this.getClient()
-    const orders = await Promise.all(ids.map((i) => client.orders.retrieve(i)))
+    const orders = await promiseAll(ids.map((i) => client.orders.retrieve(i)))
 
     let rows = []
     for (const o of orders) {
@@ -1479,7 +1476,7 @@ class BrightpearlService extends BaseService {
   ) {
     const { region } = fromOrder
 
-    const lines = await Promise.all(
+    const lines = await promiseAll(
       fromOrder.items.map(async (item) => {
         const bpProduct = await this.retrieveProductBySKU(item.variant.sku)
 

@@ -1,4 +1,3 @@
-import { ModulesHelper } from "@medusajs/modules-sdk"
 import { FlagRouter } from "@medusajs/utils"
 import { defaultRelationsExtended } from "."
 import {
@@ -7,6 +6,7 @@ import {
   StoreService,
 } from "../../../../services"
 import { ExtendedStoreDTO } from "../../../../types/store"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 /**
  * @oas [get] /admin/store
@@ -26,15 +26,16 @@ import { ExtendedStoreDTO } from "../../../../types/store"
  *       medusa.admin.store.retrieve()
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/store' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:
@@ -61,7 +62,6 @@ export default async (req, res) => {
   const storeService: StoreService = req.scope.resolve("storeService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  const modulesHelper: ModulesHelper = req.scope.resolve("modulesHelper")
 
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
@@ -79,7 +79,16 @@ export default async (req, res) => {
   })) as ExtendedStoreDTO
 
   data.feature_flags = featureFlagRouter.listFlags()
-  data.modules = modulesHelper.modules
+  data.modules = MedusaModule.getLoadedModules()
+    .map((loadedModule) => {
+      return Object.entries(loadedModule).map(([key, service]) => {
+        return {
+          module: key,
+          resolution: service.__definition.defaultPackage,
+        }
+      })
+    })
+    .flat()
 
   const paymentProviders = await paymentProviderService.list()
   const fulfillmentProviders = await fulfillmentProviderService.list()

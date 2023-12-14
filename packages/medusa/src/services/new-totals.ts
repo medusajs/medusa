@@ -1,21 +1,21 @@
 import { FlagRouter } from "@medusajs/utils"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
-    ITaxCalculationStrategy,
-    TaxCalculationContext,
-    TransactionBaseService,
+  ITaxCalculationStrategy,
+  TaxCalculationContext,
+  TransactionBaseService,
 } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-    Discount,
-    DiscountRuleType,
-    GiftCard,
-    LineItem,
-    LineItemTaxLine,
-    Region,
-    ShippingMethod,
-    ShippingMethodTaxLine,
+  Discount,
+  DiscountRuleType,
+  GiftCard,
+  LineItem,
+  LineItemTaxLine,
+  Region,
+  ShippingMethod,
+  ShippingMethodTaxLine,
 } from "../models"
 import { LineAllocationsMap } from "../types/totals"
 import { calculatePriceTaxAmount } from "../utils"
@@ -635,6 +635,26 @@ export default class NewTotalsService extends TransactionBaseService {
     return shippingMethodsTotals
   }
 
+  getGiftCardableAmount({
+    gift_cards_taxable,
+    subtotal,
+    shipping_total,
+    discount_total,
+    tax_total,
+  }: {
+    gift_cards_taxable?: boolean
+    subtotal: number
+    shipping_total: number
+    discount_total: number
+    tax_total: number
+  }): number {
+    return (
+      (gift_cards_taxable
+        ? subtotal + shipping_total - discount_total
+        : subtotal + shipping_total + tax_total - discount_total) || 0
+    )
+  }
+
   /**
    * Calculate and return the shipping method totals
    * @param shippingMethod
@@ -675,7 +695,7 @@ export default class NewTotalsService extends TransactionBaseService {
       if (!totals.tax_lines) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "Tax Lines must be joined to calculate taxes"
+          "Tax Lines must be joined to calculate shipping taxes"
         )
       }
     }

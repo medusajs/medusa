@@ -12,7 +12,7 @@ import {
  * @oas [post] /store/order-edits/{id}/complete
  * operationId: "PostOrderEditsOrderEditComplete"
  * summary: "Complete an Order Edit"
- * description: "Complete an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the Payment Collection endpoints."
+ * description: "Complete an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the Payment Collection API Routes."
  * externalDocs:
  *   description: "How to handle order edits in a storefront"
  *   url: "https://docs.medusajs.com/modules/orders/storefront/handle-order-edits"
@@ -27,9 +27,9 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.orderEdits.complete(orderEditId)
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

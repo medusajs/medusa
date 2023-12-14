@@ -1,9 +1,13 @@
 import {
+  AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
 } from "typeorm"
 
@@ -43,27 +47,67 @@ export class MoneyAmount extends SoftDeletableEntity {
   @JoinColumn({ name: "price_list_id" })
   price_list: PriceList | null
 
-  @Index('idx_money_amount_variant_id')
-  @Column({ nullable: true })
-  variant_id: string
-
-  @ManyToOne(() => ProductVariant, (variant) => variant.prices, {
+  @ManyToMany(() => ProductVariant, {
     onDelete: "CASCADE",
   })
-  @JoinColumn({ name: "variant_id" })
+  @JoinTable({
+    name: "product_variant_money_amount",
+    joinColumn: {
+      name: "money_amount_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "variant_id",
+      referencedColumnName: "id",
+    },
+  })
+  variants: ProductVariant[]
+
   variant: ProductVariant
 
-  @Index('idx_money_amount_region_id')
+  variant_id: string
+
+  @Index("idx_money_amount_region_id")
   @Column({ nullable: true })
-  region_id: string
+  region_id: string | null
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
   region?: Region
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): undefined | void {
     this.id = generateEntityId(this.id, "ma")
+
+    if (this.variant || this.variant_id) {
+      this.variants = [
+        { id: this.variant?.id || this.variant_id },
+      ] as ProductVariant[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.variant || this.variant_id) {
+      this.variants = [
+        { id: this.variant?.id || this.variant_id },
+      ] as ProductVariant[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @AfterLoad()
+  private afterLoad() {
+    this.variant = this.variants?.[0]
+    this.variant_id = this.variant?.id
   }
 }
 

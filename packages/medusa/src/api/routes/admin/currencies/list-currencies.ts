@@ -36,21 +36,37 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       medusa.admin.currencies.list()
  *       .then(({ currencies, count, offset, limit }) => {
  *         console.log(currencies.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/currencies' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Currencies
  * responses:
- *   200:
+ *   "200":
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
  *           $ref: "#/components/schemas/AdminCurrenciesListRes"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req: ExtendedRequest<Currency>, res) => {
   const currencyService: CurrencyService = req.scope.resolve("currencyService")
@@ -74,17 +90,32 @@ export default async (req: ExtendedRequest<Currency>, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved currencies.
+ */
 export class AdminGetCurrenciesParams extends FindPaginationParams {
+  /**
+   * Code to filter currencies by.
+   */
   @IsString()
   @IsOptional()
   code?: string
 
+  /**
+   * Filter currencies by whether they include tax.
+   *
+   * @featureFlag tax_inclusive_pricing
+   */
   @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
     IsBoolean(),
     IsOptional(),
   ])
   includes_tax?: boolean
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   * By default, the returned currencies will be sorted by their `created_at` field.
+   */
   @IsString()
   @IsOptional()
   order?: string

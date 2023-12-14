@@ -6,6 +6,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=16"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
@@ -14,8 +17,8 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.15.0",
-    "@medusajs/types": "workspace:^",
+    "@medusajs/medusa": "^1.17.4",
+    "@medusajs/types": "^1.11.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^5.0.1",
@@ -33,6 +36,7 @@
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808",
   "keywords": [
     "medusa-plugin",
-    "medusa-plugin-file"
+    "medusa-plugin-file",
+    "medusa-plugin-storage"
   ]
 }
