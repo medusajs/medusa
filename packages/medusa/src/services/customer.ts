@@ -21,6 +21,7 @@ import {
 } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
 import { buildQuery, setMetadata } from "../utils"
+import { selectorConstraintsToString } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -194,9 +195,8 @@ class CustomerService extends TransactionBaseService {
     const customer = await customerRepo.findOne(query)
 
     if (!customer) {
-      const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
+
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Customer with ${selectorConstraints} was not found`

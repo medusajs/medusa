@@ -1,23 +1,28 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
-import { DeepPartial } from "typeorm/common/DeepPartial"
+import {MedusaError} from "medusa-core-utils"
+import {EntityManager, In} from "typeorm"
+import {DeepPartial} from "typeorm/common/DeepPartial"
 
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-import { TransactionBaseService } from "../interfaces"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  selectorConstraintsToString
+} from "@medusajs/utils"
+import {TransactionBaseService} from "../interfaces"
+import TaxInclusivePricingFeatureFlag
+  from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   LineItem,
   LineItemAdjustment,
   LineItemTaxLine,
   ProductVariant,
 } from "../models"
-import { CartRepository } from "../repositories/cart"
-import { LineItemRepository } from "../repositories/line-item"
-import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { FindConfig, Selector } from "../types/common"
-import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
-import { ProductVariantPricing } from "../types/pricing"
-import { buildQuery, isString, setMetadata } from "../utils"
+import {CartRepository} from "../repositories/cart"
+import {LineItemRepository} from "../repositories/line-item"
+import {LineItemTaxLineRepository} from "../repositories/line-item-tax-line"
+import {FindConfig, Selector} from "../types/common"
+import {GenerateInputData, GenerateLineItemContext} from "../types/line-item"
+import {ProductVariantPricing} from "../types/pricing"
+import {buildQuery, isString, setMetadata} from "../utils"
 import {
   PricingService,
   ProductService,
@@ -461,9 +466,7 @@ class LineItemService extends TransactionBaseService {
         let lineItems = await this.list(selector)
 
         if (!lineItems.length) {
-          const selectorConstraints = Object.entries(selector)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join(", ")
+          const selectorConstraints = selectorConstraintsToString(selector)
 
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
