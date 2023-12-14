@@ -10,6 +10,7 @@ import React, {
   useState,
 } from "react"
 import { usePathname } from "next/navigation"
+import { getScrolledTop } from "../../utils"
 
 export enum SidebarItemSections {
   TOP = "top",
@@ -129,6 +130,7 @@ export type SidebarProviderProps = {
   initialItems?: SidebarSectionItemsType
   shouldHandleHashChange?: boolean
   shouldHandlePathChange?: boolean
+  scrollableElement?: Element | Window
 }
 
 export const SidebarProvider = ({
@@ -138,6 +140,7 @@ export const SidebarProvider = ({
   initialItems,
   shouldHandleHashChange = false,
   shouldHandlePathChange = false,
+  scrollableElement,
 }: SidebarProviderProps) => {
   const [items, dispatch] = useReducer(reducer, {
     top: initialItems?.top || [],
@@ -148,6 +151,9 @@ export const SidebarProvider = ({
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true)
   const pathname = usePathname()
+  const getResolvedScrollableElement = useCallback(() => {
+    return scrollableElement || window
+  }, [scrollableElement])
 
   const findItemInSection = useCallback(
     (
@@ -250,14 +256,20 @@ export const SidebarProvider = ({
   }, [activePath])
 
   useEffect(() => {
+    if (shouldHandleHashChange) {
+      init()
+    }
+  }, [shouldHandleHashChange])
+
+  useEffect(() => {
     if (!shouldHandleHashChange) {
       return
     }
 
-    init()
+    const resolvedScrollableElement = getResolvedScrollableElement()
 
     const handleScroll = () => {
-      if (window.scrollY === 0) {
+      if (getScrolledTop(resolvedScrollableElement) === 0) {
         setActivePath("")
         // can't use next router as it doesn't support
         // changing url without scrolling
@@ -265,14 +277,17 @@ export const SidebarProvider = ({
       }
     }
 
-    window.addEventListener("scroll", handleScroll)
-    window.addEventListener("hashchange", handleHashChange)
+    resolvedScrollableElement.addEventListener("scroll", handleScroll)
+    resolvedScrollableElement.addEventListener("hashchange", handleHashChange)
 
     return () => {
-      window.removeEventListener("scroll", handleScroll)
-      window.removeEventListener("hashchange", handleHashChange)
+      resolvedScrollableElement.removeEventListener("scroll", handleScroll)
+      resolvedScrollableElement.removeEventListener(
+        "hashchange",
+        handleHashChange
+      )
     }
-  }, [handleHashChange, shouldHandleHashChange])
+  }, [handleHashChange, shouldHandleHashChange, getResolvedScrollableElement])
 
   useEffect(() => {
     if (isLoading && items.top.length && items.bottom.length) {

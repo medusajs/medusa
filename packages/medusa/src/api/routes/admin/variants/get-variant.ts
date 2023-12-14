@@ -25,7 +25,7 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.variants.retrieve(variantId)
  *       .then(({ variant }) => {
  *         console.log(variant.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -70,7 +70,7 @@ export default async (req, res) => {
     req.retrieveConfig
   )
 
-  const [variant] = await pricingService.setVariantPrices([rawVariant])
+  const [variant] = await pricingService.setAdminVariantPricing([rawVariant])
 
   res.status(200).json({ variant })
 }

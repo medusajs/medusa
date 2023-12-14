@@ -21,7 +21,7 @@ const {
 } = require("../../../../factories")
 const setupServer = require("../../../../environment-helpers/setup-server")
 
-jest.setTimeout(30000)
+jest.setTimeout(100000)
 
 const adminHeaders = {
   headers: {

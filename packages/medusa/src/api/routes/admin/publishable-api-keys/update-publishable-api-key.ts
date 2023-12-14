@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /admin/publishable-api-key/{id}
+ * @oas [post] /admin/publishable-api-keys/{id}
  * operationId: "PostPublishableApiKysPublishableApiKey"
  * summary: "Update Publishable API Key"
  * description: "Update a Publishable API Key's details."

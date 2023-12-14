@@ -1,6 +1,7 @@
 import { BaseService } from "medusa-interfaces"
 import _ from "lodash"
 import { createClient } from "contentful-management"
+import { promiseAll } from "@medusajs/utils"
 
 const IGNORE_THRESHOLD = 2 // seconds
 
@@ -63,7 +64,7 @@ class ContentfulService extends BaseService {
   }
 
   async getVariantEntries_(variants, config = { publish: false }) {
-    const contentfulVariants = await Promise.all(
+    const contentfulVariants = await promiseAll(
       variants.map(async (variant) => {
         let updated = await this.updateProductVariantInContentful(variant)
         if (config.publish) {

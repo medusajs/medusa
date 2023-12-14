@@ -7,6 +7,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-plugin-twilio-sms"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Oliver Juhl",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {

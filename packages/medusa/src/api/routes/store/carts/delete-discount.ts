@@ -1,13 +1,17 @@
-import { EntityManager } from "typeorm"
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
+import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [delete] /store/carts/{id}/discounts/{code}
  * operationId: DeleteCartsCartDiscountsDiscount
  * summary: "Remove Discount"
- * description: "Remove a Discount from a Cart. This only removes the application of the discount, and not completely delete it. The totals will be re-calculated and the payment sessions
+ * description: "Remove a Discount from a Cart. This only removes the application of the discount, and not completely deletes it. The totals will be re-calculated and the payment sessions
  *  will be refreshed after the removal."
  * parameters:
  *   - (path) id=* {string} The ID of the Cart.
@@ -23,7 +27,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.deleteDiscount(cartId, code)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -53,6 +57,8 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   await manager.transaction(async (m) => {
     // Remove the discount
@@ -72,6 +78,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }

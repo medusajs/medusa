@@ -1,7 +1,7 @@
 import * as Handlebars from "handlebars"
 import { SignatureReflection } from "typedoc"
 import { ArrayType, ReferenceType } from "typedoc/dist/lib/models/types"
-import { escapeChars } from "../../utils"
+import { escapeChars } from "utils"
 
 export default function () {
   Handlebars.registerHelper(

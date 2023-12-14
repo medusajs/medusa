@@ -1,13 +1,14 @@
 import "reflect-metadata"
 
 import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
-import { FindParams, PaginatedResponse } from "../../../../types/common"
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
 
 import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
 import { PricedProduct } from "../../../../types/pricing"
 import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
+import { AdminGetProductParams } from "./get-product"
 import { AdminGetProductsParams } from "./list-products"
 
 const route = Router()
@@ -76,7 +77,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   )
   route.get(
     "/:id",
-    transformQuery(FindParams, {
+    transformQuery(AdminGetProductParams, {
       defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
       isList: false,
@@ -158,6 +159,18 @@ export const defaultAdminProductRemoteQueryObject = {
     fields: ["title", "handle", "id", "created_at", "updated_at", "deleted_at"],
   },
 
+  categories: {
+    fields: [
+      "id",
+      "name",
+      "description",
+      "handle",
+      "is_active",
+      "is_internal",
+      "parent_category_id",
+    ],
+  },
+
   options: {
     fields: [
       "id",
@@ -230,6 +243,7 @@ export const defaultAdminProductRemoteQueryObject = {
 /**
  * @schema AdminProductsDeleteOptionRes
  * type: object
+ * description: "The details of deleting a product's option."
  * x-expanded-relations:
  *   field: product
  *   relations:
@@ -272,6 +286,7 @@ export type AdminProductsDeleteOptionRes = {
 /**
  * @schema AdminProductsDeleteVariantRes
  * type: object
+ * description: "The details of deleting a product's variant."
  * x-expanded-relations:
  *   field: product
  *   relations:
@@ -314,6 +329,7 @@ export type AdminProductsDeleteVariantRes = {
 /**
  * @schema AdminProductsDeleteRes
  * type: object
+ * description: "The details of deleting a product."
  * required:
  *   - id
  *   - object
@@ -340,6 +356,7 @@ export type AdminProductsDeleteRes = {
 /**
  * @schema AdminProductsListRes
  * type: object
+ * description: "The list of products with pagination fields."
  * x-expanded-relations:
  *   field: products
  *   relations:
@@ -425,6 +442,7 @@ export type AdminProductsListTypesRes = {
 /**
  * @schema AdminProductsListTagsRes
  * type: object
+ * description: "The usage details of product tags."
  * required:
  *   - tags
  * properties:
@@ -459,6 +477,7 @@ export type AdminProductsListTagsRes = {
 /**
  * @schema AdminProductsRes
  * type: object
+ * description: "The product's details."
  * x-expanded-relations:
  *   field: product
  *   relations:

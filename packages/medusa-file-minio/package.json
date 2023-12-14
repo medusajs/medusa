@@ -11,11 +11,14 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-file-minio"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Edin Skeja",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.17.1",
-    "@medusajs/types": "workspace:^",
+    "@medusajs/medusa": "^1.17.4",
+    "@medusajs/types": "^1.11.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^5.0.1",

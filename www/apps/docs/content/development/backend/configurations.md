@@ -27,7 +27,7 @@ The configurations for your Medusa backend are in `medusa-config.js` located in
 
 For example:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig,
   plugins,
@@ -52,9 +52,9 @@ This section includes all configurations that belong to the `projectConfig` prop
 
 ### admin_cors and store_cors
 
-The Medusa backend’s endpoints are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s endpoints.
+The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
 
-`admin_cors` is used to specify the accepted URLs or patterns for admin endpoints, and `store_cors` is used to specify the accepted URLs or patterns for store endpoints.
+`admin_cors` is used to specify the accepted URLs or patterns for admin API Routes, and `store_cors` is used to specify the accepted URLs or patterns for store API Routes.
 
 For both the `admin_cors` and `store_cors`, the value is expected to be a string. This string can be a comma-separated list of accepted origins. Every origin in that list can be of the following types:
 
@@ -76,7 +76,7 @@ ADMIN_CORS=/http:\/\/*/
 
 Typically, the value of these configurations would be set in an environment variable and referenced in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     admin_cors: process.env.ADMIN_CORS,
@@ -89,7 +89,7 @@ module.exports = {
 
 If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     admin_cors: "/http:\\/\\/localhost:700\\d+$/",
@@ -108,7 +108,7 @@ In a development environment, if this option is not set the default secret is `s
 
 Typically, the value of this configuration would be set in an environment variable and referenced in `medusa-config.js`.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     cookie_secret: process.env.COOKIE_SECRET,
@@ -129,9 +129,9 @@ Its value is an object that has the following properties:
 - `memLevel`: A `number` value that specifies how much memory should be allocated to the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level). The default value is `8`.
 - `threshold`: A `number` or a `string` value in bytes that specifies the minimum response body size that compression is applied on. This is the number of bytes or any string accepted by the bytes module. The default value is `1024`.
 
-If you enable HTTP compression and you want to disable it for specific endpoints, you can pass in the request header `"x-no-compression": true`.
+If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     http_compression: {
@@ -154,7 +154,7 @@ In a development environment, if this option is not set the default secret is `s
 
 Typically, the value of this configuration would be set in an environment variable and referenced in `medusa-config.js`.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     jwt_secret: process.env.JWT_SECRET,
@@ -170,7 +170,7 @@ The name of the database to connect to. If provided in `database_url`, then it�
 
 Make sure to create the PostgreSQL database before using it. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     database_database: "medusa-store",
@@ -186,7 +186,7 @@ An object that includes additional configurations to pass to the database connec
 
 This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`. During development, it’s recommended not to pass this option.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     database_extra: 
@@ -207,7 +207,7 @@ This configuration specifies what messages to log. Its value can be one of the f
 - The string value `all` that indicates all types of messages should be logged.
 - An array of log-level strings to indicate which type of messages to show in the logs. The strings can be `query`, `schema`, `error`, `warn`, `info`, `log`, or `migration`. Refer to [Typeorm’s documentation](https://typeorm.io/logging#logging-options) for more details on what each of these values means.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     database_logging: [
@@ -223,7 +223,7 @@ module.exports = {
 
 A string indicating the database schema to connect to. This is not necessary to provide if you’re using the default schema, which is `public`.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     database_schema: "custom",
@@ -237,7 +237,7 @@ module.exports = {
 
 A string indicating the type of database to connect to. At the moment, only `postgres` is accepted, which is also the default value.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     database_type: "postgres",
@@ -273,7 +273,7 @@ DATABASE_URL=postgres://postgres@localhost/medusa-store
 
 You can learn more about the connection URL format in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     database_url: process.env.DATABASE_URL,
@@ -303,7 +303,7 @@ For a local Redis installation, the connection URL should be `redis://localhost:
 
 Typically, the value would be added as an environment variable and referenced in `medusa-config.js`.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     redis_url: process.env.REDIS_URL,
@@ -317,7 +317,7 @@ module.exports = {
 
 The prefix set on all keys stored in Redis. The default value is `sess:`. If this configuration option is provided, it is prepended to `sess:`.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     redis_prefix: "medusa:",
@@ -331,7 +331,7 @@ module.exports = {
 
 An object of options to pass ioredis. You can refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions) for the list of available options.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     redis_options: {
@@ -354,7 +354,7 @@ An object of options to pass to `express-session`. The object can have the follo
 - `secret`: A string that indicates the secret to sign the session ID cookie. By default, the value of [cookie_secret](#cookie_secret) will be used. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#secret) for details.
 - `ttl`: A number is used when calculating the `Expires` `Set-Cookie` attribute of cookies. By default, it’ll be `10 * 60 * 60 * 1000`. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#cookiemaxage) for details.
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     session_options: {
@@ -383,7 +383,7 @@ The items in the array can either be:
 
 For example:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   plugins: [
     `medusa-my-plugin-1`,
@@ -422,7 +422,7 @@ The keys of the `modules` configuration object refer to the type of module. Its 
 
 For example:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   modules: {
     eventBus: {
@@ -457,7 +457,7 @@ You can find available feature flags and their key name [here](https://github.co
 
 For example:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   featureFlags: {
     product_categories: true,

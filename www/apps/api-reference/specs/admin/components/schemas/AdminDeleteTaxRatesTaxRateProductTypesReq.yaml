@@ -1,4 +1,5 @@
 type: object
+description: Product types to remove from the tax rates.
 required:
   - product_types
 properties:

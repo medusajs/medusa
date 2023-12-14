@@ -2,7 +2,9 @@
 
 {{#if name}}
 
-{{titleLevel 3}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
+{{titleLevel}} {{#ifNamedAnchors}}<a id="{{anchor}}" name="{{this.anchor}}"></a> {{/ifNamedAnchors}}{{ escape name }}
+
+{{incrementCurrentTitleLevel}}
 
 {{/if}}
 
@@ -58,4 +60,14 @@
 {{#unless hasOwnDocument}}
 ___
 {{/unless}}
+{{/unless}}
+
+{{#unless hasOwnDocument}}
+
+{{#if name}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
 {{/unless}}

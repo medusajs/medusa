@@ -5,7 +5,6 @@ import {
   PageEvent,
   ProjectReflection,
   Reflection,
-  ReflectionGroup,
   ReflectionKind,
   RenderTemplate,
   Renderer,
@@ -29,7 +28,7 @@ import {
 } from "./types"
 
 export class MarkdownTheme extends Theme {
-  allReflectionsHaveOwnDocument!: boolean
+  allReflectionsHaveOwnDocument!: string[]
   entryDocument: string
   entryPoints!: string[]
   filenameSeparator!: string
@@ -47,19 +46,25 @@ export class MarkdownTheme extends Theme {
   preserveAnchorCasing!: boolean
   objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle
   formattingOptions: FormattingOptionsType
+  mdxOutput: boolean
+  outputNamespace: boolean
+  outputModules: boolean
 
   project?: ProjectReflection
   reflection?: DeclarationReflection
   location!: string
   anchorMap: Record<string, string[]> = {}
+  currentTitleLevel = 1
 
   static URL_PREFIX = /^(http|ftp)s?:\/\//
+
+  static MAX_LEVEL = 3
 
   constructor(renderer: Renderer) {
     super(renderer)
 
     // prettier-ignore
-    this.allReflectionsHaveOwnDocument = this.getOption("allReflectionsHaveOwnDocument") as boolean
+    this.allReflectionsHaveOwnDocument = this.getOption("allReflectionsHaveOwnDocument") as string[]
     this.entryDocument = this.getOption("entryDocument") as string
     this.entryPoints = this.getOption("entryPoints") as string[]
     this.filenameSeparator = this.getOption("filenameSeparator") as string
@@ -83,6 +88,10 @@ export class MarkdownTheme extends Theme {
     this.formattingOptions = this.getOption(
       "formatting"
     ) as FormattingOptionsType
+    this.mdxOutput = this.getOption("mdxOutput") as boolean
+    this.outputNamespace = this.getOption("outputNamespace") as boolean
+    this.outputModules = this.getOption("outputModules") as boolean
+    MarkdownTheme.MAX_LEVEL = this.getOption("maxLevel") as number
 
     this.listenTo(this.owner, {
       [RendererEvent.BEGIN]: this.onBeginRenderer,
@@ -138,6 +147,7 @@ export class MarkdownTheme extends Theme {
     urls: UrlMapping[]
   ): UrlMapping[] {
     const mapping = this.getMappings(
+      reflection,
       reflection.parent?.isProject() ? "" : reflection.parent?.getAlias()
     ).find((mapping) => reflection.kindOf(mapping.kind))
     if (mapping) {
@@ -162,7 +172,12 @@ export class MarkdownTheme extends Theme {
   }
 
   toUrl(mapping: Mapping, reflection: DeclarationReflection) {
-    return mapping.directory + "/" + this.getUrl(reflection) + ".md"
+    return (
+      mapping.directory +
+      "/" +
+      this.getUrl(reflection) +
+      (this.mdxOutput ? ".mdx" : ".md")
+    )
   }
 
   getUrl(reflection: Reflection, relative?: Reflection): string {
@@ -264,7 +279,31 @@ export class MarkdownTheme extends Theme {
     }
   }
 
-  getMappings(directoryPrefix?: string): Mapping[] {
+  getModuleParents(reflection: DeclarationReflection): DeclarationReflection[] {
+    const parents: DeclarationReflection[] = []
+    let currentParent = reflection?.parent as DeclarationReflection | undefined
+    do {
+      if (currentParent?.kind === ReflectionKind.Module) {
+        parents.push(currentParent)
+      }
+      currentParent = currentParent?.parent as DeclarationReflection | undefined
+    } while (currentParent)
+
+    return parents
+  }
+
+  getAllReflectionsHaveOwnDocument(reflection: DeclarationReflection): boolean {
+    const moduleParents = this.getModuleParents(reflection)
+
+    return moduleParents.some((parent) =>
+      this.allReflectionsHaveOwnDocument.includes(parent.name)
+    )
+  }
+
+  getMappings(
+    reflection: DeclarationReflection,
+    directoryPrefix?: string
+  ): Mapping[] {
     return [
       {
         kind: [ReflectionKind.Module],
@@ -296,14 +335,14 @@ export class MarkdownTheme extends Theme {
         directory: path.join(directoryPrefix || "", "interfaces"),
         template: this.getReflectionTemplate(),
       },
-      ...(this.allReflectionsHaveOwnDocument
+      {
+        kind: [ReflectionKind.TypeAlias],
+        isLeaf: true,
+        directory: path.join(directoryPrefix || "", "types"),
+        template: this.getReflectionMemberTemplate(),
+      },
+      ...(this.getAllReflectionsHaveOwnDocument(reflection)
         ? [
-            {
-              kind: [ReflectionKind.TypeAlias],
-              isLeaf: true,
-              directory: path.join(directoryPrefix || "", "types"),
-              template: this.getReflectionMemberTemplate(),
-            },
             {
               kind: [ReflectionKind.Variable],
               isLeaf: true,
@@ -342,29 +381,58 @@ export class MarkdownTheme extends Theme {
    * @param page  An event object describing the current render operation.
    */
   protected onBeginPage(page: PageEvent) {
+    // reset header level counter
+    this.currentTitleLevel = 1
     this.location = page.url
     this.reflection =
       page.model instanceof DeclarationReflection ? page.model : undefined
-    const options = this.getFormattingOptionsForLocation()
-    if (this.reflection && this.reflection.groups) {
-      // filter out unwanted groups
-      const tempGroups: ReflectionGroup[] = []
-      this.reflection.groups.forEach((reflectionGroup) => {
-        if (
-          !options.reflectionGroups ||
-          !(reflectionGroup.title in options.reflectionGroups) ||
-          options.reflectionGroups[reflectionGroup.title]
-        ) {
-          tempGroups.push(reflectionGroup)
-        }
-      })
 
-      this.reflection.groups = tempGroups
+    if (
+      page.model instanceof DeclarationReflection ||
+      page.model instanceof ProjectReflection
+    ) {
+      this.removeGroups(page.model)
+    }
+
+    if (
+      this.reflection instanceof DeclarationReflection &&
+      this.reflection.signatures
+    ) {
+      // check if any of its signature has the `@mainSignature` tag
+      // and if so remove other signatures
+      const mainSignatureIndex = this.reflection.signatures.findIndex(
+        (signature) => signature.comment?.hasModifier("@mainSignature")
+      )
+
+      if (mainSignatureIndex !== -1) {
+        const mainSignature = this.reflection.signatures[mainSignatureIndex]
+        this.reflection.signatures = [mainSignature]
+      }
     }
   }
 
+  protected removeGroups(model?: DeclarationReflection | ProjectReflection) {
+    if (!model?.groups) {
+      return
+    }
+
+    const options = this.getFormattingOptionsForLocation()
+
+    model.groups = model.groups.filter((reflectionGroup) => {
+      return (
+        !options.reflectionGroups ||
+        !(reflectionGroup.title in options.reflectionGroups) ||
+        options.reflectionGroups[reflectionGroup.title]
+      )
+    })
+  }
+
   get globalsFile() {
-    return "modules.md"
+    return `modules.${this.mdxOutput ? "mdx" : "md"}`
+  }
+
+  setCurrentTitleLevel(value: number) {
+    this.currentTitleLevel = value
   }
 
   getFormattingOptionsForLocation(): FormattingOptionType {
@@ -372,20 +440,14 @@ export class MarkdownTheme extends Theme {
       return {}
     }
 
-    const optionKey =
-      Object.keys(this.formattingOptions).find((key) => {
-        if (key === "*") {
-          return false
-        }
+    const applicableOptions: FormattingOptionType[] = []
 
-        const keyPattern = new RegExp(key)
-        if (keyPattern.test(this.location)) {
-          return true
-        }
-      }) || "*"
+    Object.keys(this.formattingOptions).forEach((key) => {
+      if (key === "*" || new RegExp(key).test(this.location)) {
+        applicableOptions.push(this.formattingOptions[key])
+      }
+    })
 
-    return optionKey in this.formattingOptions
-      ? this.formattingOptions[optionKey]
-      : {}
+    return Object.assign({}, ...applicableOptions)
   }
 }

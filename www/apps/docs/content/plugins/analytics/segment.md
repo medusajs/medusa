@@ -111,7 +111,7 @@ Where `<YOUR_SEGMENT_WRITE_KEY>` is the Write Key shown on the page of the Segme
 
 Finally, in `medusa-config.js`, add the following new item to the `plugins` array:
 
-```jsx title=medusa-config.js
+```jsx title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -153,43 +153,41 @@ If the data is not appearing on the destination, the issue is related to your co
 
 In some cases, you might want to track more events or custom events. You can do that using the `SegmentService` provided by the Segment Plugin.
 
-For example, you can add the following subscriber to listen to the `customer.created` event and add tracking for every customer created:
+For example, you can add the following [subscriber](../../development/events/subscribers.mdx) to listen to the `customer.created` event and add tracking for every customer created:
 
-```jsx title=src/subscribers/customer.ts
-class CustomerSubscriber {
-  constructor({ segmentService, eventBusService }) {
-    this.segmentService = segmentService
+```ts title="src/subscribers/customer.ts"
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+  CustomerService,
+} from "@medusajs/medusa"
 
-    eventBusService.subscribe(
-      "customer.created",
-      this.handleCustomer
-    )
-  }
+export default async function handleCustomerCreated({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const segmentService = container.resolve("segmentService")
 
-  handleCustomer = async (data) => {
-    const customerData = data
-    delete customerData["password_hash"]
+  const customerData = data
+  delete customerData["password_hash"]
 
-    this.segmentService.track({
-      event: "Customer Created",
-      userId: data.id,
-      properties: customerData,
-    })
-  }
+  this.segmentService.track({
+    event: "Customer Created",
+    userId: data.id,
+    properties: customerData,
+  })
 }
 
-export default CustomerSubscriber
+export const config: SubscriberConfig = {
+  event: CustomerService.Events.CREATED,
+  context: {
+    subscriberId: "customer-created-handler",
+  },
+}
 ```
 
-You resolve the `SegmentService` using dependency injection. Then, when the `customer.created` event is triggered, you use the `track` method available in the `SegmentService` to send tracking data to Segment.
+In the handler function, you resolve the `SegmentService` using the `container` of type [MedusaContainer](../../development/fundamentals/dependency-injection.md). Then, you use the `track` method of the `SegmentService` to send tracking data to Segment.
 
-:::info
-
-Services can be resolved and used in Subscribers, endpoints, and other Services. Learn [how to resolve services in the Services documentation](../../development/services/create-service.mdx#using-your-custom-service).
-
-:::
-
-`track` accepts an object of data, where the keys `event` and `userId` are required. Instead of `userId`, you can use `anonymousId` to pass an anonymous user ID.
+The `track` method accepts an object of data, where the keys `event` and `userId` are required. Instead of `userId`, you can use `anonymousId` to pass an anonymous user ID.
 
 If you want to pass additional data to Segment, pass them under the `properties` object key.
 
@@ -198,8 +196,6 @@ The `SegmentService` also provides the method `identify` to tie a user to their 
 ### Test Custom Tracking
 
 After adding the above subscriber, run your backend again if it isn’t running and create a customer using the REST APIs or one of the Medusa storefronts. If you check the Debugger in your Segment source, you should see a new event “Customer Created” tracked. If you click on it, you’ll see the data you passed to the `track` method.
-
-![The customer created event is recorded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000759/Medusa%20Docs/Segment/4LD41xE_qungdw.png)
 
 ---
 

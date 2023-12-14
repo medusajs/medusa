@@ -32,4 +32,8 @@ export interface AdminPostProductCategoriesCategoryReq {
    * The rank of the category in the tree node (starting from 0)
    */
   rank?: number
+  /**
+   * An optional set of key-value pairs to hold additional information.
+   */
+  metadata?: Record<string, any>
 }

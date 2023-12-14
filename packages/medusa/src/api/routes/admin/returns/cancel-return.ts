@@ -20,8 +20,8 @@ import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
  *       // must be previously logged in or use api token
  *       medusa.admin.returns.cancel(returnId)
  *       .then(({ order }) => {
- *         console.log(order.id);
- *       });
+ *         console.log(order.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

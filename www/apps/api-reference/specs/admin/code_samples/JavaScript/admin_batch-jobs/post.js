@@ -7,4 +7,4 @@ medusa.admin.batchJobs.create({
   dry_run: false
 }).then((({ batch_job }) => {
   console.log(batch_job.id);
-});
+})

@@ -10,6 +10,7 @@ export type DetailsProps = {
   openInitial?: boolean
   summaryContent?: React.ReactNode
   summaryElm?: React.ReactNode
+  heightAnimation?: boolean
 } & React.HTMLAttributes<HTMLDetailsElement>
 
 export const Details = ({
@@ -17,13 +18,23 @@ export const Details = ({
   summaryContent,
   summaryElm,
   children,
+  heightAnimation = false,
   ...props
 }: DetailsProps) => {
   const [open, setOpen] = useState(openInitial)
   const [showContent, setShowContent] = useState(openInitial)
   const ref = useRef<HTMLDetailsElement>(null)
 
-  const handleToggle = () => {
+  const handleToggle = (e: React.MouseEvent<HTMLElement>) => {
+    const targetElm = e.target as HTMLElement
+    if (targetElm.tagName.toLowerCase() === "a") {
+      window.location.href =
+        targetElm.getAttribute("href") || window.location.href
+      return
+    }
+    if (targetElm.tagName.toLowerCase() === "code") {
+      return
+    }
     if (open) {
       setShowContent(false)
     } else {
@@ -70,18 +81,45 @@ export const Details = ({
         in={showContent}
         timeout={150}
         onEnter={(node: HTMLElement) => {
-          node.classList.add(
-            "!mb-docs_2",
-            "!mt-0",
-            "translate-y-docs_1",
-            "transition-transform"
-          )
+          if (heightAnimation) {
+            node.classList.add("transition-[height]")
+            node.style.height = `0px`
+          } else {
+            node.classList.add(
+              "!mb-docs_2",
+              "!mt-0",
+              "translate-y-docs_1",
+              "transition-transform"
+            )
+          }
+        }}
+        onEntering={(node: HTMLElement) => {
+          if (heightAnimation) {
+            node.style.height = `${node.scrollHeight}px`
+          }
+        }}
+        onEntered={(node: HTMLElement) => {
+          if (heightAnimation) {
+            node.style.height = `auto`
+          }
         }}
         onExit={(node: HTMLElement) => {
-          node.classList.add("transition-transform", "!-translate-y-docs_1")
-          setTimeout(() => {
-            setOpen(false)
-          }, 100)
+          if (heightAnimation) {
+            node.style.height = `${node.scrollHeight}px`
+          } else {
+            node.classList.add("transition-transform", "!-translate-y-docs_1")
+            setTimeout(() => {
+              setOpen(false)
+            }, 100)
+          }
+        }}
+        onExiting={(node: HTMLElement) => {
+          if (heightAnimation) {
+            node.style.height = `0px`
+            setTimeout(() => {
+              setOpen(false)
+            }, 100)
+          }
         }}
       >
         <Suspense fallback={<Loading className="!mb-docs_2 !mt-0" />}>

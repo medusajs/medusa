@@ -1,7 +1,8 @@
 import * as Handlebars from "handlebars"
 import { PageEvent, ParameterReflection, ReflectionKind } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import { escapeChars, getDisplayName } from "../../utils"
+import { getDisplayName } from "../../utils"
+import { escapeChars } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -9,6 +10,10 @@ export default function (theme: MarkdownTheme) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function (this: PageEvent<any>, shouldEscape = true) {
       const { reflectionTitle } = theme.getFormattingOptionsForLocation()
+
+      if (reflectionTitle?.fullReplacement?.length) {
+        return reflectionTitle.fullReplacement
+      }
 
       const title: string[] = [""]
       if (
@@ -28,7 +33,7 @@ export default function (theme: MarkdownTheme) {
           const typeParameters = this.model.typeParameters
             .map((typeParameter: ParameterReflection) => typeParameter.name)
             .join(", ")
-          title.push(`<${typeParameters}${shouldEscape ? "\\>" : ">"}`)
+          title.push(`\`<${typeParameters}>\``)
         }
       }
       if (reflectionTitle?.suffix) {

@@ -29,7 +29,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -88,7 +88,8 @@ export default async (req, res) => {
  *     description: "The name of the Store"
  *     type: string
  *   swap_link_template:
- *     description: "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart ID"
+ *     description: >-
+ *       A template for Swap links - use `{{cart_id}}` to insert the Swap Cart ID
  *     type: string
  *     example: "http://example.com/swaps/{{cart_id}}"
  *   payment_link_template:

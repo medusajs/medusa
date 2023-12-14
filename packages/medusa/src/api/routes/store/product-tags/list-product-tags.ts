@@ -95,7 +95,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       medusa.productTags.list()
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -141,31 +141,55 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product tags.
+ */
 export class StoreGetProductTagsParams extends FindPaginationParams {
+  /**
+   * IDs to filter product tags by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   id?: string | string[] | StringComparisonOperator
 
+  /**
+   * Search term to search product tags' values.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Values to filter product tags by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   value?: string | string[] | StringComparisonOperator
 
+  /**
+   * Date filters to apply to the product tags' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply to the product tags' `updated_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   updated_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Filter product tags by the ID of their associated discount condition.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string

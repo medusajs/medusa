@@ -21,7 +21,7 @@ import { ShippingProfileService } from "../../../../services"
  *       medusa.admin.shippingProfiles.delete(profileId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

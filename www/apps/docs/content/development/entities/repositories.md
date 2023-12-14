@@ -10,7 +10,7 @@ In this document, you'll learn what repositories are, how to use them within you
 
 Repositories provide generic helper methods for entities. For example, you can use the `find` method to retrieve all entities with pagination, or `findOne` to retrieve a single entity record.
 
-Repostories are [Typeorm repositories](https://typeorm.io/working-with-repository), so you can refer to Typeorm's documentation on all available methods.
+Repositories are [Typeorm repositories](https://typeorm.io/working-with-repository), so you can refer to Typeorm's documentation on all available methods.
 
 By default, you don't need to create a repository for your custom entities. You can retrieve the default repository of an entity using the Entity Manager. You should only create a repository if you want to implement custom methods in it.
 
@@ -22,7 +22,7 @@ If you haven't created a custom repository, you can access the default repositor
 
 For example, to retrieve the default repository of an entity in a service:
 
-```ts title=src/services/post.ts
+```ts title="src/services/post.ts"
 import { Post } from "../models/post"
 
 class PostService extends TransactionBaseService {
@@ -39,27 +39,26 @@ class PostService extends TransactionBaseService {
 }
 ```
 
-Another example is retrieving the default repository of an entity in an endpoint:
+Another example is retrieving the default repository of an entity in an API Route:
 
-```ts title=src/api/index.ts
+```ts title="src/api/store/custom/route.ts"
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { Post } from "../models/post"
 import { EntityManager } from "typeorm"
 
-// ...
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const manager: EntityManager = req.scope.resolve("manager")
+  const postRepo = manager.getRepository(Post)
 
-export default () => {
-  // ...
-
-  storeRouter.get("/posts", async (req, res) => {
-    const manager: EntityManager = req.scope.resolve("manager")
-    const postRepo = manager.getRepository(Post)
-
-    return res.json({
-      posts: await postRepo.find(),
-    })
+  return res.json({
+    posts: await postRepo.find(),
   })
-
-  // ...
 }
 ```
 
@@ -105,43 +104,44 @@ A data source is Typeorm’s connection settings that allows you to connect to y
 
 ## Using Custom Repositories in Other Resources
 
-### Endpoints
+### API Routes
 
-To access a custom repository within an endpoint, use the `req.scope.resolve` method. For example:
-
-```ts title=src/api/index.ts
-import { PostRepository } from "../repositories/post"
-import { EntityManager } from "typeorm"
-
-// ...
-
-export default () => {
-  // ...
-
-  storeRouter.get("/posts", async (req, res) => {
-    const postRepository: typeof PostRepository = 
-      req.scope.resolve("postRepository")
-    const manager: EntityManager = req.scope.resolve("manager")
-    const postRepo = manager.withRepository(postRepository)
-
-    return res.json({
-      posts: await postRepo.find(),
-    })
-  })
-
-  // ...
-}
-```
-
-You can learn more about endpoints [here](../endpoints/overview.mdx).
-
-### Services and Subscribers
-
-As custom repositories are registered in the [dependency container](../fundamentals/dependency-injection.md#dependency-container-and-injection), they can be accessed through dependency injection in the constructor of a service or a subscriber.
+To access a custom repository within an API Route, use the `MedusaRequest` object's `scope.resolve` method.
 
 For example:
 
-```ts title=src/services/post.ts
+```ts title="src/store/custom/route.ts"
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { PostRepository } from "../repositories/post"
+import { EntityManager } from "typeorm"
+
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const postRepository: typeof PostRepository = 
+    req.scope.resolve("postRepository")
+  const manager: EntityManager = req.scope.resolve("manager")
+  const postRepo = manager.withRepository(postRepository)
+
+  return res.json({
+    posts: await postRepo.find(),
+  })
+}
+```
+
+You can learn more about API Route [here](../api-routes/overview.mdx).
+
+### Services
+
+As custom repositories are registered in the [dependency container](../fundamentals/dependency-injection.md#dependency-container-and-injection), they can be accessed through dependency injection in the constructor of a service.
+
+For example:
+
+```ts title="src/services/post.ts"
 import { PostRepository } from "../repositories/post"
 
 class PostService extends TransactionBaseService {
@@ -166,6 +166,32 @@ class PostService extends TransactionBaseService {
 ```
 
 You can learn more about services [here](../services/overview.mdx).
+
+### Subscribers
+
+A subscriber handler function can resolve a repository using the `container` property of its parameter. The `container` has a method `resolve` which accepts the registration name of the repository as a parameter.
+
+For example:
+
+```ts title="src/subscribers/post-handler.ts"
+import {
+  type SubscriberArgs,
+} from "@medusajs/medusa"
+
+import { PostRepository } from "../repositories/post"
+
+export default async function postHandler({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs) {
+  const postRepository: PostRepository = container.resolve(
+    "postRepository"
+  )
+  
+  // ...
+}
+
+// ...
+```
 
 ### Other Resources
 

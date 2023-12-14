@@ -2,13 +2,13 @@
 description: "In this document, you’ll learn about the inventory module, how it works, and its relation to other processes in your commerce application."
 ---
 
-# Stock Level Module
+# Stock Location Module
 
-In this document, you’ll learn about the Stock Level module and how it works.
+In this document, you’ll learn about the Stock Location module and how it works.
 
 ## Overview
 
-A stock location indicates a physical address that stock-kept items can be stored in. The stock location module handles functionalities related to managing stock locations and their addresses.
+A stock location indicates a physical address that stock-kept items can be stored in. The Stock Location module handles functionalities related to managing stock locations and their addresses.
 
 Medusa's Stock Location module is a standalone module that can be used in any commerce application, not just in a Medusa backend. This document gives a general overview of how the stock location module is designed, and highlights how the Medusa core orchestrates relations around this module when it's used with the Medusa backend.
 

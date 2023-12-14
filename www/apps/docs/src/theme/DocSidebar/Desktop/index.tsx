@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from "react"
 import clsx from "clsx"
 import { useThemeConfig } from "@docusaurus/theme-common"
+import AnnouncementBar from "@theme/AnnouncementBar"
 import Content from "@theme/DocSidebar/Desktop/Content"
 import type { Props } from "@theme/DocSidebar/Desktop"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
-import AnnouncementBar from "../../AnnouncementBar/index"
 
 function DocSidebarDesktop({ path, sidebar }: Props) {
   const {

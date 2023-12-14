@@ -28,7 +28,7 @@ Some of the `Return` entity’s attributes include:
 - `no_notification`: a boolean value indicating whether the customer should receive notification updates when there are any changes in the return.
 - `shipping_data`: this is a JSONB object that can hold any data related to the fulfillment associated with the return.
 
-There are other important attributes discussed in later sections. Check out the [full Return entity in the entities reference](../../references/entities/classes/Return.md).
+There are other important attributes discussed in later sections. Check out the [full Return entity in the entities reference](../../references/entities/classes/entities.Return.mdx).
 
 ---
 
@@ -50,12 +50,12 @@ You can learn more about idempotency keys [here](../../development/idempotency-k
 
 This section explains how the return is created by the customer or any type of client. This is the process created within the Medusa core.
 
-The following process occurs within the Create Return storefront endpoint:
+The following process occurs within the Create Return storefront API Route:
 
 ![Return Client Process Flowchart](https://res.cloudinary.com/dza7lstvk/image/upload/v1681994516/Medusa%20Docs/Diagrams/return-client-process_evbjf5.jpg)
 
-1. The customer creates a return, specifying the items they want to return and optionally the shipping option they want to use to return the items. This is done using the `ReturnService`'s [create method](../../references/services/classes/ReturnService.md#create).
-2. If they specify the return shipping option they want to use, a shipping method is created from the chosen shipping option and the return is automatically fulfilled in the backend using the `ReturnService`'s [fulfill method](../../references/services/classes/ReturnService.md#fulfill).
+1. The customer creates a return, specifying the items they want to return and optionally the shipping option they want to use to return the items. This is done using the `ReturnService`'s [create method](../../references/services/classes/services.ReturnService.mdx#create).
+2. If they specify the return shipping option they want to use, a shipping method is created from the chosen shipping option and the return is automatically fulfilled in the backend using the `ReturnService`'s [fulfill method](../../references/services/classes/services.ReturnService.mdx#fulfill).
 
 After this process, the return will be available for the merchant or the admin to view and handle it. The merchant can either mark the return as received or cancel the return.
 
@@ -63,7 +63,7 @@ After this process, the return will be available for the merchant or the admin t
 
 Marking a return as received would refund the amount to the customer and adjust the store’s inventory for the returned items.
 
-The following process occurs within the [Receive Return admin endpoint](https://docs.medusajs.com/api/admin#returns_postreturnsreturnreceive):
+The following process occurs within the [Receive Return admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsreturnreceive):
 
 ![Receive Return Process Flowchart](https://res.cloudinary.com/dza7lstvk/image/upload/v1681996834/Medusa%20Docs/Diagrams/return-admin-process_e99skk.jpg)
 
@@ -71,15 +71,15 @@ The following process occurs within the [Receive Return admin endpoint](https://
     1. The return’s status is checked to ensure it’s not canceled or received. If so, the process is terminated with an error.
     2. The received items are validated to ensure they match the items that were previously requested to be returned. If there’s a mismatch, the return’s status is set to `requires_more`. This is useful in situations where a custom refund amount is requested, but the returned items don’t match the requested items.
     3. If there’s no mismatch issue, the return’s status is set to `received`.
-    4. The inventory of the returned items is adjusted using the `ProductVariantInventoryService`'s [method adjustInventory](../../references/services/classes/ProductVariantInventoryService.md#adjustinventory)
-2. After the return is marked as received, if the return is associated with a swap, the `SwapService`'s [registerReceived method](../../references/services/classes/SwapService.md#registerreceived) is used to validate the return, emit the swap event `received`, and return the swap.
-3. On the other hand, after the return is marked as received, if the return is associated with an order, the `OrderService`'s [registerReturnReceived method](../../references/services/classes/OrderService.md#registerreturnreceived). In this method:
+    4. The inventory of the returned items is adjusted using the `ProductVariantInventoryService`'s [method adjustInventory](../../references/services/classes/services.ProductVariantInventoryService.mdx#adjustinventory)
+2. After the return is marked as received, if the return is associated with a swap, the `SwapService`'s [registerReceived method](../../references/services/classes/services.SwapService.mdx#registerreceived) is used to validate the return, emit the swap event `received`, and return the swap.
+3. On the other hand, after the return is marked as received, if the return is associated with an order, the `OrderService`'s [registerReturnReceived method](../../references/services/classes/services.OrderService.mdx#registerreturnreceived). In this method:
     1. If the amount that is expected to be refunded is greater than the amount that can be refunded, the `fulfillment_status` of the order is set to `requires_action`. And the process is terminated.
     2. If there are no validation issues, the payment is refunded and the fulfillment status is set to `returned` if all items of the order were returned, or `partially_returned` if only some items were returned.
 
 ### Cancel a Return
 
-The merchant can cancel a return if it hasn’t be marked as `received` before. This can be done either using the `ReturnService`'s [cancel method](../../references/services/classes/ReturnService.md#cancel) or using the [Cancel Return endpoint](https://docs.medusajs.com/api/admin#returns_postreturnsreturncancel).
+The merchant can cancel a return if it hasn’t be marked as `received` before. This can be done either using the `ReturnService`'s [cancel method](../../references/services/classes/services.ReturnService.mdx#cancel) or using the [Cancel Return API Route](https://docs.medusajs.com/api/admin#returns_postreturnsreturncancel).
 
 Canceling a return would change its status to canceled.
 

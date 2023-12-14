@@ -31,7 +31,7 @@ Then, Medusa handles calculating the tax amount using the tax rate and the tax-i
 
 Tax inclusivity can be toggled for regions, currencies, price lists, and shipping options either during creation or while editing. This is represented by the boolean attribute `includes_tax` available in the entities `Region`, `Currency`, `PriceList`, and `ShippingOption`. By default, this attribute is set to `false`.
 
-If you want to enable or disable this attribute for any of these entities, you can use the create or update endpoints related to these entities as shown in the [Admin API reference](https://docs.medusajs.com/api/admin/).
+If you want to enable or disable this attribute for any of these entities, you can use the create or update API Routes related to these entities as shown in the [Admin API reference](https://docs.medusajs.com/api/admin/).
 
 The value set for these entities can affect whether line items and shipping methods are tax inclusive or not.
 
@@ -78,7 +78,7 @@ For example, if the tax rate is `0.25` and the price of a product is `100`, the 
 
 ## Retrieving Tax Amounts
 
-This section covers at which point tax amounts are calculated for different entities, how they are calculated when the price is tax inclusive, and what fields can be returned in the endpoints relative to each of the entities.
+This section covers at which point tax amounts are calculated for different entities, how they are calculated when the price is tax inclusive, and what fields can be returned in the API Routes relative to each of the entities.
 
 :::note
 
@@ -156,7 +156,7 @@ Each line item returned in any of the cart’s requests has total fields related
 - `tax_total`: The total tax amount applied on the original price taking into account any applied discounts as well.
 - `original_tax_total`: The total tax amount applied on the original price without taking into account any applied discounts.
 - `subtotal`: The total of the line item’s price subtracting the amount in `original_tax_total`.
-- `origial_total`: The `subtotal` including the `original_tax_total` amount.
+- `original_total`: The `subtotal` including the `original_tax_total` amount.
 
 If tax inclusivity is enabled for the line item, `unit_price` will include the tax amount. The tax amount, which will also be the value of `tax_total`, is calculated using [Medusa’s formula for tax inclusive pricing](#tax-amount-calculation-formula) based on the line item’s tax rates. The calculation takes into account any discounts applied on the item, which means the discount amount is deducted from the original price.
 

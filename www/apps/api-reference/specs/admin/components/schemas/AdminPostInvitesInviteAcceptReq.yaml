@@ -1,4 +1,5 @@
 type: object
+description: The details of the invite to be accepted.
 required:
   - token
   - user

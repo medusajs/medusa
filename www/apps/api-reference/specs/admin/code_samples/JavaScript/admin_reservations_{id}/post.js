@@ -6,4 +6,4 @@ medusa.admin.reservations.update(reservationId, {
 })
 .then(({ reservation }) => {
   console.log(reservation.id);
-});
+})

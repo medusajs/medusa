@@ -9,12 +9,12 @@ import {
   Text,
   usePrompt,
 } from "@medusajs/ui"
+import { useAdminCreatePriceListPrices } from "medusa-react"
 import * as React from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import * as z from "zod"
 
-import { useAdminCreatePriceListPrices } from "medusa-react"
-import { useTranslation } from "react-i18next"
 import { Form } from "../../../../components/helpers/form"
 import useNotification from "../../../../hooks/use-notification"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
@@ -110,6 +110,7 @@ const AddProductsModal = ({
     trigger,
     handleSubmit,
     setValue,
+    setError,
     getValues,
     reset,
     formState: { isDirty },
@@ -138,6 +139,7 @@ const AddProductsModal = ({
   const onCloseModal = React.useCallback(() => {
     onOpenChange(false)
     setTab(Tab.PRODUCTS)
+    setSelectedIds([])
     setStatus({
       [Tab.PRODUCTS]: "not-started",
       [Tab.PRICES]: "not-started",
@@ -204,6 +206,42 @@ const AddProductsModal = ({
 
   const onSubmit = handleSubmit(async (data) => {
     const prices: PricePayload[] = []
+
+    const productPriceKeys = Object.keys(data.prices.products)
+    const productIds = data.products.ids
+
+    if (!productPriceKeys.length || !data.prices.products) {
+      setError("prices.products", {
+        type: "manual",
+        message: t(
+          "price-list-add-products-modal-no-prices-error",
+          "Please assign prices for at least one product."
+        ) as string,
+      })
+
+      return
+    }
+
+    const missingProducts = productIds.filter(
+      (id) => !productPriceKeys.includes(id)
+    )
+
+    if (missingProducts.length > 0) {
+      const res = await prompt({
+        title: t(
+          "price-list-add-products-modal-missing-prices-title",
+          "Incomplete price list"
+        ),
+        description: t(
+          "price-list-add-products-modal-missing-prices-description",
+          "Prices have not been assigned to all of your chosen products. Would you like to continue?"
+        ),
+      })
+
+      if (!res) {
+        return
+      }
+    }
 
     for (const productId of Object.keys(data.prices.products)) {
       const product = data.prices.products[productId]
@@ -533,6 +571,7 @@ const AddProductsModal = ({
                 </span>
               </ProgressTabs.Trigger>
               <ProgressTabs.Trigger
+                disabled={status[Tab.PRODUCTS] !== "completed"}
                 value={Tab.PRICES}
                 className="w-full max-w-[200px]"
                 status={status[Tab.PRICES]}
@@ -582,52 +621,68 @@ const AddProductsModal = ({
                   productIds={productIds}
                 />
               </ProgressTabs.Content>
-              {isLoading ? (
-                <div className="flex h-full w-full items-center justify-center">
-                  <Spinner className="text-ui-fg-subtle animate-spin" />
-                </div>
-              ) : isError || isNotFound ? (
-                <div className="flex h-full w-full items-center justify-center">
-                  <div className="text-ui-fg-subtle flex items-center gap-x-2">
-                    <ExclamationCircle />
-                    <Text>
-                      {t(
-                        "price-list-add-products-modal-error",
-                        "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
-                      )}
-                    </Text>
+              <ProgressTabs.Content
+                value={Tab.PRICES}
+                className="h-full w-full"
+              >
+                {isLoading ? (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <Spinner className="text-ui-fg-subtle animate-spin" />
                   </div>
-                </div>
-              ) : (
-                <React.Fragment>
-                  <ProgressTabs.Content
-                    value={Tab.PRICES}
-                    className="h-full w-full"
-                  >
-                    <PriceListPricesForm
-                      setProduct={onSetProduct}
-                      form={nestedForm(form, "prices")}
-                      productIds={selectedIds}
+                ) : isError || isNotFound ? (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <div className="text-ui-fg-subtle flex items-center gap-x-2">
+                      <ExclamationCircle />
+                      <Text>
+                        {t(
+                          "price-list-add-products-modal-error",
+                          "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
+                        )}
+                      </Text>
+                    </div>
+                  </div>
+                ) : (
+                  <PriceListPricesForm
+                    setProduct={onSetProduct}
+                    form={nestedForm(form, "prices")}
+                    productIds={selectedIds}
+                  />
+                )}
+              </ProgressTabs.Content>
+              {product && (
+                <ProgressTabs.Content
+                  value={Tab.EDIT}
+                  className="h-full w-full"
+                >
+                  {isLoading ? (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <Spinner className="text-ui-fg-subtle animate-spin" />
+                    </div>
+                  ) : isError || isNotFound ? (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <div className="text-ui-fg-subtle flex items-center gap-x-2">
+                        <ExclamationCircle />
+                        <Text>
+                          {t(
+                            "price-list-add-products-modal-error",
+                            "An error occurred while preparing the form. Reload the page and try again. If the issue persists, try again later."
+                          )}
+                        </Text>
+                      </div>
+                    </div>
+                  ) : (
+                    <PriceListProductPricesForm
+                      product={product}
+                      currencies={currencies}
+                      regions={regions}
+                      control={editControl}
+                      priceListTaxInclusive={priceList.includes_tax}
+                      taxInclEnabled={isTaxInclPricesEnabled}
+                      setValue={setEditValue}
+                      getValues={getEditValues}
                     />
-                  </ProgressTabs.Content>
-                  {product && (
-                    <ProgressTabs.Content
-                      value={Tab.EDIT}
-                      className="h-full w-full"
-                    >
-                      <PriceListProductPricesForm
-                        product={product}
-                        currencies={currencies}
-                        regions={regions}
-                        control={editControl}
-                        priceListTaxInclusive={priceList.includes_tax}
-                        taxInclEnabled={isTaxInclPricesEnabled}
-                        setValue={setEditValue}
-                        getValues={getEditValues}
-                      />
-                    </ProgressTabs.Content>
                   )}
-                </React.Fragment>
+                </ProgressTabs.Content>
               )}
             </Form>
           </FocusModal.Body>

@@ -1,6 +1,9 @@
 import {
-    buildRelations,
-    buildSelects, FlagRouter, objectToStringPath
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  objectToStringPath,
+  promiseAll,
 } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
@@ -8,19 +11,19 @@ import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-    Product,
-    ProductCategory,
-    ProductOption,
-    ProductTag,
-    ProductType,
-    ProductVariant,
-    SalesChannel,
-    ShippingProfile,
+  Product,
+  ProductCategory,
+  ProductOption,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+  SalesChannel,
+  ShippingProfile,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
-    FindWithoutRelationsOptions,
-    ProductRepository,
+  FindWithoutRelationsOptions,
+  ProductRepository,
 } from "../repositories/product"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
@@ -29,15 +32,16 @@ import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
 import { Selector } from "../types/common"
 import {
-    CreateProductInput,
-    FilterableProductProps,
-    FindProductConfig,
-    ProductOptionInput,
-    ProductSelector,
-    UpdateProductInput,
+  CreateProductInput,
+  FilterableProductProps,
+  FindProductConfig,
+  ProductOptionInput,
+  ProductSelector,
+  UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
+import { CreateProductVariantInput } from "../types/product-variant"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -429,6 +433,7 @@ class ProductService extends TransactionBaseService {
         tags,
         type,
         images,
+        variants,
         sales_channels: salesChannels,
         categories: categories,
         ...rest
@@ -490,7 +495,7 @@ class ProductService extends TransactionBaseService {
 
       product = await productRepo.save(product)
 
-      product.options = await Promise.all(
+      product.options = await promiseAll(
         (options ?? []).map(async (option) => {
           const res = optionRepo.create({
             ...option,
@@ -500,6 +505,27 @@ class ProductService extends TransactionBaseService {
           return res
         })
       )
+
+      if (variants) {
+        const toCreate = variants.map((variant) => {
+          return {
+            ...variant,
+            options:
+              variant.options?.map((option, index) => {
+                return {
+                  option_id: product.options[index].id,
+                  ...option,
+                }
+              }) ?? [],
+          }
+        })
+        product.variants = await this.productVariantService_
+          .withTransaction(manager)
+          .create(
+            product.id,
+            toCreate as unknown as CreateProductVariantInput[]
+          )
+      }
 
       const result = await this.retrieve(product.id, {
         relations: ["options"],
@@ -633,7 +659,7 @@ class ProductService extends TransactionBaseService {
         }
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
 
       const result = await productRepo.save(product)
 
@@ -899,7 +925,7 @@ class ProductService extends TransactionBaseService {
           (o) => o.option_id === optionId
         )?.value
 
-        const equalsFirst = await Promise.all(
+        const equalsFirst = await promiseAll(
           product.variants.map(async (v) => {
             const option = v.options.find((o) => o.option_id === optionId)
             return option?.value === valueToMatch

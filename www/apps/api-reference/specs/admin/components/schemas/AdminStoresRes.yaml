@@ -1,4 +1,5 @@
 type: object
+description: The store's details.
 required:
   - store
 properties:

@@ -1,4 +1,5 @@
 type: object
+description: The gift card's details.
 x-expanded-relations:
   field: gift_card
   relations:

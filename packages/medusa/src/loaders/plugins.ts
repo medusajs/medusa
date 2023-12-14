@@ -1,6 +1,16 @@
-import { SearchUtils, upperCaseFirst } from "@medusajs/utils"
-import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { promiseAll, SearchUtils, upperCaseFirst } from "@medusajs/utils"
+import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
+import { Express } from "express"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import _ from "lodash"
+import { createRequireFromPath } from "medusa-core-utils"
 import { FileService, OauthService } from "medusa-interfaces"
+import { trackInstallation } from "medusa-telemetry"
+import { EOL } from "os"
+import path from "path"
+import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
   isBatchJobStrategy,
@@ -10,6 +20,7 @@ import {
   isPriceSelectionStrategy,
   isTaxCalculationStrategy,
 } from "../interfaces"
+import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
   ConfigModule,
@@ -20,24 +31,16 @@ import {
   formatRegistrationName,
   formatRegistrationNameWithoutNamespace,
 } from "../utils/format-registration-name"
+import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
+import ScheduledJobsLoader from "./helpers/jobs"
 import {
   registerAbstractFulfillmentServiceFromClass,
   registerFulfillmentServiceFromClass,
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
-
-import { Express } from "express"
-import fs from "fs"
-import { sync as existsSync } from "fs-exists-cached"
-import glob from "glob"
-import _ from "lodash"
-import { createRequireFromPath } from "medusa-core-utils"
-import { trackInstallation } from "medusa-telemetry"
-import path from "path"
-import { EntitySchema } from "typeorm"
-import { MiddlewareService } from "../services"
-import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
+import { RoutesLoader } from "./helpers/routing"
+import { SubscriberLoader } from "./helpers/subscribers"
 import logger from "./logger"
 
 type Options = {
@@ -72,26 +75,46 @@ export default async ({
 }: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
 
-  await Promise.all(
+  await promiseAll(
     resolved.map(
       async (pluginDetails) => await runSetupFunctions(pluginDetails)
     )
   )
 
-  await Promise.all(
+  await promiseAll(
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       await registerMedusaApi(pluginDetails, container)
-      registerApi(pluginDetails, app, rootDirectory, container, activityId)
+      await registerApi(
+        pluginDetails,
+        app,
+        rootDirectory,
+        container,
+        configModule,
+        activityId
+      )
       registerCoreRouters(pluginDetails, container)
-      registerSubscribers(pluginDetails, container)
+      await registerSubscribers(pluginDetails, container, activityId)
+      await registerWorkflows(pluginDetails)
     })
   )
 
-  await Promise.all(
+  await promiseAll(
     resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
   )
+
+  if (configModule.projectConfig.redis_url) {
+    await Promise.all(
+      resolved.map(async (pluginDetails) => {
+        await registerScheduledJobs(pluginDetails, container)
+      })
+    )
+  } else {
+    logger.warn(
+      "You don't have Redis configured. Scheduled jobs will not be enabled."
+    )
+  }
 
   resolved.forEach((plugin) => trackInstallation(plugin.name, "plugin"))
 }
@@ -144,7 +167,7 @@ export async function registerPluginModels({
     getResolvedPlugins(rootDirectory, configModule, extensionDirectoryPath) ||
     []
 
-  await Promise.all(
+  await promiseAll(
     resolved.map(async (pluginDetails) => {
       registerModels(pluginDetails, container, rootDirectory, pathGlob)
     })
@@ -159,7 +182,7 @@ async function runLoaders(
     `${pluginDetails.resolve}/loaders/[!__]*.js`,
     {}
   )
-  await Promise.all(
+  await promiseAll(
     loaderFiles.map(async (loader) => {
       try {
         const module = require(loader).default
@@ -173,6 +196,17 @@ async function runLoaders(
       }
     })
   )
+}
+
+async function registerScheduledJobs(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): Promise<void> {
+  await new ScheduledJobsLoader(
+    path.join(pluginDetails.resolve, "jobs"),
+    container,
+    pluginDetails.options
+  ).load()
 }
 
 async function registerMedusaApi(
@@ -317,7 +351,10 @@ function registerCoreRouters(
     const splat = descriptor.split("/")
     const path = `${splat[splat.length - 2]}/${splat[splat.length - 1]}`
     const loaded = require(fn).default
-    middlewareService.addRouter(path, loaded())
+
+    if (loaded && typeof loaded === "function") {
+      middlewareService.addRouter(path, loaded())
+    }
   })
 
   storeFiles.forEach((fn) => {
@@ -325,20 +362,24 @@ function registerCoreRouters(
     const splat = descriptor.split("/")
     const path = `${splat[splat.length - 2]}/${splat[splat.length - 1]}`
     const loaded = require(fn).default
-    middlewareService.addRouter(path, loaded())
+
+    if (loaded && typeof loaded === "function") {
+      middlewareService.addRouter(path, loaded())
+    }
   })
 }
 
 /**
  * Registers the plugin's api routes.
  */
-function registerApi(
+async function registerApi(
   pluginDetails: PluginDetails,
   app: Express,
   rootDirectory = "",
   container: MedusaContainer,
+  configmodule: ConfigModule,
   activityId: string
-): Express {
+): Promise<Express> {
   const logger = container.resolve<Logger>("logger")
   const projectName =
     pluginDetails.name === MEDUSA_PROJECT_NAME
@@ -346,25 +387,57 @@ function registerApi(
       : `${pluginDetails.name}`
 
   logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
+
   try {
-    const routes = require(`${pluginDetails.resolve}/api`).default
-    if (routes) {
-      app.use("/", routes(rootDirectory, pluginDetails.options))
+    /**
+     * Register the plugin's API routes using the file based routing.
+     */
+    await new RoutesLoader({
+      app,
+      rootDir: path.join(pluginDetails.resolve, "api"),
+      activityId: activityId,
+      configModule: configmodule,
+    }).load()
+  } catch (err) {
+    logger.warn(
+      `An error occurred while registering API Routes in ${projectName}${
+        err.stack ? EOL + err.stack : ""
+      }`
+    )
+  }
+
+  try {
+    /**
+     * For backwards compatibility we also support loading routes from
+     * `/api/index` if the file exists.
+     */
+    let apiFolderExists = true
+
+    try {
+      require.resolve(`${pluginDetails.resolve}/api`)
+    } catch (e) {
+      apiFolderExists = false
     }
-    return app
+
+    if (apiFolderExists) {
+      const routes = require(`${pluginDetails.resolve}/api`).default
+      if (routes) {
+        app.use("/", routes(rootDirectory, pluginDetails.options))
+      }
+    }
   } catch (err) {
     if (err.code !== "MODULE_NOT_FOUND") {
       logger.warn(
-        `An error occured while registering endpoints in ${projectName}`
+        `An error occurred while registering endpoints in ${projectName}`
       )
 
       if (err.stack) {
         logger.warn(`${err.stack}`)
       }
     }
-
-    return app
   }
+
+  return app
 }
 
 /**
@@ -384,7 +457,7 @@ export async function registerServices(
   container: MedusaContainer
 ): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*.js`, {})
-  await Promise.all(
+  await promiseAll(
     files.map(async (fn) => {
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
@@ -501,20 +574,36 @@ export async function registerServices(
  *    registered
  * @return {void}
  */
-function registerSubscribers(
+async function registerSubscribers(
   pluginDetails: PluginDetails,
-  container: MedusaContainer
-): void {
-  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
-  files.forEach((fn) => {
-    const loaded = require(fn).default
+  container: MedusaContainer,
+  activityId: string
+): Promise<void> {
+  const loadedFiles = await new SubscriberLoader(
+    path.join(pluginDetails.resolve, "subscribers"),
+    container,
+    pluginDetails.options,
+    activityId
+  ).load()
 
-    container.build(
-      asFunction(
-        (cradle) => new loaded(cradle, pluginDetails.options)
-      ).singleton()
-    )
-  })
+  /**
+   * Exclude any files that have already been loaded by the subscriber loader
+   */
+  const normalizedLoadedFiles =
+    loadedFiles?.map((file) => file.replace(/\\/g, "/")) ?? []
+
+  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
+  files
+    .filter((file) => !normalizedLoadedFiles.includes(file))
+    .forEach((fn) => {
+      const loaded = require(fn).default
+
+      container.build(
+        asFunction(
+          (cradle) => new loaded(cradle, pluginDetails.options)
+        ).singleton()
+      )
+    })
 }
 
 /**
@@ -543,6 +632,15 @@ function registerRepositories(
       }
     })
   })
+}
+
+/**
+ * import files from the workflows directory to run the registration of the wofklows
+ * @param pluginDetails
+ */
+async function registerWorkflows(pluginDetails: PluginDetails): Promise<void> {
+  const files = glob.sync(`${pluginDetails.resolve}/workflows/*.js`, {})
+  await Promise.all(files.map(async (file) => import(file)))
 }
 
 /**
@@ -633,7 +731,7 @@ function registerModels(
  */
 async function runSetupFunctions(pluginDetails: PluginDetails): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/setup/*.js`, {})
-  await Promise.all(
+  await promiseAll(
     files.map(async (fn) => {
       const loaded = require(fn).default
       try {

@@ -22,7 +22,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *       medusa.shippingOptions.listCartOptions(cartId)
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

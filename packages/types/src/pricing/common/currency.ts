@@ -3,68 +3,84 @@ import { BaseFilterable } from "../../dal"
 /**
  * @interface
  * 
- * An object representing a currency.
- * 
- * @prop code - a string indicating the code of the currency.
- * @prop symbol - a string indicating the symbol of the currency.
- * @prop symbol_native - 
- * a string indicating the symbol of the currecy in its native form.
- * This is typically the symbol used when displaying a price.
- * @prop name - a string indicating the name of the currency.
+ * A currency's data.
  */
 export interface CurrencyDTO {
+  /**
+   * The code of the currency.
+   */
   code: string
+  /**
+   * The symbol of the currency.
+   */
   symbol?: string
+  /**
+   * The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.
+   */
   symbol_native?: string
+  /**
+   * The name of the currency.
+   */
   name?: string
 }
 
 /**
  * @interface
  * 
- * An object that holds data to create a currency.
- * 
- * @prop code - a string indicating the code of the currency.
- * @prop symbol - a string indicating the symbol of the currency.
- * @prop symbol_native - 
- * a string indicating the symbol of the currecy in its native form.
- * This is typically the symbol used when displaying a price.
- * @prop name - a string indicating the name of the currency.
+ * A currency to create.
  */
 export interface CreateCurrencyDTO {
+  /**
+   * The code of the currency.
+   */
   code: string
+  /**
+   * The symbol of the currency.
+   */
   symbol: string
+  /**
+   * The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.
+   */
   symbol_native: string
+  /**
+   * The name of the currency.
+   */
   name: string
 }
 
 /**
  * @interface
  * 
- * An object that holds data to update a currency. The currency code must be provided to identify which currency to update.
- * 
- * @prop code - a string indicating the code of the currency to update.
- * @prop symbol - a string indicating the symbol of the currency.
- * @prop symbol_native - 
- * a string indicating the symbol of the currecy in its native form.
- * This is typically the symbol used when displaying a price.
- * @prop name - a string indicating the name of the currency.
+ * The data to update in a currency. The `code` is used to identify which currency to update.
  */
 export interface UpdateCurrencyDTO {
+  /**
+   * The code of the currency to update.
+   */
   code: string
+  /**
+   * The symbol of the currency.
+   */
   symbol?: string
+  /**
+   * The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.
+   */
   symbol_native?: string
+  /**
+   * The name of the currency.
+   */
   name?: string
 }
 
 /**
  * @interface
  * 
- * An object used to filter retrieved currencies.
- * 
- * @prop code - an array of strings, each being a currency code to filter the currencies.
+ * Filters to apply on a currency.
  */
 export interface FilterableCurrencyProps
   extends BaseFilterable<FilterableCurrencyProps> {
+  /**
+   * The codes to filter the currencies by.
+   */
   code?: string[]
 }

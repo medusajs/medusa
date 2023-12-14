@@ -5,14 +5,39 @@ import { DiscountCondition } from "./discount-condition"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
+/**
+ * @enum
+ * 
+ * The possible types of discount rules.
+ */
 export enum DiscountRuleType {
+  /**
+   * Discounts that reduce the price by a fixed amount.
+   */
   FIXED = "fixed",
+  /**
+   * Discounts that reduce the price by a percentage reduction.
+   */
   PERCENTAGE = "percentage",
+  /**
+   * Discounts that sets the shipping price to `0`.
+   */
   FREE_SHIPPING = "free_shipping",
 }
 
+/**
+ * @enum
+ * 
+ * The scope that the discount should apply to.
+ */
 export enum AllocationType {
+  /**
+   * The discount should be applied to the checkout total.
+   */
   TOTAL = "total",
+  /**
+   * The discount should be applied to applicable items in the cart.
+   */
   ITEM = "item",
 }
 
@@ -43,6 +68,9 @@ export class DiscountRule extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "dru")
@@ -70,7 +98,8 @@ export class DiscountRule extends SoftDeletableEntity {
  *     type: string
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   type:
- *     description: The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.
+ *     description: >-
+ *       The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.
  *     type: string
  *     enum:
  *       - fixed

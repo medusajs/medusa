@@ -40,6 +40,12 @@ To edit your profile details:
 
 The Medusa admin supports multiple languages, and you can change the default language from your profile settings.
 
+:::note
+
+Some languages are not official, so they may not be accurate. Please refer to [this document](../tips/languages.md) for a full list of official languages and community translations.
+
+:::
+
 To change the language:
 
 1. Go to Settings → Personal Information.

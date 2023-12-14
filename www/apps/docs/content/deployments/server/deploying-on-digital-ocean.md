@@ -66,7 +66,7 @@ const DATABASE_URL =
 
 In addition, you must add to `projectConfig` in the exported object a new property `database_extra`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     // ...
@@ -77,7 +77,7 @@ module.exports = {
 
 Also, if you're planning on using scheduled jobs, you need to set the `redis_url` configurations:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
     // ...
@@ -211,7 +211,7 @@ YARN_PRODUCTION=false
 NODE_ENV=production
 ```
 
-:::caution
+:::warning
 
 It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
 

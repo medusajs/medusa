@@ -1,0 +1,36 @@
+{
+  "description": "This component is based on the heading element (`h1`, `h2`, etc...) depeneding on the specified level\nand supports all of its props",
+  "methods": [],
+  "displayName": "Heading",
+  "props": {
+    "level": {
+      "defaultValue": {
+        "value": "\"h1\"",
+        "computed": false
+      },
+      "description": "The heading level which specifies which heading element is used.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"h2\" \\| \"h3\" \\| \"h1\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"h2\""
+          },
+          {
+            "name": "literal",
+            "value": "\"h3\""
+          },
+          {
+            "name": "literal",
+            "value": "\"h1\""
+          }
+        ]
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "VariantProps"
+  ]
+}

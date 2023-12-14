@@ -11,12 +11,13 @@ export const initialize = async (
   options?: RedisCacheModuleOptions | ExternalModuleDeclaration
 ): Promise<ICacheService> => {
   const serviceKey = Modules.CACHE
-  const loaded = await MedusaModule.bootstrap<ICacheService>(
-    serviceKey,
-    "@medusajs/cache-redis",
-    options as InternalModuleDeclaration | ExternalModuleDeclaration,
-    undefined
-  )
+  const loaded = await MedusaModule.bootstrap<ICacheService>({
+    moduleKey: serviceKey,
+    defaultPath: "@medusajs/cache-redis",
+    declaration: options as
+      | InternalModuleDeclaration
+      | ExternalModuleDeclaration,
+  })
 
   return loaded[serviceKey]
 }

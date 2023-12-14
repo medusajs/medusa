@@ -28,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notes.list()
  *       .then(({ notes, limit, offset, count }) => {
  *         console.log(notes.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -84,16 +84,30 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved notes.
+ */
 export class AdminGetNotesParams {
+  /**
+   * Resource ID to filter notes by.
+   */
   @IsString()
   @IsOptional()
   resource_id?: string
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)

@@ -1,4 +1,5 @@
 type: object
+description: The list of publishable API keys with pagination fields.
 required:
   - publishable_api_keys
   - count

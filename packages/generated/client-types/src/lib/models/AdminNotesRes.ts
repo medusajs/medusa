@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { Note } from "./Note"
 
+/**
+ * The note's details.
+ */
 export interface AdminNotesRes {
   /**
    * Note details.

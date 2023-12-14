@@ -5,66 +5,96 @@ import { RuleTypeDTO } from "./rule-type"
 /**
  * @interface
  * 
- * An object representing a price set money amount rule, which holds data related to the association between a price set money amount and a rule.
- * 
- * @prop id - A string indicating the ID of the price set money amount.
- * @prop price_set_money_amount - an object of type {@link PriceSetMoneyAmountDTO} holding the data of the associated price set money amount.
- * @prop rule_type - an object of type {@link RuleTypeDTO} holding the data of the associated rule type.
- * @prop value - a string indicating the value of the price set money amount rule.
+ * A price set money amount rule's data.
  */
 export interface PriceSetMoneyAmountRulesDTO {
+  /**
+   * The ID of the price set money amount.
+   */
   id: string
+  /**
+   * The associated price set money amount.
+   * 
+   * @expandable
+   */
   price_set_money_amount: PriceSetMoneyAmountDTO
+  /**
+   * The associated rule type.
+   * 
+   * @expandable
+   */
   rule_type: RuleTypeDTO
+  /**
+   * The value of the price set money amount rule.
+   */
   value: string
 }
 
 /**
  * @interface
  * 
- * An object used to create a price set money amount rule, which represents an association between a price set money amount and a rule type.
- * 
- * @prop price_set_money_amount - A string indicating the ID of a price set money amount.
- * @prop rule_type - A string indicating the ID of a rule type.
- * @prop value - A string indicating the value of the price set money amount rule.
+ * The price set money amount rule to create.
  */
 export interface CreatePriceSetMoneyAmountRulesDTO {
+  /**
+   * The ID of a price set money amount.
+   */
   price_set_money_amount: string
+  /**
+   * The ID of a rule type.
+   */
   rule_type: string
+  /**
+   * The value of the price set money amount rule.
+   */
   value: string
 }
 
 /**
  * @interface
  * 
- * An object used to update a price set money amount rule. The price set money amount rule is identified by the provided `id`.
- * 
- * @prop id - A string indicating the ID of the price set money amount rule to update.
- * @prop price_set_money_amount - A string indicating the ID of a price set money amount.
- * @prop rule_type - A string indicating the ID of a rule type.
- * @prop value - A string indicating the value of the price set money amount rule.
+ * The data to update in a price set money amount rule. The `id` is used to identify which money amount to update.
  */
 export interface UpdatePriceSetMoneyAmountRulesDTO {
+  /**
+   * The ID of the price set money amount rule to update.
+   */
   id: string
+  /**
+   * The ID of a price set money amount.
+   */
   price_set_money_amount?: string
+  /**
+   * The ID of a rule type.
+   */
   rule_type?: string
+  /**
+   * The value of the price set money amount rule.
+   */
   value?: string
 }
 
 /**
  * @interface
  * 
- * An object used to filter price set money amount rules when listing them.
- * 
- * @prop id - An array of strings, each string indicating an ID to filter the price set money amount rules.
- * @prop rule_type_id - An array of strings, each string indicating the ID of a rule type to filter the price set money amount rules.
- * @prop price_set_money_amount_id - an array of strings, each string indicating the ID of a price set money amount to filter the price set money amount rules.
- * @prop value - an array of strings, each string indicating a value to filter the price set money amount rules.
+ * Filters to apply on price set money amount rules.
  */
 export interface FilterablePriceSetMoneyAmountRulesProps
   extends BaseFilterable<FilterablePriceSetMoneyAmountRulesProps> {
+  /**
+   * The ID to filter price set money amount rules by.
+   */
   id?: string[]
+  /**
+   * The IDs to filter the price set money amount rule's associated rule type.
+   */
   rule_type_id?: string[]
+  /**
+   * The IDs to filter the price set money amount rule's associated price set money amount.
+   */
   price_set_money_amount_id?: string[]
+  /**
+   * The value to filter price set money amount rules by.
+   */
   value?: string[]
 }

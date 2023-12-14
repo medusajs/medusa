@@ -166,6 +166,7 @@ export const defaultAdminInventoryItemRelations = []
 /**
  * @schema AdminInventoryItemsRes
  * type: object
+ * description: The inventory item's details.
  * required:
  *   - inventory_item
  * properties:
@@ -293,17 +294,20 @@ export type AdminInventoryItemsListWithVariantsAndLocationLevelsRes =
 /**
  * @schema AdminInventoryItemsLocationLevelsRes
  * type: object
+ * description: "Details of inventory items and their associated location levels."
  * required:
  *   - inventory_item
  * properties:
  *   inventory_item:
  *     type: object
+ *     description: "An inventory item's ID and associated location levels."
  *     required:
  *       - id
  *       - location_levels
  *     properties:
  *       id:
  *         description: The id of the location
+ *         type: string
  *       location_levels:
  *         description: List of stock levels at a given location
  *         type: array

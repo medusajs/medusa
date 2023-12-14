@@ -1,0 +1,54 @@
+{
+  "description": "The command component of the command bar. This component is used to display a command, as well as registering the keyboad shortcut.",
+  "methods": [],
+  "displayName": "CommandBar.Command",
+  "props": {
+    "action": {
+      "required": true,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "() => void | Promise<void>",
+        "signature": {
+          "arguments": [],
+          "return": {
+            "name": "union",
+            "raw": "void | Promise<void>",
+            "elements": [
+              {
+                "name": "void"
+              },
+              {
+                "name": "Promise",
+                "elements": [
+                  {
+                    "name": "void"
+                  }
+                ],
+                "raw": "Promise<void>"
+              }
+            ]
+          }
+        }
+      },
+      "description": "The function to execute when the command is triggered."
+    },
+    "label": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The command's label."
+    },
+    "shortcut": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The command's shortcut"
+    }
+  },
+  "composes": [
+    "Omit"
+  ]
+}
