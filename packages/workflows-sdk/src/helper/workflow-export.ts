@@ -10,12 +10,17 @@ import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { EOL } from "os"
 import { ulid } from "ulid"
-import { SymbolWorkflowWorkflowData } from "../utils/composer"
+import { MedusaWorkflow } from "../medusa-workflow"
+import {
+  SymbolWorkflowStep,
+  SymbolWorkflowWorkflowData,
+  resolveValue,
+} from "../utils/composer"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData
   context?: Context
-  resultFrom?: string | string[]
+  resultFrom?: string | string[] | Symbol
   throwOnError?: boolean
 }
 
@@ -23,7 +28,7 @@ export type FlowRegisterStepSuccessOptions<TData = unknown> = {
   idempotencyKey: string
   response?: TData
   context?: Context
-  resultFrom?: string | string[]
+  resultFrom?: string | string[] | Symbol
   throwOnError?: boolean
 }
 
@@ -31,7 +36,7 @@ export type FlowRegisterStepFailureOptions<TData = unknown> = {
   idempotencyKey: string
   response?: TData
   context?: Context
-  resultFrom?: string | string[]
+  resultFrom?: string | string[] | Symbol
   throwOnError?: boolean
 }
 
@@ -78,10 +83,13 @@ export type ExportedWorkflow<
 
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
   workflowId: string,
-  defaultResult?: string,
+  defaultResult?: string | Symbol,
   dataPreparation?: (data: TData) => Promise<unknown>
 ) => {
-  return function <TDataOverride = undefined, TResultOverride = undefined>(
+  function exportedWorkflow<
+    TDataOverride = undefined,
+    TResultOverride = undefined
+  >(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<
     LocalWorkflow,
@@ -119,16 +127,23 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
       let result: any = undefined
 
-      if (resultFrom) {
-        if (Array.isArray(resultFrom)) {
-          result = resultFrom.map((from) => {
+      const resFrom =
+        resultFrom?.__type === SymbolWorkflowStep
+          ? resultFrom.__step__
+          : resultFrom
+
+      if (resFrom) {
+        if (Array.isArray(resFrom)) {
+          result = resFrom.map((from) => {
             const res = transaction.getContext().invoke?.[from]
             return res?.__type === SymbolWorkflowWorkflowData ? res.output : res
           })
         } else {
-          const res = transaction.getContext().invoke?.[resultFrom]
+          const res = transaction.getContext().invoke?.[resFrom]
           result = res?.__type === SymbolWorkflowWorkflowData ? res.output : res
         }
+
+        result = await resolveValue(result || resFrom, transaction.getContext())
       }
 
       return {
@@ -228,4 +243,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     return flow as unknown as LocalWorkflow &
       ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
   }
+
+  MedusaWorkflow.registerWorkflow(workflowId, exportedWorkflow)
+  return exportedWorkflow
 }

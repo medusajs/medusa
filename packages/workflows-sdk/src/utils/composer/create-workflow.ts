@@ -4,12 +4,10 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { ExportedWorkflow, WorkflowResult, exportWorkflow } from "../../helper"
+import { ExportedWorkflow, exportWorkflow } from "../../helper"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
-  SymbolWorkflowStep,
-  resolveValue,
 } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
@@ -196,49 +194,12 @@ export function createWorkflow<
 
   WorkflowManager.update(name, context.flow, handlers)
 
-  const workflow = exportWorkflow<TData, TResult>(name)
+  const workflow = exportWorkflow<TData, TResult>(name, returnedStep)
 
   const mainFlow = <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ) => {
     const workflow_ = workflow<TDataOverride, TResultOverride>(container)
-
-    const originalMethod = (method) => {
-      return async (
-        args?: any
-      ): Promise<
-        WorkflowResult<
-          TResultOverride extends undefined ? TResult : TResultOverride
-        >
-      > => {
-        args ??= {}
-        args.resultFrom ??=
-          returnedStep?.__type === SymbolWorkflowStep
-            ? returnedStep.__step__
-            : undefined
-
-        const workflowResult = (await method(
-          args
-        )) as unknown as WorkflowResult<
-          TResultOverride extends undefined ? TResult : TResultOverride
-        >
-
-        workflowResult.result = await resolveValue(
-          workflowResult.result || returnedStep,
-          workflowResult.transaction.getContext()
-        )
-
-        return workflowResult
-      }
-    }
-
-    workflow_.run = originalMethod(workflow_.run)
-    workflow_.registerStepSuccess = originalMethod(
-      workflow_.registerStepSuccess
-    )
-    workflow_.registerStepFailure = originalMethod(
-      workflow_.registerStepFailure
-    )
 
     return workflow_
   }
