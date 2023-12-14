@@ -22,9 +22,10 @@ export const SidebarItem = ({
 }: SidebarItemProps) => {
   const [showLoading, setShowLoading] = useState(false)
   const { isItemActive, setMobileSidebarOpen: setSidebarOpen } = useSidebar()
-  const active = useMemo(() => {
-    return isItemActive(item, nested)
-  }, [isItemActive, item, nested])
+  const active = useMemo(
+    () => isItemActive(item, nested),
+    [isItemActive, item, nested]
+  )
   const collapsed = !expandItems && !isItemActive(item, true)
   const ref = useRef<HTMLLIElement>(null)
 
