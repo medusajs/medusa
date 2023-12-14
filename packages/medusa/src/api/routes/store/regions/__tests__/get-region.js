@@ -23,8 +23,23 @@ describe("Get region by id", () => {
         {
           relations: [
             "countries",
-            "payment_providers",
+            "currency",
             "fulfillment_providers",
+            "payment_providers",
+          ],
+          select: [
+            "id",
+            "name",
+            "currency_code",
+            "tax_rate",
+            "tax_code",
+            "gift_cards_taxable",
+            "automatic_taxes",
+            "tax_provider_id",
+            "metadata",
+            "created_at",
+            "updated_at",
+            "deleted_at",
           ],
         }
       )
