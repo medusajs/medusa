@@ -26,6 +26,15 @@ The price list to create.
     "children": []
   },
   {
+    "name": "number_rules",
+    "type": "`number`",
+    "description": "The number of rules associated with the price list.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "prices",
     "type": "[PriceListPriceDTO](types.PriceListPriceDTO.mdx)[]",
     "description": "The prices associated with the price list.",
@@ -132,15 +141,6 @@ The price list to create.
         "defaultValue": "",
         "expandable": false,
         "children": []
-      },
-      {
-        "name": "rules",
-        "type": "[CreatePriceSetPriceRules](types.CreatePriceSetPriceRules.mdx)",
-        "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
       }
     ]
   },
@@ -148,15 +148,6 @@ The price list to create.
     "name": "rules",
     "type": "[CreatePriceListRules](types.CreatePriceListRules.mdx)",
     "description": "The rules to be created and associated with the price list.",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "rules_count",
-    "type": "`number`",
-    "description": "The number of rules associated with the price list.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,

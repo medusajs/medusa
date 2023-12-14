@@ -22,20 +22,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "OrderService",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
 ___
 
 ## Properties
@@ -1089,6 +1075,8 @@ ___
 
 ### decorateTotals
 
+`**decorateTotals**(order, totalsFields?): Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;`
+
 Calculate and attach the different total fields on the object
 
 #### Parameters
@@ -1127,6 +1115,8 @@ Calculate and attach the different total fields on the object
     "children": []
   }
 ]} />
+
+`**decorateTotals**(order, context?): Promise&#60;[Order](../../entities/classes/entities.Order.mdx)&#62;`
 
 Calculate and attach the different total fields on the object
 

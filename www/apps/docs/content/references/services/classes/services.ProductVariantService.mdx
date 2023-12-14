@@ -13,93 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__namedParameters.cartRepository",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__namedParameters.eventBusService",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__namedParameters.moneyAmountRepository",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__namedParameters.priceSelectionStrategy",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__namedParameters.productOptionValueRepository",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__namedParameters.productRepository",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__namedParameters.productVariantRepository",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__namedParameters.regionService",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "ProductVariantService",
-    "type": "`object`",
+    "type": "`Object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1006,6 +920,8 @@ ___
 
 ### update
 
+`**update**(variantData): Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)[]&#62;`
+
 Updates a collection of variant.
 
 #### Parameters
@@ -1035,6 +951,8 @@ Updates a collection of variant.
     "children": []
   }
 ]} />
+
+`**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;`
 
 Updates a variant.
 Price updates should use dedicated methods.
@@ -1076,6 +994,8 @@ The function will throw, if price updates are attempted.
     "children": []
   }
 ]} />
+
+`**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)&#62;`
 
 #### Parameters
 
@@ -1203,6 +1123,8 @@ ___
 
 ### updateVariantPrices
 
+`**updateVariantPrices**(data): Promise&#60;void&#62;`
+
 Updates variant/prices collection.
 Deletes any prices that are not in the update object, and is not associated with a price list.
 
@@ -1233,6 +1155,8 @@ Deletes any prices that are not in the update object, and is not associated with
     "children": []
   }
 ]} />
+
+`**updateVariantPrices**(variantId, prices): Promise&#60;void&#62;`
 
 Updates a variant's prices.
 Deletes any prices that are not in the update object, and is not associated with a price list.

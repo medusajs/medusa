@@ -22,20 +22,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   }
 ]} />
 
-### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "ProductVariantInventoryService",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
 ___
 
 ## Properties
@@ -376,6 +362,8 @@ ___
 
 ### attachInventoryItem
 
+`**attachInventoryItem**(attachments): Promise&#60;[ProductVariantInventoryItem](../../entities/classes/entities.ProductVariantInventoryItem.mdx)[]&#62;`
+
 Attach a variant to an inventory item
 
 #### Parameters
@@ -405,6 +393,8 @@ Attach a variant to an inventory item
     "children": []
   }
 ]} />
+
+`**attachInventoryItem**(variantId, inventoryItemId, requiredQuantity?): Promise&#60;[ProductVariantInventoryItem](../../entities/classes/entities.ProductVariantInventoryItem.mdx)[]&#62;`
 
 #### Parameters
 

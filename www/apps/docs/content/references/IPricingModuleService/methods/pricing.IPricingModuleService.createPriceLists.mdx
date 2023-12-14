@@ -66,6 +66,15 @@ async function createPriceList (items: {
         "children": []
       },
       {
+        "name": "number_rules",
+        "type": "`number`",
+        "description": "The number of rules associated with the price list.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
         "name": "prices",
         "type": "[PriceListPriceDTO](../../pricing/interfaces/pricing.PriceListPriceDTO.mdx)[]",
         "description": "The prices associated with the price list.",
@@ -135,15 +144,6 @@ async function createPriceList (items: {
             "defaultValue": "",
             "expandable": false,
             "children": []
-          },
-          {
-            "name": "rules",
-            "type": "[CreatePriceSetPriceRules](../../pricing/interfaces/pricing.CreatePriceSetPriceRules.mdx)",
-            "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
           }
         ]
       },
@@ -151,15 +151,6 @@ async function createPriceList (items: {
         "name": "rules",
         "type": "[CreatePriceListRules](../../pricing/interfaces/pricing.CreatePriceListRules.mdx)",
         "description": "The rules to be created and associated with the price list.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rules_count",
-        "type": "`number`",
-        "description": "The number of rules associated with the price list.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,

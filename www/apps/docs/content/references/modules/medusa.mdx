@@ -16,7 +16,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PriceListStatus](../medusa/enums/medusa.PriceListStatus-1.mdx)
 - [PriceListType](../medusa/enums/medusa.PriceListType.mdx)
 - [PriceListType](../medusa/enums/medusa.PriceListType-1.mdx)
-- [ProductStatus](../medusa/enums/medusa.ProductStatus.mdx)
 
 ## Classes
 
@@ -88,6 +87,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [AdminGetProductTypesParams](../medusa/classes/medusa.AdminGetProductTypesParams.mdx)
 - [AdminGetProductsParams](../medusa/classes/medusa.AdminGetProductsParams.mdx)
 - [AdminGetProductsVariantsParams](../medusa/classes/medusa.AdminGetProductsVariantsParams.mdx)
+- [AdminGetRegionsPaginationParams](../medusa/classes/medusa.AdminGetRegionsPaginationParams.mdx)
 - [AdminGetRegionsParams](../medusa/classes/medusa.AdminGetRegionsParams.mdx)
 - [AdminGetRegionsRegionFulfillmentOptionsRes](../medusa/classes/medusa.AdminGetRegionsRegionFulfillmentOptionsRes.mdx)
 - [AdminGetReservationsParams](../medusa/classes/medusa.AdminGetReservationsParams.mdx)
@@ -333,7 +333,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [StoreGetProductsPaginationParams](../medusa/classes/medusa.StoreGetProductsPaginationParams.mdx)
 - [StoreGetProductsParams](../medusa/classes/medusa.StoreGetProductsParams.mdx)
 - [StoreGetRegionsParams](../medusa/classes/medusa.StoreGetRegionsParams.mdx)
-- [StoreGetRegionsRegionParams](../medusa/classes/medusa.StoreGetRegionsRegionParams.mdx)
 - [StoreGetShippingOptionsParams](../medusa/classes/medusa.StoreGetShippingOptionsParams.mdx)
 - [StoreGetVariantsParams](../medusa/classes/medusa.StoreGetVariantsParams.mdx)
 - [StoreGetVariantsVariantParams](../medusa/classes/medusa.StoreGetVariantsVariantParams.mdx)
@@ -386,15 +385,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PaymentProcessor](../medusa/interfaces/medusa.PaymentProcessor.mdx)
 - [PaymentProcessorError](../medusa/interfaces/medusa.PaymentProcessorError.mdx)
 - [PaymentService](../medusa/interfaces/medusa.PaymentService.mdx)
-- [ProductCategoryDTO](../medusa/interfaces/medusa.ProductCategoryDTO.mdx)
-- [ProductCollectionDTO](../medusa/interfaces/medusa.ProductCollectionDTO.mdx)
-- [ProductDTO](../medusa/interfaces/medusa.ProductDTO.mdx)
-- [ProductImageDTO](../medusa/interfaces/medusa.ProductImageDTO.mdx)
-- [ProductOptionDTO](../medusa/interfaces/medusa.ProductOptionDTO.mdx)
-- [ProductOptionValueDTO](../medusa/interfaces/medusa.ProductOptionValueDTO.mdx)
-- [ProductTagDTO](../medusa/interfaces/medusa.ProductTagDTO.mdx)
-- [ProductTypeDTO](../medusa/interfaces/medusa.ProductTypeDTO.mdx)
-- [ProductVariantDTO](../medusa/interfaces/medusa.ProductVariantDTO.mdx)
 - [RequestQueryFields](../medusa/interfaces/medusa.RequestQueryFields.mdx)
 - [SubscriberContext](../medusa/interfaces/medusa.SubscriberContext.mdx)
 
@@ -548,7 +538,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [GetUploadedFileType](../medusa/types/medusa.GetUploadedFileType.mdx)
 - [GiftCardAllocation](../medusa/types/medusa.GiftCardAllocation.mdx)
 - [HttpCompressionOptions](../medusa/types/medusa.HttpCompressionOptions.mdx)
-- [InnerSelector](../medusa/types/medusa.InnerSelector.mdx)
 - [InternalModuleDeclaration](../medusa/types/medusa.InternalModuleDeclaration.mdx)
 - [InventoryItemDTO](../medusa/types/medusa.InventoryItemDTO.mdx)
 - [InventoryLevelDTO](../medusa/types/medusa.InventoryLevelDTO.mdx)
@@ -1134,34 +1123,6 @@ ___
         ]
       },
       {
-        "name": "price_rules",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "fields",
-            "type": "`string`[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "rule_type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
         "name": "price_set",
         "type": "`object`",
         "description": "",
@@ -1203,81 +1164,6 @@ ___
   },
   {
     "name": "price_set_money_amounts.money_amount.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "price_set_money_amounts.price_rules",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rule_type",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "fields",
-            "type": "`string`[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "price_set_money_amounts.price_rules.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "price_set_money_amounts.price_rules.rule_type",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "price_set_money_amounts.price_rules.rule_type.fields",
     "type": "`string`[]",
     "description": "",
     "optional": false,
@@ -2353,18 +2239,6 @@ ___
 ### defaultStoreProductsRelations
 
  `Const` **defaultStoreProductsRelations**: `string`[]
-
-___
-
-### defaultStoreRegionFields
-
- `Const` **defaultStoreRegionFields**: `string`[]
-
-___
-
-### defaultStoreRegionRelations
-
- `Const` **defaultStoreRegionRelations**: `string`[]
 
 ___
 
@@ -8098,6 +7972,66 @@ Generate a composed id based on the input parameters and return either the is if
 
 ___
 
+### getProductWithIsolatedProductModule
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "req",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveConfig",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;any&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "any",
+        "type": "`any`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
 ### getRequestedBatchJob
 
 #### Parameters
@@ -8151,86 +8085,6 @@ ___
         "description": "",
         "expandable": false,
         "children": []
-      }
-    ]
-  }
-]} />
-
-___
-
-### getVariantsFromPriceList
-
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "container",
-    "type": "[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "createScope",
-        "type": "() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "registerAdd",
-        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "priceListId",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "Promise&#60;[ProductVariantDTO](../medusa/interfaces/medusa.ProductVariantDTO.mdx)[]&#62;",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "ProductVariantDTO[]",
-        "type": "[ProductVariantDTO](../medusa/interfaces/medusa.ProductVariantDTO.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "ProductVariantDTO",
-            "type": "`object`",
-            "description": "A product variant's data.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
       }
     ]
   }
@@ -8694,38 +8548,19 @@ ___
 
 ___
 
-### listProducts
+### listAndCountProductWithIsolatedProductModule
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
-    "name": "container",
-    "type": "[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
+    "name": "req",
+    "type": "`any`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "createScope",
-        "type": "() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "registerAdd",
-        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "filterableFields",
@@ -14437,66 +14272,6 @@ ___
     "description": "",
     "expandable": false,
     "children": []
-  }
-]} />
-
-___
-
-### retrieveProduct
-
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "container",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "id",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "remoteQueryObject",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "{}",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "Promise&#60;any&#62;",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "any",
-        "type": "`any`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
   }
 ]} />
 

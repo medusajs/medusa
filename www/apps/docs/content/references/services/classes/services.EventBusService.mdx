@@ -43,20 +43,6 @@ subscribers when events happen. Events will run asynchronously.
   }
 ]} />
 
-### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "EventBusService",
-    "type": "`object`",
-    "description": "Can keep track of multiple subscribers to different events and run the\nsubscribers when events happen. Events will run asynchronously.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
 ___
 
 ## Properties
@@ -275,6 +261,8 @@ ___
 
 ### emit
 
+`**emit**<TypeParameter T>(data): Promise&#60;void \| [StagedJob](../../entities/classes/entities.StagedJob.mdx)[]&#62;`
+
 Calls all subscribers when an event occurs.
 
 #### Type Parameters
@@ -318,6 +306,8 @@ Calls all subscribers when an event occurs.
     "children": []
   }
 ]} />
+
+`**emit**<TypeParameter T>(eventName, data, options?): Promise&#60;void \| [StagedJob](../../entities/classes/entities.StagedJob.mdx)&#62;`
 
 Calls all subscribers when an event occurs.
 

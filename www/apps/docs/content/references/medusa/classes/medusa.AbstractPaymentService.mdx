@@ -37,227 +37,6 @@ in the near future use the AbstractPaymentProcessor instead
   }
 ]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
 
-### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "constructor",
-    "type": "(`container`: `unknown`, `config?`: `Record<string, unknown>`) => [AbstractPaymentService](medusa.AbstractPaymentService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__configModule__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__container__",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "__moduleDeclaration__",
-    "type": "`Record<string, unknown>`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "manager_",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "identifier",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "activeManager_",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "atomicPhase_",
-    "type": "`<TResult, TError>`(`work`: (`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;, `isolationOrErrorHandler?`: `IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;, `maybeErrorHandlerOrDontFail?`: (`error`: `TError`) => Promise&#60;void \\| TResult&#62;) => Promise&#60;TResult&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "authorizePayment",
-    "type": "(`paymentSession`: [PaymentSession](../../entities/classes/entities.PaymentSession.mdx), `context`: [Data](../types/medusa.Data.mdx)) => Promise&#60;&#123; data: [Data](../types/medusa.Data.mdx) ; status: [PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)  &#125;&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "cancelPayment",
-    "type": "(`payment`: [Payment](../../entities/classes/entities.Payment.mdx)) => Promise&#60;[Data](../types/medusa.Data.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "capturePayment",
-    "type": "(`payment`: [Payment](../../entities/classes/entities.Payment.mdx)) => Promise&#60;[Data](../types/medusa.Data.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "createPayment",
-    "type": "(`context`: [Cart](../../entities/classes/entities.Cart.mdx) & [PaymentContext](../types/medusa.PaymentContext.mdx)) => Promise&#60;[PaymentSessionResponse](../types/medusa.PaymentSessionResponse.mdx)&#62;(`cart`: [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;[Data](../types/medusa.Data.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "deletePayment",
-    "type": "(`paymentSession`: [PaymentSession](../../entities/classes/entities.PaymentSession.mdx)) => Promise&#60;void&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getIdentifier",
-    "type": "() => `string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getPaymentData",
-    "type": "(`paymentSession`: [PaymentSession](../../entities/classes/entities.PaymentSession.mdx)) => Promise&#60;[Data](../types/medusa.Data.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "getStatus",
-    "type": "(`data`: [Data](../types/medusa.Data.mdx)) => Promise&#60;[PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "refundPayment",
-    "type": "(`payment`: [Payment](../../entities/classes/entities.Payment.mdx), `refundAmount`: `number`) => Promise&#60;[Data](../types/medusa.Data.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrievePayment",
-    "type": "(`paymentData`: [Data](../types/medusa.Data.mdx)) => Promise&#60;[Data](../types/medusa.Data.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveSavedMethods",
-    "type": "(`customer`: [Customer](../../entities/classes/entities.Customer.mdx)) => Promise&#60;[Data](../types/medusa.Data.mdx)[]&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "shouldRetryTransaction_",
-    "type": "(`err`: `Record<string, unknown>` \\| ``{ code: string  }``) => `boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updatePayment",
-    "type": "(`paymentSessionData`: [Data](../types/medusa.Data.mdx), `context`: [Cart](../../entities/classes/entities.Cart.mdx) & [PaymentContext](../types/medusa.PaymentContext.mdx)) => Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentSessionResponse](../types/medusa.PaymentSessionResponse.mdx)&#62;(`paymentSessionData`: [Data](../types/medusa.Data.mdx), `cart`: [Cart](../../entities/classes/entities.Cart.mdx)) => Promise&#60;[Data](../types/medusa.Data.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "updatePaymentData",
-    "type": "(`paymentSessionData`: [Data](../types/medusa.Data.mdx), `data`: [Data](../types/medusa.Data.mdx)) => Promise&#60;[Data](../types/medusa.Data.mdx)&#62;",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "withTransaction",
-    "type": "(`transactionManager?`: `EntityManager`) => [AbstractPaymentService](medusa.AbstractPaymentService.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
 ___
 
 ## Properties
@@ -1043,6 +822,8 @@ ___
 
 ### createPayment
 
+`Abstract **createPayment**(context): Promise&#60;[PaymentSessionResponse](../types/medusa.PaymentSessionResponse.mdx)&#62;`
+
 #### Parameters
 
 <ParameterTypes parameters={[
@@ -1513,6 +1294,8 @@ ___
     ]
   }
 ]} />
+
+`Abstract **createPayment**(cart): Promise&#60;[Data](../types/medusa.Data.mdx)&#62;`
 
 This will be
 
@@ -2823,6 +2606,8 @@ ___
 
 ### updatePayment
 
+`Abstract **updatePayment**(paymentSessionData, context): Promise&#60;Record&#60;string, unknown&#62; \| [PaymentSessionResponse](../types/medusa.PaymentSessionResponse.mdx)&#62;`
+
 #### Parameters
 
 <ParameterTypes parameters={[
@@ -3302,6 +3087,8 @@ ___
     ]
   }
 ]} />
+
+`Abstract **updatePayment**(paymentSessionData, cart): Promise&#60;[Data](../types/medusa.Data.mdx)&#62;`
 
 This will be
 

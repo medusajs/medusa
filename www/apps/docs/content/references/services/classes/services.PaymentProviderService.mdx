@@ -24,20 +24,6 @@ Helps retrieve payment providers
   }
 ]} />
 
-### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "PaymentProviderService",
-    "type": "`object`",
-    "description": "Helps retrieve payment providers",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
 ___
 
 ## Properties
@@ -454,6 +440,8 @@ ___
 
 ### createSession
 
+`**createSession**(providerId, cart): Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;`
+
 #### Parameters
 
 <ParameterTypes parameters={[
@@ -492,6 +480,8 @@ ___
 ]} />
 
 #### Deprecated
+
+`**createSession**(sessionInput): Promise&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;`
 
 Creates a payment session with the given provider.
 
