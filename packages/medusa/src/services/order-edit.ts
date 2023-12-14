@@ -753,16 +753,21 @@ export default class OrderEditService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      const [lineItems] = await promiseAll([
-        lineItemServiceTx.update(
-          { order_id: orderEdit.order_id },
-          { order_id: null }
-        ),
+      // Detach the original order line items from the order
+      const orderLineItems = await lineItemServiceTx.update(
+        { order_id: orderEdit.order_id },
+        { order_id: null }
+      )
+
+      const promises: Promise<any>[] = []
+
+      // Attach the order edit item to the order
+      promises.push(
         lineItemServiceTx.update(
           { order_edit_id: orderEditId },
           { order_id: orderEdit.order_id }
-        ),
-      ])
+        )
+      )
 
       orderEdit.confirmed_at = new Date()
       orderEdit.confirmed_by = context.confirmedBy
@@ -770,14 +775,15 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit = await orderEditRepository.save(orderEdit)
 
       if (this.inventoryService_) {
-        const itemsIds = lineItems.map((i) => i.id)
-        await this.inventoryService_!.deleteReservationItemsByLineItem(
-          itemsIds,
-          {
+        const itemsIds = orderLineItems.map((i) => i.id)
+        promises.push(
+          this.inventoryService_!.deleteReservationItemsByLineItem(itemsIds, {
             transactionManager: manager,
-          }
+          })
         )
       }
+
+      await promiseAll(promises)
 
       await this.eventBusService_
         .withTransaction(manager)
