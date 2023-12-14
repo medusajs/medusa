@@ -5,7 +5,7 @@ export default function () {
   Handlebars.registerHelper(
     "hasMoreThanOneSignature",
     function (model: DeclarationReflection) {
-      return (model.signatures?.length || 0) > 1
+      return (model?.signatures?.length || 0) > 1
     }
   )
 }

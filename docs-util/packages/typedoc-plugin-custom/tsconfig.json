@@ -4,6 +4,5 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": ["src", "src/types"],
-  "typeRoots": ["./src/types/index.d.ts"]
+  "include": ["src"]
 }
