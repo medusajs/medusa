@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "eslint": "^8.49.0",
+    "react-docgen": "^7.0.1",
     "ts-node": "^10.9.1"
   }
 }

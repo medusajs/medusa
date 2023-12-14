@@ -50,7 +50,7 @@ const paths: LearningPathType[] = [
         descriptionJSX: (
           <>
             Extend entities, such as <code>User</code> or <code>Product</code>{" "}
-            entites, to associate them with the <code>Store</code> entity.
+            entities, to associate them with the <code>Store</code> entity.
           </>
         ),
         path: "/development/entities/extend-entity",
