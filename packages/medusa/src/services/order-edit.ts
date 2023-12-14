@@ -754,7 +754,7 @@ export default class OrderEditService extends TransactionBaseService {
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
       // Detach the original order line items from the order
-      const orderLineItems = await lineItemServiceTx.update(
+      const originalOrderLineItems = await lineItemServiceTx.update(
         { order_id: orderEdit.order_id },
         { order_id: null }
       )
@@ -775,7 +775,7 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit = await orderEditRepository.save(orderEdit)
 
       if (this.inventoryService_) {
-        const itemsIds = orderLineItems.map((i) => i.id)
+        const itemsIds = originalOrderLineItems.map((i) => i.id)
         promises.push(
           this.inventoryService_!.deleteReservationItemsByLineItem(itemsIds, {
             transactionManager: manager,
