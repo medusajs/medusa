@@ -5,6 +5,7 @@ import BaseService from "./base-service"
  * provides the necessary methods for creating, authorizing and managing
  * fulfillment orders.
  * @interface
+ * @deprecated use AbstractFulfillmentService from @medusajs/medusa instead
  */
 class BaseFulfillmentService extends BaseService {
   static _isFulfillmentService = true

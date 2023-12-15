@@ -221,14 +221,6 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
 }
 
 /**
- * Return if the input object is AbstractPaymentProcessor
- * @param obj
- */
-export function isPaymentProcessor(obj: unknown): boolean {
-  return obj instanceof AbstractPaymentProcessor
-}
-
-/**
  * Utility function to determine if an object is a processor error
  * @param obj
  */

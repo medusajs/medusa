@@ -1,4 +1,8 @@
-import { promiseAll, SearchUtils, upperCaseFirst } from "@medusajs/utils"
+import {
+  AbstractSearchService,
+  promiseAll,
+  upperCaseFirst,
+} from "@medusajs/utils"
 import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import fs from "fs"
@@ -519,7 +523,7 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (SearchUtils.isSearchService(loaded.prototype)) {
+      } else if (AbstractSearchService.isSearchService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
         container.register({
