@@ -1,4 +1,4 @@
-{{{signatureTitle accessor}}}
+{{{signatureTitle accessor parent}}}
 
 {{#if (getFormattingOption "expandMembers")}}
 
@@ -90,7 +90,7 @@
 
 {{#each declaration.signatures}}
 
-{{> member.signature showSources=false }}
+{{> member.signature showSources=false parent=../declaration }}
 
 {{/each}}
 

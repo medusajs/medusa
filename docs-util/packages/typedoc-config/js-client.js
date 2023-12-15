@@ -14,9 +14,5 @@ module.exports = getConfig({
     ...globalTypedocOptions.exclude,
     path.join(pathPrefix, "packages/medusa-js/src/resources/base.ts"),
   ],
-  // internalModule: "internal",
   ignoreApi: true,
-  // outputModules: false,
-  // outputNamespace: false,
-  // excludeReferences: true,
 })

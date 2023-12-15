@@ -1,0 +1,47 @@
+{
+  "description": "This component is based on the input element and supports all of its props",
+  "methods": [],
+  "displayName": "CurrencyInput",
+  "props": {
+    "symbol": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The symbol to show in the input."
+    },
+    "code": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The currency code to show in the input."
+    },
+    "size": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "The input's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"small\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          }
+        ]
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "Omit",
+    "VariantProps"
+  ]
+}

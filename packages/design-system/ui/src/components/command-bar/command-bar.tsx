@@ -7,17 +7,32 @@ import * as React from "react"
 import { Kbd } from "@/components/kbd"
 import { clx } from "@/utils/clx"
 
-type CommandBarProps = React.PropsWithChildren<{
+interface CommandBarProps extends React.PropsWithChildren {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   defaultOpen?: boolean
   disableAutoFocus?: boolean
-}>
+}
 
+/**
+ * The root component of the command bar. This component manages the state of the command bar.
+ */
 const Root = ({
+  /**
+   * Whether to open (show) the command bar.
+   */
   open = false,
+  /**
+   * Specify a function to handle the change of `open`'s value.
+   */
   onOpenChange,
+  /**
+   * Whether the command bar is open by default.
+   */
   defaultOpen = false,
+  /**
+   * Whether to disable focusing automatically on the command bar when it's opened.
+   */
   disableAutoFocus = true,
   children,
 }: CommandBarProps) => {
@@ -53,6 +68,10 @@ const Root = ({
 }
 Root.displayName = "CommandBar"
 
+/**
+ * The value component of the command bar. This component is used to display a value, 
+ * such as the number of selected items which the commands will act on.
+ */
 const Value = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<"div">
@@ -70,6 +89,9 @@ const Value = React.forwardRef<
 })
 Value.displayName = "CommandBar.Value"
 
+/**
+ * The bar component of the command bar. This component is used to display the commands.
+ */
 const Bar = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<"div">
@@ -88,6 +110,9 @@ const Bar = React.forwardRef<
 })
 Bar.displayName = "CommandBar.Bar"
 
+/**
+ * The seperator component of the command bar. This component is used to display a seperator between commands.
+ */
 const Seperator = React.forwardRef<
   HTMLDivElement,
   Omit<React.ComponentPropsWithoutRef<"div">, "children">
@@ -112,9 +137,29 @@ interface CommandProps
   shortcut: string
 }
 
+/**
+ * The command component of the command bar. This component is used to display a command, as well as registering the keyboad shortcut.
+ */
 const Command = React.forwardRef<HTMLButtonElement, CommandProps>(
   (
-    { className, type = "button", label, action, shortcut, disabled, ...props },
+    {
+      className, 
+      type = "button", 
+      /**
+       * The command's label.
+       */
+      label, 
+      /**
+       * The function to execute when the command is triggered.
+       */
+      action, 
+      /**
+       * The command's shortcut
+       */
+      shortcut, 
+      disabled, 
+      ...props
+    }: CommandProps,
     ref
   ) => {
     React.useEffect(() => {

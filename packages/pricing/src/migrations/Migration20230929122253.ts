@@ -18,7 +18,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "price_set_money_amount" ("id" text not null, "title" text not null, "price_set_id" text not null, "money_amount_id" text not null, "number_rules" integer not null default 0, constraint "price_set_money_amount_pkey" primary key ("id"));'
+      'create table "price_set_money_amount" ("id" text not null, "title" text not null, "price_set_id" text not null, "money_amount_id" text not null, "rules_count" integer not null default 0, constraint "price_set_money_amount_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_price_set_money_amount_price_set_id" on "price_set_money_amount" ("price_set_id");'
@@ -103,7 +103,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table if not exists "price_list" ("id" text not null, "status" text check ("status" in (\'active\', \'draft\')) not null default \'draft\', "starts_at" timestamptz null, "ends_at" timestamptz null, "number_rules" integer not null default 0, constraint "price_list_pkey" primary key ("id"));'
+      'create table if not exists "price_list" ("id" text not null, "status" text check ("status" in (\'active\', \'draft\')) not null default \'draft\', "starts_at" timestamptz null, "ends_at" timestamptz null, "rules_count" integer not null default 0, constraint "price_list_pkey" primary key ("id"));'
     )
 
     this.addSql(

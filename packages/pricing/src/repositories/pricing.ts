@@ -5,6 +5,7 @@ import {
   PricingFilters,
 } from "@medusajs/types"
 import { MedusaError, MikroOrmBase } from "@medusajs/utils"
+
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PricingRepositoryService } from "../types"
 
@@ -67,9 +68,9 @@ export class PricingRepository
         id: "psma1.id",
         price_set_id: "psma1.price_set_id",
         money_amount_id: "psma1.money_amount_id",
-        number_rules: "psma1.number_rules",
+        rules_count: "psma1.rules_count",
         price_list_id: "psma1.price_list_id",
-        pl_number_rules: "pl.number_rules",
+        pl_rules_count: "pl.rules_count",
         pl_type: "pl.type",
         has_price_list: knex.raw(
           "case when psma1.price_list_id IS NULL then False else True end"
@@ -86,23 +87,22 @@ export class PricingRepository
       )
       .leftJoin("rule_type as plrt", "plrt.id", "plr.rule_type_id")
       .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
-      .orderBy("pl.number_rules", "desc")
-      .orderBy("number_rules", "desc")
       .orderBy([
-        { column: "number_rules", order: "desc" },
-        { column: "pl.number_rules", order: "desc" },
+        { column: "rules_count", order: "desc" },
+        { column: "pl.rules_count", order: "desc" },
       ])
       .groupBy("psma1.id", "pl.id")
       .having(
         knex.raw(
-          "count(DISTINCT rt.rule_attribute) = psma1.number_rules AND psma1.price_list_id IS NULL"
+          "count(DISTINCT rt.rule_attribute) = psma1.rules_count AND psma1.price_list_id IS NULL"
         )
       )
       .orHaving(
         knex.raw(
-          "count(DISTINCT plrt.rule_attribute) = pl.number_rules AND psma1.price_list_id IS NOT NULL"
+          "count(DISTINCT plrt.rule_attribute) = pl.rules_count AND psma1.price_list_id IS NOT NULL"
         )
       )
+
     psmaSubQueryKnex.orWhere((q) => {
       for (const [key, value] of Object.entries(context)) {
         q.orWhere({
@@ -110,8 +110,7 @@ export class PricingRepository
           "pr.value": value,
         })
       }
-
-      q.orWhere("psma1.number_rules", "=", 0)
+      q.orWhere("psma1.rules_count", "=", 0)
       q.whereNull("psma1.price_list_id")
     })
 
@@ -124,14 +123,29 @@ export class PricingRepository
           this.whereNull("pl.ends_at").orWhere("pl.ends_at", ">=", date)
         })
         .andWhere(function () {
-          for (const [key, value] of Object.entries(context)) {
-            this.orWhere({
-              "plrt.rule_attribute": key,
-            })
-            this.whereIn("plrv.value", [value])
-          }
+          this.andWhere(function () {
+            for (const [key, value] of Object.entries(context)) {
+              this.orWhere({
+                "plrt.rule_attribute": key,
+              })
+              this.whereIn("plrv.value", [value])
+            }
 
-          this.orWhere("pl.number_rules", "=", 0)
+            this.orWhere("pl.rules_count", "=", 0)
+          })
+
+          this.andWhere(function () {
+            this.andWhere(function () {
+              for (const [key, value] of Object.entries(context)) {
+                this.orWhere({
+                  "rt.rule_attribute": key,
+                  "pr.value": value,
+                })
+              }
+              this.andWhere("psma1.rules_count", ">", 0)
+            })
+            this.orWhere("psma1.rules_count", "=", 0)
+          })
         })
     })
 
@@ -146,8 +160,8 @@ export class PricingRepository
         max_quantity: "ma.max_quantity",
         currency_code: "ma.currency_code",
         default_priority: "rt.default_priority",
-        number_rules: "psma.number_rules",
-        pl_number_rules: "psma.pl_number_rules",
+        rules_count: "psma.rules_count",
+        pl_rules_count: "psma.pl_rules_count",
         price_list_type: "psma.pl_type",
         price_list_id: "psma.price_list_id",
       })
@@ -160,9 +174,9 @@ export class PricingRepository
 
       .orderBy([
         { column: "psma.has_price_list", order: "asc" },
-        { column: "number_rules", order: "desc" },
-        { column: "default_priority", order: "desc" },
         { column: "amount", order: "asc" },
+        { column: "rules_count", order: "desc" },
+        { column: "default_priority", order: "desc" },
       ])
 
     if (quantity) {
