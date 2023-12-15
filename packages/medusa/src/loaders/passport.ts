@@ -15,8 +15,6 @@ export default async ({
   container: MedusaContainer
   configModule: ConfigModule
 }): Promise<void> => {
-  const authService = container.resolve<AuthService>("authService")
-
   // For good old email password authentication
   passport.use(
     new LocalStrategy(
@@ -25,6 +23,7 @@ export default async ({
         passwordField: "password",
       },
       async (email, password, done) => {
+        const authService = container.resolve<AuthService>("authService")
         try {
           const { success, user } = await authService.authenticate(
             email,
@@ -84,6 +83,7 @@ export default async ({
         return done(null, false)
       }
 
+      const authService = container.resolve<AuthService>("authService")
       const auth = await authService.authenticateAPIToken(token)
       if (auth.success) {
         done(null, auth.user)
