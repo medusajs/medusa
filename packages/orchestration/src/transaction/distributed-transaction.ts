@@ -4,7 +4,10 @@ import {
   IDistributedTransactionStorage,
   InMemoryDistributedTransactionStorage,
 } from "./datastore/in-memory-storage"
-import { TransactionFlow } from "./transaction-orchestrator"
+import {
+  TransactionFlow,
+  TransactionOrchestrator,
+} from "./transaction-orchestrator"
 import { TransactionStepHandler } from "./transaction-step"
 import { TransactionHandlerType, TransactionState } from "./types"
 
@@ -174,7 +177,7 @@ export class DistributedTransaction extends EventEmitter {
     DistributedTransaction.keyValueStore = storage
   }
 
-  private static keyPrefix = "dtrans:"
+  private static keyPrefix = "dtrans"
   public async saveCheckpoint(
     ttl = 0
   ): Promise<TransactionCheckpoint | undefined> {
@@ -189,16 +192,25 @@ export class DistributedTransaction extends EventEmitter {
       this.getErrors()
     )
 
-    const key = DistributedTransaction.keyPrefix + this.transactionId
+    const key = TransactionOrchestrator.getKeyName(
+      DistributedTransaction.keyPrefix,
+      this.modelId,
+      this.transactionId
+    )
     await DistributedTransaction.keyValueStore.save(key, data, ttl)
 
     return data
   }
 
   public static async loadTransaction(
+    modelId: string,
     transactionId: string
   ): Promise<TransactionCheckpoint | null> {
-    const key = DistributedTransaction.keyPrefix + transactionId
+    const key = TransactionOrchestrator.getKeyName(
+      DistributedTransaction.keyPrefix,
+      modelId,
+      transactionId
+    )
 
     const loadedData = await DistributedTransaction.keyValueStore.get(key)
     if (loadedData) {
@@ -214,14 +226,22 @@ export class DistributedTransaction extends EventEmitter {
       return
     }
 
-    const key = DistributedTransaction.keyPrefix + this.transactionId
+    const key = TransactionOrchestrator.getKeyName(
+      DistributedTransaction.keyPrefix,
+      this.modelId,
+      this.transactionId
+    )
     await DistributedTransaction.keyValueStore.delete(key)
   }
 
   public async archiveCheckpoint(): Promise<void> {
     const options = this.getFlow().options
 
-    const key = DistributedTransaction.keyPrefix + this.transactionId
+    const key = TransactionOrchestrator.getKeyName(
+      DistributedTransaction.keyPrefix,
+      this.modelId,
+      this.transactionId
+    )
     await DistributedTransaction.keyValueStore.archive(key, options)
   }
 }

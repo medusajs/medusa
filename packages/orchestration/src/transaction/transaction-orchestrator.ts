@@ -366,6 +366,7 @@ export class TransactionOrchestrator extends EventEmitter {
         {
           model_id: flow.modelId,
           idempotency_key: TransactionOrchestrator.getKeyName(
+            flow.modelId,
             flow.transactionId,
             step.definition.action!,
             type
@@ -507,9 +508,11 @@ export class TransactionOrchestrator extends EventEmitter {
   }
 
   private static async loadTransactionById(
+    modelId: string,
     transactionId: string
   ): Promise<TransactionCheckpoint | null> {
     const transaction = await DistributedTransaction.loadTransaction(
+      modelId,
       transactionId
     )
 
@@ -613,7 +616,10 @@ export class TransactionOrchestrator extends EventEmitter {
     payload?: unknown
   ): Promise<DistributedTransaction> {
     const existingTransaction = this.options?.storeExecution
-      ? await TransactionOrchestrator.loadTransactionById(transactionId)
+      ? await TransactionOrchestrator.loadTransactionById(
+          this.id,
+          transactionId
+        )
       : null
 
     let newTransaction = false
@@ -659,9 +665,8 @@ export class TransactionOrchestrator extends EventEmitter {
     handler?: TransactionStepHandler,
     transaction?: DistributedTransaction
   ): Promise<[DistributedTransaction, TransactionStep]> {
-    const [transactionId, action, actionType] = responseIdempotencyKey.split(
-      TransactionOrchestrator.SEPARATOR
-    )
+    const [modelId, transactionId, action, actionType] =
+      responseIdempotencyKey.split(TransactionOrchestrator.SEPARATOR)
 
     if (!transaction && !handler) {
       throw new Error(
@@ -671,7 +676,10 @@ export class TransactionOrchestrator extends EventEmitter {
 
     if (!transaction) {
       const existingTransaction =
-        await TransactionOrchestrator.loadTransactionById(transactionId)
+        await TransactionOrchestrator.loadTransactionById(
+          modelId,
+          transactionId
+        )
 
       if (existingTransaction === null) {
         throw new Error(`Transaction ${transactionId} could not be found.`)

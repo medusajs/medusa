@@ -70,7 +70,8 @@ describe("Transaction Orchestrator", () => {
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
-          idempotency_key: "transaction_id_123:firstMethod:invoke",
+          idempotency_key:
+            "transaction-name:transaction_id_123:firstMethod:invoke",
           action: "firstMethod",
           action_type: "invoke",
           attempt: 1,
@@ -84,7 +85,8 @@ describe("Transaction Orchestrator", () => {
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
-          idempotency_key: "transaction_id_123:secondMethod:invoke",
+          idempotency_key:
+            "transaction-name:transaction_id_123:secondMethod:invoke",
           action: "secondMethod",
           action_type: "invoke",
           attempt: 1,
@@ -675,6 +677,7 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
 
     const mocktransactionId = TransactionOrchestrator.getKeyName(
+      "transaction-name",
       transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.INVOKE
@@ -743,6 +746,7 @@ describe("Transaction Orchestrator", () => {
     )
 
     const mocktransactionId = TransactionOrchestrator.getKeyName(
+      "transaction-name",
       transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.INVOKE
@@ -772,6 +776,7 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.compensateOne).toBeCalledTimes(1)
 
     const mocktransactionIdCompensate = TransactionOrchestrator.getKeyName(
+      "transaction-name",
       transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.COMPENSATE
