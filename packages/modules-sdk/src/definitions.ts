@@ -11,6 +11,7 @@ export enum Modules {
   CACHE = "cacheService",
   PRODUCT = "productService",
   PRICING = "pricingService",
+  SALES_CHANNEL = "salesChannelService",
 }
 
 export enum ModuleRegistrationName {
@@ -20,6 +21,7 @@ export enum ModuleRegistrationName {
   CACHE = "cacheService",
   PRODUCT = "productModuleService",
   PRICING = "pricingModuleService",
+  SALES_CHANNEL = "salesChannelModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -29,6 +31,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.INVENTORY]: "@medusajs/inventory",
   [Modules.CACHE]: "@medusajs/cache-inmemory",
   [Modules.PRICING]: "@medusajs/pricing",
+  [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
