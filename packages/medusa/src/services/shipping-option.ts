@@ -12,7 +12,7 @@ import {
   ShippingMethodUpdate,
   UpdateShippingOptionInput,
   ValidatePriceTypeAndAmountInput,
-  validateRequirementTypeInput,
+  ValidateRequirementTypeInput,
 } from "../types/shipping-options"
 import { FindConfig, Selector } from "../types/common"
 import { FlagRouter, promiseAll } from "@medusajs/utils"
@@ -77,7 +77,7 @@ class ShippingOptionService extends TransactionBaseService {
    * @return {ShippingOptionRequirement} a validated shipping requirement
    */
   async validateRequirement_(
-    requirement: validateRequirementTypeInput,
+    requirement: ValidateRequirementTypeInput,
     optionId: string | undefined = undefined
   ): Promise<ShippingOptionRequirement> {
     return await this.atomicPhase_(async (manager) => {

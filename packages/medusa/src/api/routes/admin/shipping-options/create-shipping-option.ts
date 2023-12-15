@@ -17,6 +17,7 @@ import { ShippingOptionService } from "../../../../services"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { CreateShippingOptionInput } from "../../../../types/shipping-options"
 
 /**
  * @oas [post] /admin/shipping-options
@@ -106,7 +107,7 @@ export default async (req, res) => {
   const result = await manager.transaction(async (transactionManager) => {
     return await optionService
       .withTransaction(transactionManager)
-      .create(validated)
+      .create(validated as CreateShippingOptionInput)
   })
 
   const data = await optionService.retrieve(result.id, {
@@ -212,7 +213,8 @@ export class AdminPostShippingOptionsReq {
   provider_id: string
 
   @IsString()
-  profile_id: string
+  @IsOptional()
+  profile_id?: string
 
   @IsObject()
   data: Record<string, unknown>

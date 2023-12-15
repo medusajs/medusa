@@ -56,7 +56,7 @@ export type CreateShippingOptionInput = {
 
 export type RequirementInput = { type: RequirementType; amount: number }
 
-export type validateRequirementTypeInput = {
+export type ValidateRequirementTypeInput = {
   id?: string
   type: RequirementType
   amount: number
