@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { ShippingOptionServiceMock } from "../../../../../services/__mocks__/shipping-option"
+import { request } from "../../../../../helpers/test-request"
 
 describe("POST /admin/shipping-options", () => {
   describe("successful creation", () => {
@@ -13,6 +13,7 @@ describe("POST /admin/shipping-options", () => {
           name: "Test option",
           region_id: "testregion",
           provider_id: "test_provider",
+          profile_id: "gift-card",
           data: { id: "test" },
           price_type: "flat_rate",
           amount: 100,
