@@ -675,6 +675,7 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.one).toBeCalledTimes(1)
     expect(mocks.two).toBeCalledTimes(0)
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
+    expect(transaction.getFlow().hasWaitingSteps).toBe(true)
 
     const mocktransactionId = TransactionOrchestrator.getKeyName(
       "transaction-name",
@@ -689,6 +690,7 @@ describe("Transaction Orchestrator", () => {
     )
 
     expect(transaction.getState()).toBe(TransactionState.DONE)
+    expect(transaction.getFlow().hasWaitingSteps).toBe(false)
   })
 
   it("Should hold the status COMPENSATING while the transaction hasn't finished compensating", async () => {

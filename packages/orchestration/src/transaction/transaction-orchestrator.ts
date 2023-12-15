@@ -22,6 +22,7 @@ export type TransactionFlow = {
   transactionId: string
   hasAsyncSteps: boolean
   hasFailedSteps: boolean
+  hasWaitingSteps: boolean
   hasSkippedSteps: boolean
   state: TransactionState
   steps: {
@@ -188,6 +189,8 @@ export class TransactionOrchestrator extends EventEmitter {
         }
       }
     }
+
+    flow.hasWaitingSteps = hasWaiting
 
     const totalSteps = allSteps.length - 1
     if (
@@ -499,6 +502,7 @@ export class TransactionOrchestrator extends EventEmitter {
       hasAsyncSteps,
       hasFailedSteps: false,
       hasSkippedSteps: false,
+      hasWaitingSteps: false,
       state: TransactionState.NOT_STARTED,
       definition: this.definition,
       steps,
