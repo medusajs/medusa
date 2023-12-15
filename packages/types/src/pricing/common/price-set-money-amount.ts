@@ -49,11 +49,11 @@ export interface PriceSetMoneyAmountDTO {
   /**
    * When the price_set_money_amount was created.
    */
-  created_at?: null
+  created_at: Date
   /**
    * When the price_set_money_amount was updated.
    */
-  updated_at?: null
+  updated_at: Date
   /**
    * When the price_set_money_amount was deleted.
    */

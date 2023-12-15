@@ -41,11 +41,11 @@ export interface MoneyAmountDTO {
   /**
    * When the money_amount was created.
    */
-  created_at?: null
+  created_at: Date
   /**
    * When the money_amount was updated.
    */
-  updated_at?: null
+  updated_at: Date
   /**
    * When the money_amount was deleted.
    */

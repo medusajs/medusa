@@ -51,11 +51,11 @@ export interface PriceRuleDTO {
   /**
    * When the price_rule was created.
    */
-  created_at?: null
+  created_at: Date
   /**
    * When the price_rule was updated.
    */
-  updated_at?: null
+  updated_at: Date
   /**
    * When the price_rule was deleted.
    */
