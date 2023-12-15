@@ -2,7 +2,6 @@ import { IPricingModuleService, PriceSetMoneyAmountDTO } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { PricingModuleService } from "@medusajs/pricing"
 
 type deletePriceListPricesInput = {
   priceSetMoneyAmounts: PriceSetMoneyAmountDTO[]
@@ -30,7 +29,7 @@ export const deletePriceListPrices = createStep(
     })
   },
   async (input, context) => {
-    const pricingModuleService: PricingModuleService =
+    const pricingModuleService: IPricingModuleService =
       context.container.resolve(ModuleRegistrationName.PRICING)
 
     await pricingModuleService.restoreDeletedMoneyAmounts(input!.moneyAmountIds)
