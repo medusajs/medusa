@@ -407,13 +407,15 @@ Creating an API Route also requires creating a service, which is a class that ty
       )
     }
 
-    async retrieveMediasByVariant (productVariant: ProductVariant): Promise<ProductMedia[]> {
+    async retrieveMediasByVariant(
+      productVariant: ProductVariant
+    ): Promise<ProductMedia[]> {
       const productMediaRepo = this.activeManager_.getRepository(
         ProductMedia
       )
 
       const query = buildQuery({
-        variant_id: productVariant.id
+        variant_id: productVariant.id,
       })
 
       const productMedias = await productMediaRepo.find(query)
