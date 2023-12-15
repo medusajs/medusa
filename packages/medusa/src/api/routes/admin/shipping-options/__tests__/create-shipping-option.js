@@ -13,7 +13,6 @@ describe("POST /admin/shipping-options", () => {
           name: "Test option",
           region_id: "testregion",
           provider_id: "test_provider",
-          profile_id: "gift-card",
           data: { id: "test" },
           price_type: "flat_rate",
           amount: 100,
