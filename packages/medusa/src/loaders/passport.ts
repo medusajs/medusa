@@ -4,15 +4,14 @@ import { Strategy as CustomStrategy } from "passport-custom"
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
 import { AuthService } from "../services"
-import { ConfigModule, MedusaContainer } from "../types/global"
+import { ConfigModule } from "../types/global"
+import { MedusaRequest } from "../types/routing"
 
 export default async ({
   app,
-  container,
   configModule,
 }: {
   app: Express
-  container: MedusaContainer
   configModule: ConfigModule
 }): Promise<void> => {
   // For good old email password authentication
@@ -21,9 +20,10 @@ export default async ({
       {
         usernameField: "email",
         passwordField: "password",
+        passReqToCallback: true,
       },
-      async (email, password, done) => {
-        const authService = container.resolve<AuthService>("authService")
+      async (req: MedusaRequest, email, password, done) => {
+        const authService = req.scope.resolve<AuthService>("authService")
         try {
           const { success, user } = await authService.authenticate(
             email,
@@ -83,7 +83,7 @@ export default async ({
         return done(null, false)
       }
 
-      const authService = container.resolve<AuthService>("authService")
+      const authService = req.scope.resolve<AuthService>("authService")
       const auth = await authService.authenticateAPIToken(token)
       if (auth.success) {
         done(null, auth.user)
