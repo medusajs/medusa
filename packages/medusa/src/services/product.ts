@@ -3,7 +3,7 @@ import {
   buildSelects,
   FlagRouter,
   objectToStringPath,
-  promiseAll,
+  promiseAll, selectorConstraintsToString,
 } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
@@ -306,9 +306,7 @@ class ProductService extends TransactionBaseService {
     )
 
     if (!product) {
-      const selectorConstraints = Object.entries(selector)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
