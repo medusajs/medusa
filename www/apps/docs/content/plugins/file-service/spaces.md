@@ -83,7 +83,7 @@ Where:
 1. `<YOUR_SPACE_URL>` is either the Origin Endpoint or the CDN endpoint of your Spaces Object Storage bucket.
 2. `<YOUR_SPACE_NAME>` is the name of your Spaces Object Storage bucket.
 3. `<YOUR_SPACE_REGION>` is the region your Spaces Object Storage bucket is in. If you're unsure, you can find it in the Origin Endpoint whose format is `https://<bucket-name>.<region>.digitaloceanspaces.com`. For example, `nyc3`.
-4. `<YOUR_SPACE_ENDPOINT>` is of the format `<region>.digitaloceanspaces.com`. For example, `nyc3.digitaloceanspaces.com`.
+4. `<YOUR_SPACE_ENDPOINT>` is of the format `https://<region>.digitaloceanspaces.com`. For example, `https://nyc3.digitaloceanspaces.com`.
 5. `<YOUR_ACCESS_KEY_ID>` and `<YOUR_SECRET_ACCESS_KEY>` are the keys you created in the previous section.
 
 Finally, in `medusa-config.js` add a new item to the `plugins` array:
