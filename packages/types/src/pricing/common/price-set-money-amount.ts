@@ -57,7 +57,7 @@ export interface PriceSetMoneyAmountDTO {
   /**
    * When the price_set_money_amount was deleted.
    */
-  deleted_at?: null | Date
+  deleted_at: null | Date
 }
 
 export interface UpdatePriceSetMoneyAmountDTO {
