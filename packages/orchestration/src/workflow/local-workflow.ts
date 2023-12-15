@@ -101,6 +101,10 @@ export class LocalWorkflow {
       orchestrator.on("finish", subscribe.onFinish)
     }
 
+    if (subscribe?.onTimeout) {
+      orchestrator.on("timeout", subscribe.onTimeout)
+    }
+
     if (transaction) {
       if (subscribe?.onStepBegin) {
         transaction.on("stepBegin", subscribe.onStepBegin)

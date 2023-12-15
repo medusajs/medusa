@@ -12,6 +12,7 @@ export type TransactionStepsDefinition = {
   noCompensation?: boolean
   maxRetries?: number
   retryInterval?: number
+  retryIntervalAwaiting?: number
   timeout?: number
   async?: boolean
   noWait?: boolean
@@ -58,6 +59,7 @@ export type DistributedTransactionEvents = {
   onResume?: (transaction: DistributedTransaction) => void
   onCompensate?: (transaction: DistributedTransaction) => void
   onFinish?: (transaction: DistributedTransaction, result?: unknown) => void
+  onTimeout?: (transaction: DistributedTransaction) => void
 
   onStepBegin?: (args: {
     step: TransactionStep

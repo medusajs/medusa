@@ -736,6 +736,7 @@ describe("Transaction Orchestrator", () => {
         async: true,
         next: {
           action: "secondMethod",
+          async: true,
         },
       },
     }
@@ -754,17 +755,25 @@ describe("Transaction Orchestrator", () => {
       TransactionHandlerType.INVOKE
     )
 
-    const registerBeforeAllowed = await strategy
-      .registerStepFailure(mocktransactionId, null, handler)
-      .catch((e) => e.message)
+    const mockSecondStepId = TransactionOrchestrator.getKeyName(
+      "transaction-name",
+      transaction.transactionId,
+      "secondMethod",
+      TransactionHandlerType.INVOKE
+    )
 
     await strategy.resume(transaction)
 
     expect(mocks.one).toBeCalledTimes(1)
     expect(mocks.compensateOne).toBeCalledTimes(0)
     expect(mocks.two).toBeCalledTimes(0)
+
+    const registerBeforeAllowed = await strategy
+      .registerStepSuccess(mockSecondStepId, handler)
+      .catch((e) => e.message)
+
     expect(registerBeforeAllowed).toEqual(
-      "Cannot set step failure when status is idle"
+      "Cannot set step success when status is idle"
     )
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
 
