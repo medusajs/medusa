@@ -508,7 +508,7 @@ Creating an API Route also requires creating a service, which is a class that ty
       file_key,
       type,
       name,
-      mime_type
+      mime_type,
     })
 
     res.json({
@@ -973,9 +973,10 @@ Finally, you can send a notification, such as an email, to the customer using th
     const fileService: AbstractFileService = container.resolve(
       "fileService"
     )
-    const productMediaService: ProductMediaService = container.resolve(
-      "productMediaService"
-    )
+    const productMediaService: ProductMediaService = 
+      container.resolve(
+        "productMediaService"
+      )
     const sendgridService = container.resolve("sendgridService")
 
     const order = await orderService.retrieve(data.id, {
@@ -988,7 +989,8 @@ Finally, you can send a notification, such as an email, to the customer using th
     // find product medias in the order
     const urls = []
     for (const item of order.items) {
-      const productMedias = await productMediaService.retrieveMediasByVariant(item.variant)
+      const productMedias = await productMediaService
+        .retrieveMediasByVariant(item.variant)
       if (!productMedias.length) {
         return
       }
@@ -1857,6 +1859,8 @@ When a customer purchases a digital product, the shipping form shown during chec
 
   Next, change the content of `src/modules/checkout/components/shipping-address/index.tsx` to remove the unnecessary address fields:
 
+<!-- eslint-skip -->
+
   ```tsx title="src/modules/checkout/components/shipping-address/index.tsx" badgeLabel="Storefront" badgeColor="blue"
   import { CheckoutFormValues } from "@lib/context/checkout-context"
   import { emailRegex } from "@lib/util/regex"
@@ -2036,6 +2040,8 @@ When a customer purchases a digital product, the shipping form shown during chec
   ```
 
   Finally, change the shipping details shown in the order confirmation page by replacing the content of `src/modules/order/components/shipping-details/index.tsx` with the following:
+
+<!-- eslint-skip -->
 
   ```tsx title="src/modules/order/components/shipping-details/index.tsx" badgeLabel="Storefront" badgeColor="blue"
   import { Order } from "@medusajs/medusa"
