@@ -11,6 +11,7 @@ import {
   PricingContext,
   PricingFilters,
   PricingTypes,
+  RestoreReturn,
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
@@ -22,6 +23,7 @@ import {
   arrayDifference,
   deduplicate,
   groupBy,
+  mapObjectTo,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -52,7 +54,11 @@ import {
   PriceSetService,
   RuleTypeService,
 } from "@services"
-import { joinerConfig } from "../joiner-config"
+import {
+  LinkableKeys,
+  entityNameToLinkableKeysMap,
+  joinerConfig,
+} from "../joiner-config"
 import { CreatePriceListRuleValueDTO, PricingRepositoryService } from "../types"
 
 type InjectedDependencies = {
@@ -871,11 +877,30 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async restoreDeletedMoneyAmounts(
+  async restoreDeletedMoneyAmounts<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
     ids: string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.moneyAmountService_.restore(ids, sharedContext)
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.moneyAmountService_.restore(
+      ids,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectManager("baseRepository_")

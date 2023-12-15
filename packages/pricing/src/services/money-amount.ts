@@ -113,7 +113,7 @@ export default class MoneyAmountService<
   async restore(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.moneyAmountRepository_.restore(ids, sharedContext)
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.moneyAmountRepository_.restore(ids, sharedContext)
   }
 }
