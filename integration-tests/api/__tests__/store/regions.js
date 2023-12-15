@@ -27,7 +27,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -70,6 +70,72 @@ describe("/store/carts", () => {
       expect(response.data.count).toEqual(2)
       expect(response.data.offset).toEqual(1)
       expect(response.data.limit).toEqual(1)
+    })
+
+    it("should list the store regions with expand relations", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/store/regions?limit=1&offset=1&expand=currency"
+      )
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.regions[0].currency).toEqual(
+        expect.objectContaining({
+          code: "usd",
+        })
+      )
+    })
+  })
+
+  describe("GET /store/regions/:id", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+
+      await manager.insert(Region, {
+        id: "region-id",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should retrieve the region from ID", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/regions/region-id?expand=currency`)
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.region).toEqual(
+        expect.objectContaining({
+          id: "region-id",
+          currency: expect.objectContaining({
+            code: "usd",
+          }),
+        })
+      )
+    })
+
+    it("should throw an error when region ID is invalid", async () => {
+      const api = useApi()
+
+      const error = await api
+        .get(`/store/regions/invalid-region-id`)
+        .catch((e) => e)
+
+      expect(error.response.status).toEqual(404)
+
+      expect(error.response.data).toEqual({
+        type: "not_found",
+        message: "Region with invalid-region-id was not found",
+      })
     })
   })
 })

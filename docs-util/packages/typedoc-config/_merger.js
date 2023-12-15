@@ -221,9 +221,14 @@ module.exports = {
           "https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records",
       },
     },
+    "^medusa/classes/medusa\\.(Store*|Admin*)": {
+      reflectionGroups: {
+        Constructors: false,
+      },
+    },
 
     // PRICING CONFIG
-    "^pricing": {
+    "^(pricing|IPricingModuleService)": {
       ...modulesOptions,
       frontmatterData: {
         displayed_sidebar: "pricingReference",

@@ -7,8 +7,11 @@ import { Button } from "@/components/button"
 import { Heading } from "@/components/heading"
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the [Radix UI Alert Dialog](https://www.radix-ui.com/primitives/docs/components/alert-dialog) primitives.
+ */
 const Root = Primitives.AlertDialog
-Root.displayName = "Prompt.Root"
+Root.displayName = "Prompt"
 
 const Trigger = Primitives.Trigger
 Trigger.displayName = "Prompt.Trigger"
@@ -111,6 +114,9 @@ const Cancel = React.forwardRef<
 })
 Cancel.displayName = "Prompt.Cancel"
 
+/**
+ * This component is based on the `div` element and supports all of its props
+ */
 const Header = ({
   className,
   ...props
@@ -122,7 +128,11 @@ const Header = ({
     />
   )
 }
+Header.displayName = "Prompt.Header"
 
+/**
+ * This component is based on the `div` element and supports all of its props
+ */
 const Footer = ({
   className,
   ...props
@@ -134,6 +144,7 @@ const Footer = ({
     />
   )
 }
+Footer.displayName = "Prompt.Footer"
 
 const Prompt = Object.assign(Root, {
   Trigger,
