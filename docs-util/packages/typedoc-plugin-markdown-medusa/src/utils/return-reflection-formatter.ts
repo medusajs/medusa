@@ -7,14 +7,13 @@ import {
   TypeParameterReflection,
 } from "typedoc"
 import * as Handlebars from "handlebars"
-import getType from "./type-utils"
 import { Parameter } from "../types"
 import {
   getDefaultValue,
   reflectionComponentFormatter,
 } from "./reflection-formatter"
 import { MarkdownTheme } from "../theme"
-import { getProjectChild, getTypeChildren } from "utils"
+import { getProjectChild, getType, getTypeChildren } from "utils"
 
 type ReturnReflectionComponentFormatterParams = {
   reflectionType: SomeType
@@ -37,11 +36,13 @@ export function returnReflectionComponentFormatter({
     wrapBackticks: false,
     hideLink: true,
     project,
+    getRelativeUrlMethod: Handlebars.helpers.relativeURL,
   })
   const type = getType({
     reflectionType: reflectionType,
     collapse: "object",
     project,
+    getRelativeUrlMethod: Handlebars.helpers.relativeURL,
   })
   const componentItem: Parameter[] = []
   const canRetrieveChildren = level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)

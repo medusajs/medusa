@@ -17,11 +17,19 @@ const hintVariants = cva({
   },
 })
 
-type HintProps = VariantProps<typeof hintVariants> &
-  React.ComponentPropsWithoutRef<"span">
+interface HintProps extends VariantProps<typeof hintVariants>,
+  React.ComponentPropsWithoutRef<"span"> {}
 
 const Hint = React.forwardRef<HTMLSpanElement, HintProps>(
-  ({ className, variant = "info", children, ...props }, ref) => {
+  ({ 
+    className, 
+    /**
+     * The hint's style.
+     */
+    variant = "info", 
+    children, 
+    ...props 
+  }: HintProps, ref) => {
     return (
       <span
         ref={ref}

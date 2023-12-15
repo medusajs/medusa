@@ -6,7 +6,7 @@ import { Input } from "@/components/input"
 import { Label } from "@/components/label"
 import { Prompt } from "@/components/prompt"
 
-export type RenderPromptProps = {
+export interface RenderPromptProps {
   open: boolean
   title: string
   description: string
@@ -18,13 +18,37 @@ export type RenderPromptProps = {
 }
 
 export const RenderPrompt = ({
+  /**
+   * @ignore
+   */
   open,
+  /**
+   * The prompt's title.
+   */
   title,
+  /**
+   * The prompt's description.
+   */
   description,
+  /**
+   * The text the user has to input in order to confirm the action.
+   */
   verificationText,
+  /**
+   * The label for the Cancel button.
+   */
   cancelText = "Cancel",
+  /**
+   * Label for the Confirm button.
+   */
   confirmText = "Confirm",
+  /**
+   * @ignore
+   */
   onConfirm,
+  /**
+   * @ignore
+   */
   onCancel,
 }: RenderPromptProps) => {
   const [userInput, setUserInput] = React.useState("")
@@ -108,3 +132,4 @@ export const RenderPrompt = ({
     </Prompt>
   )
 }
+RenderPrompt.displayName = "RenderPrompt"

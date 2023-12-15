@@ -4,7 +4,7 @@ import {
   FlagRouter,
   MedusaV2Flag,
   objectToStringPath,
-  promiseAll,
+  promiseAll, selectorConstraintsToString,
 } from "@medusajs/utils"
 import { RemoteQueryFunction } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
@@ -353,9 +353,7 @@ class ProductService extends TransactionBaseService {
     )
 
     if (!product) {
-      const selectorConstraints = Object.entries(selector)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
