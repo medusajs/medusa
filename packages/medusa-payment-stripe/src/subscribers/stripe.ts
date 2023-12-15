@@ -17,8 +17,8 @@ export default async function stripeHandler({
 }
 
 export const config: SubscriberConfig = {
-  event: "medusa.stripe_payment_intent",
+  event: "medusa.stripe_payment_intent_update",
   context: {
-    subscriberId: "medusa.stripe_payment_intent",
+    subscriberId: "medusa.stripe_payment_intent_update",
   },
 }
