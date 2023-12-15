@@ -91,7 +91,7 @@ export function registerHelpers(theme: MarkdownTheme) {
   ifShowBreadcrumbsHelper(theme)
   ifShowNamedAnchorsHelper(theme)
   ifShowPageTitleHelper(theme)
-  ifShowReturnsHelper()
+  ifShowReturnsHelper(theme)
   ifShowTypeHierarchyHelper()
   indexSignatureTitleHelper()
   parameterTableHelper()
@@ -126,6 +126,6 @@ export function registerHelpers(theme: MarkdownTheme) {
   featureFlagHelper()
   decrementCurrentTitleLevelHelper(theme)
   incrementCurrentTitleLevelHelper(theme)
-  hasMoreThanOneSignatureHelper()
+  hasMoreThanOneSignatureHelper(theme)
   ifCanShowConstructorsTitleHelper()
 }

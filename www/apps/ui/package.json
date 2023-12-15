@@ -30,7 +30,7 @@
     "docs-ui": "*",
     "eslint-config-docs": "*",
     "mdast-util-toc": "^7.0.0",
-    "next": "13.4.13",
+    "next": "^14",
     "next-contentlayer": "^0.3.4",
     "next-themes": "^0.2.1",
     "postcss": "8.4.27",
@@ -47,5 +47,8 @@
     "eslint": "^8.49.0",
     "react-docgen": "^7.0.1",
     "ts-node": "^10.9.1"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

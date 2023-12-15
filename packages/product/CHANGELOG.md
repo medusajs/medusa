@@ -1,5 +1,16 @@
 # @medusajs/product
 
+## 0.3.6
+
+### Patch Changes
+
+- [#5755](https://github.com/medusajs/medusa/pull/5755) [`8f25ed8a1`](https://github.com/medusajs/medusa/commit/8f25ed8a10fe23e9342dc3d03545546b4ad4d6da) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(link-modules, pricing, product, utils): Should be able to set some custom database config even in shared mode
+
+- Updated dependencies [[`079f0da83`](https://github.com/medusajs/medusa/commit/079f0da83f482562bbb525807ee1a7e32993b4da), [`c4deeee48`](https://github.com/medusajs/medusa/commit/c4deeee481399f5371d773173e20dc149d502e20), [`8f25ed8a1`](https://github.com/medusajs/medusa/commit/8f25ed8a10fe23e9342dc3d03545546b4ad4d6da)]:
+  - @medusajs/types@1.11.9
+  - @medusajs/utils@1.11.2
+  - @medusajs/modules-sdk@1.12.5
+
 ## 0.3.5
 
 ### Patch Changes

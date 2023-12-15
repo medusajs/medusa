@@ -217,6 +217,7 @@ export function reflectionTableFormatter({
           reflectionType: parameter,
           collapse: "object",
           wrapBackticks: true,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         })
   )
 
