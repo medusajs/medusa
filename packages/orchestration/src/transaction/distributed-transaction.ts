@@ -190,7 +190,7 @@ export class DistributedTransaction extends EventEmitter {
     )
 
     const key = DistributedTransaction.keyPrefix + this.transactionId
-    await DistributedTransaction.keyValueStore.set(key, data, ttl)
+    await DistributedTransaction.keyValueStore.save(key, data, ttl)
 
     return data
   }
@@ -216,6 +216,13 @@ export class DistributedTransaction extends EventEmitter {
 
     const key = DistributedTransaction.keyPrefix + this.transactionId
     await DistributedTransaction.keyValueStore.delete(key)
+  }
+
+  public async archiveCheckpoint(): Promise<void> {
+    const options = this.getFlow().options
+
+    const key = DistributedTransaction.keyPrefix + this.transactionId
+    await DistributedTransaction.keyValueStore.archive(key, options)
   }
 }
 

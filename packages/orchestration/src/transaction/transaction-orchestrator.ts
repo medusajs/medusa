@@ -215,12 +215,6 @@ export class TransactionOrchestrator extends EventEmitter {
           ? TransactionState.REVERTED
           : TransactionState.DONE
       }
-
-      this.emit("finish", transaction)
-
-      if (flow.options?.retentionTime == undefined) {
-        void transaction.deleteCheckpoint()
-      }
     }
 
     return {
@@ -332,6 +326,16 @@ export class TransactionOrchestrator extends EventEmitter {
     const flow = transaction.getFlow()
     const nextSteps = this.checkAllSteps(transaction)
     const execution: Promise<void | unknown>[] = []
+
+    if (nextSteps.remaining === 0) {
+      if (flow.options?.retentionTime == undefined) {
+        await transaction.deleteCheckpoint()
+      } else {
+        await transaction.archiveCheckpoint()
+      }
+
+      this.emit("finish", transaction)
+    }
 
     let hasSyncSteps = false
     for (const step of nextSteps.next) {

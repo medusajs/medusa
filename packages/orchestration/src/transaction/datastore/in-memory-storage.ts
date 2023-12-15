@@ -1,9 +1,11 @@
 import { TransactionCheckpoint } from "../distributed-transaction"
+import { TransactionModelOptions } from "../types"
 
 export interface IDistributedTransactionStorage {
   get(key: string): Promise<TransactionCheckpoint | undefined>
-  set(key: string, data: TransactionCheckpoint, ttl?: number): Promise<void>
+  save(key: string, data: TransactionCheckpoint, ttl?: number): Promise<void>
   delete(key: string): Promise<void>
+  archive(key: string, options?: TransactionModelOptions): Promise<void>
 }
 
 export class InMemoryDistributedTransactionStorage
@@ -19,11 +21,19 @@ export class InMemoryDistributedTransactionStorage
     return this.storage.get(key)
   }
 
-  async set(key: string, data: TransactionCheckpoint): Promise<void> {
+  async save(
+    key: string,
+    data: TransactionCheckpoint,
+    ttl?: number
+  ): Promise<void> {
     this.storage.set(key, data)
   }
 
   async delete(key: string): Promise<void> {
+    this.storage.delete(key)
+  }
+
+  async archive(key: string, options?: TransactionModelOptions): Promise<void> {
     this.storage.delete(key)
   }
 }
