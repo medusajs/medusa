@@ -110,7 +110,7 @@ After you update the quantity, you can see the `restock-notification.restocked` 
 
 :::note
 
-The SendGrid plugin already listens to and handles the `restock-notification.restocked` event. So, if you install it you don't need to manually create a subscriber that handles this event as explained here. This example is only provided for reference on how you can send a notification to the customer using a Notication plugin.
+The SendGrid plugin already listens to and handles the `restock-notification.restocked` event. So, if you install it you don't need to manually create a subscriber that handles this event as explained here. This example is only provided for reference on how you can send a notification to the customer using a Notification plugin.
 
 :::
 

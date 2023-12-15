@@ -572,7 +572,7 @@ describe("/admin/products", () => {
 
       const response = await api
         .post(
-          `/admin/products/${toUpdateWithSalesChannels}`,
+          `/admin/products/${toUpdateWithSalesChannels}?expand=sales_channels`,
           payload,
           adminHeaders
         )
@@ -584,11 +584,10 @@ describe("/admin/products", () => {
       expect(response?.data.product).toEqual(
         expect.objectContaining({
           id: toUpdateWithSalesChannels,
-          // TODO: Introduce this in the sale channel PR
-          // sales_channels: [
-          //   expect.objectContaining({ id: "channel-2" }),
-          //   expect.objectContaining({ id: "channel-3" }),
-          // ],
+          sales_channels: [
+            expect.objectContaining({ id: "channel-2" }),
+            expect.objectContaining({ id: "channel-3" }),
+          ],
         })
       )
     })

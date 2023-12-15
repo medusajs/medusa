@@ -12,19 +12,11 @@ import {
   ParameterType,
 } from "typedoc"
 
-declare module "typedoc" {
-  export interface TypeDocOptionMap {
-    internalModule: string
-  }
-}
-
 let hasMonkeyPatched = false
 
 export function load(app: Application) {
   if (hasMonkeyPatched) {
-    throw new Error(
-      "typedoc-plugin-missing-exports cannot be loaded multiple times"
-    )
+    throw new Error("typedoc-plugin-custom cannot be loaded multiple times")
   }
   hasMonkeyPatched = true
 

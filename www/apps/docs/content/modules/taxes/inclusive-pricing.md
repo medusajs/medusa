@@ -156,7 +156,7 @@ Each line item returned in any of the cart’s requests has total fields related
 - `tax_total`: The total tax amount applied on the original price taking into account any applied discounts as well.
 - `original_tax_total`: The total tax amount applied on the original price without taking into account any applied discounts.
 - `subtotal`: The total of the line item’s price subtracting the amount in `original_tax_total`.
-- `origial_total`: The `subtotal` including the `original_tax_total` amount.
+- `original_total`: The `subtotal` including the `original_tax_total` amount.
 
 If tax inclusivity is enabled for the line item, `unit_price` will include the tax amount. The tax amount, which will also be the value of `tax_total`, is calculated using [Medusa’s formula for tax inclusive pricing](#tax-amount-calculation-formula) based on the line item’s tax rates. The calculation takes into account any discounts applied on the item, which means the discount amount is deducted from the original price.
 

@@ -1,5 +1,6 @@
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
-import { promiseAll } from "@medusajs/utils"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 type ProductHandle = string
 type SalesChannelId = string
@@ -15,6 +16,8 @@ export async function detachSalesChannelFromProducts({
   data,
 }: WorkflowArguments<HandlerInput>): Promise<void> {
   const { manager } = context
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+
   const productsHandleSalesChannelsMap = data.productsHandleSalesChannelsMap
   const products = data.products
 
@@ -33,16 +36,41 @@ export async function detachSalesChannelFromProducts({
     }
   })
 
-  await promiseAll(
-    Array.from(salesChannelIdProductIdsMap.entries()).map(
-      async ([salesChannelId, productIds]) => {
-        return await salesChannelServiceTx.removeProducts(
-          salesChannelId,
-          productIds
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    const remoteLink = container.resolve("remoteLink")
+    const promises: Promise<unknown>[] = []
+
+    for (const [
+      salesChannelId,
+      productIds,
+    ] of salesChannelIdProductIdsMap.entries()) {
+      productIds.forEach((id) =>
+        promises.push(
+          remoteLink.dismiss({
+            [Modules.PRODUCT]: {
+              product_id: id,
+            },
+            salesChannelService: {
+              sales_channel_id: salesChannelId,
+            },
+          })
         )
-      }
+      )
+    }
+
+    return
+  } else {
+    await promiseAll(
+      Array.from(salesChannelIdProductIdsMap.entries()).map(
+        async ([salesChannelId, productIds]) => {
+          return await salesChannelServiceTx.removeProducts(
+            salesChannelId,
+            productIds
+          )
+        }
+      )
     )
-  )
+  }
 }
 
 detachSalesChannelFromProducts.aliases = {
