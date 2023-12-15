@@ -1,3 +1,4 @@
+import { DistributedTransaction } from "@medusajs/orchestration"
 import { Context, MedusaContainer } from "@medusajs/types"
 import { MedusaWorkflow } from "@medusajs/workflows-sdk"
 import { ulid } from "ulid"
@@ -29,8 +30,8 @@ class WorkflowOrchestrator {
     context.transactionId ??= transactionId ?? ulid()
 
     const events = {
-      onFinish: (transaction) => {
-        //WorkflowOrchestrator.notify(workflowId, data)
+      onFinish: (transaction: DistributedTransaction, result: unknown) => {
+        WorkflowOrchestrator.notify(transaction.modelId, result)
       },
       onStepBegin: ({ step, transaction }) => {
         //

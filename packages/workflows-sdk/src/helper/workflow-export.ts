@@ -182,7 +182,10 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         }
       }
 
-      return await originalExecution(
+      const onFinish = events?.onFinish
+      delete events?.onFinish
+
+      const ret = await originalExecution(
         originalRun,
         { throwOnError, resultFrom },
         context?.transactionId ?? ulid(),
@@ -190,6 +193,12 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         context,
         events
       )
+
+      if (ret.transaction.hasFinished() && onFinish) {
+        onFinish(ret.transaction, ret.result)
+      }
+
+      return ret
     }
     flow.run = newRun as any
 
@@ -210,7 +219,10 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       resultFrom ??= defaultResult
       throwOnError ??= true
 
-      return await originalExecution(
+      const onFinish = events?.onFinish
+      delete events?.onFinish
+
+      const ret = await originalExecution(
         originalRegisterStepSuccess,
         { throwOnError, resultFrom },
         idempotencyKey,
@@ -218,6 +230,12 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         context,
         events
       )
+
+      if (ret.transaction.hasFinished() && onFinish) {
+        onFinish(ret.transaction, ret.result)
+      }
+
+      return ret
     }
     flow.registerStepSuccess = newRegisterStepSuccess as any
 
@@ -238,7 +256,10 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       resultFrom ??= defaultResult
       throwOnError ??= true
 
-      return await originalExecution(
+      const onFinish = events?.onFinish
+      delete events?.onFinish
+
+      const ret = await originalExecution(
         originalRegisterStepFailure,
         { throwOnError, resultFrom },
         idempotencyKey,
@@ -246,6 +267,12 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         context,
         events
       )
+
+      if (ret.transaction.hasFinished() && onFinish) {
+        onFinish(ret.transaction, ret.result)
+      }
+
+      return ret
     }
     flow.registerStepFailure = newRegisterStepFailure as any
 

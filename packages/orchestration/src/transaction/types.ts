@@ -57,7 +57,7 @@ export type DistributedTransactionEvents = {
   onBegin?: (transaction: DistributedTransaction) => void
   onResume?: (transaction: DistributedTransaction) => void
   onCompensate?: (transaction: DistributedTransaction) => void
-  onFinish?: (transaction: DistributedTransaction) => void
+  onFinish?: (transaction: DistributedTransaction, result?: unknown) => void
 
   onStepBegin?: (args: {
     step: TransactionStep
