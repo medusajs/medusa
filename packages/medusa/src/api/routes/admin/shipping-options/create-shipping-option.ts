@@ -1,18 +1,21 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
+import { RequirementType, ShippingOptionPriceType } from "../../../../models"
 import { defaultFields, defaultRelations } from "."
 
-import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { ShippingOptionService } from "../../../../services"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -88,7 +91,9 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostShippingOptionsReq, req.body)
 
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService: ShippingOptionService = req.scope.resolve(
+    "shippingOptionService"
+  )
   const shippingProfileService = req.scope.resolve("shippingProfileService")
 
   // Add to default shipping profile
@@ -113,8 +118,11 @@ export default async (req, res) => {
 }
 
 class OptionRequirement {
-  @IsString()
-  type: string
+  @IsEnum(RequirementType, {
+    message: `Invalid option type, must be one of "min_subtotal" or "max_subtotal"`,
+  })
+  type: RequirementType
+
   @IsNumber()
   amount: number
 }
@@ -203,15 +211,16 @@ export class AdminPostShippingOptionsReq {
   @IsString()
   provider_id: string
 
-  @IsOptional()
   @IsString()
-  profile_id?: string
+  profile_id: string
 
   @IsObject()
-  data: object
+  data: Record<string, unknown>
 
-  @IsString()
-  price_type: string
+  @IsEnum(ShippingOptionPriceType, {
+    message: `Invalid price type, must be one of "flat_rate" or "calculated"`,
+  })
+  price_type: ShippingOptionPriceType
 
   @IsOptional()
   @IsNumber()

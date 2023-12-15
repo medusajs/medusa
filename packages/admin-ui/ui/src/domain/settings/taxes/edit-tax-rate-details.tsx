@@ -1,8 +1,8 @@
-import { useTranslation } from "react-i18next"
-import LockIcon from "../../../components/fundamentals/icons/lock-icon"
-import Input from "../../../components/molecules/input"
 import FormValidator from "../../../utils/form-validator"
+import Input from "../../../components/molecules/input"
+import LockIcon from "../../../components/fundamentals/icons/lock-icon"
 import { NestedForm } from "../../../utils/nested-form"
+import { useTranslation } from "react-i18next"
 
 export type EditTaxRateFormType = {
   name: string
