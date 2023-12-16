@@ -705,6 +705,53 @@ Object of the following format:
 
 ---
 
+## Discount Events
+
+This section holds all events related to discounts.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`discount.created`
+
+</td>
+<td>
+
+Triggered when a discount is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of discount
+}
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+---
+
 ## Draft Order Events
 
 This section holds all events related to draft orders.

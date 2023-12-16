@@ -238,6 +238,18 @@ export const defaultAdminProductRemoteQueryObject = {
   profile: {
     fields: ["id", "created_at", "updated_at", "deleted_at", "name", "type"],
   },
+  sales_channels: {
+    fields: [
+      "id",
+      "name",
+      "description",
+      "is_disabled",
+      "created_at",
+      "updated_at",
+      "deleted_at",
+      "metadata",
+    ],
+  },
 }
 
 /**

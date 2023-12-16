@@ -4417,6 +4417,7 @@ __metadata:
   resolution: "typedoc-config@workspace:packages/typedoc-config"
   dependencies:
     glob: ^10.3.10
+    types: "*"
   peerDependencies:
     typedoc: 0.25.x
   languageName: unknown
@@ -4463,6 +4464,7 @@ __metadata:
     "@types/node": ^16.11.10
     copyfiles: ^2.4.1
     handlebars: ^4.7.8
+    types: "*"
     typescript: 5.2
     utils: "*"
   peerDependencies:
@@ -4543,6 +4545,16 @@ __metadata:
   checksum: 2790b3f16b26a477cfc9b72f81b4f209c885c554f9c7b2557d5d85ea4c8bd6a51584af8d29eec123a26398c4986f52b0c3c7a9c32352a223c33a96bd211f288f
   languageName: node
   linkType: hard
+
+"types@*, types@workspace:packages/types":
+  version: 0.0.0-use.local
+  resolution: "types@workspace:packages/types"
+  dependencies:
+    typescript: 5.2
+  peerDependencies:
+    typedoc: 0.25.x
+  languageName: unknown
+  linkType: soft
 
 "typescript@npm:5.2":
   version: 5.2.2
