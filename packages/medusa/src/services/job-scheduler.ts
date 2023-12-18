@@ -1,7 +1,7 @@
+import { promiseAll } from "@medusajs/utils"
 import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
-import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   logger: Logger
@@ -41,6 +41,7 @@ export default class JobSchedulerService {
       const connection = new Redis(config.projectConfig.redis_url, {
         maxRetriesPerRequest: null,
         enableReadyCheck: false,
+        ...(config.projectConfig.redis_options ?? {}),
       })
 
       this.queue_ = new Queue(`scheduled-jobs:queue`, {
