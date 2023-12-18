@@ -67,10 +67,12 @@ export type DistributedTransactionEvents = {
   onStepSuccess?: (args: {
     step: TransactionStep
     transaction: DistributedTransaction
+    result: unknown
   }) => void
 
   onStepFailure?: (args: {
     step: TransactionStep
     transaction: DistributedTransaction
+    errors: unknown[]
   }) => void
 }
