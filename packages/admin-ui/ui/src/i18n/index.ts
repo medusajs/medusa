@@ -70,6 +70,10 @@ export const supportedLanguages = [
     locale: "sl",
     name: "Slovenščina",
   },
+  {
+    locale: "bg",
+    name: "Български",
+  },
   { 
     locale: "ko",
     name: "한국어",
