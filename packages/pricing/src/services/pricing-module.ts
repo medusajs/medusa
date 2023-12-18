@@ -1174,7 +1174,7 @@ export default class PricingModuleService<
     )
 
     return this.baseRepository_.serialize<
-      PricingTypes.PriceSetMoneyAmountRulesDTO[]
+      PricingTypes.PriceSetMoneyAmountDTO[]
     >(records, {
       populate: true,
     })
@@ -1195,7 +1195,7 @@ export default class PricingModuleService<
 
     return [
       await this.baseRepository_.serialize<
-        PricingTypes.PriceSetMoneyAmountRulesDTO[]
+        PricingTypes.PriceSetMoneyAmountDTO[]
       >(records, {
         populate: true,
       }),
