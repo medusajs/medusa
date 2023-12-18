@@ -6,10 +6,14 @@ import {
   ReflectionType,
 } from "typedoc"
 import * as Handlebars from "handlebars"
-import { stripCode, stripLineBreaks } from "../utils"
+import { stripCode } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
-import getType, { getReflectionType } from "./type-utils"
-import { getTypeChildren } from "utils"
+import {
+  getReflectionType,
+  getType,
+  getTypeChildren,
+  stripLineBreaks,
+} from "utils"
 import { MarkdownTheme } from "../theme"
 
 const ALLOWED_KINDS: ReflectionKind[] = [
@@ -124,12 +128,15 @@ export function reflectionComponentFormatter({
           reflectionType: reflection.type,
           collapse: "object",
           project: reflection.project,
+          escape: true,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         })
       : getReflectionType({
           reflectionType: reflection,
           collapse: "object",
-          wrapBackticks: true,
+          // escape: true,
           project: reflection.project,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         }),
     description: comments
       ? Handlebars.helpers.comments(comments, true, false)
@@ -147,15 +154,6 @@ export function reflectionComponentFormatter({
     (reflection.type || hasChildren) &&
     level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   ) {
-    // if (
-    //   reflection.name === "user" &&
-    //   reflection.type &&
-    //   "name" in reflection.type &&
-    //   reflection.type.name.startsWith("Omit") &&
-    //   "typeArguments" in reflection.type
-    // ) {
-    //   console.log(reflection)
-    // }
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, project || reflection.project)
@@ -211,6 +209,7 @@ export function reflectionTableFormatter({
           reflectionType: parameter,
           collapse: "object",
           wrapBackticks: true,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         })
   )
 

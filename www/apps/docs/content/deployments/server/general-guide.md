@@ -39,7 +39,12 @@ In production, it’s recommended to set the [database_extra option](../../devel
 module.exports = {
   projectConfig: {
     // ...
-    database_extra: { ssl: { rejectUnauthorized: false } },
+    database_extra: process.env.NODE_ENV !== "development" ?
+      {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      } : {},
   },
 }
 ```

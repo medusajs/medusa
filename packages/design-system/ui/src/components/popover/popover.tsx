@@ -3,6 +3,9 @@ import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover) primitves.
+ */
 const Root = (
   props: React.ComponentPropsWithoutRef<typeof Primitives.Root>
 ) => {
@@ -34,19 +37,34 @@ const Close = React.forwardRef<
 })
 Close.displayName = "Popover.Close"
 
+interface ContentProps extends React.ComponentPropsWithoutRef<typeof Primitives.Content> {}
+
+/**
+ * @excludeExternal
+ */
 const Content = React.forwardRef<
   React.ElementRef<typeof Primitives.Content>,
-  React.ComponentPropsWithoutRef<typeof Primitives.Content>
+  ContentProps
 >(
   (
     {
       className,
+      /**
+       * The distance in pixels from the anchor.
+       */
       sideOffset = 8,
+      /**
+       * The preferred side of the anchor to render against when open.
+       * Will be reversed when collisions occur and `avoidCollisions` is enabled.
+       */
       side = "bottom",
+      /**
+       * The preferred alignment against the anchor. May change when collisions occur.
+       */
       align = "start",
       collisionPadding,
       ...props
-    },
+    }: ContentProps,
     ref
   ) => {
     return (

@@ -7,6 +7,9 @@ import { clx } from "@/utils/clx"
 import { Hint } from "../hint"
 import { Label } from "../label"
 
+/**
+ * This component is based on the [Radix UI Radio Group](https://www.radix-ui.com/primitives/docs/components/radio-group) primitives.
+ */
 const Root = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   React.ComponentPropsWithoutRef<typeof Primitives.Root>
@@ -19,7 +22,7 @@ const Root = React.forwardRef<
     />
   )
 })
-Root.displayName = "RadioGroup.Root"
+Root.displayName = "RadioGroup"
 
 const Indicator = React.forwardRef<
   React.ElementRef<typeof Primitives.Indicator>,

@@ -1,5 +1,16 @@
 # @medusajs/admin
 
+## 7.1.9
+
+### Patch Changes
+
+- [#5769](https://github.com/medusajs/medusa/pull/5769) [`f20d484b2`](https://github.com/medusajs/medusa/commit/f20d484b2381d07aac3e86d02f424f16b532c302) Thanks [@iweurman](https://github.com/iweurman)! - feat(admin): Add Korean language support
+
+- [#5723](https://github.com/medusajs/medusa/pull/5723) [`fd317f1a6`](https://github.com/medusajs/medusa/commit/fd317f1a6ba0952999e2de5c4e649376e6afab21) Thanks [@driver005](https://github.com/driver005)! - feat(medusa): add monorepo support command develop
+
+- Updated dependencies [[`f20d484b2`](https://github.com/medusajs/medusa/commit/f20d484b2381d07aac3e86d02f424f16b532c302), [`6975eacb3`](https://github.com/medusajs/medusa/commit/6975eacb338874b976c14aae030c74362d57410c)]:
+  - @medusajs/admin-ui@2.1.10
+
 ## 7.1.8
 
 ### Patch Changes
