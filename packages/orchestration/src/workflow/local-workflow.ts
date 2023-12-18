@@ -85,96 +85,130 @@ export class LocalWorkflow {
     transaction?: DistributedTransaction,
     subscribe?: DistributedTransactionEvents
   ) {
+    const modelId = orchestrator.id
+    const transactionId = transaction!.transactionId
+
+    const eventWrapperMap = new Map()
+    for (const [key, handler] of Object.entries(subscribe ?? {})) {
+      eventWrapperMap.set(key, (args) => {
+        const { transaction } = args
+
+        if (
+          transaction.id !== transactionId ||
+          transaction.modelId !== modelId
+        ) {
+          return
+        }
+
+        handler(args)
+      })
+    }
+
     if (subscribe?.onBegin) {
-      orchestrator.on("begin", subscribe.onBegin)
+      orchestrator.on("begin", eventWrapperMap.get("onBegin"))
     }
 
     if (subscribe?.onResume) {
-      orchestrator.on("resume", subscribe.onResume)
+      orchestrator.on("resume", eventWrapperMap.get("onResume"))
     }
 
     if (subscribe?.onCompensateBegin) {
-      orchestrator.on("compensateBegin", subscribe.onCompensateBegin)
+      orchestrator.on(
+        "compensateBegin",
+        eventWrapperMap.get("onCompensateBegin")
+      )
     }
 
     if (subscribe?.onTimeout) {
-      orchestrator.on("timeout", subscribe.onTimeout)
+      orchestrator.on("timeout", eventWrapperMap.get("onTimeout"))
     }
 
-    // Detach event listeners when workflow is finished
-    const wrapper = (...args) => {
-      // @ts-ignore
-      subscribe?.onFinish && subscribe.onFinish!(...args)
-      subscribe?.onFinish && orchestrator.removeListener("finish", wrapper)
-      subscribe?.onBegin &&
-        orchestrator.removeListener("begin", subscribe.onBegin!)
-      subscribe?.onResume &&
-        orchestrator.removeListener("resume", subscribe.onResume!)
-      subscribe?.onCompensateBegin &&
-        orchestrator.removeListener(
-          "compensateBegin",
-          subscribe.onCompensateBegin!
-        )
-      subscribe?.onTimeout &&
-        orchestrator.removeListener("timeout", subscribe.onTimeout!)
+    if (subscribe?.onResume) {
+      orchestrator.on("resume", eventWrapperMap.get("onResume"))
     }
 
-    orchestrator.on("finish", wrapper)
+    const resumeWrapper = (transaction) => {
+      if (transaction.modelId !== modelId || transaction.id !== transactionId) {
+        return
+      }
 
-    if (transaction) {
       if (subscribe?.onStepBegin) {
-        transaction.on("stepBegin", subscribe.onStepBegin)
+        transaction.on("stepBegin", eventWrapperMap.get("onStepBegin"))
       }
 
       if (subscribe?.onStepSuccess) {
-        transaction.on("stepSuccess", subscribe.onStepSuccess)
+        transaction.on("stepSuccess", eventWrapperMap.get("onStepSuccess"))
       }
 
       if (subscribe?.onStepFailure) {
-        transaction.on("stepFailure", subscribe.onStepFailure)
+        transaction.on("stepFailure", eventWrapperMap.get("onStepFailure"))
       }
 
       if (subscribe?.onCompensateStepSuccess) {
         transaction.on(
           "compensateStepSuccess",
-          subscribe.onCompensateStepSuccess
+          eventWrapperMap.get("onCompensateStepSuccess")
         )
       }
 
       if (subscribe?.onCompensateStepFailure) {
         transaction.on(
           "compensateStepFailure",
-          subscribe.onCompensateStepFailure
+          eventWrapperMap.get("onCompensateStepFailure")
+        )
+      }
+    }
+
+    // Detach event listeners when workflow is finished
+    const finishWrapper = (...args) => {
+      // @ts-ignore
+      subscribe?.onFinish && eventWrapperMap.get("onFinish")(...args)
+      subscribe?.onResume &&
+        orchestrator.removeListener("resume", eventWrapperMap.get("onResume"))
+      subscribe?.onBegin &&
+        orchestrator.removeListener("begin", eventWrapperMap.get("onBegin"))
+      subscribe?.onCompensateBegin &&
+        orchestrator.removeListener(
+          "compensateBegin",
+          eventWrapperMap.get("onCompensateBegin")
+        )
+      subscribe?.onTimeout &&
+        orchestrator.removeListener("timeout", eventWrapperMap.get("onTimeout"))
+
+      orchestrator.removeListener("resume", resumeWrapper)
+      orchestrator.removeListener("finish", finishWrapper)
+    }
+
+    orchestrator.on("finish", finishWrapper)
+
+    if (transaction) {
+      if (subscribe?.onStepBegin) {
+        transaction.on("stepBegin", eventWrapperMap.get("onStepBegin"))
+      }
+
+      if (subscribe?.onStepSuccess) {
+        transaction.on("stepSuccess", eventWrapperMap.get("onStepSuccess"))
+      }
+
+      if (subscribe?.onStepFailure) {
+        transaction.on("stepFailure", eventWrapperMap.get("onStepFailure"))
+      }
+
+      if (subscribe?.onCompensateStepSuccess) {
+        transaction.on(
+          "compensateStepSuccess",
+          eventWrapperMap.get("onCompensateStepSuccess")
+        )
+      }
+
+      if (subscribe?.onCompensateStepFailure) {
+        transaction.on(
+          "compensateStepFailure",
+          eventWrapperMap.get("onCompensateStepFailure")
         )
       }
     } else {
-      orchestrator.once("resume", (transaction) => {
-        if (subscribe?.onStepBegin) {
-          transaction.on("stepBegin", subscribe.onStepBegin)
-        }
-
-        if (subscribe?.onStepSuccess) {
-          transaction.on("stepSuccess", subscribe.onStepSuccess)
-        }
-
-        if (subscribe?.onStepFailure) {
-          transaction.on("stepFailure", subscribe.onStepFailure)
-        }
-
-        if (subscribe?.onCompensateStepSuccess) {
-          transaction.on(
-            "compensateStepSuccess",
-            subscribe.onCompensateStepSuccess
-          )
-        }
-
-        if (subscribe?.onCompensateStepFailure) {
-          transaction.on(
-            "compensateStepFailure",
-            subscribe.onCompensateStepFailure
-          )
-        }
-      })
+      orchestrator.once("resume", resumeWrapper)
     }
   }
 
