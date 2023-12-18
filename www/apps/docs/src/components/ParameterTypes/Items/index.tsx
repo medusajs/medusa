@@ -15,6 +15,7 @@ import {
   TriangleRightMini,
 } from "@medusajs/icons"
 import IconFlagMini from "../../../theme/Icon/FlagMini"
+import decodeStr from "../../../utils/decode-str"
 
 type ParameterTypesItemsProps = {
   parameters: Parameter[]
@@ -127,7 +128,7 @@ const ParameterTypesItems = ({
             />
           )}
           <div className="flex gap-0.75 flex-wrap">
-            <InlineCode>{parameter.name}</InlineCode>
+            <InlineCode>{decodeStr(parameter.name)}</InlineCode>
             <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
               <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
                 {parameter.type}

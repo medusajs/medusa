@@ -312,10 +312,9 @@ export function getReferenceType({
   getRelativeUrlMethod,
   ...options
 }: TypeOptions<ReferenceType>): string {
-  escape = getShouldEscape(wrapBackticks, escape)
-
   const shouldShowLink = !hideLink && model.name !== "Record"
   const wrappedInBackticks = wrapBackticks && !shouldShowLink
+  escape = getShouldEscape(wrappedInBackticks, escape)
   let modelReflection = model.reflection
   if (!modelReflection && project) {
     // try to load reflection
