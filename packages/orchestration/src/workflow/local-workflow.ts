@@ -97,13 +97,29 @@ export class LocalWorkflow {
       orchestrator.on("compensateBegin", subscribe.onCompensateBegin)
     }
 
-    if (subscribe?.onFinish) {
-      orchestrator.on("finish", subscribe.onFinish)
-    }
-
     if (subscribe?.onTimeout) {
       orchestrator.on("timeout", subscribe.onTimeout)
     }
+
+    // Detach event listeners when workflow is finished
+    const wrapper = (...args) => {
+      // @ts-ignore
+      subscribe?.onFinish && subscribe.onFinish!(...args)
+      subscribe?.onFinish && orchestrator.removeListener("finish", wrapper)
+      subscribe?.onBegin &&
+        orchestrator.removeListener("begin", subscribe.onBegin!)
+      subscribe?.onResume &&
+        orchestrator.removeListener("resume", subscribe.onResume!)
+      subscribe?.onCompensateBegin &&
+        orchestrator.removeListener(
+          "compensateBegin",
+          subscribe.onCompensateBegin!
+        )
+      subscribe?.onTimeout &&
+        orchestrator.removeListener("timeout", subscribe.onTimeout!)
+    }
+
+    orchestrator.on("finish", wrapper)
 
     if (transaction) {
       if (subscribe?.onStepBegin) {

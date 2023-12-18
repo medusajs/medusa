@@ -33,6 +33,10 @@ export interface IDistributedTransactionStorage {
 export abstract class DistributedTransactionStorage
   implements IDistributedTransactionStorage
 {
+  protected constructor() {
+    /* noop */
+  }
+
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     throw new Error("Method 'get' not implemented.")
   }

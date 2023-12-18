@@ -320,7 +320,6 @@ class WorkflowOrchestrator {
     if (transactionId) {
       const transactionSubscribers = subscribers.get(transactionId) ?? []
       notifySubscribers(transactionSubscribers)
-      return
     }
 
     const workflowSubscribers = subscribers.get(AnySubscriber) ?? []
