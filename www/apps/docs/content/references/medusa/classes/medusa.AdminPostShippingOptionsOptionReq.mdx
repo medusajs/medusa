@@ -56,6 +56,34 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "children": []
   },
   {
+    "name": "price_type",
+    "type": "[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "CALCULATED",
+        "type": "`\"calculated\"`",
+        "description": "The shipping option's price is calculated. In this case, the `amount` field is typically `null`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "FLAT_RATE",
+        "type": "`\"flat_rate\"`",
+        "description": "The shipping option's price is a flat rate.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
     "name": "requirements",
     "type": "[OptionRequirement](medusa.OptionRequirement-1.mdx)[]",
     "description": "The requirements that must be satisfied for the Shipping Option to be available.",
