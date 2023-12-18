@@ -1,11 +1,13 @@
+import { EntityManager } from "typeorm"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
 
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
@@ -19,6 +21,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   manager: EntityManager
   storeService: StoreService
+  featureFlagRouter: FlagRouter
 }
 
 class SalesChannelService extends TransactionBaseService {
@@ -31,11 +34,13 @@ class SalesChannelService extends TransactionBaseService {
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
   protected readonly storeService_: StoreService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     salesChannelRepository,
     eventBusService,
     storeService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -43,6 +48,7 @@ class SalesChannelService extends TransactionBaseService {
     this.salesChannelRepository_ = salesChannelRepository
     this.eventBusService_ = eventBusService
     this.storeService_ = storeService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -124,8 +130,9 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
-   * Lists sales channels based on the provided parameters and includes the count of
+   * Lists sales channels based on the provided parameters and include the count of
    * sales channels that match the query.
+   *
    * @return an array containing the sales channels as
    *   the first element and the total count of sales channels that matches the query
    *   as the second element.
@@ -155,6 +162,38 @@ class SalesChannelService extends TransactionBaseService {
     }
 
     return await salesChannelRepo.findAndCount(query)
+  }
+
+  /**
+   * Lists sales channels based on the provided parameters.
+   *
+   * @return an array containing the sales channels
+   */
+  async list(
+    selector: QuerySelector<SalesChannel>,
+    config: FindConfig<SalesChannel> = {
+      skip: 0,
+      take: 20,
+    }
+  ): Promise<SalesChannel[]> {
+    const salesChannelRepo = this.activeManager_.withRepository(
+      this.salesChannelRepository_
+    )
+
+    const selector_ = { ...selector }
+    let q: string | undefined
+    if ("q" in selector_) {
+      q = selector_.q
+      delete selector_.q
+    }
+
+    const query = buildQuery(selector_, config)
+
+    if (q) {
+      return await salesChannelRepo.getFreeTextSearchResults(q, query)
+    }
+
+    return await salesChannelRepo.find(query)
   }
 
   /**
@@ -353,7 +392,15 @@ class SalesChannelService extends TransactionBaseService {
         this.salesChannelRepository_
       )
 
-      await salesChannelRepo.addProducts(salesChannelId, productIds)
+      const isMedusaV2Enabled = this.featureFlagRouter_.isFeatureEnabled(
+        MedusaV2Flag.key
+      )
+
+      await salesChannelRepo.addProducts(
+        salesChannelId,
+        productIds,
+        isMedusaV2Enabled
+      )
 
       return await this.retrieve(salesChannelId)
     })

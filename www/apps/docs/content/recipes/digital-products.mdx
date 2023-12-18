@@ -277,6 +277,7 @@ Creating an API Route also requires creating a service, which is a class that ty
   ```ts title="src/services/product-media.ts" badgeLabel="Backend"
   import { 
     FindConfig,
+    ProductVariant,
     ProductVariantService,
     Selector,
     TransactionBaseService,
@@ -330,6 +331,8 @@ Creating an API Route also requires creating a service, which is a class that ty
       )
 
       config.relations = relations
+
+      console.log(selector, config.relations)
 
       const query = buildQuery(selector, config)
 
@@ -402,6 +405,22 @@ Creating an API Route also requires creating a service, which is a class that ty
           relations: ["product"],
         }
       )
+    }
+
+    async retrieveMediasByVariant(
+      productVariant: ProductVariant
+    ): Promise<ProductMedia[]> {
+      const productMediaRepo = this.activeManager_.getRepository(
+        ProductMedia
+      )
+
+      const query = buildQuery({
+        variant_id: productVariant.id,
+      })
+
+      const productMedias = await productMediaRepo.find(query)
+
+      return productMedias
     }
 
     async create(
@@ -716,6 +735,12 @@ To add an interface that allows the admin user to upload digital products, you c
   In the page, you’ll show the list of digital products in a table, if there are any. You’ll also show a button that opens a drawer to the side of the page.
 
   In the drawer, you show the Create Digital Product form. To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
+  
+:::note
+
+If you're using `@tanstack/react-query` v4, please change all occurrences of `isPending` to `isLoading`.
+
+:::
 
   ```tsx title="src/admin/components/product-media/CreateForm/index.tsx" badgeLabel="Backend"
   import { useState } from "react"
