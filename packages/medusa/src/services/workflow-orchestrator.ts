@@ -192,6 +192,11 @@ class WorkflowOrchestrator {
     }
 
     return {
+      onTimeout: (transaction) => {
+        customEventHandlers?.onTimeout?.(transaction)
+        notify("onTimeout")
+      },
+
       onBegin: (transaction) => {
         customEventHandlers?.onBegin?.(transaction)
         notify("onBegin")

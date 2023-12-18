@@ -257,7 +257,7 @@ export class DistributedTransaction extends EventEmitter {
     )
   }
 
-  public async scheduleTransactionTimeout(timeout: number): Promise<void> {
+  public async scheduleTransactionTimeout(interval: number): Promise<void> {
     await DistributedTransaction.keyValueStore.scheduleTransactionTimeout(
       this,
       Date.now(),
