@@ -17,6 +17,7 @@ import {
   UpdateProductCategoryInput,
 } from "../types/product-category"
 import { buildQuery, nullableValue, setMetadata } from "../utils"
+import {selectorConstraintsToString} from "@medusajs/utils";
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -115,9 +116,7 @@ class ProductCategoryService extends TransactionBaseService {
     )
 
     if (!productCategory) {
-      const selectorConstraints = Object.entries(selector)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,

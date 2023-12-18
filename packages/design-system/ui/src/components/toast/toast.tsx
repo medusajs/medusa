@@ -28,7 +28,7 @@ const ToastViewport = React.forwardRef<
     {...props}
   />
 ))
-ToastViewport.displayName = "ToastViewport"
+ToastViewport.displayName = "Toast.Viewport"
 
 interface ActionProps {
   label: string
@@ -45,6 +45,11 @@ interface ToastProps
   disableDismiss?: boolean
 }
 
+/**
+ * This component is based on the [Radix UI Toast](https://www.radix-ui.com/primitives/docs/components/toast) primitives.
+ * 
+ * @excludeExternal
+ */
 const Toast = React.forwardRef<
   React.ElementRef<typeof Primitives.Root>,
   ToastProps
@@ -52,13 +57,28 @@ const Toast = React.forwardRef<
   (
     {
       className,
+      /**
+       * The toast's style.
+       */
       variant,
+      /**
+       * The toast's title.
+       */
       title,
+      /**
+       * The toast's content.
+       */
       description,
+      /**
+       * The actions to show in the toast as buttons.
+       */
       action,
+      /**
+       * Whether to hide the Close button.
+       */
       disableDismiss = false,
       ...props
-    },
+    }: ToastProps,
     ref
   ) => {
     let Icon = undefined

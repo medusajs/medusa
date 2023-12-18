@@ -1,5 +1,5 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
 
 # Prices Calculation
 
@@ -20,11 +20,11 @@ The context is an object passed to the method. It must contain at least the `cur
 For example:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 async function calculatePrice(
-  priceSetId: string, 
+  priceSetId: string,
   currencyCode: string
 ) {
   const pricingService = await initializePricingModule()
@@ -45,11 +45,11 @@ The context object can also contain any custom rules, with the key being the `ru
 For example:
 
 ```ts
-import { 
+import {
   initialize as initializePricingModule,
 } from "@medusajs/pricing"
 async function calculatePrice(
-  priceSetId: string, 
+  priceSetId: string,
   currencyCode: string
 ) {
   const pricingService = await initializePricingModule()
@@ -93,7 +93,7 @@ For each price set, the method selects two money amounts:
 - If no rules are provided in the context other than the `currency_code`, the default money amount is selected as the original price. The default money amount is a money amount having no rules applied to it.
 - Otherwise, if a money amount exists in any price set with the same rules provided in the context, it's selected as the original price.
 - If no money amount exists with the same rules as the context, all money amounts satisfying any combination of the provided rules are retrieved.
-  - The money amounts are sorted in descending order by the associated `PriceSetMoneyAmount`'s `number_rules`, the `default_priority` of the rule types, and the `priority` of the associated `PriceRule`. The `priority` attribute has a higher precedence than the `default_priority`.
+  - The money amounts are sorted in descending order by the associated `PriceSetMoneyAmount`'s `rules_count`, the `default_priority` of the rule types, and the `priority` of the associated `PriceRule`. The `priority` attribute has a higher precedence than the `default_priority`.
   - The highest money amount sorted is selected as the original price since it's considered the best price.
 
 ---
@@ -107,15 +107,17 @@ const price = {
   id: priceSetId,
   is_calculated_price_price_list: 
     !!calculatedPrice?.price_list_id,
-  calculated_amount: parseInt(calculatedPrice?.amount || "") ||
-    null,
+  calculated_amount: parseInt(
+    calculatedPrice?.amount || ""
+  ) || null,
 
-  is_original_price_price_list: !!originalPrice?.price_list_id,
-  original_amount: parseInt(originalPrice?.amount || "") ||
-    null,
+  is_original_price_price_list: 
+    !!originalPrice?.price_list_id,
+  original_amount: parseInt(
+    originalPrice?.amount || ""
+  ) || null,
 
-  currency_code: calculatedPrice?.currency_code ||
-    null,
+  currency_code: calculatedPrice?.currency_code || null,
 
   calculated_price: {
     money_amount_id: calculatedPrice?.id || null,
@@ -133,10 +135,12 @@ const price = {
     money_amount_id: originalPrice?.id || null,
     price_list_id: originalPrice?.price_list_id || null,
     price_list_type: originalPrice?.price_list_type || null,
-    min_quantity: parseInt(originalPrice?.min_quantity || "") ||
-      null,
-    max_quantity: parseInt(originalPrice?.max_quantity || "") ||
-      null,
+    min_quantity: parseInt(
+      originalPrice?.min_quantity || ""
+    ) || null,
+    max_quantity: parseInt(
+      originalPrice?.max_quantity || ""
+    ) || null,
   },
 }
 ```

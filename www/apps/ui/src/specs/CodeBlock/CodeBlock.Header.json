@@ -1,0 +1,18 @@
+{
+  "description": "This component is based on the `div` element and supports all of its props",
+  "methods": [],
+  "displayName": "CodeBlock.Header",
+  "props": {
+    "hideLabels": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to hide the code snippets' labels.",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    }
+  }
+}

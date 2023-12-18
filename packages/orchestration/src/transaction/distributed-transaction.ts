@@ -8,7 +8,7 @@ import {
   TransactionFlow,
   TransactionOrchestrator,
 } from "./transaction-orchestrator"
-import { TransactionStepHandler } from "./transaction-step"
+import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import { TransactionHandlerType, TransactionState } from "./types"
 
 /**
@@ -243,6 +243,38 @@ export class DistributedTransaction extends EventEmitter {
       this.transactionId
     )
     await DistributedTransaction.keyValueStore.archive(key, options)
+  }
+
+  public async scheduleRetry(
+    step: TransactionStep,
+    interval: number
+  ): Promise<void> {
+    await DistributedTransaction.keyValueStore.scheduleRetry(
+      this,
+      step,
+      Date.now(),
+      interval
+    )
+  }
+
+  public async scheduleTransactionTimeout(timeout: number): Promise<void> {
+    await DistributedTransaction.keyValueStore.scheduleTransactionTimeout(
+      this,
+      Date.now(),
+      interval
+    )
+  }
+
+  public async scheduleStepTimeout(
+    step: TransactionStep,
+    interval: number
+  ): Promise<void> {
+    await DistributedTransaction.keyValueStore.scheduleStepTimeout(
+      this,
+      step,
+      Date.now(),
+      interval
+    )
   }
 }
 

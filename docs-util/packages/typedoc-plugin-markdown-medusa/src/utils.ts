@@ -6,6 +6,7 @@ import {
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
+import { stripLineBreaks } from "utils"
 
 export function formatContents(contents: string) {
   return (
@@ -14,19 +15,6 @@ export function formatContents(contents: string) {
       .replace(/!spaces/g, "")
       .replace(/^\s+|\s+$/g, "") + "\n"
   )
-}
-
-export function getHTMLChar(str: string) {
-  return str
-    .replace(/</g, "&#60;")
-    .replace(/{/g, "&#123;")
-    .replace(/}/g, "&#125;")
-    .replace(/>/g, "&#62;")
-}
-
-export function escapeChars(str: string, escapeBackticks = true) {
-  const result = getHTMLChar(str).replace(/_/g, "\\_").replace(/\|/g, "\\|")
-  return escapeBackticks ? result.replace(/`/g, "\\`") : result
 }
 
 export function memberSymbol(
@@ -55,17 +43,6 @@ export function stripComments(str: string) {
     .replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:^\s*\/\/(?:.*)$)/g, " ")
     .replace(/\n/g, "")
     .replace(/^\s+|\s+$|(\s)+/g, "$1")
-}
-
-export function stripLineBreaks(str: string) {
-  return str
-    ? str
-        .replace(/\n/g, " ")
-        .replace(/\r/g, " ")
-        .replace(/\t/g, " ")
-        .replace(/[\s]{2,}/g, " ")
-        .trim()
-    : ""
 }
 
 export function stripCode(str: string) {

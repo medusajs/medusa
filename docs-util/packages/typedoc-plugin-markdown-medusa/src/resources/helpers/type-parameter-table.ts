@@ -4,7 +4,7 @@ import {
   getTableHeaders,
   reflectionTableFormatter,
 } from "../../utils/reflection-formatter"
-import { hasTypes } from "../../utils/type-utils"
+import { hasTypes } from "utils"
 
 export default function () {
   Handlebars.registerHelper(

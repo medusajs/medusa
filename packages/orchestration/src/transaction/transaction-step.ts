@@ -48,6 +48,8 @@ export class TransactionStep {
   attempts: number
   failures: number
   lastAttempt: number | null
+  retryRescheduledAt: number | null
+  timedOutAt: number | null
   next: string[]
   saveResponse: boolean
 
@@ -138,10 +140,22 @@ export class TransactionStep {
   }
 
   canRetry(): boolean {
+    return (
+      !this.definition.retryInterval ||
+      !!(
+        this.lastAttempt &&
+        this.definition.retryInterval &&
+        Date.now() - this.lastAttempt > this.definition.retryInterval * 1e3
+      )
+    )
+  }
+
+  canRetryAwaiting(): boolean {
     return !!(
       this.lastAttempt &&
-      this.definition.retryInterval &&
-      Date.now() - this.lastAttempt > this.definition.retryInterval * 1e3
+      this.definition.retryIntervalAwaiting &&
+      Date.now() - this.lastAttempt >
+        this.definition.retryIntervalAwaiting * 1e3
     )
   }
 
