@@ -93,8 +93,8 @@ export class LocalWorkflow {
       orchestrator.on("resume", subscribe.onResume)
     }
 
-    if (subscribe?.onCompensate) {
-      orchestrator.on("compensate", subscribe.onCompensate)
+    if (subscribe?.onCompensateBegin) {
+      orchestrator.on("compensateBegin", subscribe.onCompensateBegin)
     }
 
     if (subscribe?.onFinish) {
@@ -117,6 +117,20 @@ export class LocalWorkflow {
       if (subscribe?.onStepFailure) {
         transaction.on("stepFailure", subscribe.onStepFailure)
       }
+
+      if (subscribe?.onCompensateStepSuccess) {
+        transaction.on(
+          "compensateStepSuccess",
+          subscribe.onCompensateStepSuccess
+        )
+      }
+
+      if (subscribe?.onCompensateStepFailure) {
+        transaction.on(
+          "compensateStepFailure",
+          subscribe.onCompensateStepFailure
+        )
+      }
     } else {
       orchestrator.once("resume", (transaction) => {
         if (subscribe?.onStepBegin) {
@@ -129,6 +143,20 @@ export class LocalWorkflow {
 
         if (subscribe?.onStepFailure) {
           transaction.on("stepFailure", subscribe.onStepFailure)
+        }
+
+        if (subscribe?.onCompensateStepSuccess) {
+          transaction.on(
+            "compensateStepSuccess",
+            subscribe.onCompensateStepSuccess
+          )
+        }
+
+        if (subscribe?.onCompensateStepFailure) {
+          transaction.on(
+            "compensateStepFailure",
+            subscribe.onCompensateStepFailure
+          )
         }
       })
     }

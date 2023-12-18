@@ -8,8 +8,8 @@ import {
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionState,
-  TransactionStepStatus,
   TransactionStepsDefinition,
+  TransactionStepStatus,
 } from "./types"
 
 import { promiseAll } from "@medusajs/utils"
@@ -224,7 +224,7 @@ export class TransactionOrchestrator extends EventEmitter {
       flow.state = TransactionState.COMPENSATING
       this.flagStepsToRevert(flow)
 
-      this.emit("compensate", transaction)
+      this.emit("compensateBegin", transaction)
 
       return await this.checkAllSteps(transaction)
     } else if (completedSteps === totalSteps) {
@@ -297,7 +297,10 @@ export class TransactionOrchestrator extends EventEmitter {
       await transaction.saveCheckpoint()
     }
 
-    transaction.emit("stepSuccess", { step, transaction })
+    const eventName = step.isCompensating()
+      ? "compensateStepSuccess"
+      : "stepSuccess"
+    transaction.emit(eventName, { step, transaction })
   }
 
   private static async setStepFailure(
@@ -339,7 +342,10 @@ export class TransactionOrchestrator extends EventEmitter {
       await transaction.saveCheckpoint()
     }
 
-    transaction.emit("stepFailure", { step, transaction })
+    const eventName = step.isCompensating()
+      ? "compensateStepFailure"
+      : "stepFailure"
+    transaction.emit(eventName, { step, transaction })
   }
 
   private async executeNext(

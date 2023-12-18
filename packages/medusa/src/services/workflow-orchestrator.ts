@@ -2,39 +2,62 @@ import { FlowRunOptions, MedusaWorkflow } from "@medusajs/workflows-sdk"
 import {
   DistributedTransaction,
   DistributedTransactionEvents,
+  TransactionHandlerType,
+  TransactionStep,
 } from "@medusajs/orchestration"
 import { ulid } from "ulid"
-import { MedusaContainer } from "@medusajs/types"
+import { ContainerLike, MedusaContainer } from "@medusajs/types"
+import { isString } from "@medusajs/utils"
 
 type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
   transactionId?: string
-  container?: { resolve<T = unknown>(key: string): T } // TODO: use ContainerLike once it is merged
+  container?: ContainerLike
 }
 
 type RegisterStepSuccessOptions<T> = Omit<
   WorkflowOrchestratorRunOptions<T>,
-  "transactionId" | "input" | "events"
+  "transactionId" | "input"
 >
+
+type IdempotencyKeyParts = {
+  workflowId: string
+  transactionId: string
+  stepId: string
+  action: "invoke" | "compensate"
+}
 
 type NotifyOptions = {
   eventType: keyof DistributedTransactionEvents
   workflowId: string
   transactionId?: string
-  data: unknown
+  result?: unknown
+  errors?: unknown[]
+}
+
+type NotifyStepOptions = NotifyOptions & {
+  step: TransactionStep
 }
 
 type WorkflowId = string
 type TransactionId = string
 
-type SubscriberHandler = (input: {
-  eventType: keyof DistributedTransactionEvents
-  result: unknown
-}) => void
+type SubscriberHandler = {
+  (input: NotifyOptions | NotifyStepOptions): void
+} & {
+  _id?: string
+}
 
 type SubscribeOptions = {
   workflowId: string
   transactionId?: string
-  handler: SubscriberHandler
+  subscriber: SubscriberHandler
+  subscriberId?: string
+}
+
+type UnsubscribeOptions = {
+  workflowId: string
+  transactionId?: string
+  subscriberOrId: string | SubscriberHandler
 }
 
 type TransactionSubscribers = Map<TransactionId, SubscriberHandler[]>
@@ -96,98 +119,141 @@ class WorkflowOrchestrator {
   }
 
   static async setStepSuccess<T = unknown>({
-    workflowId,
     idempotencyKey,
     stepResponse,
     options,
   }: {
-    workflowId: string
-    idempotencyKey: string
+    idempotencyKey: string | IdempotencyKeyParts
     stepResponse: unknown
     options?: RegisterStepSuccessOptions<T>
   }) {
-    let { context, throwOnError, resultFrom, container } = options ?? {}
+    const {
+      context,
+      throwOnError,
+      resultFrom,
+      container,
+      events: eventHandlers,
+    } = options ?? {}
+
+    const [idempotencyKey_, { workflowId, transactionId }] =
+      this.buildIdempotencyKeyAndParts(idempotencyKey)
 
     const flow = MedusaWorkflow.getWorkflow(workflowId)(
       container as MedusaContainer
     )
 
+    const events = this.buildWorkflowEvents({
+      customEventHandlers: eventHandlers,
+      transactionId,
+      workflowId,
+    })
+
     return await flow.registerStepSuccess({
-      idempotencyKey,
+      idempotencyKey: idempotencyKey_,
       context,
       resultFrom,
       throwOnError,
+      events,
       response: stepResponse,
     })
   }
 
   static async setStepFailure<T = unknown>({
-    workflowId,
     idempotencyKey,
     stepResponse,
     options,
   }: {
-    workflowId: string
-    idempotencyKey: string
+    idempotencyKey: string | IdempotencyKeyParts
     stepResponse: unknown
     options?: RegisterStepSuccessOptions<T>
   }) {
-    let { context, throwOnError, resultFrom, container } = options ?? {}
+    const {
+      context,
+      throwOnError,
+      resultFrom,
+      container,
+      events: eventHandlers,
+    } = options ?? {}
+
+    const [idempotencyKey_, { workflowId, transactionId }] =
+      this.buildIdempotencyKeyAndParts(idempotencyKey)
 
     const flow = MedusaWorkflow.getWorkflow(workflowId)(
       container as MedusaContainer
     )
 
+    const events = this.buildWorkflowEvents({
+      customEventHandlers: eventHandlers,
+      transactionId,
+      workflowId,
+    })
+
     return await flow.registerStepFailure({
-      idempotencyKey,
+      idempotencyKey: idempotencyKey_,
       context,
       resultFrom,
       throwOnError,
+      events,
       response: stepResponse,
     })
   }
 
-  static subscribe({ workflowId, transactionId, handler }: SubscribeOptions) {
+  static subscribe({
+    workflowId,
+    transactionId,
+    subscriber,
+    subscriberId,
+  }: SubscribeOptions) {
+    subscriber._id = subscriberId
     const subscribers = this.subscribers.get(workflowId) ?? new Map()
 
-    const doesHandlerExists = (handlerToFind, handlers) => {
-      return handlers.some((s) => s.toString() === handlerToFind.toString())
+    const doesHandlerExists = (handlers) => {
+      return handlers.some((s) => s === subscriber || s._id === subscriberId)
     }
 
     if (transactionId) {
       const transactionSubscribers = subscribers.get(transactionId) ?? []
-      const subscriberAlreadyExists = doesHandlerExists(
-        handler,
-        transactionSubscribers
-      )
+      const subscriberAlreadyExists = doesHandlerExists(transactionSubscribers)
       if (subscriberAlreadyExists) {
         return
       }
 
-      transactionSubscribers.push(handler)
+      transactionSubscribers.push(subscriber)
       subscribers.set(transactionId, transactionSubscribers)
       this.subscribers.set(workflowId, subscribers)
       return
     }
 
     const workflowSubscribers = subscribers.get(AnySubscriber) ?? []
-    const doesSubscriberExists = doesHandlerExists(handler, workflowSubscribers)
+    const doesSubscriberExists = doesHandlerExists(workflowSubscribers)
     if (doesSubscriberExists) {
       return
     }
 
-    workflowSubscribers.push(handler)
+    workflowSubscribers.push(subscriber)
     subscribers.set(AnySubscriber, workflowSubscribers)
     this.subscribers.set(workflowId, subscribers)
   }
 
-  static unsubscribe({ workflowId, transactionId, handler }: SubscribeOptions) {
+  static unsubscribe({
+    workflowId,
+    transactionId,
+    subscriberOrId,
+  }: UnsubscribeOptions) {
     const subscribers = this.subscribers.get(workflowId) ?? new Map()
+
+    const filterSubscribers = (handlers: SubscriberHandler[]) => {
+      return handlers.filter((handler) => {
+        return handler._id
+          ? handler._id !== (subscriberOrId as string)
+          : handler !== (subscriberOrId as SubscriberHandler)
+      })
+    }
 
     if (transactionId) {
       const transactionSubscribers = subscribers.get(transactionId) ?? []
-      const newTransactionSubscribers = transactionSubscribers.filter(
-        (s) => s.toString() !== handler.toString()
+      const newTransactionSubscribers = filterSubscribers(
+        transactionSubscribers
       )
       subscribers.set(transactionId, newTransactionSubscribers)
       this.subscribers.set(workflowId, subscribers)
@@ -195,25 +261,25 @@ class WorkflowOrchestrator {
     }
 
     const workflowSubscribers = subscribers.get(AnySubscriber) ?? []
-    const newWorkflowSubscribers = workflowSubscribers.filter(
-      (s) => s.toString() !== handler.toString()
-    )
+    const newWorkflowSubscribers = filterSubscribers(workflowSubscribers)
     subscribers.set(AnySubscriber, newWorkflowSubscribers)
     this.subscribers.set(workflowId, subscribers)
   }
 
-  private static notify({
-    workflowId,
-    transactionId,
-    eventType,
-    data,
-  }: NotifyOptions) {
+  private static notify(options: NotifyOptions | NotifyStepOptions) {
+    const { eventType, workflowId, transactionId, result, errors } = options
+    const step = "step" in options ? options.step : undefined
+
     const subscribers: TransactionSubscribers =
       this.subscribers.get(workflowId) ?? new Map()
 
     const notifySubscribers = (handlers: SubscriberHandler[]) => {
       handlers.forEach((handler) => {
-        handler({ eventType, result: data })
+        handler(
+          step
+            ? ({ eventType, step, result, errors } as NotifyStepOptions)
+            : ({ eventType, result, errors } as NotifyOptions)
+        )
       })
     }
 
@@ -232,66 +298,121 @@ class WorkflowOrchestrator {
     workflowId,
     transactionId,
   }): DistributedTransactionEvents {
-    const notify = (
-      eventType: keyof DistributedTransactionEvents,
-      data?: unknown
-    ) => {
+    const notify = ({
+      eventType,
+      step,
+      result,
+      errors,
+    }: {
+      eventType: keyof DistributedTransactionEvents
+      step?: TransactionStep
+      result?: unknown
+      errors?: unknown[]
+    }) => {
       this.notify({
         workflowId,
         transactionId,
         eventType,
-        data,
+        step,
+        result,
+        errors,
       })
     }
 
     return {
       onTimeout: (transaction) => {
         customEventHandlers?.onTimeout?.(transaction)
-        notify("onTimeout")
+        notify({ eventType: "onTimeout" })
       },
 
       onBegin: (transaction) => {
         customEventHandlers?.onBegin?.(transaction)
-        notify("onBegin")
+        notify({ eventType: "onBegin" })
       },
       onResume: (transaction) => {
         customEventHandlers?.onResume?.(transaction)
-        notify("onResume")
+        notify({ eventType: "onResume" })
       },
-      onCompensate: (transaction) => {
-        customEventHandlers?.onCompensate?.(transaction)
-        notify("onCompensate")
+      onCompensateBegin: (transaction) => {
+        customEventHandlers?.onCompensateBegin?.(transaction)
+        notify({ eventType: "onCompensateBegin" })
       },
-      onFinish: (transaction: DistributedTransaction, result: unknown) => {
+      onFinish: (
+        transaction: DistributedTransaction,
+        result?: unknown,
+        errors?: unknown[]
+      ) => {
         customEventHandlers?.onFinish?.(transaction, result)
-        notify("onFinish", result)
+        notify({ eventType: "onFinish", result, errors })
       },
 
       onStepBegin: ({ step, transaction }) => {
         customEventHandlers?.onStepBegin?.({ step, transaction })
 
-        const data = { stepId: step.id }
-        notify("onStepBegin", data)
+        notify({ eventType: "onStepBegin", step })
       },
-      onStepSuccess: ({ step, transaction, result }) => {
+      onStepSuccess: ({ step, transaction }) => {
+        const result = transaction.getContext().invoke[step.id]
         customEventHandlers?.onStepSuccess?.({ step, transaction, result })
 
-        const data_ = {
-          stepId: step.id,
-          result: result,
-        }
-        notify("onStepSuccess", data_)
+        notify({ eventType: "onStepSuccess", step, result })
       },
-      onStepFailure: ({ step, transaction, errors }) => {
+      onStepFailure: ({ step, transaction }) => {
+        const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
+          step.id
+        ]
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
-        const data = {
-          stepId: step.id,
-          errors: errors,
-        }
-        notify("onStepFailure", data)
+        notify({ eventType: "onStepFailure", step, errors })
+      },
+
+      onCompensateStepSuccess: ({ step, transaction }) => {
+        const result = transaction.getContext().compensate[step.id]
+        customEventHandlers?.onStepSuccess?.({ step, transaction, result })
+
+        notify({ eventType: "onCompensateStepSuccess", step, result })
+      },
+      onCompensateStepFailure: ({ step, transaction }) => {
+        const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
+          step.id
+        ]
+        customEventHandlers?.onStepFailure?.({ step, transaction, errors })
+
+        notify({ eventType: "onCompensateStepFailure", step, errors })
       },
     }
+  }
+
+  private static buildIdempotencyKeyAndParts(
+    idempotencyKey: string | IdempotencyKeyParts
+  ): [string, IdempotencyKeyParts] {
+    const parts: IdempotencyKeyParts = {
+      workflowId: "",
+      transactionId: "",
+      stepId: "",
+      action: "invoke",
+    }
+    let idempotencyKey_ = idempotencyKey as string
+
+    const setParts = (workflowId, transactionId, stepId, action) => {
+      parts.workflowId = workflowId
+      parts.transactionId = transactionId
+      parts.stepId = stepId
+      parts.action = action
+    }
+
+    if (!isString(idempotencyKey)) {
+      const { workflowId, transactionId, stepId, action } =
+        idempotencyKey as IdempotencyKeyParts
+      idempotencyKey_ = `${workflowId}${transactionId}:${stepId}:${action}`
+      setParts(workflowId, transactionId, stepId, action)
+    } else {
+      const [workflowId, transactionId, stepId, action] =
+        idempotencyKey_.split(":")
+      setParts(workflowId, transactionId, stepId, action)
+    }
+
+    return [idempotencyKey_, parts]
   }
 }
 

@@ -57,8 +57,12 @@ export type TransactionModel = {
 export type DistributedTransactionEvents = {
   onBegin?: (transaction: DistributedTransaction) => void
   onResume?: (transaction: DistributedTransaction) => void
-  onCompensate?: (transaction: DistributedTransaction) => void
-  onFinish?: (transaction: DistributedTransaction, result?: unknown) => void
+  onCompensateBegin?: (transaction: DistributedTransaction) => void
+  onFinish?: (
+    transaction: DistributedTransaction,
+    result?: unknown,
+    errors?: unknown[]
+  ) => void
   onTimeout?: (transaction: DistributedTransaction) => void
 
   onStepBegin?: (args: {
@@ -69,12 +73,20 @@ export type DistributedTransactionEvents = {
   onStepSuccess?: (args: {
     step: TransactionStep
     transaction: DistributedTransaction
-    result: unknown
   }) => void
 
   onStepFailure?: (args: {
     step: TransactionStep
     transaction: DistributedTransaction
-    errors: unknown[]
+  }) => void
+
+  onCompensateStepSuccess?: (args: {
+    step: TransactionStep
+    transaction: DistributedTransaction
+  }) => void
+
+  onCompensateStepFailure?: (args: {
+    step: TransactionStep
+    transaction: DistributedTransaction
   }) => void
 }
