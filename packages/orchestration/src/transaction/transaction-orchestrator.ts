@@ -8,8 +8,8 @@ import {
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionState,
-  TransactionStepsDefinition,
   TransactionStepStatus,
+  TransactionStepsDefinition,
 } from "./types"
 
 import { promiseAll } from "@medusajs/utils"
@@ -167,17 +167,21 @@ export class TransactionOrchestrator extends EventEmitter {
 
       if (curState.status === TransactionStepStatus.WAITING) {
         hasWaiting = true
-        if (stepDef.canRetryAwaiting()) {
-          stepDef.retryRescheduledAt = null
-          nextSteps.push(stepDef)
-        } else {
-          stepDef.retryRescheduledAt = Date.now()
 
-          await transaction.scheduleRetry(
-            stepDef,
-            stepDef.definition.retryInterval!
-          )
+        if (stepDef.hasAwaitingRetry()) {
+          if (stepDef.canRetryAwaiting()) {
+            stepDef.retryRescheduledAt = null
+            nextSteps.push(stepDef)
+          } else {
+            stepDef.retryRescheduledAt = Date.now()
+
+            await transaction.scheduleRetry(
+              stepDef,
+              stepDef.definition.retryInterval!
+            )
+          }
         }
+
         continue
       } else if (curState.status === TransactionStepStatus.TEMPORARY_FAILURE) {
         if (!stepDef.canRetry()) {

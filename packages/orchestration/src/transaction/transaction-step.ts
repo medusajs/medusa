@@ -150,12 +150,16 @@ export class TransactionStep {
     )
   }
 
+  hasAwaitingRetry(): boolean {
+    return !!this.definition.retryIntervalAwaiting
+  }
+
   canRetryAwaiting(): boolean {
     return !!(
+      this.hasAwaitingRetry() &&
       this.lastAttempt &&
-      this.definition.retryIntervalAwaiting &&
       Date.now() - this.lastAttempt >
-        this.definition.retryIntervalAwaiting * 1e3
+        this.definition.retryIntervalAwaiting! * 1e3
     )
   }
 

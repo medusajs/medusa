@@ -30,21 +30,15 @@ export interface IDistributedTransactionStorage {
   ): Promise<void>
 }
 
-export class InMemoryDistributedTransactionStorage
+export abstract class DistributedTransactionStorage
   implements IDistributedTransactionStorage
 {
-  private storage: Map<string, TransactionCheckpoint>
-
-  constructor() {
-    this.storage = new Map()
-  }
-
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
-    return this.storage.get(key)
+    throw new Error("Method 'get' not implemented.")
   }
 
   async list(): Promise<TransactionCheckpoint[]> {
-    return Array.from(this.storage.values())
+    throw new Error("Method 'list' not implemented.")
   }
 
   async save(
@@ -52,15 +46,15 @@ export class InMemoryDistributedTransactionStorage
     data: TransactionCheckpoint,
     ttl?: number
   ): Promise<void> {
-    this.storage.set(key, data)
+    throw new Error("Method 'save' not implemented.")
   }
 
   async delete(key: string): Promise<void> {
-    this.storage.delete(key)
+    throw new Error("Method 'delete' not implemented.")
   }
 
   async archive(key: string, options?: TransactionModelOptions): Promise<void> {
-    this.storage.delete(key)
+    throw new Error("Method 'archive' not implemented.")
   }
 
   async scheduleRetry(
@@ -69,7 +63,7 @@ export class InMemoryDistributedTransactionStorage
     now: number,
     interval: number
   ): Promise<void> {
-    //
+    throw new Error("Method 'scheduleRetry' not implemented.")
   }
 
   async scheduleTransactionTimeout(
@@ -77,7 +71,7 @@ export class InMemoryDistributedTransactionStorage
     now: number,
     interval: number
   ): Promise<void> {
-    //
+    throw new Error("Method 'scheduleTransactionTimeout' not implemented.")
   }
 
   async scheduleStepTimeout(
@@ -86,6 +80,6 @@ export class InMemoryDistributedTransactionStorage
     now: number,
     interval: number
   ): Promise<void> {
-    //
+    throw new Error("Method 'scheduleStepTimeout' not implemented.")
   }
 }

@@ -1,4 +1,4 @@
-export * from "./datastore/in-memory-storage"
+export * from "./datastore/abstract-storage"
 export * from "./distributed-transaction"
 export * from "./orchestrator-builder"
 export * from "./transaction-orchestrator"

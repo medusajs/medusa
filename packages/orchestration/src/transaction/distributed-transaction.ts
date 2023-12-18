@@ -1,9 +1,7 @@
 import { isDefined } from "@medusajs/utils"
 import { EventEmitter } from "events"
-import {
-  IDistributedTransactionStorage,
-  InMemoryDistributedTransactionStorage,
-} from "./datastore/in-memory-storage"
+import { IDistributedTransactionStorage } from "./datastore/abstract-storage"
+import { BaseInMemoryDistributedTransactionStorage } from "./datastore/base-in-memory-storage"
 import {
   TransactionFlow,
   TransactionOrchestrator,
@@ -278,4 +276,6 @@ export class DistributedTransaction extends EventEmitter {
   }
 }
 
-DistributedTransaction.setStorage(new InMemoryDistributedTransactionStorage())
+DistributedTransaction.setStorage(
+  new BaseInMemoryDistributedTransactionStorage()
+)
