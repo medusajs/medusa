@@ -5,6 +5,9 @@ import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the [Radix UI Tabs](https://radix-ui.com/primitives/docs/components/tabs) primitves
+ */
 const TabsRoot = (
   props: React.ComponentPropsWithoutRef<typeof TabsPrimitives.Root>
 ) => {

@@ -1,10 +1,12 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, wrapHandler } from "@medusajs/utils"
 import { Router } from "express"
 import "reflect-metadata"
 import { Region } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import { transformQuery } from "../../../middlewares"
+import getRegion, { AdminGetRegionsRegionParams } from "./get-region"
+import listRegions, { AdminGetRegionsParams } from "./list-regions"
 
 const route = Router()
 
@@ -15,50 +17,65 @@ export default (app, featureFlagRouter: FlagRouter) => {
     defaultAdminRegionFields.push("includes_tax")
   }
 
-  route.get("/", middlewares.wrap(require("./list-regions").default))
-  route.get("/:region_id", middlewares.wrap(require("./get-region").default))
+  const retrieveTransformQueryConfig = {
+    defaultFields: defaultAdminRegionFields,
+    defaultRelations: defaultAdminRegionRelations,
+    allowedRelations: defaultAdminRegionRelations,
+    isList: false,
+  }
+
+  const listTransformQueryConfig = {
+    ...retrieveTransformQueryConfig,
+    isList: true,
+  }
+
+  route.get(
+    "/",
+    transformQuery(AdminGetRegionsParams, listTransformQueryConfig),
+    wrapHandler(listRegions)
+  )
+
+  route.get(
+    "/:region_id",
+    transformQuery(AdminGetRegionsRegionParams, retrieveTransformQueryConfig),
+    wrapHandler(getRegion)
+  )
 
   route.get(
     "/:region_id/fulfillment-options",
-    middlewares.wrap(require("./get-fulfillment-options").default)
+    wrapHandler(require("./get-fulfillment-options").default)
   )
 
-  route.post("/", middlewares.wrap(require("./create-region").default))
-  route.post(
-    "/:region_id",
-    middlewares.wrap(require("./update-region").default)
-  )
+  route.post("/", wrapHandler(require("./create-region").default))
+  route.post("/:region_id", wrapHandler(require("./update-region").default))
 
-  route.delete(
-    "/:region_id",
-    middlewares.wrap(require("./delete-region").default)
-  )
+  route.delete("/:region_id", wrapHandler(require("./delete-region").default))
 
   route.post(
     "/:region_id/countries",
-    middlewares.wrap(require("./add-country").default)
+    wrapHandler(require("./add-country").default)
   )
   route.delete(
     "/:region_id/countries/:country_code",
-    middlewares.wrap(require("./remove-country").default)
+    wrapHandler(require("./remove-country").default)
   )
 
   route.post(
     "/:region_id/payment-providers",
-    middlewares.wrap(require("./add-payment-provider").default)
+    wrapHandler(require("./add-payment-provider").default)
   )
   route.delete(
     "/:region_id/payment-providers/:provider_id",
-    middlewares.wrap(require("./remove-payment-provider").default)
+    wrapHandler(require("./remove-payment-provider").default)
   )
 
   route.post(
     "/:region_id/fulfillment-providers",
-    middlewares.wrap(require("./add-fulfillment-provider").default)
+    wrapHandler(require("./add-fulfillment-provider").default)
   )
   route.delete(
     "/:region_id/fulfillment-providers/:provider_id",
-    middlewares.wrap(require("./remove-fulfillment-provider").default)
+    wrapHandler(require("./remove-fulfillment-provider").default)
   )
 
   return app
@@ -83,6 +100,7 @@ export const defaultAdminRegionRelations = [
   "countries",
   "payment_providers",
   "fulfillment_providers",
+  "currency",
 ]
 
 /**

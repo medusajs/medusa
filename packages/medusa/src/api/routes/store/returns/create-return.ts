@@ -16,6 +16,7 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
 import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
 import { defaultRelations } from "."
+import { Logger } from "@medusajs/types"
 
 /**
  * @oas [post] /store/returns
@@ -225,7 +226,8 @@ export default async (req, res) => {
 
     res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
   } catch (err) {
-    console.log(err)
+    const logger: Logger = req.scope.resolve("logger")
+    logger.log(err)
     throw err
   }
 }

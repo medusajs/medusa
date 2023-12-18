@@ -2,7 +2,11 @@ import dotenv from "dotenv"
 import { DataSource } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import Logger from "../loaders/logger"
-import { DiscountCondition, DiscountConditionOperator, DiscountConditionType, } from "../models/discount-condition"
+import {
+  DiscountCondition,
+  DiscountConditionOperator,
+  DiscountConditionType,
+} from "../models/discount-condition"
 import { DiscountConditionProduct } from "../models/discount-condition-product"
 import { DiscountRule } from "../models/discount-rule"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
@@ -123,6 +127,6 @@ migrate({ typeormConfig })
     Logger.info("Database migration completed successfully")
     process.exit()
   })
-  .catch((err) => console.log(err))
+  .catch((err) => Logger.log(err))
 
 export default migrate

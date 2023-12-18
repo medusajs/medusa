@@ -125,7 +125,10 @@ const plugins = [
           searchableAttributes,
           attributesToRetrieve,
         },
-        transformer,
+        transformer: (product) => ({ 
+          objectID: product.id, 
+          // other attributes...
+        }),
       },
     },
     },
@@ -176,10 +179,6 @@ const plugins = [
               "images",
             ],
           },
-          transformer: (product) => ({ 
-            objectID: product.id, 
-            // other attributes...
-          }),
         },
       },
     },
@@ -280,11 +279,11 @@ If you run your Next.js Starter Template now while the Medusa backend is running
 
 :::note
 
-To make sure the Next.js Starter Template properly displays the products in the search result, include in the `attributesToRetrieve` setting of the Algolia plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
+To make sure the Next.js Starter Template properly displays the products in the search result, include in the `attributesToRetrieve` setting of the Algolia plugin on the Medusa backend at least the fields `id`, `title`, `handle`, `description`, and `thumbnail`.
 
 :::
 
-![Search pop up in the Next.js Starter Template](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000082/Medusa%20Docs/Algolia/1f9qqK6_c0z8zi.png)
+![Search Result on Next.js Starter Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1701112725/Medusa%20Docs/Screenshots/Screenshot_2023-11-27_at_7.18.09_PM_iozjt0.png)
 
 ### Add to Other Storefronts
 

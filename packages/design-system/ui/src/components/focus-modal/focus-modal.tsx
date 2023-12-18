@@ -8,8 +8,20 @@ import { IconButton } from "@/components/icon-button"
 import { Kbd } from "@/components/kbd"
 import { clx } from "@/utils/clx"
 
+/**
+ * @prop defaultOpen - Whether the modal is opened by default.
+ * @prop open - Whether the modal is opened.
+ * @prop onOpenChange - A function to handle when the modal is opened or closed.
+ */
+interface FocusModalRootProps 
+  extends React.ComponentPropsWithoutRef<typeof FocusModalPrimitives.Root> {
+}
+
+/**
+ * This component is based on the [Radix UI Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) primitives.
+ */
 const FocusModalRoot = (
-  props: React.ComponentPropsWithoutRef<typeof FocusModalPrimitives.Root>
+  props: FocusModalRootProps
 ) => {
   return <FocusModalPrimitives.Root {...props} />
 }
@@ -72,6 +84,9 @@ const FocusModalContent = React.forwardRef<
 })
 FocusModalContent.displayName = "FocusModal.Content"
 
+/**
+ * This component is based on the `div` element and supports all of its props
+ */
 const FocusModalHeader = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<"div">
@@ -99,6 +114,9 @@ const FocusModalHeader = React.forwardRef<
 })
 FocusModalHeader.displayName = "FocusModal.Header"
 
+/**
+ * This component is based on the `div` element and supports all of its props
+ */
 const FocusModalBody = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<"div">

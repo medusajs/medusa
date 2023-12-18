@@ -65,7 +65,7 @@ export interface PriceListDTO {
   /**
    * The number of rules associated with this price list.
    */
-  number_rules?: number
+  rules_count?: number
   /**
    * The associated price set money amounts.
    *
@@ -111,7 +111,21 @@ export interface PriceListPriceDTO extends CreateMoneyAmountDTO {
    * The ID of the associated price set.
    */
   price_set_id: string
+  /**
+   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   */
+  rules?: CreatePriceSetPriceRules
 }
+
+/**
+ * @interface
+ *
+ * The price rules to be set for each price in the price set.
+ *
+ * Each key of the object is a rule type's `rule_attribute`, and its value
+ * is the values of the rule.
+ */
+export interface CreatePriceSetPriceRules extends Record<string, string> {}
 
 /**
  * @interface
@@ -154,7 +168,7 @@ export interface CreatePriceListDTO {
   /**
    * The number of rules associated with the price list.
    */
-  number_rules?: number
+  rules_count?: number
   /**
    * The rules to be created and associated with the price list.
    */
@@ -194,7 +208,7 @@ export interface UpdatePriceListDTO {
   /**
    * The number of rules associated with the price list.
    */
-  number_rules?: number
+  rules_count?: number
   /**
    * The rules to be created and associated with the price list.
    */
@@ -227,7 +241,7 @@ export interface FilterablePriceListProps
   /**
    * The number of rules to filter price lists by.
    */
-  number_rules?: number[]
+  rules_count?: number[]
 }
 
 /**

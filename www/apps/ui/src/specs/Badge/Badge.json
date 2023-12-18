@@ -1,0 +1,108 @@
+{
+  "description": "This component is based on the `div` element and supports all of its props",
+  "methods": [],
+  "displayName": "Badge",
+  "props": {
+    "asChild": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to remove the wrapper `span` element and use the\npassed child element instead.",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    },
+    "size": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "The badge's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"large\" \\| \"small\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          }
+        ]
+      },
+      "required": false
+    },
+    "rounded": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "The style of the badge's border radius.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"full\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"full\""
+          }
+        ]
+      },
+      "required": false
+    },
+    "color": {
+      "defaultValue": {
+        "value": "\"grey\"",
+        "computed": false
+      },
+      "description": "The badge's color.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"green\" \\| \"red\" \\| \"blue\" \\| \"orange\" \\| \"grey\" \\| \"purple\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"green\""
+          },
+          {
+            "name": "literal",
+            "value": "\"red\""
+          },
+          {
+            "name": "literal",
+            "value": "\"blue\""
+          },
+          {
+            "name": "literal",
+            "value": "\"orange\""
+          },
+          {
+            "name": "literal",
+            "value": "\"grey\""
+          },
+          {
+            "name": "literal",
+            "value": "\"purple\""
+          }
+        ]
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "Omit",
+    "VariantProps"
+  ]
+}

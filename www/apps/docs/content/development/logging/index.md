@@ -110,7 +110,7 @@ export default async (
       await productService.count()
     }`)
   } catch (e) {
-    logger.failure(activityId, `An error occurrect: ${e}`)
+    logger.failure(activityId, `An error occurred: ${e}`)
   }
   
   logger.success(activityId, "Ending loader")

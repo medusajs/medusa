@@ -244,20 +244,28 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       return res
     }
 
-    const cart = await this.cartService_
-      .withTransaction(manager)
-      .authorizePayment(id, {
-        ...context,
-        cart_id: id,
-        idempotency_key: idempotencyKey,
-      })
+    const txCartService = this.cartService_.withTransaction(manager)
+
+    let cart = await txCartService.retrieve(id, {
+      relations: ["payment_sessions"],
+    })
+
+    if (cart.payment_sessions?.length) {
+      await txCartService.setPaymentSessions(id)
+    }
+
+    cart = await txCartService.authorizePayment(id, {
+      ...context,
+      cart_id: id,
+      idempotency_key: idempotencyKey,
+    })
 
     if (cart.payment_session) {
       if (
         cart.payment_session.status === "requires_more" ||
         cart.payment_session.status === "pending"
       ) {
-        await this.cartService_.withTransaction(manager).deleteTaxLines(id)
+        await txCartService.deleteTaxLines(id)
 
         return {
           response_code: 200,

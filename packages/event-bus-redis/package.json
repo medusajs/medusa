@@ -14,6 +14,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {

@@ -1,5 +1,9 @@
 "use client"
-import { SidebarProvider as UiSidebarProvider, usePageLoading } from "docs-ui"
+import {
+  SidebarProvider as UiSidebarProvider,
+  usePageLoading,
+  useScrollController,
+} from "docs-ui"
 
 type SidebarProviderProps = {
   children?: React.ReactNode
@@ -7,12 +11,14 @@ type SidebarProviderProps = {
 
 const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const { isLoading, setIsLoading } = usePageLoading()
+  const { scrollableElement } = useScrollController()
 
   return (
     <UiSidebarProvider
       isLoading={isLoading}
       setIsLoading={setIsLoading}
       shouldHandleHashChange={true}
+      scrollableElement={scrollableElement}
       initialItems={{
         top: [
           {
