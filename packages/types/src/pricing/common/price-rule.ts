@@ -59,7 +59,7 @@ export interface PriceRuleDTO {
   /**
    * When the price_rule was deleted.
    */
-  deleted_at?: null | Date
+  deleted_at: null | Date
 }
 
 /**

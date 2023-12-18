@@ -49,7 +49,7 @@ export interface MoneyAmountDTO {
   /**
    * When the money_amount was deleted.
    */
-  deleted_at?: null | Date
+  deleted_at: null | Date
 }
 
 /**
