@@ -121,6 +121,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
         resources: MODULE_RESOURCE_TYPE.SHARED,
       },
     },
+    [Modules.SALES_CHANNEL]: {
+      key: Modules.SALES_CHANNEL,
+      registrationName: ModuleRegistrationName.SALES_CHANNEL,
+      defaultPackage: false,
+      label: "salesChannelModuleService",
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
   }
 
 export const MODULE_DEFINITIONS: ModuleDefinition[] =

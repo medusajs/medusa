@@ -21,6 +21,9 @@ export default class SalesChannel {
   @Property({ columnType: "text" })
   description!: string
 
+  @Property({ columnType: "boolean" })
+  is_disabled!: boolean
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
