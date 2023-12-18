@@ -27,7 +27,6 @@ import regionRoutes from "./regions"
 import reservationRoutes from "./reservations"
 import returnReasonRoutes from "./return-reasons"
 import returnRoutes from "./returns"
-import reservationRoutes from "./reservations"
 import salesChannelRoutes from "./sales-channels"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
@@ -41,6 +40,7 @@ import variantRoutes from "./variants"
 import paymentCollectionRoutes from "./payment-collections"
 import paymentRoutes from "./payments"
 import productCategoryRoutes from "./product-categories"
+import pocWorkflows from "./_poc-async-workflow"
 import { parseCorsOrigins } from "medusa-core-utils"
 
 const route = Router()
@@ -116,6 +116,7 @@ export default (app, container, config) => {
   paymentCollectionRoutes(route)
   paymentRoutes(route)
   productCategoryRoutes(route)
+  pocWorkflows(route)
 
   return app
 }

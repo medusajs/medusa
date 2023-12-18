@@ -9,7 +9,7 @@ import { ulid } from "ulid"
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 
-type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
+export type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
   transactionId?: string
   container?: ContainerLike
 }
@@ -111,11 +111,17 @@ class WorkflowOrchestrator {
       events,
     })
 
+    // TODO: temporary
+    const acknowledgement = {
+      transactionId: context.transactionId,
+      workflowId: workflowId,
+    }
+
     /* if (ret.transaction.hasFinished()) {
       WorkflowOrchestrator.notify(ret.transaction.modelId, ret.result)
     }*/
 
-    return ret
+    return { acknowledgement, ret }
   }
 
   static async setStepSuccess<T = unknown>({
@@ -207,15 +213,15 @@ class WorkflowOrchestrator {
     subscriber._id = subscriberId
     const subscribers = this.subscribers.get(workflowId) ?? new Map()
 
-    const doesHandlerExists = (handlers) => {
-      return handlers.some((s) => s === subscriber || s._id === subscriberId)
+    const handlerIndex = (handlers) => {
+      return handlers.indexOf((s) => s === subscriber || s._id === subscriberId)
     }
 
     if (transactionId) {
       const transactionSubscribers = subscribers.get(transactionId) ?? []
-      const subscriberAlreadyExists = doesHandlerExists(transactionSubscribers)
-      if (subscriberAlreadyExists) {
-        return
+      const subscriberIndex = handlerIndex(transactionSubscribers)
+      if (subscriberIndex !== -1) {
+        transactionSubscribers.slice(subscriberIndex, 1)
       }
 
       transactionSubscribers.push(subscriber)
@@ -225,9 +231,9 @@ class WorkflowOrchestrator {
     }
 
     const workflowSubscribers = subscribers.get(AnySubscriber) ?? []
-    const doesSubscriberExists = doesHandlerExists(workflowSubscribers)
-    if (doesSubscriberExists) {
-      return
+    const subscriberIndex = handlerIndex(workflowSubscribers)
+    if (subscriberIndex !== -1) {
+      workflowSubscribers.slice(subscriberIndex, 1)
     }
 
     workflowSubscribers.push(subscriber)
@@ -342,6 +348,7 @@ class WorkflowOrchestrator {
         result?: unknown,
         errors?: unknown[]
       ) => {
+        // TODO: unsubscribe transaction handlers on finish
         customEventHandlers?.onFinish?.(transaction, result)
         notify({ eventType: "onFinish", result, errors })
       },
@@ -404,7 +411,7 @@ class WorkflowOrchestrator {
     if (!isString(idempotencyKey)) {
       const { workflowId, transactionId, stepId, action } =
         idempotencyKey as IdempotencyKeyParts
-      idempotencyKey_ = `${workflowId}${transactionId}:${stepId}:${action}`
+      idempotencyKey_ = [workflowId, transactionId, stepId, action].join(":")
       setParts(workflowId, transactionId, stepId, action)
     } else {
       const [workflowId, transactionId, stepId, action] =
