@@ -1,4 +1,4 @@
-import * as PricingModels from "@models"
+import * as SalesChannelModles from "@models"
 
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 
@@ -22,7 +22,9 @@ export async function revertMigration({
   logger ??= console as unknown as Logger
 
   const dbData = ModulesSdkUtils.loadDatabaseConfig("pricing", options)!
-  const entities = Object.values(PricingModels) as unknown as EntitySchema[]
+  const entities = Object.values(
+    SalesChannelModles
+  ) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 
   const orm = await DALUtils.mikroOrmCreateConnection(
@@ -35,9 +37,11 @@ export async function revertMigration({
     const migrator = orm.getMigrator()
     await migrator.down()
 
-    logger?.info("Pricing module migration executed")
+    logger?.info("SalesChannel module migration executed")
   } catch (error) {
-    logger?.error(`Pricing module migration failed to run - Error: ${error}`)
+    logger?.error(
+      `SalesChannel module migration failed to run - Error: ${error}`
+    )
   }
 
   await orm.close()
