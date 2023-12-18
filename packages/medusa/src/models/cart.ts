@@ -244,6 +244,7 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
+import { MedusaV2Flag, SalesChannelFeatureFlag } from "@medusajs/utils"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
@@ -262,7 +263,6 @@ import {
   FeatureFlagColumn,
   FeatureFlagDecorators,
 } from "../utils/feature-flag-decorators"
-import { MedusaV2Flag } from "@medusajs/utils"
 
 export enum CartType {
   DEFAULT = "default",
@@ -389,17 +389,20 @@ export class Cart extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
+  @FeatureFlagColumn(SalesChannelFeatureFlag.key, {
+    type: "varchar",
+    nullable: true,
+  })
   sales_channel_id: string | null
 
-  @FeatureFlagDecorators("sales_channels", [
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
   sales_channel: SalesChannel
 
   @FeatureFlagDecorators(
-    [MedusaV2Flag.key, "sales_channels"],
+    [MedusaV2Flag.key, SalesChannelFeatureFlag.key],
     [
       ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
       JoinTable({
