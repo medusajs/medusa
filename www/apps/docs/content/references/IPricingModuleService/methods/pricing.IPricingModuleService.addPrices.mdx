@@ -13,11 +13,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This documentation provides a reference to the `addPrices` method. This belongs to the Pricing Module.
 
-`**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)&#62;`
+## addPrices(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)&#62;
 
 This method adds prices to a price set.
 
-## Example
+### Example
 
 To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
 
@@ -88,7 +88,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 }
 ```
 
-## Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -240,7 +240,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-## Returns
+### Returns
 
 <ParameterTypes parameters={[
   {
@@ -383,11 +383,11 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-`**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)[]&#62;`
+## addPrices(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)[]&#62;
 
 This method adds prices to multiple price sets.
 
-## Example
+### Example
 
 To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
 
@@ -458,7 +458,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 }
 ```
 
-## Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -610,7 +610,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-## Returns
+### Returns
 
 <ParameterTypes parameters={[
   {

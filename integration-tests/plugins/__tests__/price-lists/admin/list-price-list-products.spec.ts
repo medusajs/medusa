@@ -99,7 +99,6 @@ describe("GET /admin/price-lists/:id/products", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
       rules: [],
@@ -210,7 +209,6 @@ describe("GET /admin/price-lists/:id/products", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
       rules: [],

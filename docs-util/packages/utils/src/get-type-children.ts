@@ -22,12 +22,15 @@ export function getTypeChildren(
       break
     case "reference":
       // eslint-disable-next-line no-case-declarations
-      const referencedReflection =
-        reflectionType.reflection && "children" in reflectionType.reflection
+      const referencedReflection = reflectionType.reflection
+        ? "children" in reflectionType.reflection
           ? reflectionType.reflection
           : project
-            ? getProjectChild(project, reflectionType.name)
+            ? project.getReflectionById(reflectionType.reflection.id)
             : undefined
+        : project
+          ? getProjectChild(project, reflectionType.name)
+          : undefined
 
       if (referencedReflection instanceof DeclarationReflection) {
         if (referencedReflection.children) {

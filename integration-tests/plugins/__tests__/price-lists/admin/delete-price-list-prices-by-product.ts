@@ -87,7 +87,6 @@ describe("DELETE /admin/price-lists/:id/products/:productId/batch", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
     })
