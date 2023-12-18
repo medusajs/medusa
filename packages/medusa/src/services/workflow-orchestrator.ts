@@ -11,6 +11,11 @@ type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
   container?: { resolve<T = unknown>(key: string): T } // TODO: use ContainerLike once it is merged
 }
 
+type RegisterStepSuccessOptions<T> = Omit<
+  WorkflowOrchestratorRunOptions<T>,
+  "transactionId" | "input" | "events"
+>
+
 type NotifyOptions = {
   eventType: keyof DistributedTransactionEvents
   workflowId: string
@@ -52,6 +57,8 @@ class WorkflowOrchestrator {
       input,
       context,
       transactionId,
+      resultFrom,
+      throwOnError,
       events: eventHandlers,
       container,
     } = options ?? {}
@@ -75,6 +82,8 @@ class WorkflowOrchestrator {
 
     const ret = await flow.run({
       input,
+      throwOnError,
+      resultFrom,
       context,
       events,
     })
@@ -86,12 +95,56 @@ class WorkflowOrchestrator {
     return ret
   }
 
-  static setStepSuccess({ workflowId, idempotencyKey, stepResponse }) {
-    //
+  static async setStepSuccess<T = unknown>({
+    workflowId,
+    idempotencyKey,
+    stepResponse,
+    options,
+  }: {
+    workflowId: string
+    idempotencyKey: string
+    stepResponse: unknown
+    options?: RegisterStepSuccessOptions<T>
+  }) {
+    let { context, throwOnError, resultFrom, container } = options ?? {}
+
+    const flow = MedusaWorkflow.getWorkflow(workflowId)(
+      container as MedusaContainer
+    )
+
+    return await flow.registerStepSuccess({
+      idempotencyKey,
+      context,
+      resultFrom,
+      throwOnError,
+      response: stepResponse,
+    })
   }
 
-  static setStepFailure({ workflowId, idempotencyKey, stepResponse }) {
-    //
+  static async setStepFailure<T = unknown>({
+    workflowId,
+    idempotencyKey,
+    stepResponse,
+    options,
+  }: {
+    workflowId: string
+    idempotencyKey: string
+    stepResponse: unknown
+    options?: RegisterStepSuccessOptions<T>
+  }) {
+    let { context, throwOnError, resultFrom, container } = options ?? {}
+
+    const flow = MedusaWorkflow.getWorkflow(workflowId)(
+      container as MedusaContainer
+    )
+
+    return await flow.registerStepFailure({
+      idempotencyKey,
+      context,
+      resultFrom,
+      throwOnError,
+      response: stepResponse,
+    })
   }
 
   static subscribe({ workflowId, transactionId, handler }: SubscribeOptions) {
