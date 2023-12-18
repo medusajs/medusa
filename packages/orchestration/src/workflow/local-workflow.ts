@@ -187,6 +187,30 @@ export class LocalWorkflow {
     return transaction
   }
 
+  async getRunningTransaction(uniqueTransactionId: string, context?: Context) {
+    const { handler, orchestrator } = this.workflow
+
+    const transaction = await orchestrator.retrieveExistingTransaction(
+      uniqueTransactionId,
+      handler(this.container, context)
+    )
+
+    return transaction
+  }
+
+  async cancel(uniqueTransactionId: string, context?: Context) {
+    const { orchestrator } = this.workflow
+
+    const transaction = await this.getRunningTransaction(
+      uniqueTransactionId,
+      context
+    )
+
+    await orchestrator.cancelTransaction(transaction)
+
+    return transaction
+  }
+
   async registerStepSuccess(
     idempotencyKey: string,
     response?: unknown,
