@@ -26,14 +26,14 @@ export default async ({
       },
       async (email, password, done) => {
         try {
-          const { success, user } = await authService.authenticate(
+          const { success, user, error } = await authService.authenticate(
             email,
             password
           )
           if (success) {
             return done(null, user)
           } else {
-            return done("Incorrect Username / Password")
+            return done(error)
           }
         } catch (error) {
           return done(error)
