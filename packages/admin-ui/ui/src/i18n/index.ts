@@ -48,7 +48,7 @@ export const supportedLanguages = [
   {
 
     locale: "hi",
-    name: "Hindi"
+    name: "Hindi",
   },
   {
     locale: "bs",
@@ -64,7 +64,11 @@ export const supportedLanguages = [
   },
   {
     locale: "ru",
-    name: "Русский"
+    name: "Русский",
+  },
+  {
+    locale: "sl",
+    name: "Slovenščina",
   },
   {
     locale: "bg",
@@ -72,7 +76,7 @@ export const supportedLanguages = [
   },
   { 
     locale: "ko",
-    name: "한국어"
+    name: "한국어",
   },
   {
     locale: "zh",
