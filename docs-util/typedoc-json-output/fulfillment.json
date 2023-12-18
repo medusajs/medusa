@@ -69,7 +69,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "```ts title=src/services/my-fulfillment.ts\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n```"
+						"text": "```ts title=src/services/my-fulfillment.ts\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n\nexport default MyFulfillmentService\n```"
 					},
 					{
 						"kind": "text",
@@ -105,7 +105,7 @@
 					},
 					{
 						"kind": "text",
-						"text": " property in the class is used when the fulfillment provider is created in the database.\n\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.\n\n"
+						"text": " property in the fulfillment provider service is used when the fulfillment provider is added to the database.\n\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.\n\n"
 					},
 					{
 						"kind": "code",
@@ -154,7 +154,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  static identifier = \"my-fulfillment\"\n\n  // ...\n}\n```"
+												"text": "```ts\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // ...\n  constructor(container, options) {\n    super(container)\n    // you can access options here\n\n    // you can also initialize a client that\n    // communicates with a third-party service.\n    this.client = new Client(options)\n  }\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -2204,7 +2204,7 @@
 					},
 					{
 						"kind": "code",
-						"text": "```ts title=src/services/my-fulfillment.ts\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n```"
+						"text": "```ts title=src/services/my-fulfillment.ts\nimport { AbstractFulfillmentService } from \"@medusajs/medusa\"\n\nclass MyFulfillmentService extends AbstractFulfillmentService {\n  // methods here...\n}\n\nexport default MyFulfillmentService\n```"
 					},
 					{
 						"kind": "text",
@@ -2240,7 +2240,7 @@
 					},
 					{
 						"kind": "text",
-						"text": " property in the class is used when the fulfillment provider is created in the database.\n\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.\n\n"
+						"text": " property in the fulfillment provider service is used when the fulfillment provider is added to the database.\n\nThe value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.\n\n"
 					},
 					{
 						"kind": "code",
