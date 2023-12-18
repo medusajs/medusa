@@ -68,14 +68,14 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import {
+  CreateProductOptionValueDTO,
+  UpdateProductOptionValueDTO,
+} from "../types/services/product-option-value"
+import {
   entityNameToLinkableKeysMap,
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
-import {
-  CreateProductOptionValueDTO,
-  UpdateProductOptionValueDTO,
-} from "../types/services/product-option-value"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -1063,6 +1063,10 @@ export default class ProductModuleService<
 
     const existingProductVariantsMap = new Map<string, ProductVariant[]>(
       data.map((productData) => {
+        if (productData.variants === undefined) {
+          return [productData.id, []]
+        }
+
         const productVariantsForProduct = existingProductVariants.filter(
           (variant) => variant.product_id === productData.id
         )

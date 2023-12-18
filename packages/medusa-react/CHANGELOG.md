@@ -1,5 +1,11 @@
 # Change Log
 
+## 9.0.12
+
+### Patch Changes
+
+- [#5765](https://github.com/medusajs/medusa/pull/5765) [`4e9d95454`](https://github.com/medusajs/medusa/commit/4e9d954549916ea260583a6b5e36f0c6c02d4d22) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa-react): Allow setting maxRetries on MedusaProvider
+
 ## 9.0.11
 
 ### Patch Changes

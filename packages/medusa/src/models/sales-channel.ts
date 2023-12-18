@@ -1,15 +1,12 @@
 import { BeforeInsert, Column, JoinTable, ManyToMany, OneToMany } from "typeorm"
 
-import {
-  FeatureFlagDecorators,
-  FeatureFlagEntity,
-} from "../utils/feature-flag-decorators"
+import { MedusaV2Flag } from "@medusajs/utils"
+import { FeatureFlagDecorators, FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { DbAwareColumn, generateEntityId } from "../utils"
 import { SalesChannelLocation } from "./sales-channel-location"
 import { Product } from "./product"
 import { Cart } from "./cart"
-import { MedusaV2Flag } from "@medusajs/utils"
 
 @FeatureFlagEntity("sales_channels")
 export class SalesChannel extends SoftDeletableEntity {

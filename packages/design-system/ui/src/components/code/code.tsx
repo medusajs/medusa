@@ -1,6 +1,9 @@
 import { clx } from "@/utils/clx"
 import * as React from "react"
 
+/**
+ * This component is based on the `code` element and supports all of its props
+ */
 const Code = React.forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<"code">
