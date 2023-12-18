@@ -42,8 +42,8 @@ module.exports = {
     database_extra: process.env.NODE_ENV !== "development" ?
       {
         ssl: {
-          rejectUnauthorized: false
-        }
+          rejectUnauthorized: false,
+        },
       } : {},
   },
 }
