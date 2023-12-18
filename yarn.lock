@@ -7904,9 +7904,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/promotions@workspace:packages/promotions":
+"@medusajs/promotions@workspace:packages/promotion":
   version: 0.0.0-use.local
-  resolution: "@medusajs/promotions@workspace:packages/promotions"
+  resolution: "@medusajs/promotions@workspace:packages/promotion"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
