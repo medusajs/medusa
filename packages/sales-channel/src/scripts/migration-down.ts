@@ -4,6 +4,7 @@ import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
+import { Modules } from "@medusajs/modules-sdk"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -21,7 +22,10 @@ export async function revertMigration({
 > = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("pricing", options)!
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(
+    Modules.SALES_CHANNEL,
+    options
+  )!
   const entities = Object.values(
     SalesChannelModles
   ) as unknown as EntitySchema[]
