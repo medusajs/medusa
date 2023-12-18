@@ -1,20 +1,20 @@
 ---
-displayed_sidebar: homepage
+displayed_sidebar: modules
 ---
 
 import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # PaymentProcessorSessionResponse
 
- **PaymentProcessorSessionResponse**: `Object`
+The response of operations on a payment.
 
-## Type declaration
+## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "session_data",
     "type": "`Record<string, unknown>`",
-    "description": "",
+    "description": "The data to be stored in the `data` field of the Payment Session to be created.\nThe `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -23,7 +23,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "update_requests",
     "type": "`object`",
-    "description": "",
+    "description": "Used to specify data that should be updated in the Medusa backend.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -31,7 +31,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
       {
         "name": "customer_metadata",
         "type": "`Record<string, unknown>`",
-        "description": "",
+        "description": "Specifies a new value of the `metadata` field of the customer associated with the payment.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -42,7 +42,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "update_requests.customer_metadata",
     "type": "`Record<string, unknown>`",
-    "description": "",
+    "description": "Specifies a new value of the `metadata` field of the customer associated with the payment.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
