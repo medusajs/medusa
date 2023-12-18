@@ -24,15 +24,15 @@ A `PriceSet` represents a collection of money amounts that are linked to a resou
 
 ### Rule Type
 
-Each money amount within a price set can be a price that’s applied for different conditions. These conditions are represented as rule types. 
+Each money amount within a price set can be a price that’s applied for different conditions. These conditions are represented as rule types.
 
 A `RuleType` defines custom conditions. Each rule type has a unique `rule_attribute`, referenced in rule values, such as when setting a rule of a money amount.
 
 ### Price Rule
 
-Each rule of a money amount within a price set is represented by the `PriceRule` entity, which holds the value of a rule type. The `PriceSetMoneyAmount` has a `number_rules` attribute, which indicates how many rules, represented by `PriceRule`, are applied to the money amount.
+Each rule of a money amount within a price set is represented by the `PriceRule` entity, which holds the value of a rule type. The `PriceSetMoneyAmount` has a `rules_count` attribute, which indicates how many rules, represented by `PriceRule`, are applied to the money amount.
 
-![A diagram showcasing the relation between the PriceRule, PriceSet, MoneyAmount, RuleType, and PriceSetMoneyAmount](https://res.cloudinary.com/dza7lstvk/image/upload/v1700573982/Medusa%20Docs/Diagrams/price-rule-1_mcnnts.jpg)
+![A diagram showcasing the relation between the PriceRule, PriceSet, MoneyAmount, RuleType, and PriceSetMoneyAmount](https://res.cloudinary.com/dza7lstvk/image/upload/v1702395550/Medusa%20Docs/Diagrams/price-rule-1_h7mdwg.jpg)
 
 For example, you can create a `zip_code` rule type. Then, a money amount within the price set can have the rule value `zip_code: 10557`, indicating that the money amount can only be applied within the `10557` zip code.
 
@@ -40,13 +40,13 @@ Each money amount within the price set can have different values for the same ru
 
 For example, this diagram showcases two money amounts having different values for the same rule type:
 
-![A diagram showcasing the relation between the PriceRule, PriceSet, MoneyAmount, RuleType, and PriceSetMoneyAmount with two money amounts.](https://res.cloudinary.com/dza7lstvk/image/upload/v1700574156/Medusa%20Docs/Diagrams/price-rule-2_ejxale.jpg)
+![A diagram showcasing the relation between the PriceRule, PriceSet, MoneyAmount, RuleType, and PriceSetMoneyAmount with two money amounts.](https://res.cloudinary.com/dza7lstvk/image/upload/v1702395596/Medusa%20Docs/Diagrams/price-rule-2_x5be7v.jpg)
 
 Each money amount can have multiple rules applied to it as well.
 
 For example, a money amount can have the rules `zip_code` and `region_id` applied to it. In this case, the value of each rule is represented by a `PriceRule`.
 
-![A diagram showcasing the relation between the PriceRule, PriceSet, MoneyAmount, RuleType, and PriceSetMoneyAmount with multiple rules.](https://res.cloudinary.com/dza7lstvk/image/upload/v1700574174/Medusa%20Docs/Diagrams/price-rule-3_j4kdfu.jpg)
+![A diagram showcasing the relation between the PriceRule, PriceSet, MoneyAmount, RuleType, and PriceSetMoneyAmount with multiple rules.](https://res.cloudinary.com/dza7lstvk/image/upload/v1702395641/Medusa%20Docs/Diagrams/price-rule-3_uvwjj5.jpg)
 
 ### PriceSetRuleType
 
@@ -54,7 +54,7 @@ The `PriceSetRuleType` entity indicates what rules the money amounts can have wi
 
 For example, to use the `zip_code` rule type on a money amount in a price set, the rule type must first be enabled on the price set through the `PriceSetRuleType`.
 
-![A diagram showcasing the relation between the PriceSet, PriceRule, MoneyAmount, PriceSetMoneyAmount, RuleType, and PriceSetRuleType](https://res.cloudinary.com/dza7lstvk/image/upload/v1700573984/Medusa%20Docs/Diagrams/price-set-rule-type_e1l0ef.jpg)
+![A diagram showcasing the relation between the PriceSet, PriceRule, MoneyAmount, PriceSetMoneyAmount, RuleType, and PriceSetRuleType](https://res.cloudinary.com/dza7lstvk/image/upload/v1702395692/Medusa%20Docs/Diagrams/price-set-rule-type_tmxbdw.jpg)
 
 ---
 
@@ -64,11 +64,11 @@ A `PriceList` is a group of prices only enabled if their rules are satisfied. A 
 
 Its associated prices are represented by the `PriceSetMoneyAmount` entity, which is used to store the money amounts of a price set.
 
-Each rule that can be applied to a price list is represented by the `PriceListRule` entity. The `number_rules` attribute of a `PriceList` indicates how many rules are applied to it.
+Each rule that can be applied to a price list is represented by the `PriceListRule` entity. The `rules_count` attribute of a `PriceList` indicates how many rules are applied to it.
 
 Each rule of a price list can have more than one value, representing its values by the `PriceListRuleValue` entity.
 
-![A diagram showcasing the relation between the PriceSet, PriceList, MoneyAmount, PriceSetMoneyAmount, RuleType, and PriceListRuleValue](https://res.cloudinary.com/dza7lstvk/image/upload/v1700574138/Medusa%20Docs/Diagrams/price-list_mtcanv.jpg)
+![A diagram showcasing the relation between the PriceSet, PriceList, MoneyAmount, PriceSetMoneyAmount, RuleType, and PriceListRuleValue](https://res.cloudinary.com/dza7lstvk/image/upload/v1702395768/Medusa%20Docs/Diagrams/price-list_bjbknv.jpg)
 
 ---
 

@@ -95,7 +95,9 @@ export async function upsertVariantPrices({
           min_quantity: price.min_quantity,
           max_quantity: price.max_quantity,
           amount: price.amount,
-          currency_code: region_currency_code ?? price.currency_code,
+          currency_code: (
+            region_currency_code ?? price.currency_code
+          ).toLowerCase(),
         }
 
         moneyAmountsToUpdate.push(priceToUpdate)
@@ -104,7 +106,9 @@ export async function upsertVariantPrices({
           min_quantity: price.min_quantity,
           max_quantity: price.max_quantity,
           amount: price.amount,
-          currency_code: region_currency_code ?? price.currency_code,
+          currency_code: (
+            region_currency_code ?? price.currency_code
+          ).toLowerCase(),
           rules: region_rules ?? {},
         }
 

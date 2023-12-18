@@ -6,7 +6,7 @@ import {
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
-import { PriceSetRuleType, initialize } from "../../../../src"
+import { initialize, PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
@@ -400,7 +400,6 @@ describe("PricingModule Service - PriceSet", () => {
             {
               amount: 150,
               currency_code: "USD",
-              rules: {},
             },
           ],
         },

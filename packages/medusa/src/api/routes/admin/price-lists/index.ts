@@ -121,6 +121,12 @@ export const defaultAdminPriceListRemoteQueryObject = {
         "updated_at",
       ],
     },
+    price_rules: {
+      fields: ["value"],
+      rule_type: {
+        fields: ["rule_attribute"],
+      },
+    },
     price_set: {
       variant_link: {
         variant: {

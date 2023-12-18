@@ -1,5 +1,45 @@
 # Change Log
 
+## 1.19.0
+
+### Minor Changes
+
+- [#5766](https://github.com/medusajs/medusa/pull/5766) [`428331a65`](https://github.com/medusajs/medusa/commit/428331a653b613767174d210fb96cc3b7eacb93a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Respond with order when cart is already completed
+
+- [#5656](https://github.com/medusajs/medusa/pull/5656) [`a53ae1e29`](https://github.com/medusajs/medusa/commit/a53ae1e29b53e08e7885f663a5bff5cfa193d338) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - Replaced Node Redis with ioredis
+
+### Patch Changes
+
+- [#5752](https://github.com/medusajs/medusa/pull/5752) [`079f0da83`](https://github.com/medusajs/medusa/commit/079f0da83f482562bbb525807ee1a7e32993b4da) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,pricing,medusa,pricing,types,utils): Price List Prices can have their own rules
+
+- [#5811](https://github.com/medusajs/medusa/pull/5811) [`07107f356`](https://github.com/medusajs/medusa/commit/07107f3565bc2c97e9b89818b390210454f0566d) Thanks [@riqwan](https://github.com/riqwan)! - feat(orchestration,core-flows,medusa): product import uses workflows
+
+- [#5825](https://github.com/medusajs/medusa/pull/5825) [`d9e29e8e4`](https://github.com/medusajs/medusa/commit/d9e29e8e456de4a7b2c32585670911639f5acb9e) Thanks [@josetr](https://github.com/josetr)! - Updating note doesn't require loading author relationship
+
+- [#5723](https://github.com/medusajs/medusa/pull/5723) [`fd317f1a6`](https://github.com/medusajs/medusa/commit/fd317f1a6ba0952999e2de5c4e649376e6afab21) Thanks [@driver005](https://github.com/driver005)! - feat(medusa): add monorepo support command develop
+
+- [#5846](https://github.com/medusajs/medusa/pull/5846) [`b5748ab59`](https://github.com/medusajs/medusa/commit/b5748ab59eac1b5adac32779fd0b88d56b1628af) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa): Prefer logger instead of console.log
+
+- [#5867](https://github.com/medusajs/medusa/pull/5867) [`2826605b0`](https://github.com/medusajs/medusa/commit/2826605b01ddfca78b84979999b671a4f25dd5f9) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Order edit confirmation conflict line items update
+
+- [#5701](https://github.com/medusajs/medusa/pull/5701) [`6975eacb3`](https://github.com/medusajs/medusa/commit/6975eacb338874b976c14aae030c74362d57410c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, medusa-cli): Improve add line item + cluster starting with medusa cli
+
+- [#5745](https://github.com/medusajs/medusa/pull/5745) [`e4bfa6c88`](https://github.com/medusajs/medusa/commit/e4bfa6c88ae56934528e66a7f8cc0edf3ad49e04) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): raise error properly in api-key middleware if product is not found
+
+- [#5816](https://github.com/medusajs/medusa/pull/5816) [`6f96ced40`](https://github.com/medusajs/medusa/commit/6f96ced40f01a6cccee2a5eb0d30964bc8f43163) Thanks [@Arsenalist](https://github.com/Arsenalist)! - Emit event when discount is created
+
+- [#5725](https://github.com/medusajs/medusa/pull/5725) [`85cda7ce3`](https://github.com/medusajs/medusa/commit/85cda7ce3754e2a8ecb207f29d462a9bcd442ade) Thanks [@adrien2p](https://github.com/adrien2p)! - slightly improve create cart workflow
+
+- [#5781](https://github.com/medusajs/medusa/pull/5781) [`9b447f99f`](https://github.com/medusajs/medusa/commit/9b447f99ff25812ad07fe3b49656fd099df69e42) Thanks [@mortenengel](https://github.com/mortenengel)! - fix(medusa): Product option values in CSV Export
+
+- Updated dependencies [[`079f0da83`](https://github.com/medusajs/medusa/commit/079f0da83f482562bbb525807ee1a7e32993b4da), [`c4deeee48`](https://github.com/medusajs/medusa/commit/c4deeee481399f5371d773173e20dc149d502e20), [`07107f356`](https://github.com/medusajs/medusa/commit/07107f3565bc2c97e9b89818b390210454f0566d), [`6975eacb3`](https://github.com/medusajs/medusa/commit/6975eacb338874b976c14aae030c74362d57410c), [`85cda7ce3`](https://github.com/medusajs/medusa/commit/85cda7ce3754e2a8ecb207f29d462a9bcd442ade), [`8f25ed8a1`](https://github.com/medusajs/medusa/commit/8f25ed8a10fe23e9342dc3d03545546b4ad4d6da)]:
+  - @medusajs/core-flows@0.0.3
+  - @medusajs/utils@1.11.2
+  - @medusajs/modules-sdk@1.12.5
+  - @medusajs/orchestration@0.5.1
+  - @medusajs/medusa-cli@1.3.22
+  - @medusajs/link-modules@0.2.5
+
 ## 1.18.1
 
 ### Patch Changes

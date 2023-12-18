@@ -15,8 +15,19 @@ interface StatusBadgeProps
   color?: "green" | "red" | "blue" | "orange" | "grey" | "purple"
 }
 
+/**
+ * This component is based on the span element and supports all of its props
+ */
 const StatusBadge = React.forwardRef<HTMLSpanElement, StatusBadgeProps>(
-  ({ children, className, color = "grey", ...props }, ref) => {
+  ({ 
+    children, 
+    className, 
+    /**
+     * The status's color.
+     */
+    color = "grey", 
+    ...props 
+  }: StatusBadgeProps, ref) => {
     const StatusIndicator = {
       green: EllipseGreenSolid,
       red: EllipseRedSolid,

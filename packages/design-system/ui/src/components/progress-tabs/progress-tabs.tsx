@@ -11,6 +11,11 @@ import * as React from "react"
 import { ProgressStatus } from "@/types"
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the [Radix UI Tabs](https://radix-ui.com/primitives/docs/components/tabs) primitves.
+ * 
+ * @excludeExternal
+ */
 const ProgressTabsRoot = (props: ProgressTabsPrimitives.TabsProps) => {
   return <ProgressTabsPrimitives.Root {...props} />
 }
@@ -18,10 +23,17 @@ ProgressTabsRoot.displayName = "ProgressTabs"
 
 interface IndicatorProps
   extends Omit<React.ComponentPropsWithoutRef<"span">, "children"> {
+  /**
+   * The current status.
+   */
   status?: ProgressStatus
 }
 
-const ProgressIndicator = ({ status, className, ...props }: IndicatorProps) => {
+const ProgressIndicator = ({ 
+  status, 
+  className, 
+  ...props 
+}: IndicatorProps) => {
   const Icon = React.useMemo(() => {
     switch (status) {
       case "not-started":
@@ -47,6 +59,7 @@ const ProgressIndicator = ({ status, className, ...props }: IndicatorProps) => {
     </span>
   )
 }
+ProgressIndicator.displayName = "ProgressTabs.ProgressIndicator"
 
 interface ProgressTabsTriggerProps
   extends Omit<
@@ -59,7 +72,7 @@ interface ProgressTabsTriggerProps
 const ProgressTabsTrigger = React.forwardRef<
   React.ElementRef<typeof ProgressTabsPrimitives.Trigger>,
   ProgressTabsTriggerProps
->(({ className, children, status = "not-started", ...props }, ref) => (
+>(({ className, children, status = "not-started", ...props }: ProgressTabsTriggerProps, ref) => (
   <ProgressTabsPrimitives.Trigger
     ref={ref}
     className={clx(

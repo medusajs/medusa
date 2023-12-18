@@ -13,11 +13,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This documentation provides a reference to the `create` method. This belongs to the Pricing Module.
 
-`**create**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)&#62;`
+## create(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)&#62;
 
 This method is used to create a new price set.
 
-## Example
+### Example
 
 To create a default price set, don't pass any rules. For example:
 
@@ -99,7 +99,7 @@ async function createPriceSet () {
 }
 ```
 
-## Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -261,7 +261,7 @@ async function createPriceSet () {
   }
 ]} />
 
-## Returns
+### Returns
 
 <ParameterTypes parameters={[
   {
@@ -404,11 +404,11 @@ async function createPriceSet () {
   }
 ]} />
 
-`**create**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)[]&#62;`
+## create(data, sharedContext?): Promise&#60;[PriceSetDTO](../../pricing/interfaces/pricing.PriceSetDTO.mdx)[]&#62;
 
 This method is used to create multiple price sets.
 
-## Example
+### Example
 
 To create price sets with a default price, don't pass any rules and make sure to pass the `currency_code` of the price. For example:
 
@@ -483,7 +483,7 @@ async function createPriceSets () {
 }
 ```
 
-## Parameters
+### Parameters
 
 <ParameterTypes parameters={[
   {
@@ -645,7 +645,7 @@ async function createPriceSets () {
   }
 ]} />
 
-## Returns
+### Returns
 
 <ParameterTypes parameters={[
   {

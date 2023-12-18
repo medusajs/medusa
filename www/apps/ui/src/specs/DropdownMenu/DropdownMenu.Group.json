@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the [Radix UI Dropdown Menu Group](https://www.radix-ui.com/primitives/docs/components/dropdown-menu#group) primitive.",
+  "methods": [],
+  "displayName": "DropdownMenu.Group",
+  "props": {}
+}

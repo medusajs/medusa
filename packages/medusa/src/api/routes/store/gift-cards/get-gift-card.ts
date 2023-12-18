@@ -1,6 +1,7 @@
 import { defaultStoreGiftCardFields, defaultStoreGiftCardRelations } from "."
 
 import GiftCardService from "../../../../services/gift-card"
+import { Logger } from "@medusajs/types"
 
 /**
  * @oas [get] /store/gift-cards/{code}
@@ -58,7 +59,8 @@ export default async (req, res) => {
 
     res.json({ gift_card: giftCard })
   } catch (error) {
-    console.log(error)
+    const logger: Logger = req.scope.resolve("logger")
+    logger.log(error)
     throw error
   }
 }

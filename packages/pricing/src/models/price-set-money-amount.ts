@@ -38,7 +38,7 @@ export default class PriceSetMoneyAmount {
   money_amount?: MoneyAmount
 
   @Property({ columnType: "integer", default: 0 })
-  number_rules?: number
+  rules_count?: number
 
   @OneToMany({
     entity: () => PriceRule,

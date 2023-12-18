@@ -546,13 +546,13 @@ After using `MedusaError`, the returned error in the response provides a clearer
   - `MedusaError.Types.DB_ERROR`: Sets the response code to `500`.
   - `MedusaError.Types.DUPLICATE_ERROR`: Sets the response code to `422`.
   - `MedusaError.Types.INVALID_ARGUMENT`
-  - `MedusaError.Types.INVALID_DATA`: Sets the resposne code to `400`.
-  - `MedusaError.Types.UNAUTHORIZED`: Sets the resposne code to `401`.
+  - `MedusaError.Types.INVALID_DATA`: Sets the response code to `400`.
+  - `MedusaError.Types.UNAUTHORIZED`: Sets the response code to `401`.
   - `MedusaError.Types.NOT_FOUND`: Sets the response code to `404`.
-  - `MedusaError.Types.NOT_ALLOWED`: Sets the resposne code to `400`.
+  - `MedusaError.Types.NOT_ALLOWED`: Sets the response code to `400`.
   - `MedusaError.Types.UNEXPECTED_STATE`
-  - `MedusaError.Types.CONFLICT`: Sets the resposne code to `409`.
-  - `MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR`: Sets the resposne code to `422`.
+  - `MedusaError.Types.CONFLICT`: Sets the response code to `409`.
+  - `MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR`: Sets the response code to `422`.
 
 </Details>
 
@@ -603,7 +603,7 @@ export const GET = wrapHandler(async (
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> => {
-  throw new Error("An error occured")
+  throw new Error("An error occurred")
 })
 
 ```
