@@ -60,7 +60,7 @@ The plugin exposes four API Routes.
 
 ### Add Item to Wishlist API Route
 
-The `POST` API Route at `/store/customer/<CUSTOMER_ID>/wishlist` allows customers to add items to their existing or new wishlist, where `<CUSTOMER_ID>` is the ID of the customer. It accepts the following body parameters:
+The `POST` API Route at `/store/customers/<CUSTOMER_ID>/wishlist` allows customers to add items to their existing or new wishlist, where `<CUSTOMER_ID>` is the ID of the customer. It accepts the following body parameters:
 
 - `variant_id`: a string indicating the ID of the product variant to add to the wishlist.
 - `quantity`: (optional) a number indicating the quantity of the product variant.
@@ -70,7 +70,7 @@ The request returns the full customer object. The wishlist is available at `cust
 
 ### Delete Item from Wishlist API Route
 
-The `DELETE` API Route at `/store/customer/<CUSTOMER_ID>/wishlist` allows customers to delete items from their wishlist, where `<CUSTOMER_ID>` is the ID of the customer.
+The `DELETE` API Route at `/store/customers/<CUSTOMER_ID>/wishlist` allows customers to delete items from their wishlist, where `<CUSTOMER_ID>` is the ID of the customer.
 
 The API Route accepts one request body parameter `index`, which indicates the index of the item in the `customer.metadata.wishlist` array.
 
@@ -78,7 +78,7 @@ The request returns the full customer object. The wishlist is available at `cust
 
 #### Generate Share Token API Route
 
-The `POST` API Route at `/store/customer/<CUSTOMER_ID>/wishlist/share-token` allows customers to retrieve a token that can be used to access the wishlist, where `<CUSTOMER_ID>` is the ID of the customer.
+The `POST` API Route at `/store/customers/<CUSTOMER_ID>/wishlist/share-token` allows customers to retrieve a token that can be used to access the wishlist, where `<CUSTOMER_ID>` is the ID of the customer.
 
 The API Route doesn't accept any request body parameters.
 
