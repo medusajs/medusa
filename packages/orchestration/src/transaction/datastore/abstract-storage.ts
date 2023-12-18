@@ -14,18 +14,18 @@ export interface IDistributedTransactionStorage {
   scheduleRetry(
     transaction: DistributedTransaction,
     step: TransactionStep,
-    now: number,
+    timestamp: number,
     interval: number
   ): Promise<void>
   scheduleTransactionTimeout(
     transaction: DistributedTransaction,
-    now: number,
+    timestamp: number,
     interval: number
   ): Promise<void>
   scheduleStepTimeout(
     transaction: DistributedTransaction,
     step: TransactionStep,
-    now: number,
+    timestamp: number,
     interval: number
   ): Promise<void>
 }
@@ -60,7 +60,7 @@ export abstract class DistributedTransactionStorage
   async scheduleRetry(
     transaction: DistributedTransaction,
     step: TransactionStep,
-    now: number,
+    timestamp: number,
     interval: number
   ): Promise<void> {
     throw new Error("Method 'scheduleRetry' not implemented.")
@@ -68,7 +68,7 @@ export abstract class DistributedTransactionStorage
 
   async scheduleTransactionTimeout(
     transaction: DistributedTransaction,
-    now: number,
+    timestamp: number,
     interval: number
   ): Promise<void> {
     throw new Error("Method 'scheduleTransactionTimeout' not implemented.")
@@ -77,7 +77,7 @@ export abstract class DistributedTransactionStorage
   async scheduleStepTimeout(
     transaction: DistributedTransaction,
     step: TransactionStep,
-    now: number,
+    timestamp: number,
     interval: number
   ): Promise<void> {
     throw new Error("Method 'scheduleStepTimeout' not implemented.")

@@ -1,13 +1,13 @@
-import { FlowRunOptions, MedusaWorkflow } from "@medusajs/workflows-sdk"
 import {
   DistributedTransaction,
   DistributedTransactionEvents,
   TransactionHandlerType,
   TransactionStep,
 } from "@medusajs/orchestration"
-import { ulid } from "ulid"
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
+import { FlowRunOptions, MedusaWorkflow } from "@medusajs/workflows-sdk"
+import { ulid } from "ulid"
 
 type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
   transactionId?: string
@@ -116,6 +116,33 @@ class WorkflowOrchestrator {
     }*/
 
     return ret
+  }
+
+  static async getRunningTransaction(
+    workflowId: string,
+    transactionId: string,
+    options?: WorkflowOrchestratorRunOptions<undefined>
+  ): Promise<DistributedTransaction> {
+    let { context, container } = options ?? {}
+
+    if (!workflowId) {
+      throw new Error("Workflow ID is required")
+    }
+
+    if (!transactionId) {
+      throw new Error("TransactionId ID is required")
+    }
+
+    context ??= {}
+    context.transactionId ??= transactionId
+
+    const flow = MedusaWorkflow.getWorkflow(workflowId)(
+      container as MedusaContainer
+    )
+
+    const transaction = await flow.getRunningTransaction(transactionId, context)
+
+    return transaction
   }
 
   static async setStepSuccess<T = unknown>({

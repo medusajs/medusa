@@ -1,3 +1,4 @@
+import { MedusaError } from "@medusajs/utils"
 import {
   DistributedTransaction,
   TransactionPayload,
@@ -50,6 +51,7 @@ export class TransactionStep {
   lastAttempt: number | null
   retryRescheduledAt: number | null
   timedOutAt: number | null
+  startedAt?: number
   next: string[]
   saveResponse: boolean
 
@@ -105,7 +107,8 @@ export class TransactionStep {
       return
     }
 
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
       `Updating State from "${curState.state}" to "${toState}" is not allowed.`
     )
   }
@@ -134,7 +137,8 @@ export class TransactionStep {
       return
     }
 
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
       `Updating Status from "${curState.status}" to "${toStatus}" is not allowed.`
     )
   }
@@ -178,6 +182,16 @@ export class TransactionStep {
       this.isCompensating() &&
       this.getStates().state === TransactionState.NOT_STARTED &&
       flowState === TransactionState.COMPENSATING
+    )
+  }
+
+  canCancel(): boolean {
+    return (
+      !this.isCompensating() &&
+      [
+        TransactionStepStatus.WAITING,
+        TransactionStepStatus.TEMPORARY_FAILURE,
+      ].includes(this.getStates().status)
     )
   }
 }

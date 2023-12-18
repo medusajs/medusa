@@ -12,7 +12,7 @@ import {
   TransactionStepsDefinition,
 } from "./types"
 
-import { promiseAll } from "@medusajs/utils"
+import { MedusaError, promiseAll } from "@medusajs/utils"
 import { EventEmitter } from "events"
 
 export type TransactionFlow = {
@@ -164,6 +164,20 @@ export class TransactionOrchestrator extends EventEmitter {
 
       const stepDef = flow.steps[step]
       const curState = stepDef.getStates()
+
+      // Step timeout
+      if (
+        stepDef.definition.timeout &&
+        !stepDef.timedOutAt &&
+        stepDef.canCancel() &&
+        stepDef.startedAt! + stepDef.definition.timeout * 1e3 < Date.now()
+      ) {
+        stepDef.timedOutAt = Date.now()
+        await transaction.saveCheckpoint()
+        this.emit("timeout", transaction)
+        await this.cancelTransaction(transaction)
+        break
+      }
 
       if (curState.status === TransactionStepStatus.WAITING) {
         hasWaiting = true
@@ -397,6 +411,10 @@ export class TransactionOrchestrator extends EventEmitter {
       step.attempts++
 
       if (curState.state === TransactionState.NOT_STARTED) {
+        if (!step.startedAt) {
+          step.startedAt = Date.now()
+        }
+
         if (step.isCompensating()) {
           step.changeState(TransactionState.COMPENSATING)
 
@@ -491,7 +509,8 @@ export class TransactionOrchestrator extends EventEmitter {
    */
   public async resume(transaction: DistributedTransaction): Promise<void> {
     if (transaction.modelId !== this.id) {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
         `TransactionModel "${transaction.modelId}" cannot be orchestrated by "${this.id}" model.`
       )
     }
@@ -532,14 +551,18 @@ export class TransactionOrchestrator extends EventEmitter {
     transaction: DistributedTransaction
   ): Promise<void> {
     if (transaction.modelId !== this.id) {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
         `TransactionModel "${transaction.modelId}" cannot be orchestrated by "${this.id}" model.`
       )
     }
 
     const flow = transaction.getFlow()
     if (flow.state === TransactionState.FAILED) {
-      throw new Error(`Cannot revert a perment failed transaction.`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot revert a perment failed transaction.`
+      )
     }
 
     flow.state = TransactionState.WAITING_TO_COMPENSATE
@@ -719,6 +742,35 @@ export class TransactionOrchestrator extends EventEmitter {
     return transaction
   }
 
+  /** Returns an existing transaction
+   * @param transactionId - unique identifier of the transaction
+   * @param handler - function to handle action of the transaction
+   */
+  public async retrieveExistingTransaction(
+    transactionId: string,
+    handler: TransactionStepHandler
+  ): Promise<DistributedTransaction> {
+    const existingTransaction =
+      await TransactionOrchestrator.loadTransactionById(this.id, transactionId)
+
+    if (!existingTransaction) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Transaction ${transactionId} could not be found.`
+      )
+    }
+
+    const transaction = new DistributedTransaction(
+      existingTransaction.flow,
+      handler,
+      undefined,
+      existingTransaction?.errors,
+      existingTransaction?.context
+    )
+
+    return transaction
+  }
+
   private static getStepByAction(
     flow: TransactionFlow,
     action: string
@@ -753,7 +805,10 @@ export class TransactionOrchestrator extends EventEmitter {
         )
 
       if (existingTransaction === null) {
-        throw new Error(`Transaction ${transactionId} could not be found.`)
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Transaction ${transactionId} could not be found.`
+        )
       }
 
       transaction = new DistributedTransaction(
@@ -811,7 +866,8 @@ export class TransactionOrchestrator extends EventEmitter {
       this.emit("resume", curTransaction)
       await this.executeNext(curTransaction)
     } else {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
         `Cannot set step success when status is ${step.getStates().status}`
       )
     }
@@ -850,7 +906,8 @@ export class TransactionOrchestrator extends EventEmitter {
       this.emit("resume", curTransaction)
       await this.executeNext(curTransaction)
     } else {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
         `Cannot set step failure when status is ${step.getStates().status}`
       )
     }
