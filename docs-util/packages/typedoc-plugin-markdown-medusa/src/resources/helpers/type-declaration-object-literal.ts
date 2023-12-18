@@ -1,10 +1,10 @@
 import * as Handlebars from "handlebars"
 import { DeclarationReflection, ReflectionType } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import { escapeChars, stripLineBreaks } from "../../utils"
 import { parseParams } from "../../utils/params-utils"
 import { ReflectionParameterType } from "../../types"
 import reflectionFormatter from "../../utils/reflection-formatter"
+import { escapeChars, stripLineBreaks } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -49,7 +49,10 @@ export default function (theme: MarkdownTheme) {
 
 function getListMarkdownContent(properties: DeclarationReflection[]) {
   const items = properties.map((property) =>
-    reflectionFormatter(property, "list")
+    reflectionFormatter({
+      reflection: property,
+      type: "list",
+    })
   )
 
   return items.join("\n")
@@ -61,7 +64,12 @@ function getComponentMarkdownContent(
   maxLevel?: number | undefined
 ) {
   const parameters = properties.map((property) =>
-    reflectionFormatter(property, "component", 1, maxLevel)
+    reflectionFormatter({
+      reflection: property,
+      type: "component",
+      level: 1,
+      maxLevel,
+    })
   )
 
   return `<${parameterComponent} parameters={${JSON.stringify(

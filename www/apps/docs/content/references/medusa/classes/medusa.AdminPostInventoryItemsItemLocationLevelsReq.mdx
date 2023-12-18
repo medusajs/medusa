@@ -1,0 +1,39 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostInventoryItemsItemLocationLevelsReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "incoming_quantity",
+    "type": "`number`",
+    "description": "the incoming stock quantity of the inventory item at this location",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "`string`",
+    "description": "the ID of the stock location",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "stocked_quantity",
+    "type": "`number`",
+    "description": "the stock quantity of the inventory item at this location",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>

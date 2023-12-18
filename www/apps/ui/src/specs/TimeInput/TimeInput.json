@@ -1,0 +1,10 @@
+{
+  "description": "This component is based on the `div` element and supports all of its props.",
+  "methods": [],
+  "displayName": "TimeInput",
+  "props": {
+    "hourCycle": {
+      "description": "The time's format. If no value is specified, the format is\nset based on the user's locale."
+    }
+  }
+}

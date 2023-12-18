@@ -14,7 +14,7 @@ import {
   UnionType,
   UnknownType,
 } from "typedoc"
-import getType, { Collapse } from "../../utils/type-utils"
+import { Collapse, getType } from "utils"
 
 export default function () {
   Handlebars.registerHelper(
@@ -39,7 +39,12 @@ export default function () {
       collapse: Collapse = "none",
       emphasis = true
     ) {
-      return getType(this, collapse, emphasis)
+      return getType({
+        reflectionType: this,
+        collapse,
+        wrapBackticks: emphasis,
+        getRelativeUrlMethod: Handlebars.helpers.relativeURL,
+      })
     }
   )
 }

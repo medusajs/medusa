@@ -1,9 +1,10 @@
 import { Cart, Order } from ".."
-import { ShippingOptionPriceType } from "../models/shipping-option"
 import {
   RequirementType,
   ShippingOptionRequirement,
 } from "../models/shipping-option-requirement"
+
+import { ShippingOptionPriceType } from "../models/shipping-option"
 
 export type ShippingRequirement = {
   type: RequirementType
@@ -50,7 +51,15 @@ export type CreateShippingOptionInput = {
   is_return?: boolean
   admin_only?: boolean
   metadata?: Record<string, unknown>
-  requirements?: ShippingOptionRequirement[]
+  requirements?: RequirementInput[]
+}
+
+export type RequirementInput = { type: RequirementType; amount: number }
+
+export type ValidateRequirementTypeInput = {
+  id?: string
+  type: RequirementType
+  amount: number
 }
 
 export type CreateCustomShippingOptionInput = {
@@ -67,7 +76,7 @@ export type UpdateShippingOptionInput = {
   name?: string
   admin_only?: boolean
   is_return?: boolean
-  requirements?: ShippingOptionRequirement[]
+  requirements?: RequirementInput[]
   region_id?: string
   provider_id?: string
   profile_id?: string

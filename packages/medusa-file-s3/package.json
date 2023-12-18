@@ -11,6 +11,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-file-s3"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Sebastian Mateos Nicolajsen",
   "license": "MIT",
   "devDependencies": {

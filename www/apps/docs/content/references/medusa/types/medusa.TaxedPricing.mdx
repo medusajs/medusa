@@ -1,0 +1,61 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# TaxedPricing
+
+ **TaxedPricing**: `Object`
+
+Pricing fields related to taxes.
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "calculated_price_incl_tax",
+    "type": "`number` \\| `null`",
+    "description": "The price after applying the tax amount on the calculated price.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculated_tax",
+    "type": "`number` \\| `null`",
+    "description": "The tax amount applied to the calculated price.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "original_price_incl_tax",
+    "type": "`number` \\| `null`",
+    "description": "The price after applying the tax amount on the original price.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "original_tax",
+    "type": "`number` \\| `null`",
+    "description": "The tax amount applied to the original price.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_rates",
+    "type": "[TaxServiceRate](medusa.TaxServiceRate.mdx)[] \\| `null`",
+    "description": "The list of tax rates.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

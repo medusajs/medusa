@@ -1,3 +1,4 @@
+import { Workflows, updateProducts } from "@medusajs/core-flows"
 import { DistributedTransaction } from "@medusajs/orchestration"
 import {
   FlagRouter,
@@ -5,7 +6,6 @@ import {
   MedusaV2Flag,
   promiseAll,
 } from "@medusajs/utils"
-import { updateProducts, Workflows } from "@medusajs/core-flows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -45,6 +45,7 @@ import {
   ProductVariantPricesUpdateReq,
   UpdateProductVariantInput,
 } from "../../../../types/product-variant"
+import { retrieveProduct } from "../../../../utils"
 import {
   createVariantsTransaction,
   revertVariantTransaction,
@@ -292,7 +293,11 @@ export default async (req, res) => {
   let rawProduct
 
   if (isMedusaV2Enabled) {
-    rawProduct = await getProductWithIsolatedProductModule(req, id)
+    rawProduct = await retrieveProduct(
+      req.scope,
+      id,
+      defaultAdminProductRemoteQueryObject
+    )
   } else {
     rawProduct = await productService.retrieve(id, {
       select: defaultAdminProductFields,
@@ -303,26 +308,6 @@ export default async (req, res) => {
   const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
-}
-
-async function getProductWithIsolatedProductModule(req, id) {
-  // TODO: Add support for fields/expands
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const [product] = await remoteQuery(query)
-
-  product.profile_id = product.profile?.id
-
-  return product
 }
 
 class ProductVariantOptionReq {

@@ -89,7 +89,6 @@ describe("DELETE /admin/price-lists/:id/variants/:variantId/prices", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
         },
       ],
     })
