@@ -1,49 +1,45 @@
-import {
-  createStep,
-  createWorkflow,
-  StepResponse,
-} from "@medusajs/workflows-sdk"
+const { WorkflowManager } = require("@medusajs/orchestration")
+const { exportWorkflow } = require("@medusajs/workflows-sdk")
 
-const step1 = createStep("step1", async (_, context) => {
-  return new StepResponse({
-    value: "test",
-  })
+const handlers = new Map()
+handlers.set("foo", {
+  invoke: () => ({ foo: true }),
+  compensate: () => {
+    return { foo_reverted: true }
+  },
 })
 
-const step2 = createStep("step2", async (_, context) => {
-  return new StepResponse({
-    value: "test2",
-  })
+handlers.set("bar", {
+  invoke: () => ({ bar: true }),
+  compensate: () => {
+    return { bar_reverted: true }
+  },
 })
 
-const step3 = createStep("step3", async (_, context) => {
-  return new StepResponse({
-    value: "test3",
-  })
+handlers.set("callExternal", {
+  invoke: () => {
+    // call to external API
+    // receive response
+    return { external_api_response: true }
+  },
+  compensate: () => {
+    return { callExternal_reverted: true }
+  },
 })
 
-const asyncWorkflow = createWorkflow<void, { value: string }>(
+WorkflowManager.register(
   "async_test",
-  (input) => {
-    step1({})
-    step2({})
-    return step3({})
-  }
-)
-
-asyncWorkflow().replaceAction(
-  "step2",
-  "step2",
   {
-    invoke: async () => {
-      return new StepResponse({
-        value: "test2",
-      })
+    action: "foo",
+    next: {
+      action: "callExternal",
+      async: true,
+      next: {
+        action: "bar",
+      },
     },
   },
-  {
-    async: true,
-  }
+  handlers
 )
 
-export { asyncWorkflow }
+export const asyncWorkflow = exportWorkflow("async_test")

@@ -8,6 +8,41 @@ const route = Router()
 export default (app) => {
   app.use("/workflows", route)
 
+  const subscriber = (res) => {
+    return async (...args) => {
+      const data = JSON.stringify(args, null, 2)
+      console.log(data)
+      res.write(data)
+    }
+  }
+  const subscriberId = "__sub__"
+
+  route.get("/subscribe", async (req, res) => {
+    res.writeHead(200, {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    })
+
+    req.on("close", () => {
+      res.end()
+    })
+
+    req.on("error", (err: any) => {
+      if (err.code === "ECONNRESET") {
+        res.end()
+      }
+    })
+
+    const { workflow_id, transaction_id } = req.query as any
+    WorkflowOrchestrator.subscribe({
+      workflowId: workflow_id,
+      transactionId: transaction_id,
+      subscriber: subscriber(res),
+      subscriberId,
+    })
+  })
+
   route.post("/:workflow_id", async (req, res) => {
     const { workflow_id } = req.params
     const options = req.body as WorkflowOrchestratorRunOptions<any>
@@ -38,41 +73,6 @@ export default (app) => {
       return res.send("ok")
     }
   )
-
-  const subscriber = (res) => {
-    return async (...args) => {
-      const data = JSON.stringify(args, null, 2)
-      console.log(data)
-      res.write(data)
-    }
-  }
-  const subscriberId = "__sub__"
-
-  route.post("/subscribe", async (req, res) => {
-    res.writeHead(200, {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache",
-      Connection: "keep-alive",
-    })
-
-    req.on("close", () => {
-      res.end()
-    })
-
-    req.on("error", (err: any) => {
-      if (err.code === "ECONNRESET") {
-        res.end()
-      }
-    })
-
-    const { workflow_id, transaction_id } = req.params as any
-    WorkflowOrchestrator.subscribe({
-      workflowId: workflow_id,
-      transactionId: transaction_id,
-      subscriber: subscriber(res),
-      subscriberId,
-    })
-  })
 
   return route
 }
