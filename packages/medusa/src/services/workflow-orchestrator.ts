@@ -8,6 +8,7 @@ import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import { FlowRunOptions, MedusaWorkflow } from "@medusajs/workflows-sdk"
 import { ulid } from "ulid"
+import { InMemoryDistributedTransactionStorage } from "./workflow-orchestrator-storage"
 
 export type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
   transactionId?: string
@@ -449,5 +450,7 @@ class WorkflowOrchestrator {
     return [idempotencyKey_, parts]
   }
 }
+
+DistributedTransaction.setStorage(new InMemoryDistributedTransactionStorage())
 
 export default WorkflowOrchestrator

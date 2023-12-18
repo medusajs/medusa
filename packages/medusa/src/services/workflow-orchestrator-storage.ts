@@ -10,8 +10,6 @@ import WorkflowOrchestrator from "./workflow-orchestrator"
 // eslint-disable-next-line max-len
 export class InMemoryDistributedTransactionStorage extends DistributedTransactionStorage {
   private storage: Map<string, TransactionCheckpoint>
-  private retries: any[] = []
-  private timeouts: any[] = []
 
   constructor() {
     super()
