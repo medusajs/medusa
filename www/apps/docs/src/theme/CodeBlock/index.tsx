@@ -4,6 +4,7 @@ import ElementContent from "@theme/CodeBlock/Content/Element"
 import StringContent from "@theme/CodeBlock/Content/String"
 import type { Props } from "@theme/CodeBlock"
 import clsx from "clsx"
+import { Badge, BadgeVariant } from "docs-ui"
 
 /**
  * Best attempt to make the children a plain string so it is copyable. If there
@@ -34,24 +35,53 @@ export default function CodeBlock({
   const CodeBlockComp =
     typeof children === "string" ? StringContent : ElementContent
 
+  const metastringTitleRegex = /title="?([^"]*)"?/
+  const metastringBadgeLabelRegex = /badgeLabel="?([^"]*)"?/
+  const metastringBadgeColorRegex = /badgeColor="?([^"]*)"?/
+
   let title = props.title
   delete props.title
 
-  if (!title) {
-    // check if it's in `metastring` instead
-    if (props.metastring) {
-      const titleRegex = /title="?(.*)"?/
-      const matchedTitle = props.metastring.match(titleRegex)
-      if (matchedTitle?.length) {
-        title = matchedTitle[1].replace(/^"/, "").replace(/"$/, "")
-        props.metastring = props.metastring.replace(titleRegex, "")
-      }
+  function extractFromMetastring(regex: RegExp): string {
+    if (!props.metastring) {
+      return ""
     }
+
+    let value = ""
+
+    const matched = props.metastring.match(regex)
+    if (matched?.length) {
+      value = matched[1].replace(/^"/, "").replace(/"$/, "")
+      props.metastring = props.metastring.replace(regex, "")
+    }
+
+    return value
+  }
+
+  if (!title) {
+    title = extractFromMetastring(metastringTitleRegex)
+  }
+
+  const badge = {
+    label: extractFromMetastring(metastringBadgeLabelRegex),
+    color: extractFromMetastring(metastringBadgeColorRegex),
   }
 
   return (
     <div className="code-wrapper">
-      {title && <div className="code-header">{title}</div>}
+      {(title || badge.label) && (
+        <div className="code-header">
+          {title}
+          {badge.label && (
+            <Badge
+              variant={(badge.color as BadgeVariant) || "green"}
+              className="justify-end"
+            >
+              {badge.label}
+            </Badge>
+          )}
+        </div>
+      )}
       <CodeBlockComp
         key={String(isBrowser)}
         noReport={noReport}
