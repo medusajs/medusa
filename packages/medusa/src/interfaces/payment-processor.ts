@@ -2,6 +2,8 @@ import { Address, Customer, PaymentSessionStatus } from "../models"
 import { MedusaContainer } from "../types/global"
 
 /**
+ * @interface
+ *
  * A payment's context.
  */
 export type PaymentProcessorContext = {
@@ -41,6 +43,8 @@ export type PaymentProcessorContext = {
 }
 
 /**
+ * @interface
+ *
  * The response of operations on a payment.
  */
 export type PaymentProcessorSessionResponse = {
@@ -60,6 +64,9 @@ export type PaymentProcessorSessionResponse = {
   session_data: Record<string, unknown>
 }
 
+/**
+ * An object that is returned in case of an error.
+ */
 export interface PaymentProcessorError {
   /**
    * The error message
@@ -119,7 +126,7 @@ export interface PaymentProcessorError {
  *
  * ---
  *
- * ### PaymentProcessorError
+ * ## PaymentProcessorError
  *
  * Before diving into the methods of the Payment Processor, you'll notice that part of the expected return signature of these method includes `PaymentProcessorError`.
  *
@@ -172,6 +179,8 @@ export interface PaymentProcessorError {
  *   }
  * }
  * ```
+ *
+ * ---
  *
  */
 export interface PaymentProcessor {
@@ -513,7 +522,7 @@ export interface PaymentProcessor {
    *
    * You can utilize this method to interact with the third-party provider and perform any actions necessary to cancel the payment.
    *
-   * @param {Record<string, unknown>} - The `data` field of the Payment.
+   * @param {Record<string, unknown>} paymentSessionData - The `data` field of the Payment.
    * @returns Either an error object or a value that's stored in the `data` field of the Payment.
    *
    * @example
@@ -633,12 +642,9 @@ export interface PaymentProcessor {
   >
 }
 
-/**
- * Payment processor in charge of creating , managing and processing a payment
- */
 export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   /**
-   * You can use the `constructor` of your Payment Processor to have access to different services in Medusa through dependency injection.
+   * You can use the `constructor` of your Payment Processor to have access to different services in Medusa through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection).
    *
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,
    * you can initialize it in the constructor and use it in other methods in the service.
@@ -646,9 +652,10 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
    * Additionally, if you’re creating your Payment Processor as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin,
    * you can access it in the constructor. The options are passed as a second parameter.
    *
-   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
+   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection)
    * @param {Record<string, unknown>} config - If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.
    *
+   * @example
    * ```ts
    * class MyPaymentService extends AbstractPaymentProcessor {
    *   // ...
@@ -684,6 +691,11 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
    */
   public static identifier: string
 
+  /**
+   * @ignore
+   *
+   * Return a unique identifier to retrieve the payment plugin provider
+   */
   public getIdentifier(): string {
     const ctr = this.constructor as typeof AbstractPaymentProcessor
 

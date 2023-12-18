@@ -14,6 +14,8 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 
 /**
+ * @enum
+ * 
  * The status of a payment session.
  */
 export enum PaymentSessionStatus {
