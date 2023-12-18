@@ -379,8 +379,7 @@ class CartService extends TransactionBaseService {
         }
 
         if (data.customer_id || data.customer) {
-          const customer =
-            (data.customer ??
+          const customer = (data.customer ??
             (data.customer_id &&
               (await this.customerService_
                 .withTransaction(transactionManager)
@@ -1304,9 +1303,7 @@ class CartService extends TransactionBaseService {
                 cart_id: cart.id,
               },
               salesChannelService: {
-                sales_channel_id: (
-                  await this.getValidatedSalesChannel(data.sales_channel_id)
-                ).id,
+                sales_channel_id: salesChannel.id,
               },
             })
           } else {
