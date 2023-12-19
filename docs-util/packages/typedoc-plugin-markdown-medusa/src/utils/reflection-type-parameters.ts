@@ -15,21 +15,21 @@ import {
 import { MarkdownTheme } from "../theme"
 import { getProjectChild, getType, getTypeChildren } from "utils"
 
-type ReturnReflectionComponentFormatterParams = {
+export type GetReflectionTypeParametersParams = {
   reflectionType: SomeType
   project: ProjectReflection
   comment?: Comment
-  level: number
+  level?: number
   maxLevel?: number | undefined
 }
 
-export function returnReflectionComponentFormatter({
+export function getReflectionTypeParameters({
   reflectionType,
   project,
   comment,
   level = 1,
   maxLevel,
-}: ReturnReflectionComponentFormatterParams): Parameter[] {
+}: GetReflectionTypeParametersParams): Parameter[] {
   const typeName = getType({
     reflectionType,
     collapse: "object",
@@ -39,11 +39,6 @@ export function returnReflectionComponentFormatter({
     project,
     getRelativeUrlMethod: Handlebars.helpers.relativeURL,
   })
-  // if (
-  //   typeName === "Record&#60;string, unknown&#62; \\| PaymentProcessorError"
-  // ) {
-  //   console.log(reflectionType)
-  // }
   const type = getType({
     reflectionType: reflectionType,
     collapse: "object",
@@ -89,7 +84,7 @@ export function returnReflectionComponentFormatter({
           if (!reflectionTypeArg) {
             return
           }
-          const typeArgComponent = returnReflectionComponentFormatter({
+          const typeArgComponent = getReflectionTypeParameters({
             reflectionType: reflectionTypeArg,
             project,
             level: level + 1,
@@ -170,7 +165,7 @@ export function returnReflectionComponentFormatter({
       children: [],
     })
     if (canRetrieveChildren) {
-      const elementTypeItem = returnReflectionComponentFormatter({
+      const elementTypeItem = getReflectionTypeParameters({
         reflectionType: reflectionType.elementType,
         project,
         level: level + 1,
@@ -206,7 +201,7 @@ export function returnReflectionComponentFormatter({
     }
     if (canRetrieveChildren) {
       reflectionType.elements.forEach((element) => {
-        const elementTypeItem = returnReflectionComponentFormatter({
+        const elementTypeItem = getReflectionTypeParameters({
           reflectionType: element,
           project,
           level: level + 1,

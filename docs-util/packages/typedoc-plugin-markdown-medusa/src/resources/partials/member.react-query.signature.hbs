@@ -48,75 +48,41 @@
 
 {{#if (sectionEnabled "member_signature_parameters")}}
 
-{{#if parameters}}
+{{#ifHasHookParams}}
 
-{{{titleLevel}}} Parameters
+{{{titleLevel}}} Hook Parameters
 
-{{#with parameters}}
+{{{reactQueryHookParams}}}
 
-{{{parameter}}}
+{{/ifHasHookParams}}
 
-{{/with}}
+{{#ifHasMutationParams}}
 
-{{/if}}
+{{{titleLevel}}} Mutation Function Parameters
+
+{{{reactQueryMutationParams}}}
+
+{{/ifHasMutationParams}}
 
 {{/if}}
 
 {{#ifShowReturns}}
 
-{{#if type}}
+{{#ifHasMutationReturn}}
 
-{{{titleLevel}}} Returns
+{{{titleLevel}}} Mutation Function Returned Data
 
-{{#if (sectionEnabled "member_signature_returns")}}
+{{{reactQueryMutationReturn}}}
 
-{{#with type}}
+{{/ifHasMutationReturn}}
 
-{{{type 'all'}}}
+{{#ifHasQueryReturn}}
 
-{{/with}}
+{{{titleLevel}}} Query Returned Data
 
-{{/if}}
+{{{reactQueryQueryReturn}}}
 
-{{{returns this}}}
-
-{{#with type}}
-
-{{#if (sectionEnabled "member_signature_declarationSignatures")}}
-
-{{#if declaration.signatures}}
-
-{{incrementCurrentTitleLevel}}
-
-{{#each declaration.signatures}}
-
-{{> member.signature-wrapper showSources=false parent=../declaration }}
-
-{{/each}}
-
-{{decrementCurrentTitleLevel}}
-
-{{/if}}
-
-{{/if}}
-
-{{#if (sectionEnabled "member_signature_declarationChildren")}}
-
-{{#if declaration.children}}
-
-{{#with declaration.children}}
-
-{{{typeDeclarationMembers}}}
-
-{{/with}}
-
-{{/if}}
-
-{{/if}}
-
-{{/with}}
-
-{{/if}}
+{{/ifHasQueryReturn}}
 
 {{/ifShowReturns}}
 

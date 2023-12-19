@@ -39,14 +39,6 @@
       "syntaxKind": "block"
     },
     {
-      "tagName": "@reactQueryHook",
-      "syntaxKind": "modifier"
-    },
-    {
-      "tagName": "@reactMutationHook",
-      "syntaxKind": "modifier"
-    },
-    {
       "tagName": "@namespaceMember",
       "syntaxKind": "modifier"
     }

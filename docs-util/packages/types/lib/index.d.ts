@@ -192,5 +192,10 @@ export declare module "typedoc" {
      * Optionally specify a name prefix for all generated namespaces.
      */
     namePrefix: string
+    /**
+     * Whether to enable the React Query manipulator.
+     * @defaultValue false
+     */
+    enableReactQueryManipulator: boolean
   }
 }

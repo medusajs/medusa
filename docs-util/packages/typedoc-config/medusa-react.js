@@ -6,4 +6,5 @@ module.exports = getConfig({
   tsConfigName: "medusa-react.json",
   name: "medusa-react",
   generateNamespaces: true,
+  // enableReactQueryManipulator: true,
 })
