@@ -1,7 +1,7 @@
 {
   "name": "@medusajs/promotion",
   "version": "0.0.1",
-  "description": "Medusa Promotions module",
+  "description": "Medusa Promotion module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,14 +11,14 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-promotions-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-promotions-migrations-up": "dist/scripts/bin/run-migration-up.js",
-    "medusa-promotions-seed": "dist/scripts/bin/run-seed.js"
+    "medusa-promotion-migrations-down": "dist/scripts/bin/run-migration-down.js",
+    "medusa-promotion-migrations-up": "dist/scripts/bin/run-migration-up.js",
+    "medusa-promotion-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/promotions"
+    "directory": "packages/promotion"
   },
   "publishConfig": {
     "access": "public"

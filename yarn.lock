@@ -7904,9 +7904,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/promotions@workspace:packages/promotion":
+"@medusajs/promotion@workspace:packages/promotion":
   version: 0.0.0-use.local
-  resolution: "@medusajs/promotions@workspace:packages/promotion"
+  resolution: "@medusajs/promotion@workspace:packages/promotion"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
@@ -7927,9 +7927,9 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-promotions-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-promotions-migrations-up: dist/scripts/bin/run-migration-up.js
-    medusa-promotions-seed: dist/scripts/bin/run-seed.js
+    medusa-promotion-migrations-down: dist/scripts/bin/run-migration-down.js
+    medusa-promotion-migrations-up: dist/scripts/bin/run-migration-up.js
+    medusa-promotion-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
