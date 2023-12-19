@@ -154,6 +154,7 @@ export function getReflectionType({
   collapse,
   wrapBackticks = true,
   hideLink = false,
+  ...options
 }: TypeOptions<ReflectionParameterType>): string {
   if ("signatures" in model && model.signatures) {
     return collapse === "function" || collapse === "all"
@@ -163,6 +164,7 @@ export function getReflectionType({
           wrapBackticks,
           hideLink,
           escape: !wrapBackticks,
+          ...options,
         })
   }
   return collapse === "object" || collapse === "all"
@@ -172,6 +174,7 @@ export function getReflectionType({
         wrapBackticks,
         hideLink,
         escape: !wrapBackticks,
+        ...options,
       })}${wrapBackticks ? "`" : ""}`
 }
 
@@ -309,10 +312,9 @@ export function getReferenceType({
   getRelativeUrlMethod,
   ...options
 }: TypeOptions<ReferenceType>): string {
-  escape = getShouldEscape(wrapBackticks, escape)
-
   const shouldShowLink = !hideLink && model.name !== "Record"
   const wrappedInBackticks = wrapBackticks && !shouldShowLink
+  escape = getShouldEscape(wrappedInBackticks, escape)
   let modelReflection = model.reflection
   if (!modelReflection && project) {
     // try to load reflection
@@ -347,6 +349,7 @@ export function getReferenceType({
               wrapBackticks: false,
               hideLink,
               escape: false,
+              getRelativeUrlMethod,
               ...options,
             })
           )

@@ -14,7 +14,7 @@ function getEntryPoints(entryPointPaths) {
 
 /**
  *
- * @param {Record<string, any>} param0 - The configuration options
+ * @param {Partial<import('typedoc').TypeDocOptions>} param0 - The configuration options
  * @returns {import('typedoc').TypeDocOptions}
  */
 function getConfig({

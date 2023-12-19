@@ -7,6 +7,7 @@ import {
 import { memberSymbol } from "../../utils"
 import { MarkdownTheme } from "../../theme"
 import { getHTMLChar } from "utils"
+import getCorrectDeclarationReflection from "../../utils/get-correct-declaration-reflection"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -14,6 +15,8 @@ export default function (theme: MarkdownTheme) {
     function (this: SignatureReflection, accessor?: string, standalone = true) {
       const { sections, expandMembers = false } =
         theme.getFormattingOptionsForLocation()
+      this.parent =
+        getCorrectDeclarationReflection(this.parent, theme) || this.parent
       const parentHasMoreThanOneSignature =
         Handlebars.helpers.hasMoreThanOneSignature(this.parent)
       if (
@@ -24,6 +27,7 @@ export default function (theme: MarkdownTheme) {
         // only show title if there are more than one signatures
         return ""
       }
+
       const md: string[] = []
 
       if (!expandMembers) {
@@ -62,7 +66,9 @@ export default function (theme: MarkdownTheme) {
       md.push(`(${getParameters(this.parameters, false)})`)
 
       if (this.type && !this.parent?.kindOf(ReflectionKind.Constructor)) {
-        md.push(`: ${Handlebars.helpers.type.call(this.type, "none", false)}`)
+        md.push(
+          `: ${Handlebars.helpers.type.call(this.type, "none", !expandMembers)}`
+        )
       }
 
       if (!expandMembers) {

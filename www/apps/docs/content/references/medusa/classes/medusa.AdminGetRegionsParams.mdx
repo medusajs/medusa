@@ -8,10 +8,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Parameters used to filter and configure the pagination of the retrieved regions.
 
-## constructor
-
-___
-
 ## Properties
 
 <ParameterTypes parameters={[
@@ -108,11 +104,29 @@ ___
     ]
   },
   {
+    "name": "expand",
+    "type": "`string`",
+    "description": "Comma-separated relations that should be expanded in the returned data.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fields",
+    "type": "`string`",
+    "description": "Comma-separated fields that should be included in the returned data.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "limit",
     "type": "`number`",
     "description": "Limit the number of items returned in the list.",
     "optional": true,
-    "defaultValue": "50",
+    "defaultValue": "20",
     "expandable": false,
     "children": []
   },

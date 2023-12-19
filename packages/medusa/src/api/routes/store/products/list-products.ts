@@ -399,6 +399,10 @@ async function listAndCountProductWithIsolatedProductModule(
     },
   }
 
+  if (salesChannelIdFilter) {
+    query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter }
+  }
+
   const {
     rows: products,
     metadata: { count },

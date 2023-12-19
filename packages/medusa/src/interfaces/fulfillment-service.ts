@@ -23,13 +23,15 @@ type ShippingMethodData = Record<string, unknown>
  * class MyFulfillmentService extends AbstractFulfillmentService {
  *   // methods here...
  * }
+ *
+ * export default MyFulfillmentService
  * ```
  *
  * ---
  *
  * ## Identifier Property
  *
- * The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class is used when the fulfillment provider is created in the database.
+ * The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the fulfillment provider service is used when the fulfillment provider is added to the database.
  *
  * The value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.
  *
@@ -408,8 +410,15 @@ export abstract class AbstractFulfillmentService
    *
    * @example
    * class MyFulfillmentService extends AbstractFulfillmentService {
-   *   static identifier = "my-fulfillment"
+   *   // ...
+   *   constructor(container, options) {
+   *     super(container)
+   *     // you can access options here
    *
+   *     // you can also initialize a client that
+   *     // communicates with a third-party service.
+   *     this.client = new Client(options)
+   *   }
    *   // ...
    * }
    */

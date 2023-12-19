@@ -128,12 +128,13 @@ export function reflectionComponentFormatter({
           reflectionType: reflection.type,
           collapse: "object",
           project: reflection.project,
+          escape: true,
           getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         })
       : getReflectionType({
           reflectionType: reflection,
           collapse: "object",
-          wrapBackticks: true,
+          // escape: true,
           project: reflection.project,
           getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         }),
@@ -153,15 +154,6 @@ export function reflectionComponentFormatter({
     (reflection.type || hasChildren) &&
     level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   ) {
-    // if (
-    //   reflection.name === "user" &&
-    //   reflection.type &&
-    //   "name" in reflection.type &&
-    //   reflection.type.name.startsWith("Omit") &&
-    //   "typeArguments" in reflection.type
-    // ) {
-    //   console.log(reflection)
-    // }
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, project || reflection.project)
@@ -217,6 +209,7 @@ export function reflectionTableFormatter({
           reflectionType: parameter,
           collapse: "object",
           wrapBackticks: true,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
         })
   )
 

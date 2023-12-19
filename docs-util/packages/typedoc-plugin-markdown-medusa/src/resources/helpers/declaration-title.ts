@@ -8,7 +8,7 @@ import {
 } from "typedoc"
 import { MarkdownTheme } from "../../theme"
 import { memberSymbol, stripComments } from "../../utils"
-import { escapeChars, stripLineBreaks } from "utils"
+import { escapeChars, stripLineBreaks, getType as getTypeUtils } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -25,10 +25,12 @@ export default function (theme: MarkdownTheme) {
         }
         return (
           (reflection.parent?.kindOf(ReflectionKind.Enum) ? " = " : ": ") +
-          Handlebars.helpers.type.call(
-            reflectionType ? reflectionType : reflection,
-            "object"
-          )
+          getTypeUtils({
+            reflectionType: reflectionType || reflection.type,
+            collapse: "object",
+            escape: true,
+            getRelativeUrlMethod: Handlebars.helpers.relativeURL,
+          })
         )
       }
 

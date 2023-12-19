@@ -6,10 +6,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # AdminPostShippingOptionsReq
 
-## constructor
-
-___
-
 ## Properties
 
 <ParameterTypes parameters={[
@@ -33,7 +29,7 @@ ___
   },
   {
     "name": "data",
-    "type": "`object`",
+    "type": "`Record<string, unknown>`",
     "description": "The data needed for the Fulfillment Provider to handle shipping with this Shipping Option.",
     "optional": false,
     "defaultValue": "",
@@ -79,12 +75,31 @@ ___
   },
   {
     "name": "price_type",
-    "type": "`string`",
+    "type": "[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)",
     "description": "The type of the Shipping Option price. `flat\\_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "CALCULATED",
+        "type": "`\"calculated\"`",
+        "description": "The shipping option's price is calculated. In this case, the `amount` field is typically `null`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "FLAT_RATE",
+        "type": "`\"flat_rate\"`",
+        "description": "The shipping option's price is a flat rate.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "profile_id",
@@ -132,7 +147,7 @@ ___
       },
       {
         "name": "type",
-        "type": "`string`",
+        "type": "[RequirementType](../../entities/enums/entities.RequirementType.mdx)",
         "description": "The type of the requirement",
         "optional": false,
         "defaultValue": "",

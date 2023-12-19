@@ -1,6 +1,7 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNumber,
   IsObject,
   IsOptional,
@@ -9,13 +10,14 @@ import {
 } from "class-validator"
 import { defaultFields, defaultRelations } from "."
 
-import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
+import { ShippingOptionPriceType } from "../../../../models"
 import { ShippingOptionService } from "../../../../services"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { Type } from "class-transformer"
 import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/shipping-options/{id}
@@ -123,8 +125,10 @@ class OptionRequirement {
   @IsString()
   @IsOptional()
   id: string
+
   @IsString()
   type: string
+
   @IsNumber()
   amount: number
 }
@@ -186,6 +190,12 @@ export class AdminPostShippingOptionsOptionReq {
   @IsNumber()
   @IsOptional()
   amount?: number
+
+  @IsEnum(ShippingOptionPriceType, {
+    message: `Invalid price type, must be one of "flat_rate" or "calculated"`,
+  })
+  @IsOptional()
+  price_type?: ShippingOptionPriceType
 
   @IsArray()
   @ValidateNested({ each: true })
