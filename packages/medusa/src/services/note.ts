@@ -156,7 +156,7 @@ class NoteService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const noteRepo = manager.withRepository(this.noteRepository_)
 
-      const note = await this.retrieve(noteId, { relations: ["author"] })
+      const note = await this.retrieve(noteId)
 
       note.value = value
 

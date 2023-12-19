@@ -25,7 +25,7 @@ It’s assumed you already have a Medusa backend installed. If not, you can lear
 
 ## Step 1: Install the Module
 
-In the root directory of your Medusa backend, install the Redis events module with the following command:
+In the root directory of your Medusa backend, install the local events module with the following command:
 
 ```bash npm2yarn
 npm install @medusajs/event-bus-local

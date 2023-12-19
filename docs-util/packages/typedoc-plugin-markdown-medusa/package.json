@@ -23,6 +23,7 @@
   "devDependencies": {
     "@types/node": "^16.11.10",
     "copyfiles": "^2.4.1",
+    "types": "*",
     "typescript": "5.2"
   },
   "keywords": [

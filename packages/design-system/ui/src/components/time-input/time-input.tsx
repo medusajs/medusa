@@ -71,8 +71,18 @@ type TimeInputProps = Omit<
   "label" | "shouldForceLeadingZeros" | "description" | "errorMessage"
 >
 
+/**
+ * This component is based on the `div` element and supports all of its props.
+ */
 const TimeInput = React.forwardRef<HTMLDivElement, TimeInputProps>(
-  ({ hourCycle, ...props }: TimeInputProps, ref) => {
+  ({ 
+    /**
+     * The time's format. If no value is specified, the format is
+     * set based on the user's locale.
+     */
+    hourCycle, 
+    ...props
+  }: TimeInputProps, ref) => {
     const innerRef = React.useRef<HTMLDivElement>(null)
 
     React.useImperativeHandle<HTMLDivElement | null, HTMLDivElement | null>(

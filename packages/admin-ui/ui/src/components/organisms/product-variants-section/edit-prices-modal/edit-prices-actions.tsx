@@ -43,7 +43,7 @@ function EditPricesActions(props: EditPricesActionsProps) {
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <Button variant="secondary" size="small" className="text-gray-700">
-            View
+            Currencies
             <AdjustmentsIcon size={20} />
           </Button>
         </DropdownMenu.Trigger>

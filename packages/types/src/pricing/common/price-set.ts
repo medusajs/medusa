@@ -1,6 +1,7 @@
 import { BaseFilterable } from "../../dal";
 import { CreateMoneyAmountDTO, FilterableMoneyAmountProps, MoneyAmountDTO } from "./money-amount";
 import { RuleTypeDTO } from "./rule-type";
+import { CreatePriceSetPriceRules } from "./price-list";
 
 /**
  * @interface
@@ -52,7 +53,7 @@ export interface PriceSetDTO {
  * @interface
  *
  * A calculated price set's data.
- * 
+ *
  * @privateRemarks
  * Do we still need this type? Shouldn't we use CalculatedPriceSet instead?
  */
@@ -93,7 +94,7 @@ export interface CalculatedPriceSetDTO {
 
 /**
  * @interface
- * 
+ *
  * The calculated price for a specific price set and context.
  */
 export interface CalculatedPriceSet {
@@ -102,7 +103,7 @@ export interface CalculatedPriceSet {
    */
   id: string
   /**
-   * Whether the calculated price is associated with a price list. During the calculation process, if no valid price list is found, 
+   * Whether the calculated price is associated with a price list. During the calculation process, if no valid price list is found,
    * the calculated price is set to the original price, which doesn't belong to a price list. In that case, the value of this property is `false`.
    */
   is_calculated_price_price_list?: boolean
@@ -112,7 +113,7 @@ export interface CalculatedPriceSet {
   calculated_amount: number | null
 
   /**
-   * Whether the original price is associated with a price list. During the calculation process, if the price list of the calculated price is of type override, 
+   * Whether the original price is associated with a price list. During the calculation process, if the price list of the calculated price is of type override,
    * the original price will be the same as the calculated price. In that case, the value of this property is `true`.
    */
   is_original_price_price_list?: boolean
@@ -192,7 +193,7 @@ export interface AddRulesDTO {
   /**
    * The rules to add to a price set.
    */
-  rules: { 
+  rules: {
     /**
      * The value of the rule's `rule_attribute` attribute.
      */
@@ -209,7 +210,7 @@ export interface CreatePricesDTO extends CreateMoneyAmountDTO {
   /**
    * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
    */
-  rules: Record<string, string>
+  rules?: CreatePriceSetPriceRules
 }
 
 /**
@@ -253,7 +254,7 @@ export interface CreatePriceSetDTO {
   /**
    * The rules to associate with the price set.
    */
-  rules?: { 
+  rules?: {
     /**
      * the value of the rule's `rule_attribute` attribute.
      */
