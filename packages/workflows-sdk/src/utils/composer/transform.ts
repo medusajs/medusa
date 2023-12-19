@@ -1,6 +1,7 @@
-import { resolveValue, SymbolWorkflowStepTransformer } from "./helpers"
+import { resolveValue } from "./helpers"
 import { StepExecutionContext, WorkflowData } from "./type"
 import { proxify } from "./helpers/proxy"
+import { OrchestrationUtils } from "@medusajs/utils"
 
 type Func1<T extends object | WorkflowData, U> = (
   input: T extends WorkflowData<infer U>
@@ -163,7 +164,7 @@ export function transform(
   ...functions: Function[]
 ): unknown {
   const ret = {
-    __type: SymbolWorkflowStepTransformer,
+    __type: OrchestrationUtils.SymbolWorkflowStepTransformer,
     __resolver: undefined,
   }
 
