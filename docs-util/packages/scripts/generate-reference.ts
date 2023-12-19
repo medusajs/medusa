@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url)
 const referenceNames = process.argv.slice(2) || ["all"]
 const basePath = path.join(require.resolve("typedoc-config"), "..")
 let generatedCount = 0
-let totalCount = 0
+let totalCount = referenceNames.length
 let ranMerger = false
 
 if (!referenceNames.length) {
@@ -37,7 +37,6 @@ referenceNames.forEach((name) => {
   } else if (name === "merge") {
     runMerger()
   } else {
-    totalCount = 1
     generateReference(`${name}.js`)
   }
 })
