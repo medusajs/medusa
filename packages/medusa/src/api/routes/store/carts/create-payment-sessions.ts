@@ -1,12 +1,12 @@
-import {
-  CartService,
-  ProductVariantInventoryService,
-} from "../../../../services"
+import { CartService } from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
 import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { setVariantAvailability } from "./create-line-item/utils/handler-steps"
+import { WithRequiredProperty } from "../../../../types/common"
+import { Cart } from "../../../../models"
 
 /**
  * @oas [post] /store/carts/{id}/payment-sessions
@@ -55,13 +55,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 export default async (req, res) => {
   const { id } = req.params
 
-  const cartService: CartService = req.scope.resolve("cartService")
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
-
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
 
@@ -88,40 +84,53 @@ export default async (req, res) => {
   while (inProgress) {
     switch (idempotencyKey.recovery_point) {
       case "started": {
-        await manager
-          .transaction("SERIALIZABLE", async (transactionManager) => {
-            idempotencyKey = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(
-                idempotencyKey.idempotency_key,
-                async (stageManager) => {
-                  await cartService
-                    .withTransaction(stageManager)
-                    .setPaymentSessions(id)
-
-                  const cart = await cartService
-                    .withTransaction(stageManager)
-                    .retrieveWithTotals(id, {
-                      select: defaultStoreCartFields,
-                      relations: defaultStoreCartRelations,
-                    })
-
-                  await productVariantInventoryService.setVariantAvailability(
-                    cart.items.map((i) => i.variant),
-                    cart.sales_channel_id!
-                  )
-
-                  return {
-                    response_code: 200,
-                    response_body: { cart },
-                  }
-                }
+        try {
+          const cartService: CartService = req.scope.resolve("cartService")
+          const getCart = async () => {
+            return await cartService
+              .withTransaction(manager)
+              .retrieveWithTotals(
+                id,
+                {
+                  select: defaultStoreCartFields,
+                  relations: [
+                    ...defaultStoreCartRelations,
+                    "region.tax_rates",
+                    "customer",
+                  ],
+                },
+                { force_taxes: true }
               )
+          }
+
+          const cart = await getCart()
+
+          await manager.transaction(async (transactionManager) => {
+            const txCartService =
+              cartService.withTransaction(transactionManager)
+            await txCartService.setPaymentSessions(
+              cart as WithRequiredProperty<Cart, "total">
+            )
           })
-          .catch((e) => {
-            inProgress = false
-            err = e
+
+          const freshCart = await getCart()
+          await setVariantAvailability({
+            cart: freshCart,
+            container: req.scope,
+            manager,
           })
+
+          idempotencyKey = await idempotencyKeyService
+            .withTransaction(manager)
+            .update(idempotencyKey.idempotency_key, {
+              recovery_point: "finished",
+              response_code: 200,
+              response_body: { cart: freshCart },
+            })
+        } catch (e) {
+          inProgress = false
+          err = e
+        }
         break
       }
 
