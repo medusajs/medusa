@@ -221,9 +221,35 @@ module.exports = {
           "https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records",
       },
     },
+    "^medusa/classes/medusa\\.(Store*|Admin*)": {
+      reflectionGroups: {
+        Constructors: false,
+      },
+    },
+
+    // PAYMENT CONFIG
+    "^payment": {
+      frontmatterData: {
+        displayed_sidebar: "modules",
+      },
+      maxLevel: 2,
+    },
+    "^payment/.*AbstractPaymentProcessor": {
+      reflectionDescription: `In this document, you’ll learn how to create a Payment Processor in your Medusa backend. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](https://docs.medusajs.com/modules/carts-and-checkout/payment) first.`,
+      frontmatterData: {
+        displayed_sidebar: "modules",
+        slug: "/modules/carts-and-checkout/backend/add-payment-provider",
+      },
+      reflectionTitle: {
+        fullReplacement: "How to Create a Payment Processor",
+      },
+      reflectionGroups: {
+        Properties: false,
+      },
+    },
 
     // PRICING CONFIG
-    "^pricing": {
+    "^(pricing|IPricingModuleService)": {
       ...modulesOptions,
       frontmatterData: {
         displayed_sidebar: "pricingReference",

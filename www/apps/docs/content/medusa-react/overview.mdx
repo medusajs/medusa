@@ -20,16 +20,16 @@ Alternatively, you can use Medusa’s [JS Client](../js-client/overview.mdx) or 
 In the directory holding your React-based storefront or admin dashboard, run the following command to install Medusa React:
 
 ```bash npm2yarn
-npm install medusa-react @tanstack/react-query @medusajs/medusa
+npm install medusa-react @tanstack/react-query@4.22 @medusajs/medusa
 ```
 
 In addition to the `medusa-react` library, you need the following libraries:
 
-1\. `@tanstack/react-query`: `medusa-react` is built on top of [Tanstack Query](https://tanstack.com/query/latest/docs/react/overview). You’ll learn later in this reference how you can use Mutations and Queries with Medusa React.
+1\. `@tanstack/react-query`: `medusa-react` is built on top of [Tanstack Query v4.22](https://tanstack.com/query/v4/docs/react/overview). You’ll learn later in this reference how you can use Mutations and Queries with Medusa React.
 
 :::note
 
-Versions of Medusa React prior to v4.0.2 used React Query v3 instead of Tanstack Query. Check out [this upgrade guide] to learn how you can update your storefront.
+Versions of Medusa React prior to v4.0.2 used React Query v3 instead of Tanstack Query. Check out [this upgrade guide](../upgrade-guides/medusa-react/4-0-2.md) to learn how you can update your storefront.
 
 :::
 
@@ -45,9 +45,9 @@ Part of the Medusa roadmap is to move the types into a separate package, removin
 
 ## Usage
 
-To use the hooks exposed by Medusa React, you need to include  the `MedusaProvider` somewhere up in your component tree.
+To use the hooks exposed by Medusa React, you need to include the `MedusaProvider` somewhere up in your component tree.
 
-The `MedusaProvider` requires two props:
+The `MedusaProvider` requires two props:
 
 1. `baseUrl`: The URL to your Medusa backend
 2. `queryClientProviderProps`: An object used to set the Tanstack Query client. The object requires a `client` property, which should be an instance of [QueryClient](https://tanstack.com/query/v4/docs/react/reference/QueryClient).
@@ -108,10 +108,12 @@ You can also pass the following props to Medusa Provider:
 | ------------------- | ------------------------- | --------------------------------------------------------- |
 | `apiKey`            | `''`                      | Optional API key used for authenticating admin requests. Follow [this guide](https://docs.medusajs.com/api/admin#authentication) to learn how to create an API key for an admin user.  |
 | `publishableApiKey` | `''`                      | Optional publishable API key used for storefront requests. You can create a publishable API key either using the [admin APIs](../development/publishable-api-keys/admin/manage-publishable-api-keys.mdx) or the [Medusa admin](../user-guide/settings/publishable-api-keys.mdx). |
+| `maxRetries`        | `3`                       | Number of times to retry a request if it fails.  |
+| `customHeaders`     | `{}`                      | An object of custom headers to pass with every request. Each key of the object is the name of the header, and its value is the header's value.  |
 
 ### Queries
 
-To fetch data from the Medusa backend (in other words, perform `GET` requests), you can use [Queries](https://tanstack.com/query/v4/docs/react/guides/queries). Query hooks simply wrap around Tanstack Query's `useQuery` hook to fetch data from your Medusa backend.
+To fetch data from the Medusa backend (in other words, perform `GET` requests), you can use [Queries](https://tanstack.com/query/v4/docs/react/guides/queries). Query hooks simply wrap around Tanstack Query's `useQuery` hook to fetch data from your Medusa backend.
 
 For example, to fetch products from your Medusa backend:
 
@@ -156,7 +158,7 @@ You can learn more about using queries in [Tanstack Query’s documentation](htt
 
 ### Mutations
 
-To create, update, or delete data on the Medusa backend (in other words, perform `POST`, `PUT`, and `DELETE` requests), you can use [Mutations](https://tanstack.com/query/v4/docs/react/guides/mutations). Mutation hooks wrap around Tanstack Query's `useMutation` to mutate data on your Medusa backend.
+To create, update, or delete data on the Medusa backend (in other words, perform `POST`, `PUT`, and `DELETE` requests), you can use [Mutations](https://tanstack.com/query/v4/docs/react/guides/mutations). Mutation hooks wrap around Tanstack Query's `useMutation` to mutate data on your Medusa backend.
 
 For example, to create a cart:
 
@@ -643,11 +645,11 @@ This is an experimental feature.
 
 :::
 
-To facilitate building custom storefronts, `medusa-react` also exposes a `CartProvider` and a `SessionCartProvider`.
+To facilitate building custom storefronts, `medusa-react` also exposes a `CartProvider` and a `SessionCartProvider`.
 
 ### CartProvider
 
-`CartProvider` makes use of some of the hooks already exposed by `medusa-react` to perform cart operations on the Medusa backend. You can use it to create a cart, start the checkout flow, authorize payment sessions, and so on.
+`CartProvider` makes use of some of the hooks already exposed by `medusa-react` to perform cart operations on the Medusa backend. You can use it to create a cart, start the checkout flow, authorize payment sessions, and so on.
 
 It also manages one single global piece of state which represents a cart, exactly like the one created on your Medusa backend.
 
