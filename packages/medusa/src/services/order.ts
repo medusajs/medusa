@@ -386,7 +386,10 @@ class OrderService extends TransactionBaseService {
     const { totalsToSelect, select } = this.transformQueryForTotals(config)
 
     if (totalsToSelect?.length) {
-      return await this.retrieveWithTotals(orderId, { ...config, select })
+      return await this.retrieveWithTotals(orderId, {
+        ...config,
+        select: select?.length ? select : undefined,
+      })
     }
 
     const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
@@ -2000,6 +2003,7 @@ class OrderService extends TransactionBaseService {
     relationSet.add("items.tax_lines")
     relationSet.add("items.adjustments")
     relationSet.add("items.variant")
+    relationSet.add("items.variant.product.profiles")
     relationSet.add("swaps")
     relationSet.add("swaps.additional_items")
     relationSet.add("swaps.additional_items.tax_lines")

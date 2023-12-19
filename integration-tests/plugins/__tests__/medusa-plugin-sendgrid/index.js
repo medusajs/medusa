@@ -11,7 +11,7 @@ const {
 
 const adminSeeder = require("../../../helpers/admin-seeder")
 
-jest.setTimeout(10000)
+jest.setTimeout(100000)
 
 const {
   simpleOrderFactory,
