@@ -11,7 +11,7 @@ export enum Modules {
   CACHE = "cacheService",
   PRODUCT = "productService",
   PRICING = "pricingService",
-  PROMOTION = "promotionService",
+  PROMOTION = "promotion",
 }
 
 export enum ModuleRegistrationName {

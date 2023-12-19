@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/promotions",
+  "name": "@medusajs/promotion",
   "version": "0.0.1",
   "description": "Medusa Promotions module",
   "main": "dist/index.js",
