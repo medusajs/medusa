@@ -106,9 +106,8 @@ export default class SalesChannelModuleService<
       config
     )
 
-    return (await this.salesChannelRepository_.findAndCount(
-      queryOptions,
-      sharedContext
-    )) as [TEntity[], number]
+    return (await (
+      this.salesChannelRepository_ as SalesChannelRepository
+    ).findAndCount(queryOptions, sharedContext)) as [TEntity[], number]
   }
 }

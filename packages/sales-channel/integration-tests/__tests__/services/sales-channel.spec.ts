@@ -150,6 +150,88 @@ describe("Sales Channel Service", () => {
     })
   })
 
+  describe("listAndCount", () => {
+    it("should return sales channels and count", async () => {
+      const [result, count] = await service.listAndCount()
+
+      expect(count).toEqual(3)
+      expect(result).toEqual([
+        expect.objectContaining({
+          id: "channel-1",
+        }),
+        expect.objectContaining({
+          id: "channel-2",
+        }),
+        expect.objectContaining({
+          id: "channel-3",
+        }),
+      ])
+    })
+
+    it("should return sales channels and count when filtered", async () => {
+      const [result, count] = await service.listAndCount({
+        id: ["channel-2"],
+      })
+
+      expect(count).toEqual(1)
+      expect(result).toEqual([
+        expect.objectContaining({
+          id: "channel-2",
+        }),
+      ])
+    })
+
+    it("should return sales channels and count when using skip and take", async () => {
+      const [results, count] = await service.listAndCount(
+        {},
+        { skip: 1, take: 1 }
+      )
+
+      expect(count).toEqual(3)
+      expect(results).toEqual([
+        expect.objectContaining({
+          id: "channel-2",
+        }),
+      ])
+    })
+
+    it("should return requested fields", async () => {
+      const [result, count] = await service.listAndCount(
+        {},
+        {
+          take: 1,
+          select: ["id", "name"],
+        }
+      )
+
+      const serialized = JSON.parse(JSON.stringify(result))
+
+      expect(count).toEqual(3)
+      expect(serialized).toEqual([
+        {
+          id: "channel-1",
+          name: "Channel 1",
+        },
+      ])
+    })
+
+    it("should filter disabled channels", async () => {
+      const [result, count] = await service.listAndCount(
+        { is_disabled: true },
+        { select: ["id"] }
+      )
+
+      const serialized = JSON.parse(JSON.stringify(result))
+
+      expect(count).toEqual(1)
+      expect(serialized).toEqual([
+        {
+          id: "channel-3",
+        },
+      ])
+    })
+  })
+
   describe("delete", () => {
     const id = "channel-2"
 
