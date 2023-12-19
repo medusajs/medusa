@@ -79,6 +79,10 @@ export const supportedLanguages = [
     name: "한국어",
   },
   {
+    locale: "cs",
+    name: "Čeština"
+  },
+  {
     locale: "zh",
     name: "简体中文",
   }
