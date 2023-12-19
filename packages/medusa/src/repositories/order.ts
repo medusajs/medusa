@@ -42,10 +42,6 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
           withDeleted:
             topLevel === ITEMS_REL_NAME || topLevel === REGION_REL_NAME,
           relationLoadStrategy: "join",
-          lock: {
-            mode: "dirty_read",
-            onLocked: "skip_locked",
-          },
         })
       })
     ).then(flatten)
