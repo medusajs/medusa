@@ -33,10 +33,15 @@ export abstract class AbstractBatchJobStrategy
   extends TransactionBaseService
   implements IBatchJobStrategy
 {
+  static _isBatchJobStrategy = true
   static identifier: string
   static batchType: string
 
   protected abstract batchJobService_: BatchJobService
+
+  static isBatchJobStrategy(object): object is IBatchJobStrategy {
+    return object?.constructor?._isBatchJobStrategy
+  }
 
   async prepareBatchJobForProcessing(
     batchJob: CreateBatchJobInput,
@@ -106,10 +111,4 @@ export abstract class AbstractBatchJobStrategy
       }
     })
   }
-}
-
-export function isBatchJobStrategy(
-  object: unknown
-): object is IBatchJobStrategy {
-  return object instanceof AbstractBatchJobStrategy
 }
