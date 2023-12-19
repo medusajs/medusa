@@ -396,8 +396,7 @@ class ReturnService extends TransactionBaseService {
 
       const order = await this.orderService_
         .withTransaction(manager)
-        .retrieve(orderId, {
-          select: ["refunded_total", "total", "refundable_amount"],
+        .retrieveWithTotals(orderId, {
           relations: [
             "swaps",
             "swaps.additional_items",

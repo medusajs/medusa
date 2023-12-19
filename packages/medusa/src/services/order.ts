@@ -285,19 +285,17 @@ class OrderService extends TransactionBaseService {
 
     let [orders, count] = await orderRepo.findWithRelationsAndCount(rels, query)
     orders = await promiseAll(
-      orders.map(
-        async (r) =>
-          await this.decorateTotals(r, {
-            includes: {
-              returnable_items: true,
-            },
-          })
-      )
+      orders.map(async (r) => await this.decorateTotals(r))
     )
 
     return [orders, count]
   }
 
+  /**
+   * @deprecated use the getTotalsRelations and decorateTotals methods instead
+   * @param config
+   * @protected
+   */
   protected transformQueryForTotals(config: FindConfig<Order>): {
     relations: string[] | undefined
     select: FindConfig<Order>["select"]
@@ -383,6 +381,12 @@ class OrderService extends TransactionBaseService {
         MedusaError.Types.NOT_FOUND,
         `"orderId" must be defined`
       )
+    }
+
+    const { totalsToSelect, select } = this.transformQueryForTotals(config)
+
+    if (totalsToSelect?.length) {
+      return await this.retrieveWithTotals(orderId, { ...config, select })
     }
 
     const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
@@ -1328,15 +1332,7 @@ class OrderService extends TransactionBaseService {
       // will add to what is fetched from the database. We want this to happen
       // so that we get all order details. These will thereafter be forwarded
       // to the fulfillment provider.
-      const order = await this.retrieve(orderId, {
-        select: [
-          "subtotal",
-          "shipping_total",
-          "discount_total",
-          "tax_total",
-          "gift_card_total",
-          "total",
-        ],
+      const order = await this.retrieveWithTotals(orderId, {
         relations: [
           "discounts",
           "discounts.rule",
@@ -1540,8 +1536,7 @@ class OrderService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const orderRepo = manager.withRepository(this.orderRepository_)
 
-      const order = await this.retrieve(orderId, {
-        select: ["refundable_amount", "total", "refunded_total"],
+      const order = await this.retrieveWithTotals(orderId, {
         relations: ["payments"],
       })
 
@@ -1930,8 +1925,7 @@ class OrderService extends TransactionBaseService {
     customRefundAmount?: number
   ): Promise<Order> {
     return await this.atomicPhase_(async (manager) => {
-      const order = await this.retrieve(orderId, {
-        select: ["total", "refunded_total", "refundable_amount"],
+      const order = await this.retrieveWithTotals(orderId, {
         relations: ["items", "returns", "payments"],
       })
 

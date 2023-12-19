@@ -249,10 +249,14 @@ class CartService extends TransactionBaseService {
       options.relations = [...new Set(options.relations)]
     }
 
-    const { totalsToSelect } = this.transformQueryForTotals_(options)
+    const { totalsToSelect, select } = this.transformQueryForTotals_(options)
 
     if (totalsToSelect.length) {
-      return await this.retrieveLegacy(cartId, options, totalsConfig)
+      return await this.retrieveWithTotals(
+        cartId,
+        { ...options, select },
+        totalsConfig
+      )
     }
 
     const cartRepo = this.activeManager_.withRepository(this.cartRepository_)
@@ -276,41 +280,6 @@ class CartService extends TransactionBaseService {
     }
 
     return raw
-  }
-
-  /**
-   * @deprecated
-   * @param cartId
-   * @param options
-   * @param totalsConfig
-   * @protected
-   */
-  protected async retrieveLegacy(
-    cartId: string,
-    options: FindConfig<Cart> = {},
-    totalsConfig: TotalsConfig = {}
-  ): Promise<Cart> {
-    const cartRepo = this.activeManager_.withRepository(this.cartRepository_)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(options)
-
-    const query = buildQuery({ id: cartId }, {
-      ...options,
-      select,
-      relations,
-    } as FindConfig<Cart>)
-
-    const raw = await cartRepo.findOne(query)
-
-    if (!raw) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Cart with ${cartId} was not found`
-      )
-    }
-
-    return await this.decorateTotals_(raw, totalsToSelect, totalsConfig)
   }
 
   async retrieveWithTotals(
@@ -365,8 +334,7 @@ class CartService extends TransactionBaseService {
         }
 
         if (data.customer_id || data.customer) {
-          const customer =
-            (data.customer ??
+          const customer = (data.customer ??
             (data.customer_id &&
               (await this.customerService_
                 .withTransaction(transactionManager)
