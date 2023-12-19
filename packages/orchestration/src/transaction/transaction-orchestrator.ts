@@ -686,7 +686,7 @@ export class TransactionOrchestrator extends EventEmitter {
           const id = level.join(".")
           const parent = level.slice(0, level.length - 1).join(".")
 
-          if (!existingSteps) {
+          if (!existingSteps || parent === TransactionOrchestrator.ROOT_STEP) {
             states[parent].next?.push(id)
           }
 
