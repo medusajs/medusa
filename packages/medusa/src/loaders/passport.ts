@@ -83,11 +83,7 @@ export default async ({
         return done(null, false)
       }
 
-<<<<<<< HEAD
       const authService = req.scope.resolve<AuthService>("authService")
-=======
-      const authService = container.resolve<AuthService>("authService")
->>>>>>> 5a4dea273... fix(medusa): Passport loader resolving to early
       const auth = await authService.authenticateAPIToken(token)
       if (auth.success) {
         done(null, auth.user)
