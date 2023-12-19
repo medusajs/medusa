@@ -52,6 +52,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     const inter = setTimeout(async () => {
       await WorkflowOrchestrator.run(workflowId, {
         transactionId,
+        throwOnError: false,
       })
     }, interval * 1e3)
 
@@ -83,6 +84,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     const inter = setTimeout(async () => {
       await WorkflowOrchestrator.run(workflowId, {
         transactionId,
+        throwOnError: false,
       })
     }, interval * 1e3)
 
@@ -114,6 +116,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     const inter = setTimeout(async () => {
       await WorkflowOrchestrator.run(workflowId, {
         transactionId,
+        throwOnError: false,
       })
     }, interval * 1e3)
 
