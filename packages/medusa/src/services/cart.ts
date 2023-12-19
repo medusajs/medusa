@@ -1901,12 +1901,10 @@ class CartService extends TransactionBaseService {
         const paymentProviderServiceTx =
           this.paymentProviderService_.withTransaction(transactionManager)
 
-        const cartId = isString(cartOrCartId) ? cartOrCartId : cartOrCartId.id
-
         const cart = !isString(cartOrCartId)
           ? cartOrCartId
           : await this.retrieveWithTotals(
-              cartId,
+              cartOrCartId,
               {
                 relations: [
                   "items.variant.product.profiles",
@@ -1960,7 +1958,7 @@ class CartService extends TransactionBaseService {
           currency_code: cart.region.currency_code,
         }
         const partialPaymentSessionData = {
-          cart_id: cartId,
+          cart_id: cart.id,
           data: {},
           status: PaymentSessionStatus.PENDING,
           amount: total,
