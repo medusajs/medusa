@@ -74,9 +74,13 @@ export const supportedLanguages = [
     locale: "bg",
     name: "Български",
   },
-  { 
+  {
     locale: "ko",
-    name: "한국어",
+    name: "한국어"
+  },
+  {
+    locale: "ja",
+    name: "日本語"
   },
   {
     locale: "cs",
