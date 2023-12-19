@@ -80,13 +80,26 @@ export class LocalWorkflow {
     return this.workflow.flow_
   }
 
-  private registerEventCallbacks(
-    orchestrator: TransactionOrchestrator,
-    transaction?: DistributedTransaction,
+  private registerEventCallbacks({
+    orchestrator,
+    transaction,
+    subscribe,
+    idempotencyKey,
+  }: {
+    orchestrator: TransactionOrchestrator
+    transaction?: DistributedTransaction
     subscribe?: DistributedTransactionEvents
-  ) {
+    idempotencyKey?: string
+  }) {
     const modelId = orchestrator.id
-    const transactionId = transaction!.transactionId
+    let transactionId
+
+    if (transaction) {
+      transactionId = transaction!.transactionId
+    } else if (idempotencyKey) {
+      const [, trxId] = idempotencyKey!.split(":")
+      transactionId = trxId
+    }
 
     const eventWrapperMap = new Map()
     for (const [key, handler] of Object.entries(subscribe ?? {})) {
@@ -230,7 +243,7 @@ export class LocalWorkflow {
       input
     )
 
-    this.registerEventCallbacks(orchestrator, transaction, subscribe)
+    this.registerEventCallbacks({ orchestrator, transaction, subscribe })
 
     await orchestrator.resume(transaction)
 
@@ -269,7 +282,7 @@ export class LocalWorkflow {
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
 
-    this.registerEventCallbacks(orchestrator, undefined, subscribe)
+    this.registerEventCallbacks({ orchestrator, idempotencyKey, subscribe })
 
     return await orchestrator.registerStepSuccess(
       idempotencyKey,
@@ -287,7 +300,7 @@ export class LocalWorkflow {
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
 
-    this.registerEventCallbacks(orchestrator, undefined, subscribe)
+    this.registerEventCallbacks({ orchestrator, idempotencyKey, subscribe })
 
     return await orchestrator.registerStepFailure(
       idempotencyKey,

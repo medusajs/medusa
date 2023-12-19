@@ -174,7 +174,7 @@ export class TransactionOrchestrator extends EventEmitter {
       ) {
         stepDef.timedOutAt = Date.now()
         await transaction.saveCheckpoint()
-        this.emit("timeout", transaction)
+        this.emit("timeout", { transaction })
         await this.cancelTransaction(transaction)
         break
       }
@@ -244,7 +244,7 @@ export class TransactionOrchestrator extends EventEmitter {
       flow.state = TransactionState.COMPENSATING
       this.flagStepsToRevert(flow)
 
-      this.emit("compensateBegin", transaction)
+      this.emit("compensateBegin", { transaction })
 
       return await this.checkAllSteps(transaction)
     } else if (completedSteps === totalSteps) {
@@ -407,7 +407,7 @@ export class TransactionOrchestrator extends EventEmitter {
       // Transaction timeout
       flow.timedOutAt = Date.now()
       await transaction.saveCheckpoint()
-      this.emit("timeout", transaction)
+      this.emit("timeout", { transaction })
       await this.cancelTransaction(transaction)
       return
     }
@@ -423,7 +423,7 @@ export class TransactionOrchestrator extends EventEmitter {
         await transaction.archiveCheckpoint()
       }
 
-      this.emit("finish", transaction)
+      this.emit("finish", { transaction })
     }
 
     let hasSyncSteps = false
@@ -563,9 +563,9 @@ export class TransactionOrchestrator extends EventEmitter {
         )
       }
 
-      this.emit("begin", transaction)
+      this.emit("begin", { transaction })
     } else {
-      this.emit("resume", transaction)
+      this.emit("resume", { transaction })
     }
 
     await this.executeNext(transaction)
@@ -893,7 +893,7 @@ export class TransactionOrchestrator extends EventEmitter {
         response
       )
 
-      this.emit("resume", curTransaction)
+      this.emit("resume", { transaction: curTransaction })
       await this.executeNext(curTransaction)
     } else {
       throw new MedusaError(
@@ -933,7 +933,7 @@ export class TransactionOrchestrator extends EventEmitter {
         error,
         0
       )
-      this.emit("resume", curTransaction)
+      this.emit("resume", { transaction: curTransaction })
       await this.executeNext(curTransaction)
     } else {
       throw new MedusaError(

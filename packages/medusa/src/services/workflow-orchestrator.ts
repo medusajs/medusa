@@ -354,20 +354,20 @@ class WorkflowOrchestrator {
 
     return {
       onTimeout: (transaction) => {
-        customEventHandlers?.onTimeout?.(transaction)
+        customEventHandlers?.onTimeout?.({ transaction })
         notify({ eventType: "onTimeout" })
       },
 
       onBegin: (transaction) => {
-        customEventHandlers?.onBegin?.(transaction)
+        customEventHandlers?.onBegin?.({ transaction })
         notify({ eventType: "onBegin" })
       },
       onResume: (transaction) => {
-        customEventHandlers?.onResume?.(transaction)
+        customEventHandlers?.onResume?.({ transaction })
         notify({ eventType: "onResume" })
       },
       onCompensateBegin: (transaction) => {
-        customEventHandlers?.onCompensateBegin?.(transaction)
+        customEventHandlers?.onCompensateBegin?.({ transaction })
         notify({ eventType: "onCompensateBegin" })
       },
       onFinish: (
@@ -376,7 +376,7 @@ class WorkflowOrchestrator {
         errors?: unknown[]
       ) => {
         // TODO: unsubscribe transaction handlers on finish
-        customEventHandlers?.onFinish?.(transaction, result)
+        customEventHandlers?.onFinish?.({ transaction, result })
         notify({ eventType: "onFinish", result, errors })
       },
 
