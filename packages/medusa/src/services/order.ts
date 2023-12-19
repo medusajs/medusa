@@ -276,17 +276,23 @@ class OrderService extends TransactionBaseService {
       ]
     }
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    query.select = buildSelects(select || [])
-    const rels = buildRelations(this.getTotalsRelations({ relations }))
+    query.select = buildSelects(config.select || [])
+    const rels = buildRelations(
+      this.getTotalsRelations({ relations: config.relations })
+    )
 
     delete query.relations
 
     let [orders, count] = await orderRepo.findWithRelationsAndCount(rels, query)
     orders = await promiseAll(
-      orders.map(async (r) => await this.decorateTotals(r, totalsToSelect))
+      orders.map(
+        async (r) =>
+          await this.decorateTotals(r, {
+            includes: {
+              returnable_items: true,
+            },
+          })
+      )
     )
 
     return [orders, count]
@@ -379,12 +385,6 @@ class OrderService extends TransactionBaseService {
       )
     }
 
-    const { totalsToSelect } = this.transformQueryForTotals(config)
-
-    if (totalsToSelect?.length) {
-      return await this.retrieveLegacy(orderId, config)
-    }
-
     const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
 
     const query = buildQuery({ id: orderId }, config)
@@ -406,45 +406,6 @@ class OrderService extends TransactionBaseService {
     }
 
     return raw
-  }
-
-  protected async retrieveLegacy(
-    orderIdOrSelector: string | Selector<Order>,
-    config: FindConfig<Order> = {}
-  ): Promise<Order> {
-    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    const selector = isString(orderIdOrSelector)
-      ? { id: orderIdOrSelector }
-      : orderIdOrSelector
-
-    const query = buildQuery(selector, config)
-
-    if (relations && relations.length > 0) {
-      query.relations = buildRelations(relations)
-    }
-
-    query.select = select?.length ? buildSelects(select) : undefined
-
-    const rels = query.relations
-    delete query.relations
-
-    const raw = await orderRepo.findOneWithRelations(rels, query)
-
-    if (!raw) {
-      const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
-        .join(", ")
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Order with ${selectorConstraints} was not found`
-      )
-    }
-
-    return await this.decorateTotals(raw, totalsToSelect)
   }
 
   async retrieveWithTotals(
@@ -519,20 +480,17 @@ class OrderService extends TransactionBaseService {
   ): Promise<Order> {
     const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
     const selector = {
       where: { external_id: externalId },
     }
 
     let queryRelations
-    if (relations && relations.length > 0) {
-      queryRelations = relations
+    if (config.relations && config.relations.length > 0) {
+      queryRelations = config.relations
     }
     queryRelations = this.getTotalsRelations({ relations: queryRelations })
 
-    const querySelect = select?.length ? select : undefined
+    const querySelect = config.select?.length ? config.select : undefined
 
     const query = buildQuery(selector, {
       select: querySelect,
@@ -550,7 +508,7 @@ class OrderService extends TransactionBaseService {
       )
     }
 
-    return await this.decorateTotals(raw, totalsToSelect)
+    return await this.decorateTotals(raw)
   }
 
   /**

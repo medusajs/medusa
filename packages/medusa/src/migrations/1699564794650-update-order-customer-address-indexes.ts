@@ -16,6 +16,8 @@ export class updateOrderCustomerAddressIndexes1699564794650
       CREATE INDEX IF NOT EXISTS idx_gin_customer_phone ON customer USING gin (phone gin_trgm_ops);
       CREATE INDEX IF NOT EXISTS idx_gin_customer_first_name ON customer USING gin (first_name gin_trgm_ops);
       CREATE INDEX IF NOT EXISTS idx_gin_customer_last_name ON customer USING gin (last_name gin_trgm_ops);
+      CREATE INDEX IF NOT EXISTS idx_address_delete_at ON "address" (deleted_at);
+      CREATE INDEX IF NOT EXISTS idx_customer_delete_at ON "customer" (deleted_at);
       `
       )
       .catch((e) => {
@@ -67,7 +69,9 @@ export class updateOrderCustomerAddressIndexes1699564794650
                   uidx_order_id,
                   idx_order_shipping_address_id,
                   idx_order_display_id,
-                  idx_order_customer_id;
+                  idx_order_customer_id,
+                  idx_address_delete_at,
+                  idx_customer_delete_at;
 
           CREATE INDEX "IDX_19b0c6293443d1b464f604c331" ON "order" ("shipping_address_id");
           CREATE INDEX "IDX_579e01fb94f4f58db480857e05" ON "order" ("display_id");

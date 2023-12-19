@@ -21,10 +21,7 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
     let count = 0
 
     if (shouldCount) {
-      const result = await Promise.all([
-        this.find(optionsWithoutRelations),
-        this.count(optionsWithoutRelations),
-      ])
+      const result = await this.findAndCount(optionsWithoutRelations)
       entities = result[0]
       count = result[1]
     } else {
@@ -45,6 +42,10 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
           withDeleted:
             topLevel === ITEMS_REL_NAME || topLevel === REGION_REL_NAME,
           relationLoadStrategy: "join",
+          lock: {
+            mode: "dirty_read",
+            onLocked: "skip_locked",
+          },
         })
       })
     ).then(flatten)

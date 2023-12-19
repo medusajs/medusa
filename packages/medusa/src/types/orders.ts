@@ -251,9 +251,6 @@ export const defaultAdminOrdersFields = [
   "created_at",
   "updated_at",
   "metadata",
-  "items.refundable",
-  "swaps.additional_items.refundable",
-  "claims.additional_items.refundable",
   "no_notification",
 ] as (keyof Order)[]
 
