@@ -143,14 +143,36 @@ export class MarkdownTheme extends Theme {
     return urls
   }
 
+  getAliasPath(reflection: Reflection): string {
+    return path.join(
+      reflection.parent && !reflection.parent.isProject()
+        ? this.getAliasPath(reflection.parent)
+        : "",
+      reflection.getAlias()
+    )
+  }
+
   buildUrls(
     reflection: DeclarationReflection,
     urls: UrlMapping[]
   ): UrlMapping[] {
     const mapping = this.getMappings(
       reflection,
-      reflection.parent?.isProject() ? "" : reflection.parent?.getAlias()
-    ).find((mapping) => reflection.kindOf(mapping.kind))
+      reflection.parent?.isProject() || !reflection.parent
+        ? ""
+        : this.getAliasPath(reflection.parent)
+    ).find(
+      (mapping) =>
+        reflection.kindOf(mapping.kind) &&
+        mapping.modifiers.has.every(
+          (modifier) => reflection.comment?.hasModifier(modifier) || false
+        ) &&
+        mapping.modifiers.not.every((modifier) => {
+          return reflection.comment
+            ? !reflection.comment.hasModifier(modifier)
+            : true
+        })
+    )
     if (mapping) {
       if (!reflection.url || !MarkdownTheme.URL_PREFIX.test(reflection.url)) {
         const url = this.toUrl(mapping, reflection)
@@ -176,12 +198,23 @@ export class MarkdownTheme extends Theme {
     return (
       mapping.directory +
       "/" +
-      this.getUrl(reflection) +
+      this.getUrl({
+        reflection,
+        directory: mapping.directory,
+      }) +
       (this.mdxOutput ? ".mdx" : ".md")
     )
   }
 
-  getUrl(reflection: Reflection, relative?: Reflection): string {
+  getUrl({
+    reflection,
+    directory,
+    relative,
+  }: {
+    reflection: Reflection
+    directory: string
+    relative?: Reflection
+  }): string {
     let url = reflection.getAlias()
 
     if (
@@ -189,8 +222,15 @@ export class MarkdownTheme extends Theme {
       reflection.parent !== relative &&
       !(reflection.parent instanceof ProjectReflection)
     ) {
-      url =
-        this.getUrl(reflection.parent, relative) + this.filenameSeparator + url
+      const urlPrefix = this.getUrl({
+        reflection: reflection.parent,
+        directory,
+        relative,
+      })
+      const fileNameSeparator = this.getFileNameSeparator(
+        `${directory}/${urlPrefix}`
+      )
+      url = urlPrefix + fileNameSeparator + url
     }
 
     return url.replace(/^_/, "")
@@ -301,6 +341,11 @@ export class MarkdownTheme extends Theme {
     )
   }
 
+  getFileNameSeparator(pathPrefix: string): string {
+    const formattingOptions = this.getFormattingOptions(pathPrefix)
+    return formattingOptions.fileNameSeparator || this.filenameSeparator
+  }
+
   getMappings(
     reflection: DeclarationReflection,
     directoryPrefix?: string
@@ -308,36 +353,60 @@ export class MarkdownTheme extends Theme {
     return [
       {
         kind: [ReflectionKind.Module],
+        modifiers: {
+          has: [],
+          not: [],
+        },
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "modules"),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.Namespace],
+        modifiers: {
+          has: [],
+          not: [],
+        },
         isLeaf: false,
-        directory: path.join(directoryPrefix || "", "modules"),
+        directory: path.join(directoryPrefix || ""),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.Enum],
+        modifiers: {
+          has: [],
+          not: [],
+        },
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "enums"),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.Class],
+        modifiers: {
+          has: [],
+          not: [],
+        },
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "classes"),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.Interface],
+        modifiers: {
+          has: [],
+          not: [],
+        },
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "interfaces"),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.TypeAlias],
+        modifiers: {
+          has: [],
+          not: [],
+        },
         isLeaf: true,
         directory: path.join(directoryPrefix || "", "types"),
         template: this.getReflectionMemberTemplate(),
@@ -346,18 +415,30 @@ export class MarkdownTheme extends Theme {
         ? [
             {
               kind: [ReflectionKind.Variable],
+              modifiers: {
+                has: [],
+                not: [],
+              },
               isLeaf: true,
               directory: path.join(directoryPrefix || "", "variables"),
               template: this.getReflectionMemberTemplate(),
             },
             {
               kind: [ReflectionKind.Function],
+              modifiers: {
+                has: [],
+                not: [],
+              },
               isLeaf: true,
               directory: path.join(directoryPrefix || "", "functions"),
               template: this.getReflectionMemberTemplate(),
             },
             {
               kind: [ReflectionKind.Method],
+              modifiers: {
+                has: [],
+                not: [],
+              },
               isLeaf: true,
               directory: path.join(directoryPrefix || "", "methods"),
               template: this.getReflectionMemberTemplate(),
@@ -393,6 +474,23 @@ export class MarkdownTheme extends Theme {
       page.model instanceof ProjectReflection
     ) {
       this.removeGroups(page.model)
+    }
+
+    if (
+      this.reflection instanceof DeclarationReflection &&
+      this.reflection.parent instanceof ProjectReflection
+    ) {
+      const namespacesGroup = this.reflection.groups?.find(
+        (group) => group.title === "Namespaces"
+      )
+      if (namespacesGroup) {
+        // remove the namespaces that have the `@namespaceMember` modifier
+        namespacesGroup.children = namespacesGroup.children.filter((child) => {
+          return child.comment
+            ? !child.comment.hasModifier("@namespaceMember")
+            : true
+        })
+      }
     }
 
     if (
@@ -441,10 +539,14 @@ export class MarkdownTheme extends Theme {
       return {}
     }
 
+    return this.getFormattingOptions(this.location)
+  }
+
+  getFormattingOptions(location: string): FormattingOptionType {
     const applicableOptions: FormattingOptionType[] = []
 
     Object.keys(this.formattingOptions).forEach((key) => {
-      if (key === "*" || new RegExp(key).test(this.location)) {
+      if (key === "*" || new RegExp(key).test(location)) {
         applicableOptions.push(this.formattingOptions[key])
       }
     })

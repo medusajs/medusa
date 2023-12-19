@@ -131,7 +131,7 @@ module.exports = {
         displayed_sidebar: "inventoryReference",
       },
     },
-    "^IInventoryService/methods": {
+    "^inventory/IInventoryService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Inventory Module.",
       frontmatterData: {
@@ -189,26 +189,31 @@ module.exports = {
     "^js_client/.*LineItemsResource": {
       maxLevel: 3,
     },
-    "^(js_client/.*modules/.*internal|internal.*/modules)": {
-      reflectionGroups: {
-        Constructors: false,
-        "Type Aliases": false,
-        Enumerations: false,
-        "Enumeration Members": false,
-        Classes: false,
-        Functions: false,
-        Interfaces: false,
-        References: false,
-      },
-    },
-    "^internal.*/.*js_client.*": {
-      reflectionGroups: {
-        Constructors: false,
-      },
-      frontmatterData: {
-        displayed_sidebar: "jsClientSidebar",
-      },
-    },
+    // "^(js_client/.*modules/.*internal|internal.*/modules)": {
+    //   reflectionGroups: {
+    //     Constructors: false,
+    //     "Type Aliases": false,
+    //     Enumerations: false,
+    //     "Enumeration Members": false,
+    //     Classes: false,
+    //     Functions: false,
+    //     Interfaces: false,
+    //     References: false,
+    //   },
+    // },
+    // "^internal.*/.*js_client.*": {
+    //   reflectionGroups: {
+    //     Constructors: false,
+    //   },
+    //   frontmatterData: {
+    //     displayed_sidebar: "jsClientSidebar",
+    //   },
+    // },
+
+    // MEDUSA REACT CONFIG
+    // "^medusa_react/modules": {
+    //   fileNameSeparator: "/",
+    // },
 
     // MEDUSA CONFIG
     "^medusa": {
@@ -249,13 +254,13 @@ module.exports = {
     },
 
     // PRICING CONFIG
-    "^(pricing|IPricingModuleService)": {
+    "^pricing": {
       ...modulesOptions,
       frontmatterData: {
         displayed_sidebar: "pricingReference",
       },
     },
-    "^IPricingModuleService/methods": {
+    "^pricing/IPricingModuleService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Pricing Module.",
       frontmatterData: {
@@ -298,7 +303,7 @@ module.exports = {
         displayed_sidebar: "productReference",
       },
     },
-    "^IProductModuleService/methods": {
+    "^product/IProductModuleService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Product Module.",
       frontmatterData: {
@@ -349,7 +354,7 @@ module.exports = {
         displayed_sidebar: "stockLocationReference",
       },
     },
-    "^IStockLocationService/methods": {
+    "^stock-location/IStockLocationService/methods": {
       reflectionDescription:
         "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Stock Location Module.",
       frontmatterData: {

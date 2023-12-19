@@ -66,6 +66,7 @@ export type FormattingOptionType = {
   parameterComponentExtraProps?: Record<string, unknown>
   mdxImports?: string[]
   maxLevel?: number
+  fileNameSeparator?: string
 }
 
 export declare module "typedoc" {
@@ -178,5 +179,18 @@ export declare module "typedoc" {
      * @defaultValue true
      */
     outputModules: boolean
+    /**
+     * Whether to enable category to namespace conversion.
+     * @defaultValue false
+     */
+    generateNamespaces: boolean
+    /**
+     * Optionally specify a parent namespace to place all generated namespaces in.
+     */
+    parentNamespace: string
+    /**
+     * Optionally specify a name prefix for all generated namespaces.
+     */
+    namePrefix: string
   }
 }

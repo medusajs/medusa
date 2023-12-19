@@ -33,6 +33,22 @@
     {
       "tagName": "@excludeExternal",
       "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@namespaceAsCategory",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@reactQueryHook",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@reactMutationHook",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@namespaceMember",
+      "syntaxKind": "modifier"
     }
   ]
 }
