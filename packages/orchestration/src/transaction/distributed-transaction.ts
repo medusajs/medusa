@@ -170,6 +170,14 @@ export class DistributedTransaction extends EventEmitter {
     )
   }
 
+  public hasTimeout(): boolean {
+    return !!this.getFlow().definition.timeout
+  }
+
+  public getTimeoutInterval(): number | undefined {
+    return this.getFlow().definition.timeout
+  }
+
   private static keyValueStore: IDistributedTransactionStorage
   public static setStorage(storage: IDistributedTransactionStorage) {
     DistributedTransaction.keyValueStore = storage
@@ -255,12 +263,20 @@ export class DistributedTransaction extends EventEmitter {
     )
   }
 
+  public async clearRetry(step: TransactionStep): Promise<void> {
+    await DistributedTransaction.keyValueStore.clearRetry(this, step)
+  }
+
   public async scheduleTransactionTimeout(interval: number): Promise<void> {
     await DistributedTransaction.keyValueStore.scheduleTransactionTimeout(
       this,
       Date.now(),
       interval
     )
+  }
+
+  public async clearTransactionTimeout(): Promise<void> {
+    await DistributedTransaction.keyValueStore.clearTransactionTimeout(this)
   }
 
   public async scheduleStepTimeout(
@@ -273,6 +289,10 @@ export class DistributedTransaction extends EventEmitter {
       Date.now(),
       interval
     )
+  }
+
+  public async clearStepTimeout(step: TransactionStep): Promise<void> {
+    await DistributedTransaction.keyValueStore.clearStepTimeout(this, step)
   }
 }
 

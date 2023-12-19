@@ -167,10 +167,10 @@ export class TransactionOrchestrator extends EventEmitter {
 
       // Step timeout
       if (
-        stepDef.definition.timeout &&
+        stepDef.hasTimeout() &&
         !stepDef.timedOutAt &&
         stepDef.canCancel() &&
-        stepDef.startedAt! + stepDef.definition.timeout * 1e3 < Date.now()
+        stepDef.startedAt! + stepDef.getTimeoutInterval()! * 1e3 < Date.now()
       ) {
         stepDef.timedOutAt = Date.now()
         await transaction.saveCheckpoint()
@@ -186,12 +186,13 @@ export class TransactionOrchestrator extends EventEmitter {
           if (stepDef.canRetryAwaiting()) {
             stepDef.retryRescheduledAt = null
             nextSteps.push(stepDef)
-          } else {
+          } else if (!stepDef.retryRescheduledAt) {
+            stepDef.hasScheduledRetry = true
             stepDef.retryRescheduledAt = Date.now()
 
             await transaction.scheduleRetry(
               stepDef,
-              stepDef.definition.retryInterval!
+              stepDef.definition.retryIntervalAwaiting!
             )
           }
         }
@@ -199,7 +200,8 @@ export class TransactionOrchestrator extends EventEmitter {
         continue
       } else if (curState.status === TransactionStepStatus.TEMPORARY_FAILURE) {
         if (!stepDef.canRetry()) {
-          if (!stepDef.retryRescheduledAt) {
+          if (stepDef.hasRetryInterval() && !stepDef.retryRescheduledAt) {
+            stepDef.hasScheduledRetry = true
             stepDef.retryRescheduledAt = Date.now()
 
             await transaction.scheduleRetry(
@@ -315,6 +317,16 @@ export class TransactionOrchestrator extends EventEmitter {
       await transaction.saveCheckpoint()
     }
 
+    const cleaningUp: Promise<unknown>[] = []
+    if (step.hasRetryScheduled()) {
+      cleaningUp.push(transaction.clearRetry(step))
+    }
+    if (step.hasTimeout()) {
+      cleaningUp.push(transaction.clearStepTimeout(step))
+    }
+
+    await promiseAll(cleaningUp)
+
     const eventName = step.isCompensating()
       ? "compensateStepSuccess"
       : "stepSuccess"
@@ -360,6 +372,16 @@ export class TransactionOrchestrator extends EventEmitter {
       await transaction.saveCheckpoint()
     }
 
+    const cleaningUp: Promise<unknown>[] = []
+    if (step.hasRetryScheduled()) {
+      cleaningUp.push(transaction.clearRetry(step))
+    }
+    if (step.hasTimeout()) {
+      cleaningUp.push(transaction.clearStepTimeout(step))
+    }
+
+    await promiseAll(cleaningUp)
+
     const eventName = step.isCompensating()
       ? "compensateStepFailure"
       : "stepFailure"
@@ -378,9 +400,9 @@ export class TransactionOrchestrator extends EventEmitter {
     const execution: Promise<void | unknown>[] = []
 
     if (
-      flow.definition.timeout &&
+      transaction.hasTimeout() &&
       !flow.timedOutAt &&
-      flow.startedAt! + flow.definition.timeout * 1e3 < Date.now()
+      flow.startedAt! + transaction.getTimeoutInterval()! * 1e3 < Date.now()
     ) {
       // Transaction timeout
       flow.timedOutAt = Date.now()
@@ -391,6 +413,10 @@ export class TransactionOrchestrator extends EventEmitter {
     }
 
     if (nextSteps.remaining === 0) {
+      if (transaction.hasTimeout()) {
+        await transaction.clearTransactionTimeout()
+      }
+
       if (flow.options?.retentionTime == undefined) {
         await transaction.deleteCheckpoint()
       } else {
@@ -447,8 +473,8 @@ export class TransactionOrchestrator extends EventEmitter {
         transaction.getContext()
       )
 
-      if (step.definition.timeout && !step.timedOutAt && step.attempts === 1) {
-        await transaction.scheduleStepTimeout(step, step.definition.timeout)
+      if (step.hasTimeout() && !step.timedOutAt && step.attempts === 1) {
+        await transaction.scheduleStepTimeout(step, step.definition.timeout!)
       }
 
       transaction.emit("stepBegin", { step, transaction })
@@ -531,8 +557,10 @@ export class TransactionOrchestrator extends EventEmitter {
         )
       }
 
-      if (flow.definition.timeout) {
-        await transaction.scheduleTransactionTimeout(flow.definition.timeout)
+      if (transaction.hasTimeout()) {
+        await transaction.scheduleTransactionTimeout(
+          transaction.getTimeoutInterval()!
+        )
       }
 
       this.emit("begin", transaction)
@@ -658,7 +686,9 @@ export class TransactionOrchestrator extends EventEmitter {
           const id = level.join(".")
           const parent = level.slice(0, level.length - 1).join(".")
 
-          states[parent].next?.push(id)
+          if (!existingSteps) {
+            states[parent].next?.push(id)
+          }
 
           const definitionCopy = { ...obj }
           delete definitionCopy.next

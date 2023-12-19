@@ -31,6 +31,8 @@ export class TransactionStep {
    * @member attempts - The number of attempts made to execute the step
    * @member failures - The number of failures encountered while executing the step
    * @member lastAttempt - The timestamp of the last attempt made to execute the step
+   * @member hasScheduledRetry - A flag indicating if a retry has been scheduled
+   * @member retryRescheduledAt - The timestamp of the last retry scheduled
    * @member next - The ids of the next steps in the flow
    * @member saveResponse - A flag indicating if the response of a step should be shared in the transaction context and available to subsequent steps - default is true
    */
@@ -50,6 +52,7 @@ export class TransactionStep {
   failures: number
   lastAttempt: number | null
   retryRescheduledAt: number | null
+  hasScheduledRetry: boolean
   timedOutAt: number | null
   startedAt?: number
   next: string[]
@@ -141,6 +144,22 @@ export class TransactionStep {
       MedusaError.Types.NOT_ALLOWED,
       `Updating Status from "${curState.status}" to "${toStatus}" is not allowed.`
     )
+  }
+
+  hasRetryScheduled(): boolean {
+    return !!this.hasScheduledRetry
+  }
+
+  hasRetryInterval(): boolean {
+    return !!this.definition.retryInterval
+  }
+
+  hasTimeout(): boolean {
+    return !!this.definition.timeout
+  }
+
+  getTimeoutInterval(): number | undefined {
+    return this.definition.timeout
   }
 
   canRetry(): boolean {

@@ -9,11 +9,12 @@ import WorkflowOrchestrator from "./workflow-orchestrator"
 
 // eslint-disable-next-line max-len
 export class InMemoryDistributedTransactionStorage extends DistributedTransactionStorage {
-  private storage: Map<string, TransactionCheckpoint>
+  private storage: Map<string, TransactionCheckpoint> = new Map()
+  private retries: Map<string, unknown> = new Map()
+  private timeouts: Map<string, unknown> = new Map()
 
   constructor() {
     super()
-    this.storage = new Map()
   }
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
@@ -46,12 +47,30 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     timestamp: number,
     interval: number
   ): Promise<void> {
-    setTimeout(async () => {
-      const { modelId: workflowId, transactionId } = transaction
+    const { modelId: workflowId, transactionId } = transaction
+
+    const inter = setTimeout(async () => {
       await WorkflowOrchestrator.run(workflowId, {
         transactionId,
       })
     }, interval * 1e3)
+
+    const key = `${workflowId}:${transactionId}:${step.id}`
+    this.retries.set(key, inter)
+  }
+
+  async clearRetry(
+    transaction: DistributedTransaction,
+    step: TransactionStep
+  ): Promise<void> {
+    const { modelId: workflowId, transactionId } = transaction
+
+    const key = `${workflowId}:${transactionId}:${step.id}`
+    const inter = this.retries.get(key)
+    if (inter) {
+      clearTimeout(inter as NodeJS.Timeout)
+      this.retries.delete(key)
+    }
   }
 
   async scheduleTransactionTimeout(
@@ -59,12 +78,29 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     timestamp: number,
     interval: number
   ): Promise<void> {
-    setTimeout(async () => {
-      const { modelId: workflowId, transactionId } = transaction
+    const { modelId: workflowId, transactionId } = transaction
+
+    const inter = setTimeout(async () => {
       await WorkflowOrchestrator.run(workflowId, {
         transactionId,
       })
     }, interval * 1e3)
+
+    const key = `${workflowId}:${transactionId}`
+    this.timeouts.set(key, inter)
+  }
+
+  async clearTransactionTimeout(
+    transaction: DistributedTransaction
+  ): Promise<void> {
+    const { modelId: workflowId, transactionId } = transaction
+
+    const key = `${workflowId}:${transactionId}`
+    const inter = this.timeouts.get(key)
+    if (inter) {
+      clearTimeout(inter as NodeJS.Timeout)
+      this.timeouts.delete(key)
+    }
   }
 
   async scheduleStepTimeout(
@@ -73,11 +109,29 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     timestamp: number,
     interval: number
   ): Promise<void> {
-    setTimeout(async () => {
-      const { modelId: workflowId, transactionId } = transaction
+    const { modelId: workflowId, transactionId } = transaction
+
+    const inter = setTimeout(async () => {
       await WorkflowOrchestrator.run(workflowId, {
         transactionId,
       })
     }, interval * 1e3)
+
+    const key = `${workflowId}:${transactionId}:${step.id}`
+    this.timeouts.set(key, inter)
+  }
+
+  async clearStepTimeout(
+    transaction: DistributedTransaction,
+    step: TransactionStep
+  ): Promise<void> {
+    const { modelId: workflowId, transactionId } = transaction
+
+    const key = `${workflowId}:${transactionId}:${step.id}`
+    const inter = this.timeouts.get(key)
+    if (inter) {
+      clearTimeout(inter as NodeJS.Timeout)
+      this.timeouts.delete(key)
+    }
   }
 }
