@@ -4,11 +4,8 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
+import { OrchestrationUtils } from "@medusajs/utils"
 import { ExportedWorkflow, exportWorkflow } from "../../helper"
-import {
-  SymbolInputReference,
-  SymbolMedusaWorkflowComposerContext,
-} from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -16,7 +13,7 @@ import {
   WorkflowDataProperties,
 } from "./type"
 
-global[SymbolMedusaWorkflowComposerContext] = null
+global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
 
 /**
  * An exported workflow, which is the type of a workflow constructed by the {@link createWorkflow} function. The exported workflow can be invoked to create
@@ -181,16 +178,16 @@ export function createWorkflow<
     },
   }
 
-  global[SymbolMedusaWorkflowComposerContext] = context
+  global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = context
 
   const inputPlaceHolder = proxify<WorkflowData>({
-    __type: SymbolInputReference,
+    __type: OrchestrationUtils.SymbolInputReference,
     __step__: "",
   })
 
   const returnedStep = composer.apply(context, [inputPlaceHolder])
 
-  delete global[SymbolMedusaWorkflowComposerContext]
+  delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
 
   WorkflowManager.update(name, context.flow, handlers)
 

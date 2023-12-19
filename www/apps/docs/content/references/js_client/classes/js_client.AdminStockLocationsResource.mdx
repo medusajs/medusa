@@ -262,7 +262,7 @@ medusa.admin.stockLocations.delete(stockLocationId)
         "type": "`boolean`",
         "description": "Whether the item was deleted successfully.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
         "expandable": false,
         "children": []
       },
@@ -280,7 +280,7 @@ medusa.admin.stockLocations.delete(stockLocationId)
         "type": "`string`",
         "description": "The type of the item that was deleted.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "stock_location",
         "expandable": false,
         "children": []
       }
@@ -457,7 +457,7 @@ medusa.admin.stockLocations.list({
           {
             "name": "count",
             "type": "`number`",
-            "description": "",
+            "description": "The total number of notifications",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -466,7 +466,7 @@ medusa.admin.stockLocations.list({
           {
             "name": "limit",
             "type": "`number`",
-            "description": "",
+            "description": "The number of notifications per page",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -475,7 +475,7 @@ medusa.admin.stockLocations.list({
           {
             "name": "offset",
             "type": "`number`",
-            "description": "",
+            "description": "The number of notifications skipped when retrieving the notifications.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,

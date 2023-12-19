@@ -6,15 +6,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # PaymentProcessorContext
 
- **PaymentProcessorContext**: `Object`
+A payment's context.
 
-## Type declaration
+## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "amount",
     "type": "`number`",
-    "description": "",
+    "description": "The payment's amount.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -22,8 +22,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "billing_address",
-    "type": "[Address](../../entities/classes/entities.Address.mdx) \\| `null`",
-    "description": "",
+    "type": "`null` \\| [Address](../../entities/classes/entities.Address.mdx)",
+    "description": "The payment's billing address.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -32,7 +32,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "context",
     "type": "`Record<string, unknown>`",
-    "description": "",
+    "description": "The cart's context.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -41,7 +41,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "currency_code",
     "type": "`string`",
-    "description": "",
+    "description": "The selected currency code, typically associated with the customer's cart.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -50,7 +50,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "customer",
     "type": "[Customer](../../entities/classes/entities.Customer.mdx)",
-    "description": "A customer can make purchases in your store and manage their profile.",
+    "description": "The customer associated with this payment.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -204,7 +204,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "email",
     "type": "`string`",
-    "description": "",
+    "description": "The customer's email.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -213,7 +213,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "paymentSessionData",
     "type": "`Record<string, unknown>`",
-    "description": "",
+    "description": "If the payment session hasn't been created or initiated yet, it'll be an empty object.\nIf the payment session exists, it'll be the value of the payment session's `data` field.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -222,10 +222,10 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "resource_id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the resource the payment is associated with. For example, the cart's ID.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
     "children": []
   }
-]} />
+]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>

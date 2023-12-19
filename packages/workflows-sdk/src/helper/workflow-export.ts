@@ -9,14 +9,11 @@ import {
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 
 import { MedusaModule } from "@medusajs/modules-sdk"
+import { OrchestrationUtils } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
-import {
-  SymbolWorkflowStep,
-  SymbolWorkflowWorkflowData,
-  resolveValue,
-} from "../utils/composer"
+import { resolveValue } from "../utils/composer"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData
@@ -132,7 +129,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       let result: any = undefined
 
       const resFrom =
-        resultFrom?.__type === SymbolWorkflowStep
+        resultFrom?.__type === OrchestrationUtils.SymbolWorkflowStep
           ? resultFrom.__step__
           : resultFrom
 
@@ -140,11 +137,16 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         if (Array.isArray(resFrom)) {
           result = resFrom.map((from) => {
             const res = transaction.getContext().invoke?.[from]
-            return res?.__type === SymbolWorkflowWorkflowData ? res.output : res
+            return res?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
+              ? res.output
+              : res
           })
         } else {
           const res = transaction.getContext().invoke?.[resFrom]
-          result = res?.__type === SymbolWorkflowWorkflowData ? res.output : res
+          result =
+            res?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
+              ? res.output
+              : res
         }
 
         result = await resolveValue(result || resFrom, transaction.getContext())

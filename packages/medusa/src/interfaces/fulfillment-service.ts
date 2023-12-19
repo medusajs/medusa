@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/types"
 import { Cart, Fulfillment, LineItem, Order } from "../models"
 import { CreateReturnType } from "../types/fulfillment-provider"
+import { TransactionBaseService } from "./transaction-base-service"
 
 type FulfillmentProviderData = Record<string, unknown>
 type ShippingOptionData = Record<string, unknown>
@@ -22,13 +23,15 @@ type ShippingMethodData = Record<string, unknown>
  * class MyFulfillmentService extends AbstractFulfillmentService {
  *   // methods here...
  * }
+ *
+ * export default MyFulfillmentService
  * ```
  *
  * ---
  *
  * ## Identifier Property
  *
- * The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class is used when the fulfillment provider is created in the database.
+ * The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the fulfillment provider service is used when the fulfillment provider is added to the database.
  *
  * The value of this property is also used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.
  *
@@ -42,7 +45,7 @@ type ShippingMethodData = Record<string, unknown>
  *
  * ---
  */
-export interface FulfillmentService {
+export interface FulfillmentService extends TransactionBaseService {
   /**
    * @ignore
    *
@@ -387,7 +390,16 @@ export interface FulfillmentService {
   ): Promise<any>
 }
 
-export abstract class AbstractFulfillmentService implements FulfillmentService {
+export abstract class AbstractFulfillmentService
+  extends TransactionBaseService
+  implements FulfillmentService
+{
+  static _isFulfillmentService = true
+
+  static isFulfillmentService(object): boolean {
+    return object?.constructor?._isFulfillmentService
+  }
+
   /**
    * You can use the `constructor` of your fulfillment provider to access the different services in Medusa through dependency injection.
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
@@ -398,15 +410,24 @@ export abstract class AbstractFulfillmentService implements FulfillmentService {
    *
    * @example
    * class MyFulfillmentService extends AbstractFulfillmentService {
-   *   static identifier = "my-fulfillment"
+   *   // ...
+   *   constructor(container, options) {
+   *     super(container)
+   *     // you can access options here
    *
+   *     // you can also initialize a client that
+   *     // communicates with a third-party service.
+   *     this.client = new Client(options)
+   *   }
    *   // ...
    * }
    */
   protected constructor(
     protected readonly container: MedusaContainer,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
-  ) {}
+  ) {
+    super(container, config)
+  }
 
   /**
    * The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class is used when the fulfillment provider is created in the database.

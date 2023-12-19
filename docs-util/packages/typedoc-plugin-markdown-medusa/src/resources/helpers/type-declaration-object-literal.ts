@@ -19,7 +19,7 @@ export default function (theme: MarkdownTheme) {
 
       const properties = this.reduce(
         (acc: ReflectionParameterType[], current: ReflectionParameterType) =>
-          parseParams(current, acc),
+          parseParams(current, acc, false),
         []
       ) as DeclarationReflection[]
 

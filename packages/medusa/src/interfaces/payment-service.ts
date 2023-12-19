@@ -146,6 +146,12 @@ export abstract class AbstractPaymentService
   extends TransactionBaseService
   implements PaymentService
 {
+  static _isPaymentService = true
+
+  static isPaymentService(object): boolean {
+    return object?.constructor?._isPaymentService
+  }
+
   protected constructor(container: unknown, config?: Record<string, unknown>) {
     super(container, config)
   }
@@ -257,12 +263,4 @@ export abstract class AbstractPaymentService
    * This will be @deprecated in the near future
    */
   public abstract getStatus(data: Data): Promise<PaymentSessionStatus>
-}
-
-/**
- * Return if the input object is one of AbstractPaymentService or PaymentService or AbstractPaymentPluginService
- * @param obj
- */
-export function isPaymentService(obj: unknown): boolean {
-  return obj instanceof AbstractPaymentService || obj instanceof PaymentService
 }

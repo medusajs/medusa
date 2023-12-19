@@ -331,7 +331,7 @@ export default CustomPage
 
 ## Querying and Mutating Data
 
-You might need to interact with the Medusa backend from your admin route. To do so, you can utilize the [Medusa React package](../medusa-react/overview.mdx). It contains a collection of queries and mutation built on `@tanstack/react-query` that lets you interact with the Medusa backend.
+You might need to interact with the Medusa backend from your admin route. To do so, you can utilize the [Medusa React package](../medusa-react/overview.mdx). It contains a collection of queries and mutation built on `@tanstack/react-query@4.22` that lets you interact with the Medusa backend.
 
 :::note
 
