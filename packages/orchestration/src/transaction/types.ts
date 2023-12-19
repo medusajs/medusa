@@ -15,6 +15,7 @@ export type TransactionStepsDefinition = {
   retryIntervalAwaiting?: number
   timeout?: number
   async?: boolean
+  compensateAsync?: boolean
   noWait?: boolean
   saveResponse?: boolean
   next?: TransactionStepsDefinition | TransactionStepsDefinition[]

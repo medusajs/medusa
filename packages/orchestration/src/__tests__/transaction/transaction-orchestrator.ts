@@ -654,6 +654,7 @@ describe("Transaction Orchestrator", () => {
       next: {
         action: "firstMethod",
         async: true,
+        compensateAsync: true,
         next: {
           action: "secondMethod",
         },
@@ -734,9 +735,11 @@ describe("Transaction Orchestrator", () => {
       next: {
         action: "firstMethod",
         async: true,
+        compensateAsync: true,
         next: {
           action: "secondMethod",
           async: true,
+          compensateAsync: true,
         },
       },
     }
