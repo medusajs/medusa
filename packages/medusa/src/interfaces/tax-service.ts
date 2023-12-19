@@ -1,5 +1,3 @@
-import { BaseService } from "medusa-interfaces"
-
 import { LineItem } from "../models/line-item"
 import { Region } from "../models/region"
 import { Address } from "../models/address"
@@ -7,6 +5,7 @@ import { ShippingMethod } from "../models/shipping-method"
 import { Customer } from "../models/customer"
 import { ProviderTaxLine, TaxServiceRate } from "../types/tax-service"
 import { LineAllocationsMap } from "../types/totals"
+import { TransactionBaseService } from "./transaction-base-service"
 
 /**
  * A shipping method and the tax rates that have been configured to apply to the
@@ -61,10 +60,15 @@ export interface ITaxService {
 }
 
 export abstract class AbstractTaxService
-  extends BaseService
+  extends TransactionBaseService
   implements ITaxService
 {
+  static _isTaxService = true
   protected static identifier: string
+
+  static isTaxService(object): boolean {
+    return object?.constructor?._isTaxService
+  }
 
   public getIdentifier(): string {
     if (!(this.constructor as typeof AbstractTaxService).identifier) {
