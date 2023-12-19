@@ -1,4 +1,10 @@
-import { Context, DAL, FindConfig, SalesChannelDTO } from "@medusajs/types"
+import {
+  Context,
+  DAL,
+  FilterableSalesChannelProps,
+  FindConfig,
+  SalesChannelDTO,
+} from "@medusajs/types"
 import {
   doNotForceTransaction,
   InjectManager,
@@ -75,7 +81,7 @@ export default class SalesChannelModuleService<
   @InjectManager("salesChannelRepository_")
   async list(
     filters: {} = {},
-    config: FindConfig<{}> = {},
+    config: FindConfig<SalesChannelDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<SalesChannel>(
@@ -89,20 +95,20 @@ export default class SalesChannelModuleService<
     )) as TEntity[]
   }
 
-  // @InjectManager("salesChannelRepository_")
-  // async listAndCount(
-  //   filters: FilterableSalesChannelProps = {},
-  //   config: FindConfig<FilterableSalesChannelProps> = {},
-  //   @MedusaContext() sharedContext: Context = {}
-  // ): Promise<[TEntity[], number]> {
-  //   const queryOptions = ModulesSdkUtils.buildQuery<SalesChannel>(
-  //     filters,
-  //     config
-  //   )
-  //
-  //   return (await this.salesChannelRepository_.findAndCount(
-  //     queryOptions,
-  //     sharedContext
-  //   )) as [TEntity[], number]
-  // }
+  @InjectManager("salesChannelRepository_")
+  async listAndCount(
+    filters: FilterableSalesChannelProps = {},
+    config: FindConfig<SalesChannelDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], number]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<SalesChannel>(
+      filters,
+      config
+    )
+
+    return (await this.salesChannelRepository_.findAndCount(
+      queryOptions,
+      sharedContext
+    )) as [TEntity[], number]
+  }
 }

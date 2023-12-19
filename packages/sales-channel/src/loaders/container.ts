@@ -1,10 +1,9 @@
-import * as defaultRepositories from "@repositories"
-import * as defaultServices from "@services"
-
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { ModulesSdkTypes } from "@medusajs/types"
 import { loadCustomRepositories } from "@medusajs/utils"
 import { asClass } from "awilix"
+
+import * as defaultRepositories from "@repositories"
 
 export default async ({
   container,
@@ -16,12 +15,6 @@ export default async ({
   const customRepositories = (
     options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.repositories
-
-  container.register({
-    salesChannelService: asClass(
-      defaultServices.SalesChannelService
-    ).singleton(),
-  })
 
   if (customRepositories) {
     loadCustomRepositories({
@@ -36,8 +29,9 @@ export default async ({
 
 function loadDefaultRepositories({ container }) {
   container.register({
-    salesChannelService: asClass(
-      defaultServices.SalesChannelService
+    baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
+    salesChannelRepository: asClass(
+      defaultRepositories.SalesChannelRepository
     ).singleton(),
   })
 }
