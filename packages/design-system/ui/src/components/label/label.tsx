@@ -30,8 +30,22 @@ interface LabelProps
   extends React.ComponentPropsWithoutRef<"label">,
     VariantProps<typeof labelVariants> {}
 
+/**
+ * This component is based on the [Radix UI Label](https://www.radix-ui.com/primitives/docs/components/label) primitive.
+ */
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
-  ({ className, size = "base", weight = "regular", ...props }, ref) => {
+  ({ 
+    className, 
+    /**
+     * The label's size.
+     */
+    size = "base", 
+    /**
+     * The label's font weight.
+     */
+    weight = "regular", 
+    ...props
+  }: LabelProps, ref) => {
     return (
       <Primitives.Root
         ref={ref}

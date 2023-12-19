@@ -10,12 +10,15 @@ import { Kbd } from "@/components/kbd"
 import { Text } from "@/components/text"
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the [Radix UI Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) primitives.
+ */
 const DrawerRoot = (
   props: React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Root>
 ) => {
   return <DrawerPrimitives.Root {...props} />
 }
-DrawerRoot.displayName = "Drawer.Root"
+DrawerRoot.displayName = "Drawer"
 
 const DrawerTrigger = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitives.Trigger>,

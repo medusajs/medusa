@@ -1,5 +1,11 @@
 # @medusajs/types
 
+## 1.11.9
+
+### Patch Changes
+
+- [#5752](https://github.com/medusajs/medusa/pull/5752) [`079f0da83`](https://github.com/medusajs/medusa/commit/079f0da83f482562bbb525807ee1a7e32993b4da) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,pricing,medusa,pricing,types,utils): Price List Prices can have their own rules
+
 ## 1.11.8
 
 ### Patch Changes
