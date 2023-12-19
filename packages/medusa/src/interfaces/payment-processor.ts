@@ -773,3 +773,9 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >
 }
+
+export function isPaymentProcessorError(
+  obj: any
+): obj is PaymentProcessorError {
+  return obj && typeof obj === "object" && (obj.error || obj.code || obj.detail)
+}
