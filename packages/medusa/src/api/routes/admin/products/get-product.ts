@@ -68,15 +68,13 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const isMedusaV2FlagOn = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
-  const salesChannelService: SalesChannelService = req.scope.resolve(
-    "salesChannelService"
-  )
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+  if (isMedusaV2FlagOn) {
     rawProduct = await retrieveProduct(
       req.scope,
       id,
@@ -102,15 +100,30 @@ export default async (req, res) => {
     req.retrieveConfig.relations?.includes("variants")
 
   if (shouldSetAvailability) {
-    const [salesChannelsIds] = await salesChannelService.listAndCount(
-      {},
-      { select: ["id"] }
-    )
+    let salesChannels
+
+    if (isMedusaV2FlagOn) {
+      const remoteQuery = req.scope.resolve("remoteQuery")
+      const query = {
+        sales_channel: {
+          fields: ["id"],
+        },
+      }
+      salesChannels = await remoteQuery(query)
+    } else {
+      const salesChannelService: SalesChannelService = req.scope.resolve(
+        "salesChannelService"
+      )
+      ;[salesChannels] = await salesChannelService.listAndCount(
+        {},
+        { select: ["id"] }
+      )
+    }
 
     decoratePromises.push(
       productVariantInventoryService.setProductAvailability(
         [product],
-        salesChannelsIds.map((salesChannel) => salesChannel.id)
+        salesChannels.map((salesChannel) => salesChannel.id)
       )
     )
   }

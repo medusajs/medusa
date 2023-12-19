@@ -16,6 +16,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PriceListStatus](../medusa/enums/medusa.PriceListStatus-1.mdx)
 - [PriceListType](../medusa/enums/medusa.PriceListType.mdx)
 - [PriceListType](../medusa/enums/medusa.PriceListType-1.mdx)
+- [ProductStatus](../medusa/enums/medusa.ProductStatus.mdx)
 
 ## Classes
 
@@ -87,7 +88,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [AdminGetProductTypesParams](../medusa/classes/medusa.AdminGetProductTypesParams.mdx)
 - [AdminGetProductsParams](../medusa/classes/medusa.AdminGetProductsParams.mdx)
 - [AdminGetProductsVariantsParams](../medusa/classes/medusa.AdminGetProductsVariantsParams.mdx)
-- [AdminGetRegionsPaginationParams](../medusa/classes/medusa.AdminGetRegionsPaginationParams.mdx)
 - [AdminGetRegionsParams](../medusa/classes/medusa.AdminGetRegionsParams.mdx)
 - [AdminGetRegionsRegionFulfillmentOptionsRes](../medusa/classes/medusa.AdminGetRegionsRegionFulfillmentOptionsRes.mdx)
 - [AdminGetReservationsParams](../medusa/classes/medusa.AdminGetReservationsParams.mdx)
@@ -333,6 +333,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [StoreGetProductsPaginationParams](../medusa/classes/medusa.StoreGetProductsPaginationParams.mdx)
 - [StoreGetProductsParams](../medusa/classes/medusa.StoreGetProductsParams.mdx)
 - [StoreGetRegionsParams](../medusa/classes/medusa.StoreGetRegionsParams.mdx)
+- [StoreGetRegionsRegionParams](../medusa/classes/medusa.StoreGetRegionsRegionParams.mdx)
 - [StoreGetShippingOptionsParams](../medusa/classes/medusa.StoreGetShippingOptionsParams.mdx)
 - [StoreGetVariantsParams](../medusa/classes/medusa.StoreGetVariantsParams.mdx)
 - [StoreGetVariantsVariantParams](../medusa/classes/medusa.StoreGetVariantsVariantParams.mdx)
@@ -383,8 +384,19 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [MedusaRequest](../medusa/interfaces/medusa.MedusaRequest.mdx)
 - [PaginatedResponse](../medusa/interfaces/medusa.PaginatedResponse.mdx)
 - [PaymentProcessor](../medusa/interfaces/medusa.PaymentProcessor.mdx)
+- [PaymentProcessorContext](../medusa/interfaces/medusa.PaymentProcessorContext.mdx)
 - [PaymentProcessorError](../medusa/interfaces/medusa.PaymentProcessorError.mdx)
+- [PaymentProcessorSessionResponse](../medusa/interfaces/medusa.PaymentProcessorSessionResponse.mdx)
 - [PaymentService](../medusa/interfaces/medusa.PaymentService.mdx)
+- [ProductCategoryDTO](../medusa/interfaces/medusa.ProductCategoryDTO.mdx)
+- [ProductCollectionDTO](../medusa/interfaces/medusa.ProductCollectionDTO.mdx)
+- [ProductDTO](../medusa/interfaces/medusa.ProductDTO.mdx)
+- [ProductImageDTO](../medusa/interfaces/medusa.ProductImageDTO.mdx)
+- [ProductOptionDTO](../medusa/interfaces/medusa.ProductOptionDTO.mdx)
+- [ProductOptionValueDTO](../medusa/interfaces/medusa.ProductOptionValueDTO.mdx)
+- [ProductTagDTO](../medusa/interfaces/medusa.ProductTagDTO.mdx)
+- [ProductTypeDTO](../medusa/interfaces/medusa.ProductTypeDTO.mdx)
+- [ProductVariantDTO](../medusa/interfaces/medusa.ProductVariantDTO.mdx)
 - [RequestQueryFields](../medusa/interfaces/medusa.RequestQueryFields.mdx)
 - [SubscriberContext](../medusa/interfaces/medusa.SubscriberContext.mdx)
 
@@ -538,6 +550,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [GetUploadedFileType](../medusa/types/medusa.GetUploadedFileType.mdx)
 - [GiftCardAllocation](../medusa/types/medusa.GiftCardAllocation.mdx)
 - [HttpCompressionOptions](../medusa/types/medusa.HttpCompressionOptions.mdx)
+- [InnerSelector](../medusa/types/medusa.InnerSelector.mdx)
 - [InternalModuleDeclaration](../medusa/types/medusa.InternalModuleDeclaration.mdx)
 - [InventoryItemDTO](../medusa/types/medusa.InventoryItemDTO.mdx)
 - [InventoryLevelDTO](../medusa/types/medusa.InventoryLevelDTO.mdx)
@@ -567,8 +580,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PartialPick](../medusa/types/medusa.PartialPick.mdx)
 - [PaymentContext](../medusa/types/medusa.PaymentContext.mdx)
 - [PaymentData](../medusa/types/medusa.PaymentData.mdx)
-- [PaymentProcessorContext](../medusa/types/medusa.PaymentProcessorContext.mdx)
-- [PaymentProcessorSessionResponse](../medusa/types/medusa.PaymentProcessorSessionResponse.mdx)
 - [PaymentSessionData](../medusa/types/medusa.PaymentSessionData.mdx)
 - [PaymentSessionResponse](../medusa/types/medusa.PaymentSessionResponse.mdx)
 - [PriceListLoadConfig](../medusa/types/medusa.PriceListLoadConfig.mdx)
@@ -1040,62 +1051,6 @@ ___
     ]
   },
   {
-    "name": "price_list_rules.price_list_rule_values",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "price_list_rules.price_list_rule_values.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "price_list_rules.rule_type",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "price_list_rules.rule_type.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "price_set_money_amounts",
     "type": "`object`",
     "description": "",
@@ -1114,6 +1069,34 @@ ___
           {
             "name": "fields",
             "type": "`string`[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "price_rules",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "fields",
+            "type": "`string`[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "rule_type",
+            "type": "`object`",
             "description": "",
             "optional": false,
             "defaultValue": "",
@@ -1142,120 +1125,6 @@ ___
         ]
       }
     ]
-  },
-  {
-    "name": "price_set_money_amounts.money_amount",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "price_set_money_amounts.money_amount.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "price_set_money_amounts.price_set",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "variant_link",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "variant",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "price_set_money_amounts.price_set.variant_link",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "variant",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "fields",
-            "type": "`string`[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "defaultAdminProductRemoteQueryObject.variants.fields",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "price_set_money_amounts.price_set.variant_link.variant",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "defaultAdminProductRemoteQueryObject.variants.fields",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "price_set_money_amounts.price_set.variant_link.variant.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "defaultAdminProductRemoteQueryObject.variants.fields",
-    "expandable": false,
-    "children": []
   }
 ]} />
 
@@ -1308,15 +1177,6 @@ This is temporary.
     ]
   },
   {
-    "name": "categories.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "collection",
     "type": "`object`",
     "description": "",
@@ -1334,15 +1194,6 @@ This is temporary.
         "children": []
       }
     ]
-  },
-  {
-    "name": "collection.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
   },
   {
     "name": "fields",
@@ -1371,15 +1222,6 @@ This is temporary.
         "children": []
       }
     ]
-  },
-  {
-    "name": "images.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
   },
   {
     "name": "options",
@@ -1420,43 +1262,6 @@ This is temporary.
     ]
   },
   {
-    "name": "options.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "options.values",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "options.values.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "profile",
     "type": "`object`",
     "description": "",
@@ -1476,13 +1281,23 @@ This is temporary.
     ]
   },
   {
-    "name": "profile.fields",
-    "type": "`string`[]",
+    "name": "sales_channels",
+    "type": "`object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "tags",
@@ -1504,15 +1319,6 @@ This is temporary.
     ]
   },
   {
-    "name": "tags.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "type",
     "type": "`object`",
     "description": "",
@@ -1530,15 +1336,6 @@ This is temporary.
         "children": []
       }
     ]
-  },
-  {
-    "name": "type.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
   },
   {
     "name": "variants",
@@ -1577,43 +1374,6 @@ This is temporary.
         ]
       }
     ]
-  },
-  {
-    "name": "variants.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "variants.options",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "variants.options.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
   }
 ]} />
 
@@ -1923,15 +1683,6 @@ This is temporary.
     ]
   },
   {
-    "name": "collection.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "fields",
     "type": "keyof [Product](../entities/classes/entities.Product.mdx)[]",
     "description": "",
@@ -1958,15 +1709,6 @@ This is temporary.
         "children": []
       }
     ]
-  },
-  {
-    "name": "images.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
   },
   {
     "name": "options",
@@ -2007,43 +1749,6 @@ This is temporary.
     ]
   },
   {
-    "name": "options.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "options.values",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "options.values.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "profile",
     "type": "`object`",
     "description": "",
@@ -2063,13 +1768,23 @@ This is temporary.
     ]
   },
   {
-    "name": "profile.fields",
-    "type": "`string`[]",
+    "name": "sales_channels",
+    "type": "`object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "tags",
@@ -2091,15 +1806,6 @@ This is temporary.
     ]
   },
   {
-    "name": "tags.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
     "name": "type",
     "type": "`object`",
     "description": "",
@@ -2117,15 +1823,6 @@ This is temporary.
         "children": []
       }
     ]
-  },
-  {
-    "name": "type.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
   },
   {
     "name": "variants",
@@ -2164,43 +1861,6 @@ This is temporary.
         ]
       }
     ]
-  },
-  {
-    "name": "variants.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "variants.options",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  },
-  {
-    "name": "variants.options.fields",
-    "type": "`string`[]",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
   }
 ]} />
 
@@ -2239,6 +1899,18 @@ ___
 ### defaultStoreProductsRelations
 
  `Const` **defaultStoreProductsRelations**: `string`[]
+
+___
+
+### defaultStoreRegionFields
+
+ `Const` **defaultStoreRegionFields**: `string`[]
+
+___
+
+### defaultStoreRegionRelations
+
+ `Const` **defaultStoreRegionRelations**: `string`[]
 
 ___
 
@@ -7940,7 +7612,7 @@ Generate a composed id based on the input parameters and return either the is if
     "name": "idProperty",
     "type": "`string`",
     "description": "",
-    "optional": false,
+    "optional": true,
     "defaultValue": "",
     "expandable": false,
     "children": []
@@ -7967,66 +7639,6 @@ Generate a composed id based on the input parameters and return either the is if
     "description": "",
     "expandable": false,
     "children": []
-  }
-]} />
-
-___
-
-### getProductWithIsolatedProductModule
-
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "req",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "id",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "retrieveConfig",
-    "type": "`any`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "Promise&#60;any&#62;",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "any",
-        "type": "`any`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
   }
 ]} />
 
@@ -8085,6 +7697,86 @@ ___
         "description": "",
         "expandable": false,
         "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### getVariantsFromPriceList
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "container",
+    "type": "[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "createScope",
+        "type": "() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "registerAdd",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "priceListId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;[ProductVariantDTO](../medusa/interfaces/medusa.ProductVariantDTO.mdx)[]&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "ProductVariantDTO[]",
+        "type": "[ProductVariantDTO](../medusa/interfaces/medusa.ProductVariantDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "ProductVariantDTO",
+            "type": "`object`",
+            "description": "A product variant's data.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   }
@@ -8548,19 +8240,38 @@ ___
 
 ___
 
-### listAndCountProductWithIsolatedProductModule
+### listProducts
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
-    "name": "req",
-    "type": "`any`",
+    "name": "container",
+    "type": "[MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": []
+    "children": [
+      {
+        "name": "createScope",
+        "type": "() => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "registerAdd",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](../medusa/types/medusa.MedusaContainer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "filterableFields",
@@ -14272,6 +13983,66 @@ ___
     "description": "",
     "expandable": false,
     "children": []
+  }
+]} />
+
+___
+
+### retrieveProduct
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "container",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "remoteQueryObject",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "Promise&#60;any&#62;",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "any",
+        "type": "`any`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />
 

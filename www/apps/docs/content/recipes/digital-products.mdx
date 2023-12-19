@@ -142,7 +142,7 @@ For example, if you're selling the Harry Potter movies, you would have a `Produc
 
   To do that, create the file `src/models/product-media.ts` with the following content:
 
-  ```ts title="src/models/product-media.ts"
+  ```ts title="src/models/product-media.ts" badgeLabel="Backend"
   import { 
     BeforeInsert, 
     Column, 
@@ -225,6 +225,8 @@ For example, if you're selling the Harry Potter movies, you would have a `Produc
   npx medusa migrations run
   ```
 
+  To avoid TypeScript errors while using the `ProductMedia`
+
 </Details>
     
 
@@ -272,9 +274,10 @@ Creating an API Route also requires creating a service, which is a class that ty
 
   Before creating the API Routes, you’ll create the `ProductMediaService`. Create the file `src/services/product-media.ts` with the following content:
 
-  ```ts title="src/services/product-media.ts"
+  ```ts title="src/services/product-media.ts" badgeLabel="Backend"
   import { 
     FindConfig,
+    ProductVariant,
     ProductVariantService,
     Selector,
     TransactionBaseService,
@@ -328,6 +331,8 @@ Creating an API Route also requires creating a service, which is a class that ty
       )
 
       config.relations = relations
+
+      console.log(selector, config.relations)
 
       const query = buildQuery(selector, config)
 
@@ -402,6 +407,22 @@ Creating an API Route also requires creating a service, which is a class that ty
       )
     }
 
+    async retrieveMediasByVariant(
+      productVariant: ProductVariant
+    ): Promise<ProductMedia[]> {
+      const productMediaRepo = this.activeManager_.getRepository(
+        ProductMedia
+      )
+
+      const query = buildQuery({
+        variant_id: productVariant.id,
+      })
+
+      const productMedias = await productMediaRepo.find(query)
+
+      return productMedias
+    }
+
     async create(
       data: Pick<
         ProductMedia, 
@@ -454,7 +475,7 @@ Creating an API Route also requires creating a service, which is a class that ty
 
   You can now create the API Routes. Create the file `src/api/admin/product-media/route.ts` with the following content:
 
-  ```ts title="src/api/admin/product-media/route.ts"
+  ```ts title="src/api/admin/product-media/route.ts" badgeLabel="Backend"
   import type { 
     MedusaRequest, 
     MedusaResponse,
@@ -506,6 +527,7 @@ Creating an API Route also requires creating a service, which is a class that ty
       file_key,
       type,
       name,
+      mime_type,
     })
 
     res.json({
@@ -568,14 +590,14 @@ To add an interface that allows the admin user to upload digital products, you c
   Before starting off, make sure to install the necessary dependencies in your Medusa backend project:
 
   ```bash npm2yarn
-  npm install medusa-react @tanstack/react-query @medusajs/ui
+  npm install medusa-react @tanstack/react-query@4.22 @medusajs/ui
   ```
 
   This installs the necessary packages to use the Medusa React client and the [Medusa UI package](https://docs.medusajs.com/ui).
 
   You also need to create types for the expected requests and responses of the API Routes you created. This is helpful when using Medusa React’s custom hooks. To do that, create the file `src/types/product-media.ts` with the following content:
 
-  ```ts title="src/types/product-media.ts"
+  ```ts title="src/types/product-media.ts" badgeLabel="Backend"
   import { 
     MediaType, 
     ProductMedia, 
@@ -605,7 +627,7 @@ To add an interface that allows the admin user to upload digital products, you c
 
   You can now create your admin UI route. To do that, create the file `src/admin/routes/product-media/page.tsx` with the following content:
 
-  ```tsx title="src/admin/routes/product-media/page.tsx"
+  ```tsx title="src/admin/routes/product-media/page.tsx" badgeLabel="Backend"
   import { RouteConfig } from "@medusajs/admin"
   import { DocumentText } from "@medusajs/icons"
   import { useAdminCustomQuery } from "medusa-react"
@@ -714,7 +736,7 @@ To add an interface that allows the admin user to upload digital products, you c
 
   In the drawer, you show the Create Digital Product form. To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
 
-  ```tsx title="src/admin/components/product-media/CreateForm/index.tsx"
+  ```tsx title="src/admin/components/product-media/CreateForm/index.tsx" badgeLabel="Backend"
   import { useState } from "react"
   import { MediaType } from "../../../../models/product-media"
   import { 
@@ -952,13 +974,14 @@ Finally, you can send a notification, such as an email, to the customer using th
 
   Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the SendGrid plugin:
       
-  ```ts title="src/subscribers/handle-order.ts"
+  ```ts title="src/subscribers/handle-order.ts" badgeLabel="Backend"
   import { 
     type SubscriberConfig, 
     type SubscriberArgs,
     OrderService,
     AbstractFileService,
   } from "@medusajs/medusa"
+  import ProductMediaService from "../services/product-media"
 
   export default async function handleOrderPlaced({ 
     data, eventName, container, pluginOptions, 
@@ -969,25 +992,30 @@ Finally, you can send a notification, such as an email, to the customer using th
     const fileService: AbstractFileService = container.resolve(
       "fileService"
     )
+    const productMediaService: ProductMediaService = 
+      container.resolve(
+        "productMediaService"
+      )
     const sendgridService = container.resolve("sendgridService")
 
     const order = await orderService.retrieve(data.id, {
       relations: [
         "items", 
         "items.variant", 
-        "items.variant.product_medias",
       ],
     })
 
     // find product medias in the order
     const urls = []
     for (const item of order.items) {
-      if (!item.variant.product_medias.length) {
+      const productMedias = await productMediaService
+        .retrieveMediasByVariant(item.variant)
+      if (!productMedias.length) {
         return
       }
 
       await Promise.all([
-        item.variant.product_medias.forEach(
+        productMedias.forEach(
           async (productMedia) => {
           // get the download URL from the file service
           const downloadUrl = await 
@@ -1055,7 +1083,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Create the file `src/api/store/product-media/route.ts` with the following content:
 
-  ```ts title="src/api/store/product-media/route.ts"
+  ```ts title="src/api/store/product-media/route.ts" badgeLabel="Backend"
   import type { 
     MedusaRequest, 
     MedusaResponse,
@@ -1095,7 +1123,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   First, if you're using TypeScript for your development, create the file `src/types/product-media.ts` with the following content:
 
-  ```ts title="src/types/product-media.ts"
+  ```ts title="src/types/product-media.ts" badgeLabel="Storefront" badgeColor="blue"
 
   import { Product } from "@medusajs/medusa"
   import { ProductVariant } from "@medusajs/product"
@@ -1114,10 +1142,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
     created_at?: Date
     updated_at?: Date
     type?: ProductMediaVariantType
-    variant_id?: string
     variants?: ProductVariant[]
-    created_at: Date
-    updated_at: Date
   }
 
   export type DigitalProduct = Omit<Product, "variants"> & {
@@ -1132,11 +1157,11 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Then, add in `src/lib/data/index.ts` a new function that retrieves the product media of the product variant being viewed:
 
-  ```ts title="src/lib/data/index.ts"
+  ```ts title="src/lib/data/index.ts" badgeLabel="Storefront" badgeColor="blue"
   import { 
-    DigitalProduct, 
     ProductMedia,
   } from "types/product-media"
+  import { Variant } from "../../types/medusa"
 
   // ... rest of the functions
 
@@ -1165,7 +1190,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   To allow customers to download the file preview without exposing its URL, create a Next.js API route in the file `src/app/api/download/preview/route.ts` with the following content:
 
-  ```ts title="src/app/api/download/preview/route.ts"
+  ```ts title="src/app/api/download/preview/route.ts" badgeLabel="Storefront" badgeColor="blue"
   import { NextRequest, NextResponse } from "next/server"
 
   export async function GET(req: NextRequest) {
@@ -1177,15 +1202,15 @@ To implement this, create a storefront API Route that allows you to fetch the di
     } = Object.fromEntries(req.nextUrl.searchParams)
 
     // Fetch the file
-    const response = await fetch(file_path)
+    const fileResponse = await fetch(file_path)
 
     // Handle the case where the file could not be fetched
-    if (!response.ok) {
+    if (!fileResponse.ok) {
       return new NextResponse("File not found", { status: 404 })
     }
 
     // Get the file content as a buffer
-    const fileBuffer = await response.arrayBuffer()
+    const fileBuffer = await fileResponse.arrayBuffer()
 
     // Define response headers
     const headers = {
@@ -1208,7 +1233,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Next, create the preview button in the file `src/modules/products/components/product-media-preview/index.tsx`:
 
-  ```tsx title="src/modules/products/components/product-media-preview/index.tsx"
+  ```tsx title="src/modules/products/components/product-media-preview/index.tsx" badgeLabel="Storefront" badgeColor="blue"
   import Button from "@modules/common/components/button"
   import { ProductMedia } from "types/product-media"
 
@@ -1243,8 +1268,9 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
   Finally, add the button as one of the product actions defined in `src/modules/products/components/product-actions/index.tsx`. These are the actions shown to the customer in the product details page:
 
-  ```tsx title="src/modules/products/components/product-actions/index.tsx"
+  ```tsx title="src/modules/products/components/product-actions/index.tsx" badgeLabel="Storefront" badgeColor="blue"
   // other imports...
+  import { useState, useEffect } from "react"
   import ProductMediaPreview from "../product-media-preview"
   import { getProductMediaPreviewByVariant } from "@lib/data"
   import { ProductMedia } from "types/product-media"
@@ -1257,7 +1283,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
     const [productMedia, setProductMedia] = useState<
       ProductMedia
-    >({})
+    >()
 
     useEffect(() => {
       const getProductMedia = async () => {
@@ -1315,7 +1341,7 @@ You can change this section to show information relevant to the product. For exa
 
   Next, change the `ProductTabs`, `ProductInfoTab`, and `ShippingInfoTab` components defined in `src/modules/products/components/product-tabs/index.tsx` to the following:
 
-  ```tsx title="src/modules/products/components/product-tabs/index.tsx"
+  ```tsx title="src/modules/products/components/product-tabs/index.tsx" badgeLabel="Storefront" badgeColor="blue"
   const ProductTabs = ({ product }: ProductTabsProps) => {
     const tabs = useMemo(() => {
       return [
@@ -1426,20 +1452,18 @@ When a customer purchases a digital product, the shipping form shown during chec
 
 <!-- eslint-skip -->
 
-  ```tsx title="src/lib/context/checkout-context.tsx"
+  ```tsx title="src/lib/context/checkout-context.tsx" badgeLabel="Storefront" badgeColor="blue"
   "use client"
 
   import { medusaClient } from "@lib/config"
-  import useToggleState, { 
-    StateType,
-  } from "@lib/hooks/use-toggle-state"
-  import { 
+  import useToggleState, { StateType } from "@lib/hooks/use-toggle-state"
+  import {
+    Address,
     Cart,
     Customer,
     StorePostCartsCartReq,
   } from "@medusajs/medusa"
-  import Wrapper 
-    from "@modules/checkout/components/payment-wrapper"
+  import Wrapper from "@modules/checkout/components/payment-wrapper"
   import { isEqual } from "lodash"
   import {
     formatAmount,
@@ -1451,18 +1475,10 @@ When a customer purchases a digital product, the shipping form shown during chec
     useUpdateCart,
   } from "medusa-react"
   import { useRouter } from "next/navigation"
-  import React, { 
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-  } from "react"
-  import { 
-    FormProvider, 
-    useForm, 
-    useFormContext,
-  } from "react-hook-form"
+  import React, { createContext, useContext, useEffect, useMemo } from "react"
+  import { FormProvider, useForm, useFormContext } from "react-hook-form"
   import { useStore } from "./store-context"
+  import Spinner from "@modules/common/icons/spinner"
 
   type AddressValues = {
     first_name: string
@@ -1472,32 +1488,32 @@ When a customer purchases a digital product, the shipping form shown during chec
 
   export type CheckoutFormValues = {
     shipping_address: AddressValues
-    billing_address?: AddressValues
+    billing_address: AddressValues
     email: string
   }
 
   interface CheckoutContext {
     cart?: Omit<Cart, "refundable_amount" | "refunded_total">
-    shippingMethods: { 
-      label?: string;
-      value?: string;
-      price: string
-    }[]
+    shippingMethods: { label?: string; value?: string; price: string }[]
     isLoading: boolean
+    addressReady: boolean
+    shippingReady: boolean
+    paymentReady: boolean
     readyToComplete: boolean
     sameAsBilling: StateType
     editAddresses: StateType
+    editShipping: StateType
+    editPayment: StateType
+    isCompleting: StateType
     initPayment: () => Promise<void>
     setAddresses: (addresses: CheckoutFormValues) => void
-    setSavedAddress: (address: AddressValues) => void
+    setSavedAddress: (address: Address) => void
     setShippingOption: (soId: string) => void
     setPaymentSession: (providerId: string) => void
     onPaymentCompleted: () => void
   }
 
-  const CheckoutContext = createContext<
-    CheckoutContext | null
-  >(null)
+  const CheckoutContext = createContext<CheckoutContext | null>(null)
 
   interface CheckoutProviderProps {
     children?: React.ReactNode
@@ -1505,9 +1521,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 
   const IDEMPOTENCY_KEY = "create_payment_session_key"
 
-  export const CheckoutProvider = ({
-    children,
-  }: CheckoutProviderProps) => {
+  export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
     const {
       cart,
       setCart,
@@ -1515,10 +1529,7 @@ When a customer purchases a digital product, the shipping form shown during chec
         mutate: setShippingMethod,
         isLoading: addingShippingMethod,
       },
-      completeCheckout: { 
-        mutate: complete, 
-        isLoading: completingCheckout,
-      },
+      completeCheckout: { mutate: complete },
     } = useCart()
 
     const { customer } = useMeCustomer()
@@ -1534,16 +1545,11 @@ When a customer purchases a digital product, the shipping form shown during chec
       isLoading: settingPaymentSession,
     } = useSetPaymentSession(cart?.id!)
 
-    const { 
-      mutate: updateCart,
-      isLoading: updatingCart,
-    } = useUpdateCart(
+    const { mutate: updateCart, isLoading: updatingCart } = useUpdateCart(
       cart?.id!
     )
 
-    const { 
-      shipping_options,
-    } = useCartShippingOptions(cart?.id!, {
+    const { shipping_options } = useCartShippingOptions(cart?.id!, {
       enabled: !!cart?.id,
     })
 
@@ -1559,40 +1565,50 @@ When a customer purchases a digital product, the shipping form shown during chec
         : true
     )
 
-    /**
-     * Boolean that indicates if a 
-     * part of the checkout is loading.
-     */
-    const isLoading = useMemo(() => {
-      return (
-        addingShippingMethod ||
-        settingPaymentSession ||
-        updatingCart ||
-        completingCheckout
-      )
-    }, [
-      addingShippingMethod,
-      completingCheckout,
-      settingPaymentSession,
-      updatingCart,
-    ])
+    const editShipping = useToggleState()
+    const editPayment = useToggleState()
 
     /**
-     * Boolean that indicates if the checkout is ready to be
-     * completed. A checkout is ready to be completed if
-     * the user has supplied a email, shipping address, 
-     * billing address, shipping method, and a method of payment.
-     */
-    const readyToComplete = useMemo(() => {
-      return (
-        !!cart &&
-        !!cart.email &&
-        !!cart.shipping_address &&
-        !!cart.billing_address &&
-        !!cart.payment_session &&
-        cart.shipping_methods?.length > 0
-      )
-    }, [cart])
+    * Boolean that indicates if a part of the checkout is loading.
+    */
+    const isLoading = useMemo(() => {
+      return addingShippingMethod || settingPaymentSession || updatingCart
+    }, [addingShippingMethod, settingPaymentSession, updatingCart])
+
+    /**
+    * Boolean that indicates if the checkout is ready to be completed. A checkout is ready to be completed if
+    * the user has supplied a email, shipping address, billing address, shipping method, and a method of payment.
+    */
+    const { addressReady, shippingReady, paymentReady, readyToComplete } =
+      useMemo(() => {
+        const addressReady =
+          !!cart?.shipping_address && !!cart?.billing_address && !!cart?.email
+
+        const shippingReady =
+          addressReady &&
+          !!(
+            cart?.shipping_methods &&
+            cart.shipping_methods.length > 0 &&
+            cart.shipping_methods[0].shipping_option
+          )
+
+        const paymentReady = shippingReady && !!cart?.payment_session
+
+        const readyToComplete = addressReady && shippingReady && paymentReady
+
+        return {
+          addressReady,
+          shippingReady,
+          paymentReady,
+          readyToComplete,
+        }
+      }, [cart])
+
+    useEffect(() => {
+      if (addressReady && !shippingReady) {
+        editShipping.open()
+      }
+    }, [addressReady, shippingReady, editShipping])
 
     const shippingMethods = useMemo(() => {
       if (shipping_options && cart?.region) {
@@ -1610,8 +1626,8 @@ When a customer purchases a digital product, the shipping form shown during chec
     }, [shipping_options, cart])
 
     /**
-     * Resets the form when the cart changed.
-     */
+    * Resets the form when the cart changed.
+    */
     useEffect(() => {
       if (cart?.id) {
         methods.reset(mapFormValues(customer, cart, countryCode))
@@ -1634,11 +1650,9 @@ When a customer purchases a digital product, the shipping form shown during chec
     }, [cart])
 
     /**
-     * Method to set the selected shipping method for the cart.
-     * This is called when the user selects a shipping method,
-     * such as UPS, FedEx, etc.
-     */
-    const setShippingOption = (soId: string) => {
+    * Method to set the selected shipping method for the cart. This is called when the user selects a shipping method, such as UPS, FedEx, etc.
+    */
+    const setShippingOption = async (soId: string) => {
       if (cart) {
         setShippingMethod(
           { option_id: soId },
@@ -1650,41 +1664,30 @@ When a customer purchases a digital product, the shipping form shown during chec
     }
 
     /**
-     * Method to create the payment sessions available for the
-     * cart. Uses a idempotency key to prevent 
-     * duplicate requests.
-     */
-    const createPaymentSession = async (cartId: string) => {
-      return medusaClient.carts
-        .createPaymentSessions(cartId, {
-          "Idempotency-Key": IDEMPOTENCY_KEY,
-        })
-        .then(({ cart }) => cart)
-        .catch(() => null)
-    }
-
-    /**
-     * Method that calls the createPaymentSession method and
-     * updates the cart with the payment session.
-     */
+    * Method to create the payment sessions available for the cart. Uses a idempotency key to prevent duplicate requests.
+    */
     const initPayment = async () => {
       if (cart?.id && !cart.payment_sessions?.length && cart?.items?.length) {
-        const paymentSession = await createPaymentSession(cart.id)
-
-        if (!paymentSession) {
-          setTimeout(initPayment, 500)
-        } else {
-          setCart(paymentSession)
-          return
-        }
+        return medusaClient.carts
+          .createPaymentSessions(cart.id, {
+            "Idempotency-Key": IDEMPOTENCY_KEY,
+          })
+          .then(({ cart }) => cart && setCart(cart))
+          .catch((err) => err)
       }
     }
 
+    useEffect(() => {
+      // initialize payment session
+      const start = async () => {
+        await initPayment()
+      }
+      start()
+    }, [cart?.region, cart?.id, cart?.items])
+
     /**
-     * Method to set the selected payment session for the cart.
-     * This is called when the user selects a payment provider,
-     * such as Stripe, PayPal, etc.
-     */
+    * Method to set the selected payment session for the cart. This is called when the user selects a payment provider, such as Stripe, PayPal, etc.
+    */
     const setPaymentSession = (providerId: string) => {
       if (cart) {
         setPaymentSessionMutation(
@@ -1700,17 +1703,7 @@ When a customer purchases a digital product, the shipping form shown during chec
       }
     }
 
-    const prepareFinalSteps = () => {
-      initPayment()
-
-      if (
-        shippingMethods?.length && shippingMethods?.[0]?.value
-      ) {
-        setShippingOption(shippingMethods[0].value)
-      }
-    }
-
-    const setSavedAddress = (address: AddressValues) => {
+    const setSavedAddress = (address: Address) => {
       const setValue = methods.setValue
 
       setValue("shipping_address", {
@@ -1721,10 +1714,8 @@ When a customer purchases a digital product, the shipping form shown during chec
     }
 
     /**
-     * Method that validates if the cart's region matches the 
-     * shipping address's region. If not, it will update the
-     * cart region.
-     */
+    * Method that validates if the cart's region matches the shipping address's region. If not, it will update the cart region.
+    */
     const validateRegion = (countryCode: string) => {
       if (regions && cart) {
         const region = regions.find((r) =>
@@ -1738,10 +1729,12 @@ When a customer purchases a digital product, the shipping form shown during chec
     }
 
     /**
-     * Method that sets the addresses and email on the cart.
-     */
+    * Method that sets the addresses and email on the cart.
+    */
     const setAddresses = (data: CheckoutFormValues) => {
       const { shipping_address, billing_address, email } = data
+
+      validateRegion(shipping_address.country_code)
 
       const payload: StorePostCartsCartReq = {
         shipping_address,
@@ -1759,24 +1752,24 @@ When a customer purchases a digital product, the shipping form shown during chec
       }
 
       updateCart(payload, {
-        onSuccess: ({ cart }) => {
-          setCart(cart)
-          prepareFinalSteps()
-        },
+        onSuccess: ({ cart }) => setCart(cart),
       })
     }
 
+    const isCompleting = useToggleState()
+
     /**
-     * Method to complete the checkout process. This is called
-     * when the user clicks the "Complete Checkout" button.
-     */
+    * Method to complete the checkout process. This is called when the user clicks the "Complete Checkout" button.
+    */
     const onPaymentCompleted = () => {
+      isCompleting.open()
       complete(undefined, {
         onSuccess: ({ data }) => {
-          resetCart()
           push(`/order/confirmed/${data.id}`)
+          resetCart()
         },
       })
+      isCompleting.close()
     }
 
     return (
@@ -1786,9 +1779,15 @@ When a customer purchases a digital product, the shipping form shown during chec
             cart,
             shippingMethods,
             isLoading,
+            addressReady,
+            shippingReady,
+            paymentReady,
             readyToComplete,
             sameAsBilling,
             editAddresses,
+            editShipping,
+            editPayment,
+            isCompleting,
             initPayment,
             setAddresses,
             setSavedAddress,
@@ -1797,11 +1796,15 @@ When a customer purchases a digital product, the shipping form shown during chec
             onPaymentCompleted,
           }}
         >
-          <Wrapper
-            paymentSession={cart?.payment_session}
-          >
-            {children}
-          </Wrapper>
+          {isLoading && cart?.id === "" ? (
+            <div className="flex justify-center items-center h-screen">
+              <div className="w-auto">
+                <Spinner size={40} />
+              </div>
+            </div>
+          ) : (
+            <Wrapper paymentSession={cart?.payment_session}>{children}</Wrapper>
+          )}
         </CheckoutContext.Provider>
       </FormProvider>
     )
@@ -1873,23 +1876,131 @@ When a customer purchases a digital product, the shipping form shown during chec
 
   This removes all references to shipping fields that you don't need for digital products.
 
-  Next, update the content of `src/modules/checkout/components/addresses/index.tsx` to remove the unnecessary address fields:
+  Next, change the content of `src/modules/checkout/components/shipping-address/index.tsx` to remove the unnecessary address fields:
+
+<!-- eslint-skip -->
+
+  ```tsx title="src/modules/checkout/components/shipping-address/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+  import { CheckoutFormValues } from "@lib/context/checkout-context"
+  import { emailRegex } from "@lib/util/regex"
+  import ConnectForm from "@modules/common/components/connect-form"
+  import Input from "@modules/common/components/input"
+  import { useMeCustomer } from "medusa-react"
+  import AddressSelect from "../address-select"
+  import CountrySelect from "../country-select"
+  import Checkbox from "@modules/common/components/checkbox"
+  import { Container } from "@medusajs/ui"
+
+  const ShippingAddress = ({
+    checked,
+    onChange,
+  }: {
+    checked: boolean
+    onChange: () => void
+  }) => {
+    const { customer } = useMeCustomer()
+
+    return (
+      <div>
+        {customer && (customer.shipping_addresses?.length || 0) > 0 && (
+          <Container className="mb-6 flex flex-col gap-y-4 p-5">
+            <p className="text-small-regular">
+              {`Hi ${customer.first_name}, do you want to use one of your saved addresses?`}
+            </p>
+            <AddressSelect addresses={customer.shipping_addresses} />
+          </Container>
+        )}
+        <ConnectForm<CheckoutFormValues>>
+          {({ register, formState: { errors, touchedFields } }) => (
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  label="First name"
+                  {...register("shipping_address.first_name", {
+                    required: "First name is required",
+                  })}
+                  autoComplete="given-name"
+                  errors={errors}
+                  touched={touchedFields}
+                  required
+                />
+                <Input
+                  label="Last name"
+                  {...register("shipping_address.last_name", {
+                    required: "Last name is required",
+                  })}
+                  autoComplete="family-name"
+                  errors={errors}
+                  touched={touchedFields}
+                  required
+                />
+                <CountrySelect
+                  {...register("shipping_address.country_code", {
+                    required: "Country is required",
+                  })}
+                  autoComplete="country"
+                  errors={errors}
+                  touched={touchedFields}
+                  required
+                />
+              </div>
+              <div className="my-8">
+                <Checkbox
+                  label="Same as billing address"
+                  checked={checked}
+                  onChange={onChange}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <Input
+                  label="Email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: emailRegex,
+                  })}
+                  autoComplete="email"
+                  errors={errors}
+                  touched={touchedFields}
+                  required
+                />
+              </div>
+            </>
+          )}
+        </ConnectForm>
+      </div>
+    )
+  }
+
+  export default ShippingAddress
+  ```
+
+  And update the content of `src/modules/checkout/components/addresses/index.tsx` to only show the necessary address fields:
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title="src/modules/checkout/components/addresses/index.tsx"
+  ```tsx title="src/modules/checkout/components/addresses/index.tsx" badgeLabel="Storefront" badgeColor="blue"
   import { useCheckout } from "@lib/context/checkout-context"
-  import Button from "@modules/common/components/button"
+  import { Button } from "@medusajs/ui"
   import Spinner from "@modules/common/icons/spinner"
   import ShippingAddress from "../shipping-address"
 
   const Addresses = () => {
     const {
-      editAddresses: { state: isEdit, toggle: setEdit },
+      sameAsBilling: { state: checked, toggle: onChange },
+      editAddresses: { state: isOpen, open },
+      editShipping: { close: closeShipping },
+      editPayment: { close: closePayment },
       setAddresses,
       handleSubmit,
       cart,
     } = useCheckout()
+
+    const handleEdit = () => {
+      open()
+      closeShipping()
+      closePayment()
+    }
+
     return (
       <div className="bg-white">
         <div className={"text-xl-semi flex items-center gap-x-4 px-8 pb-6 pt-8"}>
@@ -1898,9 +2009,9 @@ When a customer purchases a digital product, the shipping form shown during chec
           </div>
           <h2>Shipping address</h2>
         </div>
-        {isEdit ? (
+        {isOpen ? (
           <div className="px-8 pb-8">
-            <ShippingAddress />
+            <ShippingAddress checked={checked} onChange={onChange} />
             <Button
               className="max-w-[200px] mt-6"
               onClick={handleSubmit(setAddresses)}
@@ -1928,7 +2039,7 @@ When a customer purchases a digital product, the shipping form shown during chec
                       </div>
                     </div>
                     <div>
-                      <button onClick={setEdit}>Edit</button>
+                      <button onClick={handleEdit}>Edit</button>
                     </div>
                   </div>
                 </div>
@@ -1949,48 +2060,58 @@ When a customer purchases a digital product, the shipping form shown during chec
 
   Finally, change the shipping details shown in the order confirmation page by replacing the content of `src/modules/order/components/shipping-details/index.tsx` with the following:
 
-  ```tsx title="src/modules/order/components/shipping-details/index.tsx"
-  import { Address, ShippingMethod } from "@medusajs/medusa"
+<!-- eslint-skip -->
+
+  ```tsx title="src/modules/order/components/shipping-details/index.tsx" badgeLabel="Storefront" badgeColor="blue"
+  import { Order } from "@medusajs/medusa"
+  import { Heading, Text } from "@medusajs/ui"
+  import Divider from "@modules/common/components/divider"
+  import { formatAmount } from "medusa-react"
 
   type ShippingDetailsProps = {
-    address: Address
-    shippingMethods: ShippingMethod[]
-    email: string
+    order: Order
   }
 
-  const ShippingDetails = ({
-    address,
-    shippingMethods,
-    email,
-  }: ShippingDetailsProps) => {
+  const ShippingDetails = ({ order }: ShippingDetailsProps) => {
     return (
-      <div className="text-base-regular">
-        <h2 className="text-base-semi">Delivery</h2>
-        <div className="my-2">
-          <h3 className="text-small-regular text-gray-700">
-            Details
-          </h3>
-          <div className="flex flex-col">
-            <span>
-              {`${address.first_name} ${address.last_name}`}
-            </span>
-            <span>{email}</span>
+      <div>
+        <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
+          Delivery
+        </Heading>
+        <div className="flex items-start gap-x-8">
+          <div className="flex flex-col w-1/3">
+            <Text className="txt-medium-plus text-ui-fg-base mb-1">
+              Shipping Address
+            </Text>
+            <Text className="txt-medium text-ui-fg-subtle">
+              {order.shipping_address.first_name}{" "}
+              {order.shipping_address.last_name}
+            </Text>
+            <Text className="txt-medium text-ui-fg-subtle">
+              {order.shipping_address.country_code?.toUpperCase()}
+            </Text>
           </div>
-        </div>
-        <div className="my-2">
-          <h3 className="text-small-regular text-gray-700">
-            Delivery method
-          </h3>
-          <div>
-            {shippingMethods.map((sm) => {
-              return (
-                <div key={sm.id}>
-                  {sm.shipping_option.name}
-                </div>
+
+          <div className="flex flex-col w-1/3 ">
+            <Text className="txt-medium-plus text-ui-fg-base mb-1">Contact</Text>
+            <Text className="txt-medium text-ui-fg-subtle">{order.email}</Text>
+          </div>
+
+          <div className="flex flex-col w-1/3">
+            <Text className="txt-medium-plus text-ui-fg-base mb-1">Method</Text>
+            <Text className="txt-medium text-ui-fg-subtle">
+              {order.shipping_methods[0].shipping_option.name} (
+              {formatAmount({
+                amount: order.shipping_methods[0].price,
+                region: order.region,
+              })
+                .replace(/,/g, "")
+                .replace(/\./g, ",")}
               )
-            })}
+            </Text>
           </div>
         </div>
+        <Divider className="mt-8" />
       </div>
     )
   }
@@ -2011,7 +2132,7 @@ After the customer purchases the digital product you can show a download button 
 
   Create the file `src/api/store/product-media/download/[variant_id]/route.ts` with the following content:
 
-  ```ts title="src/api/store/product-media/download/route.ts"
+  ```ts title="src/api/store/product-media/download/route.ts" badgeLabel="Backend"
   import type { 
     AbstractFileService, 
     MedusaRequest, 
@@ -2082,7 +2203,7 @@ After the customer purchases the digital product you can show a download button 
 
   Then, add the `requireCustomerAuthentication` middleware to this API Route in `src/api/middlewares.ts`:
 
-  ```ts title="src/api/middlewares.ts"
+  ```ts title="src/api/middlewares.ts" badgeLabel="Backend"
   import { 
     requireCustomerAuthentication, 
     type MiddlewaresConfig, 
@@ -2104,7 +2225,7 @@ After the customer purchases the digital product you can show a download button 
 
   To mask the presigned URL, create a Next.js API route at `src/app/api/download/main/[variant_id]/route.ts` with the following content:
 
-  ```ts title="src/app/api/download/main/[variant_id]/route.ts"
+  ```ts title="src/app/api/download/main/[variant_id]/route.ts" badgeLabel="Storefront" badgeColor="blue"
   import { NextRequest, NextResponse } from "next/server"
 
   export async function GET(
@@ -2137,10 +2258,10 @@ After the customer purchases the digital product you can show a download button 
     }
 
     // Fetch the file
-    const response = await fetch(url)
+    const fileResponse = await fetch(url)
 
     // Handle the case where the file could not be fetched
-    if (!response.ok) {
+    if (!fileResponse.ok) {
       return new NextResponse(
         "File not found",
         { status: 404 }
@@ -2148,7 +2269,7 @@ After the customer purchases the digital product you can show a download button 
     }
 
     // Get the file content as a buffer
-    const fileBuffer = await response.arrayBuffer()
+    const fileBuffer = await fileResponse.arrayBuffer()
 
     // Define response headers
     const headers = {
@@ -2169,78 +2290,64 @@ After the customer purchases the digital product you can show a download button 
 
   Finally, add a button in the storefront that uses this route to allow customers to download the digital product after purchase.
 
-  For example, you can change the `src/modules/order/components/items/index.tsx` file that shows the items to the customer in the order confirmation page to include a new download button:
+  For example, you can change the `src/modules/order/components/item/index.tsx` file that handles showing each of the order's items in the order confirmation page to include a new download button if the customer is logged-in:
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title="src/modules/order/components/items/index.tsx"
-  import useEnrichedLineItems from "@lib/hooks/use-enrich-line-items"
+  ```tsx title="src/modules/order/components/item/index.tsx" badgeLabel="Storefront" badgeColor="blue"
   import { LineItem, Region } from "@medusajs/medusa"
+  import { Button, Table, Text, clx } from "@medusajs/ui"
   import LineItemOptions from "@modules/common/components/line-item-options"
   import LineItemPrice from "@modules/common/components/line-item-price"
+  import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
   import Thumbnail from "@modules/products/components/thumbnail"
-  import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
-  import Link from "next/link"
-  import medusaRequest from "../medusa-fetch"
+  import { useAccount } from "../../../../lib/context/account-context"
 
-  type ItemsProps = {
-    items: LineItem[]
+  type ItemProps = {
+    item: Omit<LineItem, "beforeInsert">
     region: Region
-    cartId: string
   }
 
-  const Items = ({ items, region, cartId }: ItemsProps) => {
-    const enrichedItems = useEnrichedLineItems(items, cartId)
-
-    const handleDownload = async (variantId: string) => {
-      window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/download/main/${variant_id}`
+  const Item = ({ item, region }: ItemProps) => {
+    const { customer } = useAccount()
+    const handleDownload = async () => {
+      window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/download/main/${item.variant_id}`
     }
-
     return (
-      <div className="p-10 border-b border-gray-200 gap-y-4 flex flex-col">
-        {enrichedItems?.length
-          ? enrichedItems.map((item) => {
-              return (
-                <div className="grid grid-cols-[122px_1fr] gap-x-4" key={item.id}>
-                  <div className="w-[122px]">
-                    <Thumbnail thumbnail={item.thumbnail} size="full" />
-                  </div>
-                  <div className="flex flex-col justify-between flex-1">
-                    <div className="flex flex-col flex-1 text-small-regular">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h3 className="text-base-regular overflow-ellipsis overflow-hidden whitespace-nowrap mr-4">
-                            <Link
-                              href={`/products/${item.variant.product.handle}`}
-                            >
-                              {item.title}
-                            </Link>
-                          </h3>
-                          <LineItemOptions variant={item.variant} />
-                          <span>Quantity: {item.quantity}</span>
-                        </div>
-                        <div className="flex justify-end">
-                          <LineItemPrice region={region} item={item} />
-                          <Button 
-                            variant="secondary" 
-                            onClick={() => handleDownload(item.variant.id)}>
-                            Download
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            })
-          : Array.from(Array(items.length).keys()).map((i) => {
-              return <SkeletonLineItem key={i} />
-            })}
-      </div>
+      <Table.Row className="w-full">
+        <Table.Cell className="!pl-0 p-4 w-24">
+          <div className="flex w-16">
+            <Thumbnail thumbnail={item.thumbnail} size="square" />
+          </div>
+        </Table.Cell>
+
+        <Table.Cell className="text-left">
+          <Text className="txt-medium-plus text-ui-fg-base">{item.title}</Text>
+          <LineItemOptions variant={item.variant} />
+        </Table.Cell>
+
+        <Table.Cell className="!pr-0">
+          <span className="!pr-0 flex flex-col items-end h-full justify-center">
+            <span className="flex gap-x-1 ">
+              <Text className="text-ui-fg-muted">{item.quantity}x </Text>
+              <LineItemUnitPrice item={item} region={region} style="tight" />
+            </span>
+
+            <LineItemPrice item={item} region={region} style="tight" />
+            {customer && (
+              <Button
+                variant="secondary" 
+                onClick={() => handleDownload()}>
+                Download
+              </Button>
+            )}
+          </span>
+        </Table.Cell>
+      </Table.Row>
     )
   }
 
-  export default Items
+  export default Item
   ```
 
 </Details>
