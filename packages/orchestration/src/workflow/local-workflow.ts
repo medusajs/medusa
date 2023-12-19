@@ -136,8 +136,8 @@ export class LocalWorkflow {
       orchestrator.on("timeout", eventWrapperMap.get("onTimeout"))
     }
 
-    if (subscribe?.onResume) {
-      orchestrator.on("resume", eventWrapperMap.get("onResume"))
+    if (subscribe?.onFinish) {
+      orchestrator.on("finish", eventWrapperMap.get("onFinish"))
     }
 
     const resumeWrapper = (transaction) => {
@@ -172,28 +172,6 @@ export class LocalWorkflow {
       }
     }
 
-    // Detach event listeners when workflow is finished
-    const finishWrapper = (...args) => {
-      // @ts-ignore
-      subscribe?.onFinish && eventWrapperMap.get("onFinish")(...args)
-      subscribe?.onResume &&
-        orchestrator.removeListener("resume", eventWrapperMap.get("onResume"))
-      subscribe?.onBegin &&
-        orchestrator.removeListener("begin", eventWrapperMap.get("onBegin"))
-      subscribe?.onCompensateBegin &&
-        orchestrator.removeListener(
-          "compensateBegin",
-          eventWrapperMap.get("onCompensateBegin")
-        )
-      subscribe?.onTimeout &&
-        orchestrator.removeListener("timeout", eventWrapperMap.get("onTimeout"))
-
-      orchestrator.removeListener("resume", resumeWrapper)
-      orchestrator.removeListener("finish", finishWrapper)
-    }
-
-    orchestrator.on("finish", finishWrapper)
-
     if (transaction) {
       if (subscribe?.onStepBegin) {
         transaction.on("stepBegin", eventWrapperMap.get("onStepBegin"))
@@ -223,6 +201,30 @@ export class LocalWorkflow {
     } else {
       orchestrator.once("resume", resumeWrapper)
     }
+
+    const cleanUp = (...args) => {
+      subscribe?.onFinish &&
+        orchestrator.removeListener("finish", eventWrapperMap.get("onFinish"))
+      subscribe?.onResume &&
+        orchestrator.removeListener("resume", eventWrapperMap.get("onResume"))
+      subscribe?.onBegin &&
+        orchestrator.removeListener("begin", eventWrapperMap.get("onBegin"))
+      subscribe?.onCompensateBegin &&
+        orchestrator.removeListener(
+          "compensateBegin",
+          eventWrapperMap.get("onCompensateBegin")
+        )
+      subscribe?.onTimeout &&
+        orchestrator.removeListener("timeout", eventWrapperMap.get("onTimeout"))
+
+      orchestrator.removeListener("resume", resumeWrapper)
+
+      eventWrapperMap.clear()
+    }
+
+    return {
+      cleanUp,
+    }
   }
 
   async run(
@@ -243,9 +245,15 @@ export class LocalWorkflow {
       input
     )
 
-    this.registerEventCallbacks({ orchestrator, transaction, subscribe })
+    const { cleanUp } = this.registerEventCallbacks({
+      orchestrator,
+      transaction,
+      subscribe,
+    })
 
     await orchestrator.resume(transaction)
+
+    cleanUp()
 
     return transaction
   }
@@ -261,7 +269,11 @@ export class LocalWorkflow {
     return transaction
   }
 
-  async cancel(uniqueTransactionId: string, context?: Context) {
+  async cancel(
+    uniqueTransactionId: string,
+    context?: Context,
+    subscribe?: DistributedTransactionEvents
+  ) {
     const { orchestrator } = this.workflow
 
     const transaction = await this.getRunningTransaction(
@@ -269,7 +281,15 @@ export class LocalWorkflow {
       context
     )
 
+    const { cleanUp } = this.registerEventCallbacks({
+      orchestrator,
+      transaction,
+      subscribe,
+    })
+
     await orchestrator.cancelTransaction(transaction)
+
+    cleanUp()
 
     return transaction
   }
@@ -282,14 +302,22 @@ export class LocalWorkflow {
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
 
-    this.registerEventCallbacks({ orchestrator, idempotencyKey, subscribe })
+    const { cleanUp } = this.registerEventCallbacks({
+      orchestrator,
+      idempotencyKey,
+      subscribe,
+    })
 
-    return await orchestrator.registerStepSuccess(
+    const transaction = await orchestrator.registerStepSuccess(
       idempotencyKey,
       handler(this.container, context),
       undefined,
       response
     )
+
+    cleanUp()
+
+    return transaction
   }
 
   async registerStepFailure(
@@ -300,13 +328,21 @@ export class LocalWorkflow {
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
 
-    this.registerEventCallbacks({ orchestrator, idempotencyKey, subscribe })
+    const { cleanUp } = this.registerEventCallbacks({
+      orchestrator,
+      idempotencyKey,
+      subscribe,
+    })
 
-    return await orchestrator.registerStepFailure(
+    const transaction = await orchestrator.registerStepFailure(
       idempotencyKey,
       error,
       handler(this.container, context)
     )
+
+    cleanUp()
+
+    return transaction
   }
 
   addAction(

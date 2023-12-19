@@ -35,8 +35,9 @@ type NotifyOptions = {
   errors?: unknown[]
 }
 
-type NotifyStepOptions = NotifyOptions & {
+type NotifyStepOptions = Omit<NotifyOptions, "result"> & {
   step: TransactionStep
+  response?: unknown
 }
 
 type WorkflowId = string
@@ -118,11 +119,17 @@ class WorkflowOrchestrator {
       workflowId: workflowId,
     }
 
-    /* if (ret.transaction.hasFinished()) {
-      WorkflowOrchestrator.notify(ret.transaction.modelId, ret.result)
-    }*/
+    if (ret.transaction.hasFinished()) {
+      const { result, errors } = ret
+      WorkflowOrchestrator.notify({
+        eventType: "onFinish",
+        workflowId,
+        result,
+        errors,
+      })
+    }
 
-    return { acknowledgement, ret }
+    return { acknowledgement, ...ret }
   }
 
   static async getRunningTransaction(
@@ -182,7 +189,7 @@ class WorkflowOrchestrator {
       workflowId,
     })
 
-    return await flow.registerStepSuccess({
+    const ret = await flow.registerStepSuccess({
       idempotencyKey: idempotencyKey_,
       context,
       resultFrom,
@@ -190,6 +197,18 @@ class WorkflowOrchestrator {
       events,
       response: stepResponse,
     })
+
+    if (ret.transaction.hasFinished()) {
+      const { result, errors } = ret
+      WorkflowOrchestrator.notify({
+        eventType: "onFinish",
+        workflowId,
+        result,
+        errors,
+      })
+    }
+
+    return ret
   }
 
   static async setStepFailure<T = unknown>({
@@ -222,7 +241,7 @@ class WorkflowOrchestrator {
       workflowId,
     })
 
-    return await flow.registerStepFailure({
+    const ret = await flow.registerStepFailure({
       idempotencyKey: idempotencyKey_,
       context,
       resultFrom,
@@ -230,6 +249,18 @@ class WorkflowOrchestrator {
       events,
       response: stepResponse,
     })
+
+    if (ret.transaction.hasFinished()) {
+      const { result, errors } = ret
+      WorkflowOrchestrator.notify({
+        eventType: "onFinish",
+        workflowId,
+        result,
+        errors,
+      })
+    }
+
+    return ret
   }
 
   static subscribe({
@@ -301,8 +332,11 @@ class WorkflowOrchestrator {
   }
 
   private static notify(options: NotifyOptions | NotifyStepOptions) {
-    const { eventType, workflowId, transactionId, result, errors } = options
+    const { eventType, workflowId, transactionId, errors } = options
+
+    const result = "result" in options ? options.result : undefined
     const step = "step" in options ? options.step : undefined
+    const response = "response" in options ? options.response : undefined
 
     const subscribers: TransactionSubscribers =
       this.subscribers.get(workflowId) ?? new Map()
@@ -311,7 +345,7 @@ class WorkflowOrchestrator {
       handlers.forEach((handler) => {
         handler(
           step
-            ? ({ eventType, step, result, errors } as NotifyStepOptions)
+            ? ({ eventType, step, response, errors } as NotifyStepOptions)
             : ({ eventType, result, errors } as NotifyOptions)
         )
       })
@@ -335,10 +369,12 @@ class WorkflowOrchestrator {
       eventType,
       step,
       result,
+      response,
       errors,
     }: {
       eventType: keyof DistributedTransactionEvents
       step?: TransactionStep
+      response?: unknown
       result?: unknown
       errors?: unknown[]
     }) => {
@@ -353,31 +389,26 @@ class WorkflowOrchestrator {
     }
 
     return {
-      onTimeout: (transaction) => {
+      onTimeout: ({ transaction }) => {
         customEventHandlers?.onTimeout?.({ transaction })
         notify({ eventType: "onTimeout" })
       },
 
-      onBegin: (transaction) => {
+      onBegin: ({ transaction }) => {
         customEventHandlers?.onBegin?.({ transaction })
         notify({ eventType: "onBegin" })
       },
-      onResume: (transaction) => {
+      onResume: ({ transaction }) => {
         customEventHandlers?.onResume?.({ transaction })
         notify({ eventType: "onResume" })
       },
-      onCompensateBegin: (transaction) => {
+      onCompensateBegin: ({ transaction }) => {
         customEventHandlers?.onCompensateBegin?.({ transaction })
         notify({ eventType: "onCompensateBegin" })
       },
-      onFinish: (
-        transaction: DistributedTransaction,
-        result?: unknown,
-        errors?: unknown[]
-      ) => {
+      onFinish: ({ transaction, result, errors }) => {
         // TODO: unsubscribe transaction handlers on finish
-        customEventHandlers?.onFinish?.({ transaction, result })
-        notify({ eventType: "onFinish", result, errors })
+        customEventHandlers?.onFinish?.({ transaction, result, errors })
       },
 
       onStepBegin: ({ step, transaction }) => {
@@ -386,10 +417,10 @@ class WorkflowOrchestrator {
         notify({ eventType: "onStepBegin", step })
       },
       onStepSuccess: ({ step, transaction }) => {
-        const result = transaction.getContext().invoke[step.id]
-        customEventHandlers?.onStepSuccess?.({ step, transaction, result })
+        const response = transaction.getContext().invoke[step.id]
+        customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
-        notify({ eventType: "onStepSuccess", step, result })
+        notify({ eventType: "onStepSuccess", step, response })
       },
       onStepFailure: ({ step, transaction }) => {
         const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
@@ -401,10 +432,10 @@ class WorkflowOrchestrator {
       },
 
       onCompensateStepSuccess: ({ step, transaction }) => {
-        const result = transaction.getContext().compensate[step.id]
-        customEventHandlers?.onStepSuccess?.({ step, transaction, result })
+        const response = transaction.getContext().compensate[step.id]
+        customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
-        notify({ eventType: "onCompensateStepSuccess", step, result })
+        notify({ eventType: "onCompensateStepSuccess", step, response })
       },
       onCompensateStepFailure: ({ step, transaction }) => {
         const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
