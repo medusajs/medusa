@@ -50,7 +50,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "workspace:^",
+    "@medusajs/modules-sdk": "^1.12.5",
     "@medusajs/types": "^1.11.9",
     "@medusajs/utils": "^1.11.2",
     "@mikro-orm/core": "5.7.12",

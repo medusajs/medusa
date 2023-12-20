@@ -7908,7 +7908,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/promotion"
   dependencies:
-    "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
     "@mikro-orm/cli": 5.7.12
