@@ -1590,10 +1590,13 @@ export default class PricingModuleService<
     )
 
     for (const priceListData of data) {
-      const { rules, starts_at, ends_at, ...priceListOnlyData } = priceListData
+      const { rules, ...priceListOnlyData } = priceListData
       const updatePriceListData: any = {
         ...priceListOnlyData,
       }
+
+      validatePriceListDates(updatePriceListData)
+
 
       if (typeof rules === "object") {
         updatePriceListData.rules_count = Object.keys(rules).length
