@@ -203,12 +203,19 @@ class WorkflowOrchestrator {
       WorkflowOrchestrator.notify({
         eventType: "onFinish",
         workflowId,
+        transactionId,
         result,
         errors,
       })
     }
 
-    return ret
+    // TODO: temporary
+    const acknowledgement = {
+      transactionId,
+      workflowId: workflowId,
+    }
+
+    return { acknowledgement, ...ret }
   }
 
   static async setStepFailure<T = unknown>({
@@ -255,12 +262,19 @@ class WorkflowOrchestrator {
       WorkflowOrchestrator.notify({
         eventType: "onFinish",
         workflowId,
+        transactionId,
         result,
         errors,
       })
     }
 
-    return ret
+    // TODO: temporary
+    const acknowledgement = {
+      transactionId,
+      workflowId: workflowId,
+    }
+
+    return { acknowledgement, ...ret }
   }
 
   static subscribe({
@@ -418,14 +432,15 @@ class WorkflowOrchestrator {
         notify({ eventType: "onStepBegin", step })
       },
       onStepSuccess: ({ step, transaction }) => {
-        const response = transaction.getContext().invoke[step.id]
+        const response =
+          transaction.getContext().invoke[step.definition.action!]
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         notify({ eventType: "onStepSuccess", step, response })
       },
       onStepFailure: ({ step, transaction }) => {
         const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
-          step.id
+          step.definition.action!
         ]
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
@@ -433,14 +448,15 @@ class WorkflowOrchestrator {
       },
 
       onCompensateStepSuccess: ({ step, transaction }) => {
-        const response = transaction.getContext().compensate[step.id]
+        const response =
+          transaction.getContext().compensate[step.definition.action!]
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         notify({ eventType: "onCompensateStepSuccess", step, response })
       },
       onCompensateStepFailure: ({ step, transaction }) => {
         const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
-          step.id
+          step.definition.action!
         ]
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
