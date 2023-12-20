@@ -1,17 +1,16 @@
 import { Router } from "express"
 
+import { PublishableApiKey, SalesChannel } from "../../../../models"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
-import { PublishableApiKey, SalesChannel } from "../../../../models"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import { AdminPostPublishableApiKeysReq } from "./create-publishable-api-key"
-import { AdminPostPublishableApiKeysPublishableApiKeyReq } from "./update-publishable-api-key"
-import { AdminDeletePublishableApiKeySalesChannelsBatchReq } from "./delete-channels-batch"
 import { AdminPostPublishableApiKeySalesChannelsBatchReq } from "./add-channels-batch"
-import { GetPublishableApiKeySalesChannelsParams } from "./list-publishable-api-key-sales-channels"
+import { AdminPostPublishableApiKeysReq } from "./create-publishable-api-key"
+import { AdminDeletePublishableApiKeySalesChannelsBatchReq } from "./delete-channels-batch"
+import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
+import { AdminPostPublishableApiKeysPublishableApiKeyReq } from "./update-publishable-api-key"
 
 const route = Router()
 
@@ -55,7 +54,6 @@ export default (app) => {
 
   route.get(
     "/:id/sales-channels",
-    transformQuery(GetPublishableApiKeySalesChannelsParams, { isList: true }),
     middlewares.wrap(
       require("./list-publishable-api-key-sales-channels").default
     )
@@ -158,8 +156,8 @@ export type AdminPublishableApiKeysListSalesChannelsRes = {
 }
 
 export * from "./add-channels-batch"
-export * from "./delete-channels-batch"
-export * from "./list-publishable-api-keys"
-export * from "./list-publishable-api-key-sales-channels"
 export * from "./create-publishable-api-key"
+export * from "./delete-channels-batch"
+export * from "./list-publishable-api-key-sales-channels"
+export * from "./list-publishable-api-keys"
 export * from "./update-publishable-api-key"
