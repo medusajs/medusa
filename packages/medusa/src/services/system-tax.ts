@@ -10,7 +10,7 @@ class SystemTaxService extends AbstractTaxService {
   static identifier = "system"
 
   constructor() {
-    super()
+    super({})
   }
 
   async getTaxLines(

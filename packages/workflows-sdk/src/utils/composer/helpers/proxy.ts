@@ -1,6 +1,6 @@
 import { transform } from "../transform"
 import { WorkflowData, WorkflowTransactionContext } from "../type"
-import { SymbolInputReference, SymbolWorkflowStepTransformer } from "./symbol"
+import { OrchestrationUtils } from "@medusajs/utils"
 import { resolveValue } from "./resolve-value"
 
 export function proxify<T>(obj: WorkflowData<any>): T {
@@ -13,8 +13,8 @@ export function proxify<T>(obj: WorkflowData<any>): T {
       return transform(target[prop], async function (input, context) {
         const { invoke } = context as WorkflowTransactionContext
         let output =
-          target.__type === SymbolInputReference ||
-          target.__type === SymbolWorkflowStepTransformer
+          target.__type === OrchestrationUtils.SymbolInputReference ||
+          target.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
             ? target
             : invoke?.[obj.__step__]?.output
 
