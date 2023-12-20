@@ -1,9 +1,9 @@
 import { TestDatabaseUtils } from "medusa-test-utils"
 
-import * as PromotionModels from "@models"
+import * as AuthenticationModels from "@models"
 
 const pathToMigrations = "../../src/migrations"
-const mikroOrmEntities = PromotionModels as unknown as any[]
+const mikroOrmEntities = AuthenticationModels as unknown as any[]
 
 export const MikroOrmWrapper = TestDatabaseUtils.getMikroOrmWrapper(
   mikroOrmEntities,
