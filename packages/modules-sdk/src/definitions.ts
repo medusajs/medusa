@@ -125,7 +125,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       key: Modules.PROMOTION,
       registrationName: ModuleRegistrationName.PROMOTION,
       defaultPackage: false,
-      label: "promotionModuleService",
+      label: "PromotionModuleService",
       isRequired: false,
       canOverride: true,
       isQueryable: true,
