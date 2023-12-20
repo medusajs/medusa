@@ -1,5 +1,3 @@
-import { ModuleJoinerConfig } from "../modules-sdk"
+import { IModuleService } from "../modules-sdk"
 
-export interface IPromotionModuleService {
-  __joinerConfig(): ModuleJoinerConfig
-}
+export interface IPromotionModuleService extends IModuleService {}
