@@ -1,4 +1,5 @@
 import { BaseFilterable } from "../../dal"
+import { PromotionDTO } from "./promotion"
 
 export type ApplicationMethodType = "fixed" | "percentage"
 export type ApplicationMethodTargetType = "order" | "shipping" | "item"
@@ -12,7 +13,9 @@ export interface CreateApplicationMethodDTO {
   type: ApplicationMethodType
   target_type: ApplicationMethodTargetType
   allocation?: ApplicationMethodAllocation
-  value: number
+  value?: number
+  max_quantity?: number
+  promotion?: PromotionDTO | string
 }
 
 export interface UpdateApplicationMethodDTO {

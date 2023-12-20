@@ -16,7 +16,7 @@ import {
 } from "@mikro-orm/core"
 import Promotion from "./promotion"
 
-type OptionalFields = "value" | "max_quantity"
+type OptionalFields = "value" | "max_quantity" | "allocation"
 @Entity()
 export default class ApplicationMethod {
   [OptionalProps]?: OptionalFields
@@ -39,12 +39,14 @@ export default class ApplicationMethod {
   target_type: ApplicationMethodTargetType
 
   @Index({ name: "IDX_application_method_allocation" })
-  @Enum(() => PromotionUtils.ApplicationMethodAllocation)
-  allocation: ApplicationMethodAllocation
+  @Enum({
+    items: () => PromotionUtils.ApplicationMethodAllocation,
+    nullable: true,
+  })
+  allocation?: ApplicationMethodAllocation
 
   @OneToOne({
     entity: () => Promotion,
-    mappedBy: (promotion: Promotion) => promotion.application_method,
   })
   promotion: Promotion
 

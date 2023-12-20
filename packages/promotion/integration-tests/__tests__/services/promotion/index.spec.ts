@@ -38,7 +38,7 @@ describe("Promotion Service", () => {
         .create([
           {
             type: PromotionType.STANDARD,
-          },
+          } as any,
         ])
         .catch((e) => e)
 

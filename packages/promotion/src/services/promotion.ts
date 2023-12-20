@@ -8,6 +8,7 @@ import {
 } from "@medusajs/utils"
 import { Promotion } from "@models"
 import { PromotionRepository } from "@repositories"
+import { CreatePromotionDTO, UpdatePromotionDTO } from "../types"
 
 type InjectedDependencies = {
   promotionRepository: DAL.RepositoryService
@@ -65,7 +66,7 @@ export default class PromotionService<TEntity extends Promotion = Promotion> {
 
   @InjectTransactionManager("promotionRepository_")
   async create(
-    data: PromotionTypes.CreatePromotionDTO[],
+    data: CreatePromotionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.promotionRepository_ as PromotionRepository).create(
@@ -76,7 +77,7 @@ export default class PromotionService<TEntity extends Promotion = Promotion> {
 
   @InjectTransactionManager("promotionRepository_")
   async update(
-    data: PromotionTypes.UpdatePromotionDTO[],
+    data: UpdatePromotionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.promotionRepository_ as PromotionRepository).update(

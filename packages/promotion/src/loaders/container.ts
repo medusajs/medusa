@@ -19,6 +19,9 @@ export default async ({
 
   container.register({
     promotionService: asClass(defaultServices.PromotionService).singleton(),
+    applicationMethodService: asClass(
+      defaultServices.ApplicationMethodService
+    ).singleton(),
   })
 
   if (customRepositories) {
@@ -35,6 +38,9 @@ export default async ({
 function loadDefaultRepositories({ container }) {
   container.register({
     baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
+    applicationMethodRepository: asClass(
+      defaultRepositories.ApplicationMethodRepository
+    ).singleton(),
     promotionRepository: asClass(
       defaultRepositories.PromotionRepository
     ).singleton(),

@@ -1,9 +1,4 @@
-import {
-  Context,
-  CreatePromotionDTO,
-  DAL,
-  UpdatePromotionDTO,
-} from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   LoadStrategy,
@@ -12,6 +7,7 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Promotion } from "@models"
+import { CreatePromotionDTO, UpdatePromotionDTO } from "../types"
 
 export class PromotionRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager

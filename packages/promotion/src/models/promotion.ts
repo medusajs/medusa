@@ -14,9 +14,10 @@ import {
 import ApplicationMethod from "./application-method"
 
 type OptionalFields = "is_automatic"
+type OptionalRelations = "application_method"
 @Entity()
 export default class Promotion {
-  [OptionalProps]?: OptionalFields
+  [OptionalProps]?: OptionalFields | OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
   id!: string
