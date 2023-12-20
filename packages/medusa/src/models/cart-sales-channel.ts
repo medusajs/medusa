@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Index } from "typeorm"
+import { BeforeInsert, Column, Index, PrimaryColumn } from "typeorm"
 import { MedusaV2Flag, SalesChannelFeatureFlag } from "@medusajs/utils"
 
 import { generateEntityId } from "../utils"
@@ -7,13 +7,16 @@ import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 
 @FeatureFlagEntity([MedusaV2Flag.key, SalesChannelFeatureFlag.key])
 export class CartSalesChannel extends SoftDeletableEntity {
+  @Column()
+  id: string
+
   @Index("cart_sales_channel_cart_id_unique", {
     unique: true,
   })
-  @Column()
+  @PrimaryColumn()
   cart_id: string
 
-  @Column()
+  @PrimaryColumn()
   sales_channel_id: string
 
   /**

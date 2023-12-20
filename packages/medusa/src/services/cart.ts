@@ -496,14 +496,16 @@ class CartService extends TransactionBaseService {
             MedusaV2Flag.key,
           ])
         ) {
+          const salesChannel = await this.getValidatedSalesChannel(
+            data.sales_channel_id
+          )
+
           await this.remoteLink_.create({
             cartService: {
               cart_id: cart.id,
             },
             salesChannelService: {
-              sales_channel_id: (
-                await this.getValidatedSalesChannel(data.sales_channel_id)
-              ).id,
+              sales_channel_id: salesChannel.id,
             },
           })
         }
