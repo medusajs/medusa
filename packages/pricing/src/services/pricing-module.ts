@@ -7,9 +7,11 @@ import {
   FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  MoneyAmountDTO,
   PriceSetDTO,
   PricingContext,
   PricingFilters,
+  PricingRepositoryService,
   PricingTypes,
   RuleTypeDTO,
 } from "@medusajs/types"
@@ -53,9 +55,9 @@ import {
   RuleTypeService,
 } from "@services"
 import { joinerConfig } from "../joiner-config"
-import { CreatePriceListRuleValueDTO, PricingRepositoryService } from "../types"
 import { validatePriceListDates } from "@utils"
-
+import { ServiceTypes } from "@types"
+import { CreatePriceListRuleValueDTO } from "src/types/services"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   pricingRepository: PricingRepositoryService
@@ -427,7 +429,7 @@ export default class PricingModuleService<
     // Price rules
     if (priceRulesData.length > 0) {
       await this.priceRuleService_.create(
-        priceRulesData as PricingTypes.CreatePriceRuleDTO[],
+        priceRulesData as ServiceTypes.CreatePriceRuleDTO[],
         sharedContext
       )
     }
@@ -631,8 +633,8 @@ export default class PricingModuleService<
 
     // Price set money amounts
     let maCursor = 0
-    const priceSetMoneyAmountsBulkData = input.flatMap(
-      ({ priceSetId, prices }) =>
+    const priceSetMoneyAmountsBulkData: unknown[] =
+      input.flatMap(({ priceSetId, prices }) =>
         prices.map(() => {
           const ma = createdMoneyAmounts[maCursor]
           const numberOfRules = Object.entries(
@@ -646,10 +648,10 @@ export default class PricingModuleService<
             rules_count: numberOfRules,
           }
         })
-    )
+      )
     const createdPriceSetMoneyAmounts =
       await this.priceSetMoneyAmountService_.create(
-        priceSetMoneyAmountsBulkData as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+        priceSetMoneyAmountsBulkData as ServiceTypes.CreatePriceSetMoneyAmountDTO[],
         sharedContext
       )
 
@@ -662,19 +664,15 @@ export default class PricingModuleService<
         rulesCursor++
         return Object.entries(rules).map(([k, v]) => ({
           price_set_money_amount: priceSetMoneyAmount,
-          rule_type: ruleTypeMap.get(priceSetId)!.get(k),
+          rule_type_id: ruleTypeMap.get(priceSetId)!.get(k)!.id,
           price_set: priceSetId,
           value: v,
-          price_list_id: "test", // TODO: accept title
         }))
       })
     )
 
     if (priceRulesBulkData.length > 0) {
-      await this.priceRuleService_.create(
-        priceRulesBulkData as unknown as PricingTypes.CreatePriceRuleDTO[],
-        sharedContext
-      )
+      await this.priceRuleService_.create(priceRulesBulkData, sharedContext)
     }
   }
 
@@ -1273,7 +1271,10 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceRuleDTO[]> {
-    const priceRules = await this.priceRuleService_.create(data, sharedContext)
+    const priceRules = await this.priceRuleService_.create(
+      data as ServiceTypes.CreatePriceRuleDTO[],
+      sharedContext
+    )
 
     return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
       priceRules,
@@ -1497,7 +1498,7 @@ export default class PricingModuleService<
                 title: "test",
                 rules_count: Object.keys(priceRules).length,
               },
-            ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+            ] as unknown as ServiceTypes.CreatePriceSetMoneyAmountDTO[],
             sharedContext
           )
 
@@ -1592,14 +1593,6 @@ export default class PricingModuleService<
       const { rules, starts_at, ends_at, ...priceListOnlyData } = priceListData
       const updatePriceListData: any = {
         ...priceListOnlyData,
-      }
-
-      if (starts_at) {
-        updatePriceListData.starts_at = starts_at!.toISOString()
-      }
-
-      if (ends_at) {
-        updatePriceListData.ends_at = ends_at!.toISOString()
       }
 
       if (typeof rules === "object") {
@@ -2023,7 +2016,7 @@ export default class PricingModuleService<
       ),
     ])
 
-    const priceListRuleValuesToCreate: CreatePriceListRuleValueDTO[] = []
+    const priceListRuleValuesToCreate: unknown[] = []
 
     for (const { id, price_list, rule_type } of createdRules) {
       const ruleValues = priceRuleValues.get(
@@ -2052,7 +2045,9 @@ export default class PricingModuleService<
       this.priceListRuleValueService_.delete(
         priceListValuesToDelete.map((p) => p.id)
       ),
-      this.priceListRuleValueService_.create(priceListRuleValuesToCreate),
+      this.priceListRuleValueService_.create(
+        priceListRuleValuesToCreate as CreatePriceListRuleValueDTO[]
+      ),
     ])
 
     return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(

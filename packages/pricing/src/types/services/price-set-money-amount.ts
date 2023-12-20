@@ -18,6 +18,7 @@ export interface CreatePriceSetMoneyAmountDTO {
   price_set?: PriceSetDTO | string
   price_list?: PriceListDTO | string
   money_amount?: MoneyAmountDTO | string
+  rules_count?: number
 }
 
 export interface FilterablePriceSetMoneyAmountProps
