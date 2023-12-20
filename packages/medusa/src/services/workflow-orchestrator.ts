@@ -382,6 +382,7 @@ class WorkflowOrchestrator {
         workflowId,
         transactionId,
         eventType,
+        response,
         step,
         result,
         errors,
