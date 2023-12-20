@@ -11,7 +11,7 @@ export type ExpandableNoticeProps = {
 export const ExpandableNotice = ({
   type = "request",
   link,
-  badgeContent = "expendable",
+  badgeContent = "expandable",
   badgeClassName,
 }: ExpandableNoticeProps) => {
   return (
