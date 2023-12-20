@@ -306,7 +306,7 @@ class AdminInventoryItemsResource extends BaseResource {
     locationId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
-    let path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
+    const path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
 
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
