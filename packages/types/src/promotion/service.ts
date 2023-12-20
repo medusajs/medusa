@@ -1,5 +1,5 @@
 import { FindConfig } from "../common"
-import { ModuleJoinerConfig } from "../modules-sdk"
+import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   CreatePromotionDTO,
@@ -7,9 +7,7 @@ import {
   PromotionDTO,
 } from "./common"
 
-export interface IPromotionModuleService {
-  __joinerConfig(): ModuleJoinerConfig
-
+export interface IPromotionModuleService extends IModuleService {
   create(
     data: CreatePromotionDTO[],
     sharedContext?: Context

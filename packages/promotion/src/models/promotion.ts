@@ -5,6 +5,7 @@ import {
   Entity,
   Enum,
   Index,
+  OnInit,
   OneToOne,
   OptionalProps,
   PrimaryKey,
@@ -62,6 +63,11 @@ export default class Promotion {
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "promo")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "promo")
   }
 }

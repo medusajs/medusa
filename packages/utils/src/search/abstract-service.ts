@@ -3,6 +3,12 @@ import { SearchTypes } from "@medusajs/types"
 export abstract class AbstractSearchService
   implements SearchTypes.ISearchService
 {
+  static _isSearchService = true
+
+  static isSearchService(obj) {
+    return obj?.constructor?._isSearchService
+  }
+
   abstract readonly isDefault
   protected readonly options_: Record<string, unknown>
 

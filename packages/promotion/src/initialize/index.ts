@@ -1,8 +1,8 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MedusaModule,
   MODULE_PACKAGE_NAMES,
+  MedusaModule,
   Modules,
 } from "@medusajs/modules-sdk"
 import { IPromotionModuleService, ModulesSdkTypes } from "@medusajs/types"
@@ -17,10 +17,8 @@ export const initialize = async (
     | InternalModuleDeclaration,
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<IPromotionModuleService> => {
-  const serviceKey = Modules.PROMOTION
-
   const loaded = await MedusaModule.bootstrap<IPromotionModuleService>({
-    moduleKey: serviceKey,
+    moduleKey: Modules.PROMOTION,
     defaultPath: MODULE_PACKAGE_NAMES[Modules.PROMOTION],
     declaration: options as
       | InternalModuleDeclaration
@@ -29,5 +27,5 @@ export const initialize = async (
     moduleExports: moduleDefinition,
   })
 
-  return loaded[serviceKey]
+  return loaded[Modules.PROMOTION]
 }

@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
@@ -19,7 +20,7 @@ export async function revertMigration({
 > = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("promotion", options)!
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(Modules.PROMOTION, options)!
   const entities = Object.values(PromotionModels) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 

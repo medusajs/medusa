@@ -2,18 +2,15 @@ import {
   OrchestratorBuilder,
   TransactionContext as OriginalWorkflowTransactionContext,
   TransactionPayload,
+  TransactionStepsDefinition,
   WorkflowHandler,
 } from "@medusajs/orchestration"
 import { Context, MedusaContainer } from "@medusajs/types"
 
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
-  (this: CreateWorkflowComposerContext) => TOutput extends []
-    ? [
-        ...WorkflowData<{
-          [K in keyof TOutput]: TOutput[number][K]
-        }>[]
-      ]
-    : WorkflowData<{ [K in keyof TOutput]: TOutput[K] }>
+  (
+    this: CreateWorkflowComposerContext
+  ) => WorkflowData<{ [K in keyof TOutput]: TOutput[K] }>
 
 /**
  * A step function to be used in a workflow.
@@ -24,7 +21,13 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
 export type StepFunction<TInput extends object = object, TOutput = unknown> = {
   (input: { [K in keyof TInput]: WorkflowData<TInput[K]> }): WorkflowData<{
     [K in keyof TOutput]: TOutput[K]
-  }>
+  }> & {
+    config(
+      config: Pick<TransactionStepsDefinition, "maxRetries">
+    ): WorkflowData<{
+      [K in keyof TOutput]: TOutput[K]
+    }>
+  }
 } & WorkflowDataProperties<{
   [K in keyof TOutput]: TOutput[K]
 }>
