@@ -4,6 +4,8 @@ import {
   ModuleDefinition,
 } from "@medusajs/types"
 
+import { upperCaseFirst } from "@medusajs/utils"
+
 export enum Modules {
   EVENT_BUS = "eventBus",
   STOCK_LOCATION = "stockLocationService",
@@ -11,6 +13,7 @@ export enum Modules {
   CACHE = "cacheService",
   PRODUCT = "productService",
   PRICING = "pricingService",
+  PROMOTION = "promotion",
   SALES_CHANNEL = "salesChannelService",
 }
 
@@ -21,6 +24,7 @@ export enum ModuleRegistrationName {
   CACHE = "cacheService",
   PRODUCT = "productModuleService",
   PRICING = "pricingModuleService",
+  PROMOTION = "promotionModuleService",
   SALES_CHANNEL = "salesChannelModuleService",
 }
 
@@ -31,6 +35,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.INVENTORY]: "@medusajs/inventory",
   [Modules.CACHE]: "@medusajs/cache-inmemory",
   [Modules.PRICING]: "@medusajs/pricing",
+  [Modules.PROMOTION]: "@medusajs/promotion",
   [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
 }
 
@@ -41,7 +46,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isLegacy: true,
       registrationName: ModuleRegistrationName.EVENT_BUS,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
-      label: "EventBusModuleService",
+      label: upperCaseFirst(ModuleRegistrationName.EVENT_BUS),
       canOverride: true,
       isRequired: true,
       dependencies: ["logger"],
@@ -55,7 +60,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isLegacy: true,
       registrationName: ModuleRegistrationName.STOCK_LOCATION,
       defaultPackage: false,
-      label: "StockLocationService",
+      label: upperCaseFirst(ModuleRegistrationName.STOCK_LOCATION),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
@@ -70,7 +75,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isLegacy: true,
       registrationName: ModuleRegistrationName.INVENTORY,
       defaultPackage: false,
-      label: "InventoryService",
+      label: upperCaseFirst(ModuleRegistrationName.INVENTORY),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
@@ -85,7 +90,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isLegacy: true,
       registrationName: ModuleRegistrationName.CACHE,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.CACHE],
-      label: "CacheService",
+      label: upperCaseFirst(ModuleRegistrationName.CACHE),
       isRequired: true,
       canOverride: true,
       defaultModuleDeclaration: {
@@ -97,7 +102,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       key: Modules.PRODUCT,
       registrationName: ModuleRegistrationName.PRODUCT,
       defaultPackage: false,
-      label: "ProductModuleService",
+      label: upperCaseFirst(ModuleRegistrationName.PRODUCT),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
@@ -111,7 +116,21 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       key: Modules.PRICING,
       registrationName: ModuleRegistrationName.PRICING,
       defaultPackage: false,
-      label: "PricingModuleService",
+      label: upperCaseFirst(ModuleRegistrationName.PRICING),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.PROMOTION]: {
+      key: Modules.PROMOTION,
+      registrationName: ModuleRegistrationName.PROMOTION,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.PROMOTION),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
@@ -125,7 +144,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       key: Modules.SALES_CHANNEL,
       registrationName: ModuleRegistrationName.SALES_CHANNEL,
       defaultPackage: false,
-      label: "salesChannelModuleService",
+      label: upperCaseFirst(ModuleRegistrationName.SALES_CHANNEL),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
