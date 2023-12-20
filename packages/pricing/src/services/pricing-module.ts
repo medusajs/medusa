@@ -10,7 +10,6 @@ import {
   PriceSetDTO,
   PricingContext,
   PricingFilters,
-  PricingRepositoryService,
   PricingTypes,
   RuleTypeDTO,
 } from "@medusajs/types"
@@ -54,7 +53,7 @@ import {
   RuleTypeService,
 } from "@services"
 import { joinerConfig } from "../joiner-config"
-import { RepositoryTypes } from "@types"
+import { CreatePriceListRuleValueDTO, PricingRepositoryService } from "../types"
 import { validatePriceListDates } from "@utils"
 
 type InjectedDependencies = {
@@ -1430,39 +1429,15 @@ export default class PricingModuleService<
     const priceListsToCreate: PricingTypes.CreatePriceListDTO[] = []
 
     for (const priceListData of data) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-      const { rules = {}, 
-      prices = [],
-      ...priceListOnlyData } = priceListData
+      const { rules = {}, prices = [], ...priceListOnlyData } = priceListData
+
+      validatePriceListDates(priceListData)
 
       priceListsToCreate.push({
         ...priceListOnlyData,
         rules_count: Object.keys(rules).length,
       })
     }
-=======
-      const {
-        rules = {},
-        prices = [],
-        ...priceListOnlyData
-      } = priceListData
-=======
-      const { rules = {}, prices = [], ...priceListOnlyData } = priceListData
-
-      validatePriceListDates(priceListData)
->>>>>>> 554423ac6 (make string optional)
-
-      const [createdPriceList] = (await this.priceListService_.create(
-        [
-          {
-            ...priceListOnlyData,
-            number_rules: Object.keys(rules).length,
-          },
-        ],
-        sharedContext
-      )) as unknown as PricingTypes.PriceListDTO[]
->>>>>>> d85e9c7df (move type conversion to the datalayer)
 
     const priceLists = (await this.priceListService_.create(
       priceListsToCreate
@@ -1574,8 +1549,6 @@ export default class PricingModuleService<
         ruleAttributes.push(...Object.keys(priceListData.rules))
         priceListIds.push(priceListData.id)
       }
-
-      validatePriceListDates(priceListData)
     }
 
     const existingPriceLists = await this.listPriceLists(
@@ -1616,9 +1589,17 @@ export default class PricingModuleService<
     )
 
     for (const priceListData of data) {
-      const { rules, ...priceListOnlyData } = priceListData
-      const updatePriceListData = {
+      const { rules, starts_at, ends_at, ...priceListOnlyData } = priceListData
+      const updatePriceListData: any = {
         ...priceListOnlyData,
+      }
+
+      if (starts_at) {
+        updatePriceListData.starts_at = starts_at!.toISOString()
+      }
+
+      if (ends_at) {
+        updatePriceListData.ends_at = ends_at!.toISOString()
       }
 
       if (typeof rules === "object") {
@@ -2042,8 +2023,7 @@ export default class PricingModuleService<
       ),
     ])
 
-    const priceListRuleValuesToCreate: RepositoryTypes.CreatePriceListRuleValueDTO[] =
-      []
+    const priceListRuleValuesToCreate: CreatePriceListRuleValueDTO[] = []
 
     for (const { id, price_list, rule_type } of createdRules) {
       const ruleValues = priceRuleValues.get(
