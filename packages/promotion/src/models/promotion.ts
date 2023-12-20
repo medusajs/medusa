@@ -1,5 +1,5 @@
 import { generateEntityId } from "@medusajs/utils"
-import { BeforeCreate, Entity, PrimaryKey } from "@mikro-orm/core"
+import { BeforeCreate, Entity, PrimaryKey, OnInit } from "@mikro-orm/core"
 
 @Entity()
 export default class Promotion {
@@ -8,6 +8,11 @@ export default class Promotion {
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "promo")
+  }
+  
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "promo")
   }
 }
