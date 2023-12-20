@@ -137,20 +137,6 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
         resources: MODULE_RESOURCE_TYPE.SHARED,
       },
     },
-    [Modules.PROMOTION]: {
-      key: Modules.PROMOTION,
-      registrationName: ModuleRegistrationName.PROMOTION,
-      defaultPackage: false,
-      label: "promotionModuleService",
-      isRequired: false,
-      canOverride: true,
-      isQueryable: true,
-      dependencies: ["logger"],
-      defaultModuleDeclaration: {
-        scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.SHARED,
-      },
-    },
   }
 
 export const MODULE_DEFINITIONS: ModuleDefinition[] =
