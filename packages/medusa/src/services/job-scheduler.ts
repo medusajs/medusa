@@ -41,6 +41,7 @@ export default class JobSchedulerService {
       const connection = new Redis(config.projectConfig.redis_url, {
         maxRetriesPerRequest: null,
         enableReadyCheck: false,
+        ...(config.projectConfig.redis_options ?? {}),
       })
 
       this.queue_ = new Queue(`scheduled-jobs:queue`, {

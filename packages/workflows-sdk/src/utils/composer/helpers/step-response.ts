@@ -1,4 +1,5 @@
-import { SymbolWorkflowStepResponse } from "./symbol"
+import { OrchestrationUtils } from "@medusajs/utils"
+import { PermanentStepFailureError } from "@medusajs/orchestration"
 
 /**
  * This class is used to create the response returned by a step. A step return its data by returning an instance of `StepResponse`.
@@ -9,7 +10,7 @@ import { SymbolWorkflowStepResponse } from "./symbol"
  * as that of `TOutput`.
  */
 export class StepResponse<TOutput, TCompensateInput = TOutput> {
-  readonly #__type = SymbolWorkflowStepResponse
+  readonly #__type = OrchestrationUtils.SymbolWorkflowStepResponse
   readonly #output: TOutput
   readonly #compensateInput?: TCompensateInput
 
@@ -33,6 +34,15 @@ export class StepResponse<TOutput, TCompensateInput = TOutput> {
   ) {
     this.#output = output
     this.#compensateInput = (compensateInput ?? output) as TCompensateInput
+  }
+
+  /**
+   * Creates a StepResponse that indicates that the step has failed and the retry mechanism should not kick in anymore.
+   *
+   * @param message - An optional message to be logged. Default to `Permanent failure`.
+   */
+  static permanentFailure(message = "Permanent failure"): never {
+    throw new PermanentStepFailureError(message)
   }
 
   /**

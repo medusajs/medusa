@@ -1779,27 +1779,32 @@ class CartService extends TransactionBaseService {
    * a payment object, that we will use to update our cart payment with.
    * Additionally, if the payment does not require more or fails, we will
    * set the payment on the cart.
-   * @param cartId - the id of the cart to authorize payment for
+   * @param cartOrId - the id of the cart to authorize payment for
    * @param context - object containing whatever is relevant for
    *    authorizing the payment with the payment provider. As an example,
    *    this could be IP address or similar for fraud handling.
    * @return the resulting cart
    */
   async authorizePayment(
-    cartId: string,
-    context: Record<string, unknown> & {
-      cart_id: string
-    } = { cart_id: "" }
+    cartOrId: string | WithRequiredProperty<Cart, "total">,
+    context: Record<string, unknown> = { cart_id: "" }
   ): Promise<Cart> {
+    context = {
+      ...context,
+      cart_id: isString(cartOrId) ? cartOrId : cartOrId.id,
+    }
+
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cartRepository = transactionManager.withRepository(
           this.cartRepository_
         )
 
-        const cart = await this.retrieveWithTotals(cartId, {
-          relations: ["payment_sessions", "items.variant.product.profiles"],
-        })
+        const cart = !isString(cartOrId)
+          ? cartOrId
+          : await this.retrieveWithTotals(cartOrId, {
+              relations: ["payment_sessions", "items.variant.product.profiles"],
+            })
 
         // If cart total is 0, we don't perform anything payment related
         if (cart.total! <= 0) {
@@ -1961,8 +1966,7 @@ class CartService extends TransactionBaseService {
         await this.eventBus_
           .withTransaction(transactionManager)
           .emit(CartService.Events.UPDATED, { id: cartId })
-      },
-      "SERIALIZABLE"
+      }
     )
   }
 
@@ -1975,7 +1979,9 @@ class CartService extends TransactionBaseService {
    * @param cartOrCartId - the id of the cart to set payment session for
    * @return the result of the update operation.
    */
-  async setPaymentSessions(cartOrCartId: Cart | string): Promise<void> {
+  async setPaymentSessions(
+    cartOrCartId: WithRequiredProperty<Cart, "total"> | string
+  ): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const psRepo = transactionManager.withRepository(
@@ -1985,31 +1991,30 @@ class CartService extends TransactionBaseService {
         const paymentProviderServiceTx =
           this.paymentProviderService_.withTransaction(transactionManager)
 
-        const cartId =
-          typeof cartOrCartId === `string` ? cartOrCartId : cartOrCartId.id
-
-        const cart = await this.retrieveWithTotals(
-          cartId,
-          {
-            relations: [
-              "items.variant.product.profiles",
-              "items.adjustments",
-              "discounts",
-              "discounts.rule",
-              "gift_cards",
-              "shipping_methods",
-              "shipping_methods.shipping_option",
-              "billing_address",
-              "shipping_address",
-              "region",
-              "region.tax_rates",
-              "region.payment_providers",
-              "payment_sessions",
-              "customer",
-            ],
-          },
-          { force_taxes: true }
-        )
+        const cart = !isString(cartOrCartId)
+          ? cartOrCartId
+          : await this.retrieveWithTotals(
+              cartOrCartId,
+              {
+                relations: [
+                  "items.variant.product.profiles",
+                  "items.adjustments",
+                  "discounts",
+                  "discounts.rule",
+                  "gift_cards",
+                  "shipping_methods",
+                  "shipping_methods.shipping_option",
+                  "billing_address",
+                  "shipping_address",
+                  "region",
+                  "region.tax_rates",
+                  "region.payment_providers",
+                  "payment_sessions",
+                  "customer",
+                ],
+              },
+              { force_taxes: true }
+            )
 
         const { total, region } = cart
 
@@ -2043,7 +2048,7 @@ class CartService extends TransactionBaseService {
           currency_code: cart.region.currency_code,
         }
         const partialPaymentSessionData = {
-          cart_id: cartId,
+          cart_id: cart.id,
           data: {},
           status: PaymentSessionStatus.PENDING,
           amount: total,

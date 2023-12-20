@@ -32,6 +32,12 @@ export abstract class AbstractPriceSelectionStrategy
   extends TransactionBaseService
   implements IPriceSelectionStrategy
 {
+  static _isPriceSelectionStrategy = true
+
+  static isPriceSelectionStrategy(object): boolean {
+    return object?.constructor?._isPriceSelectionStrategy
+  }
+
   public abstract calculateVariantPrice(
     data: {
       variantId: string
@@ -44,16 +50,6 @@ export abstract class AbstractPriceSelectionStrategy
   public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
     return void 0
   }
-}
-
-export function isPriceSelectionStrategy(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  object: any
-): object is IPriceSelectionStrategy {
-  return (
-    typeof object.calculateVariantPrice === "function" &&
-    typeof object.withTransaction === "function"
-  )
 }
 
 export type PriceSelectionContext = {

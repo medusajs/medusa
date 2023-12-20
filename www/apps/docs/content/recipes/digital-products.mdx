@@ -590,7 +590,7 @@ To add an interface that allows the admin user to upload digital products, you c
   Before starting off, make sure to install the necessary dependencies in your Medusa backend project:
 
   ```bash npm2yarn
-  npm install medusa-react @tanstack/react-query @medusajs/ui
+  npm install medusa-react @tanstack/react-query@4.22 @medusajs/ui
   ```
 
   This installs the necessary packages to use the Medusa React client and the [Medusa UI package](https://docs.medusajs.com/ui).
@@ -735,12 +735,6 @@ To add an interface that allows the admin user to upload digital products, you c
   In the page, you’ll show the list of digital products in a table, if there are any. You’ll also show a button that opens a drawer to the side of the page.
 
   In the drawer, you show the Create Digital Product form. To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
-  
-:::note
-
-If you're using `@tanstack/react-query` v4, please change all occurrences of `isPending` to `isLoading`.
-
-:::
 
   ```tsx title="src/admin/components/product-media/CreateForm/index.tsx" badgeLabel="Backend"
   import { useState } from "react"
@@ -780,7 +774,7 @@ If you're using `@tanstack/react-query` v4, please change all occurrences of `is
     const uploadFile = useAdminUploadProtectedFile()
     const { 
       mutate: createDigitalProduct,
-      isPending,
+      isLoading,
     } = useAdminCustomPost<
       CreateProductMediaRequest,
       CreateProductMediaResponse
@@ -910,9 +904,9 @@ If you're using `@tanstack/react-query` v4, please change all occurrences of `is
             variant="primary" 
             type="submit" 
             isLoading={
-              createProduct.isPending || 
-              uploadFile.isPending || 
-              isPending
+              createProduct.isLoading || 
+              uploadFile.isLoading || 
+              isLoading
             }>
             Create
           </Button>

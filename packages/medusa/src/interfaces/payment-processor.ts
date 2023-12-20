@@ -676,6 +676,12 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {}
 
+  static _isPaymentProcessor = true
+
+  static isPaymentProcessor(object): boolean {
+    return object?.constructor?._isPaymentProcessor
+  }
+
   /**
    * The `PaymentProvider` entity has 2 properties: `id` and `is_installed`. The `identifier` property in the payment processor service is used when the payment processor is added to the database.
    *
@@ -768,18 +774,6 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   >
 }
 
-/**
- * Return if the input object is AbstractPaymentProcessor
- * @param obj
- */
-export function isPaymentProcessor(obj: unknown): boolean {
-  return obj instanceof AbstractPaymentProcessor
-}
-
-/**
- * Utility function to determine if an object is a processor error
- * @param obj
- */
 export function isPaymentProcessorError(
   obj: any
 ): obj is PaymentProcessorError {
