@@ -8,8 +8,8 @@ import {
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionState,
-  TransactionStepStatus,
   TransactionStepsDefinition,
+  TransactionStepStatus,
 } from "./types"
 
 import { MedusaError, promiseAll } from "@medusajs/utils"
@@ -957,13 +957,14 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
     if (step.getStates().status === TransactionStepStatus.WAITING) {
+      this.emit("resume", { transaction: curTransaction })
+
       await TransactionOrchestrator.setStepSuccess(
         curTransaction,
         step,
         response
       )
 
-      this.emit("resume", { transaction: curTransaction })
       await this.executeNext(curTransaction)
     } else {
       throw new MedusaError(
@@ -997,13 +998,15 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
     if (step.getStates().status === TransactionStepStatus.WAITING) {
+      this.emit("resume", { transaction: curTransaction })
+
       await TransactionOrchestrator.setStepFailure(
         curTransaction,
         step,
         error,
         0
       )
-      this.emit("resume", { transaction: curTransaction })
+
       await this.executeNext(curTransaction)
     } else {
       throw new MedusaError(

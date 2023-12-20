@@ -107,7 +107,7 @@ export class LocalWorkflow {
         const { transaction } = args
 
         if (
-          transaction.id !== transactionId ||
+          transaction.transactionId !== transactionId ||
           transaction.modelId !== modelId
         ) {
           return
@@ -140,8 +140,11 @@ export class LocalWorkflow {
       orchestrator.on("finish", eventWrapperMap.get("onFinish"))
     }
 
-    const resumeWrapper = (transaction) => {
-      if (transaction.modelId !== modelId || transaction.id !== transactionId) {
+    const resumeWrapper = ({ transaction }) => {
+      if (
+        transaction.modelId !== modelId ||
+        transaction.transactionId !== transactionId
+      ) {
         return
       }
 
