@@ -1,29 +1,26 @@
-import { promiseAll } from "@medusajs/utils"
-import {
-  SymbolInputReference,
-  SymbolWorkflowHook,
-  SymbolWorkflowStep,
-  SymbolWorkflowStepResponse,
-  SymbolWorkflowStepTransformer,
-} from "./symbol"
+import { OrchestrationUtils, promiseAll } from "@medusajs/utils"
 
 async function resolveProperty(property, transactionContext) {
   const { invoke: invokeRes } = transactionContext
 
-  if (property?.__type === SymbolInputReference) {
+  if (property?.__type === OrchestrationUtils.SymbolInputReference) {
     return transactionContext.payload
-  } else if (property?.__type === SymbolWorkflowStepTransformer) {
+  } else if (
+    property?.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
+  ) {
     return await property.__resolver(transactionContext)
-  } else if (property?.__type === SymbolWorkflowHook) {
+  } else if (property?.__type === OrchestrationUtils.SymbolWorkflowHook) {
     return await property.__value(transactionContext)
-  } else if (property?.__type === SymbolWorkflowStep) {
+  } else if (property?.__type === OrchestrationUtils.SymbolWorkflowStep) {
     const output = invokeRes[property.__step__]?.output
-    if (output?.__type === SymbolWorkflowStepResponse) {
+    if (output?.__type === OrchestrationUtils.SymbolWorkflowStepResponse) {
       return output.output
     }
 
     return output
-  } else if (property?.__type === SymbolWorkflowStepResponse) {
+  } else if (
+    property?.__type === OrchestrationUtils.SymbolWorkflowStepResponse
+  ) {
     return property.output
   } else {
     return property
