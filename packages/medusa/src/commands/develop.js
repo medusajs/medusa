@@ -7,6 +7,7 @@ import path from "path"
 
 import Logger from "../loaders/logger"
 import { resolveAdminCLI } from "./utils/resolve-admin-cli"
+import { resolveBabelCLI } from "./utils/resolve-babel-cli"
 
 const defaultConfig = {
   padding: 5,
@@ -43,17 +44,22 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  const babelPath = path.resolve(
-    require.resolve("@babel/cli"),
-    "../",
-    "bin",
-    "babel.js"
-  )
+  const babelCli = resolveBabelCLI(directory)
 
-  execSync(`"${babelPath}" src -d dist --ignore "src/admin/**"`, {
-    cwd: directory,
-    stdio: ["ignore", process.stdout, process.stderr],
-  })
+  if (!babelCli) {
+    console.error("Unable to @babel/cli executable")
+    process.exit(1)
+  }
+
+  try {
+    execSync(`"${babelCli}" src -d dist --ignore "src/admin/**"`, {
+      cwd: directory,
+      stdio: ["ignore", process.stdout, process.stderr],
+    })
+  } catch (error) {
+    console.error("Error executing babel:", error)
+    process.exit(1)
+  }
 
   /**
    * Environment variable to indicate that the `start` command was initiated by the `develop`.
@@ -80,7 +86,7 @@ export default async function ({ port, directory }) {
     process.exit(1)
   })
 
-  const { cli, binExists } = resolveAdminCLI()
+  const { cli, binExists } = resolveAdminCLI(directory)
 
   if (binExists) {
     const backendUrl = `http://localhost:${port}`
