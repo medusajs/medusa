@@ -5,7 +5,7 @@ import * as SalesChannelModels from "@models"
 import { Modules } from "@medusajs/modules-sdk"
 
 /**
- * This script is only valid for mikro orm managers. If a user provide a custom manager
+ * This script is only valid for Mikro orm managers. If a user provide a custom manager
  * he is in charge of running the migrations.
  * @param options
  * @param logger
@@ -20,10 +20,7 @@ export async function runMigrations({
 > = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig(
-    Modules.SALES_CHANNEL,
-    options
-  )!
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("sales-channel", options)!
   const entities = Object.values(
     SalesChannelModels
   ) as unknown as EntitySchema[]

@@ -14,11 +14,19 @@ export interface SalesChannelDTO {
   locations?: SalesChannelLocationDTO[]
 }
 
-/**
- * @interface
- *
- * Filters to apply on sales channel lists.
- */
+export type CreateSalesChannelDTO = {
+  name: string
+  description: string
+  is_disabled?: boolean
+}
+
+export type UpdateSalesChannelDTO = {
+  id: string
+  name?: string
+  description?: string
+  is_disabled?: boolean
+}
+
 export interface FilterableSalesChannelProps
   extends BaseFilterable<FilterableSalesChannelProps> {
   id?: string[]

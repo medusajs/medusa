@@ -18,18 +18,12 @@ Object.entries(LinkableKeys).forEach(([key, value]) => {
 
 export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
-export default {
+export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.SALES_CHANNEL,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
-  alias: [
-    {
-      name: "sales_channel",
-      args: { entity: "SalesChannel" },
-    },
-    {
-      name: "sales_channels",
-      args: { entity: "SalesChannel" },
-    },
-  ],
+  alias: {
+    name: ["sales_channel", "sales_channels"],
+    args: { entity: "SalesChannel" },
+  },
 } as ModuleJoinerConfig

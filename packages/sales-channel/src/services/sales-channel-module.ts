@@ -3,6 +3,9 @@ import {
   DAL,
   FilterableSalesChannelProps,
   FindConfig,
+  InternalModuleDeclaration,
+  ISalesChannelModuleService,
+  ModuleJoinerConfig,
   SalesChannelDTO,
 } from "@medusajs/types"
 import {
@@ -14,10 +17,12 @@ import {
   retrieveEntity,
   shouldForceTransaction,
 } from "@medusajs/utils"
+import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@medusajs/types"
 
 import { SalesChannel } from "@models"
 import { SalesChannelRepository } from "@repositories"
-import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@types"
+
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   salesChannelRepository: DAL.RepositoryService
@@ -25,21 +30,29 @@ type InjectedDependencies = {
 
 export default class SalesChannelModuleService<
   TEntity extends SalesChannel = SalesChannel
-> {
+> implements ISalesChannelModuleService
+{
   protected readonly salesChannelRepository_: DAL.RepositoryService
 
-  constructor({ salesChannelRepository }: InjectedDependencies) {
+  constructor(
+    { salesChannelRepository }: InjectedDependencies,
+    protected readonly moduleDeclaration: InternalModuleDeclaration
+  ) {
     this.salesChannelRepository_ = salesChannelRepository
+  }
+
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
   }
 
   @InjectTransactionManager(shouldForceTransaction, "salesChannelRepository_")
   async create(
     data: CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<SalesChannelDTO[]> {
     return (await (
       this.salesChannelRepository_ as SalesChannelRepository
-    ).create(data, sharedContext)) as TEntity[]
+    ).create(data, sharedContext)) as unknown as SalesChannelDTO[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "salesChannelRepository_")
@@ -57,10 +70,10 @@ export default class SalesChannelModuleService<
   async update(
     data: UpdateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<SalesChannelDTO[]> {
     return (await (
       this.salesChannelRepository_ as SalesChannelRepository
-    ).update(data, sharedContext)) as TEntity[]
+    ).update(data, sharedContext)) as unknown as SalesChannelDTO[]
   }
 
   @InjectManager("salesChannelRepository_")
@@ -68,14 +81,14 @@ export default class SalesChannelModuleService<
     salesChannelId: string,
     config: FindConfig<SalesChannelDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
+  ): Promise<SalesChannelDTO> {
     return (await retrieveEntity<SalesChannel, SalesChannelDTO>({
       id: salesChannelId,
       entityName: SalesChannel.name,
       repository: this.salesChannelRepository_,
       config,
       sharedContext,
-    })) as TEntity
+    })) as unknown as SalesChannelDTO
   }
 
   @InjectManager("salesChannelRepository_")
@@ -83,7 +96,7 @@ export default class SalesChannelModuleService<
     filters: {} = {},
     config: FindConfig<SalesChannelDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<SalesChannelDTO[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<SalesChannel>(
       filters,
       config
@@ -92,7 +105,7 @@ export default class SalesChannelModuleService<
     return (await this.salesChannelRepository_.find(
       queryOptions,
       sharedContext
-    )) as TEntity[]
+    )) as unknown as SalesChannelDTO[]
   }
 
   @InjectManager("salesChannelRepository_")
@@ -100,7 +113,7 @@ export default class SalesChannelModuleService<
     filters: FilterableSalesChannelProps = {},
     config: FindConfig<SalesChannelDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
+  ): Promise<[SalesChannelDTO[], number]> {
     const queryOptions = ModulesSdkUtils.buildQuery<SalesChannel>(
       filters,
       config
@@ -108,6 +121,9 @@ export default class SalesChannelModuleService<
 
     return (await (
       this.salesChannelRepository_ as SalesChannelRepository
-    ).findAndCount(queryOptions, sharedContext)) as [TEntity[], number]
+    ).findAndCount(queryOptions, sharedContext)) as unknown as [
+      SalesChannelDTO[],
+      number
+    ]
   }
 }

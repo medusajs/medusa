@@ -5,10 +5,11 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
+import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@medusajs/types"
+
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { SalesChannel } from "@models"
-import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@types"
 
 export class SalesChannelRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
