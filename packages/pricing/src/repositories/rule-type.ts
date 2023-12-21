@@ -1,17 +1,14 @@
-import {
-  Context,
-  CreateRuleTypeDTO,
-  DAL,
-  UpdateRuleTypeDTO,
-} from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError, validateRuleAttributes } from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+
+import { RepositoryTypes } from "@types"
 import { RuleType } from "@models"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -69,7 +66,7 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async create(
-    data: CreateRuleTypeDTO[],
+    data: RepositoryTypes.CreateRuleTypeDTO[],
     context: Context = {}
   ): Promise<RuleType[]> {
     validateRuleAttributes(data.map((d) => d.rule_attribute))
@@ -86,7 +83,7 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdateRuleTypeDTO[],
+    data: RepositoryTypes.UpdateRuleTypeDTO[],
     context: Context = {}
   ): Promise<RuleType[]> {
     validateRuleAttributes(data.map((d) => d.rule_attribute))

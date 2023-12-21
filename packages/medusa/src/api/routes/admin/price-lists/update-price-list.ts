@@ -11,7 +11,7 @@ import {
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 
 import { updatePriceLists } from "@medusajs/core-flows"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { PriceList } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
@@ -20,6 +20,7 @@ import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 import { getPriceListPricingModule } from "./modules-queries"
+import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
  * @oas [post] /admin/price-lists/{id}
@@ -238,9 +239,11 @@ export class AdminPostPriceListsPriceListPriceListReq {
   description?: string
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   starts_at?: Date | null
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   ends_at?: Date | null
 
   @IsOptional()

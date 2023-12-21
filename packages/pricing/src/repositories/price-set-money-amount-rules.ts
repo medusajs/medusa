@@ -1,17 +1,14 @@
-import {
-  Context,
-  CreatePriceSetMoneyAmountRulesDTO,
-  DAL,
-  UpdatePriceSetMoneyAmountRulesDTO,
-} from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+
 import { PriceSetMoneyAmountRules } from "@models"
+import { RepositoryTypes } from "@types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -69,7 +66,7 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRep
   }
 
   async create(
-    data: CreatePriceSetMoneyAmountRulesDTO[],
+    data: RepositoryTypes.CreatePriceSetMoneyAmountRulesDTO[],
     context: Context = {}
   ): Promise<PriceSetMoneyAmountRules[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -84,7 +81,7 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRep
   }
 
   async update(
-    data: UpdatePriceSetMoneyAmountRulesDTO[],
+    data: RepositoryTypes.UpdatePriceSetMoneyAmountRulesDTO[],
     context: Context = {}
   ): Promise<PriceSetMoneyAmountRules[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)

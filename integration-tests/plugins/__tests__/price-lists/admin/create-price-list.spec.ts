@@ -105,6 +105,7 @@ describe("POST /admin/price-lists", () => {
       type: "override",
       customer_groups: [{ id: "customer-group-1" }],
       status: "active",
+      starts_at: new Date(),
       prices: [
         {
           amount: 400,
@@ -132,7 +133,7 @@ describe("POST /admin/price-lists", () => {
         description: "test",
         type: "override",
         status: "active",
-        starts_at: null,
+        starts_at: expect.any(String),
         ends_at: null,
         customer_groups: [
           {
