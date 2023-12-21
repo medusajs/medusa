@@ -29,8 +29,8 @@ export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
     {
       (
         input: TInput extends object
-          ? { [K in keyof TInput]: WorkflowData<TInput[K]> }
-          : WorkflowData<TInput>
+          ? { [K in keyof TInput]: WorkflowData<TInput[K]> | TInput[K] }
+          : WorkflowData<TInput> | TInput
       ): WorkflowData<{
         [K in keyof TOutput]: TOutput[K]
       }>
