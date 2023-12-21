@@ -1,8 +1,12 @@
-import { JoinerRelationship, JoinerServiceConfig, RemoteJoinerQuery } from "../joiner"
+import {
+  JoinerRelationship,
+  JoinerServiceConfig,
+  RemoteJoinerQuery,
+} from "../joiner"
 
-import { Logger } from "../logger"
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
+import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -261,7 +265,22 @@ export type ModuleServiceInitializeCustomDataLayerOptions = {
   }
 }
 
+export type ModuleBootstrapDeclaration =
+  | InternalModuleDeclaration
+  | ExternalModuleDeclaration
+// TODO: These should be added back when the chain of types are fixed
+// | ModuleServiceInitializeOptions
+// | ModuleServiceInitializeCustomDataLayerOptions
+
 export type RemoteQueryFunction = (
   query: string | RemoteJoinerQuery | object,
   variables?: Record<string, unknown>
 ) => Promise<any> | null
+
+export interface IModuleService {
+  __joinerConfig?(): ModuleJoinerConfig
+
+  __hooks?: {
+    onApplicationStart?: () => Promise<void>
+  }
+}
