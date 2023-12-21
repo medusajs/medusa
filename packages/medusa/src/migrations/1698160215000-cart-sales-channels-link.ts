@@ -1,6 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { MedusaV2Flag } from "@medusajs/utils"
+
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 
 export const featureFlag = [SalesChannelFeatureFlag.key, MedusaV2Flag.key]
 

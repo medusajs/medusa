@@ -22,21 +22,25 @@ export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
   public isFeatureEnabled(
     flag: string | string[] | Record<string, string>
   ): boolean {
+    if (isString(flag)) {
+      return !!this.flags[flag]
+    }
+
+    if (Array.isArray(flag)) {
+      return flag.every((f) => !!this.flags[f])
+    }
+
     if (isObject(flag)) {
       const [nestedFlag, value] = Object.entries(flag)[0]
+
       if (typeof this.flags[nestedFlag] === "boolean") {
         return this.flags[nestedFlag] as boolean
       }
+
       return !!this.flags[nestedFlag]?.[value]
     }
 
-    const flags = Array.isArray(flag) ? flag : [flag]
-    return flags.every((flag_) => {
-      if (!isString(flag_)) {
-        throw Error("Flag must be a string, an array of string or an object")
-      }
-      return !!this.flags[flag_]
-    })
+    throw Error("Flag must be a string or an object")
   }
 
   /**

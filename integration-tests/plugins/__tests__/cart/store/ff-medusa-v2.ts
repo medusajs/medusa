@@ -81,6 +81,7 @@ describe("/store/carts", () => {
 
     it("should create a cart in a sales channel", async () => {
       const api = useApi()
+
       const response = await api.post("/store/carts", {
         sales_channel_id: "amazon-sc",
       })
