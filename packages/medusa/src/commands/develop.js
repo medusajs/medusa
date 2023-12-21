@@ -73,7 +73,7 @@ export default async function ({ port, directory }) {
     process.exit(1)
   })
 
-  const { cli, binExists } = resolveAdminCLI(directory)
+  const { cli, binExists } = resolveAdminCLI()
 
   if (binExists) {
     const backendUrl = `http://localhost:${port}`
