@@ -55,10 +55,22 @@ export type TransactionModel = {
   options?: TransactionModelOptions
 }
 
+export enum DistributedTransactionEvent {
+  BEGIN = "begin",
+  RESUME = "resume",
+  COMPENSATE_BEGIN = "compensateBegin",
+  FINISH = "finish",
+  TIMEOUT = "timeout",
+  STEP_BEGIN = "stepBegin",
+  STEP_SUCCESS = "stepSuccess",
+  STEP_FAILURE = "stepFailure",
+  COMPENSATE_STEP_SUCCESS = "compensateStepSuccess",
+  COMPENSATE_STEP_FAILURE = "compensateStepFailure",
+}
+
 export type DistributedTransactionEvents = {
   onBegin?: (args: { transaction: DistributedTransaction }) => void
   onResume?: (args: { transaction: DistributedTransaction }) => void
-  onCompensateBegin?: (args: { transaction: DistributedTransaction }) => void
   onFinish?: (args: {
     transaction: DistributedTransaction
     result?: unknown
@@ -80,6 +92,8 @@ export type DistributedTransactionEvents = {
     step: TransactionStep
     transaction: DistributedTransaction
   }) => void
+
+  onCompensateBegin?: (args: { transaction: DistributedTransaction }) => void
 
   onCompensateStepSuccess?: (args: {
     step: TransactionStep

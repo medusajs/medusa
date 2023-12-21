@@ -79,8 +79,14 @@ export class DistributedTransaction extends EventEmitter {
   public transactionId: string
 
   private readonly errors: TransactionStepError[] = []
-
   private readonly context: TransactionContext = new TransactionContext()
+  private static keyValueStore: IDistributedTransactionStorage
+
+  public static setStorage(storage: IDistributedTransactionStorage) {
+    this.keyValueStore = storage
+  }
+
+  private static keyPrefix = "dtrans"
 
   constructor(
     private flow: TransactionFlow,
@@ -178,12 +184,6 @@ export class DistributedTransaction extends EventEmitter {
     return this.getFlow().definition.timeout
   }
 
-  private static keyValueStore: IDistributedTransactionStorage
-  public static setStorage(storage: IDistributedTransactionStorage) {
-    DistributedTransaction.keyValueStore = storage
-  }
-
-  private static keyPrefix = "dtrans"
   public async saveCheckpoint(
     ttl = 0
   ): Promise<TransactionCheckpoint | undefined> {

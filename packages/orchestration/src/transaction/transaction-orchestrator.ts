@@ -5,6 +5,7 @@ import {
 } from "./distributed-transaction"
 import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
+  DistributedTransactionEvent,
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionState,
@@ -148,7 +149,7 @@ export class TransactionOrchestrator extends EventEmitter {
     ) {
       step.timedOutAt = Date.now()
       await transaction.saveCheckpoint()
-      this.emit("timeout", { transaction })
+      this.emit(DistributedTransactionEvent.TIMEOUT, { transaction })
       await TransactionOrchestrator.setStepFailure(
         transaction,
         step,
@@ -262,7 +263,7 @@ export class TransactionOrchestrator extends EventEmitter {
       flow.state = TransactionState.COMPENSATING
       this.flagStepsToRevert(flow)
 
-      this.emit("compensateBegin", { transaction })
+      this.emit(DistributedTransactionEvent.COMPENSATE_BEGIN, { transaction })
 
       return await this.checkAllSteps(transaction)
     } else if (completedSteps === totalSteps) {
@@ -346,8 +347,8 @@ export class TransactionOrchestrator extends EventEmitter {
     await promiseAll(cleaningUp)
 
     const eventName = step.isCompensating()
-      ? "compensateStepSuccess"
-      : "stepSuccess"
+      ? DistributedTransactionEvent.COMPENSATE_STEP_SUCCESS
+      : DistributedTransactionEvent.STEP_SUCCESS
     transaction.emit(eventName, { step, transaction })
   }
 
@@ -402,8 +403,8 @@ export class TransactionOrchestrator extends EventEmitter {
     await promiseAll(cleaningUp)
 
     const eventName = step.isCompensating()
-      ? "compensateStepFailure"
-      : "stepFailure"
+      ? DistributedTransactionEvent.COMPENSATE_STEP_FAILURE
+      : DistributedTransactionEvent.STEP_FAILURE
     transaction.emit(eventName, { step, transaction })
   }
 
@@ -416,7 +417,7 @@ export class TransactionOrchestrator extends EventEmitter {
       flow.startedAt! + transaction.getTimeoutInterval()! * 1e3 < Date.now()
     ) {
       flow.timedOutAt = Date.now()
-      this.emit("timeout", { transaction })
+      this.emit(DistributedTransactionEvent.TIMEOUT, { transaction })
 
       for (const step of currentSteps) {
         await TransactionOrchestrator.setStepFailure(
@@ -467,7 +468,7 @@ export class TransactionOrchestrator extends EventEmitter {
           await transaction.archiveCheckpoint()
         }
 
-        this.emit("finish", { transaction })
+        this.emit(DistributedTransactionEvent.FINISH, { transaction })
       }
 
       let hasSyncSteps = false
@@ -521,7 +522,10 @@ export class TransactionOrchestrator extends EventEmitter {
           await transaction.scheduleStepTimeout(step, step.definition.timeout!)
         }
 
-        transaction.emit("stepBegin", { step, transaction })
+        transaction.emit(DistributedTransactionEvent.STEP_BEGIN, {
+          step,
+          transaction,
+        })
 
         const setStepFailure = async (
           error: Error | any,
@@ -633,9 +637,9 @@ export class TransactionOrchestrator extends EventEmitter {
         )
       }
 
-      this.emit("begin", { transaction })
+      this.emit(DistributedTransactionEvent.BEGIN, { transaction })
     } else {
-      this.emit("resume", { transaction })
+      this.emit(DistributedTransactionEvent.RESUME, { transaction })
     }
 
     await this.executeNext(transaction)
@@ -957,7 +961,9 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
     if (step.getStates().status === TransactionStepStatus.WAITING) {
-      this.emit("resume", { transaction: curTransaction })
+      this.emit(DistributedTransactionEvent.RESUME, {
+        transaction: curTransaction,
+      })
 
       await TransactionOrchestrator.setStepSuccess(
         curTransaction,
@@ -998,7 +1004,9 @@ export class TransactionOrchestrator extends EventEmitter {
       )
 
     if (step.getStates().status === TransactionStepStatus.WAITING) {
-      this.emit("resume", { transaction: curTransaction })
+      this.emit(DistributedTransactionEvent.RESUME, {
+        transaction: curTransaction,
+      })
 
       await TransactionOrchestrator.setStepFailure(
         curTransaction,

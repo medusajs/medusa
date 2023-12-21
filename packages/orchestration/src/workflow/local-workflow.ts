@@ -3,6 +3,7 @@ import { createContainerLike, createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
   DistributedTransaction,
+  DistributedTransactionEvent,
   DistributedTransactionEvents,
   TransactionOrchestrator,
   TransactionStepsDefinition,
@@ -118,26 +119,38 @@ export class LocalWorkflow {
     }
 
     if (subscribe?.onBegin) {
-      orchestrator.on("begin", eventWrapperMap.get("onBegin"))
+      orchestrator.on(
+        DistributedTransactionEvent.BEGIN,
+        eventWrapperMap.get("onBegin")
+      )
     }
 
     if (subscribe?.onResume) {
-      orchestrator.on("resume", eventWrapperMap.get("onResume"))
+      orchestrator.on(
+        DistributedTransactionEvent.RESUME,
+        eventWrapperMap.get("onResume")
+      )
     }
 
     if (subscribe?.onCompensateBegin) {
       orchestrator.on(
-        "compensateBegin",
+        DistributedTransactionEvent.COMPENSATE_BEGIN,
         eventWrapperMap.get("onCompensateBegin")
       )
     }
 
     if (subscribe?.onTimeout) {
-      orchestrator.on("timeout", eventWrapperMap.get("onTimeout"))
+      orchestrator.on(
+        DistributedTransactionEvent.TIMEOUT,
+        eventWrapperMap.get("onTimeout")
+      )
     }
 
     if (subscribe?.onFinish) {
-      orchestrator.on("finish", eventWrapperMap.get("onFinish"))
+      orchestrator.on(
+        DistributedTransactionEvent.FINISH,
+        eventWrapperMap.get("onFinish")
+      )
     }
 
     const resumeWrapper = ({ transaction }) => {
@@ -149,84 +162,84 @@ export class LocalWorkflow {
       }
 
       if (subscribe?.onStepBegin) {
-        transaction.on("stepBegin", eventWrapperMap.get("onStepBegin"))
+        transaction.on(
+          DistributedTransactionEvent.STEP_BEGIN,
+          eventWrapperMap.get("onStepBegin")
+        )
       }
 
       if (subscribe?.onStepSuccess) {
-        transaction.on("stepSuccess", eventWrapperMap.get("onStepSuccess"))
+        transaction.on(
+          DistributedTransactionEvent.STEP_SUCCESS,
+          eventWrapperMap.get("onStepSuccess")
+        )
       }
 
       if (subscribe?.onStepFailure) {
-        transaction.on("stepFailure", eventWrapperMap.get("onStepFailure"))
+        transaction.on(
+          DistributedTransactionEvent.STEP_FAILURE,
+          eventWrapperMap.get("onStepFailure")
+        )
       }
 
       if (subscribe?.onCompensateStepSuccess) {
         transaction.on(
-          "compensateStepSuccess",
+          DistributedTransactionEvent.COMPENSATE_STEP_SUCCESS,
           eventWrapperMap.get("onCompensateStepSuccess")
         )
       }
 
       if (subscribe?.onCompensateStepFailure) {
         transaction.on(
-          "compensateStepFailure",
+          DistributedTransactionEvent.COMPENSATE_STEP_FAILURE,
           eventWrapperMap.get("onCompensateStepFailure")
         )
       }
     }
 
     if (transaction) {
-      if (subscribe?.onStepBegin) {
-        transaction.on("stepBegin", eventWrapperMap.get("onStepBegin"))
-      }
-
-      if (subscribe?.onStepSuccess) {
-        transaction.on("stepSuccess", eventWrapperMap.get("onStepSuccess"))
-      }
-
-      if (subscribe?.onStepFailure) {
-        transaction.on("stepFailure", eventWrapperMap.get("onStepFailure"))
-      }
-
-      if (subscribe?.onCompensateStepSuccess) {
-        transaction.on(
-          "compensateStepSuccess",
-          eventWrapperMap.get("onCompensateStepSuccess")
-        )
-      }
-
-      if (subscribe?.onCompensateStepFailure) {
-        transaction.on(
-          "compensateStepFailure",
-          eventWrapperMap.get("onCompensateStepFailure")
-        )
-      }
+      resumeWrapper({ transaction })
     } else {
       orchestrator.once("resume", resumeWrapper)
     }
 
-    const cleanUp = (...args) => {
+    const cleanUp = () => {
       subscribe?.onFinish &&
-        orchestrator.removeListener("finish", eventWrapperMap.get("onFinish"))
+        orchestrator.removeListener(
+          DistributedTransactionEvent.FINISH,
+          eventWrapperMap.get("onFinish")
+        )
       subscribe?.onResume &&
-        orchestrator.removeListener("resume", eventWrapperMap.get("onResume"))
+        orchestrator.removeListener(
+          DistributedTransactionEvent.RESUME,
+          eventWrapperMap.get("onResume")
+        )
       subscribe?.onBegin &&
-        orchestrator.removeListener("begin", eventWrapperMap.get("onBegin"))
+        orchestrator.removeListener(
+          DistributedTransactionEvent.BEGIN,
+          eventWrapperMap.get("onBegin")
+        )
       subscribe?.onCompensateBegin &&
         orchestrator.removeListener(
-          "compensateBegin",
+          DistributedTransactionEvent.COMPENSATE_BEGIN,
           eventWrapperMap.get("onCompensateBegin")
         )
       subscribe?.onTimeout &&
-        orchestrator.removeListener("timeout", eventWrapperMap.get("onTimeout"))
+        orchestrator.removeListener(
+          DistributedTransactionEvent.TIMEOUT,
+          eventWrapperMap.get("onTimeout")
+        )
 
-      orchestrator.removeListener("resume", resumeWrapper)
+      orchestrator.removeListener(
+        DistributedTransactionEvent.RESUME,
+        resumeWrapper
+      )
 
       eventWrapperMap.clear()
     }
 
     return {
-      cleanUp,
+      cleanUpEventListeners: cleanUp,
     }
   }
 
@@ -248,7 +261,7 @@ export class LocalWorkflow {
       input
     )
 
-    const { cleanUp } = this.registerEventCallbacks({
+    const { cleanUpEventListeners } = this.registerEventCallbacks({
       orchestrator,
       transaction,
       subscribe,
@@ -256,7 +269,7 @@ export class LocalWorkflow {
 
     await orchestrator.resume(transaction)
 
-    cleanUp()
+    cleanUpEventListeners()
 
     return transaction
   }
@@ -284,7 +297,7 @@ export class LocalWorkflow {
       context
     )
 
-    const { cleanUp } = this.registerEventCallbacks({
+    const { cleanUpEventListeners } = this.registerEventCallbacks({
       orchestrator,
       transaction,
       subscribe,
@@ -292,7 +305,7 @@ export class LocalWorkflow {
 
     await orchestrator.cancelTransaction(transaction)
 
-    cleanUp()
+    cleanUpEventListeners()
 
     return transaction
   }
@@ -305,7 +318,7 @@ export class LocalWorkflow {
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
 
-    const { cleanUp } = this.registerEventCallbacks({
+    const { cleanUpEventListeners } = this.registerEventCallbacks({
       orchestrator,
       idempotencyKey,
       subscribe,
@@ -318,7 +331,7 @@ export class LocalWorkflow {
       response
     )
 
-    cleanUp()
+    cleanUpEventListeners()
 
     return transaction
   }
@@ -331,7 +344,7 @@ export class LocalWorkflow {
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
 
-    const { cleanUp } = this.registerEventCallbacks({
+    const { cleanUpEventListeners } = this.registerEventCallbacks({
       orchestrator,
       idempotencyKey,
       subscribe,
@@ -343,7 +356,7 @@ export class LocalWorkflow {
       handler(this.container, context)
     )
 
-    cleanUp()
+    cleanUpEventListeners()
 
     return transaction
   }
