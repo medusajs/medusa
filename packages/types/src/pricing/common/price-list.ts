@@ -1,8 +1,8 @@
-import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount"
+import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount";
 
-import { BaseFilterable } from "../../dal"
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
-import { RuleTypeDTO } from "./rule-type"
+import { BaseFilterable } from "../../dal";
+import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
+import { RuleTypeDTO } from "./rule-type";
 
 /**
  * @enum
@@ -152,11 +152,11 @@ export interface CreatePriceListDTO {
   /**
    * The price list is enabled starting from this date.
    */
-  starts_at?: string
+  starts_at?: Date | string | null
   /**
    * The price list expires after this date.
    */
-  ends_at?: string
+  ends_at?: Date | string | null
   /**
    * The price list's status.
    */
@@ -194,13 +194,17 @@ export interface UpdatePriceListDTO {
    */
   title?: string
   /**
+   * The price list's description.
+   */
+  description?: string
+  /**
    * The price list is enabled starting from this date.
    */
-  starts_at?: string | null
+  starts_at?: Date | string | null
   /**
    * The price list expires after this date.
    */
-  ends_at?: string | null
+  ends_at?: Date | string | null
   /**
    * The price list's status.
    */

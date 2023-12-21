@@ -14,6 +14,7 @@ export enum Modules {
   PRODUCT = "productService",
   PRICING = "pricingService",
   PROMOTION = "promotion",
+  AUTHENTICATION = "authentication",
   SALES_CHANNEL = "salesChannelService",
 }
 
@@ -25,6 +26,7 @@ export enum ModuleRegistrationName {
   PRODUCT = "productModuleService",
   PRICING = "pricingModuleService",
   PROMOTION = "promotionModuleService",
+  AUTHENTICATION = "authenticationModuleService",
   SALES_CHANNEL = "salesChannelModuleService",
 }
 
@@ -36,6 +38,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.CACHE]: "@medusajs/cache-inmemory",
   [Modules.PRICING]: "@medusajs/pricing",
   [Modules.PROMOTION]: "@medusajs/promotion",
+  [Modules.AUTHENTICATION]: "@medusajs/authentication",
   [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
 }
 
@@ -131,6 +134,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.PROMOTION,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.PROMOTION),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.AUTHENTICATION]: {
+      key: Modules.AUTHENTICATION,
+      registrationName: ModuleRegistrationName.AUTHENTICATION,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.AUTHENTICATION),
       isRequired: false,
       canOverride: true,
       isQueryable: true,

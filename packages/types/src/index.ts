@@ -1,4 +1,5 @@
 export * from "./address"
+export * from "./authentication"
 export * from "./bundles"
 export * from "./cache"
 export * from "./cart"

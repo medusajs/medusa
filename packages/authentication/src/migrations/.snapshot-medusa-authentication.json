@@ -16,11 +16,11 @@
           "mappedType": "text"
         }
       },
-      "name": "promotion",
+      "name": "auth_user",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "promotion_pkey",
+          "keyName": "auth_user_pkey",
           "columnNames": [
             "id"
           ],
