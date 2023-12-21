@@ -1,17 +1,13 @@
-import {
-  Context,
-  CreatePriceRuleDTO,
-  DAL,
-  UpdatePriceRuleDTO,
-} from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
-import { PriceRule } from "@models"
 
+import { PriceRule } from "@models"
+import { RepositoryTypes } from "@types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
@@ -70,7 +66,7 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async create(
-    data: CreatePriceRuleDTO[],
+    data: RepositoryTypes.CreatePriceRuleDTO[],
     context: Context = {}
   ): Promise<PriceRule[]> {
     const manager: SqlEntityManager =
@@ -97,7 +93,7 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdatePriceRuleDTO[],
+    data: RepositoryTypes.UpdatePriceRuleDTO[],
     context: Context = {}
   ): Promise<PriceRule[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)

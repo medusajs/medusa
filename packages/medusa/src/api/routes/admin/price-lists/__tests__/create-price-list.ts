@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { PriceListServiceMock } from "../../../../../services/__mocks__/price-list"
+import { request } from "../../../../../helpers/test-request"
 
 jest.setTimeout(10000)
 describe("POST /price-lists", () => {
@@ -58,8 +58,8 @@ describe("POST /price-lists", () => {
       expect(PriceListServiceMock.create).toHaveBeenCalledWith({
         name: "My Price List",
         description: "testing",
-        ends_at: "2022-03-14T08:28:38.551Z",
-        starts_at: "2022-03-14T08:28:38.551Z",
+        ends_at: new Date("2022-03-14T08:28:38.551Z"),
+        starts_at: new Date("2022-03-14T08:28:38.551Z"),
         customer_groups: [
           {
             id: "gc_123",
