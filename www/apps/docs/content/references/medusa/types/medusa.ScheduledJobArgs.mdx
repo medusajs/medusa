@@ -1,0 +1,74 @@
+---
+displayed_sidebar: homepage
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ScheduledJobArgs
+
+ **ScheduledJobArgs**: `Object`
+
+## Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "container",
+    "type": "[MedusaContainer](medusa.MedusaContainer-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "createScope",
+        "type": "() => [MedusaContainer](medusa.MedusaContainer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "registerAdd",
+        "type": "`<T>`(`name`: `string`, `registration`: `T`) => [MedusaContainer](medusa.MedusaContainer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "data",
+    "type": "`T`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "pluginOptions",
+    "type": "`Record<string, unknown>`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

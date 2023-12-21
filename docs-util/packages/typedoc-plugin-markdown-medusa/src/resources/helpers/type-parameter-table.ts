@@ -4,7 +4,7 @@ import {
   getTableHeaders,
   reflectionTableFormatter,
 } from "../../utils/reflection-formatter"
-import { hasTypes } from "../../utils/type-utils"
+import { hasTypes } from "utils"
 
 export default function () {
   Handlebars.registerHelper(
@@ -13,7 +13,11 @@ export default function () {
       const showTypeCol = hasTypes(this)
       const headers = getTableHeaders(this, showTypeCol)
 
-      const rows = this.map((parameter) => reflectionTableFormatter(parameter))
+      const rows = this.map((parameter) =>
+        reflectionTableFormatter({
+          reflection: parameter,
+        })
+      )
 
       return `\n| ${headers.join(" | ")} |\n| ${headers
         .map(() => ":------")

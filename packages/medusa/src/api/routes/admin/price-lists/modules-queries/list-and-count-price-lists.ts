@@ -65,12 +65,18 @@ export async function listAndCountPriceListPricingModule({
     priceList.prices = priceSetMoneyAmounts.map((priceSetMoneyAmount) => {
       const productVariant = priceSetMoneyAmount.price_set.variant_link.variant
 
+      const rules = priceSetMoneyAmount.price_rules.reduce((acc, curr) => {
+        acc[curr.rule_type.rule_attribute] = curr.value
+        return acc
+      }, {})
+
       return {
         ...(priceSetMoneyAmount.money_amount as MoneyAmount),
         price_list_id: priceList.id,
         variant_id: productVariant?.id ?? null,
         variant: productVariant ?? null,
-        region_id: null,
+        region_id: rules["region_id"] ?? null,
+        rules,
       }
     })
 

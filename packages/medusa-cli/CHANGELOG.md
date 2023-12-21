@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.3.22
+
+### Patch Changes
+
+- [#5701](https://github.com/medusajs/medusa/pull/5701) [`6975eacb3`](https://github.com/medusajs/medusa/commit/6975eacb338874b976c14aae030c74362d57410c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, medusa-cli): Improve add line item + cluster starting with medusa cli
+
+- Updated dependencies [[`079f0da83`](https://github.com/medusajs/medusa/commit/079f0da83f482562bbb525807ee1a7e32993b4da), [`8f25ed8a1`](https://github.com/medusajs/medusa/commit/8f25ed8a10fe23e9342dc3d03545546b4ad4d6da)]:
+  - @medusajs/utils@1.11.2
+
 ## 1.3.21
 
 ### Patch Changes

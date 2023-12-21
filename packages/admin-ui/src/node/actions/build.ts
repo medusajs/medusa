@@ -15,7 +15,9 @@ export async function build({
   options,
   reporting = "fancy",
 }: BuildArgs) {
-  await createCacheDir({ appDir, plugins })
+  if (!process.env.PLUGIN_ADMIN_UI_SKIP_CACHE) {
+    await createCacheDir({ appDir, plugins })
+  }
 
   const cacheDir = path.resolve(appDir, ".cache")
   const entry = path.resolve(cacheDir, "admin", "src", "main.tsx")

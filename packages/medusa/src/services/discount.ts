@@ -54,6 +54,9 @@ import EventBusService from "./event-bus"
  * @implements {BaseService}
  */
 class DiscountService extends TransactionBaseService {
+  static readonly Events = {
+    CREATED: "discount.created",
+  }
   protected readonly discountRepository_: typeof DiscountRepository
   protected readonly customerService_: CustomerService
   protected readonly discountRuleRepository_: typeof DiscountRuleRepository
@@ -230,6 +233,10 @@ class DiscountService extends TransactionBaseService {
           })
         )
       }
+
+      await this.eventBus_
+          .withTransaction(manager)
+          .emit(DiscountService.Events.CREATED, { id: result.id })
 
       return result
     })

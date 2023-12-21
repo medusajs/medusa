@@ -66,7 +66,7 @@ After initialization, you can use the client's properties and methods to send re
 
 You'll find in the sidebar of this reference names of different resources. These resources are properties in the Medusa client instance you initialize. You can access the methods or nested resources of each of the properties to send requests to the backend.
 
-For example, to create a new customer you can access the [create](../references/js-client/classes/CustomersResource.mdx#create) method under the [customers](../references/js-client/classes/CustomersResource.mdx) property of your client:
+For example, to create a new customer you can access the [create](../references/js_client/classes/js_client.CustomersResource.mdx#create) method under the [customers](../references/js_client/classes/js_client.CustomersResource.mdx) property of your client:
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -119,7 +119,7 @@ const medusa = new Medusa({
 
 You can use a JWT token to authenticate both admin users and customers. Authentication state is managed by the client, which is ideal for Jamstack applications and mobile applications.
 
-You can authenticate the admin user using the [admin.auth.getToken](../references/js-client/classes/AdminAuthResource.mdx#getToken) method, and the customer using the [auth.getToken](../references/js-client/classes/AuthResource.mdx#getToken) method. 
+You can authenticate the admin user using the [admin.auth.getToken](../references/js_client/classes/js_client.AdminAuthResource.mdx#getToken) method, and the customer using the [auth.getToken](../references/js_client/classes/js_client.AuthResource.mdx#getToken) method. 
 
 Once the user or customer is authenticated successfully, the Medusa client automatically attaches an Authorization Bearer header to all subsequent requests.
 
@@ -164,7 +164,7 @@ For example:
 
 You can authenticate admin users or customers using cookie session ID.
 
-You can authenticate the admin user using the [admin.auth.createSession](../references/js-client/classes/AdminAuthResource.mdx#createSession) method, and the customer using the [auth.authenticate](../references/js-client/classes/AuthResource.mdx#authenticate) method.
+You can authenticate the admin user using the [admin.auth.createSession](../references/js_client/classes/js_client.AdminAuthResource.mdx#createSession) method, and the customer using the [auth.authenticate](../references/js_client/classes/js_client.AuthResource.mdx#authenticate) method.
 
 Once the user or customer is authenticated successfully, the Medusa client sets and attached the session ID in the cookie for all subsequent requests.
 
@@ -209,7 +209,7 @@ For example:
 
 You can authenticate admin users with a personal API Token.
 
-If a user doesn't have a personal API token, create one with the [admin.users.update](../references/js-client/classes/AdminUsersResource.mdx#update) method:
+If a user doesn't have a personal API token, create one with the [admin.users.update](../references/js_client/classes/js_client.AdminUsersResource.mdx#update) method:
 
 <Tabs groupId="client-type" isCodeTabs={true}>
   <TabItem value="js-client" label="JS Client" default>
@@ -436,7 +436,7 @@ medusa.admin.products.list({
 
 ### Selecting Multiple Fields
 
-You can pass more than one field by seperating the field names in the `fields` query parameter with a comma.
+You can pass more than one field by separating the field names in the `fields` query parameter with a comma.
 
 For example, to select the `title` and `handle` of products:
 

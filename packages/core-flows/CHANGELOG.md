@@ -1,5 +1,20 @@
 # @medusajs/core-flows
 
+## 0.0.3
+
+### Patch Changes
+
+- [#5752](https://github.com/medusajs/medusa/pull/5752) [`079f0da83`](https://github.com/medusajs/medusa/commit/079f0da83f482562bbb525807ee1a7e32993b4da) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,pricing,medusa,pricing,types,utils): Price List Prices can have their own rules
+
+- [#5811](https://github.com/medusajs/medusa/pull/5811) [`07107f356`](https://github.com/medusajs/medusa/commit/07107f3565bc2c97e9b89818b390210454f0566d) Thanks [@riqwan](https://github.com/riqwan)! - feat(orchestration,core-flows,medusa): product import uses workflows
+
+- [#5725](https://github.com/medusajs/medusa/pull/5725) [`85cda7ce3`](https://github.com/medusajs/medusa/commit/85cda7ce3754e2a8ecb207f29d462a9bcd442ade) Thanks [@adrien2p](https://github.com/adrien2p)! - slightly improve create cart workflow
+
+- Updated dependencies [[`079f0da83`](https://github.com/medusajs/medusa/commit/079f0da83f482562bbb525807ee1a7e32993b4da), [`c4deeee48`](https://github.com/medusajs/medusa/commit/c4deeee481399f5371d773173e20dc149d502e20), [`07107f356`](https://github.com/medusajs/medusa/commit/07107f3565bc2c97e9b89818b390210454f0566d), [`8f25ed8a1`](https://github.com/medusajs/medusa/commit/8f25ed8a10fe23e9342dc3d03545546b4ad4d6da)]:
+  - @medusajs/utils@1.11.2
+  - @medusajs/modules-sdk@1.12.5
+  - @medusajs/orchestration@0.5.1
+
 ## 0.0.2
 
 ### Patch Changes

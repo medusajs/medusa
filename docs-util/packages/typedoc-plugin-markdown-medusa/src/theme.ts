@@ -20,15 +20,16 @@ import {
   registerPartials,
 } from "./render-utils"
 import { formatContents } from "./utils"
-import {
+
+import type {
   FormattingOptionType,
   FormattingOptionsType,
-  Mapping,
-  ObjectLiteralDeclarationStyle,
-} from "./types"
+  ParameterStyle,
+} from "types"
+import { Mapping } from "./types"
 
 export class MarkdownTheme extends Theme {
-  allReflectionsHaveOwnDocument!: boolean
+  allReflectionsHaveOwnDocument!: string[]
   entryDocument: string
   entryPoints!: string[]
   filenameSeparator!: string
@@ -44,7 +45,7 @@ export class MarkdownTheme extends Theme {
   out!: string
   publicPath!: string
   preserveAnchorCasing!: boolean
-  objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle
+  objectLiteralTypeDeclarationStyle: ParameterStyle
   formattingOptions: FormattingOptionsType
   mdxOutput: boolean
   outputNamespace: boolean
@@ -64,7 +65,7 @@ export class MarkdownTheme extends Theme {
     super(renderer)
 
     // prettier-ignore
-    this.allReflectionsHaveOwnDocument = this.getOption("allReflectionsHaveOwnDocument") as boolean
+    this.allReflectionsHaveOwnDocument = this.getOption("allReflectionsHaveOwnDocument") as string[]
     this.entryDocument = this.getOption("entryDocument") as string
     this.entryPoints = this.getOption("entryPoints") as string[]
     this.filenameSeparator = this.getOption("filenameSeparator") as string
@@ -84,7 +85,7 @@ export class MarkdownTheme extends Theme {
     ) as boolean
     this.objectLiteralTypeDeclarationStyle = this.getOption(
       "objectLiteralTypeDeclarationStyle"
-    ) as ObjectLiteralDeclarationStyle
+    ) as ParameterStyle
     this.formattingOptions = this.getOption(
       "formatting"
     ) as FormattingOptionsType
@@ -147,6 +148,7 @@ export class MarkdownTheme extends Theme {
     urls: UrlMapping[]
   ): UrlMapping[] {
     const mapping = this.getMappings(
+      reflection,
       reflection.parent?.isProject() ? "" : reflection.parent?.getAlias()
     ).find((mapping) => reflection.kindOf(mapping.kind))
     if (mapping) {
@@ -278,7 +280,31 @@ export class MarkdownTheme extends Theme {
     }
   }
 
-  getMappings(directoryPrefix?: string): Mapping[] {
+  getModuleParents(reflection: DeclarationReflection): DeclarationReflection[] {
+    const parents: DeclarationReflection[] = []
+    let currentParent = reflection?.parent as DeclarationReflection | undefined
+    do {
+      if (currentParent?.kind === ReflectionKind.Module) {
+        parents.push(currentParent)
+      }
+      currentParent = currentParent?.parent as DeclarationReflection | undefined
+    } while (currentParent)
+
+    return parents
+  }
+
+  getAllReflectionsHaveOwnDocument(reflection: DeclarationReflection): boolean {
+    const moduleParents = this.getModuleParents(reflection)
+
+    return moduleParents.some((parent) =>
+      this.allReflectionsHaveOwnDocument.includes(parent.name)
+    )
+  }
+
+  getMappings(
+    reflection: DeclarationReflection,
+    directoryPrefix?: string
+  ): Mapping[] {
     return [
       {
         kind: [ReflectionKind.Module],
@@ -316,7 +342,7 @@ export class MarkdownTheme extends Theme {
         directory: path.join(directoryPrefix || "", "types"),
         template: this.getReflectionMemberTemplate(),
       },
-      ...(this.allReflectionsHaveOwnDocument
+      ...(this.getAllReflectionsHaveOwnDocument(reflection)
         ? [
             {
               kind: [ReflectionKind.Variable],

@@ -300,7 +300,7 @@ View [react-router-dom’s documentation](https://reactrouter.com/en/main) for
 
 ## Querying and Mutating Data
 
-You might need to interact with the Medusa backend from your admin setting page. To do so, you can utilize the Medusa React package. It contains a collection of queries and mutations built on `@tanstack/react-query` that lets you interact with the Medusa backend.
+You might need to interact with the Medusa backend from your admin setting page. To do so, you can utilize the Medusa React package. It contains a collection of queries and mutations built on `@tanstack/react-query@4.22` that lets you interact with the Medusa backend.
 
 :::note
 

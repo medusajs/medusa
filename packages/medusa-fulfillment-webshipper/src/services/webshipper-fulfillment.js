@@ -10,7 +10,7 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
     { logger, totalsService, claimService, swapService, orderService },
     options
   ) {
-    super()
+    super(...arguments)
 
     this.options_ = options
 
