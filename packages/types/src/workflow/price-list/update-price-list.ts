@@ -10,8 +10,8 @@ export type PriceListVariantPriceDTO = UpdateProductVariantPricesInputDTO & {
 export interface UpdatePriceListWorkflowDTO {
   id: string
   name?: string
-  starts_at?: string
-  ends_at?: string
+  starts_at?: Date
+  ends_at?: Date
   status?: PriceListStatus
   rules?: CreatePriceListRules
   prices?: PriceListVariantPriceDTO[]
