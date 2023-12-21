@@ -1,13 +1,14 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MedusaModule,
   MODULE_PACKAGE_NAMES,
+  MedusaModule,
   Modules,
 } from "@medusajs/modules-sdk"
 import { IPricingModuleService, ModulesSdkTypes } from "@medusajs/types"
+
+import { InitializeModuleInjectableDependencies } from "@types"
 import { moduleDefinition } from "../module-definition"
-import { InitializeModuleInjectableDependencies } from "../types"
 
 export const initialize = async (
   options?:

@@ -1,4 +1,4 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
+import { Context, DAL, FindConfig } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -7,6 +7,7 @@ import {
   retrieveEntity,
 } from "@medusajs/utils"
 import { RuleType } from "@models"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   ruleTypeRepository: DAL.RepositoryService
@@ -22,10 +23,10 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
   @InjectManager("ruleTypeRepository_")
   async retrieve(
     ruleTypeId: string,
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
+    config: FindConfig<ServiceTypes.RuleTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<RuleType, PricingTypes.RuleTypeDTO>({
+    return (await retrieveEntity<RuleType, ServiceTypes.RuleTypeDTO>({
       id: ruleTypeId,
       identifierColumn: "id",
       entityName: RuleType.name,
@@ -37,8 +38,8 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
 
   @InjectManager("ruleTypeRepository_")
   async list(
-    filters: PricingTypes.FilterableRuleTypeProps = {},
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
+    filters: ServiceTypes.FilterableRuleTypeProps = {},
+    config: FindConfig<ServiceTypes.RuleTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
@@ -51,8 +52,8 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
 
   @InjectManager("ruleTypeRepository_")
   async listAndCount(
-    filters: PricingTypes.FilterableRuleTypeProps = {},
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
+    filters: ServiceTypes.FilterableRuleTypeProps = {},
+    config: FindConfig<ServiceTypes.RuleTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
@@ -65,7 +66,7 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
 
   @InjectTransactionManager("ruleTypeRepository_")
   async create(
-    data: PricingTypes.CreateRuleTypeDTO[],
+    data: ServiceTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await this.ruleTypeRepository_.create(
@@ -76,7 +77,7 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
 
   @InjectTransactionManager("ruleTypeRepository_")
   async update(
-    data: PricingTypes.UpdateRuleTypeDTO[],
+    data: ServiceTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await this.ruleTypeRepository_.update(
