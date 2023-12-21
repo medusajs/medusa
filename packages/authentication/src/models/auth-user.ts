@@ -8,11 +8,11 @@ export default class AuthUser {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "usr_")
+    this.id = generateEntityId(this.id, "authusr")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "usr_")
+    this.id = generateEntityId(this.id, "authusr")
   }
 }
