@@ -1,10 +1,11 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20231220153431 extends Migration {
+export class Migration20231221104256 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table "promotion" ("id" text not null, "code" text not null, "is_automatic" boolean not null default false, "type" text check ("type" in (\'standard\', \'buyget\')) not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_pkey" primary key ("id"));'
     )
+    this.addSql('create index "IDX_promotion_code" on "promotion" ("code");')
     this.addSql('create index "IDX_promotion_type" on "promotion" ("type");')
     this.addSql(
       'alter table "promotion" add constraint "IDX_promotion_code_unique" unique ("code");'

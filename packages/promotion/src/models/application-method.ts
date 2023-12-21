@@ -9,6 +9,7 @@ import {
   Entity,
   Enum,
   Index,
+  OnInit,
   OneToOne,
   OptionalProps,
   PrimaryKey,
@@ -71,5 +72,10 @@ export default class ApplicationMethod {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "app_method")
+  }
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "promo")
   }
 }

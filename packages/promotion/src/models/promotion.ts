@@ -24,6 +24,7 @@ export default class Promotion {
   id!: string
 
   @Property({ columnType: "text" })
+  @Index({ name: "IDX_promotion_code" })
   @Unique({
     name: "IDX_promotion_code_unique",
     properties: ["code"],

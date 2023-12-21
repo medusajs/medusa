@@ -85,6 +85,15 @@
       "indexes": [
         {
           "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "keyName": "IDX_promotion_code",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "type"
           ],
           "composite": false,
