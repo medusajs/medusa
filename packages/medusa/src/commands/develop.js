@@ -3,10 +3,9 @@ import { execSync, fork } from "child_process"
 import chokidar from "chokidar"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
-import path from "path"
 
 import Logger from "../loaders/logger"
-import { resolveAdminCLI } from "./utils/resolve-admin-cli"
+import { isAdminInstalled } from "./utils/resolve-admin-cli"
 
 const defaultConfig = {
   padding: 5,
@@ -43,12 +42,7 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  const babelPath = path.resolve(
-    require.resolve("@babel/cli"),
-    "../",
-    "bin",
-    "babel.js"
-  )
+  const babelPath = "npx babel"
 
   execSync(`"${babelPath}" src -d dist --ignore "src/admin/**"`, {
     cwd: directory,
@@ -63,12 +57,7 @@ export default async function ({ port, directory }) {
     COMMAND_INITIATED_BY: "develop",
   }
 
-  const cliPath = path.resolve(
-    require.resolve("@medusajs/medusa"),
-    "../",
-    "bin",
-    "medusa.js"
-  )
+  const cliPath = "npx medusa"
   let child = fork(cliPath, [`start`, ...args], {
     execArgv: argv,
     cwd: directory,
@@ -80,16 +69,20 @@ export default async function ({ port, directory }) {
     process.exit(1)
   })
 
-  const { cli, binExists } = resolveAdminCLI()
+  const shouldRunAdmin = isAdminInstalled(directory)
 
-  if (binExists) {
+  if (shouldRunAdmin) {
     const backendUrl = `http://localhost:${port}`
 
-    const adminChild = fork(cli, [`develop`, "--backend", `${backendUrl}`], {
-      cwd: directory,
-      env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr, "ipc"],
-    })
+    const adminChild = fork(
+      "npx medusa-admin",
+      [`develop`, "--backend", `${backendUrl}`],
+      {
+        cwd: directory,
+        env: process.env,
+        stdio: ["pipe", process.stdout, process.stderr, "ipc"],
+      }
+    )
 
     adminChild.on("error", function (err) {
       console.log("Error ", err)

@@ -1,18 +1,25 @@
-import fs from "fs-extra"
-import path from "path"
+import { ConfigModule } from "@medusajs/types"
+import { getConfigFile } from "medusa-core-utils"
 
-export function resolveAdminCLI() {
-  const cli = path.resolve(
-    require.resolve("@medusajs/admin"),
-    "../../",
-    "bin",
-    "medusa-admin.js"
+export function isAdminInstalled(root: string) {
+  const { configModule, error } = getConfigFile<ConfigModule>(
+    root,
+    "medusa-config.js"
   )
 
-  const binExists = fs.existsSync(cli)
-
-  return {
-    binExists,
-    cli,
+  if (error) {
+    return false
   }
+
+  const adminPlugin = configModule.plugins?.find((p) => {
+    return typeof p === "string"
+      ? p === "@medusajs/admin"
+      : p.resolve === "@medusajs/admin"
+  })
+
+  if (!adminPlugin) {
+    return false
+  }
+
+  return true
 }
