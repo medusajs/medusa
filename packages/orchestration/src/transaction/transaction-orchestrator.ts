@@ -9,8 +9,8 @@ import {
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionState,
-  TransactionStepsDefinition,
   TransactionStepStatus,
+  TransactionStepsDefinition,
 } from "./types"
 
 import { MedusaError, promiseAll } from "@medusajs/utils"
@@ -673,12 +673,16 @@ export class TransactionOrchestrator extends EventEmitter {
   }
 
   private createTransactionFlow(transactionId: string): TransactionFlow {
-    const [steps, hasAsyncSteps] = TransactionOrchestrator.buildSteps(
+    const [steps, features] = TransactionOrchestrator.buildSteps(
       this.definition
     )
 
-    if (hasAsyncSteps) {
-      this.options ??= {}
+    const hasAsyncSteps = features.hasAsyncSteps
+    const hasStepTimeouts = features.hasStepTimeouts
+    const hasRetriesTimeout = features.hasRetriesTimeout
+
+    this.options ??= {}
+    if (hasAsyncSteps || hasStepTimeouts || hasRetriesTimeout) {
       this.options.storeExecution = true
     }
 
@@ -725,7 +729,14 @@ export class TransactionOrchestrator extends EventEmitter {
   private static buildSteps(
     flow: TransactionStepsDefinition,
     existingSteps?: { [key: string]: TransactionStep }
-  ): [{ [key: string]: TransactionStep }, boolean] {
+  ): [
+    { [key: string]: TransactionStep },
+    {
+      hasAsyncSteps: boolean
+      hasStepTimeouts: boolean
+      hasRetriesTimeout: boolean
+    }
+  ] {
     const states: { [key: string]: TransactionStep } = {
       [TransactionOrchestrator.ROOT_STEP]: {
         id: TransactionOrchestrator.ROOT_STEP,
@@ -738,7 +749,12 @@ export class TransactionOrchestrator extends EventEmitter {
       { obj: flow, level: [TransactionOrchestrator.ROOT_STEP] },
     ]
 
-    let hasAsyncSteps = false
+    const features = {
+      hasAsyncSteps: false,
+      hasStepTimeouts: false,
+      hasRetriesTimeout: false,
+    }
+
     while (queue.length > 0) {
       const { obj, level } = queue.shift()
 
@@ -768,7 +784,18 @@ export class TransactionOrchestrator extends EventEmitter {
           delete definitionCopy.next
 
           if (definitionCopy.async) {
-            hasAsyncSteps = true
+            features.hasAsyncSteps = true
+          }
+
+          if (definitionCopy.timeout) {
+            features.hasStepTimeouts = true
+          }
+
+          if (
+            definitionCopy.retryInterval ||
+            definitionCopy.retryIntervalAwaiting
+          ) {
+            features.hasRetriesTimeout = true
           }
 
           states[id] = Object.assign(
@@ -796,7 +823,7 @@ export class TransactionOrchestrator extends EventEmitter {
       }
     }
 
-    return [states, hasAsyncSteps]
+    return [states, features]
   }
 
   /** Create a new transaction
