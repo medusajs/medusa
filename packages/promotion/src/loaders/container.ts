@@ -3,6 +3,7 @@ import * as defaultRepositories from "@repositories"
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { ModulesSdkTypes } from "@medusajs/types"
 import { loadCustomRepositories } from "@medusajs/utils"
+import * as defaultServices from "@services"
 import { asClass } from "awilix"
 
 export default async ({
@@ -17,7 +18,10 @@ export default async ({
   )?.repositories
 
   container.register({
-    // promotionService: asClass(defaultServices.PromotionService).singleton(),
+    promotionService: asClass(defaultServices.PromotionService).singleton(),
+    applicationMethodService: asClass(
+      defaultServices.ApplicationMethodService
+    ).singleton(),
   })
 
   if (customRepositories) {
@@ -34,5 +38,11 @@ export default async ({
 function loadDefaultRepositories({ container }) {
   container.register({
     baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
+    applicationMethodRepository: asClass(
+      defaultRepositories.ApplicationMethodRepository
+    ).singleton(),
+    promotionRepository: asClass(
+      defaultRepositories.PromotionRepository
+    ).singleton(),
   })
 }

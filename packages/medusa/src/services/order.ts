@@ -2081,7 +2081,8 @@ class OrderService extends TransactionBaseService {
     relationSet.add("shipping_methods")
     relationSet.add("shipping_methods.tax_lines")
     relationSet.add("region")
-
+    relationSet.add("payments")
+    
     return Array.from(relationSet.values())
   }
 }
