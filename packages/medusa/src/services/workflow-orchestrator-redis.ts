@@ -68,9 +68,11 @@ const AnySubscriber = "any"
 class WorkflowOrchestrator {
   private static instanceId = ulid()
   private static subscribers: Subscribers = new Map()
-  private static redisPublisher = new Redis(process.env.REDIS_URL || "locahost")
+  private static redisPublisher = new Redis(
+    process.env.REDIS_URL || "localhost"
+  )
   private static redisSubscriber = new Redis(
-    process.env.REDIS_URL || "locahost"
+    process.env.REDIS_URL || "localhost"
   )
 
   constructor() {
@@ -285,7 +287,7 @@ class WorkflowOrchestrator {
 
     // Subscribe instance to redis
     if (!this.subscribers.has(workflowId)) {
-      WorkflowOrchestrator.redisSubscriber.subscribe(
+      void WorkflowOrchestrator.redisSubscriber.subscribe(
         this.getChannelName(workflowId)
       )
     }
@@ -335,7 +337,7 @@ class WorkflowOrchestrator {
 
     // Unsubscribe instance
     if (!this.subscribers.has(workflowId)) {
-      WorkflowOrchestrator.redisSubscriber.unsubscribe(
+      void WorkflowOrchestrator.redisSubscriber.unsubscribe(
         this.getChannelName(workflowId)
       )
     }
@@ -372,7 +374,7 @@ class WorkflowOrchestrator {
         instanceId: WorkflowOrchestrator.instanceId,
         data: options,
       })
-      WorkflowOrchestrator.redisPublisher.publish(channel, message)
+      void WorkflowOrchestrator.redisPublisher.publish(channel, message)
     }
 
     const {
