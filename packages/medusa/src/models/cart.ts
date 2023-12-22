@@ -233,6 +233,7 @@
 import {
   AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
@@ -241,13 +242,10 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne
+  OneToOne,
 } from "typeorm"
+import { MedusaV2Flag, SalesChannelFeatureFlag } from "@medusajs/utils"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-import {
-  FeatureFlagColumn,
-  FeatureFlagDecorators,
-} from "../utils/feature-flag-decorators"
 
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
@@ -261,6 +259,10 @@ import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 
 export enum CartType {
   DEFAULT = "default",
@@ -387,14 +389,36 @@ export class Cart extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
+  @FeatureFlagColumn(SalesChannelFeatureFlag.key, {
+    type: "varchar",
+    nullable: true,
+  })
   sales_channel_id: string | null
 
-  @FeatureFlagDecorators("sales_channels", [
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
   sales_channel: SalesChannel
+
+  @FeatureFlagDecorators(
+    [MedusaV2Flag.key, SalesChannelFeatureFlag.key],
+    [
+      ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
+      JoinTable({
+        name: "cart_sales_channel",
+        joinColumn: {
+          name: "cart_id",
+          referencedColumnName: "id",
+        },
+        inverseJoinColumn: {
+          name: "sales_channel_id",
+          referencedColumnName: "id",
+        },
+      }),
+    ]
+  )
+  sales_channels?: SalesChannel[]
 
   shipping_total?: number
   discount_total?: number
@@ -412,18 +436,41 @@ export class Cart extends SoftDeletableEntity {
   /**
    * @apiIgnore
    */
-  @AfterLoad()
-  private afterLoad(): void {
-    if (this.payment_sessions) {
-      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "cart")
+
+    if (this.sales_channel_id || this.sales_channel) {
+      this.sales_channels = [
+        { id: this.sales_channel_id || this.sales_channel?.id },
+      ] as SalesChannel[]
     }
   }
 
   /**
    * @apiIgnore
    */
-  @BeforeInsert()
-  private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "cart")
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.sales_channel_id || this.sales_channel) {
+      this.sales_channels = [
+        { id: this.sales_channel_id || this.sales_channel?.id },
+      ] as SalesChannel[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @AfterLoad()
+  private afterLoad(): void {
+    if (this.payment_sessions) {
+      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
+    }
+    if (this.sales_channels) {
+      this.sales_channel = this.sales_channels?.[0]
+      this.sales_channel_id = this.sales_channel?.id
+      delete this.sales_channels
+    }
   }
 }
