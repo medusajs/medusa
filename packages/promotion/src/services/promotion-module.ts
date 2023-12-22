@@ -12,7 +12,12 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 import { Promotion } from "@models"
-import { ApplicationMethodService, PromotionService } from "@services"
+import {
+  ApplicationMethodService,
+  PromotionRuleService,
+  PromotionRuleValueService,
+  PromotionService,
+} from "@services"
 import { joinerConfig } from "../joiner-config"
 import { CreateApplicationMethodDTO, CreatePromotionDTO } from "../types"
 import { validateApplicationMethodAttributes } from "../utils"
@@ -21,6 +26,8 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   promotionService: PromotionService
   applicationMethodService: ApplicationMethodService
+  promotionRuleService: PromotionRuleService
+  promotionRuleValueService: PromotionRuleValueService
 }
 
 export default class PromotionModuleService<
@@ -30,18 +37,24 @@ export default class PromotionModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected promotionService_: PromotionService
   protected applicationMethodService_: ApplicationMethodService
+  protected promotionRuleService_: PromotionRuleService
+  protected promotionRuleValueService_: PromotionRuleValueService
 
   constructor(
     {
       baseRepository,
       promotionService,
       applicationMethodService,
+      promotionRuleService,
+      promotionRuleValueService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.promotionService_ = promotionService
     this.applicationMethodService_ = applicationMethodService
+    this.promotionRuleService_ = promotionRuleService
+    this.promotionRuleValueService_ = promotionRuleValueService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -78,7 +91,7 @@ export default class PromotionModuleService<
     return await this.list(
       { id: promotions.map((p) => p!.id) },
       {
-        relations: ["application_method"],
+        relations: ["application_method", "rules", "rules.values"],
       },
       sharedContext
     )
@@ -93,11 +106,16 @@ export default class PromotionModuleService<
       string,
       PromotionTypes.CreateApplicationMethodDTO
     >()
+    const promotionCodeRulesDataMap = new Map<
+      string,
+      PromotionTypes.CreatePromotionRuleDTO[]
+    >()
     const promotionsData: CreatePromotionDTO[] = []
     const applicationMethodsData: CreateApplicationMethodDTO[] = []
 
     for (const {
       application_method: applicationMethodData,
+      rules: rulesData,
       ...promotionData
     } of data) {
       if (applicationMethodData) {
@@ -107,26 +125,55 @@ export default class PromotionModuleService<
         )
       }
 
+      if (rulesData) {
+        promotionCodeRulesDataMap.set(promotionData.code, rulesData)
+      }
+
       promotionsData.push(promotionData)
     }
 
     const createdPromotions = await this.promotionService_.create(
-      data,
+      promotionsData,
       sharedContext
     )
 
     for (const promotion of createdPromotions) {
-      const data = promotionCodeApplicationMethodDataMap.get(promotion.code)
+      const applMethodData = promotionCodeApplicationMethodDataMap.get(
+        promotion.code
+      )
 
-      if (!data) continue
+      if (applMethodData) {
+        const applicationMethodData = {
+          ...applMethodData,
+          promotion,
+        }
 
-      const applicationMethodData = {
-        ...data,
-        promotion,
+        validateApplicationMethodAttributes(applicationMethodData)
+        applicationMethodsData.push(applicationMethodData)
       }
 
-      validateApplicationMethodAttributes(applicationMethodData)
-      applicationMethodsData.push(applicationMethodData)
+      const rulesData = promotionCodeRulesDataMap.get(promotion.code) || []
+
+      for (const ruleData of rulesData) {
+        const { values, ...rest } = ruleData
+        const promotionRuleData = {
+          ...rest,
+          promotions: [promotion],
+        }
+
+        const [createdPromotionRule] = await this.promotionRuleService_.create(
+          [promotionRuleData],
+          sharedContext
+        )
+
+        const ruleValues = Array.isArray(values) ? values : [values]
+        const promotionRuleValuesData = ruleValues.map((ruleValue) => ({
+          value: ruleValue,
+          promotion_rule: createdPromotionRule,
+        }))
+
+        await this.promotionRuleValueService_.create(promotionRuleValuesData)
+      }
     }
 
     await this.applicationMethodService_.create(

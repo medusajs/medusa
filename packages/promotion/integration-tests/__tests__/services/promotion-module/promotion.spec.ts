@@ -75,15 +75,25 @@ describe("Promotion Service", () => {
         },
       ])
 
-      const [promotion] = await service.list({
-        id: [createdPromotion.id],
-      })
+      const [promotion] = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        {
+          relations: ["application_method"],
+        }
+      )
 
       expect(promotion).toEqual(
         expect.objectContaining({
           code: "PROMOTION_TEST",
           is_automatic: false,
           type: "standard",
+          application_method: expect.objectContaining({
+            type: "fixed",
+            target_type: "order",
+            value: 100,
+          }),
         })
       )
     })
@@ -126,6 +136,97 @@ describe("Promotion Service", () => {
 
       expect(error.message).toContain(
         "application_method.max_quantity is required when application_method.allocation is 'each'"
+      )
+    })
+
+    it("should create a promotion with rules successfully", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer_group_id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+        },
+      ])
+
+      const [promotion] = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        {
+          relations: ["rules", "rules.values"],
+        }
+      )
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: "standard",
+          rules: [
+            expect.objectContaining({
+              attribute: "customer_group_id",
+              operator: "in",
+              values: expect.arrayContaining([
+                expect.objectContaining({
+                  value: "VIP",
+                }),
+                expect.objectContaining({
+                  value: "top100",
+                }),
+              ]),
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should create a promotion with rules with single value successfully", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer_group_id",
+              operator: "eq",
+              values: "VIP",
+            },
+          ],
+        },
+      ])
+
+      const [promotion] = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        {
+          relations: ["rules", "rules.values"],
+        }
+      )
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: "standard",
+          rules: [
+            expect.objectContaining({
+              attribute: "customer_group_id",
+              operator: "eq",
+              values: expect.arrayContaining([
+                expect.objectContaining({
+                  value: "VIP",
+                }),
+              ]),
+            }),
+          ],
+        })
       )
     })
   })

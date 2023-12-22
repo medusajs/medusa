@@ -2,9 +2,11 @@ import { PromotionType } from "@medusajs/types"
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Enum,
   Index,
+  ManyToMany,
   OnInit,
   OneToOne,
   OptionalProps,
@@ -13,6 +15,7 @@ import {
   Unique,
 } from "@mikro-orm/core"
 import ApplicationMethod from "./application-method"
+import PromotionRule from "./promotion-rule"
 
 type OptionalFields = "is_automatic"
 type OptionalRelations = "application_method"
@@ -43,6 +46,13 @@ export default class Promotion {
     mappedBy: (am) => am.promotion,
   })
   application_method: ApplicationMethod
+
+  @ManyToMany(() => PromotionRule, "promotions", {
+    owner: true,
+    pivotTable: "promotion_promotion_rule",
+    cascade: ["soft-remove"] as any,
+  })
+  rules = new Collection<PromotionRule>(this)
 
   @Property({
     onCreate: () => new Date(),

@@ -76,6 +76,6 @@ export default class ApplicationMethod {
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "promo")
+    this.id = generateEntityId(this.id, "app_method")
   }
 }
