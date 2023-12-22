@@ -255,6 +255,7 @@ export class DistributedTransaction extends EventEmitter {
     step: TransactionStep,
     interval: number
   ): Promise<void> {
+    await this.saveCheckpoint()
     await DistributedTransaction.keyValueStore.scheduleRetry(
       this,
       step,
@@ -268,6 +269,7 @@ export class DistributedTransaction extends EventEmitter {
   }
 
   public async scheduleTransactionTimeout(interval: number): Promise<void> {
+    await this.saveCheckpoint()
     await DistributedTransaction.keyValueStore.scheduleTransactionTimeout(
       this,
       Date.now(),
@@ -283,6 +285,7 @@ export class DistributedTransaction extends EventEmitter {
     step: TransactionStep,
     interval: number
   ): Promise<void> {
+    await this.saveCheckpoint()
     await DistributedTransaction.keyValueStore.scheduleStepTimeout(
       this,
       step,
