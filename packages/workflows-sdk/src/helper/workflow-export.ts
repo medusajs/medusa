@@ -85,7 +85,10 @@ export type ExportedWorkflow<
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
   workflowId: string,
   defaultResult?: string | Symbol,
-  dataPreparation?: (data: TData) => Promise<unknown>
+  dataPreparation?: (data: TData) => Promise<unknown>,
+  options?: {
+    wrappedInput?: boolean
+  }
 ) => {
   function exportedWorkflow<
     TDataOverride = undefined,
@@ -149,7 +152,10 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
               : res
         }
 
-        result = await resolveValue(result || resFrom, transaction.getContext())
+        const ret = result || resFrom
+        result = options?.wrappedInput
+          ? await resolveValue(ret, transaction.getContext())
+          : ret
       }
 
       return {

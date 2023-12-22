@@ -191,7 +191,14 @@ export function createWorkflow<
 
   WorkflowManager.update(name, context.flow, handlers)
 
-  const workflow = exportWorkflow<TData, TResult>(name, returnedStep)
+  const workflow = exportWorkflow<TData, TResult>(
+    name,
+    returnedStep,
+    undefined,
+    {
+      wrappedInput: true,
+    }
+  )
 
   const mainFlow = <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
