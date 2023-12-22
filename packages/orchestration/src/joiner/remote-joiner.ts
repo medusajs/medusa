@@ -23,15 +23,15 @@ export type RemoteFetchDataCallback = (
   path?: string
 }>
 
+type InternalImplodeMapping = {
+  location: string[]
+  property: string
+  path: string[]
+  isList?: boolean
+}
+
 export class RemoteJoiner {
   private serviceConfigCache: Map<string, JoinerServiceConfig> = new Map()
-
-  private implodeMapping: {
-    location: string[]
-    property: string
-    path: string[]
-    isList?: boolean
-  }[] = []
 
   private static filterFields(
     data: any,
@@ -355,7 +355,8 @@ export class RemoteJoiner {
 
   private handleFieldAliases(
     items: any[],
-    parsedExpands: Map<string, RemoteExpandProperty>
+    parsedExpands: Map<string, RemoteExpandProperty>,
+    implodeMapping: InternalImplodeMapping[]
   ) {
     const getChildren = (item: any, prop: string) => {
       if (Array.isArray(item)) {
@@ -373,7 +374,7 @@ export class RemoteJoiner {
     }
 
     const cleanup: [any, string][] = []
-    for (const alias of this.implodeMapping) {
+    for (const alias of implodeMapping) {
       const propPath = alias.path
 
       let itemsLocation = items
@@ -432,7 +433,8 @@ export class RemoteJoiner {
 
   private async handleExpands(
     items: any[],
-    parsedExpands: Map<string, RemoteExpandProperty>
+    parsedExpands: Map<string, RemoteExpandProperty>,
+    implodeMapping: InternalImplodeMapping[] = []
   ): Promise<void> {
     if (!parsedExpands) {
       return
@@ -458,7 +460,7 @@ export class RemoteJoiner {
       }
     }
 
-    this.handleFieldAliases(items, parsedExpands)
+    this.handleFieldAliases(items, parsedExpands, implodeMapping)
   }
 
   private async expandProperty(
@@ -567,13 +569,15 @@ export class RemoteJoiner {
     initialService: RemoteExpandProperty,
     query: RemoteJoinerQuery,
     serviceConfig: JoinerServiceConfig,
-    expands: RemoteJoinerQuery["expands"]
+    expands: RemoteJoinerQuery["expands"],
+    implodeMapping: InternalImplodeMapping[]
   ): Map<string, RemoteExpandProperty> {
     const parsedExpands = this.parseProperties(
       initialService,
       query,
       serviceConfig,
-      expands
+      expands,
+      implodeMapping
     )
 
     const groupedExpands = this.groupExpands(parsedExpands)
@@ -585,7 +589,8 @@ export class RemoteJoiner {
     initialService: RemoteExpandProperty,
     query: RemoteJoinerQuery,
     serviceConfig: JoinerServiceConfig,
-    expands: RemoteJoinerQuery["expands"]
+    expands: RemoteJoinerQuery["expands"],
+    implodeMapping: InternalImplodeMapping[]
   ): Map<string, RemoteExpandProperty> {
     const parsedExpands = new Map<string, any>()
     parsedExpands.set(BASE_PATH, initialService)
@@ -612,7 +617,7 @@ export class RemoteJoiner {
             )
           )
 
-          this.implodeMapping.push({
+          implodeMapping.push({
             location: currentPath,
             property: prop,
             path: fullPath,
@@ -799,6 +804,7 @@ export class RemoteJoiner {
       (arg) => !serviceConfig.primaryKeys.includes(arg.name)
     )
 
+    const implodeMapping: InternalImplodeMapping[] = []
     const parsedExpands = this.parseExpands(
       {
         property: "",
@@ -809,7 +815,8 @@ export class RemoteJoiner {
       },
       queryObj,
       serviceConfig,
-      queryObj.expands!
+      queryObj.expands!,
+      implodeMapping
     )
 
     const root = parsedExpands.get(BASE_PATH)!
@@ -823,7 +830,11 @@ export class RemoteJoiner {
 
     const data = response.path ? response.data[response.path!] : response.data
 
-    await this.handleExpands(Array.isArray(data) ? data : [data], parsedExpands)
+    await this.handleExpands(
+      Array.isArray(data) ? data : [data],
+      parsedExpands,
+      implodeMapping
+    )
 
     return response.data
   }
