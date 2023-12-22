@@ -836,12 +836,8 @@ export class TransactionOrchestrator extends EventEmitter {
     handler: TransactionStepHandler,
     payload?: unknown
   ): Promise<DistributedTransaction> {
-    const existingTransaction = this.options?.storeExecution
-      ? await TransactionOrchestrator.loadTransactionById(
-          this.id,
-          transactionId
-        )
-      : null
+    const existingTransaction =
+      await TransactionOrchestrator.loadTransactionById(this.id, transactionId)
 
     let newTransaction = false
     let modelFlow: TransactionFlow
