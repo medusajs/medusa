@@ -86,9 +86,7 @@ export const buildCustomOptions = <
         })
       }
 
-      if (options?.onSuccess) {
-        return options.onSuccess(...args)
-      }
+      options?.onSuccess?.(...args)
     },
   }
 }
