@@ -7,8 +7,9 @@ import {
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import { FlowRunOptions, MedusaWorkflow } from "@medusajs/workflows-sdk"
+import Redis from "ioredis"
 import { ulid } from "ulid"
-import { InMemoryDistributedTransactionStorage } from "./workflow-orchestrator-storage"
+import { RedisDistributedTransactionStorage } from "./workflow-orchestrator-storage-redis"
 
 export type WorkflowOrchestratorRunOptions<T> = FlowRunOptions<T> & {
   transactionId?: string
@@ -65,10 +66,20 @@ type Subscribers = Map<WorkflowId, TransactionSubscribers>
 const AnySubscriber = "any"
 
 class WorkflowOrchestrator {
+  private static instanceId = ulid()
   private static subscribers: Subscribers = new Map()
+  private static redisPublisher = new Redis(process.env.REDIS_URL || "locahost")
+  private static redisSubscriber = new Redis(
+    process.env.REDIS_URL || "locahost"
+  )
 
   constructor() {
-    //
+    console.log("Server InstanceId: ", WorkflowOrchestrator.instanceId)
+    WorkflowOrchestrator.redisSubscriber.on("message", (_, message) => {
+      const { instanceId, data } = JSON.parse(message)
+
+      WorkflowOrchestrator.notify(data, false, instanceId)
+    })
   }
 
   static async run<T = unknown>(
@@ -272,6 +283,13 @@ class WorkflowOrchestrator {
     subscriber._id = subscriberId
     const subscribers = this.subscribers.get(workflowId) ?? new Map()
 
+    // Subscribe instance to redis
+    if (!this.subscribers.has(workflowId)) {
+      WorkflowOrchestrator.redisSubscriber.subscribe(
+        this.getChannelName(workflowId)
+      )
+    }
+
     const handlerIndex = (handlers) => {
       return handlers.indexOf((s) => s === subscriber || s._id === subscriberId)
     }
@@ -315,6 +333,13 @@ class WorkflowOrchestrator {
       })
     }
 
+    // Unsubscribe instance
+    if (!this.subscribers.has(workflowId)) {
+      WorkflowOrchestrator.redisSubscriber.unsubscribe(
+        this.getChannelName(workflowId)
+      )
+    }
+
     if (transactionId) {
       const transactionSubscribers = subscribers.get(transactionId) ?? []
       const newTransactionSubscribers = filterSubscribers(
@@ -331,7 +356,25 @@ class WorkflowOrchestrator {
     this.subscribers.set(workflowId, subscribers)
   }
 
-  private static notify(options: NotifyOptions) {
+  private static notify(
+    options: NotifyOptions,
+    publish = true,
+    instanceId = WorkflowOrchestrator.instanceId
+  ) {
+    if (!publish && instanceId === WorkflowOrchestrator.instanceId) {
+      return
+    }
+
+    if (publish) {
+      const channel = this.getChannelName(options.workflowId)
+
+      const message = JSON.stringify({
+        instanceId: WorkflowOrchestrator.instanceId,
+        data: options,
+      })
+      WorkflowOrchestrator.redisPublisher.publish(channel, message)
+    }
+
     const {
       eventType,
       workflowId,
@@ -366,6 +409,10 @@ class WorkflowOrchestrator {
 
     const workflowSubscribers = subscribers.get(AnySubscriber) ?? []
     notifySubscribers(workflowSubscribers)
+  }
+
+  private static getChannelName(workflowId: string): string {
+    return `orchestrator:${workflowId}`
   }
 
   private static buildWorkflowEvents({
@@ -490,6 +537,7 @@ class WorkflowOrchestrator {
   }
 }
 
-DistributedTransaction.setStorage(new InMemoryDistributedTransactionStorage())
-
+DistributedTransaction.setStorage(new RedisDistributedTransactionStorage())
 export default WorkflowOrchestrator
+
+new WorkflowOrchestrator()
