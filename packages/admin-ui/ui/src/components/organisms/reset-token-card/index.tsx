@@ -71,7 +71,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
         </span>
         {!mailSent ? (
           <>
-            <div className="w-[280px]">
+            <div className="w-[300px]">
               <SigninInput
                 placeholder={t("reset-token-card-email", "Email")}
                 {...register("email", {
@@ -90,7 +90,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
             <Button
               variant="secondary"
               size="medium"
-              className="mt-large w-[280px]"
+              className="mt-large w-[300px]"
               type="submit"
               loading={isLoading}
             >

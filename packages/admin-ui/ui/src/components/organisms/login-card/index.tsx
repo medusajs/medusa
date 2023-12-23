@@ -86,7 +86,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
             <InputError errors={errors} name="password" />
           </div>
           <Button
-            className="rounded-rounded inter-base-regular mt-4 w-[280px]"
+            className="rounded-rounded inter-base-regular mt-4 w-[300px]"
             variant="secondary"
             size="medium"
             type="submit"
