@@ -14,6 +14,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
 import PromotionRuleValue from "./promotion-rule-value"
 
@@ -45,6 +46,12 @@ export default class PromotionRule {
 
   @ManyToMany(() => Promotion, (promotion) => promotion.rules)
   promotions = new Collection<Promotion>(this)
+
+  @ManyToMany(
+    () => ApplicationMethod,
+    (applicationMethod) => applicationMethod.target_rules
+  )
+  application_methods = new Collection<ApplicationMethod>(this)
 
   @Property({
     onCreate: () => new Date(),

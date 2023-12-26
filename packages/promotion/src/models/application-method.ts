@@ -6,9 +6,11 @@ import {
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Enum,
   Index,
+  ManyToMany,
   OnInit,
   OneToOne,
   OptionalProps,
@@ -16,6 +18,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Promotion from "./promotion"
+import PromotionRule from "./promotion-rule"
 
 type OptionalFields = "value" | "max_quantity" | "allocation"
 @Entity()
@@ -50,6 +53,13 @@ export default class ApplicationMethod {
     entity: () => Promotion,
   })
   promotion: Promotion
+
+  @ManyToMany(() => PromotionRule, "application_methods", {
+    owner: true,
+    pivotTable: "application_method_promotion_rule",
+    cascade: ["soft-remove"] as any,
+  })
+  target_rules = new Collection<PromotionRule>(this)
 
   @Property({
     onCreate: () => new Date(),
