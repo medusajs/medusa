@@ -287,7 +287,7 @@ export const productColumnsDefinition: ProductColumnDefinition = {
       transform: (value: string) => JSON.parse(value)
     },
     exportDescriptor: {
-      accessor: (product: Product): string => product?.metadata ?? "",
+      accessor: (product: Product): string => product?.metadata ? JSON.stringify(product.metadata) : "",
       entityName: "product",
     },
   },
