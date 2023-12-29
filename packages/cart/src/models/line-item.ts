@@ -71,16 +71,16 @@ export default class LineItem {
   @Property({ columnType: "jsonb", nullable: true })
   variant_option_values: Record<string, unknown> | null
 
-  @Property({ columnType: "boolean", nullable: true })
-  requires_shipping: boolean | null
+  @Property({ columnType: "boolean", default: true })
+  requires_shipping: boolean
 
-  @Property({ columnType: "boolean", nullable: true })
-  is_discountable: boolean | null
+  @Property({ columnType: "boolean", default: true })
+  is_discountable: boolean
 
-  @Property({ columnType: "boolean", nullable: true })
-  is_tax_inclusive: boolean | null
+  @Property({ columnType: "boolean", default: false })
+  is_tax_inclusive: boolean
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({ columnType: "numeric", nullable: true })
   compare_at_unit_price: number | null
 
   @Property({ columnType: "numeric" })
