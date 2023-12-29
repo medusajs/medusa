@@ -89,6 +89,7 @@ export const buildCustomOptions = <
       if (options?.onSuccess) {
         return options.onSuccess(...args)
       }
+      return
     },
   }
 }
