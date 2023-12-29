@@ -15,10 +15,10 @@ export default class TaxLine {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  description: string | null
+  description?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  tax_rate_id: string | null
+  tax_rate_id?: string | null
 
   @Property({ columnType: "text" })
   code: string
@@ -27,7 +27,7 @@ export default class TaxLine {
   rate: number
 
   @Property({ columnType: "text", nullable: true })
-  provider_id: string | null
+  provider_id?: string | null
 
   @Property({
     onCreate: () => new Date(),

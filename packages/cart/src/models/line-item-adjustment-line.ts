@@ -1,14 +1,14 @@
-import { Entity, ManyToOne, Property, Unique } from "@mikro-orm/core"
+import { Entity, ManyToOne, PrimaryKey, Unique } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
 @Entity({ tableName: "line_item_adjustment_line" })
 @Unique({ properties: ["line_item_id", "adjustment_line_id"] })
-export class LineItemAdjustmentLine {
-  @Property({ columnType: "text" })
+export default class LineItemAdjustmentLine {
+  @PrimaryKey({ columnType: "text" })
   line_item_id: string
 
-  @Property({ columnType: "text" })
+  @PrimaryKey({ columnType: "text" })
   adjustment_line_id: string
 
   @ManyToOne(() => LineItem, {

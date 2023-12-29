@@ -12,40 +12,40 @@ import {
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Address {
   @PrimaryKey({ columnType: "text" })
-  id!: string
+  id: string
 
   @Property({ columnType: "text", nullable: true })
-  customer_id: string | null
+  customer_id?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  company: string | null
+  company?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  first_name: string | null
+  first_name?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  last_name: string | null
+  last_name?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  address_1: string | null
+  address_1?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  address_2: string | null
+  address_2?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  city: string | null
+  city?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  country_code: string | null
+  country_code?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  province: string | null
+  province?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  postal_code: string | null
+  postal_code?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  phone: string | null
+  phone?: string | null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null

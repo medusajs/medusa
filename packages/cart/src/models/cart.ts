@@ -18,16 +18,16 @@ import ShippingMethod from "./shipping-method"
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Cart {
   @PrimaryKey({ columnType: "text" })
-  id!: string
+  id: string
 
-  @Property({ columnType: "text" })
-  region_id: string
+  @Property({ columnType: "text", nullable: true })
+  region_id?: string | null
 
-  @Property({ columnType: "text" })
-  customer_id: string
+  @Property({ columnType: "text", nullable: true })
+  customer_id?: string | null
 
-  @Property({ columnType: "text" })
-  sales_channel_id: string
+  @Property({ columnType: "text", nullable: true })
+  sales_channel_id?: string | null
 
   @Property({ columnType: "text" })
   email: string
@@ -36,22 +36,22 @@ export default class Cart {
   currency_code: string
 
   @Property({ columnType: "text", nullable: true })
-  shipping_address_id!: string
+  shipping_address_id?: string | null
 
   @ManyToOne(() => Address, {
     nullable: true,
     fieldName: "shipping_address_id",
   })
-  shipping_address!: Address | null
+  shipping_address?: Address | null
 
   @Property({ columnType: "text", nullable: true })
-  billing_address_id!: string
+  billing_address_id?: string | null
 
   @ManyToOne(() => Address, {
     nullable: true,
     fieldName: "billing_address_id",
   })
-  billing_address!: Address | null
+  billing_address?: Address | null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null

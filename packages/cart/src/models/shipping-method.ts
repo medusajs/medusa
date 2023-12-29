@@ -11,8 +11,8 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
-import { ShippingMethodAdjustmentLine } from "./shipping-method-adjustment-line"
-import { ShippingMethodTaxLine } from "./shipping-method-tax-line"
+import ShippingMethodAdjustmentLine from "./shipping-method-adjustment-line"
+import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
 @Entity({ tableName: "shipping_method" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -27,16 +27,16 @@ export default class ShippingMethod {
   title: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  description: string | null
+  description?: string | null
 
   @Property({ columnType: "text" })
   unit_price: number
 
-  @Property({ columnType: "boolean" })
+  @Property({ columnType: "boolean", default: false })
   tax_inclusive: boolean
 
   @Property({ columnType: "text", nullable: true })
-  shipping_option_id: string | null
+  shipping_option_id?: string | null
 
   @Property({ columnType: "jsonb", nullable: true })
   data?: Record<string, unknown> | null
@@ -53,7 +53,7 @@ export default class ShippingMethod {
 
   @OneToMany(
     () => ShippingMethodTaxLine,
-    (taxLine) => taxLine.shipping_method_id,
+    (taxLine) => taxLine.shipping_method,
     {
       cascade: ["soft-remove"] as any,
     }
@@ -62,7 +62,7 @@ export default class ShippingMethod {
 
   @OneToMany(
     () => ShippingMethodAdjustmentLine,
-    (adjustment) => adjustment.shipping_method_id,
+    (adjustment) => adjustment.shipping_method,
     {
       cascade: ["soft-remove"] as any,
     }

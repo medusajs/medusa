@@ -11,8 +11,8 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
-import { LineItemAdjustmentLine } from "./line-item-adjustment-line"
-import { LineItemTaxLine } from "./line-item-tax-line"
+import LineItemAdjustmentLine from "./line-item-adjustment-line"
+import LineItemTaxLine from "./line-item-tax-line"
 
 @Entity({ tableName: "line_item" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -93,14 +93,14 @@ export default class LineItem {
   })
   cart!: Cart
 
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item_id, {
+  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
     cascade: ["soft-remove"] as any,
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(
     () => LineItemAdjustmentLine,
-    (adjustment) => adjustment.line_item_id,
+    (adjustment) => adjustment.line_item,
     {
       cascade: ["soft-remove"] as any,
     }

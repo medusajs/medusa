@@ -15,10 +15,10 @@ export default class AdjustmentLine {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  description: string | null
+  description?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  promotion_id: string | null
+  promotion_id?: string | null
 
   @Property({ columnType: "text" })
   code: string
@@ -27,7 +27,7 @@ export default class AdjustmentLine {
   amount: number
 
   @Property({ columnType: "text", nullable: true })
-  provider_id: string | null
+  provider_id?: string | null
 
   @Property({
     onCreate: () => new Date(),
