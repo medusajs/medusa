@@ -1,7 +1,20 @@
 import { BaseFilterable } from "../../dal";
-import { CreateMoneyAmountDTO, FilterableMoneyAmountProps, MoneyAmountDTO } from "./money-amount";
-import { RuleTypeDTO } from "./rule-type";
 import { CreatePriceSetPriceRules } from "./price-list";
+import {
+  CreateMoneyAmountDTO,
+  FilterableMoneyAmountProps,
+  MoneyAmountDTO,
+} from "./money-amount"
+import { RuleTypeDTO } from "./rule-type"
+import { Context } from "../../shared-context"
+
+export interface PricingRepositoryService {
+  calculatePrices(
+    pricingFilters: PricingFilters,
+    pricingContext: PricingContext,
+    context: Context
+  ): Promise<CalculatedPriceSetDTO[]>
+}
 
 /**
  * @interface
