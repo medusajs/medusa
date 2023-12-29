@@ -202,5 +202,14 @@ describe("SendGridService", () => {
       validity: "12-01-2020",
     })
     expect(mockedSendGrid.send).toBeCalled()
+    expect(mockedSendGrid.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        template_id: "test-template",
+        dynamic_template_data: {
+          otp: "test",
+          validity: "12-01-2020",
+        },
+      })
+    )
   })
 })

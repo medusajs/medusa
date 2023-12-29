@@ -138,7 +138,7 @@ class SendGridService extends NotificationService {
       case "order.refund_created":
         return this.orderRefundCreatedData(eventData, attachmentGenerator)
       default:
-        return { ...eventData }
+        return eventData
     }
   }
 
@@ -184,9 +184,15 @@ class SendGridService extends NotificationService {
   }
 
   getTemplateId(event) {
-    const templates = Object.keys(this.options_)
-
-    switch (event) {
+    const templates = Object.keys(this.options_ ?? {})
+    const key = templates.find(
+      (template) =>
+        event.toLowerCase().toLowerCase().replace(".", "_") === template ||
+        `${event.toLowerCase().toLowerCase().replace(".", "_")}_template` ==
+          template
+    )
+    return key ? this.options_[key] : key
+    /* switch (event) {
       case "order.return_requested":
         return this.options_.order_return_requested_template
       case "swap.shipment_created":
@@ -222,7 +228,7 @@ class SendGridService extends NotificationService {
           return this.options_[event]
         }
         return null
-    }
+    }*/
   }
 
   async sendNotification(event, eventData, attachmentGenerator) {
