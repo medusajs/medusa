@@ -6,13 +6,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # PaymentProcessorError
 
+An object that is returned in case of an error.
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "code",
     "type": "`string`",
-    "description": "",
+    "description": "The error code.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -21,7 +23,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "detail",
     "type": "`any`",
-    "description": "",
+    "description": "Any additional helpful details.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -30,7 +32,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "error",
     "type": "`string`",
-    "description": "",
+    "description": "The error message",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

@@ -52,7 +52,6 @@ import {
   FolderOpen,
   Gatsby,
   GiftSolid,
-  Github,
   GlobeEurope,
   GlobeEuropeSolid,
   InformationCircleSolid,
@@ -103,6 +102,7 @@ import IconPuzzleSolid from "./PuzzleSolid"
 import IconNextjs from "./Nextjs"
 import IconFlagMini from "./FlagMini"
 import IconBeaker from "./Beaker"
+import IconGitHub from "./GitHub"
 
 export default {
   "academic-cap-solid": AcademicCapSolid,
@@ -163,7 +163,7 @@ export default {
   gatsby: Gatsby,
   "gift-solid": GiftSolid,
   "flag-mini": IconFlagMini,
-  github: Github,
+  github: IconGitHub,
   "globe-europe": GlobeEurope,
   "globe-europe-solid": GlobeEuropeSolid,
   "information-circle-solid": InformationCircleSolid,

@@ -14,12 +14,14 @@ import {
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
-  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   PriceListType,
+  arrayDifference,
+  deduplicate,
+  groupBy,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -153,7 +155,7 @@ export default class PricingModuleService<
       pricingFilters.id.map(
         (priceSetId: string): PricingTypes.CalculatedPriceSet => {
           // This is where we select prices, for now we just do a first match based on the database results
-          // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
+          // which is prioritized by rules_count first for exact match and then deafult_priority of the rule_type
           // inject custom price selection here
           const prices = pricesSetPricesMap.get(priceSetId) || []
           const priceListPrice = prices.find((p) => p.price_list_id)
@@ -288,7 +290,6 @@ export default class PricingModuleService<
       { id: priceSets.filter((p) => !!p).map((p) => p!.id) },
       {
         relations: ["rule_types", "money_amounts", "price_rules"],
-        take: null,
       },
       sharedContext
     )
@@ -332,7 +333,9 @@ export default class PricingModuleService<
     }
 
     const invalidMoneyAmountRule = data
-      .map((d) => d.prices?.map((ma) => Object.keys(ma.rules)).flat() ?? [])
+      .map(
+        (d) => d.prices?.map((ma) => Object.keys(ma?.rules ?? {})).flat() ?? []
+      )
       .flat()
       .filter((r) => !ruleTypeMap.has(r))
 
@@ -360,6 +363,7 @@ export default class PricingModuleService<
           price_set: createdPriceSets[index],
         })) || []
     )
+
     if (ruleTypeData.length > 0) {
       await this.priceSetRuleTypeService_.create(
         ruleTypeData as unknown as PricingTypes.CreatePriceSetRuleTypeDTO[],
@@ -387,7 +391,7 @@ export default class PricingModuleService<
           price_set: createdPriceSets[index],
           money_amount: createdMoneyAmounts[moneyAmountIndex++],
           title: "test", // TODO: accept title
-          number_rules: numberOfRules,
+          rules_count: numberOfRules,
         }
         priceSetMoneyAmountData.push(priceSetMoneyAmount)
 
@@ -412,7 +416,7 @@ export default class PricingModuleService<
 
     // Update price set money amount references
     for (let i = 0, j = 0; i < priceSetMoneyAmountData.length; i++) {
-      const rulesCount = (priceSetMoneyAmountData[i] as any).number_rules
+      const rulesCount = (priceSetMoneyAmountData[i] as any).rules_count
       for (let k = 0; k < rulesCount; k++, j++) {
         ;(priceRulesData[j] as any).price_set_money_amount =
           createdPriceSetMoneyAmounts[i]
@@ -449,19 +453,22 @@ export default class PricingModuleService<
 
     const priceSets = await this.addRules_(inputs, sharedContext)
 
-    return (Array.isArray(data) ? priceSets : priceSets[0]) as unknown as
-      | PricingTypes.PriceSetDTO[]
-      | PricingTypes.PriceSetDTO
+    return await this.list(
+      { id: priceSets.map(({ id }) => id) },
+      {
+        relations: ["rule_types"],
+      }
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
   protected async addRules_(
     inputs: PricingTypes.AddRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceSetDTO[]> {
+  ): Promise<TPriceSet[]> {
     const priceSets = await this.priceSetService_.list(
       { id: inputs.map((d) => d.priceSetId) },
-      { relations: ["rule_types"], take: null },
+      { relations: ["rule_types"] },
       sharedContext
     )
 
@@ -537,12 +544,7 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
-      priceSets,
-      {
-        populate: true,
-      }
-    )
+    return priceSets
   }
 
   async addPrices(
@@ -566,7 +568,7 @@ export default class PricingModuleService<
 
     return (await this.list(
       { id: input.map((d) => d.priceSetId) },
-      { relations: ["money_amounts"], take: null },
+      { relations: ["money_amounts"] },
       sharedContext
     )) as unknown as PricingTypes.PriceSetDTO[] | PricingTypes.PriceSetDTO
   }
@@ -578,7 +580,7 @@ export default class PricingModuleService<
   ) {
     const priceSets = await this.list(
       { id: input.map((d) => d.priceSetId) },
-      { relations: ["rule_types"], take: null },
+      { relations: ["rule_types"] },
       sharedContext
     )
 
@@ -640,7 +642,7 @@ export default class PricingModuleService<
             price_set: priceSetId,
             money_amount: ma,
             title: "test", // TODO: accept title
-            number_rules: numberOfRules,
+            rules_count: numberOfRules,
           }
         })
     )
@@ -684,7 +686,7 @@ export default class PricingModuleService<
       {
         id: data.map((d) => d.id),
       },
-      { take: null },
+      {},
       sharedContext
     )
     const priceSetIds = priceSets.map((ps) => ps.id)
@@ -1386,61 +1388,71 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const createdPriceLists: PricingTypes.PriceListDTO[] = []
-    const ruleAttributes = data
-      .map((priceListData) => Object.keys(priceListData.rules || {}))
-      .flat()
+    const ruleTypeAttributes: string[] = []
+
+    for (const priceListData of data) {
+      const { prices = [], rules: priceListRules = {} } = priceListData
+
+      ruleTypeAttributes.push(...Object.keys(priceListRules))
+
+      for (const price of prices) {
+        const { rules: priceListPriceRules = {} } = price
+
+        ruleTypeAttributes.push(...Object.keys(priceListPriceRules))
+      }
+    }
 
     const ruleTypes = await this.listRuleTypes(
-      {
-        rule_attribute: ruleAttributes,
-      },
+      { rule_attribute: ruleTypeAttributes },
       { take: null }
     )
+
+    const invalidRuleTypes = arrayDifference(
+      deduplicate(ruleTypeAttributes),
+      ruleTypes.map((ruleType) => ruleType.rule_attribute)
+    )
+
+    if (invalidRuleTypes.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot find RuleTypes with rule_attribute - ${invalidRuleTypes.join(
+          ", "
+        )}`
+      )
+    }
 
     const ruleTypeMap: Map<string, RuleTypeDTO> = new Map(
       ruleTypes.map((rt) => [rt.rule_attribute, rt])
     )
 
+    const priceListsToCreate: PricingTypes.CreatePriceListDTO[] = []
+
     for (const priceListData of data) {
-      const { rules = {}, prices = [], ...priceListOnlyData } = priceListData
+      const { rules = {}, ...priceListOnlyData } = priceListData
 
-      const [createdPriceList] = (await this.priceListService_.create(
-        [
-          {
-            ...priceListOnlyData,
-            number_rules: Object.keys(rules).length,
-          },
-        ],
-        sharedContext
-      )) as unknown as PricingTypes.PriceListDTO[]
+      priceListsToCreate.push({
+        ...priceListOnlyData,
+        rules_count: Object.keys(rules).length,
+      })
+    }
 
-      createdPriceLists.push(createdPriceList)
+    const priceLists = (await this.priceListService_.create(
+      priceListsToCreate
+    )) as unknown as PricingTypes.PriceListDTO[]
+
+    for (var i = 0; i < data.length; i++) {
+      const { rules = {}, prices = [] } = data[i]
+      const priceList = priceLists[i]
 
       for (const [ruleAttribute, ruleValues = []] of Object.entries(rules)) {
-        // Find or create rule type
-        let ruleType = ruleTypeMap.get(ruleAttribute)
-
-        if (!ruleType) {
-          ;[ruleType] = await this.createRuleTypes(
-            [
-              {
-                name: ruleAttribute,
-                rule_attribute: ruleAttribute,
-              },
-            ],
-            sharedContext
-          )
-
-          ruleTypeMap.set(ruleAttribute, ruleType)
-        }
+        let ruleType = ruleTypeMap.get(ruleAttribute)!
 
         // Create the rule
         const [priceListRule] = await this.priceListRuleService_.create(
           [
             {
-              price_list: createdPriceList,
-              rule_type: ruleType?.id || ruleType,
+              price_list: priceList,
+              rule_type: ruleType.id,
             },
           ],
           sharedContext
@@ -1461,29 +1473,48 @@ export default class PricingModuleService<
       }
 
       for (const price of prices) {
-        const { price_set_id: priceSetId, ...moneyAmountData } = price
+        const {
+          price_set_id: priceSetId,
+          rules: priceRules = {},
+          ...moneyAmountData
+        } = price
 
         const [moneyAmount] = await this.moneyAmountService_.create(
           [moneyAmountData],
           sharedContext
         )
 
-        await this.priceSetMoneyAmountService_.create(
-          [
-            {
-              price_set: priceSetId,
-              price_list: createdPriceList,
-              money_amount: moneyAmount,
-              title: "test",
-              number_rules: 0,
-            },
-          ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+        const [priceSetMoneyAmount] =
+          await this.priceSetMoneyAmountService_.create(
+            [
+              {
+                price_set: priceSetId,
+                price_list: priceList,
+                money_amount: moneyAmount,
+                title: "test",
+                rules_count: Object.keys(priceRules).length,
+              },
+            ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+            sharedContext
+          )
+
+        await this.createPriceRules(
+          Object.entries(priceRules).map(([ruleAttribute, ruleValue]) => {
+            return {
+              price_set_id: priceSetId,
+              rule_type:
+                ruleTypeMap.get(ruleAttribute)!?.id ||
+                ruleTypeMap.get(ruleAttribute)!,
+              value: ruleValue,
+              price_set_money_amount: priceSetMoneyAmount as any,
+            }
+          }),
           sharedContext
         )
       }
     }
 
-    return createdPriceLists
+    return priceLists
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1519,7 +1550,7 @@ export default class PricingModuleService<
 
     const existingPriceLists = await this.listPriceLists(
       { id: priceListIds },
-      { relations: ["price_list_rules"], take: null },
+      { relations: ["price_list_rules"] },
       sharedContext
     )
 
@@ -1531,7 +1562,7 @@ export default class PricingModuleService<
       {
         id: priceListRuleIds,
       },
-      { take: null },
+      {},
       sharedContext
     )
 
@@ -1561,7 +1592,7 @@ export default class PricingModuleService<
       }
 
       if (typeof rules === "object") {
-        updatePriceListData.number_rules = Object.keys(rules).length
+        updatePriceListData.rules_count = Object.keys(rules).length
       }
 
       const [updatedPriceList] = (await this.priceListService_.update(
@@ -1750,11 +1781,78 @@ export default class PricingModuleService<
     data: PricingTypes.AddPriceListPricesDTO[],
     sharedContext: Context = {}
   ): Promise<PricingTypes.PriceListDTO[]> {
-    const priceLists = await this.listPriceLists(
-      { id: data.map((d) => d.priceListId) },
-      {
-        take: null,
+    const ruleTypeAttributes: string[] = []
+    const priceListIds: string[] = []
+    const priceSetIds: string[] = []
+
+    for (const priceListData of data) {
+      priceListIds.push(priceListData.priceListId)
+
+      for (const price of priceListData.prices) {
+        ruleTypeAttributes.push(...Object.keys(price.rules || {}))
+        priceSetIds.push(price.price_set_id)
+      }
+    }
+
+    const ruleTypes = await this.listRuleTypes(
+      { rule_attribute: ruleTypeAttributes },
+      { take: null },
+      sharedContext
+    )
+
+    const priceSets = await this.list(
+      { id: priceSetIds },
+      { relations: ["rule_types"] },
+      sharedContext
+    )
+
+    const priceSetRuleTypeMap: Map<string, Set<string>> = priceSets.reduce(
+      (acc, curr) => {
+        const priceSetRuleAttributeSet: Set<string> =
+          acc.get(curr.id) || new Set()
+
+        for (const rt of curr.rule_types ?? []) {
+          priceSetRuleAttributeSet.add(rt.rule_attribute)
+        }
+
+        acc.set(curr.id, priceSetRuleAttributeSet)
+        return acc
       },
+      new Map()
+    )
+
+    const ruleTypeErrors: string[] = []
+
+    for (const priceListData of data) {
+      for (const price of priceListData.prices) {
+        for (const rule_attribute of Object.keys(price.rules ?? {})) {
+          if (
+            !priceSetRuleTypeMap.get(price.price_set_id)?.has(rule_attribute)
+          ) {
+            ruleTypeErrors.push(
+              `rule_attribute "${rule_attribute}" in price set ${price.price_set_id}`
+            )
+          }
+        }
+      }
+    }
+
+    if (ruleTypeErrors.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid rule type configuration: Price set rules doesn't exist for ${ruleTypeErrors.join(
+          ", "
+        )}`
+      )
+    }
+
+    const ruleTypeMap: Map<string, RuleTypeDTO> = new Map(
+      ruleTypes.map((rt) => [rt.rule_attribute, rt])
+    )
+
+    const priceLists = await this.listPriceLists(
+      { id: priceListIds },
+      {},
       sharedContext
     )
 
@@ -1772,20 +1870,38 @@ export default class PricingModuleService<
 
       await Promise.all(
         prices.map(async (price) => {
+          const priceRules = price.rules || {}
+          const noOfRules = Object.keys(priceRules).length
+
           const [moneyAmount] = await this.moneyAmountService_.create(
             [price] as unknown as CreateMoneyAmountDTO[],
             sharedContext
           )
 
-          const psma = await this.priceSetMoneyAmountService_.create(
+          const [psma] = await this.priceSetMoneyAmountService_.create(
             [
               {
                 price_set: price.price_set_id,
                 money_amount: moneyAmount.id,
                 title: "test",
                 price_list: priceList.id,
+                rules_count: noOfRules,
               },
             ],
+            sharedContext
+          )
+
+          await this.createPriceRules(
+            Object.entries(priceRules).map(([ruleAttribute, ruleValue]) => {
+              return {
+                price_set_id: price.price_set_id,
+                rule_type:
+                  ruleTypeMap.get(ruleAttribute)!?.id ||
+                  ruleTypeMap.get(ruleAttribute)!,
+                value: ruleValue,
+                price_set_money_amount: psma as any,
+              }
+            }),
             sharedContext
           )
 
@@ -1816,7 +1932,6 @@ export default class PricingModuleService<
       { id: data.map((d) => d.priceListId) },
       {
         relations: ["price_list_rules", "price_list_rules.rule_type"],
-        take: null,
       },
       sharedContext
     )
@@ -1956,7 +2071,6 @@ export default class PricingModuleService<
       { id: data.map((d) => d.priceListId) },
       {
         relations: ["price_list_rules", "price_list_rules.rule_type"],
-        take: null,
       },
       sharedContext
     )

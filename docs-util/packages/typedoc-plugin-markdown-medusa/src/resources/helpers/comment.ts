@@ -3,7 +3,7 @@ import * as Handlebars from "handlebars"
 import * as Path from "path"
 import { CommentDisplayPart } from "typedoc/dist/lib/models/comments/comment"
 import { MarkdownTheme } from "../../theme"
-import { escapeChars } from "../../utils"
+import { escapeChars } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper("comment", function (parts: CommentDisplayPart[]) {
@@ -30,8 +30,8 @@ export default function (theme: MarkdownTheme) {
                   typeof part.target === "string"
                     ? part.target
                     : "url" in part.target
-                    ? Handlebars.helpers.relativeURL(part.target.url)
-                    : ""
+                      ? Handlebars.helpers.relativeURL(part.target.url)
+                      : ""
                 const wrap = part.tag === "@linkcode" ? "`" : ""
                 result.push(
                   url ? `[${wrap}${part.text}${wrap}](${url})` : part.text

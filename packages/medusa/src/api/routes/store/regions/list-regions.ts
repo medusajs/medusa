@@ -1,11 +1,11 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import { IsOptional, ValidateNested } from "class-validator"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
-import { defaultRelations } from "."
-import { omit } from "lodash"
-import { validator } from "../../../../utils/validator"
+import RegionService from "../../../../services/region"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
 /**
  * @oas [get] /store/regions
@@ -101,38 +101,21 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetRegionsParams, req.query)
-  const { limit, offset } = validated
-
   const regionService: RegionService = req.scope.resolve("regionService")
-
-  const filterableFields = omit(validated, ["limit", "offset"])
-
-  const listConfig = {
-    relations: defaultRelations,
-    skip: offset,
-    take: limit,
-  }
+  const { limit, offset } = req.validatedQuery
 
   const [regions, count] = await regionService.listAndCount(
-    filterableFields,
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
   res.json({ regions, count, limit, offset })
 }
 
-export class StoreGetRegionsParams {
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  limit?: number = 100
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  offset?: number = 0
-
+export class StoreGetRegionsParams extends extendedFindParamsMixin({
+  limit: 100,
+  offset: 0,
+}) {
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

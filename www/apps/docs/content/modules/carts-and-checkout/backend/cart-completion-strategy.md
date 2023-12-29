@@ -98,7 +98,7 @@ The completion strategy is expected to return an object with the following prope
 - `response_code`: a number indicating the response code.
 - `response_body`: an object that will be returned to the client.
 
-You can refer to this guide to learn how the cart conceptual guide is implemented in the Medusa backend. This can help you understand how details such as inventory, taxes, and more are handled.
+You can refer to [this guide](../cart.md#cart-completion-process) to learn how the cart conceptual guide is implemented in the Medusa backend. This can help you understand how details such as inventory, taxes, and more are handled.
 
 ---
 

@@ -1,10 +1,10 @@
 import * as Handlebars from "handlebars"
 import { DeclarationReflection, ReflectionType } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import { escapeChars, stripLineBreaks } from "../../utils"
 import { parseParams } from "../../utils/params-utils"
 import { ReflectionParameterType } from "../../types"
 import reflectionFormatter from "../../utils/reflection-formatter"
+import { escapeChars, stripLineBreaks } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -19,7 +19,7 @@ export default function (theme: MarkdownTheme) {
 
       const properties = this.reduce(
         (acc: ReflectionParameterType[], current: ReflectionParameterType) =>
-          parseParams(current, acc),
+          parseParams(current, acc, false),
         []
       ) as DeclarationReflection[]
 

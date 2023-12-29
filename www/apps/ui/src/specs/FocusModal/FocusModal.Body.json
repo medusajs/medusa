@@ -1,0 +1,6 @@
+{
+  "description": "This component is based on the `div` element and supports all of its props",
+  "methods": [],
+  "displayName": "FocusModal.Body",
+  "props": {}
+}
