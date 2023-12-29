@@ -17,7 +17,7 @@ export default class Address {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })
-  id!: string
+  id: string
 
   @Property({ columnType: "text", nullable: true })
   customer_id?: string | null
