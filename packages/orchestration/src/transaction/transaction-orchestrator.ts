@@ -13,7 +13,7 @@ import {
   TransactionStepsDefinition,
 } from "./types"
 
-import { MedusaError, promiseAll } from "@medusajs/utils"
+import { MedusaError, TransactionStepState, promiseAll } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import {
   PermanentStepFailureError,
@@ -97,9 +97,9 @@ export class TransactionOrchestrator extends EventEmitter {
 
   private canMoveForward(flow: TransactionFlow, previousStep: TransactionStep) {
     const states = [
-      TransactionState.DONE,
-      TransactionState.FAILED,
-      TransactionState.SKIPPED,
+      TransactionStepState.DONE,
+      TransactionStepState.FAILED,
+      TransactionStepState.SKIPPED,
     ]
 
     const siblings = this.getPreviousStep(flow, previousStep).next.map(
@@ -114,10 +114,10 @@ export class TransactionOrchestrator extends EventEmitter {
 
   private canMoveBackward(flow: TransactionFlow, step: TransactionStep) {
     const states = [
-      TransactionState.DONE,
-      TransactionState.REVERTED,
-      TransactionState.FAILED,
-      TransactionState.DORMANT,
+      TransactionStepState.DONE,
+      TransactionStepState.REVERTED,
+      TransactionStepState.FAILED,
+      TransactionStepState.DORMANT,
     ]
     const siblings = step.next.map((sib) => flow.steps[sib])
     return (
@@ -238,11 +238,11 @@ export class TransactionOrchestrator extends EventEmitter {
       } else {
         completedSteps++
 
-        if (curState.state === TransactionState.SKIPPED) {
+        if (curState.state === TransactionStepState.SKIPPED) {
           hasSkipped = true
-        } else if (curState.state === TransactionState.REVERTED) {
+        } else if (curState.state === TransactionStepState.REVERTED) {
           hasReverted = true
-        } else if (curState.state === TransactionState.FAILED) {
+        } else if (curState.state === TransactionStepState.FAILED) {
           if (stepDef.definition.continueOnPermanentFailure) {
             hasIgnoredFailure = true
           } else {
@@ -299,11 +299,11 @@ export class TransactionOrchestrator extends EventEmitter {
       const stepDef = flow.steps[step]
       const curState = stepDef.getStates()
       if (
-        curState.state === TransactionState.DONE ||
+        curState.state === TransactionStepState.DONE ||
         curState.status === TransactionStepStatus.PERMANENT_FAILURE
       ) {
         stepDef.beginCompensation()
-        stepDef.changeState(TransactionState.NOT_STARTED)
+        stepDef.changeState(TransactionStepState.NOT_STARTED)
       }
     }
   }
@@ -326,9 +326,9 @@ export class TransactionOrchestrator extends EventEmitter {
     step.changeStatus(TransactionStepStatus.OK)
 
     if (step.isCompensating()) {
-      step.changeState(TransactionState.REVERTED)
+      step.changeState(TransactionStepState.REVERTED)
     } else {
-      step.changeState(TransactionState.DONE)
+      step.changeState(TransactionStepState.DONE)
     }
 
     const flow = transaction.getFlow()
@@ -365,7 +365,7 @@ export class TransactionOrchestrator extends EventEmitter {
     const flow = transaction.getFlow()
     const cleaningUp: Promise<unknown>[] = []
     if (step.failures > maxRetries) {
-      step.changeState(TransactionState.FAILED)
+      step.changeState(TransactionStepState.FAILED)
       step.changeStatus(TransactionStepStatus.PERMANENT_FAILURE)
 
       transaction.addError(
@@ -380,7 +380,7 @@ export class TransactionOrchestrator extends EventEmitter {
         if (step.definition.continueOnPermanentFailure) {
           for (const childStep of step.next) {
             const child = flow.steps[childStep]
-            child.changeState(TransactionState.SKIPPED)
+            child.changeState(TransactionStepState.SKIPPED)
           }
         } else {
           flow.state = TransactionState.WAITING_TO_COMPENSATE
@@ -481,20 +481,20 @@ export class TransactionOrchestrator extends EventEmitter {
         step.lastAttempt = Date.now()
         step.attempts++
 
-        if (curState.state === TransactionState.NOT_STARTED) {
+        if (curState.state === TransactionStepState.NOT_STARTED) {
           if (!step.startedAt) {
             step.startedAt = Date.now()
           }
 
           if (step.isCompensating()) {
-            step.changeState(TransactionState.COMPENSATING)
+            step.changeState(TransactionStepState.COMPENSATING)
 
             if (step.definition.noCompensation) {
-              step.changeState(TransactionState.REVERTED)
+              step.changeState(TransactionStepState.REVERTED)
               continue
             }
           } else if (flow.state === TransactionState.INVOKING) {
-            step.changeState(TransactionState.INVOKING)
+            step.changeState(TransactionStepState.INVOKING)
           }
         }
 
@@ -806,11 +806,11 @@ export class TransactionOrchestrator extends EventEmitter {
               definition: definitionCopy,
               saveResponse: definitionCopy.saveResponse ?? true,
               invoke: {
-                state: TransactionState.NOT_STARTED,
+                state: TransactionStepState.NOT_STARTED,
                 status: TransactionStepStatus.IDLE,
               },
               compensate: {
-                state: TransactionState.DORMANT,
+                state: TransactionStepState.DORMANT,
                 status: TransactionStepStatus.IDLE,
               },
               attempts: 0,

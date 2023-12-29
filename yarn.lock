@@ -8129,6 +8129,35 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.5
+    "@medusajs/types": ^1.11.9
+    "@medusajs/utils": ^1.11.2
+    "@mikro-orm/cli": 5.7.12
+    "@mikro-orm/core": 5.7.12
+    "@mikro-orm/migrations": 5.7.12
+    "@mikro-orm/postgresql": 5.7.12
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-workflow-orchestrator-migrations-down: dist/scripts/bin/run-migration-down.js
+    medusa-workflow-orchestrator-migrations-up: dist/scripts/bin/run-migration-up.js
+    medusa-workflow-orchestrator-seed: dist/scripts/bin/run-seed.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/workflows-sdk@^0.1.0, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/workflows-sdk"

@@ -1,4 +1,4 @@
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, TransactionStepState } from "@medusajs/utils"
 import {
   DistributedTransaction,
   TransactionPayload,
@@ -6,8 +6,8 @@ import {
 import {
   TransactionHandlerType,
   TransactionState,
-  TransactionStepsDefinition,
   TransactionStepStatus,
+  TransactionStepsDefinition,
 } from "./types"
 
 export type TransactionStepHandler = (
@@ -41,11 +41,11 @@ export class TransactionStep {
   depth: number
   definition: TransactionStepsDefinition
   invoke: {
-    state: TransactionState
+    state: TransactionStepState
     status: TransactionStepStatus
   }
   compensate: {
-    state: TransactionState
+    state: TransactionStepState
     status: TransactionStepStatus
   }
   attempts: number
@@ -81,24 +81,24 @@ export class TransactionStep {
     return !this.stepFailed
   }
 
-  public changeState(toState: TransactionState) {
+  public changeState(toState: TransactionStepState) {
     const allowed = {
-      [TransactionState.DORMANT]: [TransactionState.NOT_STARTED],
-      [TransactionState.NOT_STARTED]: [
-        TransactionState.INVOKING,
-        TransactionState.COMPENSATING,
-        TransactionState.FAILED,
-        TransactionState.SKIPPED,
+      [TransactionStepState.DORMANT]: [TransactionStepState.NOT_STARTED],
+      [TransactionStepState.NOT_STARTED]: [
+        TransactionStepState.INVOKING,
+        TransactionStepState.COMPENSATING,
+        TransactionStepState.FAILED,
+        TransactionStepState.SKIPPED,
       ],
-      [TransactionState.INVOKING]: [
-        TransactionState.FAILED,
-        TransactionState.DONE,
+      [TransactionStepState.INVOKING]: [
+        TransactionStepState.FAILED,
+        TransactionStepState.DONE,
       ],
-      [TransactionState.COMPENSATING]: [
-        TransactionState.REVERTED,
-        TransactionState.FAILED,
+      [TransactionStepState.COMPENSATING]: [
+        TransactionStepState.REVERTED,
+        TransactionStepState.FAILED,
       ],
-      [TransactionState.DONE]: [TransactionState.COMPENSATING],
+      [TransactionStepState.DONE]: [TransactionStepState.COMPENSATING],
     }
 
     const curState = this.getStates()
@@ -190,7 +190,7 @@ export class TransactionStep {
     const { status, state } = this.getStates()
     return (
       (!this.isCompensating() &&
-        state === TransactionState.NOT_STARTED &&
+        state === TransactionStepState.NOT_STARTED &&
         flowState === TransactionState.INVOKING) ||
       status === TransactionStepStatus.TEMPORARY_FAILURE
     )
@@ -199,7 +199,7 @@ export class TransactionStep {
   canCompensate(flowState: TransactionState): boolean {
     return (
       this.isCompensating() &&
-      this.getStates().state === TransactionState.NOT_STARTED &&
+      this.getStates().state === TransactionStepState.NOT_STARTED &&
       flowState === TransactionState.COMPENSATING
     )
   }

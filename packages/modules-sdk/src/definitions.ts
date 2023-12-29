@@ -15,6 +15,7 @@ export enum Modules {
   PRICING = "pricingService",
   PROMOTION = "promotion",
   AUTHENTICATION = "authentication",
+  WORKFLOW_ORCHESTRATOR = "workflowOrchestrator",
 }
 
 export enum ModuleRegistrationName {
@@ -26,6 +27,7 @@ export enum ModuleRegistrationName {
   PRICING = "pricingModuleService",
   PROMOTION = "promotionModuleService",
   AUTHENTICATION = "authenticationModuleService",
+  WORKFLOW_ORCHESTRATOR = "workflowOrchestratorService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -37,6 +39,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.PRICING]: "@medusajs/pricing",
   [Modules.PROMOTION]: "@medusajs/promotion",
   [Modules.AUTHENTICATION]: "@medusajs/authentication",
+  [Modules.WORKFLOW_ORCHESTRATOR]: "@medusajs/workflow-orchestrator-inmemory",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -145,6 +148,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.AUTHENTICATION,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.AUTHENTICATION),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.WORKFLOW_ORCHESTRATOR]: {
+      key: Modules.WORKFLOW_ORCHESTRATOR,
+      registrationName: ModuleRegistrationName.WORKFLOW_ORCHESTRATOR,
+      defaultPackage: MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ORCHESTRATOR],
+      label: upperCaseFirst(ModuleRegistrationName.WORKFLOW_ORCHESTRATOR),
       isRequired: false,
       canOverride: true,
       isQueryable: true,
