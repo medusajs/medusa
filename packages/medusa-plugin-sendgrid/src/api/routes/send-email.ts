@@ -1,4 +1,9 @@
-export default async (req, res) => {
+import {
+  MedusaRequest,
+  MedusaResponse
+} from "@medusajs/medusa";
+
+export default async (req: MedusaRequest, res: MedusaResponse) => {
   const sendgridService = req.scope.resolve("sendgridService")
   await sendgridService.sendEmail(
     req.body.template_id,

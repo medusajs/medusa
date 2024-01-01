@@ -11207,32 +11207,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/client@npm:^7.7.0":
-  version: 7.7.0
-  resolution: "@sendgrid/client@npm:7.7.0"
+"@sendgrid/client@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "@sendgrid/client@npm:8.1.0"
   dependencies:
-    "@sendgrid/helpers": ^7.7.0
-    axios: ^0.26.0
-  checksum: acf1db2dcc5181f6f9befba811ba6acb31e50051ab6bded952cb073f117c9237d86013602cdf523b91582c40545e1085a413f1e9e490a46b1d664a5c956c1f3f
+    "@sendgrid/helpers": ^8.0.0
+    axios: ^1.6.0
+  checksum: 239e6c94d76c845d117eb4719a22e3f83e5736e57970ff62596442ef392504b89c624640dccb6d6842a58fdbd4c651225b1dd3bbdcff5d5b76c83254145990ee
   languageName: node
   linkType: hard
 
-"@sendgrid/helpers@npm:^7.7.0":
-  version: 7.7.0
-  resolution: "@sendgrid/helpers@npm:7.7.0"
+"@sendgrid/helpers@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@sendgrid/helpers@npm:8.0.0"
   dependencies:
     deepmerge: ^4.2.2
-  checksum: 14dfe9af191dd9ad18f0b2744d6d12dbc80f830507b6112d8c4c1c4741ff282393a06e4b4559c0f404d33971639ecadb1017e0cc3b7187e56ec64ab9ee5ff21c
+  checksum: e7f341099c63915eb095102f8c7ec220a8f2fb66a0cd836ab91e7424005e7c5fd27b65e3a5ed43654f5b2b3608fa7d14ebba924ff86e5d0bdfeaf0248f836a50
   languageName: node
   linkType: hard
 
-"@sendgrid/mail@npm:^7.1.1":
-  version: 7.7.0
-  resolution: "@sendgrid/mail@npm:7.7.0"
+"@sendgrid/mail@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "@sendgrid/mail@npm:8.1.0"
   dependencies:
-    "@sendgrid/client": ^7.7.0
-    "@sendgrid/helpers": ^7.7.0
-  checksum: 5a1d617f1e3f8d47d4fe188ff08f18fca63e3006545ad1f954bf30887806c810f6c0dea7d8850c24de03b3aca75f70f4324369ed2497d957870b8a65f1451127
+    "@sendgrid/client": ^8.1.0
+    "@sendgrid/helpers": ^8.0.0
+  checksum: 7c4db3996898ed1ecc70bb410df83b6a8171001af31399602bc41c3dbf91766fc9a0a0d6dde14af49293e1e08142d5be79d0608bcde0f0e5c3ff6ca91db8f6a7
   languageName: node
   linkType: hard
 
@@ -19380,7 +19380,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.26.0, axios@npm:^0.26.1":
+"axios@npm:^0.26.1":
   version: 0.26.1
   resolution: "axios@npm:0.26.1"
   dependencies:
@@ -19407,6 +19407,17 @@ __metadata:
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
   checksum: a925a07590b0ec1d4daf28cd27890f930daab980371558deb3b883af174b881da09e5ba2cb8393a648fda5859e39934982d0b8b092fe89fc84cb6c80a70a1910
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.6.0":
+  version: 1.6.3
+  resolution: "axios@npm:1.6.3"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: dcc6d982353db33e6893ef01cdf81d0a0548dbd8fba0cb046dc4aee1a6a16226721faa4c2a13b2673d47130509629cdb93bb991b3a2bd4ef17a5ac27a8bba0da
   languageName: node
   linkType: hard
 
@@ -20264,7 +20275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:^1.19.0":
+"body-parser@npm:^1.19.0, body-parser@npm:^1.20.2":
   version: 1.20.2
   resolution: "body-parser@npm:1.20.2"
   dependencies:
@@ -28355,7 +28366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.0.0":
+"glob@npm:^10.0.0, glob@npm:^10.3.7":
   version: 10.3.10
   resolution: "glob@npm:10.3.10"
   dependencies:
@@ -36221,26 +36232,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-sendgrid@workspace:packages/medusa-plugin-sendgrid"
   dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/node": ^7.7.4
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-instanceof": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
-    "@babel/register": ^7.7.4
-    "@babel/runtime": ^7.9.6
-    "@sendgrid/mail": ^7.1.1
-    body-parser: ^1.19.0
+    "@sendgrid/mail": ^8.1.0
+    body-parser: ^1.20.2
     client-sessions: ^0.8.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
+    cross-env: ^7.0.3
+    express: ^4.18.2
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
-    typeorm: ^0.3.16
+    medusa-test-utils: ^1.1.41
+    rimraf: ^5.0.5
+    typeorm: ^0.3.17
+    typescript: ^5.3.3
   peerDependencies:
     medusa-interfaces: ^1.3.7
     typeorm: ^0.3.16
@@ -36440,6 +36443,17 @@ __metadata:
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
+
+"medusa-test-utils@npm:^1.1.41":
+  version: 1.1.41
+  resolution: "medusa-test-utils@npm:1.1.41"
+  dependencies:
+    "@babel/plugin-transform-classes": ^7.9.5
+    medusa-core-utils: ^1.2.0
+    randomatic: ^3.1.1
+  checksum: 37d81667ed24b924a64a8515919df6f3736fe7cd11ffd084773e8c995abcf8efbb4c4433f864771d1daff1c06f9c86bf55efb0a70f681c237dfa85e16b2f4fa9
+  languageName: node
+  linkType: hard
 
 "meilisearch@npm:^0.32.3":
   version: 0.32.5
@@ -43420,6 +43434,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rimraf@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "rimraf@npm:5.0.5"
+  dependencies:
+    glob: ^10.3.7
+  bin:
+    rimraf: dist/esm/bin.mjs
+  checksum: d50dbe724f33835decd88395b25ed35995077c60a50ae78ded06e0185418914e555817aad1b4243edbff2254548c2f6ad6f70cc850040bebb4da9e8cc016f586
+  languageName: node
+  linkType: hard
+
 "rimraf@npm:~2.4.0":
   version: 2.4.5
   resolution: "rimraf@npm:2.4.5"
@@ -47777,7 +47802,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.16":
+"typeorm@npm:^0.3.16, typeorm@npm:^0.3.17":
   version: 0.3.17
   resolution: "typeorm@npm:0.3.17"
   dependencies:
@@ -47887,6 +47912,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.3.3":
+  version: 5.3.3
+  resolution: "typescript@npm:5.3.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: e33cef99d82573624fc0f854a2980322714986bc35b9cb4d1ce736ed182aeab78e2cb32b385efa493b2a976ef52c53e20d6c6918312353a91850e2b76f1ea44f
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@4.9.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.1.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=7ad353"
@@ -47914,6 +47949,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 303979762f9b8932c53f8149e866521a1265168b5c0fde8cc8ad83ac3d0e8ede8096cb02dff5f2de048e7f118a6f61902f81da12d5972c7fb582f09f2f18d169
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
+  version: 5.3.3
+  resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=7ad353"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: e22df47df9b2b2f2617b8bf511a29aea3d177f9f7a0756818230a76b01cbd7da988bf55f9463aaa1a4c1ff90b80f8dc5676460d4e9dfc010572cbba59b822b0c
   languageName: node
   linkType: hard
 

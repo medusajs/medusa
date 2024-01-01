@@ -1,10 +1,11 @@
-import { Router } from "express"
+import { Application, Router } from "express"
 import bodyParser from "body-parser"
 import middlewares from "../middleware"
 
 const route = Router()
 
-export default (app) => {
+export default (app: Router) => {
+  
   app.use("/sendgrid", route)
 
   route.post(

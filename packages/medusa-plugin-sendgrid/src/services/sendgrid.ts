@@ -1,25 +1,54 @@
-import SendGrid from "@sendgrid/mail"
+import SendGrid, { MailDataRequired } from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
 import { IsNull, Not } from "typeorm"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, isObject } from "@medusajs/utils"
+import { AttachmentsArray, FromFullFilementService, SendgridPluginOptions } from "../types"
+import { CartService, ClaimService, FulfillmentProviderService, 
+  GiftCardService, LineItem, LineItemService, Logger,  Notification,  OrderService, ProductVariantService,ReturnItem,ReturnService, 
+  StoreService, SwapService, TotalsService } from "@medusajs/medusa"
+import { FulfillmentService } from "@medusajs/medusa/src/services/fulfillment"
+import { EventData, SendGridData } from "../types"
+import { LineItemTotals } from "@medusajs/medusa/dist/services/totals"
 
-class SendGridService extends NotificationService {
+// import Order from "../types/OrderCreatedData"
+// import OrderCreatedData from "../types/OrderCreatedData"
+// import CanceledOrderData from "../types/CanceledOrderData"
+// import OrderShippedData from "../types/OrderShippedData"
+// import OrderReturnRequestedData from "../types/OrderReturnRequestedData"
+// import OrderItemsReturnedData from "../types/OrderItemsReturnedData"
+// import ClaimShipmentData from "../types/ClaimShipmentData"
+// import SwapCreatedData from "../types/SwapCreatedData"
+// import SwapShipmentCreatedData from "../types/SwapShipmentCreatedData"
+// import SwapReceivedData from "../types/SwapReceivedData"
+// import GiftCardCreatedData from "../types/GiftCardCreatedData"
+// import { CustomerPasswordResetData, UserPasswordResetData } from "../types/PasswordData"
+// import RestockNotification from "../types/RestockNotificationData"
+
+// type EventData = OrderCreatedData | CanceledOrderData 
+//   | OrderShippedData | OrderReturnRequestedData 
+//   | OrderItemsReturnedData | ClaimShipmentData | SwapCreatedData 
+//   | SwapShipmentCreatedData | SwapReceivedData | GiftCardCreatedData 
+//   | CustomerPasswordResetData | UserPasswordResetData | RestockNotification
+
+export class SendGridService extends NotificationService {
   static identifier = "sendgrid"
 
-  /**
-   * @param {Object} options - options defined in `medusa-config.js`
-   *    e.g.
-   *    {
-   *      api_key: SendGrid api key
-   *      from: Medusa <hello@medusa.example>,
-   *      order_placed_template: 01234,
-   *      order_updated_template: 56789,
-   *      order_canceled_template: 4242,
-   *      user_password_reset_template: 0000,
-   *      customer_password_reset_template: 1111,
-   *    }
-   */
+  options_: SendgridPluginOptions
+  storeService_: StoreService
+  lineItemService_: LineItemService
+  orderService_: OrderService
+  cartService_: CartService
+  claimService_: ClaimService
+  returnService_: ReturnService
+  swapService_: SwapService
+  fulfillmentService_: FulfillmentService
+  fulfillmentProviderService_: FulfillmentProviderService
+  totalsService_: TotalsService
+  productVariantService_: ProductVariantService
+  giftCardService_: GiftCardService
+  logger_: Logger
+
   constructor(
     {
       storeService,
@@ -35,8 +64,22 @@ class SendGridService extends NotificationService {
       productVariantService,
       giftCardService,
       logger,
+    }: {
+      storeService: StoreService
+      orderService: OrderService
+      returnService: ReturnService
+      swapService: SwapService
+      cartService: CartService
+      lineItemService: LineItemService
+      claimService: ClaimService
+      fulfillmentService: FulfillmentService
+      fulfillmentProviderService: FulfillmentProviderService
+      totalsService: TotalsService
+      productVariantService: ProductVariantService
+      giftCardService: GiftCardService
+      logger: Logger
     },
-    options
+    options: SendgridPluginOptions
   ) {
     super()
 
@@ -59,16 +102,19 @@ class SendGridService extends NotificationService {
     SendGrid.setApiKey(options.api_key)
   }
 
-  async fetchAttachments(event, data, attachmentGenerator) {
+  async fetchAttachments(event: string, data?: Record<any, any>, attachmentGenerator?: any) {
     switch (event) {
       case "swap.created":
       case "order.return_requested": {
-        let attachments = []
-        const { shipping_method, shipping_data } = data.return_request
+        let attachments: AttachmentsArray[] = []
+        if (!data) {
+          return []
+        }
+        const { shipping_method, shipping_data } = data?.return_request
         if (shipping_method) {
           const provider = shipping_method.shipping_option.provider_id
 
-          const lbl = await this.fulfillmentProviderService_.retrieveDocuments(
+          const lbl: FromFullFilementService[] = await this.fulfillmentProviderService_.retrieveDocuments(
             provider,
             shipping_data,
             "label"
@@ -84,9 +130,9 @@ class SendGridService extends NotificationService {
         }
 
         if (attachmentGenerator && attachmentGenerator.createReturnInvoice) {
-          const base64 = await attachmentGenerator.createReturnInvoice(
-            data.order,
-            data.return_request.items
+          const base64: string = await attachmentGenerator.createReturnInvoice(
+            data?.order,
+            data?.return_request.items
           )
           attachments.push({
             name: "invoice",
@@ -102,47 +148,49 @@ class SendGridService extends NotificationService {
     }
   }
 
-  async fetchData(event, eventData, attachmentGenerator) {
+  
+
+  async fetchData(event: string, eventData: EventData, 
+    attachmentGenerator: any) {
     switch (event) {
       case "order.return_requested":
-        return this.returnRequestedData(eventData, attachmentGenerator)
+        return this.returnRequestedData(eventData)
       case "swap.shipment_created":
-        return this.swapShipmentCreatedData(eventData, attachmentGenerator)
+        return this.swapShipmentCreatedData(eventData)
       case "claim.shipment_created":
-        return this.claimShipmentCreatedData(eventData, attachmentGenerator)
+        return this.claimShipmentCreatedData(eventData)
       case "order.items_returned":
-        return this.itemsReturnedData(eventData, attachmentGenerator)
+        return this.itemsReturnedData(eventData)
       case "swap.received":
-        return this.swapReceivedData(eventData, attachmentGenerator)
+        return this.swapReceivedData(eventData)
       case "swap.created":
-        return this.swapCreatedData(eventData, attachmentGenerator)
+        return this.swapCreatedData(eventData)
       case "gift_card.created":
-        return this.gcCreatedData(eventData, attachmentGenerator)
+        return this.gcCreatedData(eventData)
       case "order.gift_card_created":
-        return this.gcCreatedData(eventData, attachmentGenerator)
+        return this.gcCreatedData(eventData)
       case "order.placed":
-        return this.orderPlacedData(eventData, attachmentGenerator)
+        return this.orderPlacedData(eventData)
       case "order.shipment_created":
         return this.orderShipmentCreatedData(eventData, attachmentGenerator)
       case "order.canceled":
-        return this.orderCanceledData(eventData, attachmentGenerator)
+        return this.orderCanceledData(eventData)
       case "user.password_reset":
-        return this.userPasswordResetData(eventData, attachmentGenerator)
+        return this.userPasswordResetData(eventData)
       case "customer.password_reset":
-        return this.customerPasswordResetData(eventData, attachmentGenerator)
+        return this.customerPasswordResetData(eventData)
       case "restock-notification.restocked":
         return await this.restockNotificationData(
-          eventData,
-          attachmentGenerator
+          eventData
         )
       case "order.refund_created":
-        return this.orderRefundCreatedData(eventData, attachmentGenerator)
+        return this.orderRefundCreatedData(eventData)
       default:
         return {}
     }
   }
 
-  getLocalizedTemplateId(event, locale) {
+  getLocalizedTemplateId(event: string, locale: string) {
     if (this.options_.localization && this.options_.localization[locale]) {
       const map = this.options_.localization[locale]
       switch (event) {
@@ -183,44 +231,44 @@ class SendGridService extends NotificationService {
     return null
   }
 
-  getTemplateId(event) {
+  getTemplateId(event: string) {
     switch (event) {
       case "order.return_requested":
-        return this.options_.order_return_requested_template
+        return this.options_.templates.order_return_requested_template
       case "swap.shipment_created":
-        return this.options_.swap_shipment_created_template
+        return this.options_.templates.swap_shipment_created_template
       case "claim.shipment_created":
-        return this.options_.claim_shipment_created_template
+        return this.options_.templates.claim_shipment_created_template
       case "order.items_returned":
-        return this.options_.order_items_returned_template
+        return this.options_.templates.order_items_returned_template
       case "swap.received":
-        return this.options_.swap_received_template
+        return this.options_.templates.swap_received_template
       case "swap.created":
-        return this.options_.swap_created_template
+        return this.options_.templates.swap_created_template
       case "gift_card.created":
-        return this.options_.gift_card_created_template
+        return this.options_.templates.gift_card_created_template
       case "order.gift_card_created":
-        return this.options_.gift_card_created_template
+        return this.options_.templates.gift_card_created_template
       case "order.placed":
-        return this.options_.order_placed_template
+        return this.options_.templates.order_placed_template
       case "order.shipment_created":
-        return this.options_.order_shipped_template
+        return this.options_.templates.order_shipped_template
       case "order.canceled":
-        return this.options_.order_canceled_template
+        return this.options_.templates.order_canceled_template
       case "user.password_reset":
-        return this.options_.user_password_reset_template
+        return this.options_.templates.user_password_reset_template
       case "customer.password_reset":
-        return this.options_.customer_password_reset_template
+        return this.options_.templates.customer_password_reset_template
       case "restock-notification.restocked":
-        return this.options_.medusa_restock_template
+        return this.options_.templates.medusa_restock_template
       case "order.refund_created":
-        return this.options_.order_refund_created_template
+        return this.options_.templates.order_refund_created_template
       default:
         return null
     }
   }
 
-  async sendNotification(event, eventData, attachmentGenerator) {
+  async sendNotification(event: string, eventData: EventData, attachmentGenerator: any) {
     const data = await this.fetchData(event, eventData, attachmentGenerator)
 
     let templateId = this.getTemplateId(event)
@@ -242,16 +290,24 @@ class SendGridService extends NotificationService {
       attachmentGenerator
     )
 
-    const sendOptions = {
+    const sendOptions: SendGrid.MailDataRequired | SendGrid.MailDataRequired[] = {
+      templateId: templateId,
+      from: this.options_.from,
+      to: data.email,
+      dynamicTemplateData: data,
+      attachments,
+    }
+    const dataToDb = {
       template_id: templateId,
       from: this.options_.from,
       to: data.email,
       dynamic_template_data: data,
-      has_attachments: attachments?.length,
+      has_attachments: attachments?.length > 0,
     }
 
+
     if (attachments?.length) {
-      sendOptions.has_attachments = true
+      dataToDb.has_attachments = true
       sendOptions.attachments = attachments.map((a) => {
         return {
           content: a.base64,
@@ -274,21 +330,22 @@ class SendGridService extends NotificationService {
         this.logger_.error(error)
       })
 
-    // We don't want heavy docs stored in DB
-    delete sendOptions.attachments
-
-    return { to: data.email, status, data: sendOptions }
+    return { to: data.email, status, data: dataToDb }
   }
 
-  async resendNotification(notification, config, attachmentGenerator) {
-    const sendOptions = {
+  async resendNotification(notification: SendGridData, config: {
+    to?: string
+  }, attachmentGenerator: any) {
+
+    // @ts-ignore - wrong types in SendGrid
+    const sendOptions: SendGrid.MailDataRequired = {
       ...notification.data,
       to: config.to || notification.to,
     }
 
     const attachs = await this.fetchAttachments(
       notification.event_name,
-      notification.data.dynamic_template_data,
+      notification?.data?.dynamic_template_data,
       attachmentGenerator
     )
 
@@ -309,16 +366,13 @@ class SendGridService extends NotificationService {
     return { to: sendOptions.to, status, data: sendOptions }
   }
 
-  /**
-   * Sends an email using SendGrid.
-   * @param {Object} options - send options containing to, from, template, and more. Read more here: https://github.com/sendgrid/sendgrid-nodejs/tree/main/packages/mail
-   * @return {Promise} result of the send operation
-   */
-  async sendEmail(options) {
-    return await SendGrid.send(options)
+
+  async sendEmail(options: SendGrid.MailDataRequired | SendGrid.MailDataRequired[]): Promise<[SendGrid.ClientResponse, {}]> {
+    const email = await SendGrid.send(options)
+    return email;
   }
 
-  async orderShipmentCreatedData({ id, fulfillment_id }, attachmentGenerator) {
+  async orderShipmentCreatedData({ id, fulfillment_id }: EventData, attachmentGenerator: any) {
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -346,6 +400,13 @@ class SendGridService extends NotificationService {
       ],
     })
 
+    if (!fulfillment_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No fulfillment_id was set for event: order.shipment_created`
+      )
+    }
+    
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
       relations: ["items", "tracking_links"],
     })
@@ -363,7 +424,7 @@ class SendGridService extends NotificationService {
     }
   }
 
-  async orderCanceledData({ id }) {
+  async orderCanceledData({ id }: EventData) {
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -399,12 +460,17 @@ class SendGridService extends NotificationService {
       total,
     } = order
 
-    const taxRate = order.tax_rate / 100
+    const taxRate = (order?.tax_rate || 0) / 100
     const currencyCode = order.currency_code.toUpperCase()
 
     const items = this.processItems_(order.items, taxRate, currencyCode)
 
-    let discounts = []
+    let discounts: {
+      is_giftcard: boolean
+      code: string
+      descriptor: string
+    }[] = []
+
     if (order.discounts) {
       discounts = order.discounts.map((discount) => {
         return {
@@ -417,7 +483,12 @@ class SendGridService extends NotificationService {
       })
     }
 
-    let giftCards = []
+    let giftCards: {
+      is_giftcard: boolean
+      code: string
+      descriptor: string
+    }[] = []
+
     if (order.gift_cards) {
       giftCards = order.gift_cards.map((gc) => {
         return {
@@ -461,7 +532,7 @@ class SendGridService extends NotificationService {
     }
   }
 
-  async orderPlacedData({ id }) {
+  async orderPlacedData({ id }: EventData) {
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -492,26 +563,50 @@ class SendGridService extends NotificationService {
 
     const currencyCode = order.currency_code.toUpperCase()
 
-    const items = await Promise.all(
-      order.items.map(async (i) => {
-        i.totals = await this.totalsService_.getLineItemTotals(i, order, {
-          include_tax: true,
-          use_tax_lines: true,
-        })
-        i.thumbnail = this.normalizeThumbUrl_(i.thumbnail)
-        i.discounted_price = `${this.humanPrice_(
-          i.totals.total / i.quantity,
-          currencyCode
-        )} ${currencyCode}`
-        i.price = `${this.humanPrice_(
-          i.totals.original_total / i.quantity,
-          currencyCode
-        )} ${currencyCode}`
-        return i
-      })
-    )
+    type NewLineItem = Omit<LineItem, "beforeUpdate" | "afterUpdateOrLoad"> & {
+      totals: LineItemTotals
+      thumbnail: string
+      discounted_price: string
+      price: string
+    }
+    const promises: Promise<LineItemTotals>[] = [];
 
-    let discounts = []
+    order.items.forEach((item) => {
+      promises.push(this.totalsService_.getLineItemTotals(item, order, {
+        include_tax: true,
+        use_tax_lines: true,
+      }))
+    });
+
+    const totals: LineItemTotals[] = await Promise.all(promises)
+
+    const items: NewLineItem[] = [];
+    for (let i = 0; i < order.items.length; i++) {
+      const item = order.items[i];
+
+      items.push({
+        ...item,
+        totals: totals[i],
+        thumbnail: this.normalizeThumbUrl_(item.thumbnail),
+        discounted_price: `${this.humanPrice_(
+          totals[i].total / item.quantity,
+          currencyCode
+        )} ${currencyCode}`,
+        price: `${this.humanPrice_(
+          totals[i].original_total / item.quantity,
+          currencyCode
+        )} ${currencyCode}`,
+      })
+
+    }
+  
+
+    let discounts: {
+      is_giftcard: boolean
+      code: string
+      descriptor: string
+    }[] = []
+
     if (order.discounts) {
       discounts = order.discounts.map((discount) => {
         return {
@@ -524,7 +619,12 @@ class SendGridService extends NotificationService {
       })
     }
 
-    let giftCards = []
+    let giftCards: {
+      is_giftcard: boolean
+      code: string
+      descriptor: string
+    }[] = []
+
     if (order.gift_cards) {
       giftCards = order.gift_cards.map((gc) => {
         return {
@@ -610,8 +710,14 @@ class SendGridService extends NotificationService {
     }
   }
 
-  async returnRequestedData({ id, return_id }) {
+  async returnRequestedData({ id, return_id }: EventData) {
     // Fetch the return request
+    if (!return_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No return_id was set for event: order.return_requested`
+      )
+    }
     const returnRequest = await this.returnService_.retrieve(return_id, {
       relations: [
         "items.item.tax_lines",
@@ -647,29 +753,61 @@ class SendGridService extends NotificationService {
 
     const currencyCode = order.currency_code.toUpperCase()
 
-    // Calculate which items are in the return
-    const returnItems = await Promise.all(
-      returnRequest.items.map(async (i) => {
-        const found = items.find((oi) => oi.id === i.item_id)
-        found.quantity = i.quantity
-        found.thumbnail = this.normalizeThumbUrl_(found.thumbnail)
-        found.totals = await this.totalsService_.getLineItemTotals(
-          found,
-          order,
-          {
-            include_tax: true,
-            use_tax_lines: true,
-          }
-        )
-        found.price = `${this.humanPrice_(
-          found.totals.total,
-          currencyCode
-        )} ${currencyCode}`
-        found.tax_lines = found.totals.tax_lines
-        return found
-      })
-    )
+    type NewReturnItem = Omit<ReturnItem, "beforeUpdate" | "afterUpdateOrLoad"> & {
+      totals: LineItemTotals
+      price: string
+      tax_lines: any
+      thumbnail: string
+    }
+    const promises: Promise<LineItemTotals>[] = [];
 
+    returnRequest.items.forEach((item) => {
+      const found = items.find((oi) => oi.id === item.item_id)
+      if (!found) {
+        return promises.push(new Promise((resolve) => resolve({
+          total: 0,
+          tax_lines: [],
+          unit_price: 0,
+          subtotal: 0,
+          tax_total: 0,
+          discount_total: 0,
+          quantity: 0,
+          original_total: 0,
+          original_tax_total: 0,
+          raw_discount_total: 0,
+        })))
+      }
+      return promises.push(this.totalsService_.getLineItemTotals(found, order, {
+        include_tax: true,
+        use_tax_lines: true,
+      }))
+    });
+
+    const totals: LineItemTotals[] = await Promise.all(promises)
+
+    const returnItems: NewReturnItem[] = [];
+
+    // Calculate which items are in the return
+    for (let i = 0; i < returnRequest.items.length; i++) {
+      const item = returnRequest.items[i];
+      const found = items.find((oi) => oi.id === item.item_id)
+      if (!found) {
+        continue
+      }
+      returnItems.push({
+        ...item,
+        totals: totals[i],
+        price: `${this.humanPrice_(
+          totals[i].total / item.quantity,
+          currencyCode
+        )} ${currencyCode}`,
+        tax_lines: found.tax_lines,
+        thumbnail: this.normalizeThumbUrl_(found.thumbnail),
+      })
+      
+    }
+
+    
     // Get total of the returned products
     const item_subtotal = returnItems.reduce(
       (acc, next) => acc + next.totals.total,
@@ -719,7 +857,6 @@ class SendGridService extends NotificationService {
   }
 
   async swapReceivedData({ id }) {
-    const store = await this.storeService_.retrieve()
 
     const swap = await this.swapService_.retrieve(id, {
       relations: [
@@ -745,8 +882,12 @@ class SendGridService extends NotificationService {
       }
     )
 
+    
     returnRequest.items = returnRequest.items.map((item) => {
       const found = items.find((i) => i.id === item.item_id)
+      if (!found) {
+        return item
+      }
       return {
         ...item,
         item: found,
@@ -987,7 +1128,7 @@ class SendGridService extends NotificationService {
     return this.returnRequestedData(data)
   }
 
-  async swapShipmentCreatedData({ id, fulfillment_id }) {
+  async swapShipmentCreatedData({ id, fulfillment_id }: EventData) {
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "shipping_address",
@@ -1136,7 +1277,7 @@ class SendGridService extends NotificationService {
     }
   }
 
-  async claimShipmentCreatedData({ id, fulfillment_id }) {
+  async claimShipmentCreatedData({ id, fulfillment_id }: EventData) {
     const claim = await this.claimService_.retrieve(id, {
       relations: [
         "order.items.variant.product.profiles",
