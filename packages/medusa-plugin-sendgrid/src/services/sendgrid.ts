@@ -1,36 +1,14 @@
-import SendGrid, { MailDataRequired } from "@sendgrid/mail"
+import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
-import { IsNull, Not } from "typeorm"
-import { MedusaError, isObject } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/utils"
 import { AttachmentsArray, FromFullFilementService, NewLineItem, PluginOptions } from "../types"
 import type { CartService, ClaimService, FulfillmentProviderService, 
-  GiftCardService, LineItem, LineItemService, Logger,  Notification,  Order,  OrderService, ProductVariantService,Return,ReturnItem,ReturnService, 
-  StoreService, Swap, SwapService, TotalsService } from "@medusajs/medusa"
+  GiftCardService, LineItem, LineItemService, Logger, Order,  OrderService, ProductVariantService, Return, ReturnItem, ReturnService, 
+  StoreService, SwapService, TotalsService } from "@medusajs/medusa"
 import type { FulfillmentService } from "@medusajs/medusa/dist/services/fulfillment"
 import { EventData, SendGridData } from "../types"
 import type { LineItemTotals } from "@medusajs/medusa/dist/services/totals"
-import OrderShippedData from "../types/OrderShippedData"
-
-// import Order from "../types/OrderCreatedData"
-// import OrderCreatedData from "../types/OrderCreatedData"
-// import CanceledOrderData from "../types/CanceledOrderData"
-// import OrderShippedData from "../types/OrderShippedData"
-// import OrderReturnRequestedData from "../types/OrderReturnRequestedData"
-// import OrderItemsReturnedData from "../types/OrderItemsReturnedData"
-// import ClaimShipmentData from "../types/ClaimShipmentData"
-// import SwapCreatedData from "../types/SwapCreatedData"
-// import SwapShipmentCreatedData from "../types/SwapShipmentCreatedData"
-// import SwapReceivedData from "../types/SwapReceivedData"
-// import GiftCardCreatedData from "../types/GiftCardCreatedData"
-// import { CustomerPasswordResetData, UserPasswordResetData } from "../types/PasswordData"
-// import RestockNotification from "../types/RestockNotificationData"
-
-// type EventData = OrderCreatedData | CanceledOrderData 
-//   | OrderShippedData | OrderReturnRequestedData 
-//   | OrderItemsReturnedData | ClaimShipmentData | SwapCreatedData 
-//   | SwapShipmentCreatedData | SwapReceivedData | GiftCardCreatedData 
-//   | CustomerPasswordResetData | UserPasswordResetData | RestockNotification
 
 export class SendGridService extends NotificationService {
   static identifier = "sendgrid"
