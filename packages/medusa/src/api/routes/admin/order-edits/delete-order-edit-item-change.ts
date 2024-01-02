@@ -13,7 +13,7 @@ import { OrderEditService } from "../../../../services"
  * x-codegen:
  *   method: deleteItemChange
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -23,6 +23,37 @@ import { OrderEditService } from "../../../../services"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteOrderEditItemChange } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *         itemChangeId: string
+ *       }
+ *
+ *       const OrderEditItemChange = ({
+ *         orderEditId,
+ *         itemChangeId
+ *       }: Props) => {
+ *         const deleteItemChange = useAdminDeleteOrderEditItemChange(
+ *           orderEditId,
+ *           itemChangeId
+ *         )
+ *
+ *         const handleDeleteItemChange = () => {
+ *           deleteItemChange.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEditItemChange
  *   - lang: Shell
  *     label: cURL
  *     source: |

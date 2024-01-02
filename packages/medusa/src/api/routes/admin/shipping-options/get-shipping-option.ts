@@ -11,7 +11,7 @@ import { defaultFields, defaultRelations } from "."
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -21,6 +21,32 @@ import { defaultFields, defaultRelations } from "."
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminShippingOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingOptionId: string
+ *       }
+ *
+ *       const ShippingOption = ({ shippingOptionId }: Props) => {
+ *         const {
+ *           shipping_option,
+ *           isLoading
+ *         } = useAdminShippingOption(
+ *           shippingOptionId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {shipping_option && <span>{shipping_option.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ShippingOption
  *   - lang: Shell
  *     label: cURL
  *     source: |

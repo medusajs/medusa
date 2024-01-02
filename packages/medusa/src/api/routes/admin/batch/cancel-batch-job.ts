@@ -12,7 +12,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: cancel
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,31 @@ import { EntityManager } from "typeorm"
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCancelBatchJob } from "medusa-react"
+ *
+ *       type Props = {
+ *         batchJobId: string
+ *       }
+ *
+ *       const BatchJob = ({ batchJobId }: Props) => {
+ *         const cancelBatchJob = useAdminCancelBatchJob(batchJobId)
+ *         // ...
+ *
+ *         const handleCancel = () => {
+ *           cancelBatchJob.mutate(undefined, {
+ *             onSuccess: ({ batch_job }) => {
+ *               console.log(batch_job)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default BatchJob
  *   - lang: Shell
  *     label: cURL
  *     source: |

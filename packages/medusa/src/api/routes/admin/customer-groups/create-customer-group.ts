@@ -19,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -31,6 +31,25 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateCustomerGroup } from "medusa-react"
+ *
+ *       const CreateCustomerGroup = () => {
+ *         const createCustomerGroup = useAdminCreateCustomerGroup()
+ *         // ...
+ *
+ *         const handleCreate = (name: string) => {
+ *           createCustomerGroup.mutate({
+ *             name,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -20,7 +20,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,6 +30,31 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDraftOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const {
+ *           draft_order,
+ *           isLoading,
+ *         } = useAdminDraftOrder(draftOrderId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {draft_order && <span>{draft_order.display_id}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

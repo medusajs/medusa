@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: updateOption
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,6 +34,42 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateProductOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         optionId: string
+ *       }
+ *
+ *       const ProductOption = ({
+ *         productId,
+ *         optionId
+ *       }: Props) => {
+ *         const updateOption = useAdminUpdateProductOption(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           title: string
+ *         ) => {
+ *           updateOption.mutate({
+ *             option_id: optionId,
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductOption
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -121,7 +121,7 @@ import { listAndCountPriceListPricingModule } from "./modules-queries"
  *   method: list
  *   queryParams: AdminGetPriceListPaginationParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -131,6 +131,32 @@ import { listAndCountPriceListPricingModule } from "./modules-queries"
  *       .then(({ price_lists, limit, offset, count }) => {
  *         console.log(price_lists.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminPriceLists } from "medusa-react"
+ *
+ *       const PriceLists = () => {
+ *         const { price_lists, isLoading } = useAdminPriceLists()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {price_lists && !price_lists.length && (
+ *               <span>No Price Lists</span>
+ *             )}
+ *             {price_lists && price_lists.length > 0 && (
+ *               <ul>
+ *                 {price_lists.map((price_list) => (
+ *                   <li key={price_list.id}>{price_list.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PriceLists
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -170,7 +196,7 @@ export default async (req: Request, res) => {
   let count
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    ;[priceLists, count] = await listAndCountPriceListPricingModule({
+    [priceLists, count] = await listAndCountPriceListPricingModule({
       filters: req.filterableFields,
       listConfig: req.listConfig,
       container: req.scope as MedusaContainer,

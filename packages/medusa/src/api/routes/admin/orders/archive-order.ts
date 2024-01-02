@@ -17,7 +17,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: archive
  *   params: AdminPostOrdersOrderArchiveParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,6 +27,33 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminArchiveOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const archiveOrder = useAdminArchiveOrder(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleArchivingOrder = () => {
+ *           archiveOrder.mutate(void 0, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.status)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |

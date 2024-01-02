@@ -25,7 +25,7 @@ import {
  * x-codegen:
  *   method: updateLineItem
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -37,6 +37,39 @@ import {
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminOrderEditUpdateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *         itemId: string
+ *       }
+ *
+ *       const OrderEditItemChange = ({
+ *         orderEditId,
+ *         itemId
+ *       }: Props) => {
+ *         const updateLineItem = useAdminOrderEditUpdateLineItem(
+ *           orderEditId,
+ *           itemId
+ *         )
+ *
+ *         const handleUpdateLineItem = (quantity: number) => {
+ *           updateLineItem.mutate({
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEditItemChange
  *   - lang: Shell
  *     label: cURL
  *     source: |

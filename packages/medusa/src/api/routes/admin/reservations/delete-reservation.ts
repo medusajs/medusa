@@ -12,7 +12,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,33 @@ import { EntityManager } from "typeorm"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteReservation } from "medusa-react"
+ *
+ *       type Props = {
+ *         reservationId: string
+ *       }
+ *
+ *       const Reservation = ({ reservationId }: Props) => {
+ *         const deleteReservation = useAdminDeleteReservation(
+ *           reservationId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteReservation.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Reservation
  *   - lang: Shell
  *     label: cURL
  *     source: |

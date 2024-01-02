@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: addCountry
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,6 +34,37 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminRegionAddCountry } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const addCountry = useAdminRegionAddCountry(regionId)
+ *         // ...
+ *
+ *         const handleAddCountry = (
+ *           countryCode: string
+ *         ) => {
+ *           addCountry.mutate({
+ *             country_code: countryCode
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.countries)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |

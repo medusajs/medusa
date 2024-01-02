@@ -41,7 +41,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -64,6 +64,40 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateDraftOrder } from "medusa-react"
+ *
+ *       type DraftOrderData = {
+ *         email: string
+ *         region_id: string
+ *         items: {
+ *           quantity: number,
+ *           variant_id: string
+ *         }[]
+ *         shipping_methods: {
+ *           option_id: string
+ *           price: number
+ *         }[]
+ *       }
+ *
+ *       const CreateDraftOrder = () => {
+ *         const createDraftOrder = useAdminCreateDraftOrder()
+ *         // ...
+ *
+ *         const handleCreate = (data: DraftOrderData) => {
+ *           createDraftOrder.mutate(data, {
+ *             onSuccess: ({ draft_order }) => {
+ *               console.log(draft_order.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateDraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -12,7 +12,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,33 @@ import { EntityManager } from "typeorm"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteDraftOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const deleteDraftOrder = useAdminDeleteDraftOrder(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteDraftOrder.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

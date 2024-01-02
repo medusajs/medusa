@@ -28,7 +28,7 @@ import customerController from "../../../../controllers/customers"
  *   method: list
  *   queryParams: AdminGetCustomersParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -38,6 +38,32 @@ import customerController from "../../../../controllers/customers"
  *       .then(({ customers, limit, offset, count }) => {
  *         console.log(customers.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCustomers } from "medusa-react"
+ *
+ *       const Customers = () => {
+ *         const { customers, isLoading } = useAdminCustomers()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customers && !customers.length && (
+ *               <span>No customers</span>
+ *             )}
+ *             {customers && customers.length > 0 && (
+ *               <ul>
+ *                 {customers.map((customer) => (
+ *                   <li key={customer.id}>{customer.first_name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Customers
  *   - lang: Shell
  *     label: cURL
  *     source: |

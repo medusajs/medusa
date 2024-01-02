@@ -19,7 +19,7 @@ import { defaultAdminProductCategoryRelations } from "."
  *   method: retrieve
  *   queryParams: AdminGetProductCategoryParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -29,6 +29,35 @@ import { defaultAdminProductCategoryRelations } from "."
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminProductCategory } from "medusa-react"
+ *
+ *       type Props = {
+ *         productCategoryId: string
+ *       }
+ *
+ *       const Category = ({
+ *         productCategoryId
+ *       }: Props) => {
+ *         const {
+ *           product_category,
+ *           isLoading,
+ *         } = useAdminProductCategory(productCategoryId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_category && (
+ *               <span>{product_category.name}</span>
+ *             )}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |

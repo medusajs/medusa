@@ -18,7 +18,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,6 +30,29 @@ import { EntityManager } from "typeorm"
  *       .then(({ store }) => {
  *         console.log(store.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateStore } from "medusa-react"
+ *
+ *       function Store() {
+ *         const updateStore = useAdminUpdateStore()
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string
+ *         ) => {
+ *           updateStore.mutate({
+ *             name
+ *           }, {
+ *             onSuccess: ({ store }) => {
+ *               console.log(store.name)
+ *             }
+ *           })
+ *         }
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |

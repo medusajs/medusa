@@ -139,7 +139,7 @@ import { listProducts } from "../../../../utils"
  *   method: listProducts
  *   queryParams: AdminGetPriceListsPriceListProductsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -149,6 +149,40 @@ import { listProducts } from "../../../../utils"
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminPriceListProducts } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceListProducts = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const { products, isLoading } = useAdminPriceListProducts(
+ *           priceListId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {products && !products.length && (
+ *               <span>No Price Lists</span>
+ *             )}
+ *             {products && products.length > 0 && (
+ *               <ul>
+ *                 {products.map((product) => (
+ *                   <li key={product.id}>{product.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default PriceListProducts
  *   - lang: Shell
  *     label: cURL
  *     source: |

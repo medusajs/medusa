@@ -39,7 +39,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: updateVariant
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -64,6 +64,40 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateVariant } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         variantId: string
+ *       }
+ *
+ *       const ProductVariant = ({
+ *         productId,
+ *         variantId
+ *       }: Props) => {
+ *         const updateVariant = useAdminUpdateVariant(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (title: string) => {
+ *           updateVariant.mutate({
+ *             variant_id: variantId,
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.variants)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductVariant
  *   - lang: Shell
  *     label: cURL
  *     source: |

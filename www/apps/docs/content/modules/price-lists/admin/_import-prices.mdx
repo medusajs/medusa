@@ -350,7 +350,11 @@ You can retrieve all the details of the batch job, including its status and the 
     ```tsx
     import { useAdminBatchJob } from "medusa-react"
 
-    const ImportPrices = () => {
+    type Props = {
+      batchJobId: string
+    }
+
+    const ImportPrices = ({ batchJobId }: Props) => {
       const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
       // ...
 
@@ -440,7 +444,11 @@ To confirm a batch job send the following request:
     ```tsx
     import { useAdminConfirmBatchJob } from "medusa-react"
 
-    const ImportPrices = () => {
+    type Props = {
+      batchJobId: string
+    }
+
+    const BatchJob = ({ batchJobId }: Props) => {
       const confirmBatchJob = useAdminConfirmBatchJob(batchJobId)
       // ...
 

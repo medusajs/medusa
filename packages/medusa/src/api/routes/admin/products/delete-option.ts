@@ -15,7 +15,7 @@ import { ProductService } from "../../../../services"
  * x-codegen:
  *   method: deleteOption
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -25,6 +25,37 @@ import { ProductService } from "../../../../services"
  *       .then(({ option_id, object, deleted, product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteProductOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *         optionId: string
+ *       }
+ *
+ *       const ProductOption = ({
+ *         productId,
+ *         optionId
+ *       }: Props) => {
+ *         const deleteOption = useAdminDeleteProductOption(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteOption.mutate(optionId, {
+ *             onSuccess: ({ option_id, object, deleted, product }) => {
+ *               console.log(product.options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ProductOption
  *   - lang: Shell
  *     label: cURL
  *     source: |

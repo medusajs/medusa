@@ -116,7 +116,7 @@ import { promiseAll } from "@medusajs/utils"
  *   method: list
  *   queryParams: AdminGetReservationsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -126,6 +126,32 @@ import { promiseAll } from "@medusajs/utils"
  *       .then(({ reservations, count, limit, offset }) => {
  *         console.log(reservations.length)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminReservations } from "medusa-react"
+ *
+ *       const Reservations = () => {
+ *         const { reservations, isLoading } = useAdminReservations()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {reservations && !reservations.length && (
+ *               <span>No Reservations</span>
+ *             )}
+ *             {reservations && reservations.length > 0 && (
+ *               <ul>
+ *                 {reservations.map((reservation) => (
+ *                   <li key={reservation.id}>{reservation.quantity}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Reservations
  *   - lang: Shell
  *     label: cURL
  *     source: |

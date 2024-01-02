@@ -17,7 +17,7 @@ import fs from "fs"
  *             type: string
  *             format: binary
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,6 +27,27 @@ import fs from "fs"
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUploadFile } from "medusa-react"
+ *
+ *       const UploadFile = () => {
+ *         const uploadFile = useAdminUploadFile()
+ *         // ...
+ *
+ *         const handleFileUpload = (file: File) => {
+ *           uploadFile.mutate(file, {
+ *             onSuccess: ({ uploads }) => {
+ *               console.log(uploads[0].key)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default UploadFile
  *   - lang: Shell
  *     label: cURL
  *     source: |

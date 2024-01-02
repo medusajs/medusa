@@ -28,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -51,6 +51,36 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateRegion } from "medusa-react"
+ *
+ *       type CreateData = {
+ *         name: string
+ *         currency_code: string
+ *         tax_rate: number
+ *         payment_providers: string[]
+ *         fulfillment_providers: string[]
+ *         countries: string[]
+ *       }
+ *
+ *       const CreateRegion = () => {
+ *         const createRegion = useAdminCreateRegion()
+ *         // ...
+ *
+ *         const handleCreate = (regionData: CreateData) => {
+ *           createRegion.mutate(regionData, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateRegion
  *   - lang: Shell
  *     label: cURL
  *     source: |

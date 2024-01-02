@@ -22,7 +22,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,6 +34,33 @@ import { EntityManager } from "typeorm"
  *       .then(({ currency }) => {
  *         console.log(currency.code);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateCurrency } from "medusa-react"
+ *
+ *       type Props = {
+ *         currencyCode: string
+ *       }
+ *
+ *       const Currency = ({ currencyCode }: Props) => {
+ *         const updateCurrency = useAdminUpdateCurrency(currencyCode)
+ *         // ...
+ *
+ *         const handleUpdate = (includes_tax: boolean) => {
+ *           updateCurrency.mutate({
+ *             includes_tax,
+ *           }, {
+ *             onSuccess: ({ currency }) => {
+ *               console.log(currency)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Currency
  *   - lang: Shell
  *     label: cURL
  *     source: |

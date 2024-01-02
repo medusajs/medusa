@@ -12,7 +12,40 @@ export const adminPaymentQueryKeys =
 
 type AdminPaymentKey = typeof adminPaymentQueryKeys
 
+/**
+ * This hook retrieves a payment's details.
+ * 
+ * @example
+ * import { useAdminPayment } from "medusa-react"
+ * 
+ * type Props = {
+ *   paymentId: string
+ * }
+ * 
+ * const Payment = ({ paymentId }: Props) => {
+ *   const { 
+ *     payment, 
+ *     isLoading, 
+ *   } = useAdminPayment(paymentId)
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {payment && <span>{payment.amount}</span>}
+ *       
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Payment
+ * 
+ * @namespaceAsCategory Hooks.Admin.Payments
+ * @category Queries
+ */
 export const useAdminPayment = (
+  /**
+   * The payment's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminPaymentRes>,

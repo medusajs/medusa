@@ -30,7 +30,7 @@ import {
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -42,6 +42,40 @@ import {
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { ShippingProfileType } from "@medusajs/medusa"
+ *       import { useAdminUpdateShippingProfile } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingProfileId: string
+ *       }
+ *
+ *       const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *         const updateShippingProfile = useAdminUpdateShippingProfile(
+ *           shippingProfileId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string,
+ *           type: ShippingProfileType
+ *         ) => {
+ *           updateShippingProfile.mutate({
+ *             name,
+ *             type
+ *           }, {
+ *             onSuccess: ({ shipping_profile }) => {
+ *               console.log(shipping_profile.name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |

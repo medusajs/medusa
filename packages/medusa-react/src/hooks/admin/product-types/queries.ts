@@ -16,6 +16,85 @@ export const adminProductTypeKeys = queryKeysFactory(
 
 type ProductTypesQueryKeys = typeof adminProductTypeKeys
 
+/**
+ * This hook retrieves a list of product types. The product types can be filtered by fields such as `q` or `value` passed in the `query` parameter.
+ * The product types can also be sorted or paginated.
+ * 
+ * @example
+ * To list product types:
+ * 
+ * ```tsx
+ * import { useAdminProductTypes } from "medusa-react"
+ * 
+ * function ProductTypes() {
+ *   const { 
+ *     product_types,
+ *     isLoading 
+ *   } = useAdminProductTypes()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {product_types && !product_types.length && (
+ *         <span>No Product Tags</span>
+ *       )}
+ *       {product_types && product_types.length > 0 && (
+ *         <ul>
+ *           {product_types.map(
+ *             (type) => (
+ *               <li key={type.id}>{type.value}</li>
+ *             )
+ *           )}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default ProductTypes
+ * ```
+ * 
+ * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+ * 
+ * ```tsx
+ * import { useAdminProductTypes } from "medusa-react"
+ * 
+ * function ProductTypes() {
+ *   const { 
+ *     product_types,
+ *     limit,
+ *     offset,
+ *     isLoading 
+ *   } = useAdminProductTypes({
+ *     limit: 10,
+ *     offset: 0
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {product_types && !product_types.length && (
+ *         <span>No Product Tags</span>
+ *       )}
+ *       {product_types && product_types.length > 0 && (
+ *         <ul>
+ *           {product_types.map(
+ *             (type) => (
+ *               <li key={type.id}>{type.value}</li>
+ *             )
+ *           )}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default ProductTypes
+ * ```
+ * 
+ * @namespaceAsCategory Hooks.Admin.Product Types
+ * @category Queries
+ */
 export const useAdminProductTypes = (
   query?: AdminGetProductTypesParams,
   options?: UseQueryOptionsWrapper<

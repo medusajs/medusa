@@ -15,7 +15,78 @@ export const adminNoteKeys = queryKeysFactory(ADMIN_NOTE_QUERY_KEY)
 
 type NoteQueryKeys = typeof adminNoteKeys
 
+/**
+ * This hook retrieves a list of notes. The notes can be filtered by fields such as `resource_id` passed in 
+ * the `query` parameter. The notes can also be paginated.
+ * 
+ * @example
+ * To list notes:
+ * 
+ * ```tsx
+ * import { useAdminNotes } from "medusa-react"
+ * 
+ * const Notes = () => {
+ *   const { notes, isLoading } = useAdminNotes()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {notes && !notes.length && <span>No Notes</span>}
+ *       {notes && notes.length > 0 && (
+ *         <ul>
+ *           {notes.map((note) => (
+ *             <li key={note.id}>{note.resource_type}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Notes
+ * ```
+ * 
+ * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+ * 
+ * ```tsx
+ * import { useAdminNotes } from "medusa-react"
+ * 
+ * const Notes = () => {
+ *   const { 
+ *     notes, 
+ *     limit,
+ *     offset,
+ *     isLoading
+ *   } = useAdminNotes({
+ *     limit: 40,
+ *     offset: 0
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {notes && !notes.length && <span>No Notes</span>}
+ *       {notes && notes.length > 0 && (
+ *         <ul>
+ *           {notes.map((note) => (
+ *             <li key={note.id}>{note.resource_type}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Notes
+ * ```
+ * 
+ * @namespaceAsCategory Hooks.Admin.Notes
+ * @category Queries
+ */
 export const useAdminNotes = (
+  /**
+   * Filters and pagination configurations applied on retrieved notes.
+   */
   query?: AdminGetNotesParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminNotesListRes>,
@@ -32,6 +103,32 @@ export const useAdminNotes = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieves a note's details.
+ * 
+ * @example
+ * import { useAdminNote } from "medusa-react"
+ * 
+ * type Props = {
+ *   noteId: string
+ * }
+ * 
+ * const Note = ({ noteId }: Props) => {
+ *   const { note, isLoading } = useAdminNote(noteId)
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {note && <span>{note.resource_type}</span>}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Note
+ * 
+ * @namespaceAsCategory Hooks.Admin.Notes
+ * @category Queries
+ */
 export const useAdminNote = (
   id: string,
   options?: UseQueryOptionsWrapper<

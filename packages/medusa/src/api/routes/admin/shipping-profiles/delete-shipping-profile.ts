@@ -12,7 +12,7 @@ import { ShippingProfileService } from "../../../../services"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,33 @@ import { ShippingProfileService } from "../../../../services"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteShippingProfile } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingProfileId: string
+ *       }
+ *
+ *       const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *         const deleteShippingProfile = useAdminDeleteShippingProfile(
+ *           shippingProfileId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteShippingProfile.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |

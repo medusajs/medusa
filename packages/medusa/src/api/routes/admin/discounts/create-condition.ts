@@ -28,7 +28,7 @@ import { FindParams } from "../../../../types/common"
  *   method: createCondition
  *   queryParams: AdminPostDiscountsDiscountConditionsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -42,6 +42,38 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { DiscountConditionOperator } from "@medusajs/medusa"
+ *       import { useAdminDiscountCreateCondition } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const createCondition = useAdminDiscountCreateCondition(discountId)
+ *         // ...
+ *
+ *         const handleCreateCondition = (
+ *           operator: DiscountConditionOperator,
+ *           products: string[]
+ *         ) => {
+ *           createCondition.mutate({
+ *             operator,
+ *             products
+ *           }, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

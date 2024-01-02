@@ -37,7 +37,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: addLineItem
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -49,6 +49,35 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDraftOrderAddLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const addLineItem = useAdminDraftOrderAddLineItem(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleAdd = (quantity: number) => {
+ *           addLineItem.mutate({
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ draft_order }) => {
+ *               console.log(draft_order.cart)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

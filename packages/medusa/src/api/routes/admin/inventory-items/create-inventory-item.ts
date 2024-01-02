@@ -31,7 +31,7 @@ import { FindParams } from "../../../../types/common"
  *   method: create
  *   queryParams: AdminPostInventoryItemsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -43,6 +43,29 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateInventoryItem } from "medusa-react"
+ *
+ *       const CreateInventoryItem = () => {
+ *         const createInventoryItem = useAdminCreateInventoryItem()
+ *         // ...
+ *
+ *         const handleCreate = (variantId: string) => {
+ *           createInventoryItem.mutate({
+ *             variant_id: variantId,
+ *           }, {
+ *             onSuccess: ({ inventory_item }) => {
+ *               console.log(inventory_item.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateInventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |

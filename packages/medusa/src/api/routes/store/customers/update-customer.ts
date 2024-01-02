@@ -21,7 +21,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,6 +33,37 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       .then(({ customer }) => {
  *         console.log(customer.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useUpdateMe } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerId: string
+ *       }
+ *
+ *       const Customer = ({ customerId }: Props) => {
+ *         const updateCustomer = useUpdateMe()
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           firstName: string
+ *         ) => {
+ *           // ...
+ *           updateCustomer.mutate({
+ *             id: customerId,
+ *             first_name: firstName,
+ *           }, {
+ *             onSuccess: ({ customer }) => {
+ *               console.log(customer.first_name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |

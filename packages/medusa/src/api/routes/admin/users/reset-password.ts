@@ -25,7 +25,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: resetPassword
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -38,6 +38,33 @@ import { EntityManager } from "typeorm"
  *       .then(({ user }) => {
  *         console.log(user.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminResetPassword } from "medusa-react"
+ *
+ *       const ResetPassword = () => {
+ *         const resetPassword = useAdminResetPassword()
+ *         // ...
+ *
+ *         const handleResetPassword = (
+ *           token: string,
+ *           password: string
+ *         ) => {
+ *           resetPassword.mutate({
+ *             token,
+ *             password,
+ *           }, {
+ *             onSuccess: ({ user }) => {
+ *               console.log(user.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ResetPassword
  *   - lang: Shell
  *     label: cURL
  *     source: |

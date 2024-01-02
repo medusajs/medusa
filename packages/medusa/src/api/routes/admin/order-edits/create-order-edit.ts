@@ -21,7 +21,7 @@ import {
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -31,6 +31,28 @@ import {
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateOrderEdit } from "medusa-react"
+ *
+ *       const CreateOrderEdit = () => {
+ *         const createOrderEdit = useAdminCreateOrderEdit()
+ *
+ *         const handleCreateOrderEdit = (orderId: string) => {
+ *           createOrderEdit.mutate({
+ *             order_id: orderId,
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateOrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |

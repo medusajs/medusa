@@ -12,7 +12,7 @@ import NoteService from "../../../../services/note"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,27 @@ import NoteService from "../../../../services/note"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteNote } from "medusa-react"
+ *
+ *       type Props = {
+ *         noteId: string
+ *       }
+ *
+ *       const Note = ({ noteId }: Props) => {
+ *         const deleteNote = useAdminDeleteNote(noteId)
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteNote.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Note
  *   - lang: Shell
  *     label: cURL
  *     source: |

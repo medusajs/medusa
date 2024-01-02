@@ -27,7 +27,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: createDynamicCode
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -40,6 +40,37 @@ import { EntityManager } from "typeorm"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateDynamicDiscountCode } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const createDynamicDiscount = useAdminCreateDynamicDiscountCode(discountId)
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           code: string,
+ *           usageLimit: number
+ *         ) => {
+ *           createDynamicDiscount.mutate({
+ *             code,
+ *             usage_limit: usageLimit
+ *           }, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.is_dynamic)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

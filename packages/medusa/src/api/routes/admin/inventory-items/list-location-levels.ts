@@ -28,7 +28,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   method: listLocationLevels
  *   queryParams: AdminGetInventoryItemsItemLocationLevelsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -38,6 +38,38 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.location_levels);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminInventoryItemLocationLevels,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const {
+ *           inventory_item,
+ *           isLoading,
+ *         } = useAdminInventoryItemLocationLevels(inventoryItemId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {inventory_item && (
+ *               <ul>
+ *                 {inventory_item.location_levels.map((level) => (
+ *                   <span key={level.id}>{level.stocked_quantity}</span>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |

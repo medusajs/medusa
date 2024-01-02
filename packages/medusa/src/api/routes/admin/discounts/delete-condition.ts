@@ -19,7 +19,7 @@ import { FindParams } from "../../../../types/common"
  *   method: deleteCondition
  *   queryParams: AdminDeleteDiscountsDiscountConditionsConditionParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -29,6 +29,37 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminDiscountRemoveCondition
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const deleteCondition = useAdminDiscountRemoveCondition(
+ *           discountId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (
+ *           conditionId: string
+ *         ) => {
+ *           deleteCondition.mutate(conditionId, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(deleted)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

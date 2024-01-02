@@ -94,7 +94,7 @@ import { Type } from "class-transformer"
  *   method: list
  *   queryParams: AdminGetSalesChannelsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -104,6 +104,32 @@ import { Type } from "class-transformer"
  *       .then(({ sales_channels, limit, offset, count }) => {
  *         console.log(sales_channels.length)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminSalesChannels } from "medusa-react"
+ *
+ *       const SalesChannels = () => {
+ *         const { sales_channels, isLoading } = useAdminSalesChannels()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {sales_channels && !sales_channels.length && (
+ *               <span>No Sales Channels</span>
+ *             )}
+ *             {sales_channels && sales_channels.length > 0 && (
+ *               <ul>
+ *                 {sales_channels.map((salesChannel) => (
+ *                   <li key={salesChannel.id}>{salesChannel.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default SalesChannels
  *   - lang: Shell
  *     label: cURL
  *     source: |

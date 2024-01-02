@@ -21,7 +21,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,6 +33,35 @@ import { EntityManager } from "typeorm"
  *       .then(({ user }) => {
  *         console.log(user.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateUser } from "medusa-react"
+ *
+ *       type Props = {
+ *         userId: string
+ *       }
+ *
+ *       const User = ({ userId }: Props) => {
+ *         const updateUser = useAdminUpdateUser(userId)
+ *         // ...
+ *
+ *         const handleUpdateUser = (
+ *           firstName: string
+ *         ) => {
+ *           updateUser.mutate({
+ *             first_name: firstName,
+ *           }, {
+ *             onSuccess: ({ user }) => {
+ *               console.log(user.first_name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default User
  *   - lang: Shell
  *     label: cURL
  *     source: |

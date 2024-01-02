@@ -20,7 +20,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -32,6 +32,37 @@ import { EntityManager } from "typeorm"
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateSalesChannel } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const updateSalesChannel = useAdminUpdateSalesChannel(
+ *           salesChannelId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           is_disabled: boolean
+ *         ) => {
+ *           updateSalesChannel.mutate({
+ *             is_disabled,
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.is_disabled)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -18,7 +18,7 @@ import { WorkflowTypes } from "@medusajs/types"
  * x-codegen:
  *   method: deleteProductsPrices
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,6 +33,37 @@ import { WorkflowTypes } from "@medusajs/types"
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeletePriceListProductsPrices } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const deleteProductsPrices = useAdminDeletePriceListProductsPrices(
+ *           priceListId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteProductsPrices = (productIds: string[]) => {
+ *           deleteProductsPrices.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ ids, deleted, object }) => {
+ *               console.log(ids)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |

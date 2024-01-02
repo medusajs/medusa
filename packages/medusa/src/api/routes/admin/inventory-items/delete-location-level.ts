@@ -15,7 +15,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: deleteLocationLevel
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -25,6 +25,31 @@ import { EntityManager } from "typeorm"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteLocationLevel } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const deleteLocationLevel = useAdminDeleteLocationLevel(
+ *           inventoryItemId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (
+ *           locationId: string
+ *         ) => {
+ *           deleteLocationLevel.mutate(locationId)
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |

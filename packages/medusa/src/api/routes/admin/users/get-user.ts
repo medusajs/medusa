@@ -11,7 +11,7 @@ import UserService from "../../../../services/user"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -21,6 +21,29 @@ import UserService from "../../../../services/user"
  *       .then(({ user }) => {
  *         console.log(user.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUser } from "medusa-react"
+ *
+ *       type Props = {
+ *         userId: string
+ *       }
+ *
+ *       const User = ({ userId }: Props) => {
+ *         const { user, isLoading } = useAdminUser(
+ *           userId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {user && <span>{user.first_name} {user.last_name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default User
  *   - lang: Shell
  *     label: cURL
  *     source: |

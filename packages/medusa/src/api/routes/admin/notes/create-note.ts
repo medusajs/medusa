@@ -18,7 +18,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -32,6 +32,31 @@ import { EntityManager } from "typeorm"
  *       .then(({ note }) => {
  *         console.log(note.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateNote } from "medusa-react"
+ *
+ *       const CreateNote = () => {
+ *         const createNote = useAdminCreateNote()
+ *         // ...
+ *
+ *         const handleCreate = () => {
+ *           createNote.mutate({
+ *             resource_id: "order_123",
+ *             resource_type: "order",
+ *             value: "We delivered this order"
+ *           }, {
+ *             onSuccess: ({ note }) => {
+ *               console.log(note.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateNote
  *   - lang: Shell
  *     label: cURL
  *     source: |

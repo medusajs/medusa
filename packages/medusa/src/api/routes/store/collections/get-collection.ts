@@ -10,7 +10,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -19,6 +19,27 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       .then(({ collection }) => {
  *         console.log(collection.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const ProductCollection = ({ collectionId }: Props) => {
+ *         const { collection, isLoading } = useCollection(collectionId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {collection && <span>{collection.title}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

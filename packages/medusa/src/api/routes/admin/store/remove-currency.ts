@@ -20,7 +20,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: deleteCurrency
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,6 +30,27 @@ import { EntityManager } from "typeorm"
  *       .then(({ store }) => {
  *         console.log(store.currencies);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteStoreCurrency } from "medusa-react"
+ *
+ *       const Store = () => {
+ *         const deleteCurrency = useAdminDeleteStoreCurrency()
+ *         // ...
+ *
+ *         const handleAdd = (code: string) => {
+ *           deleteCurrency.mutate(code, {
+ *             onSuccess: ({ store }) => {
+ *               console.log(store.currencies)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |

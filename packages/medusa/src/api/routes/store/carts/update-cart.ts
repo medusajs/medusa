@@ -35,7 +35,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -46,6 +46,34 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useUpdateCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const updateCart = useUpdateCart(cartId)
+ *
+ *         const handleUpdate = (
+ *           email: string
+ *         ) => {
+ *           updateCart.mutate({
+ *             email
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.email)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |

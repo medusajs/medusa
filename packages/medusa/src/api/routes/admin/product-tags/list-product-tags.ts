@@ -87,7 +87,7 @@ import { Request, Response } from "express"
  *   method: list
  *   queryParams: AdminGetProductTagsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -97,6 +97,37 @@ import { Request, Response } from "express"
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminProductTags } from "medusa-react"
+ *
+ *       function ProductTags() {
+ *         const {
+ *           product_tags,
+ *           isLoading
+ *         } = useAdminProductTags()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_tags && !product_tags.length && (
+ *               <span>No Product Tags</span>
+ *             )}
+ *             {product_tags && product_tags.length > 0 && (
+ *               <ul>
+ *                 {product_tags.map(
+ *                   (tag) => (
+ *                     <li key={tag.id}>{tag.value}</li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductTags
  *   - lang: Shell
  *     label: cURL
  *     source: |

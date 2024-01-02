@@ -43,7 +43,7 @@ import { validator } from "../../../../utils/validator"
  *   method: update
  *   queryParams: AdminPostTaxRatesTaxRateParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -55,6 +55,35 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateTaxRate } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const updateTaxRate = useAdminUpdateTaxRate(taxRateId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string
+ *         ) => {
+ *           updateTaxRate.mutate({
+ *             name
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |

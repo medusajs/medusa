@@ -41,7 +41,7 @@ import { FindParams } from "../../../../types/common"
  *   method: update
  *   queryParams: AdminPostDiscountsDiscountParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -53,6 +53,29 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateDiscount } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const updateDiscount = useAdminUpdateDiscount(discountId)
+ *         // ...
+ *
+ *         const handleUpdate = (isDisabled: boolean) => {
+ *           updateDiscount.mutate({
+ *             is_disabled: isDisabled,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

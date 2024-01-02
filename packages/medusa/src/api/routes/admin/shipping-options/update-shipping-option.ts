@@ -35,7 +35,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -54,6 +54,43 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateShippingOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingOptionId: string
+ *       }
+ *
+ *       const ShippingOption = ({ shippingOptionId }: Props) => {
+ *         const updateShippingOption = useAdminUpdateShippingOption(
+ *           shippingOptionId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string,
+ *           requirements: {
+ *             id: string,
+ *             type: string,
+ *             amount: number
+ *           }[]
+ *         ) => {
+ *           updateShippingOption.mutate({
+ *             name,
+ *             requirements
+ *           }, {
+ *             onSuccess: ({ shipping_option }) => {
+ *               console.log(shipping_option.requirements)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingOption
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -17,6 +17,40 @@ import { adminInventoryItemsKeys } from "../inventory-item"
 import { adminVariantKeys } from "../variants"
 import { adminReservationsKeys } from "./queries"
 
+/**
+ * This hook creates a reservation which can be associated with any resource, such as an order's line item.
+ * 
+ * @example
+ * import { useAdminCreateReservation } from "medusa-react"
+ * 
+ * const CreateReservation = () => {
+ *   const createReservation = useAdminCreateReservation()
+ *   // ...
+ * 
+ *   const handleCreate = (
+ *     locationId: string,
+ *     inventoryItemId: string,
+ *     quantity: number
+ *   ) => {
+ *     createReservation.mutate({
+ *       location_id: locationId,
+ *       inventory_item_id: inventoryItemId,
+ *       quantity,
+ *     }, {
+ *       onSuccess: ({ reservation }) => {
+ *         console.log(reservation.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CreateReservation
+ * 
+ * @namespaceAsCategory Hooks.Admin.Reservations
+ * @category Mutations
+ */
 export const useAdminCreateReservation = (
   options?: UseMutationOptions<
     Response<AdminReservationsRes>,
@@ -38,7 +72,42 @@ export const useAdminCreateReservation = (
   )
 }
 
+/**
+ * This hook updates a reservation's details.
+ * 
+ * @example
+ * import { useAdminUpdateReservation } from "medusa-react"
+ * 
+ * type Props = {
+ *   reservationId: string
+ * }
+ * 
+ * const Reservation = ({ reservationId }: Props) => {
+ *   const updateReservation = useAdminUpdateReservation(
+ *     reservationId
+ *   )
+ *   // ...
+ * 
+ *   const handleUpdate = (
+ *     quantity: number
+ *   ) => {
+ *     updateReservation.mutate({
+ *       quantity,
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Reservation
+ * 
+ * @namespaceAsCategory Hooks.Admin.Reservations
+ * @category Mutations
+ */
 export const useAdminUpdateReservation = (
+  /**
+   * The reservation's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminReservationsRes>,
@@ -65,7 +134,42 @@ export const useAdminUpdateReservation = (
   )
 }
 
+/**
+ * This hook deletes a reservation. Associated resources, such as the line item, will not be deleted.
+ * 
+ * @example
+ * import { useAdminDeleteReservation } from "medusa-react"
+ * 
+ * type Props = {
+ *   reservationId: string
+ * }
+ * 
+ * const Reservation = ({ reservationId }: Props) => {
+ *   const deleteReservation = useAdminDeleteReservation(
+ *     reservationId
+ *   )
+ *   // ...
+ * 
+ *   const handleDelete = () => {
+ *     deleteReservation.mutate(void 0, {
+ *       onSuccess: ({ id, object, deleted }) => {
+ *         console.log(id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Reservation
+ * 
+ * @namespaceAsCategory Hooks.Admin.Reservations
+ * @category Mutations
+ */
 export const useAdminDeleteReservation = (
+  /**
+   * The reservation's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminReservationsDeleteRes>,

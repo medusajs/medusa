@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: resend
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -35,6 +35,33 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ notification }) => {
  *         console.log(notification.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminResendNotification } from "medusa-react"
+ *
+ *       type Props = {
+ *         notificationId: string
+ *       }
+ *
+ *       const Notification = ({ notificationId }: Props) => {
+ *         const resendNotification = useAdminResendNotification(
+ *           notificationId
+ *         )
+ *         // ...
+ *
+ *         const handleResend = () => {
+ *           resendNotification.mutate({}, {
+ *             onSuccess: ({ notification }) => {
+ *               console.log(notification.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Notification
  *   - lang: Shell
  *     label: cURL
  *     source: |

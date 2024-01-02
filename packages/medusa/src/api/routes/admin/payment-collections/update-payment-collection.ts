@@ -19,7 +19,7 @@ import { PaymentCollectionService } from "../../../../services"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -31,6 +31,37 @@ import { PaymentCollectionService } from "../../../../services"
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdatePaymentCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *         const updateCollection = useAdminUpdatePaymentCollection(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           description: string
+ *         ) => {
+ *           updateCollection.mutate({
+ *             description
+ *           }, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.description)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

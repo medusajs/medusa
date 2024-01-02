@@ -11,7 +11,7 @@ import { defaultStoreSwapRelations } from "."
  * x-codegen:
  *   method: retrieveByCartId
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -20,6 +20,30 @@ import { defaultStoreSwapRelations } from "."
  *       .then(({ swap }) => {
  *         console.log(swap.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useCartSwap } from "medusa-react"
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Swap = ({ cartId }: Props) => {
+ *         const {
+ *           swap,
+ *           isLoading,
+ *         } = useCartSwap(cartId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {swap && <span>{swap.id}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |

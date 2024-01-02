@@ -22,7 +22,7 @@ import {
  * x-codegen:
  *   method: decline
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -31,6 +31,35 @@ import {
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useDeclineOrderEdit } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const declineOrderEdit = useDeclineOrderEdit(orderEditId)
+ *         // ...
+ *
+ *         const handleDeclineOrderEdit = (
+ *           declinedReason: string
+ *         ) => {
+ *           declineOrderEdit.mutate({
+ *             declined_reason: declinedReason,
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.declined_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |

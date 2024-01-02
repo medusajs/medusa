@@ -41,7 +41,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: createClaim
  *   params: AdminPostOrdersOrderClaimsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -59,6 +59,41 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateClaim } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const CreateClaim = ({ orderId }: Props) => {
+ *
+ *       const CreateClaim = (orderId: string) => {
+ *         const createClaim = useAdminCreateClaim(orderId)
+ *         // ...
+ *
+ *         const handleCreate = (itemId: string) => {
+ *           createClaim.mutate({
+ *             type: "refund",
+ *             claim_items: [
+ *               {
+ *                 item_id: itemId,
+ *                 quantity: 1,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.claims)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateClaim
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -20,7 +20,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -32,6 +32,37 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdatePublishableApiKey } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const updateKey = useAdminUpdatePublishableApiKey(
+ *           publishableApiKeyId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (title: string) => {
+ *           updateKey.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |

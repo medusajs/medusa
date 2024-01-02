@@ -11,7 +11,7 @@ import { PaymentCollectionService } from "../../../../services"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -21,6 +21,33 @@ import { PaymentCollectionService } from "../../../../services"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeletePaymentCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *         const deleteCollection = useAdminDeletePaymentCollection(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteCollection.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

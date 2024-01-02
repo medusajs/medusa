@@ -9,7 +9,7 @@
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -19,6 +19,27 @@
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminBatchJob } from "medusa-react"
+ *
+ *       type Props = {
+ *         batchJobId: string
+ *       }
+ *
+ *       const BatchJob = ({ batchJobId }: Props) => {
+ *         const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {batch_job && <span>{batch_job.created_by}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default BatchJob
  *   - lang: Shell
  *     label: cURL
  *     source: |

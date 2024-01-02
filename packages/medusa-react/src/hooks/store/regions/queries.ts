@@ -11,6 +11,36 @@ const regionsKey = queryKeysFactory(REGIONS_QUERY_KEY)
 
 type RegionQueryType = typeof regionsKey
 
+/**
+ * This hook retrieves a list of regions. This hook is useful to show the customer all available regions to choose from.
+ * 
+ * @example
+ * import { useRegions } from "medusa-react"
+ * 
+ * const Regions = () => {
+ *   const { regions, isLoading } = useRegions()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {regions?.length && (
+ *         <ul>
+ *           {regions.map((region) => (
+ *             <li key={region.id}>
+ *               {region.name}
+ *             </li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Regions
+ * 
+ * @namespaceAsCategory Hooks.Store.Regions
+ * @category Queries
+ */
 export const useRegions = (
   options?: UseQueryOptionsWrapper<
     Response<StoreRegionsListRes>,
@@ -27,7 +57,38 @@ export const useRegions = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieves a Region's details.
+ * 
+ * @example
+ * import { useRegion } from "medusa-react"
+ * 
+ * type Props = {
+ *   regionId: string
+ * }
+ * 
+ * const Region = ({ regionId }: Props) => {
+ *   const { region, isLoading } = useRegion(
+ *     regionId
+ *   )
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {region && <span>{region.name}</span>}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Region
+ * 
+ * @namespaceAsCategory Hooks.Store.Regions
+ * @category Queries
+ */
 export const useRegion = (
+  /**
+   * The region's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<StoreRegionsRes>,

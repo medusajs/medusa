@@ -14,7 +14,7 @@ import { defaultAdminCollectionsRelations } from "."
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -24,6 +24,27 @@ import { defaultAdminCollectionsRelations } from "."
  *       .then(({ collection }) => {
  *         console.log(collection.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const Collection = ({ collectionId }: Props) => {
+ *         const { collection, isLoading } = useAdminCollection(collectionId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {collection && <span>{collection.title}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Collection
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -34,7 +34,7 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *   method: fulfillClaim
  *   params: AdminPostOrdersOrderClaimsClaimFulfillmentsReq
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -45,6 +45,34 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminFulfillClaim } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *         claimId: string
+ *       }
+ *
+ *       const Claim = ({ orderId, claimId }: Props) => {
+ *         const fulfillClaim = useAdminFulfillClaim(orderId)
+ *         // ...
+ *
+ *         const handleFulfill = () => {
+ *           fulfillClaim.mutate({
+ *             claim_id: claimId,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.claims)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Claim
  *   - lang: Shell
  *     label: cURL
  *     source: |

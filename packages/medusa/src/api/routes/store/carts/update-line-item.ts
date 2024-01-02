@@ -25,7 +25,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * x-codegen:
  *   method: updateLineItem
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,6 +36,36 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useUpdateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const updateLineItem = useUpdateLineItem(cartId)
+ *
+ *         const handleUpdateItem = (
+ *           lineItemId: string,
+ *           quantity: number
+ *         ) => {
+ *           updateLineItem.mutate({
+ *             lineId: lineItemId,
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |

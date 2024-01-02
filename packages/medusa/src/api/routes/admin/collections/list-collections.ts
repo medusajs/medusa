@@ -88,7 +88,7 @@ import { Type } from "class-transformer"
  *   method: list
  *   queryParams: AdminGetCollectionsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -98,6 +98,32 @@ import { Type } from "class-transformer"
  *       .then(({ collections, limit, offset, count }) => {
  *         console.log(collections.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCollections } from "medusa-react"
+ *
+ *       const Collections = () => {
+ *         const { collections, isLoading } = useAdminCollections()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {collections && !collections.length && <span>
+ *               No Product Collections
+ *             </span>}
+ *             {collections && collections.length > 0 && (
+ *               <ul>
+ *                 {collections.map((collection) => (
+ *                   <li key={collection.id}>{collection.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Collections
  *   - lang: Shell
  *     label: cURL
  *     source: |

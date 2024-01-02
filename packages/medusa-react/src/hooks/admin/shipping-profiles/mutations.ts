@@ -13,6 +13,39 @@ import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminShippingProfileKeys } from "./queries"
 
+/**
+ * This hook creates a shipping profile.
+ * 
+ * @example
+ * import { ShippingProfileType } from "@medusajs/medusa"
+ * import { useAdminCreateShippingProfile } from "medusa-react"
+ * 
+ * const CreateShippingProfile = () => {
+ *   const createShippingProfile = useAdminCreateShippingProfile()
+ *   // ...
+ * 
+ *   const handleCreate = (
+ *     name: string,
+ *     type: ShippingProfileType
+ *   ) => {
+ *     createShippingProfile.mutate({
+ *       name,
+ *       type
+ *     }, {
+ *       onSuccess: ({ shipping_profile }) => {
+ *         console.log(shipping_profile.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CreateShippingProfile
+ * 
+ * @namespaceAsCategory Hooks.Admin.Shipping Profiles
+ * @category Mutations
+ */
 export const useAdminCreateShippingProfile = (
   options?: UseMutationOptions<
     Response<AdminShippingProfilesRes>,
@@ -29,7 +62,49 @@ export const useAdminCreateShippingProfile = (
   )
 }
 
+/**
+ * This hook updates a shipping profile's details.
+ * 
+ * @example
+ * import { ShippingProfileType } from "@medusajs/medusa"
+ * import { useAdminUpdateShippingProfile } from "medusa-react"
+ * 
+ * type Props = {
+ *   shippingProfileId: string
+ * }
+ * 
+ * const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *   const updateShippingProfile = useAdminUpdateShippingProfile(
+ *     shippingProfileId
+ *   )
+ *   // ...
+ * 
+ *   const handleUpdate = (
+ *     name: string,
+ *     type: ShippingProfileType
+ *   ) => {
+ *     updateShippingProfile.mutate({
+ *       name,
+ *       type
+ *     }, {
+ *       onSuccess: ({ shipping_profile }) => {
+ *         console.log(shipping_profile.name)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default ShippingProfile
+ * 
+ * @namespaceAsCategory Hooks.Admin.Shipping Profiles
+ * @category Mutations
+ */
 export const useAdminUpdateShippingProfile = (
+  /**
+   * The shipping profile's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminShippingProfilesRes>,
@@ -51,7 +126,42 @@ export const useAdminUpdateShippingProfile = (
   )
 }
 
+/**
+ * This hook deletes a shipping profile. Associated shipping options are deleted as well.
+ * 
+ * @example
+ * import { useAdminDeleteShippingProfile } from "medusa-react"
+ * 
+ * type Props = {
+ *   shippingProfileId: string
+ * }
+ * 
+ * const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *   const deleteShippingProfile = useAdminDeleteShippingProfile(
+ *     shippingProfileId
+ *   )
+ *   // ...
+ * 
+ *   const handleDelete = () => {
+ *     deleteShippingProfile.mutate(void 0, {
+ *       onSuccess: ({ id, object, deleted }) => {
+ *         console.log(id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default ShippingProfile
+ * 
+ * @namespaceAsCategory Hooks.Admin.Shipping Profiles
+ * @category Mutations
+ */
 export const useAdminDeleteShippingProfile = (
+  /**
+   * The shipping profile's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminDeleteShippingProfileRes>,

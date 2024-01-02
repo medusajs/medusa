@@ -31,7 +31,7 @@ import { promiseAll } from "@medusajs/utils"
  * x-codegen:
  *   method: createLineItem
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -43,6 +43,36 @@ import { promiseAll } from "@medusajs/utils"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useCreateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const createLineItem = useCreateLineItem(cartId)
+ *
+ *         const handleAddItem = (
+ *           variantId: string,
+ *           quantity: number
+ *         ) => {
+ *           createLineItem.mutate({
+ *             variant_id: variantId,
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |

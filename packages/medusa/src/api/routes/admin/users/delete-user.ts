@@ -12,7 +12,7 @@ import UserService from "../../../../services/user"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,31 @@ import UserService from "../../../../services/user"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteUser } from "medusa-react"
+ *
+ *       type Props = {
+ *         userId: string
+ *       }
+ *
+ *       const User = ({ userId }: Props) => {
+ *         const deleteUser = useAdminDeleteUser(userId)
+ *         // ...
+ *
+ *         const handleDeleteUser = () => {
+ *           deleteUser.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default User
  *   - lang: Shell
  *     label: cURL
  *     source: |

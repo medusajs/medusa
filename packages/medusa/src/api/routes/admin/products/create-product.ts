@@ -62,7 +62,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -76,6 +76,56 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateProduct } from "medusa-react"
+ *
+ *       type CreateProductData = {
+ *         title: string
+ *         is_giftcard: boolean
+ *         discountable: boolean
+ *         options: {
+ *           title: string
+ *         }[]
+ *         variants: {
+ *           title: string
+ *           prices: {
+ *             amount: number
+ *             currency_code :string
+ *           }[]
+ *           options: {
+ *             value: string
+ *           }[]
+ *         }[],
+ *         collection_id: string
+ *         categories: {
+ *           id: string
+ *         }[]
+ *         type: {
+ *           value: string
+ *         }
+ *         tags: {
+ *           value: string
+ *         }[]
+ *       }
+ *
+ *       const CreateProduct = () => {
+ *         const createProduct = useAdminCreateProduct()
+ *         // ...
+ *
+ *         const handleCreate = (productData: CreateProductData) => {
+ *           createProduct.mutate(productData, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateProduct
  *   - lang: Shell
  *     label: cURL
  *     source: |

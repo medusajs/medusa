@@ -16,7 +16,7 @@ import { ReturnReasonService } from "../../../../services"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,6 +26,29 @@ import { ReturnReasonService } from "../../../../services"
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminReturnReason } from "medusa-react"
+ *
+ *       type Props = {
+ *         returnReasonId: string
+ *       }
+ *
+ *       const ReturnReason = ({ returnReasonId }: Props) => {
+ *         const { return_reason, isLoading } = useAdminReturnReason(
+ *           returnReasonId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {return_reason && <span>{return_reason.label}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ReturnReason
  *   - lang: Shell
  *     label: cURL
  *     source: |

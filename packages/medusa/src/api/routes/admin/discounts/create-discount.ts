@@ -43,7 +43,7 @@ import { FindParams } from "../../../../types/common"
  *   method: create
  *   queryParams: AdminPostDiscountsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -64,6 +64,45 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminCreateDiscount,
+ *       } from "medusa-react"
+ *       import {
+ *         AllocationType,
+ *         DiscountRuleType,
+ *       } from "@medusajs/medusa"
+ *
+ *       const CreateDiscount = () => {
+ *         const createDiscount = useAdminCreateDiscount()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           currencyCode: string,
+ *           regionId: string
+ *         ) => {
+ *           // ...
+ *           createDiscount.mutate({
+ *             code: currencyCode,
+ *             rule: {
+ *               type: DiscountRuleType.FIXED,
+ *               value: 10,
+ *               allocation: AllocationType.ITEM,
+ *             },
+ *             regions: [
+ *                 regionId,
+ *             ],
+ *             is_dynamic: false,
+ *             is_disabled: false,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateDiscount
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -33,7 +33,7 @@ import { CreateShippingOptionInput } from "../../../../types/shipping-options"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -50,6 +50,44 @@ import { CreateShippingOptionInput } from "../../../../types/shipping-options"
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateShippingOption } from "medusa-react"
+ *
+ *       type CreateShippingOption = {
+ *         name: string
+ *         provider_id: string
+ *         data: Record<string, unknown>
+ *         price_type: string
+ *         amount: number
+ *       }
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({ regionId }: Props) => {
+ *         const createShippingOption = useAdminCreateShippingOption()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateShippingOption
+ *         ) => {
+ *           createShippingOption.mutate({
+ *             ...data,
+ *             region_id: regionId
+ *           }, {
+ *             onSuccess: ({ shipping_option }) => {
+ *               console.log(shipping_option.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |

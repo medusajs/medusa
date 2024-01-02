@@ -23,7 +23,7 @@ import {
  * x-codegen:
  *   method: addLocation
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -35,6 +35,36 @@ import {
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminAddLocationToSalesChannel
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const addLocation = useAdminAddLocationToSalesChannel()
+ *         // ...
+ *
+ *         const handleAddLocation = (locationId: string) => {
+ *           addLocation.mutate({
+ *             sales_channel_id: salesChannelId,
+ *             location_id: locationId
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.locations)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |

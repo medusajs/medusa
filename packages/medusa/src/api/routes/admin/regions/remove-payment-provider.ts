@@ -15,7 +15,7 @@ import RegionService from "../../../../services/region"
  * x-codegen:
  *   method: deletePaymentProvider
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -25,6 +25,38 @@ import RegionService from "../../../../services/region"
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminRegionDeletePaymentProvider
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const removePaymentProvider =
+ *           useAdminRegionDeletePaymentProvider(regionId)
+ *         // ...
+ *
+ *         const handleRemovePaymentProvider = (
+ *           providerId: string
+ *         ) => {
+ *           removePaymentProvider.mutate(providerId, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.payment_providers)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |

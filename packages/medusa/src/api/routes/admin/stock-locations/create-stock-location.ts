@@ -28,7 +28,7 @@ import { IStockLocationService } from "@medusajs/types"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -40,6 +40,29 @@ import { IStockLocationService } from "@medusajs/types"
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateStockLocation } from "medusa-react"
+ *
+ *       const CreateStockLocation = () => {
+ *         const createStockLocation = useAdminCreateStockLocation()
+ *         // ...
+ *
+ *         const handleCreate = (name: string) => {
+ *           createStockLocation.mutate({
+ *             name,
+ *           }, {
+ *             onSuccess: ({ stock_location }) => {
+ *               console.log(stock_location.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateStockLocation
  *   - lang: Shell
  *     label: cURL
  *     source: |

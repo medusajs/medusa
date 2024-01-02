@@ -36,7 +36,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: updateClaim
  *   params: AdminPostOrdersOrderClaimsClaimParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -48,6 +48,35 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateClaim } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *         claimId: string
+ *       }
+ *
+ *       const Claim = ({ orderId, claimId }: Props) => {
+ *         const updateClaim = useAdminUpdateClaim(orderId)
+ *         // ...
+ *
+ *         const handleUpdate = () => {
+ *           updateClaim.mutate({
+ *             claim_id: claimId,
+ *             no_notification: false
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.claims)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Claim
  *   - lang: Shell
  *     label: cURL
  *     source: |

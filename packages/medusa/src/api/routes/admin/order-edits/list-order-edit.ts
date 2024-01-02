@@ -20,7 +20,7 @@ import { IsOptional, IsString } from "class-validator"
  *   method: list
  *   queryParams: GetOrderEditsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,6 +30,34 @@ import { IsOptional, IsString } from "class-validator"
  *       .then(({ order_edits, count, limit, offset }) => {
  *         console.log(order_edits.length)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminOrderEdits } from "medusa-react"
+ *
+ *       const OrderEdits = () => {
+ *         const { order_edits, isLoading } = useAdminOrderEdits()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {order_edits && !order_edits.length && (
+ *               <span>No Order Edits</span>
+ *             )}
+ *             {order_edits && order_edits.length > 0 && (
+ *               <ul>
+ *                 {order_edits.map((orderEdit) => (
+ *                   <li key={orderEdit.id}>
+ *                     {orderEdit.status}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default OrderEdits
  *   - lang: Shell
  *     label: cURL
  *     source: |

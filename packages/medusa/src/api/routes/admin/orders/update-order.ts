@@ -34,7 +34,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: update
  *   params: AdminPostOrdersOrderParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -46,6 +46,36 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const updateOrder = useAdminUpdateOrder(
+ *           orderId
+ *         )
+ *
+ *         const handleUpdate = (
+ *           email: string
+ *         ) => {
+ *           updateOrder.mutate({
+ *             email,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.email)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |

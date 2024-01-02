@@ -15,7 +15,42 @@ import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminPaymentCollectionQueryKeys } from "./queries"
 
+/**
+ * This hook deletes a payment collection. Only payment collections with the statuses `canceled` or `not_paid` can be deleted.
+ * 
+ * @example
+ * import { useAdminDeletePaymentCollection } from "medusa-react"
+ * 
+ * type Props = {
+ *   paymentCollectionId: string
+ * }
+ * 
+ * const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *   const deleteCollection = useAdminDeletePaymentCollection(
+ *     paymentCollectionId
+ *   )
+ *   // ...
+ * 
+ *   const handleDelete = () => {
+ *     deleteCollection.mutate(void 0, {
+ *       onSuccess: ({ id, object, deleted }) => {
+ *         console.log(id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default PaymentCollection
+ * 
+ * @namespaceAsCategory Hooks.Admin.Payment Collections
+ * @category Mutations
+ */
 export const useAdminDeletePaymentCollection = (
+  /**
+   * The payment collection's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminPaymentCollectionDeleteRes>,
@@ -39,7 +74,46 @@ export const useAdminDeletePaymentCollection = (
   )
 }
 
+/**
+ * This hook updates a payment collection's details.
+ * 
+ * @example
+ * import { useAdminUpdatePaymentCollection } from "medusa-react"
+ * 
+ * type Props = {
+ *   paymentCollectionId: string
+ * }
+ * 
+ * const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *   const updateCollection = useAdminUpdatePaymentCollection(
+ *     paymentCollectionId
+ *   )
+ *   // ...
+ * 
+ *   const handleUpdate = (
+ *     description: string
+ *   ) => {
+ *     updateCollection.mutate({
+ *       description
+ *     }, {
+ *       onSuccess: ({ payment_collection }) => {
+ *         console.log(payment_collection.description)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default PaymentCollection
+ * 
+ * @namespaceAsCategory Hooks.Admin.Payment Collections
+ * @category Mutations
+ */
 export const useAdminUpdatePaymentCollection = (
+  /**
+   * The payment collection's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminPaymentCollectionsRes>,
@@ -64,7 +138,42 @@ export const useAdminUpdatePaymentCollection = (
   )
 }
 
+/**
+ * This hook sets the status of a payment collection as `authorized`. This will also change the `authorized_amount` of the payment collection.
+ * 
+ * @example
+ * import { useAdminMarkPaymentCollectionAsAuthorized } from "medusa-react"
+ * 
+ * type Props = {
+ *   paymentCollectionId: string
+ * }
+ * 
+ * const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *   const markAsAuthorized = useAdminMarkPaymentCollectionAsAuthorized(
+ *     paymentCollectionId
+ *   )
+ *   // ...
+ * 
+ *   const handleAuthorization = () => {
+ *     markAsAuthorized.mutate(void 0, {
+ *       onSuccess: ({ payment_collection }) => {
+ *         console.log(payment_collection.status)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default PaymentCollection
+ * 
+ * @namespaceAsCategory Hooks.Admin.Payment Collections
+ * @category Mutations
+ */
 export const useAdminMarkPaymentCollectionAsAuthorized = (
+  /**
+   * The payment collection's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminPaymentCollectionsRes>,

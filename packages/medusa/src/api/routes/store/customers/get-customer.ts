@@ -10,7 +10,7 @@ import CustomerService from "../../../../services/customer"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -20,6 +20,25 @@ import CustomerService from "../../../../services/customer"
  *       .then(({ customer }) => {
  *         console.log(customer.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useMeCustomer } from "medusa-react"
+ *
+ *       const Customer = () => {
+ *         const { customer, isLoading } = useMeCustomer()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customer && (
+ *               <span>{customer.first_name} {customer.last_name}</span>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |

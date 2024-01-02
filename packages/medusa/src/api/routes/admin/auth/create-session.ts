@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: createSession
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,6 +34,30 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ user }) => {
  *         console.log(user.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminLogin } from "medusa-react"
+ *
+ *       const Login = () => {
+ *         const adminLogin = useAdminLogin()
+ *         // ...
+ *
+ *         const handleLogin = () => {
+ *           adminLogin.mutate({
+ *             email: "user@example.com",
+ *             password: "supersecret",
+ *           }, {
+ *             onSuccess: ({ user }) => {
+ *               console.log(user)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Login
  *   - lang: Shell
  *     label: cURL
  *     source: |

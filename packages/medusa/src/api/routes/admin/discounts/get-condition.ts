@@ -17,7 +17,7 @@ import { FindParams } from "../../../../types/common"
  *   method: getCondition
  *   queryParams: AdminGetDiscountsDiscountConditionsConditionParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,6 +27,39 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount_condition }) => {
  *         console.log(discount_condition.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminGetDiscountCondition } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *         discountConditionId: string
+ *       }
+ *
+ *       const DiscountCondition = ({
+ *         discountId,
+ *         discountConditionId
+ *       }: Props) => {
+ *         const {
+ *           discount_condition,
+ *           isLoading
+ *         } = useAdminGetDiscountCondition(
+ *           discountId,
+ *           discountConditionId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {discount_condition && (
+ *               <span>{discount_condition.type}</span>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default DiscountCondition
  *   - lang: Shell
  *     label: cURL
  *     source: |

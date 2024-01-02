@@ -21,7 +21,7 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *   method: retrieve
  *   queryParams: AdminGetStockLocationsLocationParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -31,6 +31,32 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminStockLocation } from "medusa-react"
+ *
+ *       type Props = {
+ *         stockLocationId: string
+ *       }
+ *
+ *       const StockLocation = ({ stockLocationId }: Props) => {
+ *         const {
+ *           stock_location,
+ *           isLoading
+ *         } = useAdminStockLocation(stockLocationId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {stock_location && (
+ *               <span>{stock_location.name}</span>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default StockLocation
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -12,7 +12,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  * x-codegen:
  *   method: list
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -21,6 +21,34 @@ import ReturnReasonService from "../../../../services/return-reason"
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useReturnReasons } from "medusa-react"
+ *
+ *       const ReturnReasons = () => {
+ *         const {
+ *           return_reasons,
+ *           isLoading
+ *         } = useReturnReasons()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {return_reasons?.length && (
+ *               <ul>
+ *                 {return_reasons.map((returnReason) => (
+ *                   <li key={returnReason.id}>
+ *                     {returnReason.label}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ReturnReasons
  *   - lang: Shell
  *     label: cURL
  *     source: |

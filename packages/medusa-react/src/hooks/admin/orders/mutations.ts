@@ -19,7 +19,45 @@ import { adminProductKeys } from "../products"
 import { adminVariantKeys } from "../variants"
 import { adminOrderKeys } from "./queries"
 
+/**
+ * This hook updates an order's details.
+ * 
+ * @example
+ * import { useAdminUpdateOrder } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const updateOrder = useAdminUpdateOrder(
+ *     orderId
+ *   )
+ * 
+ *   const handleUpdate = (
+ *     email: string
+ *   ) => {
+ *     updateOrder.mutate({
+ *       email,
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.email)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminUpdateOrder = (
+  /**
+   * The order's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -41,7 +79,43 @@ export const useAdminUpdateOrder = (
   )
 }
 
+/**
+ * This hook cancels an order and change its status. This will also cancel any associated fulfillments and payments, 
+ * and it may fail if the payment or fulfillment Provider is unable to cancel the payment/fulfillment.
+ * 
+ * @example
+ * import { useAdminCancelOrder } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const cancelOrder = useAdminCancelOrder(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleCancel = () => {
+ *     cancelOrder.mutate(void 0, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.status)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminCancelOrder = (
+  /**
+   * The order's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>
 ) => {
@@ -58,7 +132,42 @@ export const useAdminCancelOrder = (
   )
 }
 
+/**
+ * This hook completes an order and change its status. A canceled order can't be completed.
+ * 
+ * @example
+ * import { useAdminCompleteOrder } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const completeOrder = useAdminCompleteOrder(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleComplete = () => {
+ *     completeOrder.mutate(void 0, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.status)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminCompleteOrder = (
+  /**
+   * The order's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>
 ) => {
@@ -75,7 +184,42 @@ export const useAdminCompleteOrder = (
   )
 }
 
+/**
+ * This hook captures all the payments associated with an order. The payment of canceled orders can't be captured.
+ * 
+ * @example
+ * import { useAdminCapturePayment } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const capturePayment = useAdminCapturePayment(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleCapture = () => {
+ *     capturePayment.mutate(void 0, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.status)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminCapturePayment = (
+  /**
+   * The order's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>
 ) => {
@@ -92,7 +236,48 @@ export const useAdminCapturePayment = (
   )
 }
 
+/**
+ * This hook refunds an amount for an order. The amount must be less than or equal the `refundable_amount` of the order.
+ * 
+ * @example
+ * import { useAdminRefundPayment } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const refundPayment = useAdminRefundPayment(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleRefund = (
+ *     amount: number,
+ *     reason: string
+ *   ) => {
+ *     refundPayment.mutate({
+ *       amount,
+ *       reason,
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.refunds)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminRefundPayment = (
+  /**
+   * The order's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -114,7 +299,54 @@ export const useAdminRefundPayment = (
   )
 }
 
+/**
+ * This hook creates a Fulfillment of an Order using the fulfillment provider, and change the order's 
+ * fulfillment status to either `partially_fulfilled` or `fulfilled`, depending on
+ * whether all the items were fulfilled.
+ * 
+ * @example
+ * import { useAdminCreateFulfillment } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const createFulfillment = useAdminCreateFulfillment(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleCreateFulfillment = (
+ *     itemId: string,
+ *     quantity: number
+ *   ) => {
+ *     createFulfillment.mutate({
+ *       items: [
+ *         {
+ *           item_id: itemId,
+ *           quantity,
+ *         },
+ *       ],
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.fulfillments)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminCreateFulfillment = (
+  /**
+   * The order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -141,7 +373,44 @@ export const useAdminCreateFulfillment = (
   )
 }
 
+/**
+ * This hook cancels an order's fulfillment and change its fulfillment status to `canceled`.
+ * 
+ * @example
+ * import { useAdminCancelFulfillment } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const cancelFulfillment = useAdminCancelFulfillment(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleCancel = (
+ *     fulfillmentId: string
+ *   ) => {
+ *     cancelFulfillment.mutate(fulfillmentId, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.fulfillments)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminCancelFulfillment = (
+  /**
+   * The order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, string>
 ) => {
@@ -159,7 +428,47 @@ export const useAdminCancelFulfillment = (
   )
 }
 
+/**
+ * This hook creates a shipment and mark a fulfillment as shipped. This changes the order's fulfillment status to either 
+ * `partially_shipped` or `shipped`, depending on whether all the items were shipped.
+ * 
+ * @example
+ * import { useAdminCreateShipment } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const createShipment = useAdminCreateShipment(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleCreate = (
+ *     fulfillmentId: string
+ *   ) => {
+ *     createShipment.mutate({
+ *       fulfillment_id: fulfillmentId,
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.fulfillment_status)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminCreateShipment = (
+  /**
+   * The order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -177,7 +486,52 @@ export const useAdminCreateShipment = (
   )
 }
 
+/**
+ * This hook requests and create a return for items in an order. If the return shipping method is specified, it will be automatically fulfilled.
+ * 
+ * @example
+ * import { useAdminRequestReturn } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const requestReturn = useAdminRequestReturn(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleRequestingReturn = (
+ *     itemId: string,
+ *     quantity: number
+ *   ) => {
+ *     requestReturn.mutate({
+ *       items: [
+ *         {
+ *           item_id: itemId,
+ *           quantity
+ *         }
+ *       ]
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.returns)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminRequestReturn = (
+  /**
+   * The order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -195,6 +549,44 @@ export const useAdminRequestReturn = (
   )
 }
 
+/**
+ * This hook adds a shipping method to an order. If another shipping method exists with the same shipping profile, the previous shipping method will be replaced.
+ * 
+ * @example
+ * import { useAdminAddShippingMethod } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const addShippingMethod = useAdminAddShippingMethod(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleAddShippingMethod = (
+ *     optionId: string,
+ *     price: number
+ *   ) => {
+ *     addShippingMethod.mutate({
+ *       option_id: optionId,
+ *       price
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.shipping_methods)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminAddShippingMethod = (
   orderId: string,
   options?: UseMutationOptions<
@@ -213,6 +605,38 @@ export const useAdminAddShippingMethod = (
   )
 }
 
+/**
+ * The hook archives an order and change its status.
+ * 
+ * @example
+ * import { useAdminArchiveOrder } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const archiveOrder = useAdminArchiveOrder(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleArchivingOrder = () => {
+ *     archiveOrder.mutate(void 0, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.status)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Order
+ * 
+ * @namespaceAsCategory Hooks.Admin.Orders
+ * @category Mutations
+ */
 export const useAdminArchiveOrder = (
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>

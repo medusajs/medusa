@@ -24,7 +24,7 @@ import { IInventoryService } from "@medusajs/types"
  *   method: update
  *   queryParams: AdminPostInventoryItemsInventoryItemParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,6 +36,35 @@ import { IInventoryService } from "@medusajs/types"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateInventoryItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const updateInventoryItem = useAdminUpdateInventoryItem(
+ *           inventoryItemId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (origin_country: string) => {
+ *           updateInventoryItem.mutate({
+ *             origin_country,
+ *           }, {
+ *             onSuccess: ({ inventory_item }) => {
+ *               console.log(inventory_item.origin_country)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |

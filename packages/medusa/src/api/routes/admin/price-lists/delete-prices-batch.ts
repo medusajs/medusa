@@ -22,7 +22,7 @@ import { removePriceListPrices } from "@medusajs/core-flows"
  * x-codegen:
  *   method: deletePrices
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,6 +36,31 @@ import { removePriceListPrices } from "@medusajs/core-flows"
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeletePriceListPrices } from "medusa-react"
+ *
+ *       const PriceList = (
+ *         priceListId: string
+ *       ) => {
+ *         const deletePrices = useAdminDeletePriceListPrices(priceListId)
+ *         // ...
+ *
+ *         const handleDeletePrices = (priceIds: string[]) => {
+ *           deletePrices.mutate({
+ *             price_ids: priceIds
+ *           }, {
+ *             onSuccess: ({ ids, deleted, object }) => {
+ *               console.log(ids)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |

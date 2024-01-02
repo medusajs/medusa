@@ -42,7 +42,7 @@ import { getPriceListPricingModule } from "./modules-queries"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -64,6 +64,46 @@ import { getPriceListPricingModule } from "./modules-queries"
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         PriceListStatus,
+ *         PriceListType,
+ *       } from "@medusajs/medusa"
+ *       import { useAdminCreatePriceList } from "medusa-react"
+ *
+ *       type CreateData = {
+ *         name: string
+ *         description: string
+ *         type: PriceListType
+ *         status: PriceListStatus
+ *         prices: {
+ *           amount: number
+ *           variant_id: string
+ *           currency_code: string
+ *           max_quantity: number
+ *         }[]
+ *       }
+ *
+ *       const CreatePriceList = () => {
+ *         const createPriceList = useAdminCreatePriceList()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateData
+ *         ) => {
+ *           createPriceList.mutate(data, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreatePriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |

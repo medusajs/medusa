@@ -156,7 +156,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: list
  *   queryParams: AdminGetOrdersParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -166,6 +166,30 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ orders, limit, offset, count }) => {
  *         console.log(orders.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminOrders } from "medusa-react"
+ *
+ *       const Orders = () => {
+ *         const { orders, isLoading } = useAdminOrders()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {orders && !orders.length && <span>No Orders</span>}
+ *             {orders && orders.length > 0 && (
+ *               <ul>
+ *                 {orders.map((order) => (
+ *                   <li key={order.id}>{order.display_id}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Orders
  *   - lang: Shell
  *     label: cURL
  *     source: |

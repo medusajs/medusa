@@ -27,7 +27,7 @@ import { FindParams } from "../../../../types/common"
  * x-codegen:
  *   method: deleteConditionResourceBatch
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -39,6 +39,46 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminDeleteDiscountConditionResourceBatch
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *         conditionId: string
+ *       }
+ *
+ *       const DiscountCondition = ({
+ *         discountId,
+ *         conditionId
+ *       }: Props) => {
+ *         const deleteConditionResource = useAdminDeleteDiscountConditionResourceBatch(
+ *           discountId,
+ *           conditionId,
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (itemId: string) => {
+ *           deleteConditionResource.mutate({
+ *             resources: [
+ *               {
+ *                 id: itemId
+ *               }
+ *             ]
+ *           }, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DiscountCondition
  *   - lang: Shell
  *     label: cURL
  *     source: |

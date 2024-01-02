@@ -12,7 +12,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,23 @@ import { EntityManager } from "typeorm"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteDiscount } from "medusa-react"
+ *
+ *       const Discount = () => {
+ *         const deleteDiscount = useAdminDeleteDiscount(discount_id)
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteDiscount.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

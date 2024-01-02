@@ -86,7 +86,7 @@ import ProductTypeService from "../../../../services/product-type"
  *   method: list
  *   queryParams: AdminGetProductTypesParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -96,6 +96,37 @@ import ProductTypeService from "../../../../services/product-type"
  *       .then(({ product_types }) => {
  *         console.log(product_types.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminProductTypes } from "medusa-react"
+ *
+ *       function ProductTypes() {
+ *         const {
+ *           product_types,
+ *           isLoading
+ *         } = useAdminProductTypes()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {product_types && !product_types.length && (
+ *               <span>No Product Tags</span>
+ *             )}
+ *             {product_types && product_types.length > 0 && (
+ *               <ul>
+ *                 {product_types.map(
+ *                   (type) => (
+ *                     <li key={type.id}>{type.value}</li>
+ *                   )
+ *                 )}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ProductTypes
  *   - lang: Shell
  *     label: cURL
  *     source: |

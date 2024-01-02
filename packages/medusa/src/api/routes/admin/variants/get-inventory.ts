@@ -24,7 +24,7 @@ import { promiseAll } from "@medusajs/utils"
  * x-codegen:
  *   method: getInventory
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,6 +34,38 @@ import { promiseAll } from "@medusajs/utils"
  *       .then(({ variant }) => {
  *         console.log(variant.inventory, variant.sales_channel_availability)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminVariantsInventory } from "medusa-react"
+ *
+ *       type Props = {
+ *         variantId: string
+ *       }
+ *
+ *       const VariantInventory = ({ variantId }: Props) => {
+ *         const { variant, isLoading } = useAdminVariantsInventory(
+ *           variantId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {variant && variant.inventory.length === 0 && (
+ *               <span>Variant doesn't have inventory details</span>
+ *             )}
+ *             {variant && variant.inventory.length > 0 && (
+ *               <ul>
+ *                 {variant.inventory.map((inventory) => (
+ *                   <li key={inventory.id}>{inventory.title}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default VariantInventory
  *   - lang: Shell
  *     label: cURL
  *     source: |

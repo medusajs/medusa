@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -42,6 +42,37 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateRegion } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const updateRegion = useAdminUpdateRegion(regionId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           countries: string[]
+ *         ) => {
+ *           updateRegion.mutate({
+ *             countries,
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |

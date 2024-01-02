@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,6 +36,35 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ customer }) => {
  *         console.log(customer.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useCreateCustomer } from "medusa-react"
+ *
+ *       const RegisterCustomer = () => {
+ *         const createCustomer = useCreateCustomer()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           customerData: {
+ *             first_name: string
+ *             last_name: string
+ *             email: string
+ *             password: string
+ *           }
+ *         ) => {
+ *           // ...
+ *           createCustomer.mutate(customerData, {
+ *             onSuccess: ({ customer }) => {
+ *               console.log(customer.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default RegisterCustomer
  *   - lang: Shell
  *     label: cURL
  *     source: |

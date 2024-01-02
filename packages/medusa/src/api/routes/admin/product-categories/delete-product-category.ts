@@ -15,7 +15,7 @@ import { ProductCategoryService } from "../../../../services"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -25,6 +25,35 @@ import { ProductCategoryService } from "../../../../services"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteProductCategory } from "medusa-react"
+ *
+ *       type Props = {
+ *         productCategoryId: string
+ *       }
+ *
+ *       const Category = ({
+ *         productCategoryId
+ *       }: Props) => {
+ *         const deleteCategory = useAdminDeleteProductCategory(
+ *           productCategoryId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteCategory.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |

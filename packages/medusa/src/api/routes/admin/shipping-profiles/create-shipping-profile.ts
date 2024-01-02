@@ -18,7 +18,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,6 +30,34 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { ShippingProfileType } from "@medusajs/medusa"
+ *       import { useAdminCreateShippingProfile } from "medusa-react"
+ *
+ *       const CreateShippingProfile = () => {
+ *         const createShippingProfile = useAdminCreateShippingProfile()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           name: string,
+ *           type: ShippingProfileType
+ *         ) => {
+ *           createShippingProfile.mutate({
+ *             name,
+ *             type
+ *           }, {
+ *             onSuccess: ({ shipping_profile }) => {
+ *               console.log(shipping_profile.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |

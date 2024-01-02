@@ -15,6 +15,73 @@ export const adminCollectionKeys = queryKeysFactory(ADMIN_COLLECTIONS_QUERY_KEY)
 
 type CollectionsQueryKey = typeof adminCollectionKeys
 
+/**
+ * This hook retrieves a list of product collections. The product collections can be filtered by fields such as `handle` or `title`.
+ * The collections can also be sorted or paginated.
+ * 
+ * @example
+ * To list product collections:
+ * 
+ * ```tsx
+ * import { useAdminCollections } from "medusa-react"
+ * 
+ * const Collections = () => {
+ *   const { collections, isLoading } = useAdminCollections()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {collections && !collections.length && <span>
+ *         No Product Collections
+ *       </span>}
+ *       {collections && collections.length > 0 && (
+ *         <ul>
+ *           {collections.map((collection) => (
+ *             <li key={collection.id}>{collection.title}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Collections
+ * ```
+ * 
+ * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+ * 
+ * ```tsx
+ * import { useAdminCollections } from "medusa-react"
+ * 
+ * const Collections = () => {
+ *   const { collections, limit, offset, isLoading } = useAdminCollections({
+ *     limit: 15,
+ *     offset: 0
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {collections && !collections.length && <span>
+ *         No Product Collections
+ *       </span>}
+ *       {collections && collections.length > 0 && (
+ *         <ul>
+ *           {collections.map((collection) => (
+ *             <li key={collection.id}>{collection.title}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Collections
+ * ```
+ * 
+ * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @category Queries
+ */
 export const useAdminCollections = (
   query?: AdminGetCollectionsParams,
   options?: UseQueryOptionsWrapper<
@@ -32,6 +99,32 @@ export const useAdminCollections = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieves a product collection by its ID. The products associated with it are expanded and returned as well.
+ * 
+ * @example
+ * import { useAdminCollection } from "medusa-react"
+ * 
+ * type Props = {
+ *   collectionId: string
+ * }
+ * 
+ * const Collection = ({ collectionId }: Props) => {
+ *   const { collection, isLoading } = useAdminCollection(collectionId)
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {collection && <span>{collection.title}</span>}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Collection
+ * 
+ * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @category Queries
+ */
 export const useAdminCollection = (
   id: string,
   options?: UseQueryOptionsWrapper<

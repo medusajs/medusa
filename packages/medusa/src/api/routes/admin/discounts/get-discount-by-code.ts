@@ -16,7 +16,7 @@ import { FindParams } from "../../../../types/common"
  *   method: retrieveByCode
  *   queryParams: AdminGetDiscountsDiscountCodeParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,6 +26,29 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminGetDiscountByCode } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountCode: string
+ *       }
+ *
+ *       const Discount = ({ discountCode }: Props) => {
+ *         const { discount, isLoading } = useAdminGetDiscountByCode(
+ *           discountCode
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {discount && <span>{discount.code}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

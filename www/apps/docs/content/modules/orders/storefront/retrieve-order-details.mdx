@@ -54,7 +54,11 @@ You can retrieve an order by its ID using the [Get Order API Route](https://docs
     ```tsx
     import { useOrder } from "medusa-react"
 
-    const Order = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const { 
         order, 
         isLoading, 
@@ -119,13 +123,21 @@ You can retrieve an order by its display ID using the [Look Up Order API Route](
     ```tsx
     import { useOrders } from "medusa-react"
 
-    const Order = () => {
+    type Props = {
+      displayId: number
+      email: string
+    }
+
+    const Order = ({
+      displayId,
+      email
+    }: Props) => {
       const { 
         order, 
         isLoading, 
       } = useOrders({
-        display_id: 1,
-        email: "user@example.com",
+        display_id: displayId,
+        email,
       })
     
       return (
@@ -191,7 +203,11 @@ You can retrieve an order by the cart ID using the [Get by Cart ID API Route](ht
     ```tsx
     import { useCartOrder } from "medusa-react"
 
-    const Order = () => {
+    type Props = {
+      cartId: string
+    }
+
+    const Order = ({ cartId }: Props) => {
       const { 
         order, 
         isLoading, 

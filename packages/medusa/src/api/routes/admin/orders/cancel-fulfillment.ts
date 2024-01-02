@@ -27,7 +27,7 @@ import { promiseAll } from "@medusajs/utils"
  *   method: cancelFulfillment
  *   params: AdminPostOrdersOrderFulfillementsCancelParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -37,6 +37,35 @@ import { promiseAll } from "@medusajs/utils"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCancelFulfillment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const cancelFulfillment = useAdminCancelFulfillment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCancel = (
+ *           fulfillmentId: string
+ *         ) => {
+ *           cancelFulfillment.mutate(fulfillmentId, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.fulfillments)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |

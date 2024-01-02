@@ -18,7 +18,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * x-codegen:
  *   method: deletePaymentSession
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,6 +27,34 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useDeletePaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const deletePaymentSession = useDeletePaymentSession(cartId)
+ *
+ *         const handleDeletePaymentSession = (
+ *           providerId: string
+ *         ) => {
+ *           deletePaymentSession.mutate({
+ *             provider_id: providerId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |

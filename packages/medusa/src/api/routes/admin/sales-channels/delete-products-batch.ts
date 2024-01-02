@@ -22,7 +22,7 @@ import { Type } from "class-transformer"
  * x-codegen:
  *   method: removeProducts
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -38,6 +38,41 @@ import { Type } from "class-transformer"
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminDeleteProductsFromSalesChannel,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const deleteProducts = useAdminDeleteProductsFromSalesChannel(
+ *           salesChannelId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteProducts = (productId: string) => {
+ *           deleteProducts.mutate({
+ *             product_ids: [
+ *               {
+ *                 id: productId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |

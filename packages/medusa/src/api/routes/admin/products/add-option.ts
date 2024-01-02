@@ -21,7 +21,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: addOption
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,6 +33,37 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateProductOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const CreateProductOption = ({ productId }: Props) => {
+ *         const createOption = useAdminCreateProductOption(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           title: string
+ *         ) => {
+ *           createOption.mutate({
+ *             title
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateProductOption
  *   - lang: Shell
  *     label: cURL
  *     source: |

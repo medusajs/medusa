@@ -14,7 +14,7 @@ import { PaymentCollectionService } from "../../../../services"
  * x-codegen:
  *   method: authorizePaymentSession
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -24,6 +24,35 @@ import { PaymentCollectionService } from "../../../../services"
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAuthorizePaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({
+ *         paymentCollectionId
+ *       }: Props) => {
+ *         const authorizePaymentSession = useAuthorizePaymentSession(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleAuthorizePayment = (paymentSessionId: string) => {
+ *           authorizePaymentSession.mutate(paymentSessionId, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

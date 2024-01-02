@@ -17,7 +17,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: retrieve
  *   queryParams: AdminGetOrdersOrderParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,6 +27,31 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const {
+ *           order,
+ *           isLoading,
+ *         } = useAdminOrder(orderId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {order && <span>{order.display_id}</span>}
+ *
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |

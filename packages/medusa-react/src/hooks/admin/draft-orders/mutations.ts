@@ -17,6 +17,45 @@ import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminDraftOrderKeys } from "./queries"
 
+/**
+ * This hook creates a Draft Order. A draft order is not transformed into an order until payment is captured.
+ * 
+ * @example
+ * import { useAdminCreateDraftOrder } from "medusa-react"
+ * 
+ * type DraftOrderData = {
+ *   email: string
+ *   region_id: string
+ *   items: {
+ *     quantity: number,
+ *     variant_id: string
+ *   }[]
+ *   shipping_methods: {
+ *     option_id: string
+ *     price: number
+ *   }[]
+ * }
+ * 
+ * const CreateDraftOrder = () => {
+ *   const createDraftOrder = useAdminCreateDraftOrder()
+ *   // ...
+ * 
+ *   const handleCreate = (data: DraftOrderData) => {
+ *     createDraftOrder.mutate(data, {
+ *       onSuccess: ({ draft_order }) => {
+ *         console.log(draft_order.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CreateDraftOrder
+ * 
+ * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @category Mutations
+ */
 export const useAdminCreateDraftOrder = (
   options?: UseMutationOptions<
     Response<AdminDraftOrdersRes>,
@@ -33,7 +72,44 @@ export const useAdminCreateDraftOrder = (
   )
 }
 
+/**
+ * This hook updates a Draft Order's details.
+ * 
+ * @example
+ * import { useAdminUpdateDraftOrder } from "medusa-react"
+ * 
+ * type Props = {
+ *   draftOrderId: string
+ * }
+ * 
+ * const DraftOrder = ({ draftOrderId }: Props) => {
+ *   const updateDraftOrder = useAdminUpdateDraftOrder(
+ *     draftOrderId
+ *   )
+ *   // ...
+ * 
+ *   const handleUpdate = (email: string) => {
+ *     updateDraftOrder.mutate({
+ *       email,
+ *     }, {
+ *       onSuccess: ({ draft_order }) => {
+ *         console.log(draft_order.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default DraftOrder
+ * 
+ * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @category Mutations
+ */
 export const useAdminUpdateDraftOrder = (
+  /**
+   * The draft order's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminDraftOrdersRes>,
@@ -54,7 +130,42 @@ export const useAdminUpdateDraftOrder = (
   )
 }
 
+/**
+ * This hook deletes a Draft Order.
+ * 
+ * @example
+ * import { useAdminDeleteDraftOrder } from "medusa-react"
+ * 
+ * type Props = {
+ *   draftOrderId: string
+ * }
+ * 
+ * const DraftOrder = ({ draftOrderId }: Props) => {
+ *   const deleteDraftOrder = useAdminDeleteDraftOrder(
+ *     draftOrderId
+ *   )
+ *   // ...
+ * 
+ *   const handleDelete = () => {
+ *     deleteDraftOrder.mutate(void 0, {
+ *       onSuccess: ({ id, object, deleted }) => {
+ *         console.log(id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default DraftOrder
+ * 
+ * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @category Mutations
+ */
 export const useAdminDeleteDraftOrder = (
+  /**
+   * The draft order's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminDraftOrdersDeleteRes>, Error, void>
 ) => {
@@ -70,7 +181,43 @@ export const useAdminDeleteDraftOrder = (
   )
 }
 
+/**
+ * This hook capture the draft order's payment. This will also set the draft order's status to `completed` and create an order from the draft order. The payment is captured through Medusa's system payment,
+ * which is manual payment that isn't integrated with any third-party payment provider. It is assumed that the payment capturing is handled manually by the admin.
+ * 
+ * @example
+ * import { useAdminDraftOrderRegisterPayment } from "medusa-react"
+ * 
+ * type Props = {
+ *   draftOrderId: string
+ * }
+ * 
+ * const DraftOrder = ({ draftOrderId }: Props) => {
+ *   const registerPayment = useAdminDraftOrderRegisterPayment(
+ *     draftOrderId
+ *   )
+ *   // ...
+ * 
+ *   const handlePayment = () => {
+ *     registerPayment.mutate(void 0, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default DraftOrder
+ * 
+ * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @category Mutations
+ */
 export const useAdminDraftOrderRegisterPayment = (
+  /**
+   * The draft order's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminPostDraftOrdersDraftOrderRegisterPaymentRes>,
@@ -86,7 +233,44 @@ export const useAdminDraftOrderRegisterPayment = (
   )
 }
 
+/**
+ * This hook creates a Line Item in the Draft Order.
+ * 
+ * @example
+ * import { useAdminDraftOrderAddLineItem } from "medusa-react"
+ * 
+ * type Props = {
+ *   draftOrderId: string
+ * }
+ * 
+ * const DraftOrder = ({ draftOrderId }: Props) => {
+ *   const addLineItem = useAdminDraftOrderAddLineItem(
+ *     draftOrderId
+ *   )
+ *   // ...
+ * 
+ *   const handleAdd = (quantity: number) => {
+ *     addLineItem.mutate({
+ *       quantity,
+ *     }, {
+ *       onSuccess: ({ draft_order }) => {
+ *         console.log(draft_order.cart)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default DraftOrder
+ * 
+ * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @category Mutations
+ */
 export const useAdminDraftOrderAddLineItem = (
+  /**
+   * The draft order's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminDraftOrdersRes>,
@@ -103,7 +287,42 @@ export const useAdminDraftOrderAddLineItem = (
   )
 }
 
+/**
+ * This hook deletes a Line Item from a Draft Order.
+ * 
+ * @example
+ * import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
+ * 
+ * type Props = {
+ *   draftOrderId: string
+ * }
+ * 
+ * const DraftOrder = ({ draftOrderId }: Props) => {
+ *   const deleteLineItem = useAdminDraftOrderRemoveLineItem(
+ *     draftOrderId
+ *   )
+ *   // ...
+ * 
+ *   const handleDelete = (itemId: string) => {
+ *     deleteLineItem.mutate(itemId, {
+ *       onSuccess: ({ draft_order }) => {
+ *         console.log(draft_order.cart)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default DraftOrder
+ * 
+ * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @category Mutations
+ */
 export const useAdminDraftOrderRemoveLineItem = (
+  /**
+   * The draft order's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminDraftOrdersRes>, Error, string>
 ) => {
@@ -115,7 +334,44 @@ export const useAdminDraftOrderRemoveLineItem = (
   )
 }
 
+/**
+ * This hook updates a Line Item in a Draft Order.
+ * 
+ * @example
+ * import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
+ * 
+ * type Props = {
+ *   draftOrderId: string
+ * }
+ * 
+ * const DraftOrder = ({ draftOrderId }: Props) => {
+ *   const updateLineItem = useAdminDraftOrderUpdateLineItem(
+ *     draftOrderId
+ *   )
+ *   // ...
+ * 
+ *   const handleUpdate = (
+ *     itemId: string,
+ *     quantity: number
+ *   ) => {
+ *     updateLineItem.mutate({
+ *       item_id: itemId,
+ *       quantity,
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default DraftOrder
+ * 
+ * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @category Mutations
+ */
 export const useAdminDraftOrderUpdateLineItem = (
+  /**
+   * The draft order's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminDraftOrdersRes>,

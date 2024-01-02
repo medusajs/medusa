@@ -14,7 +14,7 @@ import { SalesChannelService } from "../../../../services/"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -24,6 +24,33 @@ import { SalesChannelService } from "../../../../services/"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteSalesChannel } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const deleteSalesChannel = useAdminDeleteSalesChannel(
+ *           salesChannelId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteSalesChannel.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |

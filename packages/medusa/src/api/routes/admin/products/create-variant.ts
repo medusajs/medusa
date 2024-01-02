@@ -46,7 +46,7 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  * x-codegen:
  *   method: createVariant
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -71,6 +71,47 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateVariant } from "medusa-react"
+ *
+ *       type CreateVariantData = {
+ *         title: string
+ *         prices: {
+ *           amount: number
+ *           currency_code: string
+ *         }[]
+ *         options: {
+ *           option_id: string
+ *           value: string
+ *         }[]
+ *       }
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const CreateProductVariant = ({ productId }: Props) => {
+ *         const createVariant = useAdminCreateVariant(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           variantData: CreateVariantData
+ *         ) => {
+ *           createVariant.mutate(variantData, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.variants)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateProductVariant
  *   - lang: Shell
  *     label: cURL
  *     source: |

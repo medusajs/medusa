@@ -24,7 +24,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,6 +36,37 @@ import { EntityManager } from "typeorm"
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateReturnReason } from "medusa-react"
+ *
+ *       type Props = {
+ *         returnReasonId: string
+ *       }
+ *
+ *       const ReturnReason = ({ returnReasonId }: Props) => {
+ *         const updateReturnReason = useAdminUpdateReturnReason(
+ *           returnReasonId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           label: string
+ *         ) => {
+ *           updateReturnReason.mutate({
+ *             label,
+ *           }, {
+ *             onSuccess: ({ return_reason }) => {
+ *               console.log(return_reason.label)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ReturnReason
  *   - lang: Shell
  *     label: cURL
  *     source: |

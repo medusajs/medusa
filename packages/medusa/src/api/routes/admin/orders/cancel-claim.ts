@@ -23,7 +23,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: cancelClaim
  *   params: AdminPostOrdersClaimCancel
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,6 +33,28 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCancelClaim } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *         claimId: string
+ *       }
+ *
+ *       const Claim = ({ orderId, claimId }: Props) => {
+ *         const cancelClaim = useAdminCancelClaim(orderId)
+ *         // ...
+ *
+ *         const handleCancel = () => {
+ *           cancelClaim.mutate(claimId)
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Claim
  *   - lang: Shell
  *     label: cURL
  *     source: |

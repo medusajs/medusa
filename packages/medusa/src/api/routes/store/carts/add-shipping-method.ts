@@ -23,7 +23,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * x-codegen:
  *   method: addShippingMethod
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,6 +34,34 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAddShippingMethodToCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const addShippingMethod = useAddShippingMethodToCart(cartId)
+ *
+ *         const handleAddShippingMethod = (
+ *           optionId: string
+ *         ) => {
+ *           addShippingMethod.mutate({
+ *             option_id: optionId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.shipping_methods)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |

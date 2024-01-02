@@ -33,7 +33,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -45,6 +45,34 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ customer }) => {
  *         console.log(customer.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateCustomer } from "medusa-react"
+ *
+ *       type CustomerData = {
+ *         first_name: string
+ *         last_name: string
+ *         email: string
+ *         password: string
+ *       }
+ *
+ *       type Props = {
+ *         customerId: string
+ *       }
+ *
+ *       const Customer = ({ customerId }: Props) => {
+ *         const updateCustomer = useAdminUpdateCustomer(customerId)
+ *         // ...
+ *
+ *         const handleUpdate = (customerData: CustomerData) => {
+ *           updateCustomer.mutate(customerData)
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |

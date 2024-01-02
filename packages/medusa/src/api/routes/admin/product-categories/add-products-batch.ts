@@ -27,7 +27,7 @@ import { FindParams } from "../../../../types/common"
  *   method: addProducts
  *   queryParams: AdminPostProductCategoriesCategoryProductsBatchParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -43,6 +43,43 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminAddProductsToCategory } from "medusa-react"
+ *
+ *       type ProductsData = {
+ *         id: string
+ *       }
+ *
+ *       type Props = {
+ *         productCategoryId: string
+ *       }
+ *
+ *       const Category = ({
+ *         productCategoryId
+ *       }: Props) => {
+ *         const addProducts = useAdminAddProductsToCategory(
+ *           productCategoryId
+ *         )
+ *         // ...
+ *
+ *         const handleAddProducts = (
+ *           productIds: ProductsData[]
+ *         ) => {
+ *           addProducts.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ product_category }) => {
+ *               console.log(product_category.products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |

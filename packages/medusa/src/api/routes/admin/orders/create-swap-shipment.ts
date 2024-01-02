@@ -36,7 +36,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: createSwapShipment
  *   params: AdminPostOrdersOrderSwapsSwapShipmentsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -48,6 +48,42 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateSwapShipment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string,
+ *         swapId: string
+ *       }
+ *
+ *       const Swap = ({
+ *         orderId,
+ *         swapId
+ *       }: Props) => {
+ *         const createShipment = useAdminCreateSwapShipment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCreateShipment = (
+ *           fulfillmentId: string
+ *         ) => {
+ *           createShipment.mutate({
+ *             swap_id: swapId,
+ *             fulfillment_id: fulfillmentId,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.swaps)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |

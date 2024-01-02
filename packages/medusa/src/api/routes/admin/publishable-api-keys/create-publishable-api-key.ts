@@ -18,7 +18,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,6 +30,29 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreatePublishableApiKey } from "medusa-react"
+ *
+ *       const CreatePublishableApiKey = () => {
+ *         const createKey = useAdminCreatePublishableApiKey()
+ *         // ...
+ *
+ *         const handleCreate = (title: string) => {
+ *           createKey.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreatePublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |

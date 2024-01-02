@@ -13,7 +13,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: resend
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,6 +26,27 @@ import { EntityManager } from "typeorm"
  *       .catch(() => {
  *         // an error occurred
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminResendInvite } from "medusa-react"
+ *
+ *       type Props = {
+ *         inviteId: string
+ *       }
+ *
+ *       const ResendInvite = ({ inviteId }: Props) => {
+ *         const resendInvite = useAdminResendInvite(inviteId)
+ *         // ...
+ *
+ *         const handleResend = () => {
+ *           resendInvite.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ResendInvite
  *   - lang: Shell
  *     label: cURL
  *     source: |

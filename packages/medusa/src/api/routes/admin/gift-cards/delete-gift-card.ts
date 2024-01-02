@@ -11,7 +11,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -21,6 +21,33 @@ import { EntityManager } from "typeorm"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteGiftCard } from "medusa-react"
+ *
+ *       type Props = {
+ *         customGiftCardId: string
+ *       }
+ *
+ *       const CustomGiftCard = ({ customGiftCardId }: Props) => {
+ *         const deleteGiftCard = useAdminDeleteGiftCard(
+ *           customGiftCardId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteGiftCard.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted}) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomGiftCard
  *   - lang: Shell
  *     label: cURL
  *     source: |

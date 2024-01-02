@@ -9,7 +9,7 @@ import UserService from "../../../../services/user"
  * x-codegen:
  *   method: list
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -19,6 +19,30 @@ import UserService from "../../../../services/user"
  *       .then(({ users }) => {
  *         console.log(users.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUsers } from "medusa-react"
+ *
+ *       const Users = () => {
+ *         const { users, isLoading } = useAdminUsers()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {users && !users.length && <span>No Users</span>}
+ *             {users && users.length > 0 && (
+ *               <ul>
+ *                 {users.map((user) => (
+ *                   <li key={user.id}>{user.email}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Users
  *   - lang: Shell
  *     label: cURL
  *     source: |

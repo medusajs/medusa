@@ -24,7 +24,7 @@ import { FindParams } from "../../../../types/common"
  *   method: updateLocationLevel
  *   queryParams: AdminPostInventoryItemsItemLocationLevelsLevelParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,6 +36,39 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateLocationLevel } from "medusa-react"
+ *
+ *       type Props = {
+ *         inventoryItemId: string
+ *       }
+ *
+ *       const InventoryItem = ({ inventoryItemId }: Props) => {
+ *         const updateLocationLevel = useAdminUpdateLocationLevel(
+ *           inventoryItemId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           stockLocationId: string,
+ *           stocked_quantity: number
+ *         ) => {
+ *           updateLocationLevel.mutate({
+ *             stockLocationId,
+ *             stocked_quantity,
+ *           }, {
+ *             onSuccess: ({ inventory_item }) => {
+ *               console.log(inventory_item.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default InventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |

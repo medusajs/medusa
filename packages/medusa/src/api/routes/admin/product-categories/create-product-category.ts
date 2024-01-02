@@ -25,7 +25,7 @@ import { FindParams } from "../../../../types/common"
  *   method: create
  *   queryParams: AdminPostProductCategoriesParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -37,6 +37,31 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateProductCategory } from "medusa-react"
+ *
+ *       const CreateCategory = () => {
+ *         const createCategory = useAdminCreateProductCategory()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           name: string
+ *         ) => {
+ *           createCategory.mutate({
+ *             name,
+ *           }, {
+ *             onSuccess: ({ product_category }) => {
+ *               console.log(product_category.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCategory
  *   - lang: Shell
  *     label: cURL
  *     source: |

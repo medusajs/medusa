@@ -16,7 +16,7 @@ import { ShippingProfileService } from "../../../../services"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,6 +26,34 @@ import { ShippingProfileService } from "../../../../services"
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminShippingProfile } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingProfileId: string
+ *       }
+ *
+ *       const ShippingProfile = ({ shippingProfileId }: Props) => {
+ *         const {
+ *           shipping_profile,
+ *           isLoading
+ *         } = useAdminShippingProfile(
+ *           shippingProfileId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {shipping_profile && (
+ *               <span>{shipping_profile.name}</span>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |

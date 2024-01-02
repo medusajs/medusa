@@ -15,7 +15,42 @@ import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminPaymentQueryKeys } from "./queries"
 
+/**
+ * This hook captures a payment.
+ * 
+ * @example
+ * import { useAdminPaymentsCapturePayment } from "medusa-react"
+ * 
+ * type Props = {
+ *   paymentId: string
+ * }
+ * 
+ * const Payment = ({ paymentId }: Props) => {
+ *   const capture = useAdminPaymentsCapturePayment(
+ *     paymentId
+ *   )
+ *   // ...
+ * 
+ *   const handleCapture = () => {
+ *     capture.mutate(void 0, {
+ *       onSuccess: ({ payment }) => {
+ *         console.log(payment.amount)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Payment
+ * 
+ * @namespaceAsCategory Hooks.Admin.Payments
+ * @category Mutations
+ */
 export const useAdminPaymentsCapturePayment = (
+  /**
+   * The payment's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminPaymentRes>, Error, void>
 ) => {
@@ -32,7 +67,51 @@ export const useAdminPaymentsCapturePayment = (
   )
 }
 
+/**
+ * This hook refunds a payment. The payment must be captured first.
+ * 
+ * @example
+ * import { RefundReason } from "@medusajs/medusa"
+ * import { useAdminPaymentsRefundPayment } from "medusa-react"
+ * 
+ * type Props = {
+ *   paymentId: string
+ * }
+ * 
+ * const Payment = ({ paymentId }: Props) => {
+ *   const refund = useAdminPaymentsRefundPayment(
+ *     paymentId
+ *   )
+ *   // ...
+ * 
+ *   const handleRefund = (
+ *     amount: number,
+ *     reason: RefundReason,
+ *     note: string
+ *   ) => {
+ *     refund.mutate({
+ *       amount,
+ *       reason,
+ *       note
+ *     }, {
+ *       onSuccess: ({ refund }) => {
+ *         console.log(refund.amount)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Payment
+ * 
+ * @namespaceAsCategory Hooks.Admin.Payments
+ * @category Mutations
+ */
 export const useAdminPaymentsRefundPayment = (
+  /**
+   * The payment's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminRefundRes>,

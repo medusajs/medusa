@@ -17,7 +17,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   method: listSalesChannels
  *   queryParams: GetPublishableApiKeySalesChannelsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,6 +27,43 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *       .then(({ sales_channels }) => {
  *         console.log(sales_channels.length)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminPublishableApiKeySalesChannels,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const SalesChannels = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const { sales_channels, isLoading } =
+ *           useAdminPublishableApiKeySalesChannels(
+ *             publishableApiKeyId
+ *           )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {sales_channels && !sales_channels.length && (
+ *               <span>No Sales Channels</span>
+ *             )}
+ *             {sales_channels && sales_channels.length > 0 && (
+ *               <ul>
+ *                 {sales_channels.map((salesChannel) => (
+ *                   <li key={salesChannel.id}>{salesChannel.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default SalesChannels
  *   - lang: Shell
  *     label: cURL
  *     source: |

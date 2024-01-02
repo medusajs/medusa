@@ -34,7 +34,7 @@ import { Logger } from "@medusajs/types"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -51,6 +51,44 @@ import { Logger } from "@medusajs/types"
  *       .then((data) => {
  *         console.log(data.return.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useCreateReturn } from "medusa-react"
+ *
+ *       type CreateReturnData = {
+ *         items: {
+ *           item_id: string,
+ *           quantity: number
+ *         }[]
+ *         return_shipping: {
+ *           option_id: string
+ *         }
+ *       }
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const CreateReturn = ({ orderId }: Props) => {
+ *         const createReturn = useCreateReturn()
+ *         // ...
+ *
+ *         const handleCreate = (data: CreateReturnData) => {
+ *           createReturn.mutate({
+ *             ...data,
+ *             order_id: orderId
+ *           }, {
+ *             onSuccess: ({ return: returnData }) => {
+ *               console.log(returnData.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateReturn
  *   - lang: Shell
  *     label: cURL
  *     source: |

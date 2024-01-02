@@ -23,7 +23,7 @@ import {
  * x-codegen:
  *   method: requestConfirmation
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,6 +33,38 @@ import {
  *       .then({ order_edit }) => {
  *         console.log(order_edit.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminRequestOrderEditConfirmation,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const requestOrderConfirmation =
+ *           useAdminRequestOrderEditConfirmation(
+ *             orderEditId
+ *           )
+ *
+ *         const handleRequestConfirmation = () => {
+ *           requestOrderConfirmation.mutate(void 0, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(
+ *                 order_edit.requested_at,
+ *                 order_edit.requested_by
+ *               )
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |

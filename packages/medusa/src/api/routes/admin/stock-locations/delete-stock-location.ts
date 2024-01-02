@@ -12,7 +12,7 @@ import { SalesChannelLocationService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The ID of the Stock Location.
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,31 @@ import { SalesChannelLocationService } from "../../../../services"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeleteStockLocation } from "medusa-react"
+ *
+ *       type Props = {
+ *         stockLocationId: string
+ *       }
+ *
+ *       const StockLocation = ({ stockLocationId }: Props) => {
+ *         const deleteLocation = useAdminDeleteStockLocation(
+ *           stockLocationId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteLocation.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *       }
+ *
+ *       export default StockLocation
  *   - lang: Shell
  *     label: cURL
  *     source: |

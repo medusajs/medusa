@@ -15,7 +15,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: removeRegion
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -25,6 +25,31 @@ import { EntityManager } from "typeorm"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDiscountRemoveRegion } from "medusa-react"
+ *
+ *       type Props = {
+ *         discountId: string
+ *       }
+ *
+ *       const Discount = ({ discountId }: Props) => {
+ *         const deleteRegion = useAdminDiscountRemoveRegion(discountId)
+ *         // ...
+ *
+ *         const handleDelete = (regionId: string) => {
+ *           deleteRegion.mutate(regionId, {
+ *             onSuccess: ({ discount }) => {
+ *               console.log(discount.regions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

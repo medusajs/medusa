@@ -18,7 +18,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,6 +33,34 @@ import { EntityManager } from "typeorm"
  *       .then(({ customer }) => {
  *         console.log(customer.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateCustomer } from "medusa-react"
+ *
+ *       type CustomerData = {
+ *         first_name: string
+ *         last_name: string
+ *         email: string
+ *         password: string
+ *       }
+ *
+ *       const CreateCustomer = () => {
+ *         const createCustomer = useAdminCreateCustomer()
+ *         // ...
+ *
+ *         const handleCreate = (customerData: CustomerData) => {
+ *           createCustomer.mutate(customerData, {
+ *             onSuccess: ({ customer }) => {
+ *               console.log(customer.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCustomer
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -47,7 +47,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -56,6 +56,33 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useCreateCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Cart = ({ regionId }: Props) => {
+ *         const createCart = useCreateCart()
+ *
+ *         const handleCreate = () => {
+ *           createCart.mutate({
+ *             region_id: regionId
+ *             // creates an empty cart
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |

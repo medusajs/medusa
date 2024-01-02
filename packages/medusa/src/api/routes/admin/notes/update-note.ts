@@ -19,7 +19,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -31,6 +31,35 @@ import { EntityManager } from "typeorm"
  *       .then(({ note }) => {
  *         console.log(note.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateNote } from "medusa-react"
+ *
+ *       type Props = {
+ *         noteId: string
+ *       }
+ *
+ *       const Note = ({ noteId }: Props) => {
+ *         const updateNote = useAdminUpdateNote(noteId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           value: string
+ *         ) => {
+ *           updateNote.mutate({
+ *             value
+ *           }, {
+ *             onSuccess: ({ note }) => {
+ *               console.log(note.value)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Note
  *   - lang: Shell
  *     label: cURL
  *     source: |

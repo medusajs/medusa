@@ -41,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *   method: removeProductTypes
  *   queryParams: AdminDeleteTaxRatesTaxRateProductTypesParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -55,6 +55,39 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminDeleteProductTypeTaxRates,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const removeProductTypes = useAdminDeleteProductTypeTaxRates(
+ *           taxRateId
+ *         )
+ *         // ...
+ *
+ *         const handleRemoveProductTypes = (
+ *           productTypeIds: string[]
+ *         ) => {
+ *           removeProductTypes.mutate({
+ *             product_types: productTypeIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.product_types)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |

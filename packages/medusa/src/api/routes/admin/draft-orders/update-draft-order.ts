@@ -37,7 +37,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -49,6 +49,35 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateDraftOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const updateDraftOrder = useAdminUpdateDraftOrder(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (email: string) => {
+ *           updateDraftOrder.mutate({
+ *             email,
+ *           }, {
+ *             onSuccess: ({ draft_order }) => {
+ *               console.log(draft_order.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

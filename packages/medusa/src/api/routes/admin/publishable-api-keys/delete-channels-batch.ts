@@ -22,7 +22,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * x-codegen:
  *   method: deleteSalesChannelsBatch
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -38,6 +38,44 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminRemovePublishableKeySalesChannelsBatch,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const deleteSalesChannels =
+ *           useAdminRemovePublishableKeySalesChannelsBatch(
+ *             publishableApiKeyId
+ *           )
+ *         // ...
+ *
+ *         const handleDelete = (salesChannelId: string) => {
+ *           deleteSalesChannels.mutate({
+ *             sales_channel_ids: [
+ *               {
+ *                 id: salesChannelId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ publishable_api_key }) => {
+ *               console.log(publishable_api_key.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |

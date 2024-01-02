@@ -17,7 +17,107 @@ export const adminProductKeys = queryKeysFactory(ADMIN_PRODUCTS_QUERY_KEY)
 
 type ProductQueryKeys = typeof adminProductKeys
 
+/**
+ * This hook retrieves a list of products. The products can be filtered by fields such as `q` or `status` passed in 
+ * the `query` parameter. The products can also be sorted or paginated.
+ * 
+ * @example
+ * To list products:
+ * 
+ * ```tsx
+ * import { useAdminProducts } from "medusa-react"
+ * 
+ * const Products = () => {
+ *   const { products, isLoading } = useAdminProducts()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {products && !products.length && <span>No Products</span>}
+ *       {products && products.length > 0 && (
+ *         <ul>
+ *           {products.map((product) => (
+ *             <li key={product.id}>{product.title}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Products
+ * ```
+ * 
+ * To specify relations that should be retrieved within the products:
+ * 
+ * ```tsx
+ * import { useAdminProducts } from "medusa-react"
+ * 
+ * const Products = () => {
+ *   const { products, isLoading } = useAdminProducts({
+ *     expand: "images"
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {products && !products.length && <span>No Products</span>}
+ *       {products && products.length > 0 && (
+ *         <ul>
+ *           {products.map((product) => (
+ *             <li key={product.id}>{product.title}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Products
+ * ```
+ * 
+ * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+ * 
+ * ```tsx
+ * import { useAdminProducts } from "medusa-react"
+ * 
+ * const Products = () => {
+ *   const { 
+ *     products, 
+ *     limit,
+ *     offset,
+ *     isLoading
+ *   } = useAdminProducts({
+ *     expand: "images",
+ *     limit: 20,
+ *     offset: 0
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {products && !products.length && <span>No Products</span>}
+ *       {products && products.length > 0 && (
+ *         <ul>
+ *           {products.map((product) => (
+ *             <li key={product.id}>{product.title}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Products
+ * ```
+ * 
+ * @namespaceAsCategory Hooks.Admin.Products
+ * @category Queries
+ */
 export const useAdminProducts = (
+  /**
+   * Filters and pagination configurations to apply on the retrieved products.
+   */
   query?: AdminGetProductsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminProductsListRes>,
@@ -34,8 +134,44 @@ export const useAdminProducts = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieves a product's details.
+ * 
+ * @example
+ * import { useAdminProduct } from "medusa-react"
+ * 
+ * type Props = {
+ *   productId: string
+ * }
+ * 
+ * const Product = ({ productId }: Props) => {
+ *   const { 
+ *     product, 
+ *     isLoading, 
+ *   } = useAdminProduct(productId)
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {product && <span>{product.title}</span>}
+ *       
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Product
+ * 
+ * @namespaceAsCategory Hooks.Admin.Products
+ * @category Queries
+ */
 export const useAdminProduct = (
+  /**
+   * The product's ID.
+   */
   id: string,
+  /**
+   * Configurations to apply on the retrieved product.
+   */
   query?: AdminGetProductParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminProductsRes>,
@@ -52,6 +188,35 @@ export const useAdminProduct = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieves a list of Product Tags with how many times each is used in products.
+ * 
+ * @example
+ * import { useAdminProductTagUsage } from "medusa-react"
+ * 
+ * const ProductTags = (productId: string) => {
+ *   const { tags, isLoading } = useAdminProductTagUsage()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {tags && !tags.length && <span>No Product Tags</span>}
+ *       {tags && tags.length > 0 && (
+ *         <ul>
+ *           {tags.map((tag) => (
+ *             <li key={tag.id}>{tag.value} - {tag.usage_count}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default ProductTags
+ * 
+ * @namespaceAsCategory Hooks.Admin.Products
+ * @category Queries
+ */
 export const useAdminProductTagUsage = (
   options?: UseQueryOptionsWrapper<
     Response<AdminProductsListTagsRes>,

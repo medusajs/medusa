@@ -10,7 +10,7 @@ import _ from "lodash"
  * x-codegen:
  *   method: getSession
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -20,6 +20,23 @@ import _ from "lodash"
  *       .then(({ user }) => {
  *         console.log(user.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminGetSession } from "medusa-react"
+ *
+ *       const Profile = () => {
+ *         const { user, isLoading } = useAdminGetSession()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {user && <span>{user.email}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Profile
  *   - lang: Shell
  *     label: cURL
  *     source: |

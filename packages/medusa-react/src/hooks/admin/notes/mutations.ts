@@ -14,6 +14,36 @@ import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminNoteKeys } from "./queries"
 
+/**
+ * This hook creates a Note which can be associated with any resource.
+ * 
+ * @example
+ * import { useAdminCreateNote } from "medusa-react"
+ * 
+ * const CreateNote = () => {
+ *   const createNote = useAdminCreateNote()
+ *   // ...
+ * 
+ *   const handleCreate = () => {
+ *     createNote.mutate({
+ *       resource_id: "order_123",
+ *       resource_type: "order",
+ *       value: "We delivered this order"
+ *     }, {
+ *       onSuccess: ({ note }) => {
+ *         console.log(note.id)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CreateNote
+ * 
+ * @namespaceAsCategory Hooks.Admin.Notes
+ * @category Mutations
+ */
 export const useAdminCreateNote = (
   options?: UseMutationOptions<
     Response<AdminNotesRes>,
@@ -29,7 +59,44 @@ export const useAdminCreateNote = (
   )
 }
 
+/**
+ * This hook updates a Note's details.
+ * 
+ * @example
+ * import { useAdminUpdateNote } from "medusa-react"
+ * 
+ * type Props = {
+ *   noteId: string
+ * }
+ * 
+ * const Note = ({ noteId }: Props) => {
+ *   const updateNote = useAdminUpdateNote(noteId)
+ *   // ...
+ * 
+ *   const handleUpdate = (
+ *     value: string
+ *   ) => {
+ *     updateNote.mutate({
+ *       value
+ *     }, {
+ *       onSuccess: ({ note }) => {
+ *         console.log(note.value)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Note
+ * 
+ * @namespaceAsCategory Hooks.Admin.Notes
+ * @category Mutations
+ */
 export const useAdminUpdateNote = (
+  /**
+   * The note's ID.
+   */
   id: string,
   options?: UseMutationOptions<
     Response<AdminNotesRes>,
@@ -50,7 +117,36 @@ export const useAdminUpdateNote = (
   )
 }
 
+/**
+ * This hook deletes a Note.
+ * 
+ * @example
+ * import { useAdminDeleteNote } from "medusa-react"
+ * 
+ * type Props = {
+ *   noteId: string
+ * }
+ * 
+ * const Note = ({ noteId }: Props) => {
+ *   const deleteNote = useAdminDeleteNote(noteId)
+ *   // ...
+ * 
+ *   const handleDelete = () => {
+ *     deleteNote.mutate()
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Note
+ * 
+ * @namespaceAsCategory Hooks.Admin.Notes
+ * @category Mutations
+ */
 export const useAdminDeleteNote = (
+  /**
+   * The note's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminNotesDeleteRes>, Error, void>
 ) => {

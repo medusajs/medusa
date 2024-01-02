@@ -17,7 +17,7 @@ import { MedusaModule } from "@medusajs/modules-sdk"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,6 +27,26 @@ import { MedusaModule } from "@medusajs/modules-sdk"
  *       .then(({ store }) => {
  *         console.log(store.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminStore } from "medusa-react"
+ *
+ *       const Store = () => {
+ *         const {
+ *           store,
+ *           isLoading
+ *         } = useAdminStore()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {store && <span>{store.name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |

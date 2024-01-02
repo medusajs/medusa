@@ -251,7 +251,9 @@ class AdminSalesChannelsResource extends BaseResource {
   }
 
   /**
-   * Associate a stock location with a sales channel.
+   * Associate a stock location with a sales channel. It requires the 
+   * [@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module to be installed in
+   * your Medusa backend.
    * @param {string} salesChannelId - The sales channel's ID. 
    * @param {AdminPostSalesChannelsChannelStockLocationsReq} payload - The stock location to associate with the sales channel.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.

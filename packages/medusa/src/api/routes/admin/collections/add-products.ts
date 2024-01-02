@@ -21,7 +21,7 @@ import { defaultAdminCollectionsRelations } from "./index"
  * x-codegen:
  *   method: addProducts
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,6 +36,33 @@ import { defaultAdminCollectionsRelations } from "./index"
  *       .then(({ collection }) => {
  *         console.log(collection.products)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminAddProductsToCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const Collection = ({ collectionId }: Props) => {
+ *         const addProducts = useAdminAddProductsToCollection(collectionId)
+ *         // ...
+ *
+ *         const handleAddProducts = (productIds: string[]) => {
+ *           addProducts.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ collection }) => {
+ *               console.log(collection.products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Collection
  *   - lang: Shell
  *     label: cURL
  *     source: |

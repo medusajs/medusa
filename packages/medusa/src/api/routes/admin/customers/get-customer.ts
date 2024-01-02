@@ -16,7 +16,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,6 +26,29 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ customer }) => {
  *         console.log(customer.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCustomer } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerId: string
+ *       }
+ *
+ *       const Customer = ({ customerId }: Props) => {
+ *         const { customer, isLoading } = useAdminCustomer(
+ *           customerId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {customer && <span>{customer.first_name}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -15,7 +15,47 @@ import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminSwapKeys } from "./queries"
 
+/**
+ * This hook creates a swap for an order. This includes creating a return that is associated with the swap.
+ * 
+ * @example
+ * import { useAdminCreateSwap } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const CreateSwap = ({ orderId }: Props) => {
+ *   const createSwap = useAdminCreateSwap(orderId)
+ *   // ...
+ * 
+ *   const handleCreate = (
+ *     returnItems: {
+ *       item_id: string,
+ *       quantity: number
+ *     }[]
+ *   ) => {
+ *     createSwap.mutate({
+ *       return_items: returnItems
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.swaps)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default CreateSwap
+ * 
+ * @namespaceAsCategory Hooks.Admin.Swaps
+ * @category Mutations
+ */
 export const useAdminCreateSwap = (
+  /**
+   * The associated order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -36,7 +76,46 @@ export const useAdminCreateSwap = (
   )
 }
 
+/**
+ * This hook cancels a swap and change its status.
+ * 
+ * @example
+ * import { useAdminCancelSwap } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string,
+ *   swapId: string
+ * }
+ * 
+ * const Swap = ({
+ *   orderId,
+ *   swapId
+ * }: Props) => {
+ *   const cancelSwap = useAdminCancelSwap(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleCancel = () => {
+ *     cancelSwap.mutate(swapId, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.swaps)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Swap
+ * 
+ * @namespaceAsCategory Hooks.Admin.Swaps
+ * @category Mutations
+ */
 export const useAdminCancelSwap = (
+  /**
+   * The associated order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, string>
 ) => {
@@ -53,7 +132,49 @@ export const useAdminCancelSwap = (
   )
 }
 
+/**
+ * This hook creates a Fulfillment for a Swap and change its fulfillment status to `fulfilled`. If it requires any additional actions,
+ * its fulfillment status may change to `requires_action`.
+ * 
+ * @example
+ * import { useAdminFulfillSwap } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string,
+ *   swapId: string
+ * }
+ * 
+ * const Swap = ({
+ *   orderId,
+ *   swapId
+ * }: Props) => {
+ *   const fulfillSwap = useAdminFulfillSwap(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleFulfill = () => {
+ *     fulfillSwap.mutate({
+ *       swap_id: swapId,
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.swaps)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Swap
+ * 
+ * @namespaceAsCategory Hooks.Admin.Swaps
+ * @category Mutations
+ */
 export const useAdminFulfillSwap = (
+  /**
+   * The associated order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -83,7 +204,52 @@ export const useAdminFulfillSwap = (
   )
 }
 
+/**
+ * This hook creates a shipment for a swap and mark its fulfillment as shipped. This changes the swap's fulfillment status
+ * to either `shipped` or `partially_shipped`, depending on whether all the items were shipped.
+ * 
+ * @example
+ * import { useAdminCreateSwapShipment } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string,
+ *   swapId: string
+ * }
+ * 
+ * const Swap = ({
+ *   orderId,
+ *   swapId
+ * }: Props) => {
+ *   const createShipment = useAdminCreateSwapShipment(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleCreateShipment = (
+ *     fulfillmentId: string
+ *   ) => {
+ *     createShipment.mutate({
+ *       swap_id: swapId,
+ *       fulfillment_id: fulfillmentId,
+ *     }, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.swaps)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Swap
+ * 
+ * @namespaceAsCategory Hooks.Admin.Swaps
+ * @category Mutations
+ */
 export const useAdminCreateSwapShipment = (
+  /**
+   * The associated order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -104,7 +270,47 @@ export const useAdminCreateSwapShipment = (
   )
 }
 
+/**
+ * This hook process a swap's payment either by refunding or issuing a payment. This depends on the `difference_due` 
+ * of the swap. If `difference_due` is negative, the amount is refunded. If `difference_due` is positive, the amount is captured.
+ * 
+ * @example
+ * import { useAdminProcessSwapPayment } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string,
+ *   swapId: string
+ * }
+ * 
+ * const Swap = ({
+ *   orderId,
+ *   swapId
+ * }: Props) => {
+ *   const processPayment = useAdminProcessSwapPayment(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleProcessPayment = () => {
+ *     processPayment.mutate(swapId, {
+ *       onSuccess: ({ order }) => {
+ *         console.log(order.swaps)
+ *       }
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Swap
+ * 
+ * @namespaceAsCategory Hooks.Admin.Swaps
+ * @category Mutations
+ */
 export const useAdminProcessSwapPayment = (
+  /**
+   * The associated order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, string>
 ) => {
@@ -121,7 +327,47 @@ export const useAdminProcessSwapPayment = (
   )
 }
 
+/**
+ * This hook cancels a swap's fulfillment and change its fulfillment status to `canceled`.
+ * 
+ * @example
+ * import { useAdminCancelSwapFulfillment } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string,
+ *   swapId: string
+ * }
+ * 
+ * const Swap = ({
+ *   orderId,
+ *   swapId
+ * }: Props) => {
+ *   const cancelFulfillment = useAdminCancelSwapFulfillment(
+ *     orderId
+ *   )
+ *   // ...
+ * 
+ *   const handleCancelFulfillment = (
+ *     fulfillmentId: string
+ *   ) => {
+ *     cancelFulfillment.mutate({
+ *       swap_id: swapId,
+ *       fulfillment_id: fulfillmentId,
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * export default Swap
+ * 
+ * @namespaceAsCategory Hooks.Admin.Swaps
+ * @category Mutations
+ */
 export const useAdminCancelSwapFulfillment = (
+  /**
+   * The associated order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,

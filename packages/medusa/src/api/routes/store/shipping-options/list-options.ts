@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  *   method: list
  *   queryParams: StoreGetShippingOptionsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -31,6 +31,35 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useShippingOptions } from "medusa-react"
+ *
+ *       const ShippingOptions = () => {
+ *         const {
+ *           shipping_options,
+ *           isLoading,
+ *         } = useShippingOptions()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {shipping_options?.length &&
+ *               shipping_options?.length > 0 && (
+ *               <ul>
+ *                 {shipping_options?.map((shipping_option) => (
+ *                   <li key={shipping_option.id}>
+ *                     {shipping_option.id}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default ShippingOptions
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -75,7 +75,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -87,6 +87,37 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateProduct } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const Product = ({ productId }: Props) => {
+ *         const updateProduct = useAdminUpdateProduct(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           title: string
+ *         ) => {
+ *           updateProduct.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Product
  *   - lang: Shell
  *     label: cURL
  *     source: |

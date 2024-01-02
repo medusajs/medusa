@@ -100,19 +100,23 @@ To do that, send a request to the [Create an OrderEdit API Route](https://docs.m
     ```tsx
     import { useAdminCreateOrderEdit } from "medusa-react"
 
-    const OrderEdit = () => {
+    const CreateOrderEdit = () => {
       const createOrderEdit = useAdminCreateOrderEdit()
 
       const handleCreateOrderEdit = (orderId: string) => {
         createOrderEdit.mutate({
           order_id: orderId,
+        }, {
+          onSuccess: ({ order_edit }) => {
+            console.log(order_edit.id)
+          }
         })
       }
       
       // ...
     }
 
-    export default OrderEdit
+    export default CreateOrderEdit
     ```
 
   </TabItem>
@@ -195,14 +199,24 @@ To add a new item to the original order, send a request to the [Add Line Item AP
     ```tsx
     import { useAdminOrderEditAddLineItem } from "medusa-react"
 
-    const OrderEdit = () => {
-      const addLineItem = useAdminOrderEditAddLineItem(orderEditId)
+    type Props = {
+      orderEditId: string
+    }
+
+    const OrderEdit = ({ orderEditId }: Props) => {
+      const addLineItem = useAdminOrderEditAddLineItem(
+        orderEditId
+      )
 
       const handleAddLineItem = 
         (quantity: number, variantId: string) => {
           addLineItem.mutate({
             quantity,
             variant_id: variantId,
+          }, {
+            onSuccess: ({ order_edit }) => {
+              console.log(order_edit.changes)
+            }
           })
         }
       
@@ -279,7 +293,10 @@ To update an item, send a request to the [Update Line Item API Route](https://do
     ```tsx
     import { useAdminOrderEditUpdateLineItem } from "medusa-react"
 
-    const OrderEdit = () => {
+    const OrderEditItemChange = (
+      orderEditId: string,
+      itemId: string
+    ) => {
       const updateLineItem = useAdminOrderEditUpdateLineItem(
         orderEditId, 
         itemId
@@ -288,13 +305,17 @@ To update an item, send a request to the [Update Line Item API Route](https://do
       const handleUpdateLineItem = (quantity: number) => {
         updateLineItem.mutate({
           quantity,
+        }, {
+          onSuccess: ({ order_edit }) => {
+            console.log(order_edit.items)
+          }
         })
       }
 
       // ...
     }
 
-    export default OrderEdit
+    export default OrderEditItemChange
     ```
 
   </TabItem>
@@ -359,20 +380,32 @@ You can remove an item from the original order by sending a request to the [Remo
     ```tsx
     import { useAdminOrderEditDeleteLineItem } from "medusa-react"
 
-    const OrderEdit = () => {
+    type Props = {
+      orderEditId: string
+      itemId: string
+    }
+
+    const OrderEditLineItem = ({
+      orderEditId,
+      itemId
+    }: Props) => {
       const removeLineItem = useAdminOrderEditDeleteLineItem(
         orderEditId, 
         itemId
       )
       
       const handleRemoveLineItem = () => {
-        removeLineItem.mutate()
+        removeLineItem.mutate(void 0, {
+          onSuccess: ({ order_edit }) => {
+            console.log(order_edit.changes)
+          }
+        })
       }
 
       // ...
     }
 
-    export default OrderEdit
+    export default OrderEditLineItem
     ```
 
   </TabItem>
@@ -428,16 +461,23 @@ To revert an item change, send a request to the [Delete Item Change API Route](h
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { useAdminDeleteOrderEditItemChange } from "medusa-react"
+    import { useAdminDeleteOrderEdit } from "medusa-react"
 
-    const OrderEdit = () => {
-      const deleteItemChange = useAdminDeleteOrderEditItemChange(
-        orderEditId, 
-        itemChangeId
+    type Props = {
+      orderEditId: string
+    }
+
+    const OrderEdit = ({ orderEditId }: Props) => {
+      const deleteOrderEdit = useAdminDeleteOrderEdit(
+        orderEditId
       )
       
-      const handleDeleteItemChange = () => {
-        deleteItemChange.mutate()
+      const handleDelete = () => {
+        deleteOrderEdit.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
@@ -513,14 +553,25 @@ To move an Order Edit into the request state, send a request to the [Request Con
       useAdminRequestOrderEditConfirmation,
     } from "medusa-react"
 
-    const OrderEdit = () => {
+    type Props = {
+      orderEditId: string
+    }
+
+    const OrderEdit = ({ orderEditId }: Props) => {
       const requestOrderConfirmation = 
         useAdminRequestOrderEditConfirmation(
           orderEditId
         )
       
       const handleRequestConfirmation = () => {
-        requestOrderConfirmation.mutate()
+        requestOrderConfirmation.mutate(void 0, {
+          onSuccess: ({ order_edit }) => {
+            console.log(
+              order_edit.requested_at, 
+              order_edit.requested_by
+            )
+          }
+        })
       }
 
       // ...
@@ -604,11 +655,24 @@ To confirm an Order Edit, send a request to the [Confirm Order Edit API Route](h
     ```tsx
     import { useAdminConfirmOrderEdit } from "medusa-react"
 
-    const OrderEdit = () => {
-      const confirmOrderEdit = useAdminConfirmOrderEdit(orderEditId)
+    type Props = {
+      orderEditId: string
+    }
+
+    const OrderEdit = ({ orderEditId }: Props) => {
+      const confirmOrderEdit = useAdminConfirmOrderEdit(
+        orderEditId
+      )
       
       const handleConfirmOrderEdit = () => {
-        confirmOrderEdit.mutate()
+        confirmOrderEdit.mutate(void 0, {
+          onSuccess: ({ order_edit }) => {
+            console.log(
+              order_edit.confirmed_at,
+              order_edit.confirmed_by
+            )
+          }
+        })
       }
 
       // ...
@@ -687,13 +751,22 @@ If the payment is authorized by the customer, it can be captured by sending a re
     ```tsx
     import { useAdminPaymentsCapturePayment } from "medusa-react"
 
-    const OrderEditPayment = () => {
-      const capturePayment = useAdminPaymentsCapturePayment(
+    type Props = {
+      paymentId: string
+    }
+
+    const OrderEditPayment = ({ paymentId }: Props) => {
+      const capture = useAdminPaymentsCapturePayment(
         paymentId
       )
-      
-      const handleCapturePayment = () => {
-        capturePayment.mutate()
+      // ...
+
+      const handleCapture = () => {
+        capture.mutate(void 0, {
+          onSuccess: ({ payment }) => {
+            console.log(payment.amount)
+          }
+        })
       }
 
       // ...
@@ -757,24 +830,39 @@ To refund the difference to the customer, send a request to the [Refund Payment 
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { useAdminPaymentsRefundPayment } from "medusa-react"
     import { RefundReason } from "@medusajs/medusa"
+    import { useAdminPaymentsRefundPayment } from "medusa-react"
 
-    const OrderEditPayment = () => {
-      const refundPayment = useAdminPaymentsRefundPayment(paymentId)
-      
-      const handleRefundPayment = 
-        (amount: number, reason: RefundReason) => {
-          refundPayment.mutate({
-            amount,
-            reason,
-          })
-        }
+    type Props = {
+      paymentId: string
+    }
+
+    const Payment = ({ paymentId }: Props) => {
+      const refund = useAdminPaymentsRefundPayment(
+        paymentId
+      )
+      // ...
+
+      const handleRefund = (
+        amount: number,
+        reason: RefundReason,
+        note: string
+      ) => {
+        refund.mutate({
+          amount,
+          reason,
+          note
+        }, {
+          onSuccess: ({ refund }) => {
+            console.log(refund.amount)
+          }
+        })
+      }
 
       // ...
     }
 
-    export default OrderEditPayment
+    export default Payment
     ```
 
   </TabItem>

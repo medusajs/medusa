@@ -10,7 +10,7 @@ import { MedusaError } from "@medusajs/utils"
  * parameters:
  *   - (path) id=* {string} The ID of the reservation.
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -20,6 +20,29 @@ import { MedusaError } from "@medusajs/utils"
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminReservation } from "medusa-react"
+ *
+ *       type Props = {
+ *         reservationId: string
+ *       }
+ *
+ *       const Reservation = ({ reservationId }: Props) => {
+ *         const { reservation, isLoading } = useAdminReservation(
+ *           reservationId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {reservation && <span>{reservation.inventory_item_id}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Reservation
  *   - lang: Shell
  *     label: cURL
  *     source: |

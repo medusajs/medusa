@@ -13,7 +13,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -23,6 +23,35 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminDeletePublishableApiKey } from "medusa-react"
+ *
+ *       type Props = {
+ *         publishableApiKeyId: string
+ *       }
+ *
+ *       const PublishableApiKey = ({
+ *         publishableApiKeyId
+ *       }: Props) => {
+ *         const deleteKey = useAdminDeletePublishableApiKey(
+ *           publishableApiKeyId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteKey.mutate(void 0, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PublishableApiKey
  *   - lang: Shell
  *     label: cURL
  *     source: |

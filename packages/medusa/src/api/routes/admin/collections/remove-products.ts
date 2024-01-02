@@ -20,7 +20,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  * x-codegen:
  *   method: removeProducts
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -35,6 +35,33 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       .then(({ id, object, removed_products }) => {
  *         console.log(removed_products)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminRemoveProductsFromCollection } from "medusa-react"
+ *
+ *       type Props = {
+ *         collectionId: string
+ *       }
+ *
+ *       const Collection = ({ collectionId }: Props) => {
+ *         const removeProducts = useAdminRemoveProductsFromCollection(collectionId)
+ *         // ...
+ *
+ *         const handleRemoveProducts = (productIds: string[]) => {
+ *           removeProducts.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ id, object, removed_products }) => {
+ *               console.log(removed_products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Collection
  *   - lang: Shell
  *     label: cURL
  *     source: |

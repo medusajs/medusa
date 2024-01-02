@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: addFulfillmentProvider
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,6 +34,40 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminRegionAddFulfillmentProvider
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const addFulfillmentProvider =
+ *           useAdminRegionAddFulfillmentProvider(regionId)
+ *         // ...
+ *
+ *         const handleAddFulfillmentProvider = (
+ *           providerId: string
+ *         ) => {
+ *           addFulfillmentProvider.mutate({
+ *             provider_id: providerId
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.fulfillment_providers)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |

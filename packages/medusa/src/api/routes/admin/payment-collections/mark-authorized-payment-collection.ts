@@ -12,7 +12,7 @@ import { PaymentCollectionService } from "../../../../services"
  * x-codegen:
  *   method: markAsAuthorized
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,6 +22,33 @@ import { PaymentCollectionService } from "../../../../services"
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminMarkPaymentCollectionAsAuthorized } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentCollectionId: string
+ *       }
+ *
+ *       const PaymentCollection = ({ paymentCollectionId }: Props) => {
+ *         const markAsAuthorized = useAdminMarkPaymentCollectionAsAuthorized(
+ *           paymentCollectionId
+ *         )
+ *         // ...
+ *
+ *         const handleAuthorization = () => {
+ *           markAsAuthorized.mutate(void 0, {
+ *             onSuccess: ({ payment_collection }) => {
+ *               console.log(payment_collection.status)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PaymentCollection
  *   - lang: Shell
  *     label: cURL
  *     source: |

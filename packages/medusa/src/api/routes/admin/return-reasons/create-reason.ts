@@ -22,7 +22,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -35,6 +35,33 @@ import { EntityManager } from "typeorm"
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateReturnReason } from "medusa-react"
+ *
+ *       const CreateReturnReason = () => {
+ *         const createReturnReason = useAdminCreateReturnReason()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           label: string,
+ *           value: string
+ *         ) => {
+ *           createReturnReason.mutate({
+ *             label,
+ *             value,
+ *           }, {
+ *             onSuccess: ({ return_reason }) => {
+ *               console.log(return_reason.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateReturnReason
  *   - lang: Shell
  *     label: cURL
  *     source: |

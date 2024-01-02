@@ -23,7 +23,7 @@ import { promiseAll } from "@medusajs/utils"
  * x-codegen:
  *   method: confirmRequest
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -38,6 +38,33 @@ import { promiseAll } from "@medusajs/utils"
  *       .catch(() => {
  *         // an error occurred
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useGrantOrderAccess } from "medusa-react"
+ *
+ *       const ClaimOrder = () => {
+ *         const confirmOrderRequest = useGrantOrderAccess()
+ *
+ *         const handleOrderRequestConfirmation = (
+ *           token: string
+ *         ) => {
+ *           confirmOrderRequest.mutate({
+ *             token
+ *           }, {
+ *             onSuccess: () => {
+ *               // successful
+ *             },
+ *             onError: () => {
+ *               // an error occurred.
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ClaimOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

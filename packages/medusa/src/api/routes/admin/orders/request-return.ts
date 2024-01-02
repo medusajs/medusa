@@ -42,7 +42,7 @@ import { Logger } from "@medusajs/types"
  *   method: requestReturn
  *   params: AdminPostOrdersOrderReturnsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -59,6 +59,43 @@ import { Logger } from "@medusajs/types"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminRequestReturn } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const requestReturn = useAdminRequestReturn(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleRequestingReturn = (
+ *           itemId: string,
+ *           quantity: number
+ *         ) => {
+ *           requestReturn.mutate({
+ *             items: [
+ *               {
+ *                 item_id: itemId,
+ *                 quantity
+ *               }
+ *             ]
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.returns)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |

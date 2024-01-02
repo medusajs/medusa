@@ -16,7 +16,7 @@ import { FindParams } from "../../../../types/common"
  *   method: retrieve
  *   queryParams: GetOrderEditsOrderEditParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,6 +26,30 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminOrderEdit } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const {
+ *           order_edit,
+ *           isLoading,
+ *         } = useAdminOrderEdit(orderEditId)
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {order_edit && <span>{order_edit.status}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |

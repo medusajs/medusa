@@ -11,7 +11,7 @@ import { PaymentService } from "../../../../services"
  * x-codegen:
  *   method: capturePayment
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -21,6 +21,33 @@ import { PaymentService } from "../../../../services"
  *       .then(({ payment }) => {
  *         console.log(payment.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminPaymentsCapturePayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         paymentId: string
+ *       }
+ *
+ *       const Payment = ({ paymentId }: Props) => {
+ *         const capture = useAdminPaymentsCapturePayment(
+ *           paymentId
+ *         )
+ *         // ...
+ *
+ *         const handleCapture = () => {
+ *           capture.mutate(void 0, {
+ *             onSuccess: ({ payment }) => {
+ *               console.log(payment.amount)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Payment
  *   - lang: Shell
  *     label: cURL
  *     source: |

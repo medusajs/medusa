@@ -23,7 +23,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: removeCustomers
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -39,6 +39,38 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import {
+ *         useAdminRemoveCustomersFromCustomerGroup,
+ *       } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const removeCustomers =
+ *           useAdminRemoveCustomersFromCustomerGroup(
+ *             customerGroupId
+ *           )
+ *         // ...
+ *
+ *         const handleRemoveCustomer = (customerId: string) => {
+ *           removeCustomers.mutate({
+ *             customer_ids: [
+ *               {
+ *                 id: customerId,
+ *               },
+ *             ],
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |

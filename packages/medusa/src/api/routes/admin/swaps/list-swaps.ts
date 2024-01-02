@@ -19,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  *   method: list
  *   queryParams: AdminGetSwapsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -29,6 +29,30 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ swaps }) => {
  *         console.log(swaps.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminSwaps } from "medusa-react"
+ *
+ *       const Swaps = () => {
+ *         const { swaps, isLoading } = useAdminSwaps()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {swaps && !swaps.length && <span>No Swaps</span>}
+ *             {swaps && swaps.length > 0 && (
+ *               <ul>
+ *                 {swaps.map((swap) => (
+ *                   <li key={swap.id}>{swap.payment_status}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Swaps
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -33,7 +33,7 @@ import { FindParams } from "../../../../types/common"
  *   method: update
  *   queryParams: AdminPostProductCategoriesCategoryParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -45,6 +45,39 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateProductCategory } from "medusa-react"
+ *
+ *       type Props = {
+ *         productCategoryId: string
+ *       }
+ *
+ *       const Category = ({
+ *         productCategoryId
+ *       }: Props) => {
+ *         const updateCategory = useAdminUpdateProductCategory(
+ *           productCategoryId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string
+ *         ) => {
+ *           updateCategory.mutate({
+ *             name,
+ *           }, {
+ *             onSuccess: ({ product_category }) => {
+ *               console.log(product_category.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Category
  *   - lang: Shell
  *     label: cURL
  *     source: |

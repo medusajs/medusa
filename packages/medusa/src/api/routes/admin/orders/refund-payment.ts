@@ -30,7 +30,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: refundPayment
  *   params: AdminPostOrdersOrderRefundsParams
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -43,6 +43,39 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminRefundPayment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const refundPayment = useAdminRefundPayment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleRefund = (
+ *           amount: number,
+ *           reason: string
+ *         ) => {
+ *           refundPayment.mutate({
+ *             amount,
+ *             reason,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.refunds)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -21,7 +21,7 @@ import {
  * x-codegen:
  *   method: complete
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,6 +30,33 @@ import {
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id)
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useCompleteOrderEdit } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const completeOrderEdit = useCompleteOrderEdit(
+ *           orderEditId
+ *         )
+ *         // ...
+ *
+ *         const handleCompleteOrderEdit = () => {
+ *           completeOrderEdit.mutate(void 0, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.confirmed_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |

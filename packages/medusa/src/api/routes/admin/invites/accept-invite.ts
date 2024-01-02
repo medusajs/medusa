@@ -24,7 +24,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: accept
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -44,6 +44,35 @@ import { EntityManager } from "typeorm"
  *       .catch(() => {
  *         // an error occurred
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminAcceptInvite } from "medusa-react"
+ *
+ *       const AcceptInvite = () => {
+ *         const acceptInvite = useAdminAcceptInvite()
+ *         // ...
+ *
+ *         const handleAccept = (
+ *           token: string,
+ *           firstName: string,
+ *           lastName: string,
+ *           password: string
+ *         ) => {
+ *           acceptInvite.mutate({
+ *             token,
+ *             user: {
+ *               first_name: firstName,
+ *               last_name: lastName,
+ *               password,
+ *             },
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default AcceptInvite
  *   - lang: Shell
  *     label: cURL
  *     source: |

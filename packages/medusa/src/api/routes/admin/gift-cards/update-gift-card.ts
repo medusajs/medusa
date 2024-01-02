@@ -22,7 +22,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,6 +34,35 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateGiftCard } from "medusa-react"
+ *
+ *       type Props = {
+ *         customGiftCardId: string
+ *       }
+ *
+ *       const CustomGiftCard = ({ customGiftCardId }: Props) => {
+ *         const updateGiftCard = useAdminUpdateGiftCard(
+ *           customGiftCardId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (regionId: string) => {
+ *           updateGiftCard.mutate({
+ *             region_id: regionId,
+ *           }, {
+ *             onSuccess: ({ gift_card }) => {
+ *               console.log(gift_card.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomGiftCard
  *   - lang: Shell
  *     label: cURL
  *     source: |

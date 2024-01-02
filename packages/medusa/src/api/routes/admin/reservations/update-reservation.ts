@@ -20,7 +20,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *      schema:
  *        $ref: "#/components/schemas/AdminPostReservationsReservationReq"
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -32,6 +32,33 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminUpdateReservation } from "medusa-react"
+ *
+ *       type Props = {
+ *         reservationId: string
+ *       }
+ *
+ *       const Reservation = ({ reservationId }: Props) => {
+ *         const updateReservation = useAdminUpdateReservation(
+ *           reservationId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           quantity: number
+ *         ) => {
+ *           updateReservation.mutate({
+ *             quantity,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Reservation
  *   - lang: Shell
  *     label: cURL
  *     source: |

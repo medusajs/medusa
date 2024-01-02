@@ -23,7 +23,7 @@ import { validator } from "../../../../utils/validator"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,6 +36,31 @@ import { validator } from "../../../../utils/validator"
  *       }).then((({ batch_job }) => {
  *         console.log(batch_job.id);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreateBatchJob } from "medusa-react"
+ *
+ *       const CreateBatchJob = () => {
+ *         const createBatchJob = useAdminCreateBatchJob()
+ *         // ...
+ *
+ *         const handleCreateBatchJob = () => {
+ *           createBatchJob.mutate({
+ *             type: "publish-products",
+ *             context: {},
+ *             dry_run: true
+ *           }, {
+ *             onSuccess: ({ batch_job }) => {
+ *               console.log(batch_job)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateBatchJob
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -13,7 +13,7 @@ import RegionService from "../../../../services/region"
  * x-codegen:
  *   method: retrieveFulfillmentOptions
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -23,6 +23,46 @@ import RegionService from "../../../../services/region"
  *       .then(({ fulfillment_options }) => {
  *         console.log(fulfillment_options.length);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminRegionFulfillmentOptions } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const {
+ *           fulfillment_options,
+ *           isLoading
+ *         } = useAdminRegionFulfillmentOptions(
+ *           regionId
+ *         )
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {fulfillment_options && !fulfillment_options.length && (
+ *               <span>No Regions</span>
+ *             )}
+ *             {fulfillment_options &&
+ *               fulfillment_options.length > 0 && (
+ *               <ul>
+ *                 {fulfillment_options.map((option) => (
+ *                   <li key={option.provider_id}>
+ *                     {option.provider_id}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *                 )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |

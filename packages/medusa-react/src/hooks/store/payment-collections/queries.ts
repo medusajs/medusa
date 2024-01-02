@@ -13,7 +13,45 @@ export const paymentCollectionQueryKeys = queryKeysFactory<
 
 type PaymentCollectionKey = typeof paymentCollectionQueryKeys
 
+/**
+ * This hook retrieves a Payment Collection's details.
+ * 
+ * @example
+ * import { usePaymentCollection } from "medusa-react"
+ * 
+ * type Props = {
+ *   paymentCollectionId: string
+ * }
+ * 
+ * const PaymentCollection = ({
+ *   paymentCollectionId
+ * }: Props) => {
+ *   const { 
+ *     payment_collection, 
+ *     isLoading
+ *   } = usePaymentCollection(
+ *     paymentCollectionId
+ *   )
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {payment_collection && (
+ *         <span>{payment_collection.status}</span>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default PaymentCollection
+ * 
+ * @namespaceAsCategory Hooks.Store.Payment Collections
+ * @category Queries
+ */
 export const usePaymentCollection = (
+  /**
+   * The payment collection's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<StorePaymentCollectionsRes>,

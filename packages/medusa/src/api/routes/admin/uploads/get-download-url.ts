@@ -13,7 +13,7 @@ import { IsString } from "class-validator"
  *       schema:
  *         $ref: "#/components/schemas/AdminPostUploadsDownloadUrlReq"
  * x-codeSamples:
- *   - lang: JavaScript
+ *   - lang: TypeScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -25,6 +25,29 @@ import { IsString } from "class-validator"
  *       .then(({ download_url }) => {
  *         console.log(download_url);
  *       })
+ *   - lang: TypeScript
+ *     label: Medusa React
+ *     source: |
+ *       import { useAdminCreatePresignedDownloadUrl } from "medusa-react"
+ *
+ *       const Image = () => {
+ *         const createPresignedUrl = useAdminCreatePresignedDownloadUrl()
+ *         // ...
+ *
+ *         const handlePresignedUrl = (fileKey: string) => {
+ *           createPresignedUrl.mutate({
+ *             file_key: fileKey
+ *           }, {
+ *             onSuccess: ({ download_url }) => {
+ *               console.log(download_url)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Image
  *   - lang: Shell
  *     label: cURL
  *     source: |
