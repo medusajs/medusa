@@ -566,7 +566,7 @@ class CartService extends TransactionBaseService {
   async removeLineItem(
     cartId: string,
     lineItemId: string | string[]
-  ): Promise<void> {
+  ): Promise<void | (LineItem | null | undefined)[]> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
@@ -603,7 +603,7 @@ class CartService extends TransactionBaseService {
           }
         )
 
-        await this.lineItemService_
+        const deletedLineItems = await this.lineItemService_
           .withTransaction(transactionManager)
           .delete([...lineItemIdsToRemove])
 
@@ -623,6 +623,8 @@ class CartService extends TransactionBaseService {
           .emit(CartService.Events.UPDATED, {
             id: cart.id,
           })
+
+        return deletedLineItems
       }
     )
   }
@@ -1427,16 +1429,21 @@ class CartService extends TransactionBaseService {
     })
 
     if (itemsToRemove.length) {
-      await this.removeLineItem(
+      const removedLineItems = await this.removeLineItem(
         cart.id,
         itemsToRemove.map((item) => item.id)
       )
 
-      const updatedCart = await this.retrieve(cart.id, {
-        relations: ["items.variant.product.profiles"],
-      })
-
-      cart.items = updatedCart.items ?? []
+      if (removedLineItems) {
+        for (const item of removedLineItems) {
+          if (item) {
+            const index = cart.items.findIndex(
+              (lineItem) => lineItem.id === item.id
+            )
+            cart.items.splice(index, 1)
+          }
+        }
+      }
     }
   }
 
