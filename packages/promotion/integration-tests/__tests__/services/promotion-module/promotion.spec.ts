@@ -343,7 +343,7 @@ describe("Promotion Service", () => {
         .catch((e) => e)
 
       expect(error.message).toContain(
-        "rules[].operator (doesnotexist) is invalid. It should be one of gt, lt, eq, ne, in"
+        "rules[].operator (doesnotexist) is invalid. It should be one of gte, lte, gt, lt, eq, ne, in"
       )
     })
   })
