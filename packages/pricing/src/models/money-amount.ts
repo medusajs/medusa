@@ -59,7 +59,8 @@ class MoneyAmount {
     nullable: true,
     serializer: Number,
   })
-  amount?: number // TODO: add ` | null` when upgrading mikro-orm beyond 5.9.0 for this: https://github.com/mikro-orm/mikro-orm/commit/6bc116aabdc9ca958238faaa7ac4a44cf3c71c08
+  amount?: number
+  // TODO: add ` | null` when upgrading mikro-orm beyond 5.9.0 for this: https://github.com/mikro-orm/mikro-orm/commit/6bc116aabdc9ca958238faaa7ac4a44cf3c71c08
 
   @Property({ columnType: "numeric", nullable: true })
   min_quantity: number | null
