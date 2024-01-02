@@ -1,4 +1,5 @@
 import * as defaultRepositories from "@repositories"
+import * as defaultServices from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { ModulesSdkTypes } from "@medusajs/types"
@@ -17,7 +18,10 @@ export default async ({
   )?.repositories
 
   container.register({
-    // authenticationService: asClass(defaultServices.AuthenticationService).singleton(),
+    authUserService: asClass(defaultServices.AuthUserService).singleton(),
+    authProviderService: asClass(
+      defaultServices.AuthProviderService
+    ).singleton(),
   })
 
   if (customRepositories) {
@@ -34,5 +38,11 @@ export default async ({
 function loadDefaultRepositories({ container }) {
   container.register({
     baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
+    authUserRepository: asClass(
+      defaultRepositories.AuthUserRepository
+    ).singleton(),
+    authProviderRepository: asClass(
+      defaultRepositories.AuthProviderRepository
+    ).singleton(),
   })
 }
