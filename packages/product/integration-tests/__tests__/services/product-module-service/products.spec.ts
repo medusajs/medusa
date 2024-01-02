@@ -265,8 +265,8 @@ describe("ProductModuleService products", function () {
               sku: createdVariant.sku,
               allow_backorder: false,
               manage_inventory: true,
-              inventory_quantity: "100",
-              variant_rank: "0",
+              inventory_quantity: 100,
+              variant_rank: 0,
               options: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
