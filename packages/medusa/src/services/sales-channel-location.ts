@@ -76,7 +76,7 @@ class SalesChannelLocationService extends TransactionBaseService {
       .retrieve(salesChannelId)
 
     if (this.stockLocationService_) {
-      // trhows error if not found
+      // throws error if not found
       await this.stockLocationService_.retrieve(locationId, undefined, {
         transactionManager: this.activeManager_,
       })
@@ -124,7 +124,7 @@ class SalesChannelLocationService extends TransactionBaseService {
 
   /**
    * Lists the sales channels associated with a stock location.
-   * @param {string} salesChannelId - The ID of the stock location.
+   * @param {string} locationId - The ID of the stock location.
    * @returns {Promise<string[]>} A promise that resolves with an array of sales channel IDs.
    */
   async listSalesChannelIds(locationId: string): Promise<string[]> {
