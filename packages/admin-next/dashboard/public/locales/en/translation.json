@@ -1,0 +1,89 @@
+{
+  "$schema": "../$schema.json",
+  "general": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create",
+    "createItem": "Create {{item}}",
+    "delete": "Delete",
+    "deleteItem": "Delete {{item}}",
+    "edit": "Edit",
+    "editItem": "Edit {{item}}",
+    "extensions": "Extensions",
+    "details": "Details"
+  },
+  "products": {
+    "domain": "Products",
+    "variants": "Variants",
+    "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels"
+  },
+  "collections": {
+    "domain": "Collections"
+  },
+  "categories": {
+    "domain": "Categories"
+  },
+  "inventory": {
+    "domain": "Inventory"
+  },
+  "giftCards": {
+    "domain": "Gift Cards"
+  },
+  "customers": {
+    "domain": "Customers"
+  },
+  "customerGroups": {
+    "domain": "Customer Groups"
+  },
+  "orders": {
+    "domain": "Orders"
+  },
+  "draftOrders": {
+    "domain": "Draft Orders"
+  },
+  "discounts": {
+    "domain": "Discounts"
+  },
+  "pricing": {
+    "domain": "Pricing"
+  },
+  "profile": {
+    "domain": "Profile"
+  },
+  "users": {
+    "domain": "Users",
+    "role": "Role",
+    "roles": {
+      "admin": "Admin",
+      "developer": "Developer",
+      "member": "Member"
+    }
+  },
+  "store": {
+    "domain": "Store",
+    "manageYourStoresDetails": "Manage your store's details.",
+    "editStoreDetails": "Edit store details",
+    "storeName": "Store name",
+    "swapLinkTemplate": "Swap link template",
+    "paymentLinkTemplate": "Payment link template",
+    "inviteLinkTemplate": "Invite link template"
+  },
+  "fields": {
+    "name": "Name",
+    "lastName": "Last Name",
+    "firstName": "First Name",
+    "title": "Title",
+    "description": "Description",
+    "email": "Email",
+    "password": "Password",
+    "categories": "Categories",
+    "category": "Category",
+    "collection": "Collection",
+    "discountable": "Discountable",
+    "handle": "Handle",
+    "subtitle": "Subtitle",
+    "tags": "Tags",
+    "type": "Type",
+    "sales_channels": "Sales Channels"
+  }
+}
