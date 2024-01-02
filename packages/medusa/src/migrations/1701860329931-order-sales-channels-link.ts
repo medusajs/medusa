@@ -11,7 +11,7 @@ export class OrderSalesChannelLink1701860329931 implements MigrationInterface {
         CREATE TABLE IF NOT EXISTS "order_sales_channel"
         (
             "id"                character varying        NOT NULL,
-            "order_id"           character varying        NOT NULL,
+            "order_id"          character varying        NOT NULL,
             "sales_channel_id"  character varying        NOT NULL,
             "created_at"        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "updated_at"        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
