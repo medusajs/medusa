@@ -1,3 +1,5 @@
+import { BaseFilterable } from "../../dal"
+
 export type AuthProviderDTO = {
   provider: string
   name: string
@@ -25,4 +27,10 @@ export enum ProviderDomain {
   ADMIN = "admin",
 }
 
-export type FilterableAuthProviderProps = {}
+export interface FilterableAuthProviderProps
+  extends BaseFilterable<FilterableAuthProviderProps> {
+  provider?: string[]
+  is_active?: boolean
+  domain?: ProviderDomain[]
+  name?: string[]
+}

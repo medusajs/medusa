@@ -1,3 +1,5 @@
+import { BaseFilterable } from "../../dal"
+
 export type AuthUserDTO = {
   id: string
   email: string
@@ -23,4 +25,9 @@ export type UpdateAuthUserDTO = {
   app_metadata?: Record<string, unknown>
 }
 
-export type FilterableAuthUserProps = {}
+export interface FilterableAuthUserProps
+  extends BaseFilterable<FilterableAuthUserProps> {
+  id?: string[]
+  provider?: string[] | string
+  email?: string[] | string
+}

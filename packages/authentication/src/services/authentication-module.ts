@@ -90,7 +90,7 @@ export default class AuthenticationModuleService<
 
   @InjectManager("baseRepository_")
   async listAndCountAuthProviders(
-    filters = {},
+    filters: FilterableAuthProviderProps = {},
     config: FindConfig<{}>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[AuthenticationTypes.AuthProviderDTO[], number]> {
@@ -222,7 +222,7 @@ export default class AuthenticationModuleService<
 
   @InjectManager("baseRepository_")
   async listAuthUsers(
-    filters: FilterableAuthProviderProps = {},
+    filters: FilterableAuthUserProps = {},
     config: FindConfig<AuthUserDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthUserDTO[]> {
