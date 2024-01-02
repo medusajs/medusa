@@ -1,4 +1,4 @@
-import { PromotionRuleOperator as TPromotionRuleOperator } from "@medusajs/types"
+import { PromotionRuleOperatorValues } from "@medusajs/types"
 import { MedusaError, PromotionRuleOperator, isPresent } from "@medusajs/utils"
 import { CreatePromotionRuleDTO } from "../../types"
 
@@ -17,7 +17,7 @@ export function validatePromotionRuleAttributes(
     }
 
     if (isPresent(promotionRuleData.operator)) {
-      const allowedOperators: TPromotionRuleOperator[] = Object.values(
+      const allowedOperators: PromotionRuleOperatorValues[] = Object.values(
         PromotionRuleOperator
       )
 

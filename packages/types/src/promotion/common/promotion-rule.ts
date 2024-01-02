@@ -1,6 +1,13 @@
 import { BaseFilterable } from "../../dal"
 
-export type PromotionRuleOperator = "gt" | "lt" | "eq" | "ne" | "in"
+export type PromotionRuleOperatorValues =
+  | "gt"
+  | "lt"
+  | "eq"
+  | "ne"
+  | "in"
+  | "lte"
+  | "gte"
 
 export interface PromotionRuleDTO {
   id: string
@@ -9,7 +16,7 @@ export interface PromotionRuleDTO {
 export interface CreatePromotionRuleDTO {
   description?: string
   attribute: string
-  operator: PromotionRuleOperator
+  operator: PromotionRuleOperatorValues
   values: string[] | string
 }
 

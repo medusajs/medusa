@@ -20,6 +20,8 @@ export enum ApplicationMethodAllocation {
 }
 
 export enum PromotionRuleOperator {
+  GTE = "gte",
+  LTE = "lte",
   GT = "gt",
   LT = "lt",
   EQ = "eq",

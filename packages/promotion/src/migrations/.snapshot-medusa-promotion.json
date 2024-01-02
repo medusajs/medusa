@@ -298,7 +298,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["gt", "lt", "eq", "ne", "in"],
+          "enumItems": ["gte", "lte", "gt", "lt", "eq", "ne", "in"],
           "mappedType": "enum"
         },
         "created_at": {
@@ -409,6 +409,60 @@
           "constraintName": "promotion_promotion_rule_promotion_rule_id_foreign",
           "columnNames": ["promotion_rule_id"],
           "localTableName": "public.promotion_promotion_rule",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.promotion_rule",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "application_method_id": {
+          "name": "application_method_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "promotion_rule_id": {
+          "name": "promotion_rule_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "application_method_promotion_rule",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "application_method_promotion_rule_pkey",
+          "columnNames": ["application_method_id", "promotion_rule_id"],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "application_method_promotion_rule_application_method_id_foreign": {
+          "constraintName": "application_method_promotion_rule_application_method_id_foreign",
+          "columnNames": ["application_method_id"],
+          "localTableName": "public.application_method_promotion_rule",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.application_method",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "application_method_promotion_rule_promotion_rule_id_foreign": {
+          "constraintName": "application_method_promotion_rule_promotion_rule_id_foreign",
+          "columnNames": ["promotion_rule_id"],
+          "localTableName": "public.application_method_promotion_rule",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion_rule",
           "deleteRule": "cascade",

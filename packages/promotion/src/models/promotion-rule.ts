@@ -1,4 +1,4 @@
-import { PromotionRuleOperator } from "@medusajs/types"
+import { PromotionRuleOperatorValues } from "@medusajs/types"
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -18,7 +18,7 @@ import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
 import PromotionRuleValue from "./promotion-rule-value"
 
-type OptionalFields = "description"
+type OptionalFields = "description" | "created_at" | "updated_at" | "deleted_at"
 type OptionalRelations = "values" | "promotions"
 
 @Entity()
@@ -29,7 +29,7 @@ export default class PromotionRule {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  description: string
+  description: string | null
 
   @Index({ name: "IDX_promotion_rule_attribute" })
   @Property({ columnType: "text" })
@@ -37,7 +37,7 @@ export default class PromotionRule {
 
   @Index({ name: "IDX_promotion_rule_operator" })
   @Enum(() => PromotionUtils.PromotionRuleOperator)
-  operator: PromotionRuleOperator
+  operator: PromotionRuleOperatorValues
 
   @OneToMany(() => PromotionRuleValue, (prv) => prv.promotion_rule, {
     cascade: [Cascade.REMOVE],
@@ -58,7 +58,7 @@ export default class PromotionRule {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -66,18 +66,18 @@ export default class PromotionRule {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at: Date | null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "promo-rule")
+    this.id = generateEntityId(this.id, "prorul")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "promo-rule")
+    this.id = generateEntityId(this.id, "prorul")
   }
 }

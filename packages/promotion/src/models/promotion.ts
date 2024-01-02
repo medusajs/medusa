@@ -17,7 +17,11 @@ import {
 import ApplicationMethod from "./application-method"
 import PromotionRule from "./promotion-rule"
 
-type OptionalFields = "is_automatic"
+type OptionalFields =
+  | "is_automatic"
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
 type OptionalRelations = "application_method"
 @Entity()
 export default class Promotion {
@@ -59,7 +63,7 @@ export default class Promotion {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -67,10 +71,10 @@ export default class Promotion {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at: Date | null
 
   @BeforeCreate()
   onCreate() {

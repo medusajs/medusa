@@ -27,11 +27,11 @@ export default class PromotionRuleValue {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "promo-rule-value")
+    this.id = generateEntityId(this.id, "prorulval")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "promo-rule-value")
+    this.id = generateEntityId(this.id, "prorulval")
   }
 }

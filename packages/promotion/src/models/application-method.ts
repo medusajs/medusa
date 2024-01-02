@@ -20,7 +20,13 @@ import {
 import Promotion from "./promotion"
 import PromotionRule from "./promotion-rule"
 
-type OptionalFields = "value" | "max_quantity" | "allocation"
+type OptionalFields =
+  | "value"
+  | "max_quantity"
+  | "allocation"
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
 @Entity()
 export default class ApplicationMethod {
   [OptionalProps]?: OptionalFields
@@ -29,10 +35,10 @@ export default class ApplicationMethod {
   id!: string
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  value?: number
+  value?: number | null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  max_quantity?: number
+  max_quantity?: number | null
 
   @Index({ name: "IDX_application_method_type" })
   @Enum(() => PromotionUtils.ApplicationMethodType)
@@ -66,7 +72,7 @@ export default class ApplicationMethod {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -74,18 +80,18 @@ export default class ApplicationMethod {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at: Date | null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "app_method")
+    this.id = generateEntityId(this.id, "proappmet")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "app_method")
+    this.id = generateEntityId(this.id, "proappmet")
   }
 }

@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20231222101343 extends Migration {
+export class Migration20240102130345 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table "promotion" ("id" text not null, "code" text not null, "is_automatic" boolean not null default false, "type" text check ("type" in (\'standard\', \'buyget\')) not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_pkey" primary key ("id"));'
@@ -28,7 +28,7 @@ export class Migration20231222101343 extends Migration {
     )
 
     this.addSql(
-      'create table "promotion_rule" ("id" text not null, "description" text null, "attribute" text not null, "operator" text check ("operator" in (\'gt\', \'lt\', \'eq\', \'ne\', \'in\')) not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_rule_pkey" primary key ("id"));'
+      'create table "promotion_rule" ("id" text not null, "description" text null, "attribute" text not null, "operator" text check ("operator" in (\'gte\', \'lte\', \'gt\', \'lt\', \'eq\', \'ne\', \'in\')) not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "promotion_rule_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_promotion_rule_attribute" on "promotion_rule" ("attribute");'
@@ -39,6 +39,10 @@ export class Migration20231222101343 extends Migration {
 
     this.addSql(
       'create table "promotion_promotion_rule" ("promotion_id" text not null, "promotion_rule_id" text not null, constraint "promotion_promotion_rule_pkey" primary key ("promotion_id", "promotion_rule_id"));'
+    )
+
+    this.addSql(
+      'create table "application_method_promotion_rule" ("application_method_id" text not null, "promotion_rule_id" text not null, constraint "application_method_promotion_rule_pkey" primary key ("application_method_id", "promotion_rule_id"));'
     )
 
     this.addSql(
@@ -57,6 +61,13 @@ export class Migration20231222101343 extends Migration {
     )
     this.addSql(
       'alter table "promotion_promotion_rule" add constraint "promotion_promotion_rule_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'
+    )
+
+    this.addSql(
+      'alter table "application_method_promotion_rule" add constraint "application_method_promotion_rule_application_method_id_foreign" foreign key ("application_method_id") references "application_method" ("id") on update cascade on delete cascade;'
+    )
+    this.addSql(
+      'alter table "application_method_promotion_rule" add constraint "application_method_promotion_rule_promotion_rule_id_foreign" foreign key ("promotion_rule_id") references "promotion_rule" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(
