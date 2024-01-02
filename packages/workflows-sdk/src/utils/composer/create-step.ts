@@ -19,13 +19,11 @@ import { isString, OrchestrationUtils } from "@medusajs/utils"
  *
  * @returns The expected output based on the type parameter `TOutput`.
  */
-type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
+type InvokeFn<TInput, TOutput, TCompensateInput> = (
   /**
    * The input of the step.
    */
-  input: {
-    [Key in keyof TInput]: TInput[Key]
-  },
+  input: TInput,
   /**
    * The step's context.
    */
@@ -64,13 +62,13 @@ interface ApplyStepOptions<
   TStepInputs extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
-  TInvokeInput extends object,
+  TInvokeInput,
   TInvokeResultOutput,
   TInvokeResultCompensateInput
 > {
   stepName: string
   stepConfig?: TransactionStepsDefinition
-  input: TStepInputs
+  input?: TStepInputs
   invokeFn: InvokeFn<
     TInvokeInput,
     TInvokeResultOutput,
@@ -92,7 +90,7 @@ interface ApplyStepOptions<
  * @param compensateFn
  */
 function applyStep<
-  TInvokeInput extends object,
+  TInvokeInput,
   TStepInput extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
@@ -125,7 +123,9 @@ function applyStep<
           context: transactionContext.context,
         }
 
-        const argInput = await resolveValue(input, transactionContext)
+        const argInput = input
+          ? await resolveValue(input, transactionContext)
+          : {}
         const stepResponse: StepResponse<any, any> = await invokeFn.apply(
           this,
           [argInput, executionContext]
@@ -236,7 +236,7 @@ function applyStep<
  * )
  */
 export function createStep<
-  TInvokeInput extends object,
+  TInvokeInput,
   TInvokeResultOutput,
   TInvokeResultCompensateInput
 >(
@@ -267,9 +267,13 @@ export function createStep<
     (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name) ?? invokeFn.name
   const config = isString(nameOrConfig) ? {} : nameOrConfig
 
-  const returnFn = function (input: {
-    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
-  }): WorkflowData<TInvokeResultOutput> {
+  const returnFn = function (
+    input:
+      | {
+          [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
+        }
+      | undefined
+  ): WorkflowData<TInvokeResultOutput> {
     if (!global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
@@ -296,10 +300,10 @@ export function createStep<
         compensateFn,
       })
     )
-  }
+  } as StepFunction<TInvokeInput, TInvokeResultOutput>
 
   returnFn.__type = OrchestrationUtils.SymbolWorkflowStepBind
   returnFn.__step__ = stepName
 
-  return returnFn as unknown as StepFunction<TInvokeInput, TInvokeResultOutput>
+  return returnFn
 }
