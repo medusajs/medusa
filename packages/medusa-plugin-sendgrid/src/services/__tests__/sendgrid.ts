@@ -73,7 +73,9 @@ describe("SendGridService", () => {
       { orderService: orderServiceMock, totalsService },
       {
         api_key: "SG.test",
-        order_placed_template: "lol",
+        templates: {
+          order_placed_template: "lol",
+        },
       }
     )
 
@@ -100,7 +102,9 @@ describe("SendGridService", () => {
       { orderService: orderServiceMock, totalsService },
       {
         api_key: "SG.test",
-        order_placed_template: "lol",
+        templates: {
+          order_placed_template: "lol",
+        },
       }
     )
 
@@ -142,6 +146,7 @@ describe("SendGridService", () => {
         id: "test",
       })
     } catch (error) {
+      console.log(error)
       expect(error.message).toEqual(
         "Sendgrid service: No template was set for event: order.placed"
       )

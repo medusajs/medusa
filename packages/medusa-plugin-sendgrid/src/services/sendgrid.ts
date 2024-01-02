@@ -213,41 +213,41 @@ export class SendGridService extends NotificationService {
   getTemplateId(event: string) {
     switch (event) {
       case "order.return_requested":
-        return this.options_.templates.order_return_requested_template
+        return this.options_?.templates?.order_return_requested_template
       case "swap.shipment_created":
-        return this.options_.templates.swap_shipment_created_template
+        return this.options_?.templates?.swap_shipment_created_template
       case "claim.shipment_created":
-        return this.options_.templates.claim_shipment_created_template
+        return this.options_?.templates?.claim_shipment_created_template
       case "order.items_returned":
-        return this.options_.templates.order_items_returned_template
+        return this.options_?.templates?.order_items_returned_template
       case "swap.received":
-        return this.options_.templates.swap_received_template
+        return this.options_?.templates?.swap_received_template
       case "swap.created":
-        return this.options_.templates.swap_created_template
+        return this.options_?.templates?.swap_created_template
       case "gift_card.created":
-        return this.options_.templates.gift_card_created_template
+        return this.options_?.templates?.gift_card_created_template
       case "order.gift_card_created":
-        return this.options_.templates.gift_card_created_template
+        return this.options_?.templates?.gift_card_created_template
       case "order.placed":
-        return this.options_.templates.order_placed_template
+        return this.options_?.templates?.order_placed_template
       case "order.shipment_created":
-        return this.options_.templates.order_shipped_template
+        return this.options_?.templates?.order_shipped_template
       case "order.canceled":
-        return this.options_.templates.order_canceled_template
+        return this.options_?.templates?.order_canceled_template
       case "user.password_reset":
-        return this.options_.templates.user_password_reset_template
+        return this.options_?.templates?.user_password_reset_template
       case "customer.password_reset":
-        return this.options_.templates.customer_password_reset_template
+        return this.options_?.templates?.customer_password_reset_template
       case "restock-notification.restocked":
-        return this.options_.templates.medusa_restock_template
+        return this.options_?.templates?.medusa_restock_template
       case "order.refund_created":
-        return this.options_.templates.order_refund_created_template
+        return this.options_?.templates?.order_refund_created_template
       default:
         return null
     }
   }
 
-  async sendNotification(event: string, eventData: EventData, attachmentGenerator: any) {
+  async sendNotification(event: string, eventData: EventData, attachmentGenerator?: any) {
     const data = await this.fetchData(event, eventData, attachmentGenerator)
 
     let templateId = this.getTemplateId(event)
@@ -314,7 +314,7 @@ export class SendGridService extends NotificationService {
 
   async resendNotification(notification: SendGridData, config: {
     to?: string
-  }, attachmentGenerator: any) {
+  }, attachmentGenerator?: any) {
 
     // @ts-ignore - wrong types in SendGrid
     const sendOptions: SendGrid.MailDataRequired = {
@@ -351,7 +351,7 @@ export class SendGridService extends NotificationService {
     return email;
   }
 
-  async orderShipmentCreatedData({ id, fulfillment_id }: EventData, attachmentGenerator: any) {
+  async orderShipmentCreatedData({ id, fulfillment_id }: EventData, attachmentGenerator?: any) {
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",

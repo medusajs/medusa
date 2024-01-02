@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-instanceof",
+    "@babel/plugin-transform-classes"
+  ],
+  "presets": ["@babel/preset-env", "@babel/preset-typescript"],
+  "env": {
+    "test": {
+      "plugins": ["@babel/plugin-transform-runtime"]
+    }
+  }
+}
