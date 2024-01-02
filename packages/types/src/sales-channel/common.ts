@@ -8,6 +8,7 @@ export interface SalesChannelLocationDTO {
 
 export interface SalesChannelDTO {
   id: string
+  name: string
   description: string | null
   is_disabled: boolean
   metadata: Record<string, unknown> | null

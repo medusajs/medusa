@@ -4,6 +4,7 @@ import { loadCustomRepositories } from "@medusajs/utils"
 import { asClass } from "awilix"
 
 import * as defaultRepositories from "@repositories"
+import * as defaultServices from "@services"
 
 export default async ({
   container,
@@ -15,6 +16,12 @@ export default async ({
   const customRepositories = (
     options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.repositories
+
+  container.register({
+    moneyAmountService: asClass(
+      defaultServices.SalesChannelService
+    ).singleton(),
+  })
 
   if (customRepositories) {
     loadCustomRepositories({

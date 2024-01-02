@@ -1,15 +1,16 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { SalesChannelModuleService } from "@services"
-import { SalesChannelRepository } from "@repositories"
+import { ISalesChannelModuleService } from "@medusajs/types"
 
-import { MikroOrmWrapper } from "../../utils"
+import { initialize } from "../../../src"
+
+import { DB_URL, MikroOrmWrapper } from "../../utils"
 import { createSalesChannels } from "../../__fixtures__"
 
 jest.setTimeout(30000)
 
 describe("Sales Channel Service", () => {
-  let service: SalesChannelModuleService
+  let service: ISalesChannelModuleService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
 
@@ -17,12 +18,11 @@ describe("Sales Channel Service", () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
 
-    const salesChannelRepository = new SalesChannelRepository({
-      manager: repositoryManager,
-    })
-
-    service = new SalesChannelModuleService({
-      salesChannelRepository,
+    service = await initialize({
+      database: {
+        clientUrl: DB_URL,
+        schema: process.env.MEDUSA_SALES_CHANNEL_DB_SCHEMA,
+      },
     })
 
     testManager = await MikroOrmWrapper.forkManager()
