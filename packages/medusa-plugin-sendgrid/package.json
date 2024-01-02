@@ -14,6 +14,7 @@
   "author": "Oliver Juhl",
   "license": "MIT",
   "devDependencies": {
+    "@medusajs/types": "^1.11.9",
     "client-sessions": "^0.8.0",
     "cross-env": "^7.0.3",
     "jest": "^25.5.4",
@@ -34,6 +35,7 @@
     "typeorm": "^0.3.16"
   },
   "dependencies": {
+    "@medusajs/utils": "^1.11.2",
     "@sendgrid/mail": "^8.1.0",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",

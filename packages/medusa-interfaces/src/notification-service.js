@@ -23,11 +23,11 @@ class BaseNotificationService extends BaseService {
   /**
    * Used to retrieve documents related to a shipment.
    */
-  sendNotification(event, data) {
+  sendNotification(event, data, additional) {
     throw new Error("Must be overridden by child")
   }
 
-  resendNotification(notification, config = {}) {
+  resendNotification(notification, config = {}, additional) {
     throw new Error("Must be overridden by child")
   }
 }

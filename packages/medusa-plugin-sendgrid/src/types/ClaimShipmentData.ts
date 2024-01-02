@@ -1,3 +1,5 @@
+import { VariantInventory } from "@medusajs/medusa";
+
 interface FulfillmentItem {
   fulfillment_id: string;
   item_id: string;
@@ -45,7 +47,7 @@ interface OrderItem {
   title: string;
   unit_price: number;
   updated_at: any;
-  variant: Variant;
+  variant: VariantInventory;
   variant_id: string;
 }
 

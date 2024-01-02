@@ -1,3 +1,4 @@
+import { VariantInventory } from "@medusajs/medusa";
 import { OrderShippingAddress } from "./ClaimShipmentData";
 
 interface TaxLine {
@@ -34,7 +35,7 @@ interface AdditionalItem {
   title: string;
   unit_price: number;
   updated_at: any;
-  variant: Variant;
+  variant: VariantInventory;
   variant_id: string;
 }
 
@@ -75,7 +76,7 @@ interface ReturnItem {
   };
   unit_price: number;
   updated_at: any;
-  variant: Variant;
+  variant: VariantInventory;
   variant_id: string;
 }
 

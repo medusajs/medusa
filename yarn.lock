@@ -36232,6 +36232,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-sendgrid@workspace:packages/medusa-plugin-sendgrid"
   dependencies:
+    "@medusajs/types": ^1.11.9
+    "@medusajs/utils": ^1.11.2
     "@sendgrid/mail": ^8.1.0
     body-parser: ^1.20.2
     client-sessions: ^0.8.0

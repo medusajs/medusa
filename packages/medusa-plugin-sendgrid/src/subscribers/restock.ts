@@ -1,10 +1,11 @@
 import { ProductService, SubscriberArgs, SubscriberConfig } from "@medusajs/medusa"
 import type SendGridService from "../services/sendgrid"
 import { MailDataRequired, MailService } from "@sendgrid/mail"
+import { EventData } from "../types"
 
 export default async function restockHandler({ 
   data, eventName, container, pluginOptions, 
-}: SubscriberArgs<Record<string, string>>) {
+}: SubscriberArgs<EventData>) {
   const sendGridService: SendGridService = container.resolve(
     "sendgridService"
   )

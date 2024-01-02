@@ -3,13 +3,14 @@ import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
 import { IsNull, Not } from "typeorm"
 import { MedusaError, isObject } from "@medusajs/utils"
-import { AttachmentsArray, FromFullFilementService, SendgridPluginOptions } from "../types"
-import { CartService, ClaimService, FulfillmentProviderService, 
-  GiftCardService, LineItem, LineItemService, Logger,  Notification,  OrderService, ProductVariantService,ReturnItem,ReturnService, 
-  StoreService, SwapService, TotalsService } from "@medusajs/medusa"
-import { FulfillmentService } from "@medusajs/medusa/src/services/fulfillment"
+import { AttachmentsArray, FromFullFilementService, NewLineItem, PluginOptions } from "../types"
+import type { CartService, ClaimService, FulfillmentProviderService, 
+  GiftCardService, LineItem, LineItemService, Logger,  Notification,  Order,  OrderService, ProductVariantService,Return,ReturnItem,ReturnService, 
+  StoreService, Swap, SwapService, TotalsService } from "@medusajs/medusa"
+import type { FulfillmentService } from "@medusajs/medusa/dist/services/fulfillment"
 import { EventData, SendGridData } from "../types"
-import { LineItemTotals } from "@medusajs/medusa/dist/services/totals"
+import type { LineItemTotals } from "@medusajs/medusa/dist/services/totals"
+import OrderShippedData from "../types/OrderShippedData"
 
 // import Order from "../types/OrderCreatedData"
 // import OrderCreatedData from "../types/OrderCreatedData"
@@ -34,7 +35,7 @@ import { LineItemTotals } from "@medusajs/medusa/dist/services/totals"
 export class SendGridService extends NotificationService {
   static identifier = "sendgrid"
 
-  options_: SendgridPluginOptions
+  options_: PluginOptions
   storeService_: StoreService
   lineItemService_: LineItemService
   orderService_: OrderService
@@ -79,7 +80,7 @@ export class SendGridService extends NotificationService {
       giftCardService: GiftCardService
       logger: Logger
     },
-    options: SendgridPluginOptions
+    options: PluginOptions
   ) {
     super()
 
@@ -151,7 +152,7 @@ export class SendGridService extends NotificationService {
   
 
   async fetchData(event: string, eventData: EventData, 
-    attachmentGenerator: any) {
+    attachmentGenerator: any): Promise<Record<any, any>> {
     switch (event) {
       case "order.return_requested":
         return this.returnRequestedData(eventData)
@@ -288,15 +289,15 @@ export class SendGridService extends NotificationService {
       event,
       data,
       attachmentGenerator
-    )
+    ) 
 
-    const sendOptions: SendGrid.MailDataRequired | SendGrid.MailDataRequired[] = {
+    const sendOptions: SendGrid.MailDataRequired = {
       templateId: templateId,
       from: this.options_.from,
       to: data.email,
       dynamicTemplateData: data,
-      attachments,
     }
+    
     const dataToDb = {
       template_id: templateId,
       from: this.options_.from,
@@ -563,12 +564,7 @@ export class SendGridService extends NotificationService {
 
     const currencyCode = order.currency_code.toUpperCase()
 
-    type NewLineItem = Omit<LineItem, "beforeUpdate" | "afterUpdateOrLoad"> & {
-      totals: LineItemTotals
-      thumbnail: string
-      discounted_price: string
-      price: string
-    }
+    
     const promises: Promise<LineItemTotals>[] = [];
 
     order.items.forEach((item) => {
@@ -685,7 +681,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async gcCreatedData({ id }) {
+  async gcCreatedData({ id }: EventData) {
     const giftCard = await this.giftCardService_.retrieve(id, {
       relations: ["region", "order"],
     })
@@ -856,7 +852,8 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async swapReceivedData({ id }) {
+  async swapReceivedData({ id }: EventData) {
+    const store = await this.storeService_.retrieve()
 
     const swap = await this.swapService_.retrieve(id, {
       relations: [
@@ -894,10 +891,17 @@ export class SendGridService extends NotificationService {
       }
     })
 
-    const swapLink = store.swap_link_template.replace(
+    const swapLink = store?.swap_link_template?.replace(
       /\{cart_id\}/,
       swap.cart_id
     )
+
+    if (!swapLink) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No swap_link_template was set for event: swap.received`
+      )
+    }
 
     const order = await this.orderService_.retrieve(swap.order_id, {
       select: ["total"],
@@ -990,10 +994,8 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async swapCreatedData({ id }) {
-    const store = await this.storeService_.retrieve({
-      where: { id: Not(IsNull()) },
-    })
+  async swapCreatedData({ id }: EventData) {
+    const store = await this.storeService_.retrieve()
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items.variant.product.profiles",
@@ -1006,7 +1008,15 @@ export class SendGridService extends NotificationService {
       ],
     })
 
-    const returnRequest = swap.return_order
+    type ModifiedReturnItem = Omit<ReturnItem, "item"> & {
+      item?: LineItem
+    }
+
+    type ModifiedReturn = Omit<Return, "items"> & {
+      items: ModifiedReturnItem[]
+    }
+
+    const returnRequest: ModifiedReturn = swap.return_order
 
     const items = await this.lineItemService_.list(
       {
@@ -1025,7 +1035,14 @@ export class SendGridService extends NotificationService {
       }
     })
 
-    const swapLink = store.swap_link_template.replace(
+    if (!store) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No store was set for event: swap.created`
+      )
+    }
+
+    const swapLink = store?.swap_link_template?.replace(
       /\{cart_id\}/,
       swap.cart_id
     )
@@ -1124,7 +1141,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async itemsReturnedData(data) {
+  async itemsReturnedData(data: EventData) {
     return this.returnRequestedData(data)
   }
 
@@ -1176,20 +1193,21 @@ export class SendGridService extends NotificationService {
         relations: ["tax_lines", "variant.product.profiles"],
       }
     )
+    
 
-    const taxRate = order.tax_rate / 100
+    const taxRate = (order.tax_rate || 0) / 100
     const currencyCode = order.currency_code.toUpperCase()
 
     const returnItems = await Promise.all(
       swap.return_order.items.map(async (i) => {
         const found = items.find((oi) => oi.id === i.item_id)
-        const totals = await this.totalsService_.getLineItemTotals(i, cart, {
+        const totals = await this.totalsService_.getLineItemTotals(i.item, cart, {
           include_tax: true,
         })
 
         return {
           ...found,
-          thumbnail: this.normalizeThumbUrl_(found.thumbnail),
+          thumbnail: this.normalizeThumbUrl_(found?.thumbnail),
           price: `${this.humanPrice_(
             totals.original_total / i.quantity,
             currencyCode
@@ -1203,8 +1221,11 @@ export class SendGridService extends NotificationService {
       })
     )
 
+
+
     const returnTotal = await this.totalsService_.getRefundTotal(
       order,
+      // @ts-expect-error - wrong types in
       returnItems
     )
 
@@ -1214,10 +1235,16 @@ export class SendGridService extends NotificationService {
       items: swap.additional_items,
     }
 
+    // @ts-expect-error - wrong types in
     const additionalTotal = await this.totalsService_.getTotal(constructedOrder)
 
     const refundAmount = swap.return_order.refund_amount
-
+    if (!fulfillment_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No fulfillment_id was set for event: swap.shipment_created`
+      )
+    }
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
       relations: ["tracking_links"],
     })
@@ -1285,6 +1312,12 @@ export class SendGridService extends NotificationService {
       ],
     })
 
+    if (!fulfillment_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No fulfillment_id was set for event: claim.shipment_created`
+      )
+    }
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
       relations: ["tracking_links"],
     })
@@ -1302,12 +1335,18 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async restockNotificationData({ variant_id, emails }) {
+  async restockNotificationData({ variant_id, emails }: EventData) {
+    if (!variant_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No variant_id was set for event: restock-notification.restocked`
+      )
+    }
     const variant = await this.productVariantService_.retrieve(variant_id, {
       relations: ["product"],
     })
 
-    let thumb
+    let thumb: string | null = null
     if (variant.product.thumbnail) {
       thumb = this.normalizeThumbUrl_(variant.product.thumbnail)
     }
@@ -1323,15 +1362,15 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  userPasswordResetData(data) {
+  userPasswordResetData(data: EventData) {
     return data
   }
 
-  customerPasswordResetData(data) {
+  customerPasswordResetData(data: EventData) {
     return data
   }
 
-  async orderRefundCreatedData({ id, refund_id }) {
+  async orderRefundCreatedData({ id, refund_id }: EventData) {
     const order = await this.orderService_.retrieveWithTotals(id, {
       relations: ["refunds", "items"],
     })
@@ -1341,14 +1380,14 @@ export class SendGridService extends NotificationService {
     return {
       order,
       refund,
-      refund_amount: `${this.humanPrice_(refund.amount, order.currency_code)} ${
+      refund_amount: `${this.humanPrice_(refund?.amount, order.currency_code)} ${
         order.currency_code
       }`,
       email: order.email,
     }
   }
 
-  processItems_(items, taxRate, currencyCode) {
+  processItems_(items: LineItem[], taxRate: number, currencyCode: string) {
     return items.map((i) => {
       return {
         ...i,
@@ -1361,7 +1400,7 @@ export class SendGridService extends NotificationService {
     })
   }
 
-  humanPrice_(amount, currency) {
+  humanPrice_(amount: number | null | undefined, currency: string) {
     if (!amount) {
       return "0.00"
     }
@@ -1372,9 +1411,9 @@ export class SendGridService extends NotificationService {
     )
   }
 
-  normalizeThumbUrl_(url) {
+  normalizeThumbUrl_(url?: string | null) {
     if (!url) {
-      return null
+      return ''
     }
 
     if (url.startsWith("http")) {
@@ -1385,7 +1424,7 @@ export class SendGridService extends NotificationService {
     return url
   }
 
-  async extractLocale(fromOrder) {
+  async extractLocale(fromOrder: Order) {
     if (fromOrder.cart_id) {
       try {
         const cart = await this.cartService_.retrieve(fromOrder.cart_id, {
