@@ -66,7 +66,7 @@ class ProductVariant {
   // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
   // precision if you cast numeric to JS number, as JS number is a float.
   // Ref: https://github.com/mikro-orm/mikro-orm/issues/2295
-  @Property({ columnType: "numeric", default: 100 })
+  @Property({ columnType: "numeric", default: 100, serializer: Number })
   inventory_quantity?: number = 100
 
   @Property({ columnType: "boolean", default: false })
@@ -102,7 +102,12 @@ class ProductVariant {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
-  @Property({ columnType: "numeric", nullable: true, default: 0 })
+  @Property({
+    columnType: "numeric",
+    nullable: true,
+    default: 0,
+    serializer: Number,
+  })
   variant_rank?: number | null
 
   @Property({ columnType: "text", nullable: true })
