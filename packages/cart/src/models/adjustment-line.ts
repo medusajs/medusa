@@ -1,6 +1,5 @@
 import { DAL } from "@medusajs/types"
-import { ManyToOne, OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
-import LineItem from "./line-item"
+import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
 type OptionalAdjustmentLineProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
@@ -19,15 +18,6 @@ export default abstract class AdjustmentLine {
 
   @Property({ columnType: "text", nullable: true })
   promotion_id?: string | null
-
-  @Property({ columnType: "text", nullable: true })
-  line_item_id?: string | null
-
-  @ManyToOne(() => LineItem, {
-    nullable: true,
-    fieldName: "line_item_id",
-  })
-  line_item: LineItem
 
   @Property({ columnType: "text" })
   code: string
