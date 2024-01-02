@@ -8,7 +8,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-@Entity({ tableName: "address" })
+@Entity({ tableName: "cart_address" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Address {
   @PrimaryKey({ columnType: "text" })
@@ -70,11 +70,11 @@ export default class Address {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "addr")
+    this.id = generateEntityId(this.id, "caaddr")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "addr")
+    this.id = generateEntityId(this.id, "caaddr")
   }
 }

@@ -5,14 +5,12 @@ import {
   Filter,
   ManyToOne,
   OnInit,
-  PrimaryKey,
-  Unique,
+  PrimaryKey
 } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
-@Entity({ tableName: "line_item_adjustment_line" })
-@Unique({ properties: ["line_item_id", "id"] })
+@Entity({ tableName: "cart_line_item_adjustment_line" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItemAdjustmentLine extends AdjustmentLine {
   @PrimaryKey({ columnType: "text" })
@@ -25,11 +23,11 @@ export default class LineItemAdjustmentLine extends AdjustmentLine {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "liadj")
+    this.id = generateEntityId(this.id, "caliadj")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "liadj")
+    this.id = generateEntityId(this.id, "caliadj")
   }
 }

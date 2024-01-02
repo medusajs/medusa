@@ -5,14 +5,12 @@ import {
   Filter,
   ManyToOne,
   OnInit,
-  PrimaryKey,
-  Unique,
+  PrimaryKey
 } from "@mikro-orm/core"
 import LineItem from "./line-item"
 import TaxLine from "./tax-line"
 
-@Entity({ tableName: "line_item_tax_line" })
-@Unique({ properties: ["line_item_id", "id"] })
+@Entity({ tableName: "cart_line_item_tax_line" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItemTaxLine extends TaxLine {
   @PrimaryKey({ columnType: "text" })
@@ -25,11 +23,11 @@ export default class LineItemTaxLine extends TaxLine {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "litxl")
+    this.id = generateEntityId(this.id, "calitxl")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "litxl")
+    this.id = generateEntityId(this.id, "calitxl")
   }
 }

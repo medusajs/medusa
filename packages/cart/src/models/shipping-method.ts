@@ -16,7 +16,7 @@ import Cart from "./cart"
 import ShippingMethodAdjustmentLine from "./shipping-method-adjustment-line"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
-@Entity({ tableName: "shipping_method" })
+@Entity({ tableName: "cart_shipping_method" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
@@ -102,11 +102,11 @@ export default class ShippingMethod {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "sm")
+    this.id = generateEntityId(this.id, "casm")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "sm")
+    this.id = generateEntityId(this.id, "casm")
   }
 }

@@ -2,7 +2,7 @@ import { PrimaryKey, Property } from "@mikro-orm/core"
 
 export default class TaxLine {
   @PrimaryKey({ columnType: "text" })
-  id!: string
+  id: string
 
   @Property({ columnType: "text", nullable: true })
   description?: string | null
@@ -13,7 +13,7 @@ export default class TaxLine {
   @Property({ columnType: "text" })
   code: string
 
-  @Property({ columnType: "number" })
+  @Property({ columnType: "numeric" })
   rate: number
 
   @Property({ columnType: "text", nullable: true })
@@ -35,5 +35,5 @@ export default class TaxLine {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at?: Date | null
 }

@@ -1,5 +1,4 @@
-import { ManyToOne, PrimaryKey, Property } from "@mikro-orm/core"
-import LineItem from "./line-item"
+import { PrimaryKey, Property } from "@mikro-orm/core"
 
 export default class AdjustmentLine {
   @PrimaryKey({ columnType: "text" })
@@ -10,15 +9,6 @@ export default class AdjustmentLine {
 
   @Property({ columnType: "text", nullable: true })
   promotion_id?: string | null
-
-  @Property({ columnType: "text", nullable: true })
-  line_item_id?: string | null
-
-  @ManyToOne(() => LineItem, {
-    nullable: true,
-    fieldName: "line_item_id",
-  })
-  line_item: LineItem
 
   @Property({ columnType: "text" })
   code: string

@@ -11,12 +11,11 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import AdjustmentLine from "./adjustment-line"
 import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"
 import LineItemTaxLine from "./line-item-tax-line"
 
-@Entity({ tableName: "line_item" })
+@Entity({ tableName: "cart_line_item" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItem {
   @PrimaryKey({ columnType: "text" })
@@ -101,7 +100,7 @@ export default class LineItem {
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(
-    () => AdjustmentLine,
+    () => LineItemAdjustmentLine,
     (adjustment) => adjustment.line_item,
     {
       cascade: [Cascade.REMOVE, "soft-remove"] as any,
@@ -147,11 +146,11 @@ export default class LineItem {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "li")
+    this.id = generateEntityId(this.id, "cali")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "li")
+    this.id = generateEntityId(this.id, "cali")
   }
 }
