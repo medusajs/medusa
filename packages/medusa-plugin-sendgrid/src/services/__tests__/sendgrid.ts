@@ -146,7 +146,6 @@ describe("SendGridService", () => {
         id: "test",
       })
     } catch (error) {
-      console.log(error)
       expect(error.message).toEqual(
         "Sendgrid service: No template was set for event: order.placed"
       )
