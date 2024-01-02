@@ -80,7 +80,7 @@ export default class LineItem {
   @Property({ columnType: "boolean", nullable: true })
   is_tax_inclusive: boolean | null
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({ columnType: "numeric", nullable: true })
   compare_at_unit_price: number | null
 
   @Property({ columnType: "numeric" })

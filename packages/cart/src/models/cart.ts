@@ -66,9 +66,9 @@ export default class Cart {
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
-  compare_at_item_total: number
-  compare_at_item_subtotal: number
-  compare_at_item_tax_total: number
+  compare_at_item_total?: number | null
+  compare_at_item_subtotal?: number  | null
+  compare_at_item_tax_total?: number | null
 
   original_item_total: number
   original_item_subtotal: number

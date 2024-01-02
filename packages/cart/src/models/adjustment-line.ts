@@ -12,7 +12,7 @@ import {
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class AdjustmentLine {
   @PrimaryKey({ columnType: "text" })
-  id!: string
+  id: string
 
   @Property({ columnType: "text", nullable: true })
   description?: string | null
@@ -34,7 +34,7 @@ export default class AdjustmentLine {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -42,10 +42,10 @@ export default class AdjustmentLine {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at?: Date | null
 
   @BeforeCreate()
   onCreate() {
