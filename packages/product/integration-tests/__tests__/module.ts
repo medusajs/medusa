@@ -180,10 +180,6 @@ describe("Product module", function () {
     })
 
     it("should have a connection that is the shared connection", async () => {
-      // console.warn(
-      //   (module as any).baseRepository_.manager_.getConnection().client
-      // )
-      // console.warn(sharedPgConnection)
       expect(
         JSON.stringify(
           (module as any).baseRepository_.manager_.getConnection().client
