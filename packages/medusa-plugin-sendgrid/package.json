@@ -11,6 +11,10 @@
   "engines": {
     "node": ">=16"
   },
+  "types": "dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
   "author": "Oliver Juhl",
   "license": "MIT",
   "devDependencies": {
