@@ -2,7 +2,6 @@
   "name": "medusa-plugin-sendgrid",
   "version": "2.0.0",
   "description": "SendGrid transactional emails",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
