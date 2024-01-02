@@ -8,13 +8,7 @@ import {
   ModuleJoinerConfig,
   SalesChannelDTO,
 } from "@medusajs/types"
-import {
-  doNotForceTransaction,
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  shouldForceTransaction,
-} from "@medusajs/utils"
+import { InjectManager, MedusaContext } from "@medusajs/utils"
 import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@medusajs/types"
 
 import { SalesChannel } from "@models"
@@ -46,7 +40,7 @@ export default class SalesChannelModuleService<
     return joinerConfig
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async create(
     data: CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -61,7 +55,7 @@ export default class SalesChannelModuleService<
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -69,7 +63,7 @@ export default class SalesChannelModuleService<
     await this.salesChannelService_.delete(ids, sharedContext)
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async update(
     data: UpdateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -84,7 +78,7 @@ export default class SalesChannelModuleService<
     })
   }
 
-  @InjectManager("salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async retrieve(
     salesChannelId: string,
     config: FindConfig<SalesChannelDTO> = {},
@@ -100,7 +94,7 @@ export default class SalesChannelModuleService<
     })
   }
 
-  @InjectManager("salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async list(
     filters: {} = {},
     config: FindConfig<SalesChannelDTO> = {},
@@ -113,7 +107,7 @@ export default class SalesChannelModuleService<
     })
   }
 
-  @InjectManager("salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async listAndCount(
     filters: FilterableSalesChannelProps = {},
     config: FindConfig<SalesChannelDTO> = {},
