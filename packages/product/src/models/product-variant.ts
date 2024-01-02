@@ -1,4 +1,8 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  optionalNumericSerializer,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -66,7 +70,11 @@ class ProductVariant {
   // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
   // precision if you cast numeric to JS number, as JS number is a float.
   // Ref: https://github.com/mikro-orm/mikro-orm/issues/2295
-  @Property({ columnType: "numeric", default: 100, serializer: Number })
+  @Property({
+    columnType: "numeric",
+    default: 100,
+    serializer: optionalNumericSerializer,
+  })
   inventory_quantity?: number = 100
 
   @Property({ columnType: "boolean", default: false })
@@ -106,7 +114,7 @@ class ProductVariant {
     columnType: "numeric",
     nullable: true,
     default: 0,
-    serializer: Number,
+    serializer: optionalNumericSerializer,
   })
   variant_rank?: number | null
 
