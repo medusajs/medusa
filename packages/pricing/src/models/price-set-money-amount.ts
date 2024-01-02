@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   PrimaryKeyType,
@@ -36,16 +37,16 @@ export default class PriceSetMoneyAmount {
     onDelete: "cascade",
     index: "IDX_price_set_money_amount_price_set_id",
   })
-  price_set?: PriceSet
+  price_set: PriceSet
 
   @OneToOne(() => MoneyAmount, {
     onDelete: "cascade",
     index: "IDX_price_set_money_amount_money_amount_id",
   })
-  money_amount?: MoneyAmount
+  money_amount: MoneyAmount
 
   @Property({ columnType: "integer", default: 0 })
-  rules_count?: number
+  rules_count: number
 
   @OneToMany({
     entity: () => PriceRule,
@@ -66,7 +67,7 @@ export default class PriceSetMoneyAmount {
     cascade: [Cascade.REMOVE, "soft-remove"] as any,
     nullable: true,
   })
-  price_list?: PriceList
+  price_list: PriceList | null
 
   @Property({
     onCreate: () => new Date(),
@@ -85,10 +86,15 @@ export default class PriceSetMoneyAmount {
 
   @Index({ name: "IDX_price_set_money_amount_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at: Date | null
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "psma")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "psma")
   }
 

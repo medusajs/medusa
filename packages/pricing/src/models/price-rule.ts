@@ -4,6 +4,7 @@ import {
   Filter,
   Index,
   ManyToOne,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -80,10 +81,15 @@ export default class PriceRule {
 
   @Index({ name: "IDX_price_rule_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at: Date | null
 
   @BeforeCreate()
   beforeCreate() {
+    this.id = generateEntityId(this.id, "prule")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "prule")
   }
 }
