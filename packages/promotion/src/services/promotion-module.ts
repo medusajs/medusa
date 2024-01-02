@@ -11,7 +11,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "@medusajs/utils"
-import { Promotion } from "@models"
+import { ApplicationMethod, Promotion } from "@models"
 import {
   ApplicationMethodService,
   PromotionRuleService,
@@ -105,20 +105,22 @@ export default class PromotionModuleService<
     data: PromotionTypes.CreatePromotionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
+    const promotionsData: CreatePromotionDTO[] = []
+    const applicationMethodsData: CreateApplicationMethodDTO[] = []
+
     const promotionCodeApplicationMethodDataMap = new Map<
       string,
       PromotionTypes.CreateApplicationMethodDTO
     >()
+
     const promotionCodeRulesDataMap = new Map<
       string,
       PromotionTypes.CreatePromotionRuleDTO[]
     >()
-    const applicationMethodTargetRuleMap = new Map<
+    const applicationMethodRuleMap = new Map<
       string,
       PromotionTypes.CreatePromotionRuleDTO[]
     >()
-    const promotionsData: CreatePromotionDTO[] = []
-    const applicationMethodsData: CreateApplicationMethodDTO[] = []
 
     for (const {
       application_method: applicationMethodData,
@@ -163,33 +165,16 @@ export default class PromotionModuleService<
         applicationMethodsData.push(applicationMethodData)
 
         if (targetRulesData.length) {
-          applicationMethodTargetRuleMap.set(promotion.id, targetRulesData)
+          applicationMethodRuleMap.set(promotion.id, targetRulesData)
         }
       }
 
-      const rulesData = promotionCodeRulesDataMap.get(promotion.code) || []
-      validatePromotionRuleAttributes(rulesData)
-
-      for (const ruleData of rulesData) {
-        const { values, ...rest } = ruleData
-        const promotionRuleData = {
-          ...rest,
-          promotions: [promotion],
-        }
-
-        const [createdPromotionRule] = await this.promotionRuleService_.create(
-          [promotionRuleData],
-          sharedContext
-        )
-
-        const ruleValues = Array.isArray(values) ? values : [values]
-        const promotionRuleValuesData = ruleValues.map((ruleValue) => ({
-          value: ruleValue,
-          promotion_rule: createdPromotionRule,
-        }))
-
-        await this.promotionRuleValueService_.create(promotionRuleValuesData)
-      }
+      await this.createPromotionRulesAndValues(
+        promotionCodeRulesDataMap.get(promotion.code) || [],
+        "promotions",
+        promotion,
+        sharedContext
+      )
     }
 
     const createdApplicationMethods =
@@ -199,33 +184,44 @@ export default class PromotionModuleService<
       )
 
     for (const applicationMethod of createdApplicationMethods) {
-      const targetRulesData =
-        applicationMethodTargetRuleMap.get(applicationMethod.promotion.id) || []
-
-      validatePromotionRuleAttributes(targetRulesData)
-
-      for (const ruleData of targetRulesData) {
-        const { values, ...rest } = ruleData
-        const promotionRuleData = {
-          ...rest,
-          application_methods: [applicationMethod],
-        }
-
-        const [createdPromotionRule] = await this.promotionRuleService_.create(
-          [promotionRuleData],
-          sharedContext
-        )
-
-        const ruleValues = Array.isArray(values) ? values : [values]
-        const promotionRuleValuesData = ruleValues.map((ruleValue) => ({
-          value: ruleValue,
-          promotion_rule: createdPromotionRule,
-        }))
-
-        await this.promotionRuleValueService_.create(promotionRuleValuesData)
-      }
+      await this.createPromotionRulesAndValues(
+        applicationMethodRuleMap.get(applicationMethod.promotion.id) || [],
+        "application_methods",
+        applicationMethod,
+        sharedContext
+      )
     }
 
     return createdPromotions
+  }
+
+  protected async createPromotionRulesAndValues(
+    rulesData: PromotionTypes.CreatePromotionRuleDTO[],
+    relationName: "promotions" | "application_methods",
+    relation: Promotion | ApplicationMethod,
+    sharedContext: Context
+  ) {
+    validatePromotionRuleAttributes(rulesData)
+
+    for (const ruleData of rulesData) {
+      const { values, ...rest } = ruleData
+      const promotionRuleData = {
+        ...rest,
+        [relationName]: [relation],
+      }
+
+      const [createdPromotionRule] = await this.promotionRuleService_.create(
+        [promotionRuleData],
+        sharedContext
+      )
+
+      const ruleValues = Array.isArray(values) ? values : [values]
+      const promotionRuleValuesData = ruleValues.map((ruleValue) => ({
+        value: ruleValue,
+        promotion_rule: createdPromotionRule,
+      }))
+
+      await this.promotionRuleValueService_.create(promotionRuleValuesData)
+    }
   }
 }
