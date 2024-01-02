@@ -11,7 +11,7 @@ In this document, you’ll learn how to deploy your Medusa backend to Railway.
 
 [Railway](https://railway.app/) is a hosting provider that you can use to deploy web applications and databases without having to worry about managing the full infrastructure.
 
-Railway provides a free plan that allows you to deploy your Medusa backend along with PostgreSQL and Redis databases. This is useful mainly for development and demo purposes.
+Railway provides a free trial (no credit card required) that allows you to deploy your Medusa backend along with PostgreSQL and Redis databases. This is useful mainly for development and demo purposes.
 
 :::note
 

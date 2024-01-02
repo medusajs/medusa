@@ -49,6 +49,9 @@ export function objectFromStringPath(
   const output: Record<string, any> = {}
 
   for (const relation of collection) {
+    if (!relation) {
+      continue
+    }
     if (relation.indexOf(".") > -1) {
       const nestedRelations = relation.split(".")
 

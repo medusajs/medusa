@@ -1,7 +1,6 @@
+import { MikroOrmWrapper } from "../../../utils"
 import { PriceListRepository } from "@repositories"
 import { PriceListService } from "@services"
-import { MikroOrmWrapper } from "../../../utils"
-
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 
@@ -183,7 +182,7 @@ describe("PriceList Service", () => {
       await service.update([
         {
           id,
-          starts_at: updateDate.toISOString(),
+          starts_at: updateDate,
         },
       ])
 

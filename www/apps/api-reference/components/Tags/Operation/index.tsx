@@ -7,7 +7,7 @@ import getSectionId from "@/utils/get-section-id"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { useInView } from "react-intersection-observer"
-import { useSidebar } from "docs-ui"
+import { isElmWindow, useScrollController, useSidebar } from "docs-ui"
 import type { TagOperationCodeSectionProps } from "./CodeSection"
 import TagsOperationDescriptionSection from "./DescriptionSection"
 import DividedLayout from "@/layouts/Divided"
@@ -40,10 +40,14 @@ const TagOperation = ({
   )
   const nodeRef = useRef<Element | null>(null)
   const { loading, removeLoading } = useLoading()
+  const { scrollableElement } = useScrollController()
+  const root = useMemo(() => {
+    return isElmWindow(scrollableElement) ? document.body : scrollableElement
+  }, [scrollableElement])
   const { ref } = useInView({
     threshold: 0.3,
     rootMargin: `112px 0px 112px 0px`,
-    root: document.getElementById("main") || document.body,
+    root,
     onChange: (changedInView) => {
       if (changedInView) {
         if (!show) {

@@ -1,0 +1,40 @@
+{
+  "description": "This component is based on the [react-date-picker](https://www.npmjs.com/package/react-date-picker) package.",
+  "methods": [],
+  "displayName": "Calendar",
+  "props": {
+    "mode": {
+      "defaultValue": {
+        "value": "\"single\"",
+        "computed": false
+      },
+      "description": "The calendar's mode.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"single\" \\| \"range\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"single\""
+          },
+          {
+            "name": "literal",
+            "value": "\"range\""
+          }
+        ]
+      },
+      "required": false
+    },
+    "showOutsideDays": {
+      "defaultValue": {
+        "value": "true",
+        "computed": false
+      },
+      "description": "Whether to show days of previous and next months.",
+      "tsType": {
+        "name": "boolean"
+      },
+      "required": false
+    }
+  }
+}

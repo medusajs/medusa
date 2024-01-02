@@ -1,12 +1,10 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
-import _, { identity } from "lodash"
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-
-import { DateComparisonOperator } from "../../../../types/common"
-import { Region } from "../../../.."
-import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { IsOptional, ValidateNested } from "class-validator"
+import RegionService from "../../../../services/region"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
 /**
  * @oas [get] /admin/regions
@@ -144,59 +142,29 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetRegionsParams, req.query)
-
   const regionService: RegionService = req.scope.resolve("regionService")
-
-  const filterableFields = _.omit(validated, ["limit", "offset"])
-
-  const listConfig = {
-    select: defaultAdminRegionFields,
-    relations: defaultAdminRegionRelations,
-    skip: validated.offset,
-    take: validated.limit,
-  }
+  const { limit, offset } = req.validatedQuery
 
   const [regions, count] = await regionService.listAndCount(
-    _.pickBy(filterableFields, identity),
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
   res.json({
     regions,
     count,
-    offset: validated.offset,
-    limit: validated.limit,
+    offset,
+    limit,
   })
-}
-
-/**
- * {@inheritDoc FindPaginationParams}
- */
-export class AdminGetRegionsPaginationParams {
-  /**
-   * {@inheritDoc FindPaginationParams.limit}
-   * @defaultValue 50
-   */
-  @IsInt()
-  @IsOptional()
-  @Type(() => Number)
-  limit?: number = 50
-
-  /**
-   * {@inheritDoc FindPaginationParams.offset}
-   * @defaultValue 0
-   */
-  @IsInt()
-  @IsOptional()
-  @Type(() => Number)
-  offset?: number = 0
 }
 
 /**
  * Parameters used to filter and configure the pagination of the retrieved regions.
  */
-export class AdminGetRegionsParams extends AdminGetRegionsPaginationParams {
+export class AdminGetRegionsParams extends extendedFindParamsMixin({
+  limit: 50,
+  offset: 0,
+}) {
   /**
    * Date filters to apply on the regions' `created_at` date.
    */

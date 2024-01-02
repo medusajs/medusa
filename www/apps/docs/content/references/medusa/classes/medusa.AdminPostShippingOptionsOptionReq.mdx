@@ -6,10 +6,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # AdminPostShippingOptionsOptionReq
 
-## constructor
-
-___
-
 ## Properties
 
 <ParameterTypes parameters={[
@@ -58,6 +54,34 @@ ___
     "defaultValue": "",
     "expandable": false,
     "children": []
+  },
+  {
+    "name": "price_type",
+    "type": "[ShippingOptionPriceType](../../entities/enums/entities.ShippingOptionPriceType.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "CALCULATED",
+        "type": "`\"calculated\"`",
+        "description": "The shipping option's price is calculated. In this case, the `amount` field is typically `null`.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "FLAT_RATE",
+        "type": "`\"flat_rate\"`",
+        "description": "The shipping option's price is a flat rate.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "requirements",

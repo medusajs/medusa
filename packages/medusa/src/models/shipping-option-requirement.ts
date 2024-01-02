@@ -15,7 +15,7 @@ import { generateEntityId } from "../utils/generate-entity-id"
 
 /**
  * @enum
- * 
+ *
  * The type of shipping option requirement.
  */
 export enum RequirementType {

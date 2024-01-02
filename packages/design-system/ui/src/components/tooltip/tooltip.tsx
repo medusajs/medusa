@@ -17,6 +17,11 @@ interface TooltipProps
   maxWidth?: number
 }
 
+/**
+ * This component is based on the [Radix UI Tooltip](https://www.radix-ui.com/primitives/docs/components/tooltip) primitive.
+ * 
+ * @excludeExternal
+ */
 const Tooltip = ({
   children,
   content,
@@ -24,6 +29,9 @@ const Tooltip = ({
   defaultOpen,
   onOpenChange,
   delayDuration,
+  /**
+   * The maximum width of the tooltip.
+   */
   maxWidth = 220,
   className,
   side,

@@ -1,0 +1,22 @@
+{
+  "name": "types",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "lint": "eslint --ext .ts src"
+  },
+  "peerDependencies": {
+    "typedoc": "0.25.x"
+  },
+  "devDependencies": {
+    "typescript": "5.2"
+  },
+  "version": "0.0.0",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts"
+}

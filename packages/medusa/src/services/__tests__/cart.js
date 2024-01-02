@@ -1641,23 +1641,32 @@ describe("CartService", () => {
     const cartRepository = MockRepository({
       findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cart-to-filter")) {
-          return Promise.resolve(cart3)
+          return Promise.resolve({
+            id: IdMap.getId("cart-to-filter"),
+            ...cart3,
+          })
         }
         if (q.where.id === IdMap.getId("cart-with-session")) {
-          return Promise.resolve(cart2)
+          return Promise.resolve({
+            id: IdMap.getId("cart-with-session"),
+            ...cart2,
+          })
         }
         if (q.where.id === IdMap.getId("cart-remove")) {
-          return Promise.resolve(cart4)
+          return Promise.resolve({ id: IdMap.getId("cart-remove"), ...cart4 })
         }
         if (q.where.id === IdMap.getId("cart-negative")) {
-          return Promise.resolve(cart4)
+          return Promise.resolve({ id: IdMap.getId("cart-negative"), ...cart4 })
         }
         if (
           q.where.id === IdMap.getId("cartWithMixedSelectedInitiatedSessions")
         ) {
-          return Promise.resolve(cart5)
+          return Promise.resolve({
+            id: IdMap.getId("cartWithMixedSelectedInitiatedSessions"),
+            ...cart5,
+          })
         }
-        return Promise.resolve(cart1)
+        return Promise.resolve({ id: q.where.id, ...cart1 })
       },
     })
 
@@ -2659,6 +2668,7 @@ describe("CartService", () => {
       .register("newTotalsService", asClass(NewTotalsService))
       .register("cartService", asClass(CartService))
       .register("remoteQuery", asValue(null))
+      .register("remoteLink", asValue(null))
       .register("pricingModuleService", asValue(undefined))
       .register("pricingService", asClass(PricingService))
 
