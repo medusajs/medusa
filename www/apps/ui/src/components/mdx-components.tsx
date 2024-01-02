@@ -6,12 +6,12 @@ import * as React from "react"
 
 import { Colors } from "@/components/colors"
 import { ComponentExample } from "@/components/component-example"
-import { ComponentProps } from "@/components/component-props"
 import { HookValues } from "@/components/hook-values"
 import { IconSearch } from "@/components/icon-search"
 import { PackageInstall } from "@/components/package-install"
 import { Feedback } from "@/components/feedback"
 import { FigmaIcon } from "@/components/figma-icon"
+import { ComponentReference } from "@/components/component-reference"
 import clsx from "clsx"
 import { NextLink, Card, BorderedIcon, CodeMdx, CodeBlock } from "docs-ui"
 
@@ -120,7 +120,6 @@ const components = {
     return <hr className={clx("mb-4", className)} {...props} />
   },
   HookValues,
-  ComponentProps,
   CodeBlock,
   ComponentExample,
   PackageInstall,
@@ -130,6 +129,7 @@ const components = {
   Card,
   BorderedIcon,
   FigmaIcon,
+  ComponentReference,
 }
 
 const Mdx = ({ code }: MdxProps) => {
@@ -142,4 +142,4 @@ const Mdx = ({ code }: MdxProps) => {
   )
 }
 
-export { Mdx }
+export { Mdx, components }

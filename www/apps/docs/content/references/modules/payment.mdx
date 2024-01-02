@@ -1,0 +1,84 @@
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# payment
+
+## Classes
+
+- [AbstractPaymentProcessor](../payment/classes/payment.AbstractPaymentProcessor.mdx)
+
+## Interfaces
+
+- [PaymentProcessor](../payment/interfaces/payment.PaymentProcessor.mdx)
+- [PaymentProcessorContext](../payment/interfaces/payment.PaymentProcessorContext.mdx)
+- [PaymentProcessorError](../payment/interfaces/payment.PaymentProcessorError.mdx)
+- [PaymentProcessorSessionResponse](../payment/interfaces/payment.PaymentProcessorSessionResponse.mdx)
+
+___
+
+## Functions
+
+### isPaymentProcessor
+
+Return if the input object is AbstractPaymentProcessor
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "obj",
+    "type": "`unknown`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isPaymentProcessorError
+
+Utility function to determine if an object is a processor error
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "obj",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "obj",
+    "type": "obj is PaymentProcessorError",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

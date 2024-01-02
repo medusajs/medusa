@@ -1,0 +1,313 @@
+{
+  "description": "This component is based on the [Calendar](https://docs.medusajs.com/ui/components/calendar)\ncomponent and [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover).",
+  "methods": [],
+  "displayName": "DatePicker",
+  "props": {
+    "fromYear": {
+      "required": false,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "The year to start showing the dates from."
+    },
+    "toYear": {
+      "required": false,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "The year to show dates to."
+    },
+    "fromMonth": {
+      "required": false,
+      "tsType": {
+        "name": "Date"
+      },
+      "description": "The month to start showing dates from."
+    },
+    "toMonth": {
+      "required": false,
+      "tsType": {
+        "name": "Date"
+      },
+      "description": "The month to show dates to."
+    },
+    "fromDay": {
+      "required": false,
+      "tsType": {
+        "name": "Date"
+      },
+      "description": "The day to start showing dates from."
+    },
+    "toDay": {
+      "required": false,
+      "tsType": {
+        "name": "Date"
+      },
+      "description": "The day to show dates to."
+    },
+    "fromDate": {
+      "required": false,
+      "tsType": {
+        "name": "Date"
+      },
+      "description": "The date to show dates from."
+    },
+    "toDate": {
+      "required": false,
+      "tsType": {
+        "name": "Date"
+      },
+      "description": "The date to show dates to."
+    },
+    "className": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The class name to apply on the date picker."
+    },
+    "disabled": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether the date picker's input is disabled."
+    },
+    "required": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether the date picker's input is required."
+    },
+    "size": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"small\" | \"base\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"base\""
+          }
+        ]
+      },
+      "description": "The date picker's size."
+    },
+    "showTimePicker": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to show a time picker along with the date picker."
+    },
+    "mode": {
+      "defaultValue": {
+        "value": "\"single\"",
+        "computed": false
+      },
+      "description": "The date picker's mode.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"single\" \\| \"range\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"single\""
+          },
+          {
+            "name": "literal",
+            "value": "\"range\""
+          }
+        ]
+      },
+      "required": false
+    },
+    "defaultValue": {
+      "description": "The date selected by default.",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "Date \\| DateRange",
+        "elements": [
+          {
+            "name": "Date",
+            "elements": [],
+            "raw": "Date"
+          },
+          {
+            "name": "DateRange",
+            "elements": [
+              {
+                "name": "signature",
+                "type": "object",
+                "raw": "&#123; from: Date \\| undefined ; to?: Date  &#125;",
+                "signature": {
+                  "properties": [
+                    {
+                      "key": "from",
+                      "value": {
+                        "name": "Date \\| undefined"
+                      },
+                      "description": "The range's start date."
+                    },
+                    {
+                      "key": "to",
+                      "value": {
+                        "name": "Date"
+                      },
+                      "description": "The range's end date."
+                    }
+                  ]
+                }
+              }
+            ],
+            "raw": "DateRange"
+          }
+        ]
+      }
+    },
+    "onChange": {
+      "description": "A function to handle the change in the selected date.",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "(date: undefined \\| Date) => void \\| (dateRange: undefined \\| DateRange) => void",
+        "elements": [
+          {
+            "name": "signature",
+            "type": "function",
+            "raw": "(date: undefined \\| Date) => void",
+            "signature": {
+              "arguments": [
+                {
+                  "name": "date",
+                  "type": {
+                    "name": "undefined \\| Date"
+                  },
+                  "rest": false
+                }
+              ],
+              "return": {
+                "name": "void"
+              }
+            }
+          },
+          {
+            "name": "signature",
+            "type": "function",
+            "raw": "(dateRange: undefined \\| DateRange) => void",
+            "signature": {
+              "arguments": [
+                {
+                  "name": "dateRange",
+                  "type": {
+                    "name": "undefined \\| DateRange"
+                  },
+                  "rest": false
+                }
+              ],
+              "return": {
+                "name": "void"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "presets": {
+      "description": "Provide selectable preset configurations.",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "DatePreset[] \\| DateRangePreset[]",
+        "elements": [
+          {
+            "name": "Array",
+            "elements": [
+              {
+                "name": "DatePreset",
+                "elements": [
+                  {
+                    "name": "Date"
+                  },
+                  {
+                    "name": "string"
+                  }
+                ],
+                "raw": "DatePreset"
+              }
+            ],
+            "raw": "DatePreset[]"
+          },
+          {
+            "name": "Array",
+            "elements": [
+              {
+                "name": "DateRangePreset",
+                "elements": [
+                  {
+                    "name": "DateRange"
+                  },
+                  {
+                    "name": "string"
+                  }
+                ],
+                "raw": "DateRangePreset"
+              }
+            ],
+            "raw": "DateRangePreset[]"
+          }
+        ]
+      }
+    },
+    "value": {
+      "description": "The selected date.",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "Date \\| DateRange",
+        "elements": [
+          {
+            "name": "Date",
+            "elements": [],
+            "raw": "Date"
+          },
+          {
+            "name": "DateRange",
+            "elements": [
+              {
+                "name": "signature",
+                "type": "object",
+                "raw": "&#123; from: Date \\| undefined ; to?: Date  &#125;",
+                "signature": {
+                  "properties": [
+                    {
+                      "key": "from",
+                      "value": {
+                        "name": "Date \\| undefined"
+                      },
+                      "description": "The range's start date."
+                    },
+                    {
+                      "key": "to",
+                      "value": {
+                        "name": "Date"
+                      },
+                      "description": "The range's end date."
+                    }
+                  ]
+                }
+              }
+            ],
+            "raw": "DateRange"
+          }
+        ]
+      }
+    }
+  }
+}

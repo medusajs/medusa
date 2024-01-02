@@ -4,11 +4,12 @@ import {
   FeatureFlagDecorators,
   FeatureFlagEntity,
 } from "../utils/feature-flag-decorators"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { SoftDeletableEntity } from "../interfaces"
 import { DbAwareColumn, generateEntityId } from "../utils"
 import { SalesChannelLocation } from "./sales-channel-location"
 import { Product } from "./product"
-import { MedusaV2Flag } from "@medusajs/utils"
+import { Cart } from "./cart"
 import { Order } from "./order"
 
 @FeatureFlagEntity("sales_channels")
@@ -39,8 +40,23 @@ export class SalesChannel extends SoftDeletableEntity {
   })
   products: Product[]
 
-  @FeatureFlagDecorators(
-    [MedusaV2Flag.key, "sales_channels"],
+  @FeatureFlagDecorators(MedusaV2Flag.key, [
+    ManyToMany(() => Cart),
+    JoinTable({
+      name: "cart_sales_channel",
+      joinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+      inverseJoinColumn: {
+        name: "cart_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
+  carts: Cart[]
+
+  @FeatureFlagDecorators(MedusaV2Flag.key,
     [
       ManyToMany(() => Order),
       JoinTable({

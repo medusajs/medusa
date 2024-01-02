@@ -23,7 +23,7 @@ describe("/store/carts", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd })
+    dbConnection = await initDb({ cwd } as any)
     shutdownServer = await startBootstrapApp({ cwd })
   })
 

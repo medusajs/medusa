@@ -1,0 +1,79 @@
+{
+  "description": "This component is based on the `div` element and supports all of its props",
+  "methods": [],
+  "displayName": "Table.Pagination",
+  "props": {
+    "count": {
+      "required": true,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "The total number of items."
+    },
+    "pageSize": {
+      "required": true,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "The number of items per page."
+    },
+    "pageIndex": {
+      "required": true,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "The current page index."
+    },
+    "pageCount": {
+      "required": true,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "The total number of pages."
+    },
+    "canPreviousPage": {
+      "required": true,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether there's a previous page that can be navigated to."
+    },
+    "canNextPage": {
+      "required": true,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether there's a next page that can be navigated to."
+    },
+    "previousPage": {
+      "required": true,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "() => void",
+        "signature": {
+          "arguments": [],
+          "return": {
+            "name": "void"
+          }
+        }
+      },
+      "description": "A function that handles navigating to the previous page.\nThis function should handle retrieving data for the previous page."
+    },
+    "nextPage": {
+      "required": true,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "() => void",
+        "signature": {
+          "arguments": [],
+          "return": {
+            "name": "void"
+          }
+        }
+      },
+      "description": "A function that handles navigating to the next page.\nThis function should handle retrieving data for the next page."
+    }
+  }
+}

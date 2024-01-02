@@ -20,12 +20,13 @@ import {
   registerPartials,
 } from "./render-utils"
 import { formatContents } from "./utils"
-import {
+
+import type {
   FormattingOptionType,
   FormattingOptionsType,
-  Mapping,
-  ObjectLiteralDeclarationStyle,
-} from "./types"
+  ParameterStyle,
+} from "types"
+import { Mapping } from "./types"
 
 export class MarkdownTheme extends Theme {
   allReflectionsHaveOwnDocument!: string[]
@@ -44,7 +45,7 @@ export class MarkdownTheme extends Theme {
   out!: string
   publicPath!: string
   preserveAnchorCasing!: boolean
-  objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle
+  objectLiteralTypeDeclarationStyle: ParameterStyle
   formattingOptions: FormattingOptionsType
   mdxOutput: boolean
   outputNamespace: boolean
@@ -84,7 +85,7 @@ export class MarkdownTheme extends Theme {
     ) as boolean
     this.objectLiteralTypeDeclarationStyle = this.getOption(
       "objectLiteralTypeDeclarationStyle"
-    ) as ObjectLiteralDeclarationStyle
+    ) as ParameterStyle
     this.formattingOptions = this.getOption(
       "formatting"
     ) as FormattingOptionsType

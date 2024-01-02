@@ -1,5 +1,5 @@
 import RegionService from "../../../../services/region"
-import { defaultRelations } from "."
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /store/regions/{id}
@@ -46,12 +46,11 @@ import { defaultRelations } from "."
  */
 export default async (req, res) => {
   const { region_id } = req.params
-
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const region = await regionService.retrieve(region_id, {
-    relations: defaultRelations,
-  })
+  const region = await regionService.retrieve(region_id, req.retrieveConfig)
 
   res.json({ region })
 }
+
+export class StoreGetRegionsRegionParams extends FindParams {}

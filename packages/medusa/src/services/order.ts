@@ -6,7 +6,7 @@ import {
   isDefined,
   MedusaError,
   MedusaV2Flag,
-  promiseAll,
+  promiseAll, selectorConstraintsToString,
 } from "@medusajs/utils"
 import {
   EntityManager,
@@ -459,9 +459,8 @@ class OrderService extends TransactionBaseService {
     const raw = await orderRepo.findOneWithRelations(rels, query)
 
     if (!raw) {
-      const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
+
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Order with ${selectorConstraints} was not found`
@@ -2105,6 +2104,7 @@ class OrderService extends TransactionBaseService {
     relationSet.add("shipping_methods")
     relationSet.add("shipping_methods.tax_lines")
     relationSet.add("region")
+    relationSet.add("payments")
 
     return Array.from(relationSet.values())
   }
