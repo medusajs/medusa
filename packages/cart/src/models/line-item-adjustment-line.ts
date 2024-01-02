@@ -1,23 +1,35 @@
-import { Entity, ManyToOne, PrimaryKey, Unique } from "@mikro-orm/core"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  BeforeCreate,
+  Entity,
+  Filter,
+  ManyToOne,
+  OnInit,
+  PrimaryKey,
+  Unique,
+} from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
 @Entity({ tableName: "line_item_adjustment_line" })
-@Unique({ properties: ["line_item_id", "adjustment_line_id"] })
-export default class LineItemAdjustmentLine {
+@Unique({ properties: ["line_item_id", "id"] })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
+export default class LineItemAdjustmentLine extends AdjustmentLine {
   @PrimaryKey({ columnType: "text" })
   line_item_id: string
-
-  @PrimaryKey({ columnType: "text" })
-  adjustment_line_id: string
 
   @ManyToOne(() => LineItem, {
     fieldName: "item_id",
   })
   line_item: LineItem
 
-  @ManyToOne(() => AdjustmentLine, {
-    fieldName: "adjustment_line_id",
-  })
-  adjustment_line: AdjustmentLine
+  @BeforeCreate()
+  onCreate() {
+    this.id = generateEntityId(this.id, "liadj")
+  }
+
+  @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "liadj")
+  }
 }

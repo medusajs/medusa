@@ -1,15 +1,5 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
-import {
-  BeforeCreate,
-  Entity,
-  Filter,
-  OnInit,
-  PrimaryKey,
-  Property,
-} from "@mikro-orm/core"
+import { PrimaryKey, Property } from "@mikro-orm/core"
 
-@Entity({ tableName: "tax_line" })
-@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class TaxLine {
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -34,7 +24,7 @@ export default class TaxLine {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -42,18 +32,8 @@ export default class TaxLine {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "txli")
-  }
-
-  @OnInit()
-  onInit() {
-    this.id = generateEntityId(this.id, "lxli")
-  }
 }

@@ -1,6 +1,7 @@
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
@@ -10,6 +11,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import AdjustmentLine from "./adjustment-line"
 import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"
 import LineItemTaxLine from "./line-item-tax-line"
@@ -94,15 +96,15 @@ export default class LineItem {
   cart!: Cart
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
-    cascade: ["soft-remove"] as any,
+    cascade: [Cascade.REMOVE, "soft-remove"] as any,
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(
-    () => LineItemAdjustmentLine,
+    () => AdjustmentLine,
     (adjustment) => adjustment.line_item,
     {
-      cascade: ["soft-remove"] as any,
+      cascade: [Cascade.REMOVE, "soft-remove"] as any,
     }
   )
   adjustments = new Collection<LineItemAdjustmentLine>(this)
