@@ -13,6 +13,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import AdjustmentLine from "./adjustment-line"
 import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"
 import LineItemTaxLine from "./line-item-tax-line"
@@ -112,7 +113,7 @@ export default class LineItem {
   tax_lines = new Collection<LineItemTaxLine>(this)
 
   @OneToMany(
-    () => LineItemAdjustmentLine,
+    () => AdjustmentLine,
     (adjustment) => adjustment.line_item,
     {
       cascade: [Cascade.REMOVE],
