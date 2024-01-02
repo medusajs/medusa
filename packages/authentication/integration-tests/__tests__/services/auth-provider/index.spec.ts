@@ -53,7 +53,7 @@ describe("AuthProvider Service", () => {
       ])
     })
 
-    it("should list authProviders by id", async () => {
+    it("should list authProviders by provider id", async () => {
       const authProviders = await service.list({
         provider: ["manual"],
       })
@@ -85,7 +85,7 @@ describe("AuthProvider Service", () => {
       ])
     })
   })
-  //
+
   describe("listAndCount", () => {
     it("should list AuthProviders", async () => {
       const [authProviders, count] = await service.listAndCount()
@@ -194,7 +194,7 @@ describe("AuthProvider Service", () => {
       })
     })
   })
-  //
+
   describe("delete", () => {
     const provider = "manual"
 

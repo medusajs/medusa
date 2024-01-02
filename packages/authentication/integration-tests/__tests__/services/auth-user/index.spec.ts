@@ -131,6 +131,18 @@ describe("AuthUser Service", () => {
       )
     })
 
+    it("should return authUser based on config select param", async () => {
+      const authUser = await service.retrieve(id, {
+        select: ["id"],
+      })
+
+      const serialized = JSON.parse(JSON.stringify(authUser))
+
+      expect(serialized).toEqual({
+        id,
+      })
+    })
+
     it("should throw an error when an authUser with the given id does not exist", async () => {
       let error
 
@@ -156,24 +168,12 @@ describe("AuthUser Service", () => {
 
       expect(error.message).toEqual('"authUserId" must be defined')
     })
-
-    it("should return authUser based on config select param", async () => {
-      const authUser = await service.retrieve(id, {
-        select: ["id"],
-      })
-
-      const serialized = JSON.parse(JSON.stringify(authUser))
-
-      expect(serialized).toEqual({
-        id,
-      })
-    })
   })
-  //
-  describe("delete", () => {
-    const id = "test-id"
 
+  describe("delete", () => {
     it("should delete the authUsers given an id successfully", async () => {
+      const id = "test-id"
+
       await service.delete([id])
 
       const authUsers = await service.list({
@@ -185,8 +185,6 @@ describe("AuthUser Service", () => {
   })
 
   describe("update", () => {
-    const id = "test-id"
-
     it("should throw an error when a id does not exist", async () => {
       let error
 
@@ -206,6 +204,8 @@ describe("AuthUser Service", () => {
     })
 
     it("should update authUser", async () => {
+      const id = "test-id"
+
       await service.update([
         {
           id,

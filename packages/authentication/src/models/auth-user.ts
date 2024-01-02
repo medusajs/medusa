@@ -26,7 +26,6 @@ export default class AuthUser {
   @Property({
     columnType: "text",
     nullable: true,
-    // returning: false,
     hidden: true,
   })
   password_hash: string | null

@@ -13,6 +13,7 @@ export async function createAuthUsers(
       id: "test-id-1",
       provider: "manual",
       email: "manuel1@test.com",
+      password_hash: "test",
     },
     {
       provider: "store",

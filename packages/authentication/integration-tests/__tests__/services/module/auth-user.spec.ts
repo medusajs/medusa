@@ -143,6 +143,17 @@ describe("AuthenticationModuleService - AuthUser", () => {
       )
     })
 
+    it("should not return an authUser with password hash", async () => {
+      const authUser = await service.retrieveAuthUser("test-id-1")
+
+      expect(authUser).toEqual(
+        expect.objectContaining({
+          id: "test-id-1",
+        })
+      )
+      expect(authUser["password_hash"]).toEqual(undefined)
+    })
+
     it("should throw an error when a authUserId is not provided", async () => {
       let error
 
@@ -230,11 +241,12 @@ describe("AuthenticationModuleService - AuthUser", () => {
         },
       ])
 
-      const [authUser] = await service.listAuthUsers({
+      const [authUser, count] = await service.listAndCountAuthUsers({
         id: ["test"],
       })
 
-      expect(authUser).toEqual(
+      expect(count).toEqual(1)
+      expect(authUser[0]).toEqual(
         expect.objectContaining({
           id: "test",
           email: "test@test.com",

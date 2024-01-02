@@ -85,9 +85,9 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       ])
     })
   })
-  //
+
   describe("listAndCountAuthProviders", () => {
-    it("should list AuthProviders", async () => {
+    it("should list and count AuthProviders", async () => {
       const [authProviders, count] = await service.listAndCountAuthProviders()
       const serialized = JSON.parse(JSON.stringify(authProviders))
 
@@ -108,7 +108,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       ])
     })
 
-    it("should listAndCount authProviders by provider", async () => {
+    it("should list and count authProviders by provider", async () => {
       const [authProviders, count] = await service.listAndCountAuthProviders({
         provider: ["manual"],
       })
@@ -121,7 +121,7 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       ])
     })
 
-    it("should listAndCount active authProviders", async () => {
+    it("should list and count active authProviders", async () => {
       const [authProviders, count] = await service.listAndCountAuthProviders({
         is_active: true,
       })
@@ -156,6 +156,18 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       )
     })
 
+    it("should return authProvider based on config select param", async () => {
+      const authProvider = await service.retrieveAuthProvider(provider, {
+        select: ["provider"],
+      })
+
+      const serialized = JSON.parse(JSON.stringify(authProvider))
+
+      expect(serialized).toEqual({
+        provider,
+      })
+    })
+
     it("should throw an error when an authProvider with the given provider does not exist", async () => {
       let error
 
@@ -181,20 +193,8 @@ describe("AuthenticationModuleService - AuthProvider", () => {
 
       expect(error.message).toEqual('"authProviderProvider" must be defined')
     })
-
-    it("should return authProvider based on config select param", async () => {
-      const authProvider = await service.retrieveAuthProvider(provider, {
-        select: ["provider"],
-      })
-
-      const serialized = JSON.parse(JSON.stringify(authProvider))
-
-      expect(serialized).toEqual({
-        provider,
-      })
-    })
   })
-  //
+
   describe("deleteAuthProvider", () => {
     const provider = "manual"
 

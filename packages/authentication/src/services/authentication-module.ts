@@ -215,7 +215,7 @@ export default class AuthenticationModuleService<
     return await this.baseRepository_.serialize<AuthenticationTypes.AuthUserDTO>(
       authUser,
       {
-        populate: true,
+        exclude: ["password_hash"],
       }
     )
   }
