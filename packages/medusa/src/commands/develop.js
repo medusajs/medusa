@@ -43,14 +43,7 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  const babelPath = path.resolve(
-    require.resolve("@babel/cli"),
-    "../",
-    "bin",
-    "babel.js"
-  )
-
-  execSync(`"${babelPath}" src -d dist --ignore "src/admin/**"`, {
+  execSync(`npx --no-install babel src -d dist --ignore "src/admin/**"`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
@@ -112,7 +105,7 @@ export default async function ({ port, directory }) {
       child.kill("SIGINT")
 
       execSync(
-        `${babelPath} src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
+        `npx --no-install babel src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
         {
           cwd: directory,
           stdio: ["pipe", process.stdout, process.stderr],
