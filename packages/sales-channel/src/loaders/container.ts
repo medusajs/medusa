@@ -18,7 +18,7 @@ export default async ({
   )?.repositories
 
   container.register({
-    moneyAmountService: asClass(
+    salesChannelService: asClass(
       defaultServices.SalesChannelService
     ).singleton(),
   })
