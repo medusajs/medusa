@@ -1427,10 +1427,9 @@ class CartService extends TransactionBaseService {
     })
 
     if (itemsToRemove.length) {
-      await promiseAll(
-        itemsToRemove.map(async (item) => {
-          return this.removeLineItem(cart.id, item.id)
-        })
+      await this.removeLineItem(
+        cart.id,
+        itemsToRemove.map((item) => item.id)
       )
 
       const updatedCart = await this.retrieve(cart.id, {
