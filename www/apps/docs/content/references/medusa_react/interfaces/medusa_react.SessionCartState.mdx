@@ -1,0 +1,67 @@
+---
+displayed_sidebar: medusaReactSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# SessionCartState
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "items",
+    "type": "[Item](../../medusa/classes/medusa.Item.mdx)[]",
+    "description": "The items in the cart.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "The quantity to add into the cart.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variant_id",
+        "type": "`string`",
+        "description": "The ID of the Product Variant.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "region",
+    "type": "`RegionInfo`",
+    "description": "The region of the cart.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "total",
+    "type": "`number`",
+    "description": "The total amount of the cart.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "totalItems",
+    "type": "`number`",
+    "description": "The total items in the cart.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

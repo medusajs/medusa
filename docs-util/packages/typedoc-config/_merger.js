@@ -189,34 +189,74 @@ module.exports = {
     "^js_client/.*LineItemsResource": {
       maxLevel: 3,
     },
-    // "^(js_client/.*modules/.*internal|internal.*/modules)": {
-    //   reflectionGroups: {
-    //     Constructors: false,
-    //     "Type Aliases": false,
-    //     Enumerations: false,
-    //     "Enumeration Members": false,
-    //     Classes: false,
-    //     Functions: false,
-    //     Interfaces: false,
-    //     References: false,
-    //   },
-    // },
-    // "^internal.*/.*js_client.*": {
-    //   reflectionGroups: {
-    //     Constructors: false,
-    //   },
-    //   frontmatterData: {
-    //     displayed_sidebar: "jsClientSidebar",
-    //   },
-    // },
 
     // MEDUSA REACT CONFIG
-    // "^medusa_react/modules": {
-    //   fileNameSeparator: "/",
-    // },
+    "^medusa_react": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+      },
+    },
+    "^medusa_react/(medusa_react\\.Hooks\\.mdx|.*medusa_react\\.Hooks\\.Admin\\.mdx|.*medusa_react\\.Hooks\\.Store\\.mdx|medusa_react\\.Providers\\.mdx)":
+      {
+        reflectionGroups: {
+          Functions: false,
+        },
+      },
+    "^medusa_react/Providers/.*": {
+      expandMembers: true,
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/providers/{{alias-lower}}",
+      },
+    },
+    "^medusa_react/.*Utilities": {
+      expandMembers: true,
+    },
+    "^medusa_react/medusa_react\\.Hooks\\.mdx": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/hooks",
+      },
+    },
+    "^medusa_react/Hooks/Admin/.*Admin\\.mdx": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/hooks/admin",
+      },
+    },
+    "^medusa_react/Hooks/Admin/.*": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/hooks/admin/{{alias-lower}}",
+      },
+    },
+    "^medusa_react/Hooks/Store/.*Store\\.mdx": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/hooks/store",
+      },
+    },
+    "^medusa_react/Hooks/Store/.*": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/hooks/store/{{alias-lower}}",
+      },
+    },
+    "^medusa_react/medusa_react\\.Providers\\.mdx": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/providers",
+      },
+    },
+    "^medusa_react/medusa_react\\.Utilities\\.mdx": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/utilities",
+      },
+    },
 
     // MEDUSA CONFIG
-    "^medusa": {
+    "^medusa/": {
       frontmatterData: {
         displayed_sidebar: "homepage",
       },

@@ -1,3 +1,9 @@
+/**
+ * @packageDocumentation
+ * 
+ * @namespaceAsCategory Providers.Medusa
+ */
+
 import Medusa from "@medusajs/medusa-js"
 import {
   QueryClientProvider,
@@ -6,11 +12,48 @@ import {
 import React from "react"
 
 interface MedusaContextState {
+  /**
+   * The Medusa JS Client instance.
+   */
   client: Medusa
 }
 
 const MedusaContext = React.createContext<MedusaContextState | null>(null)
 
+/**
+ * This hook gives you access to context of {@link MedusaProvider}. It's useful if you want access to the 
+ * [Medusa JS Client](https://docs.medusajs.com/js-client/overview).
+ * 
+ * @example
+ * import { useMeCustomer, useMedusa } from "medusa-react"
+ * 
+ * const CustomerLogin = () => {
+ *   const { client } = useMedusa()
+ *   const { refetch: refetchCustomer } = useMeCustomer()
+ *   // ...
+ * 
+ *   const handleLogin = (
+ *     email: string,
+ *     password: string
+ *   ) => {
+ *     client.auth.authenticate({
+ *       email,
+ *       password
+ *     })
+ *     .then(() => {
+ *       // customer is logged-in successfully
+ *       refetchCustomer()
+ *     })
+ *     .catch(() => {
+ *       // an error occurred.
+ *     })
+ *   }
+ * 
+ *   // ...
+ * }
+ * 
+ * @namespaceAsCategory Providers.Medusa
+ */
 export const useMedusa = () => {
   const context = React.useContext(MedusaContext)
   if (!context) {
@@ -89,6 +132,8 @@ interface MedusaProviderProps {
  * In the example above, you wrap the `Storefront` component with the `MedusaProvider`. `Storefront` is assumed to be the top-level component of your storefront, but you can place `MedusaProvider` at any point in your tree. Only children of `MedusaProvider` can benefit from its hooks.
  * 
  * The `Storefront` component and its child components can now use hooks exposed by Medusa React.
+ * 
+ * @namespaceAsCategory Providers.Medusa
  */
 export const MedusaProvider = ({
   queryClientProviderProps,

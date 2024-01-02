@@ -1,0 +1,121 @@
+---
+displayed_sidebar: medusaReactSidebar
+slug: /references/medusa-react/providers/medusa
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Medusa
+
+## MedusaProvider
+
+The `MedusaProvider` must be used at the highest possible point in the React component tree. Using any of `medusa-react`'s hooks or providers requires having `MedusaProvider`
+higher in the component tree.
+
+### Example
+
+```tsx title="src/App.ts"
+import { MedusaProvider } from "medusa-react"
+import Storefront from "./Storefront"
+import { QueryClient } from "@tanstack/react-query"
+import React from "react"
+
+const queryClient = new QueryClient()
+
+const App = () => {
+  return (
+    <MedusaProvider
+      queryClientProviderProps={{ client: queryClient }}
+      baseUrl="http://localhost:9000"
+    >
+      <Storefront />
+    </MedusaProvider>
+  )
+}
+
+export default App
+```
+
+In the example above, you wrap the `Storefront` component with the `MedusaProvider`. `Storefront` is assumed to be the top-level component of your storefront, but you can place `MedusaProvider` at any point in your tree. Only children of `MedusaProvider` can benefit from its hooks.
+
+The `Storefront` component and its child components can now use hooks exposed by Medusa React.
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "param0",
+    "type": "`MedusaProviderProps`",
+    "description": "Props of the provider.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Element",
+    "type": "`Element`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## useMedusa
+
+This hook gives you access to context of [MedusaProvider](../../modules/medusa_react.mdx#medusaprovider). It's useful if you want access to the 
+[Medusa JS Client](https://docs.medusajs.com/js-client/overview).
+
+### Example
+
+```ts
+import { useMeCustomer, useMedusa } from "medusa-react"
+
+const CustomerLogin = () => {
+  const { client } = useMedusa()
+  const { refetch: refetchCustomer } = useMeCustomer()
+  // ...
+
+  const handleLogin = (
+    email: string,
+    password: string
+  ) => {
+    client.auth.authenticate({
+      email,
+      password
+    })
+    .then(() => {
+      // customer is logged-in successfully
+      refetchCustomer()
+    })
+    .catch(() => {
+      // an error occurred.
+    })
+  }
+
+  // ...
+}
+```
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "MedusaContextState",
+    "type": "`MedusaContextState`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

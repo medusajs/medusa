@@ -10,7 +10,7 @@ import { buildOptions } from "../../utils/buildOptions"
 import { adminAuthKeys } from "./queries"
 
 /**
- * This hook is used to log a User in using their credentials. If the user is authenticated successfully, the cookie is automatically attached to subsequent requests sent with the JS Client.
+ * This hook is used to log a User in using their credentials. If the user is authenticated successfully, the cookie is automatically attached to subsequent requests sent with other hooks.
  * 
  * @example
  * import { useAdminLogin } from "medusa-react"

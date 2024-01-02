@@ -1,3 +1,9 @@
+/**
+ * @packageDocumentation
+ * 
+ * @namespaceAsCategory Providers.Session Cart
+ */
+
 import React, { useContext, useEffect } from "react"
 import { getVariantPrice } from "../helpers"
 import { useLocalStorage } from "../hooks/utils"
@@ -266,6 +272,8 @@ const defaultInitialState: SessionCartState = {
  * 
  * export default App
  * ```
+ * 
+ * @namespaceAsCategory Providers.Session Cart
  */
 export const SessionCartProvider = ({
   initialState = defaultInitialState,
@@ -417,7 +425,8 @@ export const SessionCartProvider = ({
  *   }
  * }
  * ```
-
+ * 
+ * @namespaceAsCategory Providers.Session Cart
  */
 export const useSessionCart = () => {
   const context = useContext(SessionCartContext)

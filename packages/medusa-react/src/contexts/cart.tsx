@@ -1,3 +1,9 @@
+/**
+ * @packageDocumentation
+ * 
+ * @namespaceAsCategory Providers.Cart
+ */
+
 import React, { useState } from "react"
 import {
   useAddShippingMethodToCart,
@@ -109,6 +115,8 @@ const CartContext = React.createContext<CartContext | null>(null)
  * You would have to do that using the browser’s [Local Storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
  * 
  * :::
+ * 
+ * @namespaceAsCategory Providers.Cart
  */
 export const useCart = () => {
   const context = React.useContext(CartContext)
@@ -169,6 +177,8 @@ const defaultInitialState = {
  * 
  * export default App
  * ```
+ * 
+ * @namespaceAsCategory Providers.Cart
  */
 export const CartProvider = ({
   children,

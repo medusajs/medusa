@@ -1,0 +1,332 @@
+---
+displayed_sidebar: medusaReactSidebar
+slug: /references/medusa-react/utilities
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Utilities
+
+`medusa-react` exposes a set of utility functions that are mainly used to retrieve or format the price of a product variant.
+
+## computeAmount
+
+This utility function can be used to compute the price of an amount for a region and retrieve the amount without formatting. For example, `20`.
+This function is used by [formatAmount](../modules/medusa_react.mdx#formatamount) before applying the price formatting.
+
+The main difference between this utility function and [computeVariantPrice](../modules/medusa_react.mdx#computevariantprice) is that you don’t need to pass a complete variant object. This can be used with any number.
+
+### Example
+
+```tsx title="src/MyComponent.ts"
+import { computeAmount } from "medusa-react"
+
+const MyComponent = () => {
+  // ...
+  return (
+    <div>
+      {computeAmount({
+        amount,
+        region, // should be retrieved earlier
+      })}
+    </div>
+  )
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "params0",
+    "type": "`ComputeAmountParams`",
+    "description": "The options to compute the amount.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "The computed amount.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## computeVariantPrice
+
+This utility function can be used to compute the price of a variant for a region and retrieve the amount without formatting. 
+For example, `20`. This method is used by [formatVariantPrice](../modules/medusa_react.mdx#formatvariantprice) before applying the price formatting.
+
+### Example
+
+```tsx title="src/Products.ts"
+import { computeVariantPrice } from "medusa-react"
+import { Product, ProductVariant } from "@medusajs/medusa"
+
+const Products = () => {
+  // ...
+  return (
+    <ul>
+      {products?.map((product: Product) => (
+        <li key={product.id}>
+          {product.title}
+          <ul>
+            {product.variants.map((variant: ProductVariant) => (
+              <li key={variant.id}>
+                {computeVariantPrice({
+                  variant,
+                  region, // should be retrieved earlier
+                })}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "param0",
+    "type": "`ComputeVariantPriceParams`",
+    "description": "Options to compute the variant's price.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "The computed price of the variant.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## formatAmount
+
+This utility function can be used to compute the price of an amount for a region and retrieve the formatted amount. For example, `$20.00`.
+
+The main difference between this utility function and [formatVariantPrice](../modules/medusa_react.mdx#formatvariantprice) is that you don’t need to pass a complete variant object. This can be used with any number.
+
+### Example
+
+```ts
+import { formatVariantPrice } from "medusa-react"
+import { Product, ProductVariant } from "@medusajs/medusa"
+
+const Products = () => {
+  // ...
+  return (
+    <ul>
+      {products?.map((product: Product) => (
+        <li key={product.id}>
+          {product.title}
+          <ul>
+            {product.variants.map((variant: ProductVariant) => (
+              <li key={variant.id}>
+                {formatVariantPrice({
+                  variant,
+                  region, // should be retrieved earlier
+                })}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "param0",
+    "type": "`FormatAmountParams`",
+    "description": "Options to format the amount.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "The formatted price.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## formatVariantPrice
+
+This utility function can be used to compute the price of a variant for a region and retrieve the formatted amount. For example, `$20.00`.
+
+### Example
+
+```tsx title="src/Products.ts"
+import { formatVariantPrice } from "medusa-react"
+import { Product, ProductVariant } from "@medusajs/medusa"
+
+const Products = () => {
+  // ...
+  return (
+    <ul>
+      {products?.map((product: Product) => (
+        <li key={product.id}>
+          {product.title}
+          <ul>
+            {product.variants.map((variant: ProductVariant) => (
+              <li key={variant.id}>
+                {formatVariantPrice({
+                  variant,
+                  region, // should be retrieved earlier
+                })}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "param0",
+    "type": "`FormatVariantPriceParams`",
+    "description": "Options to format the variant's price.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "The formatted price.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## getVariantPrice
+
+This utility function is used to retrieve a variant's price in a region. It doesn't take into account taxes or any options, so you typically wouldn't need this function on its own.
+It's used by the [computeVariantPrice](../modules/medusa_react.mdx#computevariantprice) function to retrieve the variant's price in a region before computing the correct price for the options provided.
+
+### Example
+
+```tsx title="src/Products.ts"
+import { getVariantPrice } from "medusa-react"
+import { Product, ProductVariant } from "@medusajs/medusa"
+
+const Products = () => {
+  // ...
+  return (
+    <ul>
+      {products?.map((product: Product) => (
+        <li key={product.id}>
+          {product.title}
+          <ul>
+            {product.variants.map((variant: ProductVariant) => (
+              <li key={variant.id}>
+                {getVariantPrice(
+                  variant,
+                  region, // should be retrieved earlier
+                )}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variant",
+    "type": "`ProductVariantInfo`",
+    "description": "The variant's details.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "region",
+    "type": "`RegionInfo`",
+    "description": "The region's details.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "The variant's price in a region.",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -10,6 +10,7 @@ export function replaceTemplateVariables(
 
   return text
     .replaceAll("{{alias}}", reflection.getAlias())
+    .replaceAll("{{alias-lower}}", reflection.getAlias().toLowerCase())
     .replaceAll("{{kind}}", getKindAsText(reflection.kind))
 }
 

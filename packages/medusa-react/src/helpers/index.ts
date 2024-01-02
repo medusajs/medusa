@@ -83,6 +83,8 @@ type FormatVariantPriceParams = {
  *   )
  * }
  * ```
+ * 
+ * @namespaceAsCategory Utilities
  */
 export const formatVariantPrice = ({
   variant,
@@ -156,6 +158,8 @@ type ComputeVariantPriceParams = {
  *   )
  * }
  * ```
+ * 
+ * @namespaceAsCategory Utilities
  */
 export const computeVariantPrice = ({
   variant,
@@ -207,6 +211,8 @@ export const computeVariantPrice = ({
  *   )
  * }
  * ```
+ * 
+ * @namespaceAsCategory Utilities
  */
 export const getVariantPrice = (
   variant: ProductVariantInfo,
@@ -265,6 +271,8 @@ type ComputeAmountParams = {
  *   )
  * }
  * ```
+ * 
+ * @namespaceAsCategory Utilities
  */
 export const computeAmount = ({
   amount,
@@ -352,6 +360,8 @@ type FormatAmountParams = {
  *     </ul>
  *   )
  * }
+ * 
+ * @namespaceAsCategory Utilities
  */
 export const formatAmount = ({
   amount,

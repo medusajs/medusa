@@ -1,0 +1,110 @@
+---
+displayed_sidebar: medusaReactSidebar
+slug: /references/medusa-react/providers/session_cart
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Session Cart
+
+## SessionCartProvider
+
+Unlike the [CartProvider](../../modules/medusa_react.mdx#cartprovider), `SessionProvider` never interacts with the Medusa backend. It can be used to implement the user experience related to managing a cart’s items. 
+Its state variables are JavaScript objects living in the browser, but are in no way communicated with the backend.
+
+You can use the `SessionProvider` as a lightweight client-side cart functionality. It’s not stored in any database or on the Medusa backend.
+
+To use `SessionProvider`, you first have to insert it somewhere in your component tree below the [MedusaProvider](../../modules/medusa_react.mdx#medusaprovider). Then, in any of the child components, 
+you can use the [useSessionCart](../../modules/medusa_react.mdx#usesessioncart) hook to get access to client-side cart item functionalities.
+
+### Example
+
+```tsx title="src/App.ts"
+import { SessionProvider, MedusaProvider } from "medusa-react"
+import Storefront from "./Storefront"
+import { QueryClient } from "@tanstack/react-query"
+import React from "react"
+
+const queryClient = new QueryClient()
+
+const App = () => {
+  return (
+    <MedusaProvider
+      queryClientProviderProps={{ client: queryClient }}
+      baseUrl="http://localhost:9000"
+    >
+      <SessionProvider>
+        <Storefront />
+      </SessionProvider>
+    </MedusaProvider>
+  )
+}
+
+export default App
+```
+
+### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "param0",
+    "type": "`SessionCartProviderProps`",
+    "description": "Props of the provider.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Element",
+    "type": "`Element`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+## useSessionCart
+
+This hook exposes the context of [SessionCartProvider](../../modules/medusa_react.mdx#sessioncartprovider).
+
+### Example
+
+The following example assumes that you've added `SessionCartProvider` previously in the React components tree:
+
+```tsx title="src/Products.ts"
+const Products = () => {
+  const { addItem } = useSessionCart()
+  // ...
+
+  function addToCart(variant: ProductVariant) {
+    addItem({
+      variant: variant,
+      quantity: 1,
+    })
+  }
+}
+```
+
+### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "SessionCartContextState",
+    "type": "`SessionCartContextState`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

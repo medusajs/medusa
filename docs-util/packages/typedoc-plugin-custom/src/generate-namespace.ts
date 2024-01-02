@@ -111,7 +111,7 @@ export class GenerateNamespacePlugin {
     summary?: CommentDisplayPart[]
   }) {
     const categoryHeirarchy = tag.content[0].text.split(".")
-    categoryHeirarchy.forEach((cat) => {
+    categoryHeirarchy.forEach((cat, index) => {
       // check whether a namespace exists with the category name.
       let namespace = this.loadNamespace(cat)
 
@@ -119,12 +119,12 @@ export class GenerateNamespacePlugin {
         // add a namespace for this category
         namespace = this.createNamespace(cat) || namespace
 
+        namespace.comment = new Comment()
         if (this.currentNamespaceHeirarchy.length) {
-          namespace.comment = new Comment()
           namespace.comment.modifierTags.add("@namespaceMember")
-          if (summary) {
-            namespace.comment.summary = summary
-          }
+        }
+        if (summary && index === categoryHeirarchy.length - 1) {
+          namespace.comment.summary = summary
         }
       }
       this.currentContext =
@@ -193,6 +193,7 @@ export class GenerateNamespacePlugin {
     reflection.comment?.removeTags("@namespaceAsCategory")
     this.attachCategories(reflection)
     this.currentContext = undefined
+    this.currentNamespaceHeirarchy = []
   }
 
   /**
@@ -215,12 +216,14 @@ export class GenerateNamespacePlugin {
       const comments = context.getFileComment(sourceFile)
       comments?.blockTags
         .filter((tag) => tag.tag === "@namespaceAsCategory")
-        .forEach((tag) =>
+        .forEach((tag) => {
           this.generateNamespaceFromTag({ tag, summary: comments.summary })
-        )
+          // reset values
+          this.currentNamespaceHeirarchy = []
+          this.currentContext = context
+        })
     })
 
-    this.currentContext = undefined
     this.scannedComments = true
   }
 
