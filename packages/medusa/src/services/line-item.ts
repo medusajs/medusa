@@ -510,7 +510,7 @@ class LineItemService extends TransactionBaseService {
         })
 
         let result
-        if (lineItems.length) {
+        if (lineItems?.length) {
           await lineItemRepository.remove(lineItems)
           result = Array.isArray(id) ? lineItems : lineItems[0]
         }
