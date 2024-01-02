@@ -20,26 +20,76 @@ export const useMedusa = () => {
 }
 
 interface MedusaProviderProps {
+  /**
+   * The URL to your Medusa backend.
+   */
   baseUrl: string
+  /**
+   * An object used to set the Tanstack Query client. The object requires a `client` property, 
+   * which should be an instance of [QueryClient](https://tanstack.com/query/v4/docs/react/reference/QueryClient).
+   */
   queryClientProviderProps: QueryClientProviderProps
+  /**
+   * @ignore
+   */
   children: React.ReactNode
   /**
-   * Authentication token
+   * API key used for authenticating admin requests. Follow [this guide](https://docs.medusajs.com/api/admin#authentication) to learn how to create an API key for an admin user.
    */
   apiKey?: string
   /**
-   * PublishableApiKey identifier that defines the scope of resources
-   * available within the request
+   * Publishable API key used for storefront requests. You can create a publishable API key either using the 
+   * [admin APIs](https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys) or the 
+   * [Medusa admin](https://docs.medusajs.com/user-guide/settings/publishable-api-keys#create-publishable-api-key).
    */
   publishableApiKey?: string
   /**
-   * Number of times to retry a request if it fails
-   * @default 3
+   * Number of times to retry a request if it fails.
+   * 
+   * @defaultValue 3
    */
   maxRetries?: number
+  /**
+   * An object of custom headers to pass with every request. Each key of the object is the name of the header, and its value is the header's value.
+   * 
+   * @defaultValue `{}`
+   */
   customHeaders?: Record<string, any>
 }
 
+/**
+ * The `MedusaProvider` must be used at the highest possible point in the React component tree. Using any of `medusa-react`'s hooks or providers requires having `MedusaProvider`
+ * higher in the component tree.
+ * 
+ * @param {MedusaProviderProps} param0 - Props of the provider.
+ * 
+ * @example
+ * ```tsx title="src/App.ts"
+ * import { MedusaProvider } from "medusa-react"
+ * import Storefront from "./Storefront"
+ * import { QueryClient } from "@tanstack/react-query"
+ * import React from "react"
+ * 
+ * const queryClient = new QueryClient()
+ * 
+ * const App = () => {
+ *   return (
+ *     <MedusaProvider
+ *       queryClientProviderProps={{ client: queryClient }}
+ *       baseUrl="http://localhost:9000"
+ *     >
+ *       <Storefront />
+ *     </MedusaProvider>
+ *   )
+ * }
+ * 
+ * export default App
+ * ```
+ * 
+ * In the example above, you wrap the `Storefront` component with the `MedusaProvider`. `Storefront` is assumed to be the top-level component of your storefront, but you can place `MedusaProvider` at any point in your tree. Only children of `MedusaProvider` can benefit from its hooks.
+ * 
+ * The `Storefront` component and its child components can now use hooks exposed by Medusa React.
+ */
 export const MedusaProvider = ({
   queryClientProviderProps,
   baseUrl,
