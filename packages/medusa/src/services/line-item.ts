@@ -505,15 +505,17 @@ class LineItemService extends TransactionBaseService {
           this.lineItemRepository_
         )
 
-        return (await lineItemRepository
-          .find({ where: { id: In(ids) } })
-          .then(
-            async (lineItems) =>
-              lineItems.length && lineItemRepository.remove(lineItems)
-          )
-          .then((lineItems) => {
-            return Array.isArray(id) ? lineItems : lineItems[0]
-          })) as TResult
+        const lineItems = await lineItemRepository.find({
+          where: { id: In(ids) },
+        })
+
+        let result
+        if (lineItems.length) {
+          await lineItemRepository.remove(lineItems)
+          result = Array.isArray(id) ? lineItems : lineItems[0]
+        }
+
+        return result as TResult
       }
     )
   }
