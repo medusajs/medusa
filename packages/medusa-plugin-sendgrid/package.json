@@ -14,7 +14,7 @@
   "files": [
     "dist"
   ],
-  "author": "Oliver Juhl",
+  "author": "Oliver Juhl | Lucjan Grzesik",
   "license": "MIT",
   "devDependencies": {
     "@medusajs/types": "^1.11.9",
