@@ -1,7 +1,7 @@
 {
-  "name": "@medusajs/authentication",
+  "name": "@medusajs/cart",
   "version": "0.0.1",
-  "description": "Medusa Authentication module",
+  "description": "Medusa Cart module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,14 +11,14 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-authentication-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-authentication-migrations-up": "dist/scripts/bin/run-migration-up.js",
-    "medusa-authentication-seed": "dist/scripts/bin/run-seed.js"
+    "medusa-cart-migrations-down": "dist/scripts/bin/run-migration-down.js",
+    "medusa-cart-migrations-up": "dist/scripts/bin/run-migration-up.js",
+    "medusa-cart-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/authentication"
+    "directory": "packages/cart"
   },
   "publishConfig": {
     "access": "public"
