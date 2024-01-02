@@ -91,7 +91,7 @@ export default class AuthenticationModuleService<
   @InjectManager("baseRepository_")
   async listAndCountAuthProviders(
     filters: FilterableAuthProviderProps = {},
-    config: FindConfig<{}>,
+    config: FindConfig<AuthProviderDTO>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[AuthenticationTypes.AuthProviderDTO[], number]> {
     const [authProviders, count] = await this.authProviderService_.listAndCount(
