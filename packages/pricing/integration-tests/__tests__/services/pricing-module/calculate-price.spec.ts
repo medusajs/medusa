@@ -1575,8 +1575,8 @@ describe("PricingModule Service - Calculate Price", () => {
         await createPriceLists(
           service,
           {
-            starts_at: yesterday.toISOString(),
-            ends_at: tomorrow.toISOString(),
+            starts_at: yesterday,
+            ends_at: tomorrow,
           },
           {}
         )
@@ -1651,8 +1651,8 @@ describe("PricingModule Service - Calculate Price", () => {
         await createPriceLists(
           service,
           {
-            starts_at: tomorrow.toISOString(),
-            ends_at: tenDaysFromToday.toISOString(),
+            starts_at: tomorrow,
+            ends_at: tenDaysFromToday,
           },
           {}
         )
@@ -1726,8 +1726,8 @@ describe("PricingModule Service - Calculate Price", () => {
         await createPriceLists(
           service,
           {
-            starts_at: tenDaysAgo.toISOString(),
-            ends_at: yesterday.toISOString(),
+            starts_at: tenDaysAgo,
+            ends_at: yesterday,
           },
           {}
         )

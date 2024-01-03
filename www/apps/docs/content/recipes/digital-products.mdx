@@ -277,6 +277,7 @@ Creating an API Route also requires creating a service, which is a class that ty
   ```ts title="src/services/product-media.ts" badgeLabel="Backend"
   import { 
     FindConfig,
+    ProductVariant,
     ProductVariantService,
     Selector,
     TransactionBaseService,
@@ -330,6 +331,8 @@ Creating an API Route also requires creating a service, which is a class that ty
       )
 
       config.relations = relations
+
+      console.log(selector, config.relations)
 
       const query = buildQuery(selector, config)
 
@@ -402,6 +405,22 @@ Creating an API Route also requires creating a service, which is a class that ty
           relations: ["product"],
         }
       )
+    }
+
+    async retrieveMediasByVariant(
+      productVariant: ProductVariant
+    ): Promise<ProductMedia[]> {
+      const productMediaRepo = this.activeManager_.getRepository(
+        ProductMedia
+      )
+
+      const query = buildQuery({
+        variant_id: productVariant.id,
+      })
+
+      const productMedias = await productMediaRepo.find(query)
+
+      return productMedias
     }
 
     async create(
@@ -571,7 +590,7 @@ To add an interface that allows the admin user to upload digital products, you c
   Before starting off, make sure to install the necessary dependencies in your Medusa backend project:
 
   ```bash npm2yarn
-  npm install medusa-react @tanstack/react-query @medusajs/ui
+  npm install medusa-react @tanstack/react-query@4.22 @medusajs/ui
   ```
 
   This installs the necessary packages to use the Medusa React client and the [Medusa UI package](https://docs.medusajs.com/ui).
@@ -755,7 +774,7 @@ To add an interface that allows the admin user to upload digital products, you c
     const uploadFile = useAdminUploadProtectedFile()
     const { 
       mutate: createDigitalProduct,
-      isPending,
+      isLoading,
     } = useAdminCustomPost<
       CreateProductMediaRequest,
       CreateProductMediaResponse
@@ -885,9 +904,9 @@ To add an interface that allows the admin user to upload digital products, you c
             variant="primary" 
             type="submit" 
             isLoading={
-              createProduct.isPending || 
-              uploadFile.isPending || 
-              isPending
+              createProduct.isLoading || 
+              uploadFile.isLoading || 
+              isLoading
             }>
             Create
           </Button>

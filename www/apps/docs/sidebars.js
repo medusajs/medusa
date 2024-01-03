@@ -730,7 +730,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/carts-and-checkout/backend/add-payment-provider",
+          id: "references/payment/classes/payment.AbstractPaymentProcessor",
           label: "Backend: Create Payment Processor",
         },
         {

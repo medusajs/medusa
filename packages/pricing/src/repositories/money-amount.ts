@@ -1,17 +1,14 @@
-import {
-  Context,
-  CreateMoneyAmountDTO,
-  DAL,
-  UpdateMoneyAmountDTO,
-} from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+
 import { MoneyAmount } from "@models"
+import { RepositoryTypes } from "@types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class MoneyAmountRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -69,7 +66,7 @@ export class MoneyAmountRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async create(
-    data: CreateMoneyAmountDTO[],
+    data: RepositoryTypes.CreateMoneyAmountDTO[],
     context: Context = {}
   ): Promise<MoneyAmount[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -84,7 +81,7 @@ export class MoneyAmountRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdateMoneyAmountDTO[],
+    data: RepositoryTypes.UpdateMoneyAmountDTO[],
     context: Context = {}
   ): Promise<MoneyAmount[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)

@@ -1,11 +1,11 @@
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
+
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { initialize } from "../../../../src"
-
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { initialize } from "../../../../src"
 
 jest.setTimeout(30000)
 
@@ -188,15 +188,16 @@ describe("PriceList Service", () => {
   })
 
   describe("update", () => {
+    let createdId
     const id = "price-list-2"
 
-    it("should update the starts_at date of the priceList successfully", async () => {
+    beforeEach(async () => {
       const [created] = await service.createPriceLists([
         {
           title: "test",
           description: "test",
-          starts_at: "10/01/2023",
-          ends_at: "10/30/2023",
+          starts_at: new Date("10/01/2023"),
+          ends_at: new Date("10/30/2023"),
           rules: {
             customer_group_id: [
               "vip-customer-group-id",
@@ -213,12 +214,67 @@ describe("PriceList Service", () => {
           ],
         },
       ])
+      createdId = created.id
+    })
 
+    it("should fail to update a priceList with invalid starts_at date", async () => {
+      let error
+      try {
+        await service.updatePriceLists([
+          {
+            id: createdId,
+            starts_at: "invalid-date",
+          },
+        ])
+      } catch (err) {
+        error = err
+      }
+
+      expect(error.message).toEqual(
+        "Cannot set price list starts at with with invalid date string: invalid-date"
+      )
+    })
+
+    it("should fail to update a priceList with invalid ends_at date", async () => {
+      let error
+      try {
+        await service.updatePriceLists([
+          {
+            id: createdId,
+            ends_at: "invalid-date",
+          },
+        ])
+      } catch (err) {
+        error = err
+      }
+
+      expect(error.message).toEqual(
+        "Cannot set price list ends at with with invalid date string: invalid-date"
+      )
+    })
+
+    it("should update a priceList with starts_at and ends_at dates given as string", async () => {
+      let [priceList] = await service.updatePriceLists([
+        {
+          id: createdId,
+          starts_at: "10/10/2010",
+          ends_at: "10/20/2030",
+        },
+      ])
+      expect(priceList).toEqual(
+        expect.objectContaining({
+          starts_at: new Date("10/10/2010").toISOString(),
+          ends_at: new Date("10/20/2030").toISOString(),
+        })
+      )
+    })
+
+    it("should update the starts_at date of the priceList successfully", async () => {
       const updateDate = new Date()
       await service.updatePriceLists([
         {
-          id: created.id,
-          starts_at: updateDate.toISOString(),
+          id: createdId,
+          starts_at: updateDate,
           rules: {
             new_rule: ["new-rule-value"],
           },
@@ -227,7 +283,7 @@ describe("PriceList Service", () => {
 
       const [priceList] = await service.listPriceLists(
         {
-          id: [created.id],
+          id: [createdId],
         },
         {
           relations: [
@@ -303,13 +359,68 @@ describe("PriceList Service", () => {
   })
 
   describe("createPriceLists", () => {
+    it("should fail to create a priceList with invalid starts_at date", async () => {
+      let error
+      try {
+        await service.createPriceLists([
+          {
+            title: "test",
+            description: "test",
+            starts_at: "invalid-date",
+          },
+        ])
+      } catch (err) {
+        error = err
+      }
+
+      expect(error.message).toEqual(
+        "Cannot set price list starts at with with invalid date string: invalid-date"
+      )
+    })
+
+    it("should fail to create a priceList with invalid ends_at date", async () => {
+      let error
+      try {
+        await service.createPriceLists([
+          {
+            title: "test",
+            description: "test",
+            ends_at: "invalid-date",
+          },
+        ])
+      } catch (err) {
+        error = err
+      }
+
+      expect(error.message).toEqual(
+        "Cannot set price list ends at with with invalid date string: invalid-date"
+      )
+    })
+
+    it("should create a priceList with starts_at and ends_at dates given as string", async () => {
+      let [priceList] = await service.createPriceLists([
+        {
+          title: "test",
+          description: "test",
+          starts_at: "10/10/2010",
+          ends_at: "10/20/2030",
+        },
+      ])
+      expect(priceList).toEqual(
+        expect.objectContaining({
+          starts_at: new Date("10/10/2010").toISOString(),
+          ends_at: new Date("10/20/2030").toISOString(),
+        })
+      )
+    })
+
     it("should create a priceList successfully", async () => {
       const [created] = await service.createPriceLists([
         {
           title: "test",
           description: "test",
-          starts_at: "10/01/2023",
-          ends_at: "10/30/2023",
+          starts_at: new Date("10/01/2023"),
+          ends_at: new Date("10/30/2023"),
           rules: {
             customer_group_id: [
               "vip-customer-group-id",

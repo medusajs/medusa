@@ -6,7 +6,7 @@ import {
   PriceListType,
 } from "@medusajs/utils"
 import { createPriceLists } from "@medusajs/core-flows"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -27,6 +27,7 @@ import {
 } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { getPriceListPricingModule } from "./modules-queries"
+import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
  * @oas [post] /admin/price-lists
@@ -263,9 +264,11 @@ export class AdminPostPriceListsPriceListReq {
   description: string
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   starts_at?: Date
 
   @IsOptional()
+  @Transform(transformOptionalDate)
   ends_at?: Date
 
   @IsOptional()
