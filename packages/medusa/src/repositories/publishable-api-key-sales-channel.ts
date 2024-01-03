@@ -60,12 +60,10 @@ export const PublishableApiKeySalesChannelRepository = dataSource
      *
      * @param publishableApiKeyId - publishable key id
      * @param salesChannelIds - an array of SC ids
-     * @param isMedusaV2Enabled - are Medusa modules enabled
      */
     async addSalesChannels(
       publishableApiKeyId: string,
-      salesChannelIds: string[],
-      isMedusaV2Enabled?: boolean
+      salesChannelIds: string[]
     ): Promise<void> {
       const valuesToInsert = salesChannelIds.map((id) => ({
         id: generateEntityId(undefined, "pksc"),
