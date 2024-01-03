@@ -1426,15 +1426,13 @@ class CartService extends TransactionBaseService {
       return !productIdsToKeep.has(item.variant.product_id)
     })
 
-    if (itemsToRemove.length) {
-      const itemIdsToRemove = itemsToRemove.map((item) => item.id)
-      await this.removeLineItem(cart.id, itemIdsToRemove)
-
-      for (const itemId of itemIdsToRemove) {
-        const index = cart.items.findIndex((lineItem) => lineItem.id === itemId)
-        cart.items.splice(index, 1)
-      }
+    if (!itemsToRemove.length) {
+      return
     }
+
+    const itemIdsToRemove = new Set(itemsToRemove.map((item) => item.id))
+    await this.removeLineItem(cart.id, [...itemIdsToRemove])
+    cart.items = cart.items.filter((item) => !itemIdsToRemove.has(item.id))
   }
 
   /**
