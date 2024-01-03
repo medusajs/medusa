@@ -1,5 +1,5 @@
 import { Context, DAL } from "@medusajs/types"
-import { DALUtils, MedusaError } from "@medusajs/utils"
+import { DALUtils } from "@medusajs/utils"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
@@ -94,36 +94,9 @@ export class AuthUserRepository extends DALUtils.MikroOrmBaseRepository {
     context: Context = {}
   ): Promise<AuthUser[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const authUserIds = data.map((authUserData) => authUserData.id)
-    const existingAuthUsers = await this.find(
-      {
-        where: {
-          id: {
-            $in: authUserIds,
-          },
-        },
-      },
-      context
-    )
 
-    const existingAuthUsersMap = new Map(
-      existingAuthUsers.map<[string, AuthUser]>((authUser) => [
-        authUser.id,
-        authUser,
-      ])
-    )
-
-    const authUsers = data.map((authUserData) => {
-      const existingAuthUser = existingAuthUsersMap.get(authUserData.id)
-
-      if (!existingAuthUser) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `AuthUser with id "${authUserData.id}" not found`
-        )
-      }
-
-      return manager.assign(existingAuthUser, authUserData)
+    const authUsers = data.map(({ user, update }) => {
+      return manager.assign(user, update)
     })
 
     manager.persist(authUsers)

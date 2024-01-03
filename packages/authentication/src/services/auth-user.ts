@@ -3,13 +3,14 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
   retrieveEntity,
 } from "@medusajs/utils"
 import { AuthUser } from "@models"
 import { AuthUserRepository } from "@repositories"
 
-import { ServiceTypes } from "@types"
+import { RepositoryTypes, ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   authUserRepository: DAL.RepositoryService
@@ -81,8 +82,36 @@ export default class AuthUserService<TEntity extends AuthUser = AuthUser> {
     data: ServiceTypes.UpdateAuthUserDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const existingUsers = await this.list(
+      { id: data.map(({ id }) => id) },
+      {},
+      sharedContext
+    )
+
+    const existingUsersMap = new Map(
+      existingUsers.map<[string, AuthUser]>((authUser) => [
+        authUser.id,
+        authUser,
+      ])
+    )
+
+    const updates: RepositoryTypes.UpdateAuthUserDTO[] = []
+
+    for (const update of data) {
+      const user = existingUsersMap.get(update.id)
+
+      if (!user) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `AuthUser with id "${update.id}" not found`
+        )
+      }
+
+      updates.push({ update, user })
+    }
+
     return (await (this.authUserRepository_ as AuthUserRepository).update(
-      data,
+      updates,
       sharedContext
     )) as TEntity[]
   }

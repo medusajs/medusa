@@ -1,3 +1,5 @@
+import { AuthUser } from "@models"
+
 export type CreateAuthUserDTO = {
   id?: string
   email: string
@@ -8,9 +10,12 @@ export type CreateAuthUserDTO = {
 }
 
 export type UpdateAuthUserDTO = {
-  id: string
-  email?: string
-  password_hash?: string
-  user_metadata?: Record<string, unknown>
-  app_metadata?: Record<string, unknown>
+  update: {
+    id: string
+    email?: string
+    password_hash?: string
+    user_metadata?: Record<string, unknown>
+    app_metadata?: Record<string, unknown>
+  }
+  user: AuthUser
 }
