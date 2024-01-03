@@ -185,17 +185,27 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
     qb.withDeleted()
   }
 
-  // Deduplicate tuples for join + ordering (e.g. variants.prices.amount)
+  /*
+   * Deduplicate tuples for join + ordering (e.g. variants.prices.amount) since typeorm doesnt
+   * know how to manage it by itself
+   */
   const expressionMapAllOrderBys = qb.expressionMap.allOrderBys
-  const orderBysString = Object.keys(expressionMapAllOrderBys)
-    .map((column) => {
-      return `${column} ${expressionMapAllOrderBys[column]}`
-    })
-    .join(", ")
+  if (
+    expressionMapAllOrderBys &&
+    Object.keys(expressionMapAllOrderBys).length
+  ) {
+    const orderBysString = Object.keys(expressionMapAllOrderBys)
+      .map((column) => {
+        return `${column} ${expressionMapAllOrderBys[column]}`
+      })
+      .join(", ")
 
-  qb.addSelect(
-    `row_number() OVER (PARTITION BY ${alias}.id ORDER BY ${orderBysString}) AS rownum`
-  )
+    qb.addSelect(
+      `row_number() OVER (PARTITION BY ${alias}.id ORDER BY ${orderBysString}) AS rownum`
+    )
+  } else {
+    qb.addSelect(`1 AS rownum`)
+  }
 
   /*
    * In typeorm SelectQueryBuilder, the orderBy is removed from the original query when there is pagination
