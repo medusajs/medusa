@@ -1,4 +1,4 @@
-import { SalesChannelModuleService } from "@services"
+import { SalesChannelService, SalesChannelModuleService } from "@services"
 import { asClass, asValue, createContainer } from "awilix"
 
 export const mockContainer = createContainer()
@@ -12,5 +12,6 @@ mockContainer.register({
     findAndCount: jest.fn().mockResolvedValue([[], 0]),
     getFreshManager: jest.fn().mockResolvedValue({}),
   }),
-  salesChannelService: asClass(SalesChannelModuleService),
+  salesChannelService: asClass(SalesChannelService),
+  salesChannelModuleService: asClass(SalesChannelModuleService),
 })

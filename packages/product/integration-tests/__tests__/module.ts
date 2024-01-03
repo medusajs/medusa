@@ -181,8 +181,10 @@ describe("Product module", function () {
 
     it("should have a connection that is the shared connection", async () => {
       expect(
-        (module as any).baseRepository_.manager_.getConnection().client
-      ).toEqual(sharedPgConnection)
+        JSON.stringify(
+          (module as any).baseRepository_.manager_.getConnection().client
+        )
+      ).toEqual(JSON.stringify(sharedPgConnection))
     })
   })
 

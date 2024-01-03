@@ -86,7 +86,7 @@ export const buildCustomOptions = <
         })
       }
 
-      options?.onSuccess?.(...args)
+      return options?.onSuccess?.(...args)
     },
   }
 }

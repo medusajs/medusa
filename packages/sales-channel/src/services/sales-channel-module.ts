@@ -8,122 +8,121 @@ import {
   ModuleJoinerConfig,
   SalesChannelDTO,
 } from "@medusajs/types"
-import {
-  doNotForceTransaction,
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-  retrieveEntity,
-  shouldForceTransaction,
-} from "@medusajs/utils"
+import { InjectManager, MedusaContext } from "@medusajs/utils"
 import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@medusajs/types"
 
 import { SalesChannel } from "@models"
-import { SalesChannelRepository } from "@repositories"
 
 import { joinerConfig } from "../joiner-config"
+import SalesChannelService from "./sales-channel"
 
 type InjectedDependencies = {
-  salesChannelRepository: DAL.RepositoryService
+  baseRepository: DAL.RepositoryService
+  salesChannelService: SalesChannelService<any>
 }
 
 export default class SalesChannelModuleService<
   TEntity extends SalesChannel = SalesChannel
 > implements ISalesChannelModuleService
 {
-  protected readonly salesChannelRepository_: DAL.RepositoryService
+  protected baseRepository_: DAL.RepositoryService
+  protected readonly salesChannelService_: SalesChannelService<TEntity>
 
   constructor(
-    { salesChannelRepository }: InjectedDependencies,
+    { baseRepository, salesChannelService }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
-    this.salesChannelRepository_ = salesChannelRepository
+    this.baseRepository_ = baseRepository
+    this.salesChannelService_ = salesChannelService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async create(
     data: CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<SalesChannelDTO[]> {
-    return (await (
-      this.salesChannelRepository_ as SalesChannelRepository
-    ).create(data, sharedContext)) as unknown as SalesChannelDTO[]
+    const salesChannel = await this.salesChannelService_.create(
+      data,
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannel, {
+      populate: true,
+    })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await (this.salesChannelRepository_ as SalesChannelRepository).delete(
-      ids,
-      sharedContext
-    )
+    await this.salesChannelService_.delete(ids, sharedContext)
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async update(
     data: UpdateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<SalesChannelDTO[]> {
-    return (await (
-      this.salesChannelRepository_ as SalesChannelRepository
-    ).update(data, sharedContext)) as unknown as SalesChannelDTO[]
+    const salesChannel = await this.salesChannelService_.update(
+      data,
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannel, {
+      populate: true,
+    })
   }
 
-  @InjectManager("salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async retrieve(
     salesChannelId: string,
     config: FindConfig<SalesChannelDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<SalesChannelDTO> {
-    return (await retrieveEntity<SalesChannel, SalesChannelDTO>({
-      id: salesChannelId,
-      entityName: SalesChannel.name,
-      repository: this.salesChannelRepository_,
-      config,
-      sharedContext,
-    })) as unknown as SalesChannelDTO
+    const salesChannel = await this.salesChannelService_.retrieve(
+      salesChannelId,
+      config
+    )
+
+    return this.baseRepository_.serialize<SalesChannelDTO>(salesChannel, {
+      populate: true,
+    })
   }
 
-  @InjectManager("salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async list(
     filters: {} = {},
     config: FindConfig<SalesChannelDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<SalesChannelDTO[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<SalesChannel>(
-      filters,
-      config
-    )
+    const salesChannels = await this.salesChannelService_.list(filters, config)
 
-    return (await this.salesChannelRepository_.find(
-      queryOptions,
-      sharedContext
-    )) as unknown as SalesChannelDTO[]
+    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannels, {
+      populate: true,
+    })
   }
 
-  @InjectManager("salesChannelRepository_")
+  @InjectManager("baseRepository_")
   async listAndCount(
     filters: FilterableSalesChannelProps = {},
     config: FindConfig<SalesChannelDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[SalesChannelDTO[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<SalesChannel>(
+    const [salesChannels, count] = await this.salesChannelService_.listAndCount(
       filters,
       config
     )
 
-    return (await (
-      this.salesChannelRepository_ as SalesChannelRepository
-    ).findAndCount(queryOptions, sharedContext)) as unknown as [
-      SalesChannelDTO[],
-      number
+    return [
+      await this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannels, {
+        populate: true,
+      }),
+      count,
     ]
   }
 }
