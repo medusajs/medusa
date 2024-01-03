@@ -421,4 +421,103 @@ export default class PromotionModuleService<
   ): Promise<void> {
     await this.promotionService_.delete(ids, sharedContext)
   }
+
+  @InjectManager("baseRepository_")
+  async removePromotionRules(
+    promotionId: string,
+    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO> {
+    await this.removePromotionRules_(promotionId, rulesData, sharedContext)
+
+    return this.retrieve(
+      promotionId,
+      { relations: ["rules", "rules.values"] },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async removePromotionRules_(
+    promotionId: string,
+    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const promotionRuleIdsToRemove = rulesData.map((ruleData) => ruleData.id)
+    const promotion = await this.promotionService_.retrieve(
+      promotionId,
+      { relations: ["rules"] },
+      sharedContext
+    )
+
+    const existingPromotionRuleIds = promotion.rules
+      .toArray()
+      .map((rule) => rule.id)
+
+    const idsToRemove = promotionRuleIdsToRemove.filter((ruleId) =>
+      existingPromotionRuleIds.includes(ruleId)
+    )
+
+    await this.promotionRuleService_.delete(idsToRemove, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async removePromotionTargetRules(
+    promotionId: string,
+    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO> {
+    await this.removePromotionTargetRules_(
+      promotionId,
+      rulesData,
+      sharedContext
+    )
+
+    return this.retrieve(
+      promotionId,
+      {
+        relations: [
+          "rules",
+          "rules.values",
+          "application_method",
+          "application_method.target_rules",
+          "application_method.target_rules.values",
+        ],
+      },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async removePromotionTargetRules_(
+    promotionId: string,
+    rulesData: PromotionTypes.RemovePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const promotionRuleIds = rulesData.map((ruleData) => ruleData.id)
+    const promotion = await this.promotionService_.retrieve(
+      promotionId,
+      { relations: ["application_method.target_rules"] },
+      sharedContext
+    )
+
+    const applicationMethod = promotion.application_method
+
+    if (!applicationMethod) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method for promotion not found`
+      )
+    }
+
+    const targetRuleIdsToRemove = applicationMethod.target_rules
+      .toArray()
+      .filter((rule) => promotionRuleIds.includes(rule.id))
+      .map((rule) => rule.id)
+
+    await this.promotionRuleService_.delete(
+      targetRuleIdsToRemove,
+      sharedContext
+    )
+  }
 }

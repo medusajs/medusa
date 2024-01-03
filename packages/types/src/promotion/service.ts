@@ -6,6 +6,7 @@ import {
   CreatePromotionRuleDTO,
   FilterablePromotionProps,
   PromotionDTO,
+  RemovePromotionRuleDTO,
   UpdatePromotionDTO,
 } from "./common"
 
@@ -43,6 +44,18 @@ export interface IPromotionModuleService extends IModuleService {
   addPromotionTargetRules(
     promotionId: string,
     rulesData: CreatePromotionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
+  removePromotionRules(
+    promotionId: string,
+    rulesData: RemovePromotionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
+  removePromotionTargetRules(
+    promotionId: string,
+    rulesData: RemovePromotionRuleDTO[],
     sharedContext?: Context
   ): Promise<PromotionDTO>
 }

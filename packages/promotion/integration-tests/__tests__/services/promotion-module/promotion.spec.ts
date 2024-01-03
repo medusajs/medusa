@@ -742,4 +742,147 @@ describe("Promotion Service", () => {
       )
     })
   })
+
+  describe("removePromotionRules", () => {
+    let promotion
+
+    beforeEach(async () => {
+      ;[promotion] = await service.create([
+        {
+          code: "TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer_group_id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "item",
+            allocation: "each",
+            value: "100",
+            max_quantity: "500",
+          },
+        },
+      ])
+    })
+
+    it("should throw an error when promotion with id does not exist", async () => {
+      let error
+
+      try {
+        await service.removePromotionRules("does-not-exist", [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(
+        "Promotion with id: does-not-exist was not found"
+      )
+    })
+
+    it("should throw an error when a id is not provided", async () => {
+      let error
+
+      try {
+        await service.removePromotionRules(undefined as unknown as string, [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('"promotionId" must be defined')
+    })
+
+    it("should successfully create rules for a promotion", async () => {
+      const [ruleId] = promotion.rules.map((rule) => rule.id)
+
+      promotion = await service.removePromotionRules(promotion.id, [
+        { id: ruleId },
+      ])
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          id: promotion.id,
+          rules: [],
+        })
+      )
+    })
+  })
+
+  describe("removePromotionTargetRules", () => {
+    let promotion
+
+    beforeEach(async () => {
+      ;[promotion] = await service.create([
+        {
+          code: "TEST",
+          type: PromotionType.STANDARD,
+          application_method: {
+            type: "fixed",
+            target_type: "item",
+            allocation: "each",
+            value: "100",
+            max_quantity: "500",
+            target_rules: [
+              {
+                attribute: "customer_group_id",
+                operator: "in",
+                values: ["VIP", "top100"],
+              },
+            ],
+          },
+        },
+      ])
+    })
+
+    it("should throw an error when promotion with id does not exist", async () => {
+      let error
+
+      try {
+        await service.removePromotionTargetRules("does-not-exist", [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(
+        "Promotion with id: does-not-exist was not found"
+      )
+    })
+
+    it("should throw an error when a id is not provided", async () => {
+      let error
+
+      try {
+        await service.removePromotionTargetRules(
+          undefined as unknown as string,
+          []
+        )
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('"promotionId" must be defined')
+    })
+
+    it("should successfully create rules for a promotion", async () => {
+      const [ruleId] = promotion.application_method.target_rules.map(
+        (rule) => rule.id
+      )
+
+      promotion = await service.removePromotionTargetRules(promotion.id, [
+        { id: ruleId },
+      ])
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          id: promotion.id,
+          application_method: expect.objectContaining({
+            target_rules: [],
+          }),
+        })
+      )
+    })
+  })
 })
