@@ -560,23 +560,29 @@ class CartService extends TransactionBaseService {
   /**
    * Removes a line item from the cart.
    * @param cartId - the id of the cart that we will remove from
-   * @param lineItemId - the line item to remove.
+   * @param lineItemId - the line item(s) to remove.
    * @return the result of the update operation
    */
-  async removeLineItem(cartId: string, lineItemId: string): Promise<Cart> {
+  async removeLineItem(
+    cartId: string,
+    lineItemId: string | string[]
+  ): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
-          relations: [
-            "items.variant.product.profiles",
-            "payment_sessions",
-            "shipping_methods",
-          ],
+          relations: ["items.variant.product.profiles", "shipping_methods"],
         })
 
-        const lineItem = cart.items.find((item) => item.id === lineItemId)
-        if (!lineItem) {
-          return cart
+        const lineItemIdsToRemove = new Set(
+          Array.isArray(lineItemId) ? lineItemId : [lineItemId]
+        )
+
+        const lineItems = cart.items.filter((item) =>
+          lineItemIdsToRemove.has(item.id)
+        )
+
+        if (!lineItems.length) {
+          return
         }
 
         if (cart.shipping_methods?.length) {
@@ -599,12 +605,11 @@ class CartService extends TransactionBaseService {
 
         await this.lineItemService_
           .withTransaction(transactionManager)
-          .delete(lineItem.id)
+          .delete([...lineItemIdsToRemove])
 
         const result = await this.retrieve(cartId, {
           relations: [
             "items.variant.product.profiles",
-            "discounts",
             "discounts.rule",
             "region",
           ],
@@ -618,8 +623,6 @@ class CartService extends TransactionBaseService {
           .emit(CartService.Events.UPDATED, {
             id: cart.id,
           })
-
-        return this.retrieve(cartId)
       }
     )
   }
@@ -1423,14 +1426,13 @@ class CartService extends TransactionBaseService {
       return !productIdsToKeep.has(item.variant.product_id)
     })
 
-    if (itemsToRemove.length) {
-      const results = await promiseAll(
-        itemsToRemove.map(async (item) => {
-          return this.removeLineItem(cart.id, item.id)
-        })
-      )
-      cart.items = results.pop()?.items ?? []
+    if (!itemsToRemove.length) {
+      return
     }
+
+    const itemIdsToRemove = new Set(itemsToRemove.map((item) => item.id))
+    await this.removeLineItem(cart.id, [...itemIdsToRemove])
+    cart.items = cart.items.filter((item) => !itemIdsToRemove.has(item.id))
   }
 
   /**
