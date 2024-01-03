@@ -23,7 +23,7 @@ export default class PromotionRuleValue {
   promotion_rule: PromotionRule
 
   @Property({ columnType: "text" })
-  value: string
+  value: number
 
   @BeforeCreate()
   onCreate() {

@@ -83,7 +83,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PromotionTypes.PromotionDTO>(
+    return await this.baseRepository_.serialize<PromotionTypes.PromotionDTO>(
       promotion,
       {
         populate: true,
@@ -103,7 +103,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PromotionTypes.PromotionDTO[]>(
+    return await this.baseRepository_.serialize<PromotionTypes.PromotionDTO[]>(
       promotions,
       {
         populate: true,
