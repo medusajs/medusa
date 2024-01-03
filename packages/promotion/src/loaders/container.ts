@@ -19,6 +19,12 @@ export default async ({
 
   container.register({
     promotionService: asClass(defaultServices.PromotionService).singleton(),
+    promotionRuleService: asClass(
+      defaultServices.PromotionRuleService
+    ).singleton(),
+    promotionRuleValueService: asClass(
+      defaultServices.PromotionRuleValueService
+    ).singleton(),
     applicationMethodService: asClass(
       defaultServices.ApplicationMethodService
     ).singleton(),
@@ -43,6 +49,12 @@ function loadDefaultRepositories({ container }) {
     ).singleton(),
     promotionRepository: asClass(
       defaultRepositories.PromotionRepository
+    ).singleton(),
+    promotionRuleRepository: asClass(
+      defaultRepositories.PromotionRuleRepository
+    ).singleton(),
+    promotionRuleValueRepository: asClass(
+      defaultRepositories.PromotionRuleValueRepository
     ).singleton(),
   })
 }
