@@ -3,6 +3,7 @@ import { Table, Tooltip } from "@medusajs/ui"
 
 import { HookData, HookDataMap } from "@/types/hooks"
 import { EnumType, FunctionType, ObjectType } from "@/types/props"
+import { InlineCode } from "docs-ui"
 
 const HookTable = ({ props }: { props: HookDataMap }) => {
   return (
@@ -47,7 +48,9 @@ const Row = ({ value, type, description }: HookData) => {
 
   return (
     <Table.Row className="code-body">
-      <Table.Cell>{value}</Table.Cell>
+      <Table.Cell>
+        <InlineCode>{value}</InlineCode>
+      </Table.Cell>
       <Table.Cell>
         {!isComplexType && type.toString()}
         {isEnum(type) && (

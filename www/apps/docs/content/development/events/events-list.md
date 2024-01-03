@@ -112,7 +112,7 @@ Object of the following format:
 </td>
 <td>
 
-Triggered after the `preProcessBatchJob` of a batch job stategy is done executing.
+Triggered after the `preProcessBatchJob` of a batch job strategy is done executing.
 
 </td>
 <td>
@@ -700,6 +700,53 @@ Object of the following format:
 </td>
 </tr>
 
+</tbody>
+</table>
+
+---
+
+## Discount Events
+
+This section holds all events related to discounts.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`discount.created`
+
+</td>
+<td>
+
+Triggered when a discount is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id // string ID of discount
+}
+```
+
+</td>
+</tr>
 </tbody>
 </table>
 
@@ -2012,7 +2059,7 @@ In addition, an error object is passed within the same object as the Payment Pro
   //... other payment fields
   error: {
     name, //string
-    nessage, //string
+    message, //string
     stack, //(optional) string
   }
 }

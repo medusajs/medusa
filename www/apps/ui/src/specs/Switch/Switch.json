@@ -1,0 +1,33 @@
+{
+  "description": "This component is based on the [Radix UI Switch](https://www.radix-ui.com/primitives/docs/components/switch) primitive.",
+  "methods": [],
+  "displayName": "Switch",
+  "props": {
+    "size": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "The switch's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"small\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          }
+        ]
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "Omit",
+    "VariantProps"
+  ]
+}

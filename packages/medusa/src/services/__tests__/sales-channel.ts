@@ -3,6 +3,7 @@ import { EventBusService, StoreService } from "../index"
 import SalesChannelService from "../sales-channel"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { store, StoreServiceMock } from "../__mocks__/store"
+import { FlagRouter } from "@medusajs/utils"
 
 describe("SalesChannelService", () => {
   const salesChannelData = {
@@ -68,6 +69,7 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -90,6 +92,7 @@ describe("SalesChannelService", () => {
         manager: MockManager,
         eventBusService: EventBusServiceMock as unknown as EventBusService,
         salesChannelRepository: salesChannelRepositoryMock,
+        featureFlagRouter: new FlagRouter({}),
         storeService: {
           ...StoreServiceMock,
           retrieve: jest.fn().mockImplementation(() => {
@@ -119,6 +122,7 @@ describe("SalesChannelService", () => {
   describe("retrieve", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -139,11 +143,9 @@ describe("SalesChannelService", () => {
         ...salesChannelData,
       })
 
-      expect(
-        salesChannelRepositoryMock.findOne
-      ).toHaveBeenLastCalledWith({
+      expect(salesChannelRepositoryMock.findOne).toHaveBeenLastCalledWith({
         where: { id: IdMap.getId("sales_channel_1") },
-        relationLoadStrategy: "query"
+        relationLoadStrategy: "query",
       })
     })
   })
@@ -151,6 +153,7 @@ describe("SalesChannelService", () => {
   describe("update", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -186,6 +189,7 @@ describe("SalesChannelService", () => {
   describe("list", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -255,6 +259,7 @@ describe("SalesChannelService", () => {
   describe("delete", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: {
@@ -310,6 +315,7 @@ describe("SalesChannelService", () => {
   describe("Remove products", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -341,6 +347,7 @@ describe("SalesChannelService", () => {
   describe("Add products", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      featureFlagRouter: new FlagRouter({}),
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
@@ -359,7 +366,8 @@ describe("SalesChannelService", () => {
       expect(salesChannelRepositoryMock.addProducts).toHaveBeenCalledTimes(1)
       expect(salesChannelRepositoryMock.addProducts).toHaveBeenCalledWith(
         IdMap.getId("sales_channel_1"),
-        [IdMap.getId("sales_channel_1_product_1")]
+        [IdMap.getId("sales_channel_1_product_1")],
+        false
       )
       expect(salesChannel).toBeTruthy()
       expect(salesChannel).toEqual({

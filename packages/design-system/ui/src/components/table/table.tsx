@@ -4,6 +4,18 @@ import * as React from "react"
 import { Button } from "@/components/button"
 import { clx } from "@/utils/clx"
 
+/**
+ * This component is based on the table element and its various children:
+ * 
+ * - `Table`: `table`
+ * - `Table.Header`: `thead`
+ * - `Table.Row`: `tr`
+ * - `Table.HeaderCell`: `th`
+ * - `Table.Body`: `tbody`
+ * - `Table.Cell`: `td`
+ * 
+ * Each component supports the props or attributes of its equivalent HTML element.
+ */
 const Root = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
@@ -87,20 +99,49 @@ interface TablePaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   nextPage: () => void
 }
 
+/**
+ * This component is based on the `div` element and supports all of its props
+ */
 const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
   (
     {
       className,
+      /**
+       * The total number of items.
+       */
       count,
+      /**
+       * The number of items per page.
+       */
       pageSize,
+      /**
+       * The total number of pages.
+       */
       pageCount,
+      /**
+       * The current page index.
+       */
       pageIndex,
+      /**
+       * Whether there's a previous page that can be navigated to.
+       */
       canPreviousPage,
+      /**
+       * Whether there's a next page that can be navigated to.
+       */
       canNextPage,
+      /**
+       * A function that handles navigating to the next page.
+       * This function should handle retrieving data for the next page.
+       */
       nextPage,
+      /**
+       * A function that handles navigating to the previous page.
+       * This function should handle retrieving data for the previous page.
+       */
       previousPage,
       ...props
-    },
+    }: TablePaginationProps,
     ref
   ) => {
     const { from, to } = React.useMemo(() => {

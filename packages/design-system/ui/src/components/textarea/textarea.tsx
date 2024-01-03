@@ -3,6 +3,9 @@ import * as React from "react"
 import { clx } from "@/utils/clx"
 import { inputBaseStyles } from "../input"
 
+/**
+ * This component is based on the `textarea` element and supports all of its props
+ */
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.ComponentPropsWithoutRef<"textarea">

@@ -1,0 +1,80 @@
+{
+  "description": "This component is based on the `button` element and supports all of its props",
+  "methods": [],
+  "displayName": "IconButton",
+  "props": {
+    "asChild": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to remove the wrapper `button` element and use the\npassed child element instead.",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    },
+    "isLoading": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to show a loading spinner.",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    },
+    "variant": {
+      "defaultValue": {
+        "value": "\"primary\"",
+        "computed": false
+      },
+      "description": "The button's style.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"primary\" \\| \"transparent\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"primary\""
+          },
+          {
+            "name": "literal",
+            "value": "\"transparent\""
+          }
+        ]
+      },
+      "required": false
+    },
+    "size": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "The button's size.",
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" \\| \"large\" \\| \"xlarge\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"large\""
+          },
+          {
+            "name": "literal",
+            "value": "\"xlarge\""
+          }
+        ]
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "VariantProps"
+  ]
+}

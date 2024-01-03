@@ -13,6 +13,7 @@ import {
 
 import { EventEmitter } from "events"
 import { promiseAll } from "@medusajs/utils"
+import { PermanentStepFailureError } from "./errors"
 
 export type TransactionFlow = {
   modelId: string
@@ -367,11 +368,23 @@ export class TransactionOrchestrator extends EventEmitter {
         transaction.getContext()
       )
 
+      const setStepFailure = async (
+        error: Error | any,
+        { endRetry }: { endRetry?: boolean } = {}
+      ) => {
+        return TransactionOrchestrator.setStepFailure(
+          transaction,
+          step,
+          error,
+          endRetry ? 0 : step.definition.maxRetries
+        )
+      }
+
       if (!step.definition.async) {
         execution.push(
           transaction
             .handler(step.definition.action + "", type, payload, transaction)
-            .then(async (response) => {
+            .then(async (response: any) => {
               await TransactionOrchestrator.setStepSuccess(
                 transaction,
                 step,
@@ -379,12 +392,13 @@ export class TransactionOrchestrator extends EventEmitter {
               )
             })
             .catch(async (error) => {
-              await TransactionOrchestrator.setStepFailure(
-                transaction,
-                step,
-                error,
-                step.definition.maxRetries
-              )
+              if (
+                PermanentStepFailureError.isPermanentStepFailureError(error)
+              ) {
+                await setStepFailure(error, { endRetry: true })
+                return
+              }
+              await setStepFailure(error)
             })
         )
       } else {
@@ -393,12 +407,13 @@ export class TransactionOrchestrator extends EventEmitter {
             transaction
               .handler(step.definition.action + "", type, payload, transaction)
               .catch(async (error) => {
-                await TransactionOrchestrator.setStepFailure(
-                  transaction,
-                  step,
-                  error,
-                  step.definition.maxRetries
-                )
+                if (
+                  PermanentStepFailureError.isPermanentStepFailureError(error)
+                ) {
+                  await setStepFailure(error, { endRetry: true })
+                  return
+                }
+                await setStepFailure(error)
               })
           )
         )

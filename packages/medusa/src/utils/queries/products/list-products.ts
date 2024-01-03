@@ -1,7 +1,7 @@
 import { MedusaContainer } from "@medusajs/types"
 import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 
-import { PriceListService, SalesChannelService } from "../../../services"
+import { PriceListService } from "../../../services"
 import { getVariantsFromPriceList } from "./get-variants-from-price-list"
 
 export async function listProducts(
@@ -22,35 +22,6 @@ export async function listProducts(
   // This is not the best way of handling cross filtering but for now I would say it is fine
   const salesChannelIdFilter = filterableFields.sales_channel_id
   delete filterableFields.sales_channel_id
-
-  if (salesChannelIdFilter) {
-    const salesChannelService = container.resolve(
-      "salesChannelService"
-    ) as SalesChannelService
-
-    promises.push(
-      salesChannelService
-        .listProductIdsBySalesChannelIds(salesChannelIdFilter)
-        .then((productIdsInSalesChannel) => {
-          let filteredProductIds =
-            productIdsInSalesChannel[salesChannelIdFilter]
-
-          if (filterableFields.id) {
-            filterableFields.id = Array.isArray(filterableFields.id)
-              ? filterableFields.id
-              : [filterableFields.id]
-
-            const salesChannelProductIdsSet = new Set(filteredProductIds)
-
-            filteredProductIds = filterableFields.id.filter((productId) =>
-              salesChannelProductIdsSet.has(productId)
-            )
-          }
-
-          filteredProductIds.map((id) => productIdsFilter.add(id))
-        })
-    )
-  }
 
   const priceListId = filterableFields.price_list_id
   delete filterableFields.price_list_id
@@ -110,6 +81,10 @@ export async function listProducts(
       __args: variables,
       ...defaultAdminProductRemoteQueryObject,
     },
+  }
+
+  if (salesChannelIdFilter) {
+    query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter }
   }
 
   const {
@@ -244,5 +219,17 @@ export const defaultAdminProductRemoteQueryObject = {
   },
   profile: {
     fields: ["id", "created_at", "updated_at", "deleted_at", "name", "type"],
+  },
+  sales_channels: {
+    fields: [
+      "id",
+      "name",
+      "description",
+      "is_disabled",
+      "created_at",
+      "updated_at",
+      "deleted_at",
+      "metadata",
+    ],
   },
 }

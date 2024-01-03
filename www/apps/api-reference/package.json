@@ -30,7 +30,7 @@
     "jsdom": "^22.1.0",
     "json-schema": "^0.4.0",
     "json-stringify-pretty-compact": "^4.0.0",
-    "next": "13.4.19",
+    "next": "^14",
     "next-mdx-remote": "^4.4.1",
     "openapi-sampler": "^1.3.1",
     "openapi-types": "^12.1.3",
@@ -39,7 +39,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-instantsearch": "^7.0.1",
-    "react-intersection-observer": "^9.5.2",
+    "react-intersection-observer": "^9.5.3",
     "react-tooltip": "^5.19.0",
     "react-transition-group": "^4.4.5",
     "slugify": "^1.6.6",
@@ -52,5 +52,8 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.19",
     "@types/jsdom": "^21.1.1"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }
