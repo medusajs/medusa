@@ -19,8 +19,14 @@ import {
   PromotionService,
 } from "@services"
 import { joinerConfig } from "../joiner-config"
-import { CreateApplicationMethodDTO, CreatePromotionDTO } from "../types"
 import {
+  CreateApplicationMethodDTO,
+  CreatePromotionDTO,
+  UpdateApplicationMethodDTO,
+  UpdatePromotionDTO,
+} from "../types"
+import {
+  allowedAllocationForQuantity,
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "../utils"
@@ -65,6 +71,26 @@ export default class PromotionModuleService<
   }
 
   @InjectManager("baseRepository_")
+  async retrieve(
+    id: string,
+    config: FindConfig<PromotionTypes.PromotionDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO> {
+    const promotion = await this.promotionService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize<PromotionTypes.PromotionDTO>(
+      promotion,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectManager("baseRepository_")
   async list(
     filters: PromotionTypes.FilterablePromotionProps = {},
     config: FindConfig<PromotionTypes.PromotionDTO> = {},
@@ -94,7 +120,12 @@ export default class PromotionModuleService<
     return await this.list(
       { id: promotions.map((p) => p!.id) },
       {
-        relations: ["application_method", "rules", "rules.values"],
+        relations: [
+          "application_method",
+          "application_method.target_rules",
+          "rules",
+          "rules.values",
+        ],
       },
       sharedContext
     )
@@ -195,6 +226,103 @@ export default class PromotionModuleService<
     return createdPromotions
   }
 
+  @InjectManager("baseRepository_")
+  async update(
+    data: PromotionTypes.UpdatePromotionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO[]> {
+    const promotions = await this.update_(data, sharedContext)
+
+    return await this.list(
+      { id: promotions.map((p) => p!.id) },
+      {
+        relations: [
+          "application_method",
+          "application_method.target_rules",
+          "rules",
+          "rules.values",
+        ],
+      },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async update_(
+    data: PromotionTypes.UpdatePromotionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const promotionIds = data.map((d) => d.id)
+    const existingPromotions = await this.promotionService_.list(
+      {
+        id: promotionIds,
+      },
+      {
+        relations: ["application_method"],
+      }
+    )
+    const existingPromotionsMap = new Map<string, Promotion>(
+      existingPromotions.map((promotion) => [promotion.id, promotion])
+    )
+
+    const promotionsData: UpdatePromotionDTO[] = []
+    const applicationMethodsData: UpdateApplicationMethodDTO[] = []
+
+    for (const {
+      application_method: applicationMethodData,
+      ...promotionData
+    } of data) {
+      promotionsData.push(promotionData)
+
+      if (!applicationMethodData) {
+        continue
+      }
+
+      const existingPromotion = existingPromotionsMap.get(promotionData.id)
+      const existingApplicationMethod = existingPromotion?.application_method
+
+      if (!existingApplicationMethod) {
+        continue
+      }
+
+      if (
+        applicationMethodData.allocation &&
+        !allowedAllocationForQuantity.includes(applicationMethodData.allocation)
+      ) {
+        applicationMethodData.max_quantity = "0"
+      }
+
+      validateApplicationMethodAttributes({
+        type: applicationMethodData.type || existingApplicationMethod.type,
+        target_type:
+          applicationMethodData.target_type ||
+          existingApplicationMethod.target_type,
+        allocation:
+          applicationMethodData.allocation ||
+          existingApplicationMethod.allocation,
+        max_quantity:
+          applicationMethodData.max_quantity ||
+          existingApplicationMethod.max_quantity,
+      })
+
+      applicationMethodsData.push(applicationMethodData)
+    }
+
+    const updatedPromotions = this.promotionService_.update(
+      promotionsData,
+      sharedContext
+    )
+
+    if (applicationMethodsData.length) {
+      await this.applicationMethodService_.update(
+        applicationMethodsData,
+        sharedContext
+      )
+    }
+
+    return updatedPromotions
+  }
+
   protected async createPromotionRulesAndValues(
     rulesData: PromotionTypes.CreatePromotionRuleDTO[],
     relationName: "promotions" | "application_methods",
@@ -223,5 +351,13 @@ export default class PromotionModuleService<
 
       await this.promotionRuleValueService_.create(promotionRuleValuesData)
     }
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async delete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.promotionService_.delete(ids, sharedContext)
   }
 }

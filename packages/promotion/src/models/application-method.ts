@@ -1,7 +1,7 @@
 import {
-  ApplicationMethodAllocation,
-  ApplicationMethodTargetType,
-  ApplicationMethodType,
+  ApplicationMethodAllocationValues,
+  ApplicationMethodTargetTypeValues,
+  ApplicationMethodTypeValues,
 } from "@medusajs/types"
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
@@ -35,25 +35,25 @@ export default class ApplicationMethod {
   id!: string
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  value?: number | null
+  value?: string | null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  max_quantity?: number | null
+  max_quantity?: string | null
 
   @Index({ name: "IDX_application_method_type" })
   @Enum(() => PromotionUtils.ApplicationMethodType)
-  type: ApplicationMethodType
+  type: ApplicationMethodTypeValues
 
   @Index({ name: "IDX_application_method_target_type" })
   @Enum(() => PromotionUtils.ApplicationMethodTargetType)
-  target_type: ApplicationMethodTargetType
+  target_type: ApplicationMethodTargetTypeValues
 
   @Index({ name: "IDX_application_method_allocation" })
   @Enum({
     items: () => PromotionUtils.ApplicationMethodAllocation,
     nullable: true,
   })
-  allocation?: ApplicationMethodAllocation
+  allocation?: ApplicationMethodAllocationValues
 
   @OneToOne({
     entity: () => Promotion,

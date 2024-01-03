@@ -5,6 +5,7 @@ import {
   CreatePromotionDTO,
   FilterablePromotionProps,
   PromotionDTO,
+  UpdatePromotionDTO,
 } from "./common"
 
 export interface IPromotionModuleService extends IModuleService {
@@ -13,9 +14,22 @@ export interface IPromotionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
 
+  update(
+    data: UpdatePromotionDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO[]>
+
   list(
     filters?: FilterablePromotionProps,
     config?: FindConfig<PromotionDTO>,
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
+
+  retrieve(
+    id: string,
+    config?: FindConfig<PromotionDTO>,
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
+  delete(ids: string[], sharedContext?: Context): Promise<void>
 }
