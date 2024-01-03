@@ -493,9 +493,7 @@ class LineItemService extends TransactionBaseService {
    */
   async delete<
     T extends string | string[],
-    TResult = T extends []
-      ? (LineItem | undefined | null)[]
-      : LineItem | undefined | null
+    TResult = T extends [] ? LineItem[] : LineItem | void
   >(id: string | string[]): Promise<TResult> {
     const ids = Array.isArray(id) ? id : [id]
 
@@ -510,11 +508,11 @@ class LineItemService extends TransactionBaseService {
         })
 
         if (!lineItems?.length) {
-          return
+          return (Array.isArray(id) ? [] : void 0) as TResult
         }
 
-        await lineItemRepository.remove(lineItems)
-        return (Array.isArray(id) ? lineItems : lineItems[0]) as TResult
+        const removedItems = await lineItemRepository.remove(lineItems)
+        return (Array.isArray(id) ? removedItems : removedItems[0]) as TResult
       }
     )
   }
