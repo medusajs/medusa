@@ -45,7 +45,7 @@ export async function run({
     pathToMigrations
   )
 
-  const manager = orm.em.fork()
+  const manager = orm.em.fork() as unknown as SqlEntityManager
 
   try {
     logger.info("Inserting sales channel data")
