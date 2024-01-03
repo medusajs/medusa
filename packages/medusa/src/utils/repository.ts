@@ -150,11 +150,7 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
 }): Promise<[T[], number]> {
   const alias = repository.metadata.name.toLowerCase()
 
-  const qb = repository
-    .createQueryBuilder(alias)
-    .select([`${alias}.id`])
-    .skip(optionsWithoutRelations.skip)
-    .take(optionsWithoutRelations.take)
+  const qb = repository.createQueryBuilder(alias).select([`${alias}.id`])
 
   if (optionsWithoutRelations.where) {
     qb.where(optionsWithoutRelations.where)
@@ -189,14 +185,50 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
     qb.withDeleted()
   }
 
+  // Deduplicate tuples for join + ordering (e.g. variants.prices.amount)
+  const expressionMapAllOrderBys = qb.expressionMap.allOrderBys
+  const orderBysString = Object.keys(expressionMapAllOrderBys)
+    .map((column) => {
+      return `${column} ${expressionMapAllOrderBys[column]}`
+    })
+    .join(", ")
+
+  qb.addSelect(
+    `row_number() OVER (PARTITION BY ${alias}.id ORDER BY ${orderBysString}) AS rownum`
+  )
+
+  /*
+   * In typeorm SelectQueryBuilder, the orderBy is removed from the original query when there is pagination
+   * and join involved together.
+   *
+   * This workaround allows us to include the order as part of the original query (including joins) before
+   * selecting the distinct ids of the main alias entity. The distinct ids deduplication
+   * is managed by the rownum column added to the select below.
+   *
+   * see: node_modules/typeorm/query-builder/SelectQueryBuilder.js(1973)
+   */
+  const outerQb = new SelectQueryBuilder(qb.connection, repository.queryRunner)
+    .select(`${qb.escape(`${alias}_id`)}`)
+    .from(`(${qb.getQuery()})`, alias)
+    .where(`${alias}.rownum = 1`)
+    .setParameters(qb.getParameters())
+    .setNativeParameters(qb.expressionMap.nativeParameters)
+    .offset(optionsWithoutRelations.skip)
+    .limit(optionsWithoutRelations.take)
+
   let entities: T[]
   let count = 0
   if (shouldCount) {
-    const result = await promiseAll([qb.getMany(), qb.getCount()])
-    entities = result[0]
+    const result = await promiseAll([outerQb.getRawMany(), qb.getCount()])
+    entities = result[0].map((rawProduct) => ({
+      id: rawProduct[`${alias}_id`],
+    })) as unknown as T[]
     count = result[1]
   } else {
-    entities = await qb.getMany()
+    const result = await outerQb.getRawMany()
+    entities = result[0].map((rawProduct) => ({
+      id: rawProduct[`${alias}_id`],
+    })) as unknown as T[]
   }
 
   return [entities, count]
