@@ -3,6 +3,7 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   CreatePromotionDTO,
+  CreatePromotionRuleDTO,
   FilterablePromotionProps,
   PromotionDTO,
   UpdatePromotionDTO,
@@ -32,4 +33,16 @@ export interface IPromotionModuleService extends IModuleService {
   ): Promise<PromotionDTO>
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
+
+  addPromotionRules(
+    promotionId: string,
+    rulesData: CreatePromotionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
+  addPromotionTargetRules(
+    promotionId: string,
+    rulesData: CreatePromotionRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
 }

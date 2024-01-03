@@ -593,4 +593,153 @@ describe("Promotion Service", () => {
       expect(promotions).toHaveLength(0)
     })
   })
+
+  describe("addPromotionRules", () => {
+    let promotion
+
+    beforeEach(async () => {
+      ;[promotion] = await service.create([
+        {
+          code: "TEST",
+          type: PromotionType.STANDARD,
+          application_method: {
+            type: "fixed",
+            target_type: "item",
+            allocation: "each",
+            value: "100",
+            max_quantity: "500",
+          },
+        },
+      ])
+    })
+
+    it("should throw an error when promotion with id does not exist", async () => {
+      let error
+
+      try {
+        await service.addPromotionRules("does-not-exist", [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(
+        "Promotion with id: does-not-exist was not found"
+      )
+    })
+
+    it("should throw an error when a id is not provided", async () => {
+      let error
+
+      try {
+        await service.addPromotionRules(undefined as unknown as string, [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('"promotionId" must be defined')
+    })
+
+    it("should successfully create rules for a promotion", async () => {
+      promotion = await service.addPromotionRules(promotion.id, [
+        {
+          attribute: "customer_group_id",
+          operator: "in",
+          values: ["VIP", "top100"],
+        },
+      ])
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          id: promotion.id,
+          rules: [
+            expect.objectContaining({
+              attribute: "customer_group_id",
+              operator: "in",
+              values: [
+                expect.objectContaining({ value: "VIP" }),
+                expect.objectContaining({ value: "top100" }),
+              ],
+            }),
+          ],
+        })
+      )
+    })
+  })
+
+  describe("addPromotionTargetRules", () => {
+    let promotion
+
+    beforeEach(async () => {
+      ;[promotion] = await service.create([
+        {
+          code: "TEST",
+          type: PromotionType.STANDARD,
+          application_method: {
+            type: "fixed",
+            target_type: "item",
+            allocation: "each",
+            value: "100",
+            max_quantity: "500",
+          },
+        },
+      ])
+    })
+
+    it("should throw an error when promotion with id does not exist", async () => {
+      let error
+
+      try {
+        await service.addPromotionTargetRules("does-not-exist", [])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(
+        "Promotion with id: does-not-exist was not found"
+      )
+    })
+
+    it("should throw an error when a id is not provided", async () => {
+      let error
+
+      try {
+        await service.addPromotionTargetRules(
+          undefined as unknown as string,
+          []
+        )
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('"promotionId" must be defined')
+    })
+
+    it("should successfully create target rules for a promotion", async () => {
+      promotion = await service.addPromotionTargetRules(promotion.id, [
+        {
+          attribute: "customer_group_id",
+          operator: "in",
+          values: ["VIP", "top100"],
+        },
+      ])
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          id: promotion.id,
+          application_method: expect.objectContaining({
+            target_rules: [
+              expect.objectContaining({
+                attribute: "customer_group_id",
+                operator: "in",
+                values: [
+                  expect.objectContaining({ value: "VIP" }),
+                  expect.objectContaining({ value: "top100" }),
+                ],
+              }),
+            ],
+          }),
+        })
+      )
+    })
+  })
 })

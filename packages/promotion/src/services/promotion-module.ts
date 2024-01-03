@@ -10,6 +10,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
 } from "@medusajs/utils"
 import { ApplicationMethod, Promotion } from "@models"
 import {
@@ -123,6 +124,7 @@ export default class PromotionModuleService<
         relations: [
           "application_method",
           "application_method.target_rules",
+          "application_method.target_rules.values",
           "rules",
           "rules.values",
         ],
@@ -321,6 +323,65 @@ export default class PromotionModuleService<
     }
 
     return updatedPromotions
+  }
+
+  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
+  async addPromotionRules(
+    promotionId: string,
+    rulesData: PromotionTypes.CreatePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO> {
+    const promotion = await this.promotionService_.retrieve(promotionId)
+
+    await this.createPromotionRulesAndValues(
+      rulesData,
+      "promotions",
+      promotion,
+      sharedContext
+    )
+
+    return this.retrieve(promotionId, {
+      relations: ["rules", "rules.values"],
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
+  async addPromotionTargetRules(
+    promotionId: string,
+    rulesData: PromotionTypes.CreatePromotionRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO> {
+    const promotion = await this.promotionService_.retrieve(promotionId, {
+      relations: ["application_method"],
+    })
+
+    const applicationMethod = promotion.application_method
+
+    if (!applicationMethod) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method for promotion not found`
+      )
+    }
+
+    await this.createPromotionRulesAndValues(
+      rulesData,
+      "application_methods",
+      applicationMethod,
+      sharedContext
+    )
+
+    return this.retrieve(promotionId, {
+      relations: [
+        "rules",
+        "rules.values",
+        "application_method",
+        "application_method.target_rules",
+        "application_method.target_rules.values",
+      ],
+    })
   }
 
   protected async createPromotionRulesAndValues(
