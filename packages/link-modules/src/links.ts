@@ -34,6 +34,12 @@ export const LINKS = {
     "salesChannelService",
     "sales_channel_id"
   ),
+  OrderSalesChannel: composeLinkName(
+    "orderService",
+    "order_id",
+    "salesChannelService",
+    "sales_channel_id"
+  ),
   PublishableApiKeySalesChannel: composeLinkName(
     "publishableApiKeyService",
     "publishable_key_id",

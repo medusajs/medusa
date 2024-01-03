@@ -1,4 +1,5 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { FlagRouter } from "@medusajs/utils"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
@@ -151,6 +152,7 @@ describe("OrderService", () => {
       eventBusService,
       cartService,
       productVariantInventoryService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
