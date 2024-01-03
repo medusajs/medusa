@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../../dal"
 import { PromotionDTO } from "./promotion"
+import { CreatePromotionRuleDTO } from "./promotion-rule"
 
 export type ApplicationMethodType = "fixed" | "percentage"
 export type ApplicationMethodTargetType = "order" | "shipping" | "item"
@@ -16,6 +17,7 @@ export interface CreateApplicationMethodDTO {
   value?: number
   max_quantity?: number
   promotion?: PromotionDTO | string
+  target_rules?: CreatePromotionRuleDTO[]
 }
 
 export interface UpdateApplicationMethodDTO {

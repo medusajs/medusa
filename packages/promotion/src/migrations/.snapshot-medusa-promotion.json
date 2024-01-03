@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -41,10 +39,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "standard",
-            "buyget"
-          ],
+          "enumItems": ["standard", "buyget"],
           "mappedType": "enum"
         },
         "created_at": {
@@ -84,18 +79,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "code"
-          ],
+          "columnNames": ["code"],
           "composite": false,
           "keyName": "IDX_promotion_code",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
           "keyName": "IDX_promotion_type",
           "primary": false,
@@ -103,18 +94,14 @@
         },
         {
           "keyName": "IDX_promotion_code_unique",
-          "columnNames": [
-            "code"
-          ],
+          "columnNames": ["code"],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "promotion_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -159,10 +146,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "fixed",
-            "percentage"
-          ],
+          "enumItems": ["fixed", "percentage"],
           "mappedType": "enum"
         },
         "target_type": {
@@ -172,11 +156,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "order",
-            "shipping",
-            "item"
-          ],
+          "enumItems": ["order", "shipping", "item"],
           "mappedType": "enum"
         },
         "allocation": {
@@ -186,10 +166,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "enumItems": [
-            "each",
-            "across"
-          ],
+          "enumItems": ["each", "across"],
           "mappedType": "enum"
         },
         "promotion_id": {
@@ -238,36 +215,28 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "type"
-          ],
+          "columnNames": ["type"],
           "composite": false,
           "keyName": "IDX_application_method_type",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "target_type"
-          ],
+          "columnNames": ["target_type"],
           "composite": false,
           "keyName": "IDX_application_method_target_type",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "allocation"
-          ],
+          "columnNames": ["allocation"],
           "composite": false,
           "keyName": "IDX_application_method_allocation",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "promotion_id"
-          ],
+          "columnNames": ["promotion_id"],
           "composite": false,
           "keyName": "application_method_promotion_id_unique",
           "primary": false,
@@ -275,9 +244,7 @@
         },
         {
           "keyName": "application_method_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -287,14 +254,279 @@
       "foreignKeys": {
         "application_method_promotion_id_foreign": {
           "constraintName": "application_method_promotion_id_foreign",
-          "columnNames": [
-            "promotion_id"
-          ],
+          "columnNames": ["promotion_id"],
           "localTableName": "public.application_method",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.promotion",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "attribute": {
+          "name": "attribute",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "operator": {
+          "name": "operator",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": ["gte", "lte", "gt", "lt", "eq", "ne", "in"],
+          "mappedType": "enum"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "promotion_rule",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": ["attribute"],
+          "composite": false,
+          "keyName": "IDX_promotion_rule_attribute",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["operator"],
+          "composite": false,
+          "keyName": "IDX_promotion_rule_operator",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "promotion_rule_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "promotion_id": {
+          "name": "promotion_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "promotion_rule_id": {
+          "name": "promotion_rule_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "promotion_promotion_rule",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "promotion_promotion_rule_pkey",
+          "columnNames": ["promotion_id", "promotion_rule_id"],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "promotion_promotion_rule_promotion_id_foreign": {
+          "constraintName": "promotion_promotion_rule_promotion_id_foreign",
+          "columnNames": ["promotion_id"],
+          "localTableName": "public.promotion_promotion_rule",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.promotion",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "promotion_promotion_rule_promotion_rule_id_foreign": {
+          "constraintName": "promotion_promotion_rule_promotion_rule_id_foreign",
+          "columnNames": ["promotion_rule_id"],
+          "localTableName": "public.promotion_promotion_rule",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.promotion_rule",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "application_method_id": {
+          "name": "application_method_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "promotion_rule_id": {
+          "name": "promotion_rule_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "application_method_promotion_rule",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "application_method_promotion_rule_pkey",
+          "columnNames": ["application_method_id", "promotion_rule_id"],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "application_method_promotion_rule_application_method_id_foreign": {
+          "constraintName": "application_method_promotion_rule_application_method_id_foreign",
+          "columnNames": ["application_method_id"],
+          "localTableName": "public.application_method_promotion_rule",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.application_method",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "application_method_promotion_rule_promotion_rule_id_foreign": {
+          "constraintName": "application_method_promotion_rule_promotion_rule_id_foreign",
+          "columnNames": ["promotion_rule_id"],
+          "localTableName": "public.application_method_promotion_rule",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.promotion_rule",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "promotion_rule_id": {
+          "name": "promotion_rule_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "promotion_rule_value",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": ["promotion_rule_id"],
+          "composite": false,
+          "keyName": "IDX_promotion_rule_promotion_rule_value_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "promotion_rule_value_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "promotion_rule_value_promotion_rule_id_foreign": {
+          "constraintName": "promotion_rule_value_promotion_rule_id_foreign",
+          "columnNames": ["promotion_rule_id"],
+          "localTableName": "public.promotion_rule_value",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.promotion_rule",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
