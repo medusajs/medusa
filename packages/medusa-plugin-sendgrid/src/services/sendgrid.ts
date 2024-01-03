@@ -2,12 +2,13 @@ import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
 import { MedusaError } from "@medusajs/utils"
-import { AttachmentsArray, FromFullFilementService, NewLineItem, PluginOptions } from "../types"
+import { AttachmentsArray, FromFullFilementService, NewLineItem, EventData, SendGridData } from "../types/generic"
+import { PluginOptions } from "../types"
 import type { CartService, ClaimService, FulfillmentProviderService, 
   GiftCardService, LineItem, LineItemService, Logger, Order,  OrderService, ProductVariantService, Return, ReturnItem, ReturnService, 
   StoreService, SwapService, TotalsService } from "@medusajs/medusa"
 import type { FulfillmentService } from "@medusajs/medusa/dist/services/fulfillment"
-import { EventData, SendGridData } from "../types"
+
 import type { LineItemTotals } from "@medusajs/medusa/dist/services/totals"
 
 export class SendGridService extends NotificationService {
