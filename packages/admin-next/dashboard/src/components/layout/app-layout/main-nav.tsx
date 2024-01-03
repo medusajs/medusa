@@ -15,25 +15,25 @@ import {
   SquaresPlus,
   Tag,
   Users,
-} from "@medusajs/icons";
-import { Avatar, DropdownMenu, IconButton, Text } from "@medusajs/ui";
-import * as Collapsible from "@radix-ui/react-collapsible";
-import * as Dialog from "@radix-ui/react-dialog";
-import { useAdminStore } from "medusa-react";
-import { Link, useLocation } from "react-router-dom";
+} from "@medusajs/icons"
+import { Avatar, DropdownMenu, IconButton, Text } from "@medusajs/ui"
+import * as Collapsible from "@radix-ui/react-collapsible"
+import * as Dialog from "@radix-ui/react-dialog"
+import { useAdminStore } from "medusa-react"
+import { Link, useLocation } from "react-router-dom"
 
-import { useAuth } from "../../../providers/auth-provider";
-import { useTheme } from "../../../providers/theme-provider";
+import { useAuth } from "../../../providers/auth-provider"
+import { useTheme } from "../../../providers/theme-provider"
 
-import { Fragment, useEffect, useState } from "react";
-import { Breadcrumbs } from "./breadcrumbs";
-import { NavItem, NavItemProps } from "./nav-item";
-import { Notifications } from "./notifications";
-import { Search } from "./search";
-import { Spacer } from "./spacer";
+import { Fragment, useEffect, useState } from "react"
+import { Breadcrumbs } from "./breadcrumbs"
+import { NavItem, NavItemProps } from "./nav-item"
+import { Notifications } from "./notifications"
+import { SearchToggle } from "./search-toggle"
+import { Spacer } from "./spacer"
 
-import extensions from "medusa-admin:routes/links";
-import { useTranslation } from "react-i18next";
+import extensions from "medusa-admin:routes/links"
+import { useTranslation } from "react-i18next"
 
 export const MainNav = () => {
   return (
@@ -41,20 +41,20 @@ export const MainNav = () => {
       <DesktopNav />
       <MobileNav />
     </Fragment>
-  );
-};
+  )
+}
 
 const MobileNav = () => {
-  const [open, setOpen] = useState(false);
-  const location = useLocation();
+  const [open, setOpen] = useState(false)
+  const location = useLocation()
 
   // If the user navigates to a new route, we want to close the menu
   useEffect(() => {
-    setOpen(false);
-  }, [location.pathname]);
+    setOpen(false)
+  }, [location.pathname])
 
   return (
-    <div className="bg-ui-bg-base border-b border-ui-border-base h-[57px] w-full flex items-center justify-between px-4 md:hidden">
+    <div className="bg-ui-bg-base border-ui-border-base flex h-[57px] w-full items-center justify-between border-b px-4 md:hidden">
       <Dialog.Root open={open} onOpenChange={setOpen}>
         <div className="flex items-center gap-x-2">
           <Dialog.Trigger asChild>
@@ -66,8 +66,8 @@ const MobileNav = () => {
         </div>
         <Dialog.Portal>
           <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0 lg:hidden" />
-          <Dialog.Content className="fixed left-0 inset-y-0 w-full sm:max-w-[240px] bg-ui-bg-subtle lg:hidden flex flex-col overflow-y-auto">
-            <div className="flex-1 flex flex-col">
+          <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 flex w-full flex-col overflow-y-auto sm:max-w-[240px] lg:hidden">
+            <div className="flex flex-1 flex-col">
               <div className="sticky top-0">
                 <Header />
                 <Spacer />
@@ -75,7 +75,7 @@ const MobileNav = () => {
               <CoreRouteSection />
               <ExtensionRouteSection />
             </div>
-            <div className="sticky bottom-0 w-full flex flex-col">
+            <div className="sticky bottom-0 flex w-full flex-col">
               <SettingsSection />
               <Spacer />
               <UserSection />
@@ -84,49 +84,49 @@ const MobileNav = () => {
         </Dialog.Portal>
       </Dialog.Root>
       <div className="flex items-center gap-x-2">
-        <Search />
+        <SearchToggle />
         <Notifications />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const DesktopNav = () => {
   return (
-    <aside className="max-w-[240px] w-full h-full max-h-screen flex flex-col justify-between max-md:hidden overflow-y-auto">
-      <div className="flex flex-col flex-1">
-        <div className="sticky top-0 bg-ui-bg-subtle">
+    <aside className="flex h-full max-h-screen w-full max-w-[240px] flex-col justify-between overflow-y-auto max-md:hidden">
+      <div className="flex flex-1 flex-col">
+        <div className="bg-ui-bg-subtle sticky top-0">
           <Header />
           <Spacer />
         </div>
         <CoreRouteSection />
         <ExtensionRouteSection />
       </div>
-      <div className="flex flex-col sticky bottom-0 bg-ui-bg-subtle">
+      <div className="bg-ui-bg-subtle sticky bottom-0 flex flex-col">
         <SettingsSection />
         <Spacer />
         <UserSection />
       </div>
     </aside>
-  );
-};
+  )
+}
 
 const Header = () => {
-  const { store } = useAdminStore();
-  const { setTheme, theme } = useTheme();
+  const { store } = useAdminStore()
+  const { setTheme, theme } = useTheme()
 
   if (!store) {
-    return null;
+    return null
   }
 
   return (
-    <div className="p-4 w-full">
+    <div className="w-full p-4">
       <DropdownMenu>
-        <DropdownMenu.Trigger className="outline-none rounded-md hover:bg-ui-bg-subtle-hover active:bg-ui-bg-subtle-pressed focus:bg-ui-bg-subtle-pressed transition-fg w-full">
+        <DropdownMenu.Trigger className="hover:bg-ui-bg-subtle-hover active:bg-ui-bg-subtle-pressed focus:bg-ui-bg-subtle-pressed transition-fg w-full rounded-md outline-none">
           <div className="flex items-center justify-between p-1 md:pr-2">
             <div className="flex items-center gap-x-3">
-              <div className="w-8 h-8 rounded-md bg-ui-bg-base shadow-borders-base flex items-center justify-center overflow-hidden">
-                <div className="w-[28px] h-[28px] rounded-[4px] bg-ui-bg-component overflow-hidden flex items-center justify-center">
+              <div className="bg-ui-bg-base shadow-borders-base flex h-8 w-8 items-center justify-center overflow-hidden rounded-md">
+                <div className="bg-ui-bg-component flex h-[28px] w-[28px] items-center justify-center overflow-hidden rounded-[4px]">
                   {store.name[0].toUpperCase()}
                 </div>
               </div>
@@ -168,8 +168,8 @@ const Header = () => {
                 <DropdownMenu.RadioItem
                   value="light"
                   onClick={(e) => {
-                    e.preventDefault();
-                    setTheme("light");
+                    e.preventDefault()
+                    setTheme("light")
                   }}
                 >
                   Light
@@ -177,8 +177,8 @@ const Header = () => {
                 <DropdownMenu.RadioItem
                   value="dark"
                   onClick={(e) => {
-                    e.preventDefault();
-                    setTheme("dark");
+                    e.preventDefault()
+                    setTheme("dark")
                   }}
                 >
                   Dark
@@ -195,11 +195,11 @@ const Header = () => {
         </DropdownMenu.Content>
       </DropdownMenu>
     </div>
-  );
-};
+  )
+}
 
 const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return [
     {
@@ -257,24 +257,24 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
       label: t("pricing.domain"),
       to: "/pricing",
     },
-  ];
-};
+  ]
+}
 
 const CoreRouteSection = () => {
-  const coreRoutes = useCoreRoutes();
+  const coreRoutes = useCoreRoutes()
 
   return (
     <nav className="flex flex-col gap-y-1 py-4">
       {coreRoutes.map((route) => {
-        return <NavItem key={route.to} {...route} />;
+        return <NavItem key={route.to} {...route} />
       })}
     </nav>
-  );
-};
+  )
+}
 
 const ExtensionRouteSection = () => {
   if (!extensions.links || extensions.links.length === 0) {
-    return null;
+    return null
   }
 
   return (
@@ -284,7 +284,7 @@ const ExtensionRouteSection = () => {
         <Collapsible.Root defaultOpen>
           <div className="px-4">
             <Collapsible.Trigger asChild className="group/trigger">
-              <button className="flex items-center justify-between text-ui-fg-subtle px-2 w-full">
+              <button className="text-ui-fg-subtle flex w-full items-center justify-between px-2">
                 <Text size="xsmall" weight="plus" leading="compact">
                   Extensions
                 </Text>
@@ -306,52 +306,52 @@ const ExtensionRouteSection = () => {
                     icon={link.icon ? <link.icon /> : <SquaresPlus />}
                     type="extension"
                   />
-                );
+                )
               })}
             </div>
           </Collapsible.Content>
         </Collapsible.Root>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const SettingsSection = () => {
   return (
     <div className="py-4">
       <NavItem icon={<CogSixTooth />} label="Settings" to="/settings" />
     </div>
-  );
-};
+  )
+}
 
 const UserSection = () => {
-  const { user } = useAuth();
+  const { user } = useAuth()
 
   if (!user) {
-    return null;
+    return null
   }
 
   const fallback =
     user.first_name && user.last_name
       ? `${user.first_name[0]}${user.last_name[0]}`
       : user.first_name
-        ? user.first_name[0]
-        : user.email[0];
+      ? user.first_name[0]
+      : user.email[0]
 
   return (
     <div className="p-4">
       <Link
-        to="/settings/user"
-        className="p-1 flex items-center gap-x-3 hover:bg-ui-bg-subtle-hover transition-fg active:bg-ui-bg-subtle-pressed focus:bg-ui-bg-subtle-pressed outline-none rounded-md"
+        to="/settings/profile"
+        className="hover:bg-ui-bg-subtle-hover transition-fg active:bg-ui-bg-subtle-pressed focus:bg-ui-bg-subtle-pressed flex items-center gap-x-3 rounded-md p-1 outline-none"
       >
         <Avatar fallback={fallback.toUpperCase()} />
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-1 flex-col">
           {(user.first_name || user.last_name) && (
             <Text
               size="xsmall"
               weight="plus"
               leading="compact"
-              className="truncate max-w-[90%]"
+              className="max-w-[90%] truncate"
             >{`${user.first_name && `${user.first_name} `}${
               user.last_name
             }`}</Text>
@@ -359,12 +359,12 @@ const UserSection = () => {
           <Text
             size="xsmall"
             leading="compact"
-            className="text-ui-fg-subtle truncate max-w-[90%]"
+            className="text-ui-fg-subtle max-w-[90%] truncate"
           >
             {user.email}
           </Text>
         </div>
       </Link>
     </div>
-  );
-};
+  )
+}

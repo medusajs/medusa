@@ -2,35 +2,36 @@ import {
   RouterProvider as Provider,
   RouteObject,
   createBrowserRouter,
-} from "react-router-dom";
+} from "react-router-dom"
 
-import { RequireAuth } from "../../components/authentication/require-auth";
-import { AppLayout } from "../../components/layout/app-layout";
-import { PublicLayout } from "../../components/layout/public-layout";
+import { RequireAuth } from "../../components/authentication/require-auth"
+import { AppLayout } from "../../components/layout/app-layout"
+import { PublicLayout } from "../../components/layout/public-layout"
 
-import { AdminProductsRes } from "@medusajs/medusa";
-import routes from "medusa-admin:routes/pages";
-import settings from "medusa-admin:settings/pages";
+import { AdminProductsRes } from "@medusajs/medusa"
+import routes from "medusa-admin:routes/pages"
+import settings from "medusa-admin:settings/pages"
+import { SearchProvider } from "../search-provider"
 
 const routeExtensions: RouteObject[] = routes.pages.map((ext) => {
   return {
     path: ext.path,
     async lazy() {
-      const { default: Component } = await import(/* @vite-ignore */ ext.file);
-      return { Component };
+      const { default: Component } = await import(/* @vite-ignore */ ext.file)
+      return { Component }
     },
-  };
-});
+  }
+})
 
 const settingsExtensions: RouteObject[] = settings.pages.map((ext) => {
   return {
     path: `/settings${ext.path}`,
     async lazy() {
-      const { default: Component } = await import(/* @vite-ignore */ ext.file);
-      return { Component };
+      const { default: Component } = await import(/* @vite-ignore */ ext.file)
+      return { Component }
     },
-  };
-});
+  }
+})
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,9 @@ const router = createBrowserRouter([
   {
     element: (
       <RequireAuth>
-        <AppLayout />
+        <SearchProvider>
+          <AppLayout />
+        </SearchProvider>
       </RequireAuth>
     ),
     children: [
@@ -222,6 +225,22 @@ const router = createBrowserRouter([
             lazy: () => import("../../routes/locations/list"),
           },
           {
+            path: "regions",
+            handle: {
+              crumb: () => "Regions",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/regions/views/region-list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/regions/views/region-details"),
+              },
+            ],
+          },
+          {
             path: "users",
             lazy: () => import("../../routes/users"),
             handle: {
@@ -245,8 +264,8 @@ const router = createBrowserRouter([
     path: "*",
     lazy: () => import("../../routes/no-match"),
   },
-]);
+])
 
 export const RouterProvider = () => {
-  return <Provider router={router} />;
-};
+  return <Provider router={router} />
+}

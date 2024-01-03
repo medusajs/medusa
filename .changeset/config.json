@@ -11,10 +11,10 @@
     "integration-tests-api",
     "integration-tests-plugins",
     "integration-tests-repositories",
-    "packages/admin-next/admin-bundler",
-    "packages/admin-next/admin-shared",
-    "packages/admin-next/dashboard",
-    "packages/admin-next/vite-plugin-extension"
+    "@medusajs/dashboard",
+    "@medusajs/admin-shared",
+    "@medusajs/admin-bundler",
+    "@medusajs/vite-plugin-extension"
   ],
   "snapshot": {
     "useCalculatedVersion": true

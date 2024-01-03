@@ -1,16 +1,16 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Store } from "@medusajs/medusa";
-import { Button, Drawer, Heading, Input } from "@medusajs/ui";
-import { useAdminUpdateStore } from "medusa-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import * as zod from "zod";
-import { Form } from "../../../../components/common/form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Store } from "@medusajs/medusa"
+import { Button, Drawer, Heading, Input } from "@medusajs/ui"
+import { useAdminUpdateStore } from "medusa-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import * as zod from "zod"
+import { Form } from "../../../../components/common/form"
 
 type EditStoreDetailsDrawerProps = {
-  store: Store;
-};
+  store: Store
+}
 
 const EditStoreDetailsSchema = zod.object({
   name: zod.string().optional(),
@@ -20,13 +20,13 @@ const EditStoreDetailsSchema = zod.object({
     zod.string().trim().url(),
   ]),
   invite_link_template: zod.union([zod.literal(""), zod.string().trim().url()]),
-});
+})
 
 export const EditStoreDetailsDrawer = ({
   store,
 }: EditStoreDetailsDrawerProps) => {
-  const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
+  const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
 
   const form = useForm<zod.infer<typeof EditStoreDetailsSchema>>({
     defaultValues: {
@@ -36,17 +36,17 @@ export const EditStoreDetailsDrawer = ({
       invite_link_template: store.invite_link_template ?? "",
     },
     resolver: zodResolver(EditStoreDetailsSchema),
-  });
+  })
 
-  const { mutateAsync, isLoading } = useAdminUpdateStore();
+  const { mutateAsync, isLoading } = useAdminUpdateStore()
 
   const onOpenChange = (open: boolean) => {
     if (!open) {
-      form.reset();
+      form.reset()
     }
 
-    setOpen(open);
-  };
+    setOpen(open)
+  }
 
   const onSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -57,30 +57,32 @@ export const EditStoreDetailsDrawer = ({
         invite_link_template: values.invite_link_template || undefined,
       },
       {
-        onSuccess: () => {
-          onOpenChange(false);
+        onSuccess: ({ store }) => {
+          form.reset({
+            invite_link_template: store.invite_link_template ?? "",
+            payment_link_template: store.payment_link_template ?? "",
+            swap_link_template: store.swap_link_template ?? "",
+            name: store.name,
+          })
+          onOpenChange(false)
         },
         onError: (error) => {
-          console.log(error);
+          console.log(error)
         },
       }
-    );
-  });
+    )
+  })
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <Drawer.Trigger asChild>
-        <Button variant="secondary" className="capitalize">
-          {t("store.editStoreDetails")}
-        </Button>
+        <Button variant="secondary">{t("store.editStoreDetails")}</Button>
       </Drawer.Trigger>
       <Form {...form}>
         <form onSubmit={onSubmit}>
           <Drawer.Content>
             <Drawer.Header>
-              <Heading className="capitalize">
-                {t("store.editStoreDetails")}
-              </Heading>
+              <Heading>{t("store.editStoreDetails")}</Heading>
             </Drawer.Header>
             <Drawer.Body>
               <div className="flex flex-col gap-y-8">
@@ -168,5 +170,5 @@ export const EditStoreDetailsDrawer = ({
         </form>
       </Form>
     </Drawer>
-  );
-};
+  )
+}
