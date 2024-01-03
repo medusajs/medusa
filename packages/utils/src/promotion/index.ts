@@ -18,3 +18,13 @@ export enum ApplicationMethodAllocation {
   EACH = "each",
   ACROSS = "across",
 }
+
+export enum PromotionRuleOperator {
+  GTE = "gte",
+  LTE = "lte",
+  GT = "gt",
+  LT = "lt",
+  EQ = "eq",
+  NE = "ne",
+  IN = "in",
+}
