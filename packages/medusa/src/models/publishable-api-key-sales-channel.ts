@@ -1,13 +1,16 @@
-import { BeforeInsert, Column, Entity } from "typeorm"
+import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
 import { BaseEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
 
 @Entity("publishable_api_key_sales_channel")
 export class PublishableApiKeySalesChannel extends BaseEntity {
   @Column({ type: "text" })
+  id: string
+
+  @PrimaryColumn({ type: "text" })
   sales_channel_id: string
 
-  @Column({ type: "text" })
+  @PrimaryColumn({ type: "text" })
   publishable_key_id: string
 
   /**

@@ -9,8 +9,6 @@ export class PublishableKeySalesChannelLink1701894188811
         UPDATE "publishable_api_key_sales_channel" SET "id" = 'pksc_' || substr(md5(random()::text), 0, 27) WHERE id is NULL;
         ALTER TABLE "publishable_api_key_sales_channel" ALTER COLUMN "id" SET NOT NULL;
 
-        ALTER TABLE "publishable_api_key_sales_channel" DROP CONSTRAINT IF EXISTS "PK_68eaeb14bdac8954460054c567c";
-        ALTER TABLE "publishable_api_key_sales_channel" ADD CONSTRAINT "publishable_api_key_sales_channel_id_pk" PRIMARY KEY (id);
         CREATE INDEX IF NOT EXISTS "IDX_id_publishable_api_key_sales_channel" ON "publishable_api_key_sales_channel" ("id");
 
         ALTER TABLE "publishable_api_key_sales_channel" ADD COLUMN IF NOT EXISTS "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
@@ -21,15 +19,11 @@ export class PublishableKeySalesChannelLink1701894188811
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        ALTER TABLE "publishable_api_key_sales_channel" DROP CONSTRAINT IF EXISTS "publishable_api_key_sales_channel_id_pk";
-
-        DROP INDEX  IF EXISTS "IDX_id_publishable_api_key_sales_channel";
+        DROP INDEX IF EXISTS "IDX_id_publishable_api_key_sales_channel";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "id";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "created_at";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "updated_at";
         ALTER TABLE "publishable_api_key_sales_channel" DROP COLUMN IF EXISTS "deleted_at";
-
-        ALTER TABLE publishable_api_key_sales_channel ADD CONSTRAINT "PK_68eaeb14bdac8954460054c567c" PRIMARY KEY (sales_channel_id, publishable_key_id);
     `)
   }
 }
