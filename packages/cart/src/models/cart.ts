@@ -29,8 +29,8 @@ export default class Cart {
   @Property({ columnType: "text", nullable: true })
   sales_channel_id?: string | null
 
-  @Property({ columnType: "text" })
-  email: string
+  @Property({ columnType: "text", nullable: true })
+  email?: string | null
 
   @Property({ columnType: "text" })
   currency_code: string
@@ -66,9 +66,9 @@ export default class Cart {
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
-  compare_at_item_total: number
-  compare_at_item_subtotal: number
-  compare_at_item_tax_total: number
+  compare_at_item_total?: number | null
+  compare_at_item_subtotal?: number  | null
+  compare_at_item_tax_total?: number | null
 
   original_item_total: number
   original_item_subtotal: number
@@ -101,7 +101,7 @@ export default class Cart {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -109,10 +109,10 @@ export default class Cart {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at?: Date | null
 
   @BeforeCreate()
   onCreate() {

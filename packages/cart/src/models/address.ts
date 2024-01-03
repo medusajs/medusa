@@ -8,7 +8,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-@Entity({ tableName: "address" })
+@Entity({ tableName: "cart_address" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Address {
   @PrimaryKey({ columnType: "text" })
@@ -55,7 +55,7 @@ export default class Address {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -63,18 +63,18 @@ export default class Address {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at?: Date | null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "addr")
+    this.id = generateEntityId(this.id, "caaddr")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "addr")
+    this.id = generateEntityId(this.id, "caaddr")
   }
 }

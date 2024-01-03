@@ -1,6 +1,7 @@
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Filter,
@@ -14,7 +15,7 @@ import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"
 import LineItemTaxLine from "./line-item-tax-line"
 
-@Entity({ tableName: "line_item" })
+@Entity({ tableName: "cart_line_item" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItem {
   @PrimaryKey({ columnType: "text" })
@@ -94,7 +95,7 @@ export default class LineItem {
   cart!: Cart
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
-    cascade: ["soft-remove"] as any,
+    cascade: [Cascade.REMOVE, "soft-remove"] as any,
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
@@ -102,7 +103,7 @@ export default class LineItem {
     () => LineItemAdjustmentLine,
     (adjustment) => adjustment.line_item,
     {
-      cascade: ["soft-remove"] as any,
+      cascade: [Cascade.REMOVE, "soft-remove"] as any,
     }
   )
   adjustments = new Collection<LineItemAdjustmentLine>(this)
@@ -145,11 +146,11 @@ export default class LineItem {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "li")
+    this.id = generateEntityId(this.id, "cali")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "li")
+    this.id = generateEntityId(this.id, "cali")
   }
 }

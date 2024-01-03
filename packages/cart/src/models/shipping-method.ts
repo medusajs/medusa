@@ -1,6 +1,8 @@
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
+  Check,
   Collection,
   Entity,
   Filter,
@@ -14,11 +16,11 @@ import Cart from "./cart"
 import ShippingMethodAdjustmentLine from "./shipping-method-adjustment-line"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
-@Entity({ tableName: "shipping_method" })
+@Entity({ tableName: "cart_shipping_method" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
-  id!: string
+  id: string
 
   @Property({ columnType: "text" })
   cart_id: string
@@ -29,8 +31,9 @@ export default class ShippingMethod {
   @Property({ columnType: "jsonb", nullable: true })
   description?: string | null
 
-  @Property({ columnType: "text" })
-  unit_price: number
+  @Property({ columnType: "numeric" })
+  @Check({ expression: "amount >= 0" }) // TODO: Validate that numeric types work with the expression
+  amount: number
 
   @Property({ columnType: "boolean", default: false })
   tax_inclusive: boolean
@@ -55,7 +58,7 @@ export default class ShippingMethod {
     () => ShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
-      cascade: ["soft-remove"] as any,
+      cascade: [Cascade.REMOVE, "soft-remove"] as any,
     }
   )
   tax_lines = new Collection<ShippingMethodTaxLine>(this)
@@ -64,7 +67,7 @@ export default class ShippingMethod {
     () => ShippingMethodAdjustmentLine,
     (adjustment) => adjustment.shipping_method,
     {
-      cascade: ["soft-remove"] as any,
+      cascade: [Cascade.REMOVE, "soft-remove"] as any,
     }
   )
   adjustments = new Collection<ShippingMethodAdjustmentLine>(this)
@@ -84,7 +87,7 @@ export default class ShippingMethod {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -92,18 +95,18 @@ export default class ShippingMethod {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at?: Date | null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "sm")
+    this.id = generateEntityId(this.id, "casm")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "sm")
+    this.id = generateEntityId(this.id, "casm")
   }
 }
