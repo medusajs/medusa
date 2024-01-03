@@ -483,8 +483,8 @@ class LineItemService extends TransactionBaseService {
     )
   }
 
-  async delete(ids: string[]): Promise<(LineItem | undefined | null)[]>
-  async delete(id: string): Promise<LineItem | undefined | null>
+  async delete(ids: string[]): Promise<LineItem[]>
+  async delete(id: string): Promise<LineItem | void>
 
   /**
    * Deletes a line item.
@@ -523,7 +523,7 @@ class LineItemService extends TransactionBaseService {
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async deleteWithTaxLines(id: string): Promise<LineItem | undefined | null> {
+  async deleteWithTaxLines(id: string): Promise<LineItem | void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         await this.taxProviderService_
