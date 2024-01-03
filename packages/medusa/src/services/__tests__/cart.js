@@ -744,9 +744,9 @@ describe("CartService", () => {
       )
 
       expect(lineItemService.delete).toHaveBeenCalledTimes(1)
-      expect(lineItemService.delete).toHaveBeenCalledWith(
-        IdMap.getId("itemToRemove")
-      )
+      expect(lineItemService.delete).toHaveBeenCalledWith([
+        IdMap.getId("itemToRemove"),
+      ])
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
