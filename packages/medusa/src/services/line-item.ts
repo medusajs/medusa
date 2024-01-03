@@ -491,10 +491,7 @@ class LineItemService extends TransactionBaseService {
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async delete<
-    T extends string | string[],
-    TResult = T extends [] ? LineItem[] : LineItem | void
-  >(id: string | string[]): Promise<TResult> {
+  async delete(id: string | string[]): Promise<LineItem[] | LineItem | void> {
     const ids = Array.isArray(id) ? id : [id]
 
     return await this.atomicPhase_(
@@ -508,11 +505,11 @@ class LineItemService extends TransactionBaseService {
         })
 
         if (!lineItems?.length) {
-          return (Array.isArray(id) ? [] : void 0) as TResult
+          return Array.isArray(id) ? [] : void 0
         }
 
         const removedItems = await lineItemRepository.remove(lineItems)
-        return (Array.isArray(id) ? removedItems : removedItems[0]) as TResult
+        return Array.isArray(id) ? removedItems : removedItems[0]
       }
     )
   }
