@@ -1,9 +1,6 @@
 import path from "path"
 
-import { ISalesChannelModuleService } from "@medusajs/types"
-
 import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
@@ -23,18 +20,12 @@ const env = {
 
 describe("POST /admin/sales-channels", () => {
   let dbConnection
-  let appContainer
   let shutdownServer
-  let salesChannelModuleService: ISalesChannelModuleService
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
     shutdownServer = await startBootstrapApp({ cwd, env })
-    appContainer = getContainer()
-    salesChannelModuleService = appContainer.resolve(
-      "salesChannelModuleService"
-    )
   })
 
   afterAll(async () => {
@@ -55,20 +46,18 @@ describe("POST /admin/sales-channels", () => {
   it("should create a sales channel", async () => {
     const api = useApi() as any
     const data = {
-      name: "test sc",
-      description: "desc",
+      name: "Test Sales Channel",
+      description: "Description of Test Sales Channel",
     }
 
     const result = await api.post(`admin/sales-channels`, data, adminHeaders)
 
-    let channels = await salesChannelModuleService.list()
-
     expect(result.status).toEqual(200)
 
-    expect(channels).toEqual(
+    expect(result.data.sales_channel).toEqual(
       expect.objectContaining({
-        name: "test sc",
-        description: "desc",
+        name: "Test Sales Channel",
+        description: "Description of Test Sales Channel",
         is_disabled: false,
       })
     )
