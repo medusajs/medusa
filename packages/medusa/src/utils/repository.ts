@@ -217,7 +217,10 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
    *
    * see: node_modules/typeorm/query-builder/SelectQueryBuilder.js(1973)
    */
-  const outerQb = new SelectQueryBuilder(qb.connection, repository.queryRunner)
+  const outerQb = new SelectQueryBuilder(
+    qb.connection,
+    (qb as any).obtainQueryRunner()
+  )
     .select(`${qb.escape(`${alias}_id`)}`)
     .from(`(${qb.getQuery()})`, alias)
     .where(`${alias}.rownum = 1`)
@@ -236,7 +239,7 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
     count = result[1]
   } else {
     const result = await outerQb.getRawMany()
-    entities = result[0].map((rawProduct) => ({
+    entities = result?.map((rawProduct) => ({
       id: rawProduct[`${alias}_id`],
     })) as unknown as T[]
   }
