@@ -9,8 +9,7 @@ export type AuthUserDTO = {
 }
 
 export type CreateAuthUserDTO = {
-  id: string
-  email: string
+  email?: string
   provider_id: string
   password_hash?: string
   user_metadata?: Record<string, unknown>
