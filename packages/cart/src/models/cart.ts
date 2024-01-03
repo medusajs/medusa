@@ -29,8 +29,8 @@ export default class Cart {
   @Property({ columnType: "text", nullable: true })
   sales_channel_id?: string | null
 
-  @Property({ columnType: "text" })
-  email: string
+  @Property({ columnType: "text", nullable: true })
+  email?: string | null
 
   @Property({ columnType: "text" })
   currency_code: string
