@@ -129,9 +129,13 @@ export default class AuthenticationModuleService<
 
     const providers = await this.createAuthProviders_(input, sharedContext)
 
-    return (Array.isArray(data) ? providers : providers[0]) as unknown as
-      | AuthenticationTypes.AuthProviderDTO
-      | AuthenticationTypes.AuthProviderDTO[]
+    const serializedProviders = await this.baseRepository_.serialize<
+      AuthenticationTypes.AuthProviderDTO[]
+    >(providers, {
+      populate: true,
+    })
+
+    return Array.isArray(data) ? serializedProviders : serializedProviders[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -164,9 +168,13 @@ export default class AuthenticationModuleService<
 
     const providers = await this.updateAuthProvider_(input, sharedContext)
 
-    return (Array.isArray(data) ? providers : providers[0]) as unknown as
-      | AuthenticationTypes.AuthProviderDTO
-      | AuthenticationTypes.AuthProviderDTO[]
+    const serializedProviders = await this.baseRepository_.serialize<
+      AuthenticationTypes.AuthProviderDTO[]
+    >(providers, {
+      populate: true,
+    })
+
+    return Array.isArray(data) ? serializedProviders : serializedProviders[0]
   }
 
   async updateAuthProvider_(
@@ -266,9 +274,13 @@ export default class AuthenticationModuleService<
 
     const authUsers = await this.createAuthUsers_(input, sharedContext)
 
-    return (Array.isArray(data) ? authUsers : authUsers[0]) as unknown as
-      | AuthenticationTypes.AuthUserDTO
-      | AuthenticationTypes.AuthUserDTO[]
+    const serializedUsers = await this.baseRepository_.serialize<
+      AuthenticationTypes.AuthUserDTO[]
+    >(authUsers, {
+      populate: true,
+    })
+
+    return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -297,11 +309,15 @@ export default class AuthenticationModuleService<
   > {
     const input = Array.isArray(data) ? data : [data]
 
-    const authUsers = await this.updateAuthUsers_(input, sharedContext)
+    const updatedUsers = await this.updateAuthUsers_(input, sharedContext)
 
-    return (Array.isArray(data) ? authUsers : authUsers[0]) as unknown as
-      | AuthenticationTypes.AuthUserDTO
-      | AuthenticationTypes.AuthUserDTO[]
+    const serializedUsers = await this.baseRepository_.serialize<
+      AuthenticationTypes.AuthUserDTO[]
+    >(updatedUsers, {
+      populate: true,
+    })
+
+    return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
   @InjectTransactionManager("baseRepository_")
