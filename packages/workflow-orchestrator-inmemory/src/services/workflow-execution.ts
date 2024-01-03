@@ -18,7 +18,7 @@ type InjectedDependencies = {
   workflowExecutionRepository: DAL.RepositoryService
 }
 
-export default class WorkflowExecutionService<
+export class WorkflowExecutionService<
   TEntity extends WorkflowExecution = WorkflowExecution
 > {
   protected readonly workflowExecutionRepository_: DAL.RepositoryService
@@ -80,23 +80,13 @@ export default class WorkflowExecutionService<
   }
 
   @InjectTransactionManager("workflowExecutionRepository_")
-  async create(
+  async upsert(
     data: WorkflowOrchestratorTypes.UpsertWorkflowExecutionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (
       this.workflowExecutionRepository_ as WorkflowExecutionRepository
-    ).create(data, sharedContext)) as TEntity[]
-  }
-
-  @InjectTransactionManager("workflowExecutionRepository_")
-  async update(
-    data: WorkflowOrchestratorTypes.UpsertWorkflowExecutionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
-    return (await (
-      this.workflowExecutionRepository_ as WorkflowExecutionRepository
-    ).update(data, sharedContext)) as TEntity[]
+    ).upsert(data, sharedContext)) as TEntity[]
   }
 
   @InjectTransactionManager("workflowExecutionRepository_")

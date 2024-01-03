@@ -7,9 +7,9 @@ export class Migration20231221104256 extends Migration {
       CREATE TABLE IF NOT EXISTS workflow_execution
         (
             id character varying NOT NULL,
-            created_at timestamp WITH time zone NOT NULL DEFAULT Now(),
-            updated_at timestamp WITH time zone NOT NULL DEFAULT Now(),
-            deleted_at timestamp WITH time zone NULL,
+            created_at timestamp WITHOUT time zone NOT NULL DEFAULT Now(),
+            updated_at timestamp WITHOUT time zone NOT NULL DEFAULT Now(),
+            deleted_at timestamp WITHOUT time zone NULL,
             workflow_id character varying NOT NULL,
             transaction_id character varying NOT NULL,
             definition jsonb NULL,

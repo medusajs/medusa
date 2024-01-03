@@ -13,7 +13,6 @@ export interface WorkflowExecutionDTO {
 }
 
 export interface UpsertWorkflowExecutionDTO {
-  id: string
   workflow_id: string
   transaction_id: string
   definition: string

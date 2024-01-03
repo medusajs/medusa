@@ -1,2 +1,3 @@
-export { default as WorkflowExecutionService } from "./workflow-execution"
-export { default as WorkflowOrchestratorModuleService } from "./workflow-orchestrator-module"
+export * from "./workflow-execution"
+export * from "./workflow-orchestrator"
+export * from "./workflow-orchestrator-module"

@@ -5,6 +5,7 @@ import { ModulesSdkTypes } from "@medusajs/types"
 import { loadCustomRepositories } from "@medusajs/utils"
 import * as defaultServices from "@services"
 import { asClass } from "awilix"
+import { InMemoryDistributedTransactionStorage } from "../utils"
 
 export default async ({
   container,
@@ -20,6 +21,13 @@ export default async ({
   container.register({
     workflowExecutionService: asClass(
       defaultServices.WorkflowExecutionService
+    ).singleton(),
+    workflowOrchestratorService: asClass(
+      defaultServices.WorkflowExecutionService
+    ).singleton(),
+
+    inMemoryDistributedTransactionStorage: asClass(
+      InMemoryDistributedTransactionStorage
     ).singleton(),
   })
 

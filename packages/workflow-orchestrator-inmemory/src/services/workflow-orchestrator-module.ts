@@ -6,33 +6,43 @@ import {
   IWorkflowOrchestratorModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  WorkflowOrchestratorTypes,
 } from "@medusajs/types"
 import {
   InjectManager,
-  InjectTransactionManager,
+  InjectSharedContext,
   MedusaContext,
 } from "@medusajs/utils"
-import { WorkflowExecutionService } from "@services"
+import {
+  WorkflowExecutionService,
+  WorkflowOrchestratorService,
+} from "@services"
 import { joinerConfig } from "../joiner-config"
-import { UpsertWorkflowExecutionDTO, WorkflowExecutionDTO } from "../types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   workflowExecutionService: WorkflowExecutionService
+  workflowOrchestratorService: WorkflowOrchestratorService
 }
 
-export default class WorkflowOrchestratorModuleService
+export class WorkflowOrchestratorModuleService
   implements IWorkflowOrchestratorModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: WorkflowExecutionService
+  protected workflowOrchestratorService_: WorkflowOrchestratorService
 
   constructor(
-    { baseRepository, workflowExecutionService }: InjectedDependencies,
+    {
+      baseRepository,
+      workflowExecutionService,
+      workflowOrchestratorService,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.workflowExecutionService_ = workflowExecutionService
+    this.workflowOrchestratorService_ = workflowOrchestratorService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -42,29 +52,28 @@ export default class WorkflowOrchestratorModuleService
   @InjectManager("baseRepository_")
   async listWorkflowExecution(
     filters: FilterableWorkflowExecutionProps = {},
-    config: FindConfig<WorkflowExecutionDTO> = {},
+    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<WorkflowExecutionDTO[]> {
+  ): Promise<WorkflowOrchestratorTypes.WorkflowExecutionDTO[]> {
     const wfExecutions = await this.workflowExecutionService_.list(
       filters,
       config,
       sharedContext
     )
 
-    return this.baseRepository_.serialize<WorkflowExecutionDTO[]>(
-      wfExecutions,
-      {
-        populate: true,
-      }
-    )
+    return this.baseRepository_.serialize<
+      WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
+    >(wfExecutions, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
   async listAndCountWorkflowExecution(
     filters: FilterableWorkflowExecutionProps = {},
-    config: FindConfig<WorkflowExecutionDTO> = {},
+    config: FindConfig<WorkflowOrchestratorTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[WorkflowExecutionDTO[], number]> {
+  ): Promise<[WorkflowOrchestratorTypes.WorkflowExecutionDTO[], number]> {
     const [wfExecutions, count] =
       await this.workflowExecutionService_.listAndCount(
         filters,
@@ -73,78 +82,103 @@ export default class WorkflowOrchestratorModuleService
       )
 
     return [
-      await this.baseRepository_.serialize<WorkflowExecutionDTO[]>(
-        wfExecutions,
-        {
-          populate: true,
-        }
-      ),
+      await this.baseRepository_.serialize<
+        WorkflowOrchestratorTypes.WorkflowExecutionDTO[]
+      >(wfExecutions, {
+        populate: true,
+      }),
       count,
     ]
   }
 
-  @InjectManager("baseRepository_")
-  async createWorkflowExecution(
-    data: UpsertWorkflowExecutionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<WorkflowExecutionDTO[]> {
-    const workflows = await this.createWorkflowExecution_(data, sharedContext)
+  @InjectSharedContext()
+  async run(workflowId: string, context: Context = {}) {
+    const ret = await this.workflowOrchestratorService_.run(workflowId, context)
 
-    return await this.listWorkflowExecution(
-      { id: workflows.map((p) => p!.id) },
-      {},
-      sharedContext
-    )
+    return ret as any
   }
 
-  @InjectTransactionManager("baseRepository_")
-  protected async createWorkflowExecution_(
-    data: UpsertWorkflowExecutionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+  @InjectSharedContext()
+  async getRunningTransaction(
+    workflowId: string,
+    transactionId: string,
+    context: Context = {}
   ) {
-    const createdWorkflows = await this.workflowExecutionService_.create(
-      data,
-      sharedContext
-    )
-
-    return createdWorkflows
-  }
-
-  @InjectManager("baseRepository_")
-  async updateWorkflowExecution(
-    data: UpsertWorkflowExecutionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<WorkflowExecutionDTO[]> {
-    const workflows = await this.updateWorkflowExecution_(data, sharedContext)
-
-    return await this.listWorkflowExecution(
-      { id: workflows.map((p) => p!.id) },
-      {},
-      sharedContext
+    return this.workflowOrchestratorService_.getRunningTransaction(
+      workflowId,
+      transactionId,
+      context
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
-  protected async updateWorkflowExecution_(
-    data: UpsertWorkflowExecutionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+  @InjectSharedContext()
+  async setStepSuccess(
+    {
+      idempotencyKey,
+      stepResponse,
+      options,
+    }: {
+      idempotencyKey: string | object
+      stepResponse: unknown
+      options?: Record<string, any>
+    },
+    context: Context = {}
   ) {
-    const updatedWorkflows = await this.workflowExecutionService_.update(
-      data,
-      sharedContext
+    return this.workflowOrchestratorService_.setStepSuccess(
+      {
+        idempotencyKey,
+        stepResponse,
+        options,
+      } as any,
+      context
     )
-
-    return updatedWorkflows
   }
 
-  @InjectManager("baseRepository_")
-  async deleteWorkflowExecution(
-    executionIds: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    return await this.workflowExecutionService_.delete(
-      executionIds,
-      sharedContext
+  @InjectSharedContext()
+  async setStepFailure(
+    {
+      idempotencyKey,
+      stepResponse,
+      options,
+    }: {
+      idempotencyKey: string | object
+      stepResponse: unknown
+      options?: Record<string, any>
+    },
+    context: Context = {}
+  ) {
+    return this.workflowOrchestratorService_.setStepFailure(
+      {
+        idempotencyKey,
+        stepResponse,
+        options,
+      } as any,
+      context
     )
+  }
+
+  @InjectSharedContext()
+  async subscribe(
+    args: {
+      workflowId: string
+      transactionId?: string
+      subscriber: Function
+      subscriberId?: string
+    },
+    context: Context = {}
+  ) {
+    return this.workflowOrchestratorService_.subscribe(args as any, context)
+  }
+
+  @InjectSharedContext()
+  async unsubscribe(
+    args: {
+      workflowId: string
+      transactionId?: string
+      subscriberOrId: string | Function
+    },
+    context: Context = {}
+  ) {
+    return this.workflowOrchestratorService_.unsubscribe(args as any, context)
   }
 }
