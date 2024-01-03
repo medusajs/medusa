@@ -7667,7 +7667,7 @@ __metadata:
     autoprefixer: ^10.4.16
     commander: ^11.1.0
     deepmerge: ^4.3.1
-    glob: ^10.3.10
+    glob: ^7.1.6
     postcss: ^8.4.32
     rimraf: ^5.0.5
     tailwindcss: ^3.3.6
@@ -29606,7 +29606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.0.0, glob@npm:^10.3.10, glob@npm:^10.3.7":
+"glob@npm:^10.0.0, glob@npm:^10.3.7":
   version: 10.3.10
   resolution: "glob@npm:10.3.10"
   dependencies:
