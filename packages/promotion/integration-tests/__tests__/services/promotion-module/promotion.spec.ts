@@ -75,15 +75,82 @@ describe("Promotion Service", () => {
         },
       ])
 
-      const [promotion] = await service.list({
-        id: [createdPromotion.id],
-      })
+      const [promotion] = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        {
+          relations: ["application_method"],
+        }
+      )
 
       expect(promotion).toEqual(
         expect.objectContaining({
           code: "PROMOTION_TEST",
           is_automatic: false,
           type: "standard",
+          application_method: expect.objectContaining({
+            type: "fixed",
+            target_type: "order",
+            value: 100,
+          }),
+        })
+      )
+    })
+
+    it("should create a promotion with order application method with rules successfully", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          application_method: {
+            type: "fixed",
+            target_type: "order",
+            value: 100,
+            target_rules: [
+              {
+                attribute: "product_id",
+                operator: "eq",
+                values: ["prod_tshirt"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const [promotion] = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        {
+          relations: [
+            "application_method",
+            "application_method.target_rules.values",
+          ],
+        }
+      )
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: "standard",
+          application_method: expect.objectContaining({
+            type: "fixed",
+            target_type: "order",
+            value: 100,
+            target_rules: [
+              expect.objectContaining({
+                attribute: "product_id",
+                operator: "eq",
+                values: expect.arrayContaining([
+                  expect.objectContaining({
+                    value: "prod_tshirt",
+                  }),
+                ]),
+              }),
+            ],
+          }),
         })
       )
     })
@@ -126,6 +193,157 @@ describe("Promotion Service", () => {
 
       expect(error.message).toContain(
         "application_method.max_quantity is required when application_method.allocation is 'each'"
+      )
+    })
+
+    it("should create a promotion with rules successfully", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer_group_id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+        },
+      ])
+
+      const [promotion] = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        {
+          relations: ["rules", "rules.values"],
+        }
+      )
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: "standard",
+          rules: [
+            expect.objectContaining({
+              attribute: "customer_group_id",
+              operator: "in",
+              values: expect.arrayContaining([
+                expect.objectContaining({
+                  value: "VIP",
+                }),
+                expect.objectContaining({
+                  value: "top100",
+                }),
+              ]),
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should create a promotion with rules with single value successfully", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer_group_id",
+              operator: "eq",
+              values: "VIP",
+            },
+          ],
+        },
+      ])
+
+      const [promotion] = await service.list(
+        {
+          id: [createdPromotion.id],
+        },
+        {
+          relations: ["rules", "rules.values"],
+        }
+      )
+
+      expect(promotion).toEqual(
+        expect.objectContaining({
+          code: "PROMOTION_TEST",
+          is_automatic: false,
+          type: "standard",
+          rules: [
+            expect.objectContaining({
+              attribute: "customer_group_id",
+              operator: "eq",
+              values: expect.arrayContaining([
+                expect.objectContaining({
+                  value: "VIP",
+                }),
+              ]),
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should throw an error when rule attribute is invalid", async () => {
+      const error = await service
+        .create([
+          {
+            code: "PROMOTION_TEST",
+            type: PromotionType.STANDARD,
+            rules: [
+              {
+                attribute: "",
+                operator: "eq",
+                values: "VIP",
+              } as any,
+            ],
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toContain("rules[].attribute is a required field")
+    })
+
+    it("should throw an error when rule operator is invalid", async () => {
+      let error = await service
+        .create([
+          {
+            code: "PROMOTION_TEST",
+            type: PromotionType.STANDARD,
+            rules: [
+              {
+                attribute: "customer_group",
+                operator: "",
+                values: "VIP",
+              } as any,
+            ],
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toContain("rules[].operator is a required field")
+
+      error = await service
+        .create([
+          {
+            code: "PROMOTION_TEST",
+            type: PromotionType.STANDARD,
+            rules: [
+              {
+                attribute: "customer_group",
+                operator: "doesnotexist",
+                values: "VIP",
+              } as any,
+            ],
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "rules[].operator (doesnotexist) is invalid. It should be one of gte, lte, gt, lt, eq, ne, in"
       )
     })
   })
