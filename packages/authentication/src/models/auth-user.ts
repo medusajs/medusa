@@ -20,8 +20,12 @@ export default class AuthUser {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text", index: "IDX_auth_user_email" })
-  email: string
+  @Property({
+    columnType: "text",
+    index: "IDX_auth_user_email",
+    nullable: true,
+  })
+  email: string | null
 
   @Property({
     columnType: "text",

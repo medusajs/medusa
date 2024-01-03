@@ -23,7 +23,7 @@ export async function createAuthUsers(
 ): Promise<AuthUser[]> {
   const authUsers: AuthUser[] = []
 
-  for (let user of userData) {
+  for (const user of userData) {
     const authUser = manager.create(AuthUser, user)
 
     authUsers.push(authUser)

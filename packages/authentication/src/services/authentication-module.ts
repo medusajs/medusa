@@ -129,15 +129,7 @@ export default class AuthenticationModuleService<
 
     const providers = await this.createAuthProviders_(input, sharedContext)
 
-    const dbProviders = await this.listAuthProviders(
-      {
-        provider: providers.map((p) => p.provider),
-      },
-      {},
-      sharedContext
-    )
-
-    return (Array.isArray(data) ? dbProviders : dbProviders[0]) as unknown as
+    return (Array.isArray(data) ? providers : providers[0]) as unknown as
       | AuthenticationTypes.AuthProviderDTO
       | AuthenticationTypes.AuthProviderDTO[]
   }
@@ -172,15 +164,7 @@ export default class AuthenticationModuleService<
 
     const providers = await this.updateAuthProvider_(input, sharedContext)
 
-    const dbProviders = await this.listAuthProviders(
-      {
-        provider: providers.map((p) => p.provider),
-      },
-      {},
-      sharedContext
-    )
-
-    return (Array.isArray(data) ? dbProviders : dbProviders[0]) as unknown as
+    return (Array.isArray(data) ? providers : providers[0]) as unknown as
       | AuthenticationTypes.AuthProviderDTO
       | AuthenticationTypes.AuthProviderDTO[]
   }
@@ -280,17 +264,9 @@ export default class AuthenticationModuleService<
   > {
     const input = Array.isArray(data) ? data : [data]
 
-    const users = await this.createAuthUsers_(input, sharedContext)
+    const authUsers = await this.createAuthUsers_(input, sharedContext)
 
-    const dbUsers = await this.listAuthUsers(
-      {
-        id: users.map((user) => user.id),
-      },
-      {},
-      sharedContext
-    )
-
-    return (Array.isArray(data) ? dbUsers : dbUsers[0]) as unknown as
+    return (Array.isArray(data) ? authUsers : authUsers[0]) as unknown as
       | AuthenticationTypes.AuthUserDTO
       | AuthenticationTypes.AuthUserDTO[]
   }
@@ -323,15 +299,7 @@ export default class AuthenticationModuleService<
 
     const authUsers = await this.updateAuthUsers_(input, sharedContext)
 
-    const dbAuthUsers = await this.listAuthUsers(
-      {
-        id: authUsers.map((user) => user.id),
-      },
-      {},
-      sharedContext
-    )
-
-    return (Array.isArray(data) ? dbAuthUsers : dbAuthUsers[0]) as unknown as
+    return (Array.isArray(data) ? authUsers : authUsers[0]) as unknown as
       | AuthenticationTypes.AuthUserDTO
       | AuthenticationTypes.AuthUserDTO[]
   }
@@ -351,10 +319,6 @@ export default class AuthenticationModuleService<
   ): Promise<void> {
     await this.authUserService_.delete(ids, sharedContext)
   }
-
-  __hooks?:
-    | { onApplicationStart?: (() => Promise<void>) | undefined }
-    | undefined
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig

@@ -29,7 +29,7 @@ export async function createAuthProviders(
 ): Promise<AuthProvider[]> {
   const authProviders: AuthProvider[] = []
 
-  for (let provider of providerData) {
+  for (const provider of providerData) {
     const authProvider = manager.create(AuthProvider, provider)
 
     authProviders.push(authProvider)
