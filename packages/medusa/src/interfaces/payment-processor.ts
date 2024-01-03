@@ -777,5 +777,5 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
 export function isPaymentProcessorError(
   obj: any
 ): obj is PaymentProcessorError {
-  return obj && typeof obj === "object" && (obj.error || obj.code || obj.detail)
+  return obj && typeof obj === "object" && obj.error && obj.code && obj.detail
 }
