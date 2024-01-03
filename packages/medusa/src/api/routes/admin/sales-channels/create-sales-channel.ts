@@ -1,8 +1,12 @@
 import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
+import { EntityManager } from "typeorm"
+
+import { CreateSalesChannelDTO } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { createSalesChannelWorkflow } from "@medusajs/core-flows"
 
 import { CreateSalesChannelInput } from "../../../../types/sales-channels"
-import { EntityManager } from "typeorm"
 import SalesChannelService from "../../../../services/sales-channel"
 
 /**
@@ -69,17 +73,38 @@ import SalesChannelService from "../../../../services/sales-channel"
  */
 
 export default async (req: Request, res: Response) => {
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const validatedBody = req.validatedBody as CreateSalesChannelInput
-  const salesChannelService: SalesChannelService = req.scope.resolve(
-    "salesChannelService"
+
+  let salesChannel
+  const manager: EntityManager = req.scope.resolve("manager")
+
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
   )
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  const salesChannel = await manager.transaction(async (transactionManager) => {
-    return await salesChannelService
-      .withTransaction(transactionManager)
-      .create(validatedBody)
-  })
+  if (isMedusaV2FlagEnabled) {
+    const createChannelsWorkflow = createSalesChannelWorkflow(req.scope)
+
+    const { result } = await createChannelsWorkflow.run({
+      input: { channelsData: [validatedBody] as CreateSalesChannelDTO[] },
+      context: {
+        manager,
+      },
+    })
+
+    salesChannel = result[0]
+  } else {
+    const salesChannelService: SalesChannelService = req.scope.resolve(
+      "salesChannelService"
+    )
+
+    salesChannel = await manager.transaction(async (transactionManager) => {
+      return await salesChannelService
+        .withTransaction(transactionManager)
+        .create(validatedBody)
+    })
+  }
 
   res.status(200).json({ sales_channel: salesChannel })
 }
