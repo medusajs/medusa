@@ -1,13 +1,15 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
-  Filter,
+  Index,
   ManyToOne,
   OnInit,
   OneToMany,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -15,14 +17,26 @@ import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"
 import LineItemTaxLine from "./line-item-tax-line"
 
-@Entity({ tableName: "cart_line_item" })
-@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-export default class LineItem {
-  @PrimaryKey({ columnType: "text" })
-  id!: string
+type OptionalLineItemProps =
+  | "is_discoutable"
+  | "is_tax_inclusive"
+  | "compare_at_unit_price"
+  | "requires_shipping"
+  | DAL.EntityDateColumns
 
-  @Property({ columnType: "text" })
-  cart_id: string
+@Entity({ tableName: "cart_line_item" })
+export default class LineItem {
+  [OptionalProps]?: OptionalLineItemProps
+
+  @PrimaryKey({ columnType: "text" })
+  id: string
+
+  @ManyToOne(() => Cart, {
+    onDelete: "cascade",
+    index: "IDX_line_item_cart_id",
+    fieldName: "cart_id",
+  })
+  cart!: Cart
 
   @Property({ columnType: "text" })
   title: string
@@ -36,6 +50,10 @@ export default class LineItem {
   @Property({ columnType: "text" })
   quantity: number
 
+  @Index({
+    name: "IDX_line_item_variant_id",
+    properties: ["variant_id"],
+  })
   @Property({ columnType: "text", nullable: true })
   variant_id: string | null
 
@@ -72,30 +90,23 @@ export default class LineItem {
   @Property({ columnType: "jsonb", nullable: true })
   variant_option_values: Record<string, unknown> | null
 
-  @Property({ columnType: "boolean", nullable: true })
-  requires_shipping: boolean | null
+  @Property({ columnType: "boolean" })
+  requires_shipping = true
 
-  @Property({ columnType: "boolean", nullable: true })
-  is_discountable: boolean | null
+  @Property({ columnType: "boolean" })
+  is_discountable = true
 
-  @Property({ columnType: "boolean", nullable: true })
-  is_tax_inclusive: boolean | null
+  @Property({ columnType: "boolean" })
+  is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
-  compare_at_unit_price: number | null
+  compare_at_unit_price?: number
 
   @Property({ columnType: "numeric" })
   unit_price: number
 
-  @ManyToOne(() => Cart, {
-    onDelete: "cascade",
-    index: "IDX_line_item_cart_id",
-    fieldName: "cart_id",
-  })
-  cart!: Cart
-
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
-    cascade: [Cascade.REMOVE, "soft-remove"] as any,
+    cascade: [Cascade.REMOVE],
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
@@ -103,35 +114,39 @@ export default class LineItem {
     () => LineItemAdjustmentLine,
     (adjustment) => adjustment.line_item,
     {
-      cascade: [Cascade.REMOVE, "soft-remove"] as any,
+      cascade: [Cascade.REMOVE],
     }
   )
   adjustments = new Collection<LineItemAdjustmentLine>(this)
 
-  compare_at_total: number
-  compare_at_subtotal: number
-  compare_at_tax_total: number
+  /** COMPUTED PROPERTIES - START */
 
-  original_total: number
-  original_subtotal: number
-  original_tax_total: number
+  // compare_at_total?: number
+  // compare_at_subtotal?: number
+  // compare_at_tax_total?: number
 
-  item_total: number
-  item_subtotal: number
-  item_tax_total: number
+  // original_total: number
+  // original_subtotal: number
+  // original_tax_total: number
 
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  discount_tax_total: number
+  // item_total: number
+  // item_subtotal: number
+  // item_tax_total: number
+
+  // total: number
+  // subtotal: number
+  // tax_total: number
+  // discount_total: number
+  // discount_tax_total: number
+
+  /** COMPUTED PROPERTIES - END */
 
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -139,10 +154,7 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
-
-  @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  updated_at: Date
 
   @BeforeCreate()
   onCreate() {

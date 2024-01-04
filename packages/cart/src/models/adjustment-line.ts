@@ -1,6 +1,11 @@
-import { PrimaryKey, Property } from "@mikro-orm/core"
+import { DAL } from "@medusajs/types"
+import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
+
+type OptionalAdjustmentLineProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
 export default class AdjustmentLine {
+  [OptionalProps]: OptionalAdjustmentLineProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -33,7 +38,4 @@ export default class AdjustmentLine {
     defaultRaw: "now()",
   })
   updated_at: Date
-
-  @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date | null
 }
