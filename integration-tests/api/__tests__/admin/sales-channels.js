@@ -829,7 +829,7 @@ describe("sales channels", () => {
     })
   })
 
-  describe.only("/admin/orders using sales channels", () => {
+  describe("/admin/orders using sales channels", () => {
     describe("GET /admin/orders", () => {
       let order
 
@@ -874,7 +874,7 @@ describe("sales channels", () => {
     })
   })
 
-  describe.only("/admin/products using sales channels", () => {
+  describe("/admin/products using sales channels", () => {
     describe("GET /admin/products", () => {
       const productData = {
         id: "product-sales-channel-1",
@@ -1046,7 +1046,6 @@ describe("sales channels", () => {
       it("should update a product sales channels assignation with either a sales channel, null, [] or undefined", async () => {
         const api = useApi()
 
-        console.log("bp 1 ===")
         let response = await api
           .post(
             "/admin/products/test-product",
@@ -1063,7 +1062,6 @@ describe("sales channels", () => {
             console.log(err)
           })
 
-        console.log("bp 2 ===")
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
           expect.objectContaining({
@@ -1071,7 +1069,6 @@ describe("sales channels", () => {
           })
         )
 
-        console.log("bp 3 ===")
         response = await api
           .post(
             "/admin/products/test-product",
@@ -1088,7 +1085,6 @@ describe("sales channels", () => {
             console.log(err)
           })
 
-        console.log("bp 4 ===")
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
           expect.objectContaining({
@@ -1101,7 +1097,6 @@ describe("sales channels", () => {
           })
         )
 
-        console.log("bp 5 ===")
         response = await api
           .post(
             "/admin/products/test-product",
@@ -1116,7 +1111,6 @@ describe("sales channels", () => {
             console.log(err)
           })
 
-        console.log("bp 5 ===")
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
           expect.objectContaining({
@@ -1129,7 +1123,6 @@ describe("sales channels", () => {
           })
         )
 
-        console.log("bp 6 ===")
         response = await api
           .post(
             "/admin/products/test-product",
@@ -1146,7 +1139,6 @@ describe("sales channels", () => {
             console.log(err)
           })
 
-        console.log("bp 7 ===")
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
           expect.objectContaining({
