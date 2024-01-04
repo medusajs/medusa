@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "@hookform/resolvers": "3.3.2",
-    "@medusajs/icons": "1.1.0",
+    "@medusajs/icons": "workspace:^",
     "@medusajs/ui": "workspace:^",
     "@radix-ui/react-collapsible": "1.0.3",
     "@tanstack/react-query": "4.22",

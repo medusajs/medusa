@@ -7950,7 +7950,7 @@ __metadata:
   resolution: "@medusajs/dashboard@workspace:packages/admin-next/dashboard"
   dependencies:
     "@hookform/resolvers": 3.3.2
-    "@medusajs/icons": 1.1.0
+    "@medusajs/icons": "workspace:^"
     "@medusajs/medusa": "workspace:^"
     "@medusajs/ui": "workspace:^"
     "@medusajs/ui-preset": "workspace:^"
@@ -8033,7 +8033,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/icons@1.1.0, @medusajs/icons@^1.1.0, @medusajs/icons@workspace:packages/design-system/icons":
+"@medusajs/icons@^1.1.0, @medusajs/icons@workspace:^, @medusajs/icons@workspace:packages/design-system/icons":
   version: 0.0.0-use.local
   resolution: "@medusajs/icons@workspace:packages/design-system/icons"
   dependencies:

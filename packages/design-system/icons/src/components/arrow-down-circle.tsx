@@ -12,17 +12,14 @@ const ArrowDownCircle = React.forwardRef<SVGSVGElement, IconProps>(
         {...props}
       >
         <path
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="m7.5 10.625 2.5 2.5m0 0 2.5-2.5m-2.5 2.5v-6.25M17.5 10a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"
+          fill={color}
+          fillRule="evenodd"
+          d="M10 18a8 8 0 1 0 0-16.001A8 8 0 0 0 10 18Zm.75-11.25a.75.75 0 1 0-1.5 0v4.59L7.3 9.24a.75.75 0 0 0-1.1 1.02l3.25 3.5a.752.752 0 0 0 1.1 0l3.25-3.5a.75.75 0 1 0-1.1-1.02l-1.95 2.1V6.75Z"
+          clipRule="evenodd"
         />
       </svg>
     )
   }
 )
 ArrowDownCircle.displayName = "ArrowDownCircle"
-export default ArrowDownCircle
-me = "ArrowDownCircle"
 export default ArrowDownCircle
