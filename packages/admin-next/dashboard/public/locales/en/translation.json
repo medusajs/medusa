@@ -4,13 +4,14 @@
     "cancel": "Cancel",
     "save": "Save",
     "create": "Create",
-    "createItem": "Create {{item}}",
     "delete": "Delete",
-    "deleteItem": "Delete {{item}}",
     "edit": "Edit",
-    "editItem": "Edit {{item}}",
     "extensions": "Extensions",
-    "details": "Details"
+    "details": "Details",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "remove": "Remove",
+    "countSelected": "{{count}} selected"
   },
   "products": {
     "domain": "Products",
@@ -75,6 +76,14 @@
   "regions": {
     "domain": "Regions"
   },
+  "salesChannels": {
+    "domain": "Sales Channels"
+  },
+  "currencies": {
+    "domain": "Currencies",
+    "manageTheCurrencies": "Manage the currencies you want to use in your store",
+    "editCurrencyDetails": "Edit Currency Details"
+  },
   "fields": {
     "name": "Name",
     "lastName": "Last Name",
@@ -91,6 +100,7 @@
     "subtitle": "Subtitle",
     "tags": "Tags",
     "type": "Type",
-    "sales_channels": "Sales Channels"
+    "sales_channels": "Sales Channels",
+    "status": "Status"
   }
 }

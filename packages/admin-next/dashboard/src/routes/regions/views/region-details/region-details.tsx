@@ -1,5 +1,12 @@
 import { EllipsisHorizontal } from "@medusajs/icons"
-import { Container, Heading, IconButton, Text, Tooltip } from "@medusajs/ui"
+import {
+  Badge,
+  Container,
+  Heading,
+  IconButton,
+  Text,
+  Tooltip,
+} from "@medusajs/ui"
 import { useAdminRegion } from "medusa-react"
 import { useParams } from "react-router-dom"
 
@@ -65,34 +72,61 @@ export const RegionDetails = () => {
             <EllipsisHorizontal />
           </IconButton>
         </div>
-        <div className="flex items-center justify-between border-b px-8 py-6">
+        <div className="grid grid-cols-2 border-b px-8 py-6">
           <Text size="small" leading="compact" weight="plus">
             Currency
           </Text>
+          <div className="flex items-center gap-x-2">
+            <Badge rounded="full" className="uppercase">
+              {region.currency_code}
+            </Badge>
+            <Text size="small" leading="compact">
+              {region.currency.name}
+            </Text>
+          </div>
         </div>
-        <div className="flex items-center justify-between border-b px-8 py-6">
+        <div className="grid grid-cols-2 border-b px-8 py-6">
           <Text size="small" leading="compact" weight="plus">
             Default Tax Rate
           </Text>
+          <Text size="small" leading="compact">
+            {region.tax_rate}
+          </Text>
         </div>
-        <div className="flex items-center justify-between border-b px-8 py-6">
+        <div className="grid grid-cols-2 border-b px-8 py-6">
           <Text size="small" leading="compact" weight="plus">
             Default Tax Code
           </Text>
+          <Text size="small" leading="compact">
+            {region.tax_code ?? "-"}
+          </Text>
         </div>
-        <div className="flex items-center justify-between border-b px-8 py-6">
+        <div className="grid grid-cols-2 border-b px-8 py-6">
           <Text size="small" leading="compact" weight="plus">
             Tax Inclusive Pricing
           </Text>
+          <Text size="small" leading="compact">
+            {region.includes_tax ? "Yes" : "No"}
+          </Text>
         </div>
-        <div className="flex items-center justify-between border-b px-8 py-6">
+        <div className="grid grid-cols-2 border-b px-8 py-6">
           <Text size="small" leading="compact" weight="plus">
             Payment Providers
           </Text>
+          <Text size="small" leading="compact">
+            {region.payment_providers.length > 0
+              ? region.payment_providers.map((p) => p.id).join(", ")
+              : "-"}
+          </Text>
         </div>
-        <div className="flex items-center justify-between px-8 py-6">
+        <div className="grid grid-cols-2 px-8 py-6">
           <Text size="small" leading="compact" weight="plus">
             Fulfillment Providers
+          </Text>
+          <Text size="small" leading="compact">
+            {region.fulfillment_providers.length > 0
+              ? region.fulfillment_providers.map((p) => p.id).join(", ")
+              : "-"}
           </Text>
         </div>
       </Container>

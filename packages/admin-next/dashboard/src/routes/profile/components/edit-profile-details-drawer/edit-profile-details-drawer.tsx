@@ -30,6 +30,7 @@ export const EditProfileDetailsDrawer = ({
   userInsights = false,
 }: EditProfileDetailsDrawerProps) => {
   const [open, setOpen] = useState(false)
+  const [selectOpen, setSelectOpen] = useState(false)
   const { mutateAsync, isLoading } = useAdminUpdateUser(id)
 
   const { i18n } = useTranslation()
@@ -57,6 +58,13 @@ export const EditProfileDetailsDrawer = ({
   const onOpenChange = (open: boolean) => {
     if (!open) {
       form.reset()
+
+      /**
+       * If the select is open while closing the drawer, we need to close it as well.
+       * Otherwise it will cause "pointer-events: none" to stay applied to the body,
+       * making the page unresponsive.
+       */
+      setSelectOpen(false)
     }
 
     setOpen(open)
@@ -143,6 +151,8 @@ export const EditProfileDetailsDrawer = ({
                       <Form.Control>
                         <Select
                           {...field}
+                          open={selectOpen}
+                          onOpenChange={setSelectOpen}
                           value={field.value}
                           onValueChange={field.onChange}
                           size="small"

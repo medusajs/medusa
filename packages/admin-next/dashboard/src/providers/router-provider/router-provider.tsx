@@ -11,6 +11,7 @@ import { PublicLayout } from "../../components/layout/public-layout"
 import { AdminProductsRes } from "@medusajs/medusa"
 import routes from "medusa-admin:routes/pages"
 import settings from "medusa-admin:settings/pages"
+import { ErrorBoundary } from "../../components/error/error-boundary"
 import { SearchProvider } from "../search-provider"
 
 const routeExtensions: RouteObject[] = routes.pages.map((ext) => {
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
         </SearchProvider>
       </RequireAuth>
     ),
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: "/",
@@ -246,6 +248,36 @@ const router = createBrowserRouter([
             handle: {
               crumb: () => "Users",
             },
+          },
+          {
+            path: "currencies",
+            lazy: () =>
+              import("../../routes/currencies/views/currencies-details"),
+            handle: {
+              crumb: () => "Currencies",
+            },
+          },
+          {
+            path: "sales-channels",
+            handle: {
+              crumb: () => "Sales Channels",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () =>
+                  import(
+                    "../../routes/sales-channels/views/sales-channel-list"
+                  ),
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import(
+                    "../../routes/sales-channels/views/sales-channel-details"
+                  ),
+              },
+            ],
           },
           {
             path: "publishable-api-keys",
