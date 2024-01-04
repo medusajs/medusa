@@ -48,7 +48,7 @@ const PriceListEdit = () => {
   return (
     <>
       <div className="flex flex-col gap-y-2">
-        {getWidgets("product.details.before").map((w, i) => {
+        {getWidgets("price_list.details.before").map((w, i) => {
           return (
             <WidgetContainer
               key={i}
@@ -58,9 +58,15 @@ const PriceListEdit = () => {
             />
           )
         })}
-        <PriceListGeneralSection priceList={price_list} />
-        <PriceListPricesSection priceList={price_list} />
-        {getWidgets("product.details.after").map((w, i) => {
+        <PriceListGeneralSection
+          key={`gs_${price_list.id}_${price_list.updated_at}`}
+          priceList={price_list}
+        />
+        <PriceListPricesSection
+          key={`ps_${price_list.id}_${price_list.updated_at}`}
+          priceList={price_list}
+        />
+        {getWidgets("price_list.details.after").map((w, i) => {
           return (
             <WidgetContainer
               key={i}

@@ -1,5 +1,21 @@
 # @medusajs/client-types
 
+## 0.2.7
+
+### Patch Changes
+
+- [#5599](https://github.com/medusajs/medusa/pull/5599) [`b3093c3e3`](https://github.com/medusajs/medusa/commit/b3093c3e3d64e4c024a04d76fb0f727c1c38108b) Thanks [@bqst](https://github.com/bqst)! - feat(medusa): Add `metadata` to Product Category
+
+## 0.2.6
+
+### Patch Changes
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+
 ## 0.2.5
 
 ### Patch Changes

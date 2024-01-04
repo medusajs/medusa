@@ -37,7 +37,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       })
  *       .then(({ publishable_api_key }) => {
  *         console.log(publishable_api_key.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

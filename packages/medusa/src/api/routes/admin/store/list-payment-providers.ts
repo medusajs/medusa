@@ -18,7 +18,7 @@ import { PaymentProviderService } from "../../../../services"
  *       medusa.admin.store.listPaymentProviders()
  *       .then(({ payment_providers }) => {
  *         console.log(payment_providers.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

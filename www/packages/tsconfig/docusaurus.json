@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Docusaurus",
-  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "jsx": "react",
     "lib": [
@@ -9,7 +9,6 @@
       "dom",
       "dom.iterable"
     ],
-    "allowJs": true,
-    "module": "Node16"
+    "allowJs": true
   }
 }

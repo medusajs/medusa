@@ -1,5 +1,9 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
+import {
+  IProductModuleService,
+  ProductTypes,
+  UpdateProductDTO,
+} from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import {
   Product,
@@ -170,16 +174,32 @@ describe("ProductModuleService products", function () {
         thumbnail: images[0],
       })
 
-      const updateData = {
-        ...data,
-        id: productOne.id,
-        title: "updated title",
-      }
+      const variantTitle = data.variants[0].title
 
-      const updatedProducts = await module.update([updateData])
+      const productBefore = (await module.retrieve(productOne.id, {
+        relations: [
+          "images",
+          "variants",
+          "options",
+          "options.values",
+          "variants.options",
+          "tags",
+          "type",
+        ],
+      })) as unknown as UpdateProductDTO
+
+      productBefore.title = "updated title"
+      productBefore.variants = [...productBefore.variants!, ...data.variants]
+      productBefore.type = { value: "new-type" }
+      productBefore.options = data.options
+      productBefore.images = data.images
+      productBefore.thumbnail = data.thumbnail
+      productBefore.tags = data.tags
+
+      const updatedProducts = await module.update([productBefore])
       expect(updatedProducts).toHaveLength(1)
 
-      const product = await module.retrieve(updateData.id, {
+      const product = await module.retrieve(productBefore.id, {
         relations: [
           "images",
           "variants",
@@ -191,21 +211,25 @@ describe("ProductModuleService products", function () {
         ],
       })
 
+      const createdVariant = product.variants.find(
+        (v) => v.title === variantTitle
+      )!
+
       expect(product.images).toHaveLength(1)
-      expect(product.variants[0].options).toHaveLength(1)
+      expect(createdVariant?.options).toHaveLength(1)
       expect(product.tags).toHaveLength(1)
-      expect(product.variants).toHaveLength(1)
+      expect(product.variants).toHaveLength(2)
 
       expect(product).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           title: "updated title",
-          description: updateData.description,
-          subtitle: updateData.subtitle,
-          is_giftcard: updateData.is_giftcard,
-          discountable: updateData.discountable,
+          description: productBefore.description,
+          subtitle: productBefore.subtitle,
+          is_giftcard: productBefore.is_giftcard,
+          discountable: productBefore.discountable,
           thumbnail: images[0],
-          status: updateData.status,
+          status: productBefore.status,
           images: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
@@ -215,11 +239,11 @@ describe("ProductModuleService products", function () {
           options: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
-              title: updateData.options[0].title,
+              title: productBefore.options?.[0].title,
               values: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  value: updateData.variants[0].options?.[0].value,
+                  value: createdVariant.options?.[0].value,
                 }),
               ]),
             }),
@@ -227,26 +251,26 @@ describe("ProductModuleService products", function () {
           tags: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
-              value: updateData.tags[0].value,
+              value: productBefore.tags?.[0].value,
             }),
           ]),
           type: expect.objectContaining({
             id: expect.any(String),
-            value: updateData.type.value,
+            value: productBefore.type!.value,
           }),
           variants: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
-              title: updateData.variants[0].title,
-              sku: updateData.variants[0].sku,
+              title: createdVariant.title,
+              sku: createdVariant.sku,
               allow_backorder: false,
               manage_inventory: true,
-              inventory_quantity: "100",
-              variant_rank: "0",
+              inventory_quantity: 100,
+              variant_rank: 0,
               options: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  value: updateData.variants[0].options?.[0].value,
+                  value: createdVariant.options?.[0].value,
                 }),
               ]),
             }),

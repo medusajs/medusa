@@ -1,19 +1,18 @@
-import { useFieldArray, UseFormReturn } from "react-hook-form"
 import CustomsForm, { CustomsFormType } from "../../customs-form"
 import DimensionsForm, { DimensionsFormType } from "../../dimensions-form"
+import MetadataForm, { MetadataFormType } from "../../../general/metadata-form"
+import { UseFormReturn, useFieldArray } from "react-hook-form"
 import VariantGeneralForm, {
   VariantGeneralFormType,
 } from "../variant-general-form"
 import VariantStockForm, { VariantStockFormType } from "../variant-stock-form"
 
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import { nestedForm } from "../../../../../utils/nested-form"
+import Accordion from "../../../../organisms/accordion"
 import IconTooltip from "../../../../molecules/icon-tooltip"
 import InputField from "../../../../molecules/input"
-import Accordion from "../../../../organisms/accordion"
-import MetadataForm, { MetadataFormType } from "../../../general/metadata-form"
 import { PricesFormType } from "../../../general/prices-form"
-import VariantPricesForm from "../variant-prices-form"
+import { nestedForm } from "../../../../../utils/nested-form"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 export type EditFlowVariantFormType = {
   /**
@@ -96,9 +95,6 @@ const EditFlowVariantForm = ({ form, isEdit }: Props) => {
             </div>
           </div>
         </div>
-      </Accordion.Item>
-      <Accordion.Item title="Pricing" value="pricing">
-        <VariantPricesForm form={nestedForm(form, "prices")} />
       </Accordion.Item>
       {showStockAndInventory && (
         <Accordion.Item title="Stock & Inventory" value="stock">

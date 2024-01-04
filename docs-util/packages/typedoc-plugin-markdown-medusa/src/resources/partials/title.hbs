@@ -1,10 +1,16 @@
 {{#ifShowPageTitle}}
 
-# {{{reflectionTitle true}}}
+{{titleLevel}} {{{reflectionTitle true}}}
 
 {{/ifShowPageTitle}}
 
-{{{getFormattingOption "reflectionDescription"}}}
+{{> feature-flag}}
+
+{{#with model}}
+
+{{{reflectionDescription}}}
+
+{{/with}}
 
 {{#if (sectionEnabled "title_reflectionPath")}}
 

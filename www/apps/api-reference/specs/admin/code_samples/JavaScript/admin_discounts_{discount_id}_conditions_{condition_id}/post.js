@@ -8,4 +8,4 @@ medusa.admin.discounts.updateCondition(discountId, conditionId, {
 })
 .then(({ discount }) => {
   console.log(discount.id);
-});
+})

@@ -1,0 +1,25 @@
+{
+  "description": "This component is based on the `button` element and supports all of its props",
+  "methods": [],
+  "displayName": "Copy",
+  "props": {
+    "content": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The content to copy."
+    },
+    "asChild": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether to remove the wrapper `button` element and use the\npassed child element instead.",
+      "defaultValue": {
+        "value": "false",
+        "computed": false
+      }
+    }
+  }
+}

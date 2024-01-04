@@ -3,9 +3,6 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
   async rewrites() {
     return {
       fallback: [

@@ -146,15 +146,15 @@ However, if you use another add-on, make sure to set the environment variable `D
 
 #### (Optional) Configure Modules Environment Variables
 
-If you use in your Medusa backend modules that require setting environment variables, then you should set them at this point.
+If you use modules in your Medusa backend that require setting environment variables, then you should set them at this point.
 
 For example, if you use the Redis Event Bus module:
 
 ```bash
-heroku config:set EVENT_REDIS_URL=<YOUR_REDIS_URL>
+heroku config:set EVENTS_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
-Make sure to change `EVENT_REDIS_URL` to the environment variable name you use for your module's configurations.
+Make sure to change `EVENTS_REDIS_URL` to the environment variable name you use for your module's configurations.
 
 If your module requires setting up other services, do that then add the environment variables.
 

@@ -1,28 +1,73 @@
 import { PaginatedResponse } from "@medusajs/types"
-import { Region } from "./../../../../"
+import { TaxInclusivePricingFeatureFlag, wrapHandler } from "@medusajs/utils"
 import { Router } from "express"
-import middlewares from "../../../middlewares"
+import { transformQuery } from "../../../middlewares"
+import { Region } from "./../../../../"
+import getRegion from "./get-region"
+import listRegions, { StoreGetRegionsParams } from "./list-regions"
 
 const route = Router()
 
-export default (app) => {
+export default (app, featureFlagRouter) => {
+  if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
+    defaultStoreRegionFields.push("includes_tax")
+  }
+
+  const retrieveTransformQueryConfig = {
+    defaultFields: defaultStoreRegionFields,
+    defaultRelations: defaultStoreRegionRelations,
+    allowedRelations: defaultStoreRegionRelations,
+    isList: false,
+  }
+
+  const listTransformQueryConfig = {
+    ...retrieveTransformQueryConfig,
+    isList: true,
+  }
+
   app.use("/regions", route)
 
-  route.get("/", middlewares.wrap(require("./list-regions").default))
-  route.get("/:region_id", middlewares.wrap(require("./get-region").default))
+  route.get(
+    "/",
+    transformQuery(StoreGetRegionsParams, listTransformQueryConfig),
+    wrapHandler(listRegions)
+  )
+
+  route.get(
+    "/:region_id",
+    transformQuery(StoreGetRegionsParams, retrieveTransformQueryConfig),
+    wrapHandler(getRegion)
+  )
 
   return app
 }
 
-export const defaultRelations = [
+export const defaultStoreRegionRelations = [
   "countries",
   "payment_providers",
   "fulfillment_providers",
+  "currency",
+]
+
+export const defaultStoreRegionFields = [
+  "id",
+  "name",
+  "currency_code",
+  "tax_rate",
+  "tax_code",
+  "gift_cards_taxable",
+  "automatic_taxes",
+  "tax_provider_id",
+  "metadata",
+  "created_at",
+  "updated_at",
+  "deleted_at",
 ]
 
 /**
  * @schema StoreRegionsListRes
  * type: object
+ * description: "The list of regions with pagination fields."
  * x-expanded-relations:
  *   field: regions
  *   relations:
@@ -57,6 +102,7 @@ export type StoreRegionsListRes = PaginatedResponse & {
 /**
  * @schema StoreRegionsRes
  * type: object
+ * description: "The region's details."
  * x-expanded-relations:
  *   field: region
  *   relations:

@@ -6,14 +6,14 @@ import {
 } from "@medusajs/types"
 import { isString } from "../../common"
 import { MedusaContext } from "../../decorators"
-import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
+import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
 } from "../utils"
 import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
 
-class MikroOrmBase<T = any> {
+export class MikroOrmBase<T = any> {
   protected readonly manager_: any
 
   protected constructor({ manager }) {
@@ -137,6 +137,8 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     retrieveConstraintsToApply: (q: string) => any[]
   ): void {
     if (!("q" in findOptions.where) || !findOptions.where.q) {
+      delete findOptions.where.q
+
       return
     }
 

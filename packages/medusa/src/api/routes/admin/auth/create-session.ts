@@ -33,7 +33,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

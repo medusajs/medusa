@@ -19,29 +19,31 @@ export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
    * @param flag - The flag to check
    * @return {boolean} - Whether the flag is enabled or not
    */
-  public isFeatureEnabled(flag: string | Record<string, string>): boolean {
-    if (isString(flag)) {
-      return !!this.flags[flag]
-    }
-
+  public isFeatureEnabled(
+    flag: string | string[] | Record<string, string>
+  ): boolean {
     if (isObject(flag)) {
       const [nestedFlag, value] = Object.entries(flag)[0]
-
       if (typeof this.flags[nestedFlag] === "boolean") {
         return this.flags[nestedFlag] as boolean
       }
-
       return !!this.flags[nestedFlag]?.[value]
     }
 
-    throw Error("Flag must be a string or an object")
+    const flags = (Array.isArray(flag) ? flag : [flag]) as string[]
+    return flags.every((flag_) => {
+      if (!isString(flag_)) {
+        throw Error("Flag must be a string an array of string or an object")
+      }
+      return !!this.flags[flag_]
+    })
   }
 
   /**
    * Sets a feature flag.
    * Flags take two shapes:
-   * setFlag("myFeatureFlag", true)
-   * setFlag("myFeatureFlag", { nestedFlag: true })
+   * `setFlag("myFeatureFlag", true)`
+   * `setFlag("myFeatureFlag", { nestedFlag: true })`
    * These shapes are used for top-level and nested flags respectively, as explained in isFeatureEnabled.
    * @param key - The key of the flag to set.
    * @param value - The value of the flag to set.

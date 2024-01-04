@@ -12,6 +12,9 @@ import type { ProductVariant } from "./ProductVariant"
 import type { Region } from "./Region"
 import type { ShippingMethod } from "./ShippingMethod"
 
+/**
+ * The list of draft orders.
+ */
 export interface AdminDraftOrdersRes {
   /**
    * Draft order's details.

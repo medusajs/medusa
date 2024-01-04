@@ -10,15 +10,43 @@ ___
 
 {{#unless (getFormattingOption "expandMembers")}}
 
-## {{title}} {{../title}}
+{{#ifCanShowConstructorTitle}}
+
+{{titleLevel}} {{title}} {{../title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
 
 {{/unless}}
 
+{{#if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent}}}
+
+{{/with}}
+
+{{else}}
+
 {{#each children}}
 
-{{> member}}
+{{> member }}
 
 {{/each}}
+
+{{/if}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
 
 {{/each}}
 
@@ -26,15 +54,43 @@ ___
 
 {{#unless (getFormattingOption "expandMembers")}}
 
-## {{title}}
+{{#ifCanShowConstructorTitle}}
+
+{{titleLevel}} {{title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
 
 {{/unless}}
+
+{{#if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent}}}
+
+{{/with}}
+
+{{else}}
 
 {{#each children}}
 
 {{> member}}
 
 {{/each}}
+
+{{/if}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+{{#ifCanShowConstructorTitle}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/ifCanShowConstructorTitle}}
+
+{{/unless}}
 
 {{/if}}
 

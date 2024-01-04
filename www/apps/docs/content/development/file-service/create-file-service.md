@@ -44,7 +44,7 @@ You can learn more about services and their naming convention in [this documenta
 
 For example, create the file `src/services/local-file.ts` with the following content:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 import { AbstractFileService } from "@medusajs/medusa"
 import {
   DeleteFileType,
@@ -106,7 +106,7 @@ You can use a constructor to access services and resources registered in the dep
 
 For example, the local service’s constructor could be useful to prepare the local upload directory:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 // ...
 import * as fs from "fs"
 
@@ -139,7 +139,7 @@ Another example showcasing how to access resources using dependency injection:
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 type InjectedDependencies = {
   logger: Logger
 }
@@ -159,7 +159,7 @@ class LocalFileService extends AbstractFileService {
 
 You can access the plugin options in the second parameter passed to the constructor:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 class LocalFileService extends AbstractFileService {
   protected serverUrl = "http://localhost:9000"
   // ...
@@ -206,7 +206,7 @@ The method is expected to return an object that has the following properties:
 
 An example implementation of this method for the local file service:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 class LocalFileService extends AbstractFileService {
 
   async upload(
@@ -254,7 +254,7 @@ The method is expected to return an object that has the following properties:
 
 An example implementation of this method for the local file service:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 class LocalFileService extends AbstractFileService {
 
   async uploadProtected(
@@ -286,7 +286,7 @@ This method is not expected to return anything.
 
 An example implementation of this method for the local file service:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 class LocalFileService extends AbstractFileService {
 
   async delete(
@@ -320,7 +320,7 @@ You can also return custom properties within the object.
 
 An example implementation of this method for the local file service:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 class LocalFileService extends AbstractFileService {
 
   async getUploadStreamDescriptor({
@@ -359,7 +359,7 @@ The method is expected to return a readable stream.
 
 An example implementation of this method for the local file service:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 class LocalFileService extends AbstractFileService {
 
   async getDownloadStream({
@@ -394,7 +394,7 @@ The method is expected to return a string, being the URL of the file.
 
 An example implementation of this method for the local file service:
 
-```ts title=src/services/local-file.ts
+```ts title="src/services/local-file.ts"
 class LocalFileService extends AbstractFileService {
 
   async getPresignedDownloadUrl({
@@ -438,7 +438,7 @@ Run your backend to test it out:
 npx medusa develop
 ```
 
-Then, try uploading a file, for example, using the [Upload File endpoint](https://docs.medusajs.com/api/admin#uploads_postuploads). The file should be uploaded based on the logic you’ve implemented.
+Then, try uploading a file, for example, using the [Upload File API Route](https://docs.medusajs.com/api/admin#uploads_postuploads). The file should be uploaded based on the logic you’ve implemented.
 
 ### (Optional) Accessing the File
 
@@ -452,15 +452,17 @@ Since the file is uploaded to a local directory `uploads`, you need to configure
 
 To do that, create the file `src/api/index.ts` with the following content:
 
-```ts
+```ts title="src/api/middlewares.ts"
+import type { MiddlewaresConfig } from "@medusajs/medusa"
 import express from "express"
 
-export default () => {
-  const app = express.Router()
-
-  app.use(`/uploads`, express.static(uploadDir))
-
-  return app
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/uploads",
+      middlewares: [express.static(uploadDir)],
+    },
+  ],
 }
 ```
 

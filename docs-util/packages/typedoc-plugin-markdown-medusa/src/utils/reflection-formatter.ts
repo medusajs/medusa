@@ -1,19 +1,71 @@
-import { Comment, DeclarationReflection, ReflectionType } from "typedoc"
+import {
+  Comment,
+  DeclarationReflection,
+  ProjectReflection,
+  ReflectionKind,
+  ReflectionType,
+} from "typedoc"
 import * as Handlebars from "handlebars"
-import { stripLineBreaks } from "../utils"
-import { ReflectionParameterType } from "../types"
+import { stripCode } from "../utils"
+import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
+import {
+  getReflectionType,
+  getType,
+  getTypeChildren,
+  stripLineBreaks,
+} from "utils"
+import { MarkdownTheme } from "../theme"
 
-const MAX_LEVEL = 3
+const ALLOWED_KINDS: ReflectionKind[] = [
+  ReflectionKind.EnumMember,
+  ReflectionKind.TypeParameter,
+  ReflectionKind.Property,
+  ReflectionKind.Parameter,
+  ReflectionKind.TypeAlias,
+  ReflectionKind.TypeLiteral,
+  ReflectionKind.Variable,
+  ReflectionKind.Reference,
+]
 
-export default function reflectionFomatter(
-  reflection: ReflectionParameterType,
-  level = 1
-) {
+type ReflectionFormatterOptions = {
+  reflection: ReflectionParameterType
+  level?: number
+  maxLevel?: number | undefined
+  project?: ProjectReflection
+  type?: ParameterStyle
+}
+
+export default function reflectionFormatter({
+  type = "table",
+  ...options
+}: ReflectionFormatterOptions): string | Parameter {
+  switch (type) {
+    case "list":
+      return reflectionListFormatter(options)
+    case "component":
+      return reflectionComponentFormatter(options)
+    case "table":
+      return reflectionTableFormatter(options)
+    default:
+      return ""
+  }
+}
+
+export function reflectionListFormatter({
+  reflection,
+  level = 1,
+  maxLevel,
+}: ReflectionFormatterOptions): string {
   const prefix = `${Array(level - 1)
     .fill("\t")
     .join("")}-`
-  let item = `${prefix} \`${reflection.name}\`: `
+  let item = `${prefix} \`${reflection.name}\``
   const defaultValue = getDefaultValue(reflection)
+  const comments = getComments(reflection)
+
+  if (defaultValue || reflection.flags.isOptional || comments) {
+    item += ": "
+  }
 
   if (defaultValue || reflection.flags.isOptional) {
     item += `(${reflection.flags.isOptional ? "optional" : ""}${
@@ -21,43 +73,222 @@ export default function reflectionFomatter(
     }${defaultValue ? `default: ${defaultValue}` : ""}) `
   }
 
-  const comments = getComments(reflection)
-
   if (comments) {
     item += stripLineBreaks(Handlebars.helpers.comments(comments))
+  }
+
+  const hasChildren = "children" in reflection && reflection.children?.length
+
+  if (
+    (reflection.type || hasChildren) &&
+    level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
+  ) {
+    const children = hasChildren
+      ? reflection.children
+      : getTypeChildren(reflection.type!, reflection.project)
     const itemChildren: string[] = []
-    comments.summary.forEach((commentSummary) => {
-      if ("target" in commentSummary) {
-        const reflection = commentSummary.target as DeclarationReflection
-        if (reflection.children && level + 1 < MAX_LEVEL) {
-          reflection.children.forEach((childItem) => {
-            itemChildren.push(reflectionFomatter(childItem, level + 1))
-          })
-        }
+    let itemChildrenKind: ReflectionKind | null = null
+    children?.forEach((childItem: DeclarationReflection) => {
+      if (!itemChildrenKind) {
+        itemChildrenKind = childItem.kind
       }
+      itemChildren.push(
+        reflectionListFormatter({
+          reflection: childItem,
+          level: level + 1,
+          maxLevel,
+        })
+      )
     })
     if (itemChildren.length) {
-      // TODO maybe we should check the type of the reflection and replace
-      // `properties` with the text that makes sense for the type.
-      item += ` It accepts the following properties:\n${itemChildren.join(
-        "\n"
-      )}`
+      item += ` ${getItemExpandText(
+        reflection.type?.type,
+        itemChildrenKind
+      )}:\n${itemChildren.join("\n")}`
     }
   }
 
   return item
 }
 
-function getDefaultValue(parameter: ReflectionParameterType): string | null {
-  if (!("defaultValue" in parameter)) {
-    return null
+export function reflectionComponentFormatter({
+  reflection,
+  level = 1,
+  maxLevel,
+  project,
+}: ReflectionFormatterOptions): Parameter {
+  const defaultValue = getDefaultValue(reflection) || ""
+  const optional =
+    reflection.flags.isOptional || reflection.kind === ReflectionKind.EnumMember
+  const comments = getComments(reflection)
+  const componentItem: Parameter = {
+    name: reflection.name,
+    type: reflection.type
+      ? getType({
+          reflectionType: reflection.type,
+          collapse: "object",
+          project: reflection.project,
+          escape: true,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
+        })
+      : getReflectionType({
+          reflectionType: reflection,
+          collapse: "object",
+          // escape: true,
+          project: reflection.project,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
+        }),
+    description: comments
+      ? Handlebars.helpers.comments(comments, true, false)
+      : "",
+    optional,
+    defaultValue,
+    expandable: reflection.comment?.hasModifier(`@expandable`) || false,
+    featureFlag: Handlebars.helpers.featureFlag(reflection.comment),
+    children: [],
   }
-  return parameter.defaultValue && parameter.defaultValue !== "..."
-    ? `\`${parameter.defaultValue}\``
-    : null
+
+  const hasChildren = "children" in reflection && reflection.children?.length
+
+  if (
+    (reflection.type || hasChildren) &&
+    level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
+  ) {
+    const children = hasChildren
+      ? reflection.children
+      : getTypeChildren(reflection.type!, project || reflection.project)
+
+    children
+      ?.filter((childItem: DeclarationReflection) =>
+        childItem.kindOf(ALLOWED_KINDS)
+      )
+      .forEach((childItem: DeclarationReflection) => {
+        componentItem.children?.push(
+          reflectionComponentFormatter({
+            reflection: childItem,
+            level: level + 1,
+            maxLevel,
+            project,
+          })
+        )
+      })
+  }
+
+  return componentItem
 }
 
-function getComments(parameter: ReflectionParameterType): Comment | undefined {
+export function reflectionTableFormatter({
+  reflection: parameter,
+}: ReflectionFormatterOptions): string {
+  const showDefaults = hasDefaultValues([parameter])
+
+  const hasComments = !!parameter.comment?.hasVisibleComponent()
+
+  const row: string[] = []
+
+  const nbsp = " " // ? <== Unicode no-break space character
+  const rest = parameter.flags.isRest ? "..." : ""
+  const optional = parameter.flags.isOptional ? "?" : ""
+
+  const isDestructuredParam = parameter.name == "__namedParameters"
+  const isDestructuredParamProp =
+    parameter.name.startsWith("__namedParameters.")
+
+  if (isDestructuredParam) {
+    row.push(`\`${rest}«destructured»\``)
+  } else if (isDestructuredParamProp) {
+    row.push(`›${nbsp}\`${rest}${parameter.name.slice(18)}${optional}\``)
+  } else {
+    row.push(`\`${rest}${parameter.name}${optional}\``)
+  }
+
+  row.push(
+    parameter.type
+      ? Handlebars.helpers.type.call(parameter.type, "object")
+      : getReflectionType({
+          reflectionType: parameter,
+          collapse: "object",
+          wrapBackticks: true,
+          getRelativeUrlMethod: Handlebars.helpers.relativeURL,
+        })
+  )
+
+  if (showDefaults) {
+    row.push(getDefaultValue(parameter) || "")
+  }
+  if (hasComments) {
+    const comments = getComments(parameter)
+    if (comments) {
+      row.push(
+        stripLineBreaks(Handlebars.helpers.comments(comments)).replace(
+          /\|/g,
+          "\\|"
+        )
+      )
+    } else {
+      row.push("-")
+    }
+  }
+  return `| ${row.join(" | ")} |\n`
+}
+
+export function getTableHeaders(
+  parameters: ReflectionParameterType[],
+  showTypeHeader?: boolean
+): string[] {
+  const showDefaults = hasDefaultValues(parameters)
+  const hasComments = parameters.some(
+    (parameter) => !!parameter.comment?.hasVisibleComponent()
+  )
+  const headers = ["Name"]
+
+  if (showTypeHeader) {
+    headers.push("Type")
+  }
+
+  if (showDefaults) {
+    headers.push("Default value")
+  }
+
+  if (hasComments) {
+    headers.push("Description")
+  }
+
+  return headers
+}
+
+export function getDefaultValue(
+  parameter: ReflectionParameterType
+): string | null {
+  const defaultComment = parameter.comment?.getTag(`@defaultValue`)
+  if (!("defaultValue" in parameter) && !defaultComment) {
+    return null
+  }
+
+  return "defaultValue" in parameter &&
+    parameter.defaultValue !== undefined &&
+    parameter.defaultValue !== "..."
+    ? `${parameter.defaultValue}`
+    : defaultComment
+      ? defaultComment.content.map((content) => stripCode(content.text)).join()
+      : null
+}
+
+export function hasDefaultValues(parameters: ReflectionParameterType[]) {
+  const defaultValues = (parameters as ReflectionParameterType[]).map(
+    (param) =>
+      "defaultValue" in param &&
+      param.defaultValue !== "{}" &&
+      param.defaultValue !== "..." &&
+      !!param.defaultValue
+  )
+
+  return !defaultValues.every((value) => !value)
+}
+
+export function getComments(
+  parameter: ReflectionParameterType
+): Comment | undefined {
   if (parameter.type instanceof ReflectionType) {
     if (
       parameter.type?.declaration?.signatures &&
@@ -67,4 +298,22 @@ function getComments(parameter: ReflectionParameterType): Comment | undefined {
     }
   }
   return parameter.comment
+}
+
+// TODO we should add check for more types as necessary
+function getItemExpandText(
+  reflectionType?: string,
+  childrenKind?: ReflectionKind | null
+): string {
+  switch (childrenKind) {
+    case ReflectionKind.EnumMember:
+      return "It can be one of the following values"
+  }
+
+  switch (reflectionType) {
+    case "array":
+      return "Its items accept the following properties"
+    default:
+      return "It accepts the following properties"
+  }
 }

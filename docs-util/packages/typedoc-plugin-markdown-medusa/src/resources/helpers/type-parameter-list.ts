@@ -1,6 +1,6 @@
 import * as Handlebars from "handlebars"
 import { TypeParameterReflection } from "typedoc"
-import reflectionFomatter from "../../utils/reflection-formatter"
+import reflectionFormatter from "../../utils/reflection-formatter"
 
 export default function () {
   Handlebars.registerHelper(
@@ -12,7 +12,12 @@ export default function () {
 }
 
 function list(parameters: TypeParameterReflection[]) {
-  const items = parameters.map((parameter) => reflectionFomatter(parameter))
+  const items = parameters.map((parameter) =>
+    reflectionFormatter({
+      reflection: parameter,
+      type: "list",
+    })
+  )
 
   return items.join("\n")
 }

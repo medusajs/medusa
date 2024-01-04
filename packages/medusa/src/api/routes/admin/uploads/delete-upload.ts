@@ -23,7 +23,7 @@ import { IsString } from "class-validator"
  *       })
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

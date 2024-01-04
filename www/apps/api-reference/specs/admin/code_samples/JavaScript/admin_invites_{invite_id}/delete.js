@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.invites.delete(inviteId)
 .then(({ id, object, deleted }) => {
   console.log(id);
-});
+})

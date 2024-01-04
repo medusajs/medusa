@@ -1,12 +1,26 @@
+{{#if (sectionEnabled "member_declaration_title")}}
+
 {{{declarationTitle}}}
 
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_comment")}}
+
 {{> comment}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_example")}}
+
+{{{example this}}}
+
+{{/if}}
 
 {{#if (sectionEnabled "member_declaration_typeParameters")}}
 
 {{#if typeParameters}}
 
-{{titleLevel 4}} Type parameters
+{{{titleLevel}}} Type Parameters
 
 {{#with typeParameters}}
 
@@ -26,7 +40,7 @@
 
 {{#with type.declaration.indexSignature}}
 
-{{titleLevel 4}} Index signature
+{{titleLevel}} Index signature
 
 {{{indexSignatureTitle}}}
 
@@ -44,17 +58,21 @@
 
 {{#if type.declaration.children}}
 
-{{titleLevel 4}} Call signature
+{{{titleLevel}}} Call signature
 
 {{else}}
 
-{{titleLevel 4}} Type declaration
+{{{titleLevel}}} Type declaration
 
 {{/if}}
 
 {{#each type.declaration.signatures}}
 
-{{> member.signature showSources=false }}
+{{incrementCurrentTitleLevel}}
+
+{{> member.signature showSources=false parent=../type.declaration }}
+
+{{decrementCurrentTitleLevel}}
 
 {{/each}}
 
@@ -68,7 +86,7 @@
 
 {{#with type.declaration}}
 
-{{titleLevel 4}} Type declaration
+{{{titleLevel}}} Type declaration
 
 {{/with}}
 

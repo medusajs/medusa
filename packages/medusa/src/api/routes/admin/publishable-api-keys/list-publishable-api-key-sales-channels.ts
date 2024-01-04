@@ -1,8 +1,8 @@
-import { Request, Response } from "express"
 import { IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
-import { extendedFindParamsMixin } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/publishable-api-keys/{id}/sales-channels
@@ -24,9 +24,9 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.listSalesChannels()
- *         .then(({ sales_channels }) => {
- *           console.log(sales_channels.length)
- *         })
+ *       .then(({ sales_channels }) => {
+ *         console.log(sales_channels.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -64,10 +64,13 @@ export default async (req: Request, res: Response) => {
     "publishableApiKeyService"
   )
 
-  const filterableFields = req.filterableFields
+  const validated = await validator(
+    GetPublishableApiKeySalesChannelsParams,
+    req.query
+  )
 
   const salesChannels = await publishableApiKeyService.listSalesChannels(id, {
-    q: filterableFields.q as string | undefined,
+    q: validated.q,
   })
 
   return res.json({
@@ -75,7 +78,13 @@ export default async (req: Request, res: Response) => {
   })
 }
 
-export class GetPublishableApiKeySalesChannelsParams extends extendedFindParamsMixin() {
+/**
+ * Parameters used to filter the sales channels.
+ */
+export class GetPublishableApiKeySalesChannelsParams {
+  /**
+   * Search term to search sales channels' names and descriptions.
+   */
   @IsOptional()
   @IsString()
   q?: string

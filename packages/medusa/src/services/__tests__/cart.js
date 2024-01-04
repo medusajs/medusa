@@ -1,28 +1,29 @@
-import { FlagRouter } from "@medusajs/utils"
-import { asClass, asValue, createContainer } from "awilix"
-import _ from "lodash"
-import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { IsNull, Not } from "typeorm"
-import { PaymentSessionStatus } from "../../models"
-import TaxCalculationStrategy from "../../strategies/tax-calculation"
-import { cacheServiceMock } from "../__mocks__/cache"
+import { NewTotalsService, PricingService, TaxProviderService } from "../index"
+import { asClass, asValue, createContainer } from "awilix"
+
+import CartService from "../cart"
 import { CustomerServiceMock } from "../__mocks__/customer"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { LineItemServiceMock } from "../__mocks__/line-item"
+import { FlagRouter } from "@medusajs/utils"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { LineItemServiceMock } from "../__mocks__/line-item"
+import { MedusaError } from "medusa-core-utils"
 import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import { PaymentSessionStatus } from "../../models"
 import { ProductServiceMock } from "../__mocks__/product"
-import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
+import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import CartService from "../cart"
-import { NewTotalsService, PricingService, TaxProviderService } from "../index"
 import SystemTaxService from "../system-tax"
+import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import _ from "lodash"
+import { cacheServiceMock } from "../__mocks__/cache"
+import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -743,9 +744,9 @@ describe("CartService", () => {
       )
 
       expect(lineItemService.delete).toHaveBeenCalledTimes(1)
-      expect(lineItemService.delete).toHaveBeenCalledWith(
-        IdMap.getId("itemToRemove")
-      )
+      expect(lineItemService.delete).toHaveBeenCalledWith([
+        IdMap.getId("itemToRemove"),
+      ])
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
@@ -1640,23 +1641,32 @@ describe("CartService", () => {
     const cartRepository = MockRepository({
       findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cart-to-filter")) {
-          return Promise.resolve(cart3)
+          return Promise.resolve({
+            id: IdMap.getId("cart-to-filter"),
+            ...cart3,
+          })
         }
         if (q.where.id === IdMap.getId("cart-with-session")) {
-          return Promise.resolve(cart2)
+          return Promise.resolve({
+            id: IdMap.getId("cart-with-session"),
+            ...cart2,
+          })
         }
         if (q.where.id === IdMap.getId("cart-remove")) {
-          return Promise.resolve(cart4)
+          return Promise.resolve({ id: IdMap.getId("cart-remove"), ...cart4 })
         }
         if (q.where.id === IdMap.getId("cart-negative")) {
-          return Promise.resolve(cart4)
+          return Promise.resolve({ id: IdMap.getId("cart-negative"), ...cart4 })
         }
         if (
           q.where.id === IdMap.getId("cartWithMixedSelectedInitiatedSessions")
         ) {
-          return Promise.resolve(cart5)
+          return Promise.resolve({
+            id: IdMap.getId("cartWithMixedSelectedInitiatedSessions"),
+            ...cart5,
+          })
         }
-        return Promise.resolve(cart1)
+        return Promise.resolve({ id: q.where.id, ...cart1 })
       },
     })
 
@@ -2657,6 +2667,9 @@ describe("CartService", () => {
       .register("taxProviderService", asClass(TaxProviderService))
       .register("newTotalsService", asClass(NewTotalsService))
       .register("cartService", asClass(CartService))
+      .register("remoteQuery", asValue(null))
+      .register("remoteLink", asValue(null))
+      .register("pricingModuleService", asValue(undefined))
       .register("pricingService", asClass(PricingService))
 
     const cartService = container.resolve("cartService")

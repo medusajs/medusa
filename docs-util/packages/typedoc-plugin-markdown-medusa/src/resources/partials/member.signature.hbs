@@ -1,6 +1,12 @@
-{{#if (sectionEnabled "member_signature_title")}}
+{{{signatureTitle accessor parent}}}
 
-{{{signatureTitle accessor}}}
+{{#if (getFormattingOption "expandMembers")}}
+
+{{#if (hasMoreThanOneSignature parent)}}
+
+{{incrementCurrentTitleLevel}}
+
+{{/if}}
 
 {{/if}}
 
@@ -18,9 +24,17 @@
 
 {{/if}}
 
+{{#if (sectionEnabled "member_signature_example")}}
+
+{{{example this}}}
+
+{{/if}}
+
 {{#if (sectionEnabled "member_signature_typeParameters")}}
 
 {{#if typeParameters}}
+
+{{{titleLevel}}} Type Parameters
 
 {{#with typeParameters}}
 
@@ -36,15 +50,7 @@
 
 {{#if parameters}}
 
-{{#if showSources}}
-
-{{titleLevel 4}} Parameters
-
-{{else}}
-
-{{titleLevel 5}} Parameters
-
-{{/if}}
+{{{titleLevel}}} Parameters
 
 {{#with parameters}}
 
@@ -60,17 +66,9 @@
 
 {{#if type}}
 
-{{#if showSources}}
+{{{titleLevel}}} Returns
 
-{{titleLevel 4}} Returns
-
-{{else}}
-
-{{titleLevel 5}} Returns
-
-{{/if}}
-
-{{#if (getFormattingOption "showReturnSignature")}}
+{{#if (sectionEnabled "member_signature_returns")}}
 
 {{#with type}}
 
@@ -80,11 +78,7 @@
 
 {{/if}}
 
-{{#with comment}}
-
 {{{returns this}}}
-
-{{/with}}
 
 {{#with type}}
 
@@ -92,11 +86,15 @@
 
 {{#if declaration.signatures}}
 
+{{incrementCurrentTitleLevel}}
+
 {{#each declaration.signatures}}
 
-{{> member.signature showSources=false }}
+{{> member.signature showSources=false parent=../declaration }}
 
 {{/each}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/if}}
 
@@ -128,7 +126,7 @@
 
 {{#if hasVisibleComponent}}
 
-{{{comments this false true 4}}}
+{{{comments this false true ..}}}
 
 {{/if}}
 
@@ -140,7 +138,21 @@
 
 {{#if showSources}}
 
+{{incrementCurrentTitleLevel}}
+
 {{> member.sources}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (getFormattingOption "expandMembers")}}
+
+{{#if (hasMoreThanOneSignature parent)}}
+
+{{decrementCurrentTitleLevel}}
 
 {{/if}}
 

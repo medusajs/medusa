@@ -4,7 +4,7 @@ addHowToData: true
 ---
 
 import Feedback from '@site/src/components/Feedback';
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import AdminLoginSection from '../troubleshooting/signing-in-to-admin.md'
 import CorsSection from '../troubleshooting/cors-issues.md'
 
@@ -56,7 +56,7 @@ npm install @medusajs/admin
 
 In `medusa-config.js`, add the admin plugin into the array of `plugins`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -165,9 +165,9 @@ You can learn more about the admin dashboard and its features in the [User Guide
 
 ## Multi-Language Support
 
-Medusa supports multiple languages and translations.
+Medusa supports multiple languages and translations. Check out available languages [here](../user-guide/tips/languages.md).
 
-Refer to this user guide to learn how to switch the language of the Medusa admin.
+Refer to [this user guide](../user-guide/users/profile.md#change-admin-language) to learn how to switch the language of the Medusa admin.
 
 :::note
 
@@ -179,7 +179,7 @@ Can't find your language? Learn how you can contribute by translating the admin 
 
 ## Troubleshooting Installation
 
-<Troubleshooting
+<DetailsList
   sections={[
     {
       title: 'Signing into Admin',

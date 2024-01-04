@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The list of uploaded files.
+ */
 export interface AdminUploadsRes {
   /**
    * Uploaded files details.

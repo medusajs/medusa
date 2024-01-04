@@ -55,7 +55,7 @@ Make sure to replace `<YOUR_ACCOUNT_SID>`, `<YOUR_AUTH_TOKEN>`, and `<YOUR_TWILI
 
 Finally, add the plugin and its options in the `medusa-config.js` file to the `plugins` array:
 
-```jsx title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -73,71 +73,62 @@ const plugins = [
 
 ## Example Usage of the Plugin
 
-This plugin adds the service `twilioSmsService` to your Medusa backend. To send SMS using it, all you have to do is resolve it in your file as explained in the [Services](../../development/services/create-service.mdx#using-your-custom-service) documentation.
+This plugin adds the service `twilioSmsService` to your Medusa backend. To send SMS using it, all you have to do is resolve it in your file as explained in the [dependency injection](../../development/fundamentals/dependency-injection.md) documentation.
 
-In this example, you’ll create a subscriber that listens to the `order.placed` event and sends an SMS to the customer to confirm their order.
+In this example, you’ll create a [subscriber](../../development/events/subscribers.mdx) that listens to the `order.placed` event and sends an SMS to the customer to confirm their order.
 
 :::tip
 
-For this example to work, you'll need to have an event bus module installed and configured, which should be available by default.
+For this example to work, you'll need to have an [event bus module](../../development/events/index.mdx) installed and configured, which should be available by default.
 
 :::
 
-Create the file `src/services/sms.js` in your Medusa backend with the following content:
+Create the file `src/subscriber/sms.ts` in your Medusa backend with the following content:
 
-```jsx title=src/services/sms.js
-class SmsSubscriber {
-  constructor({ 
-    twilioSmsService, 
-    orderService, 
-    eventBusService,
-  }) {
-    this.twilioSmsService_ = twilioSmsService
-    this.orderService = orderService
+```ts title="src/subscriber/sms.ts"
+import { 
+  type SubscriberConfig, 
+  type SubscriberArgs,
+  OrderService,
+} from "@medusajs/medusa"
 
-    eventBusService.subscribe("order.placed", this.sendSMS)
-  }
+export default async function handleOrderPlaced({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const twilioSmsService = container.resolve("twilioSmsService")
+  const orderService: OrderService = container.resolve(
+    "orderService"
+  )
 
-  sendSMS = async (data) => {
-    const order = await this.orderService.retrieve(data.id, {
-      relations: ["shipping_address"],
+  const order = await orderService.retrieve(data.id, {
+    relations: ["shipping_address"],
+  })
+
+  if (order.shipping_address.phone) {
+    twilioSmsService.sendSms({
+      to: order.shipping_address.phone,
+      body: "We have received your order #" + data.id,
     })
-
-    if (order.shipping_address.phone) {
-      this.twilioSmsService_.sendSms({
-        to: order.shipping_address.phone,
-        body: "We have received your order #" + data.id,
-      })
-    }
   }
 }
 
-export default SmsSubscriber
+export const config: SubscriberConfig = {
+  event: OrderService.Events.PLACED,
+  context: {
+    subscriberId: "order-placed-handler",
+  },
+}
 ```
 
-In the `constructor`, you resolve the `twilioSmsService` and `orderService` using dependency injection to use it later in the `sendSMS` method.
+In the handler function, you resolve the `twilioSmsService` and `orderService` using `container` of type [MedusaContainer](../../development/fundamentals/dependency-injection.md). You then retrieve the order's details, and send an SMS to the customer based on the phone number in their shipping address.
 
-You also subscribe to the event `order.placed` and sets the event handler to be `sendSMS`.
+The `sendSms` method of the Twilio service accepts an object of parameters. These parameters are based on Twilio’s SMS APIs. You can check their [API documentation](https://www.twilio.com/docs/sms/api/message-resource#create-a-message-resource) for more fields that you can add.
 
-In `sendSMS`, you first retrieve the order with its relation to `shipping_address` which contains a `phone` field. If the phone is set, you send an SMS to the customer using the method `sendSms` in the `twilioSmsService`.
-
-This method accepts an object of parameters. These parameters are based on Twilio’s SMS APIs. You can check their [API documentation](https://www.twilio.com/docs/sms/api/message-resource#create-a-message-resource) for more fields that you can add.
-
-If you create an order now on your storefront, you should receive a message from Twilio on the phone number you entered in the shipping address.
-
-:::tip
-
-If you don’t have a storefront set up yet, you can install the [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx).
-
-:::
-
-:::caution
+:::warning
 
 If you’re on a Twilio trial make sure that the phone number you entered on checkout is a [verified Twilio number on your console](https://console.twilio.com/us1/develop/phone-numbers/manage/verified).
 
 :::
-
-![Twilio Dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001219/Medusa%20Docs/Stripe/MXtQMiL_kb7kxe.png)
 
 ---
 

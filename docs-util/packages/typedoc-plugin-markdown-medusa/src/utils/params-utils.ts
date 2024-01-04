@@ -23,13 +23,16 @@ export function flattenParams(
 
 export function parseParams(
   current: ReflectionParameterType,
-  acc: ReflectionParameterType[]
+  acc: ReflectionParameterType[],
+  flatten?: boolean
 ): ReflectionParameterType[] {
   const shouldFlatten =
-    current.type &&
-    "declaration" in current.type &&
-    current.type?.declaration?.kind === ReflectionKind.TypeLiteral &&
-    current.type?.declaration?.children
+    flatten !== undefined
+      ? flatten
+      : current.type &&
+        "declaration" in current.type &&
+        current.type?.declaration?.kind === ReflectionKind.TypeLiteral &&
+        current.type?.declaration?.children
   return shouldFlatten
     ? [...acc, current, ...flattenParams(current)]
     : [...acc, current]

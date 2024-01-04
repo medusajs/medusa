@@ -33,7 +33,7 @@ export interface ProductVariant {
    */
   prices?: Array<MoneyAmount>
   /**
-   * The unique stock keeping unit used to identify the Product Variant. This will usually be a unqiue identifer for the item that is to be shipped, and can be referenced across multiple systems.
+   * The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems.
    */
   sku: string | null
   /**

@@ -21,7 +21,7 @@ A tax calculation strategy should be defined in a TypeScript or JavaScript file 
 
 For example, you can create the file `src/strategies/tax-calculation.ts` with the following content:
 
-```ts title=src/strategies/tax-calculation.ts
+```ts title="src/strategies/tax-calculation.ts"
 import { 
   ITaxCalculationStrategy,
   LineItem,
@@ -52,7 +52,7 @@ Note that you add a basic implementation of the `calculate` method because it’
 
 You can use a constructor to access services and resources registered in the dependency container using dependency injection. For example:
 
-```ts title=src/strategies/tax-calculation.ts
+```ts title="src/strategies/tax-calculation.ts"
 // ...
 import {
   LineItemService,
@@ -89,8 +89,8 @@ If automatic tax calculation is disabled, then the tax calculation strategy will
 
 The `calculate` method expects three parameters:
 
-- `items`: the first parameter is an array of [line item](../../../references/entities/classes/LineItem.md) objects.
-- `taxLines`: the second parameter is an array of either [shipping method tax line](../../../references/entities/classes/ShippingMethodTaxLine.md) or [line item tax line](../../../references/entities/classes/LineItemTaxLine.md) objects.
+- `items`: the first parameter is an array of [line item](../../../references/entities/classes/entities.LineItem.mdx) objects.
+- `taxLines`: the second parameter is an array of either [shipping method tax line](../../../references/entities/classes/entities.ShippingMethodTaxLine.mdx) or [line item tax line](../../../references/entities/classes/entities.LineItemTaxLine.mdx) objects.
 - `calculationContext`: an object holding the context of the tax calculation. The object has the following properties:
   - `shipping_address`: an optional address object used for shipping.
   - `customer`: an optional customer object.

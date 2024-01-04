@@ -1,10 +1,9 @@
-import { mergeTypeDefs } from "@graphql-tools/merge"
-import { makeExecutableSchema } from "@graphql-tools/schema"
-import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
+  LoaderOptions,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -14,19 +13,35 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModulesSdkUtils,
+  createMedusaContainer,
   isObject,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
-import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
+import {
+  MODULE_PACKAGE_NAMES,
+  ModuleRegistrationName,
+  Modules,
+} from "./definitions"
 import { MedusaModule } from "./medusa-module"
+import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
+import { asValue } from "awilix"
+import { makeExecutableSchema } from "@graphql-tools/schema"
+import { mergeTypeDefs } from "@graphql-tools/merge"
+
+const LinkModulePackage = "@medusajs/link-modules"
+
+export type RunMigrationFn = (
+  options?: ModuleServiceInitializeOptions,
+  injectedDependencies?: Record<any, any>
+) => Promise<void>
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
+    | boolean
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-    | true
 }
 
 export type SharedResources = {
@@ -49,8 +64,9 @@ export type SharedResources = {
   }
 }
 
-async function loadModules(modulesConfig, injectedDependencies) {
+async function loadModules(modulesConfig, sharedContainer) {
   const allModules = {}
+
   await Promise.all(
     Object.keys(modulesConfig).map(async (moduleName) => {
       const mod = modulesConfig[moduleName]
@@ -76,14 +92,18 @@ async function loadModules(modulesConfig, injectedDependencies) {
         declaration.resources = MODULE_RESOURCE_TYPE.SHARED
       }
 
-      const loaded = (await MedusaModule.bootstrap(
-        moduleName,
-        path,
+      const loaded = (await MedusaModule.bootstrap({
+        moduleKey: moduleName,
+        defaultPath: path,
         declaration,
-        undefined,
-        injectedDependencies,
-        definition
-      )) as LoadedModule
+        sharedContainer,
+        moduleDefinition: definition,
+      })) as LoadedModule
+
+      const service = loaded[moduleName]
+      sharedContainer.register({
+        [service.__definition.registrationName]: asValue(service),
+      })
 
       if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
         allModules[moduleName] = []
@@ -99,16 +119,24 @@ async function loadModules(modulesConfig, injectedDependencies) {
   return allModules
 }
 
-async function initializeLinks(linkModules, injectedDependencies) {
+async function initializeLinks(config, linkModules, injectedDependencies) {
   try {
-    const { initialize: initializeLinks } = await import(
-      "@medusajs/link-modules" as string
+    const { initialize, runMigrations } = await import(LinkModulePackage)
+    const linkResolution = await initialize(
+      config,
+      linkModules,
+      injectedDependencies
     )
-    await initializeLinks({}, linkModules, injectedDependencies)
-    return new RemoteLink()
+
+    return { remoteLink: new RemoteLink(), linkResolution, runMigrations }
   } catch (err) {
     console.warn("Error initializing link modules.", err)
-    return undefined
+
+    return {
+      remoteLink: undefined,
+      linkResolution: undefined,
+      runMigrations: undefined,
+    }
   }
 }
 
@@ -134,8 +162,21 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
   }
 }
 
+export type MedusaAppOutput = {
+  modules: Record<string, LoadedModule | LoadedModule[]>
+  link: RemoteLink | undefined
+  query: (
+    query: string | RemoteJoinerQuery | object,
+    variables?: Record<string, unknown>
+  ) => Promise<any>
+  entitiesMap?: Record<string, any>
+  notFound?: Record<string, Record<string, string>>
+  runMigrations: RunMigrationFn
+}
+
 export async function MedusaApp(
   {
+    sharedContainer,
     sharedResourcesConfig,
     servicesConfig,
     modulesConfigPath,
@@ -145,6 +186,7 @@ export async function MedusaApp(
     remoteFetchData,
     injectedDependencies,
   }: {
+    sharedContainer?: MedusaContainer
     sharedResourcesConfig?: SharedResources
     loadedModules?: LoadedModule[]
     servicesConfig?: ModuleJoinerConfig[]
@@ -166,7 +208,10 @@ export async function MedusaApp(
   ) => Promise<any>
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
+  runMigrations: RunMigrationFn
 }> {
+  const sharedContainer_ = createMedusaContainer({}, sharedContainer)
+
   const modules: MedusaModuleConfig =
     modulesConfig ??
     (
@@ -175,6 +220,7 @@ export async function MedusaApp(
           process.cwd() + (modulesConfigFileName ?? "/modules-config")
       )
     ).default
+
   const dbData = ModulesSdkUtils.loadDatabaseConfig(
     "medusa",
     sharedResourcesConfig as ModuleServiceInitializeOptions,
@@ -194,8 +240,38 @@ export async function MedusaApp(
       })
   }
 
-  const allModules = await loadModules(modules, injectedDependencies)
-  const link = await initializeLinks(linkModules, injectedDependencies)
+  // remove the link module from the modules
+  const linkModule = modules[LinkModulePackage]
+  delete modules[LinkModulePackage]
+  let linkModuleOptions = {}
+
+  if (isObject(linkModule)) {
+    linkModuleOptions = linkModule
+  }
+
+  for (const injectedDependency of Object.keys(injectedDependencies)) {
+    sharedContainer_.register({
+      [injectedDependency]: asValue(injectedDependencies[injectedDependency]),
+    })
+  }
+
+  const allModules = await loadModules(modules, sharedContainer_)
+
+  // Share Event bus with link modules
+  injectedDependencies[ModuleRegistrationName.EVENT_BUS] =
+    sharedContainer_.resolve(ModuleRegistrationName.EVENT_BUS, {
+      allowUnregistered: true,
+    })
+
+  const {
+    remoteLink,
+    linkResolution,
+    runMigrations: linkModuleMigration,
+  } = await initializeLinks(
+    linkModuleOptions,
+    linkModules,
+    injectedDependencies
+  )
 
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
@@ -204,6 +280,7 @@ export async function MedusaApp(
     servicesConfig,
     customRemoteFetchData: remoteFetchData,
   })
+
   const query = async (
     query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
@@ -211,11 +288,32 @@ export async function MedusaApp(
     return await remoteQuery.query(query, variables)
   }
 
+  const runMigrations: RunMigrationFn = async (
+    linkModuleOptions
+  ): Promise<void> => {
+    for (const moduleName of Object.keys(allModules)) {
+      const moduleResolution = MedusaModule.getModuleResolutions(moduleName)
+
+      await MedusaModule.migrateUp(
+        moduleResolution.definition.key,
+        moduleResolution.resolutionPath as string,
+        moduleResolution.options
+      )
+    }
+
+    linkModuleMigration &&
+      (await linkModuleMigration({
+        options: linkModuleOptions,
+        injectedDependencies,
+      }))
+  }
+
   return {
     modules: allModules,
-    link,
+    link: remoteLink,
     query,
     entitiesMap: schema.getTypeMap(),
     notFound,
+    runMigrations,
   }
 }

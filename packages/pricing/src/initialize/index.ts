@@ -1,13 +1,14 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MedusaModule,
   MODULE_PACKAGE_NAMES,
+  MedusaModule,
   Modules,
 } from "@medusajs/modules-sdk"
 import { IPricingModuleService, ModulesSdkTypes } from "@medusajs/types"
+
+import { InitializeModuleInjectableDependencies } from "@types"
 import { moduleDefinition } from "../module-definition"
-import { InitializeModuleInjectableDependencies } from "../types"
 
 export const initialize = async (
   options?:
@@ -19,13 +20,15 @@ export const initialize = async (
 ): Promise<IPricingModuleService> => {
   const serviceKey = Modules.PRICING
 
-  const loaded = await MedusaModule.bootstrap<IPricingModuleService>(
-    serviceKey,
-    MODULE_PACKAGE_NAMES[Modules.PRICING],
-    options as InternalModuleDeclaration | ExternalModuleDeclaration,
-    moduleDefinition,
-    injectedDependencies
-  )
+  const loaded = await MedusaModule.bootstrap<IPricingModuleService>({
+    moduleKey: serviceKey,
+    defaultPath: MODULE_PACKAGE_NAMES[Modules.PRICING],
+    declaration: options as
+      | InternalModuleDeclaration
+      | ExternalModuleDeclaration,
+    injectedDependencies,
+    moduleExports: moduleDefinition,
+  })
 
   return loaded[serviceKey]
 }

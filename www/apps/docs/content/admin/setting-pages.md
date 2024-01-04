@@ -36,7 +36,7 @@ These changes may already be available in your Medusa project. They're included 
 
 First, update your `tsconfig.json` with the following configurations:
 
-```json title=tsconfig.json
+```json title="tsconfig.json"
 {
   "compilerOptions": {
     "target": "es2019",
@@ -77,7 +77,7 @@ The addition of `"jsx": "react-jsx"` specified how should TypeScript transform J
 
 Next, create the file `tsconfig.server.json` with the following content:
 
-```json title=tsconfig.server.json
+```json title="tsconfig.server.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -92,7 +92,7 @@ This is the configuration that will be used to transpile your custom backend cod
 
 Finally, create the file `tsconfig.admin.json` with the following content:
 
-```json title=tsconfig.admin.json
+```json title="tsconfig.admin.json"
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -131,7 +131,7 @@ For a setting page to be valid, it must default export a React component. There 
 
 For example, you can create the file `src/admin/settings/custom/page.tsx` with the following content:
 
-```tsx title=src/admin/settings/custom/page.tsx
+```tsx title="src/admin/settings/custom/page.tsx"
 import type { SettingConfig } from "@medusajs/admin"
 import { CustomIcon } from "../../icons/custom"
 
@@ -184,7 +184,7 @@ Every route receives props of the type `RouteProps`, which includes the `notify`
 
 For example:
 
-```tsx title=src/admin/settings/custom/page.tsx
+```tsx title="src/admin/settings/custom/page.tsx"
 import type { SettingConfig } from "@medusajs/admin"
 import type { SettingProps } from "@medusajs/admin"
 
@@ -226,7 +226,7 @@ For example, to customize the style of your custom setting page:
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/settings/custom/page.tsx
+```tsx title="src/admin/settings/custom/page.tsx"
 import type { SettingConfig } from "@medusajs/admin"
 
 const CustomSettingPage = () => {
@@ -269,7 +269,7 @@ If you're installing it in a plugin with admin customizations, make sure to incl
 
 For example, to add a link to another page:
 
-```tsx title=src/admin/settings/custom/page.tsx
+```tsx title="src/admin/settings/custom/page.tsx"
 import type { SettingConfig } from "@medusajs/admin"
 import { Link } from "react-router-dom"
 
@@ -300,7 +300,7 @@ View [react-router-dom’s documentation](https://reactrouter.com/en/main) for
 
 ## Querying and Mutating Data
 
-You might need to interact with the Medusa backend from your admin setting page. To do so, you can utilize the Medusa React package. It contains a collection of queries and mutations built on `@tanstack/react-query` that lets you interact with the Medusa backend.
+You might need to interact with the Medusa backend from your admin setting page. To do so, you can utilize the Medusa React package. It contains a collection of queries and mutations built on `@tanstack/react-query@4.22` that lets you interact with the Medusa backend.
 
 :::note
 
@@ -310,7 +310,7 @@ Make sure to also install the Medusa React package first if you’re intending t
 
 For example, you can retrieve available products and display them in your route:
 
-```tsx title=src/admin/settings/custom/page.tsx
+```tsx title="src/admin/settings/custom/page.tsx"
 import type { SettingConfig } from "@medusajs/admin"
 import { useAdminProducts } from "medusa-react"
 
@@ -337,9 +337,9 @@ export const config: SettingConfig = {
 export default CustomSettingPage
 ```
 
-### Custom Endpoints
+### Custom API Routes
 
-You can also use `medusa-react` to interact with custom endpoints using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
+You can also use `medusa-react` to interact with custom API Routes using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
 
 ---
 

@@ -62,6 +62,10 @@ get:
     method: retrieve
     queryParams: StoreGetVariantsVariantParams
   x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_variants_{id}/get.js
     - lang: Shell
       label: cURL
       source:

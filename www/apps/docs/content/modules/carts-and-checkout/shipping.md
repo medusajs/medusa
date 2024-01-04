@@ -49,7 +49,7 @@ Once the Fulfillment Provider is added to the backend, the store operator will b
 
 ### FulfillmentProvider Entity Overview
 
-The [`FulfillmentProvider`](../../references/entities/classes/FulfillmentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
+The [`FulfillmentProvider`](../../references/entities/classes/entities.FulfillmentProvider.mdx) entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
 
 ---
 
@@ -73,7 +73,7 @@ For example, shipping heavy items might be more expensive than others, which wou
 
 ### ShippingProfile Entity Overview
 
-The [`ShippingProfile`](../../references/entities/classes/ShippingProfile.md) entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
+The [`ShippingProfile`](../../references/entities/classes/entities.ShippingProfile.mdx) entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
 
 The `ShippingProfile` has a `type` attribute that can be `default`, `gift_card`, or `custom`.
 
@@ -101,7 +101,7 @@ Think of a shipping option as a template defined by the admin that indicates wha
 
 ### ShippingOption Entity Overview
 
-The [`ShippingOption`](../../references/entities/classes/ShippingOption.md) entity belongs to the `ShippingProfile` entity.
+The [`ShippingOption`](../../references/entities/classes/entities.ShippingOption.mdx) entity belongs to the `ShippingProfile` entity.
 
 The `ShippingOption` entity also belongs to a `FulfillmentProvider`. This can be either a custom third-party provider or one of Medusa’s default fulfillment providers.
 
@@ -139,7 +139,7 @@ This separation allows for developers to implement the custom integration with t
 
 A lot of the shipping method’s attributes are similar to the shipping option’s attribute.
 
-The [`ShippingMethod`](../../references/entities/classes/ShippingMethod.md) entity belongs to a `ShippingOption`.
+The [`ShippingMethod`](../../references/entities/classes/entities.ShippingMethod.mdx) entity belongs to a `ShippingOption`.
 
 Similar to the `data` attribute explained for the `ShippingOption` entity, a `ShippingMethod` has a similar `data` attribute that includes all the data to be sent to the fulfillment provider when fulfilling the order.
 
@@ -153,5 +153,5 @@ The `ShippingMethod` instance holds a `price` attribute, which will either b
 
 ## See Also
 
-- [Create a Fulfillment Provider](./backend/add-fulfillment-provider.md)
+- [Create a Fulfillment Provider](../../references/fulfillment/classes/fulfillment.AbstractFulfillmentService.mdx)
 - [Available shipping plugins](https://github.com/medusajs/medusa/tree/master/packages)

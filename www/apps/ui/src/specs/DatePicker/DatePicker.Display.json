@@ -1,0 +1,36 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "DatePicker.Display",
+  "props": {
+    "placeholder": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "Placeholder of the date picker's input."
+    },
+    "size": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"small\" | \"base\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
+          {
+            "name": "literal",
+            "value": "\"base\""
+          }
+        ]
+      },
+      "description": "The size of the date picker's input.",
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      }
+    }
+  }
+}

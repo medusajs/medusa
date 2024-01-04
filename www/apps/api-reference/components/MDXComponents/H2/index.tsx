@@ -1,9 +1,9 @@
 "use client"
 
 import { InView } from "react-intersection-observer"
-import { useSidebar } from "docs-ui"
+import { isElmWindow, useScrollController, useSidebar } from "docs-ui"
 import checkElementInViewport from "../../../utils/check-element-in-viewport"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import getSectionId from "../../../utils/get-section-id"
 
 type H2Props = {
@@ -12,6 +12,7 @@ type H2Props = {
 
 const H2 = ({ addToSidebar = true, children, ...props }: H2Props) => {
   const { activePath, setActivePath, addItems } = useSidebar()
+  const { getScrolledTop, scrollableElement } = useScrollController()
 
   const handleViewChange = (
     inView: boolean,
@@ -24,7 +25,7 @@ const H2 = ({ addToSidebar = true, children, ...props }: H2Props) => {
     if (
       (inView ||
         checkElementInViewport(heading.parentElement || heading, 40)) &&
-      window.scrollY !== 0 &&
+      getScrolledTop() !== 0 &&
       activePath !== heading.id
     ) {
       // can't use next router as it doesn't support
@@ -50,6 +51,10 @@ const H2 = ({ addToSidebar = true, children, ...props }: H2Props) => {
     ])
   }, [])
 
+  const root = useMemo(() => {
+    return isElmWindow(scrollableElement) ? document.body : scrollableElement
+  }, [scrollableElement])
+
   return (
     <InView
       as="h2"
@@ -59,6 +64,7 @@ const H2 = ({ addToSidebar = true, children, ...props }: H2Props) => {
       {...props}
       onChange={handleViewChange}
       id={id}
+      root={root}
     >
       {children}
     </InView>

@@ -65,7 +65,7 @@ export interface PaymentService extends TransactionBaseService {
   createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>
 
   /**
-   * This will be @deprecated in the near future use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use createPayment(context: `Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
    * @param cart
    */
   createPayment(cart: Cart): Promise<PaymentSessionData>
@@ -146,6 +146,12 @@ export abstract class AbstractPaymentService
   extends TransactionBaseService
   implements PaymentService
 {
+  static _isPaymentService = true
+
+  static isPaymentService(object): boolean {
+    return object?.constructor?._isPaymentService
+  }
+
   protected constructor(container: unknown, config?: Record<string, unknown>) {
     super(container, config)
   }
@@ -183,7 +189,7 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionResponse>
 
   /**
-   * This will be @deprecated in the near future use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use `createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
    * @param cart
    */
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
@@ -205,7 +211,7 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionResponse | PaymentSessionResponse["session_data"]>
 
   /**
-   * This will be @deprecated in the near future use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use `updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
    * @param paymentSessionData
    * @param cart
    */
@@ -257,12 +263,4 @@ export abstract class AbstractPaymentService
    * This will be @deprecated in the near future
    */
   public abstract getStatus(data: Data): Promise<PaymentSessionStatus>
-}
-
-/**
- * Return if the input object is one of AbstractPaymentService or PaymentService or AbstractPaymentPluginService
- * @param obj
- */
-export function isPaymentService(obj: unknown): boolean {
-  return obj instanceof AbstractPaymentService || obj instanceof PaymentService
 }

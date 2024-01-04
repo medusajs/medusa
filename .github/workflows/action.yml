@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.20.2"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Assert changed
@@ -48,7 +48,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.20.2"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Assert changed
@@ -125,7 +125,6 @@ jobs:
         env:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
-          SPLIT: ${{ steps['split-tests'].outputs['split'] }}
 
   integration-tests-api:
     needs: setup
@@ -171,7 +170,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.20.2"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -186,7 +185,8 @@ jobs:
         run: yarn test:integration:api
         env:
           DB_PASSWORD: postgres
-          SPLIT: ${{ steps['split-tests'].outputs['split'] }}
+          DB_USERNAME: postgres
+
 
   integration-tests-plugins:
     needs: setup
@@ -223,7 +223,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.20.2"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -237,6 +237,7 @@ jobs:
       - name: Run plugin integration tests
         run: yarn test:integration:plugins
         env:
+          DB_USERNAME: postgres
           DB_PASSWORD: postgres
           NODE_OPTIONS: "--max_old_space_size=4096"
 
@@ -275,7 +276,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.20.2"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -286,4 +287,5 @@ jobs:
       - name: Run repository integration tests
         run: yarn test:integration:repositories
         env:
+          DB_USERNAME: postgres
           DB_PASSWORD: postgres

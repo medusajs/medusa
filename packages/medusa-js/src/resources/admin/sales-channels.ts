@@ -14,12 +14,32 @@ import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
+/**
+ * This class is used to send requests to [Admin Sales Channel API Routes](https://docs.medusajs.com/api/admin#sales-channels). All its method
+ * are available in the JS Client under the `medusa.admin.salesChannels` property.
+ * 
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * A sales channel indicates a channel where products can be sold in. For example, a webshop or a mobile app.
+ * Admins can manage sales channels and the products available in them.
+ * 
+ * Related Guide: [How to manage sales channels](https://docs.medusajs.com/modules/sales-channels/admin/manage).
+ */
 class AdminSalesChannelsResource extends BaseResource {
-  /** retrieve a sales channel
-   * @experimental This feature is under development and may change in the future.
-   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
-   * @description gets a sales channel
-   * @returns a medusa sales channel
+  /**
+   * Retrieve a sales channel's details.
+   * @param {string} salesChannelId - The sales channel's ID.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.retrieve(salesChannelId)
+   * .then(({ sales_channel }) => {
+   *   console.log(sales_channel.id)
+   * })
    */
   retrieve(
     salesChannelId: string,
@@ -29,9 +49,23 @@ class AdminSalesChannelsResource extends BaseResource {
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
-  /* *
-   * Create a medusa sales channel
-   * @returns the created channel
+  /**
+   * Create a sales channel.
+   * @param {AdminPostSalesChannelsReq} payload - The sales channel to create.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.create({
+   *   name: "App",
+   *   description: "Mobile app"
+   * })
+   * .then(({ sales_channel }) => {
+   *   console.log(sales_channel.id);
+   * })
    */
   create(
     payload: AdminPostSalesChannelsReq,
@@ -41,11 +75,23 @@ class AdminSalesChannelsResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  /** update a sales channel
-   * @experimental This feature is under development and may change in the future.
-   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
-   * @description updates a sales channel
-   * @returns the updated medusa sales channel
+  /**
+   * Update a sales channel's details.
+   * @param {string} salesChannelId - The sales channel's ID.
+   * @param {AdminPostSalesChannelsSalesChannelReq} payload - The attributes to update in the sales channel.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.update(salesChannelId, {
+   *   name: "App"
+   * })
+   * .then(({ sales_channel }) => {
+   *   console.log(sales_channel.id)
+   * })
    */
   update(
     salesChannelId: string,
@@ -57,11 +103,53 @@ class AdminSalesChannelsResource extends BaseResource {
   }
 
   /**
-   * Retrieve a list of sales channels
-   * @experimental This feature is under development and may change in the future.
-   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
-   * @description Retrieve a list of sales channels
-   * @returns the list of sales channel as well as the pagination properties
+   * Retrieve a list of sales channels. The sales channels can be filtered by fields such as `q` or `name` passed in the `query` parameter. The sales channels can also be sorted or paginated.
+   * @param {AdminGetSalesChannelsParams} query - Filters and pagination configurations applied on the retrieved sales channels.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsListRes>} Resolves to the list of sales channels with pagination fields.
+   * 
+   * @example
+   * To list sales channels:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.list()
+   * .then(({ sales_channels, limit, offset, count }) => {
+   *   console.log(sales_channels.length)
+   * })
+   * ```
+   * 
+   * To specify relations that should be retrieved within the sales channels:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.list({
+   *   expand: "locations"
+   * })
+   * .then(({ sales_channels, limit, offset, count }) => {
+   *   console.log(sales_channels.length)
+   * })
+   * ```
+   * 
+   * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.list({
+   *   expand: "locations",
+   *   limit,
+   *   offset
+   * })
+   * .then(({ sales_channels, limit, offset, count }) => {
+   *   console.log(sales_channels.length)
+   * })
+   * ```
    */
   list(
     query?: AdminGetSalesChannelsParams,
@@ -78,11 +166,19 @@ class AdminSalesChannelsResource extends BaseResource {
   }
 
   /**
-   * Delete a sales channel
-   * @experimental This feature is under development and may change in the future.
-   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
-   * @description gets a sales channel
-   * @returns an deletion result
+   * Delete a sales channel. Associated products, stock locations, and other resources are not deleted.
+   * @param {string} salesChannelId - The sales channel's ID.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsDeleteRes>} Resolves to the deletion operation's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.delete(salesChannelId)
+   * .then(({ id, object, deleted }) => {
+   *   console.log(id)
+   * })
    */
   delete(
     salesChannelId: string,
@@ -93,11 +189,26 @@ class AdminSalesChannelsResource extends BaseResource {
   }
 
   /**
-   * Remove products from a sales channel
-   * @experimental This feature is under development and may change in the future.
-   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
-   * @description Remove products from a sales channel
-   * @returns a medusa sales channel
+   * Remove a list of products from a sales channel. This doesn't delete the product. It only removes the association between the product and the sales channel.
+   * @param {string} salesChannelId - The sales channel's ID.
+   * @param {AdminDeleteSalesChannelsChannelProductsBatchReq} payload - The products to remove from the sales channel.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.removeProducts(salesChannelId, {
+   *   product_ids: [
+   *     {
+   *       id: productId
+   *     }
+   *   ]
+   * })
+   * .then(({ sales_channel }) => {
+   *   console.log(sales_channel.id)
+   * })
    */
   removeProducts(
     salesChannelId: string,
@@ -109,11 +220,26 @@ class AdminSalesChannelsResource extends BaseResource {
   }
 
   /**
-   * Add products to a sales channel
-   * @experimental This feature is under development and may change in the future.
-   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
-   * @description Add products to a sales channel
-   * @returns a medusa sales channel
+   * Add a list of products to a sales channel.
+   * @param {string} salesChannelId - The sales channel's ID. 
+   * @param {AdminPostSalesChannelsChannelProductsBatchReq} payload - The products to add to the sales channel.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.addProducts(salesChannelId, {
+   *   product_ids: [
+   *     {
+   *       id: productId
+   *     }
+   *   ]
+   * })
+   * .then(({ sales_channel }) => {
+   *   console.log(sales_channel.id)
+   * })
    */
   addProducts(
     salesChannelId: string,
@@ -125,11 +251,22 @@ class AdminSalesChannelsResource extends BaseResource {
   }
 
   /**
-   * Add a location to a sales channel
-   * @experimental This feature is under development and may change in the future.
-   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
-   * @description Add a stock location to a SalesChannel
-   * @returns the Medusa SalesChannel
+   * Associate a stock location with a sales channel.
+   * @param {string} salesChannelId - The sales channel's ID. 
+   * @param {AdminPostSalesChannelsChannelStockLocationsReq} payload - The stock location to associate with the sales channel.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.addLocation(salesChannelId, {
+   *   location_id: "loc_123"
+   * })
+   * .then(({ sales_channel }) => {
+   *   console.log(sales_channel.id)
+   * })
    */
   addLocation(
     salesChannelId: string,
@@ -141,11 +278,22 @@ class AdminSalesChannelsResource extends BaseResource {
   }
 
   /**
-   * remove a location from a sales channel
-   * @experimental This feature is under development and may change in the future.
-   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
-   * @description Remove a stock location from a SalesChannel
-   * @returns an deletion result
+   * Remove a stock location from a sales channel. This only removes the association between the stock location and the sales channel. It does not delete the stock location.
+   * @param {string} salesChannelId - The sales channel's ID.
+   * @param {AdminDeleteSalesChannelsChannelStockLocationsReq} payload - The stock location to remove from the sales channel.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.salesChannels.removeLocation(salesChannelId, {
+   *   location_id: "loc_id"
+   * })
+   * .then(({ sales_channel }) => {
+   *   console.log(sales_channel.id);
+   * })
    */
   removeLocation(
     salesChannelId: string,

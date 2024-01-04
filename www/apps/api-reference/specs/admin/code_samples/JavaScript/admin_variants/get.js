@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.variants.list()
 .then(({ variants, limit, offset, count }) => {
   console.log(variants.length);
-});
+})

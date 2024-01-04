@@ -36,7 +36,6 @@ describe("PriceSet Service", () => {
           id: "money-amount-USD",
           currency_code: "EUR",
           amount: 100,
-          rules: {},
         },
       ],
     },
@@ -124,9 +123,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])
@@ -151,9 +150,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])
@@ -227,9 +226,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])

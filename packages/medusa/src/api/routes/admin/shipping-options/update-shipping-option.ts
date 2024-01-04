@@ -1,6 +1,7 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNumber,
   IsObject,
   IsOptional,
@@ -9,13 +10,14 @@ import {
 } from "class-validator"
 import { defaultFields, defaultRelations } from "."
 
-import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
+import { ShippingOptionPriceType } from "../../../../models"
 import { ShippingOptionService } from "../../../../services"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { Type } from "class-transformer"
 import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/shipping-options/{id}
@@ -51,7 +53,7 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  *       })
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -123,8 +125,10 @@ class OptionRequirement {
   @IsString()
   @IsOptional()
   id: string
+
   @IsString()
   type: string
+
   @IsNumber()
   amount: number
 }
@@ -139,10 +143,12 @@ class OptionRequirement {
  *     description: "The name of the Shipping Option"
  *     type: string
  *   amount:
- *     description: "The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used."
+ *     description: >-
+ *       The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used.
  *     type: integer
  *   admin_only:
- *     description: If set to `true`, the shipping option can only be used when creating draft orders.
+ *     description: >-
+ *       If set to `true`, the shipping option can only be used when creating draft orders.
  *     type: boolean
  *   metadata:
  *     description: "An optional set of key-value pairs with additional information."
@@ -184,6 +190,12 @@ export class AdminPostShippingOptionsOptionReq {
   @IsNumber()
   @IsOptional()
   amount?: number
+
+  @IsEnum(ShippingOptionPriceType, {
+    message: `Invalid price type, must be one of "flat_rate" or "calculated"`,
+  })
+  @IsOptional()
+  price_type?: ShippingOptionPriceType
 
   @IsArray()
   @ValidateNested({ each: true })
