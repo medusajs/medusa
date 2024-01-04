@@ -218,14 +218,14 @@ describe("AuthenticationModuleService - AuthUser", () => {
       await service.updateAuthUser([
         {
           id,
-          email: "test@test.com",
+          provider_metadata: { email: "test@email.com" },
         },
       ])
 
       const [authUser] = await service.listAuthUsers({ id: [id] })
       expect(authUser).toEqual(
         expect.objectContaining({
-          email: "test@test.com",
+          provider_metadata: { email: "test@email.com" },
         })
       )
     })
@@ -236,7 +236,6 @@ describe("AuthenticationModuleService - AuthUser", () => {
       await service.createAuthUser([
         {
           id: "test",
-          email: "test@test.com",
           provider_id: "manual",
         },
       ])
@@ -249,7 +248,6 @@ describe("AuthenticationModuleService - AuthUser", () => {
       expect(authUser[0]).toEqual(
         expect.objectContaining({
           id: "test",
-          email: "test@test.com",
         })
       )
     })
