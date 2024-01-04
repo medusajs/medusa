@@ -42,6 +42,11 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
 
   describe("POST /store/carts/:id", () => {
     let product
+    let product2
+    let product3
+
+    const salesChannelId = "sales-channel"
+    const defaultSalesChannelId = "default-sales-channel"
 
     beforeEach(async () => {
       await simpleRegionFactory(dbConnection, {
@@ -55,13 +60,13 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
       product = await simpleProductFactory(dbConnection, {
         sales_channels: [
           {
-            id: "sales-channel",
+            id: salesChannelId,
             name: "Sales channel",
             description: "Sales channel",
             is_disabled: false,
           },
           {
-            id: "default-sales-channel",
+            id: defaultSalesChannelId,
             name: "Main sales channel",
             description: "Main sales channel",
             is_default: true,
@@ -69,6 +74,10 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
           },
         ],
       })
+
+      product2 = await simpleProductFactory(dbConnection)
+
+      product3 = await simpleProductFactory(dbConnection)
     })
 
     afterEach(async () => {
@@ -91,7 +100,7 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
             quantity: 1,
           },
         ],
-        sales_channel_id: "sales-channel",
+        sales_channel_id: salesChannelId,
       })
 
       const cart = createCartRes.data.cart
@@ -110,7 +119,7 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
       expect(createdOrder.status).toEqual(200)
       expect(createdOrder.data.data).toEqual(
         expect.objectContaining({
-          sales_channel_id: "sales-channel",
+          sales_channel_id: salesChannelId,
         })
       )
     })
@@ -151,6 +160,41 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
           sales_channel_id: "default-sales-channel",
         })
       )
+    })
+
+    it("should remove the line items that does not belong to the new sales channel", async () => {
+      const api = useApi()
+
+      let createCartRes = await api.post("/store/carts", {
+        region_id: "test-region",
+        items: [
+          {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+          },
+          {
+            variant_id: product2.variants[0].id,
+            quantity: 1,
+          },
+          {
+            variant_id: product3.variants[0].id,
+            quantity: 1,
+          },
+        ],
+        sales_channel_id: defaultSalesChannelId,
+      })
+
+      let items = createCartRes.data.cart.items
+      expect(items).toHaveLength(3)
+
+      const cartId = createCartRes.data.cart.id
+      createCartRes = await api.post(`/store/carts/${cartId}`, {
+        sales_channel_id: salesChannelId,
+      })
+
+      items = createCartRes.data.cart.items
+      expect(items).toHaveLength(1)
+      expect(items.map((i) => i.variant.id)).toEqual([product.variants[0].id])
     })
   })
 })

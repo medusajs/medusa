@@ -6,9 +6,11 @@ import {
 import { PromotionUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
   Enum,
   Index,
+  ManyToMany,
   OnInit,
   OneToOne,
   OptionalProps,
@@ -16,8 +18,15 @@ import {
   Property,
 } from "@mikro-orm/core"
 import Promotion from "./promotion"
+import PromotionRule from "./promotion-rule"
 
-type OptionalFields = "value" | "max_quantity" | "allocation"
+type OptionalFields =
+  | "value"
+  | "max_quantity"
+  | "allocation"
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
 @Entity()
 export default class ApplicationMethod {
   [OptionalProps]?: OptionalFields
@@ -26,10 +35,10 @@ export default class ApplicationMethod {
   id!: string
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  value?: number
+  value?: number | null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  max_quantity?: number
+  max_quantity?: number | null
 
   @Index({ name: "IDX_application_method_type" })
   @Enum(() => PromotionUtils.ApplicationMethodType)
@@ -51,12 +60,19 @@ export default class ApplicationMethod {
   })
   promotion: Promotion
 
+  @ManyToMany(() => PromotionRule, "application_methods", {
+    owner: true,
+    pivotTable: "application_method_promotion_rule",
+    cascade: ["soft-remove"] as any,
+  })
+  target_rules = new Collection<PromotionRule>(this)
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -64,18 +80,18 @@ export default class ApplicationMethod {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at: Date | null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "app_method")
+    this.id = generateEntityId(this.id, "proappmet")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "promo")
+    this.id = generateEntityId(this.id, "proappmet")
   }
 }

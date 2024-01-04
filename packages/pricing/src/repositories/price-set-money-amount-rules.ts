@@ -1,9 +1,9 @@
 import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 
 import { PriceSetMoneyAmountRules } from "@models"
@@ -72,7 +72,7 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRep
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const psmar = data.map((psmarData) => {
-      return manager.create(PriceSetMoneyAmountRules, psmarData)
+      return manager.create(PriceSetMoneyAmountRules, psmarData as any)
     })
 
     manager.persist(psmar)
@@ -114,7 +114,7 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRep
         )
       }
 
-      return manager.assign(existingRecord, psmarData)
+      return manager.assign(existingRecord, psmarData as any)
     })
 
     manager.persist(psmar)

@@ -48,6 +48,18 @@ export interface PriceRuleDTO {
    * The ID of the associated price list.
    */
   price_list_id: string
+  /**
+   * When the price_rule was created.
+   */
+  created_at: Date
+  /**
+   * When the price_rule was updated.
+   */
+  updated_at: Date
+  /**
+   * When the price_rule was deleted.
+   */
+  deleted_at: null | Date
 }
 
 /**
