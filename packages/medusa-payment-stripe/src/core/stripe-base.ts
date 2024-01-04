@@ -322,16 +322,16 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
   protected buildError(
     message: string,
-    e: Stripe.StripeRawError | PaymentProcessorError | Error
+    error: Stripe.StripeRawError | PaymentProcessorError | Error
   ): PaymentProcessorError {
     return {
       error: message,
-      code: "code" in e ? e.code : "",
-      detail: isPaymentProcessorError(e)
-        ? `${e.error}${EOL}${e.detail ?? ""}`
-        : "detail" in e
-        ? e.detail
-        : e.message ?? "",
+      code: "code" in error ? error.code : "unknown",
+      detail: isPaymentProcessorError(error)
+        ? `${error.error}${EOL}${error.detail ?? ""}`
+        : "detail" in error
+        ? error.detail
+        : error.message ?? "",
     }
   }
 }
