@@ -8137,7 +8137,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.10.0, @medusajs/utils@^1.10.5, @medusajs/utils@^1.11.1, @medusajs/utils@^1.11.2, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
