@@ -77,24 +77,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
-        "password_hash": {
-          "name": "password_hash",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "provider_id": {
           "name": "provider_id",
           "type": "text",
@@ -121,20 +103,20 @@
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "provider_metadata": {
+          "name": "provider_metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
         }
       },
       "name": "auth_user",
       "schema": "public",
       "indexes": [
-        {
-          "columnNames": [
-            "email"
-          ],
-          "composite": false,
-          "keyName": "IDX_auth_user_email",
-          "primary": false,
-          "unique": false
-        },
         {
           "keyName": "auth_user_pkey",
           "columnNames": [

@@ -20,20 +20,6 @@ export default class AuthUser {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({
-    columnType: "text",
-    index: "IDX_auth_user_email",
-    nullable: true,
-  })
-  email: string | null
-
-  @Property({
-    columnType: "text",
-    nullable: true,
-    hidden: true,
-  })
-  password_hash: string | null
-
   @ManyToOne(() => AuthProvider, {
     joinColumn: "provider",
     fieldName: "provider_id",
@@ -46,6 +32,9 @@ export default class AuthUser {
 
   @Property({ columnType: "jsonb", nullable: true })
   app_metadata: Record<string, unknown> | null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  provider_metadata: Record<string, unknown> | null
 
   @BeforeCreate()
   onCreate() {
