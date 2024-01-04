@@ -7,6 +7,7 @@ import {
   OnInit,
   OneToMany,
   OneToOne,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -21,6 +22,8 @@ type OptionalCartProps =
 
 @Entity({ tableName: "cart" })
 export default class Cart {
+  [OptionalProps]?: OptionalCartProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 

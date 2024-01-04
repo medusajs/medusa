@@ -28,7 +28,7 @@ export default class ShippingMethod {
   cart: Cart
 
   @Property({ columnType: "text" })
-  title: string
+  name: string
 
   @Property({ columnType: "jsonb", nullable: true })
   description?: string | null
@@ -38,7 +38,7 @@ export default class ShippingMethod {
   amount: number
 
   @Property({ columnType: "boolean" })
-  tax_inclusive = false
+  is_tax_inclusive = false
 
   @Property({ columnType: "text", nullable: true })
   shipping_option_id?: string | null

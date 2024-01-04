@@ -1,24 +1,15 @@
 import { FindConfig } from "../common"
-import { IModuleService, ModuleJoinerConfig } from "../modules-sdk"
+import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
-import {
-  CartDTO,
-  CreateCartDTO,
-  FilterableCartProps,
-  UpdateCartDTO
-} from "./common"
+import { CartDTO, FilterableCartProps } from "./common"
+import { AddLineItemsDTO, CreateCartDTO, UpdateCartDTO, UpdateLineItemsDTO } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
-  /**
-   * @ignore
-   */
-  __joinerConfig(): ModuleJoinerConfig
-
   retrieve(
     cartId: string,
-    config?: FindConfig<any>,
+    config?: FindConfig<CartDTO>,
     sharedContext?: Context
-  ): Promise<any>
+  ): Promise<CartDTO>
 
   list(
     filters?: FilterableCartProps,
@@ -38,10 +29,20 @@ export interface ICartModuleService extends IModuleService {
 
   delete(productIds: string[], sharedContext?: Context): Promise<void>
 
-  // addLineItems(cartId: string, lineItems: CreateLineItemDTO)
-  // addLineItems(cartId: string, lineItems: CreateLineItemDTO[])
-  // updateLineItem(cartId: string, lineItems: UpdateCartDTO)
-  // updateLineItem(cartId: string, lineItems: UpdateCartDTO[])
-  // removeLineItems(cartId: string, lineItems: string)
-  // removeLineItems(cartId: string, lineItems: string[])
+  addLineItems(data: AddLineItemsDTO, sharedContext?: Context): Promise<CartDTO>
+  addLineItems(
+    data: AddLineItemsDTO[],
+    sharedContext?: Context
+  ): Promise<CartDTO[]>
+
+  updateLineItems(
+    data: UpdateLineItemsDTO,
+    sharedContext?: Context
+  ): Promise<CartDTO>
+  updateLineItems(
+    data: UpdateLineItemsDTO[],
+    sharedContext?: Context
+  ): Promise<CartDTO[]>
+
+  removeLineItems(lineItemIds: string[], sharedContext?: Context): Promise<void>
 }

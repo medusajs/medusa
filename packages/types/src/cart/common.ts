@@ -1,151 +1,228 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 
-export interface UpsertAddressDTO {
-  customer_id?: string
-  first_name?: string
-  last_name?: string
-  phone?: string
-  company?: string
-  address_1?: string
-  address_2?: string
-  city?: string
-  country_code?: string
-  province?: string
-  postal_code?: string
-  metadata?: Record<string, unknown>
+export interface AdjustmentLineDTO {
+  /**
+   * The ID of the adjustment line
+   */
+  id: string
+  /**
+   * The code of the adjustment line
+   */
+  code: string
+  /**
+   * The amount of the adjustment line
+   */
+  amount: number
+  /**
+   * The description of the adjustment line
+   */
+  description?: string
+  /**
+   * The ID of the associated promotion
+   */
+  promotion_id?: string
+  /**
+   * The ID of the associated provider
+   */
+  provider_id?: string
+  /**
+   * When the adjustment line was created
+   */
+  created_at?: Date | string
+  /**
+   * When the adjustment line was updated
+   */
+  updated_at?: Date | string
 }
 
-export interface CreateCartDTO {
-  region_id?: string
-  customer_id?: string
-  sales_channel_id?: string
-
-  email: string
-  currency_code: string
-
-  shipping_address_id?: string
-  billing_address_id?: string
-  billing_address?: UpsertAddressDTO | string
-  shipping_address?: UpsertAddressDTO | string
-
-  metadata?: Record<string, unknown>
+export interface ShippingMethodAdjustmentLineDTO extends AdjustmentLineDTO {
+  /**
+   * The associated shipping method
+   */
+  shipping_method: CartShippingMethodDTO
 }
 
-export interface UpdateCartDTO {
-  region_id?: string
-  customer_id?: string
-  sales_channel_id?: string
-  email?: string
-  currency_code?: string
-
-  shipping_address_id?: string
-  billing_address_id?: string
-  billing_address?: UpsertAddressDTO | string
-  shipping_address?: UpsertAddressDTO | string
-
-  metadata?: Record<string, unknown>
+export interface LineItemAdjustmentLineDTO extends AdjustmentLineDTO {
+  /**
+   * The associated line item
+   */
+  line_item: CartLineItemDTO
 }
 
 export interface TaxLineDTO {
+  /**
+   * The ID of the tax line
+   */
   id: string
-
+  /**
+   * The description of the tax line
+   */
+  description?: string
+  /**
+   * The ID of the associated tax rate
+   */
+  tax_rate_id?: string
+  /**
+   * The code of the tax line
+   */
   code: string
+  /**
+   * The rate of the tax line
+   */
   rate: number
-
-  description?: string | null
-  tax_rate_id?: string | null
-  provider_id?: string | null
-
-  created_at: Date
-  updated_at: Date
-  deleted_at?: Date | null
+  /**
+   * The ID of the associated provider
+   */
+  provider_id?: string
+  /**
+   * When the tax line was created
+   */
+  created_at?: Date | string
+  /**
+   * When the tax line was updated
+   */
+  updated_at?: Date | string
 }
 
-export interface AdjustmentLineDTO {
+export interface ShippingMethodTaxLineDTO extends TaxLineDTO {
+  /**
+   * The associated shipping method
+   */
+  shipping_method: CartShippingMethodDTO
+}
+
+export interface LineItemTaxLineDTO extends TaxLineDTO {
+  /**
+   * The associated line item
+   */
+  line_item: CartLineItemDTO
+}
+
+export interface CartAddressDTO {
+  /**
+   * The ID of the address
+   */
   id: string
-
-  code: string
-  amount: number
-
-  description?: string | null
-  promotion_id?: string | null
-  provider_id?: string | null
-}
-
-export interface ShippingMethodAdjustmentLine {
-  shipping_method_id: string
-  shipping_method: ShippingMethodDTO
-
-  adjustment_line_id: string
-  adjustment_line: AdjustmentLineDTO
-}
-
-export interface LineItemAdjustmentLine {
-  line_item_id: string
-  line_item: LineItemDTO
-
-  adjustment_line_id: string
-  adjustment_line: AdjustmentLineDTO
-}
-
-export interface ShippingMethodTaxLineDTO {
-  shipping_method_id: string
-  shipping_method: ShippingMethodDTO
-
-  tax_line_id: string
-  tax_line: TaxLineDTO
-}
-
-export interface LineItemTaxLineDTO {
-  line_item_id: string
-  line_item: LineItemDTO
-
-  tax_line_id: string
-  tax_line: TaxLineDTO
-}
-
-export interface AddressDTO {
-  id: string
-
-  customer_id?: string | null
-  first_name?: string | null
-  last_name?: string | null
-  phone?: string | null
-  company?: string | null
-  address_1?: string | null
-  address_2?: string | null
-  city?: string | null
-  country_code?: string | null
-  province?: string | null
-  postal_code?: string | null
-
-  metadata?: Record<string, unknown> | null
-
+  /**
+   * The customer ID of the address
+   */
+  customer_id?: string
+  /**
+   * The first name of the address
+   */
+  first_name?: string
+  /**
+   * The last name of the address
+   */
+  last_name?: string
+  /**
+   * The phone number of the address
+   */
+  phone?: string
+  /**
+   * The company of the address
+   */
+  company?: string
+  /**
+   * The first address line of the address
+   */
+  address_1?: string
+  /**
+   * The second address line of the address
+   */
+  address_2?: string
+  /**
+   * The city of the address
+   */
+  city?: string
+  /**
+   * The country code of the address
+   */
+  country_code?: string
+  /**
+   * The province/state of the address
+   */
+  province?: string
+  /**
+   * The postal code of the address
+   */
+  postal_code?: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
+  /**
+   * When the address was created.
+   */
   created_at?: Date
+  /**
+   * When the address was updated.
+   */
   updated_at?: Date
-  deleted_at?: Date | null
 }
 
-export interface ShippingMethodDTO {
+export interface CartShippingMethodDTO {
+  /**
+   * The ID of the shipping method
+   */
   id: string
 
-  cart_id: string
+  /**
+   * The name of the shipping method
+   */
+  name: string
+  /**
+   * The description of the shipping method
+   */
+  description?: string
 
-  title: string
-  description?: string | null
-
+  /**
+   * The price of the shipping method
+   */
   unit_price: number
 
-  tax_inclusive: boolean
+  /**
+   * Whether the shipping method price is tax inclusive or not
+   */
+  is_tax_inclusive: boolean
 
-  shipping_option_id?: string | null
-  data?: Record<string, unknown> | null
-  metadata?: Record<string, unknown> | null
+  /**
+   * The ID of the shipping option the method was created from
+   */
+  shipping_option_id?: string
 
-  cart: CartDTO
-  tax_lines: ShippingMethodTaxLineDTO[]
-  adjustments: ShippingMethodAdjustmentLine[]
+  /**
+   * Additional data needed for fulfillment.
+   */
+  data?: Record<string, unknown>
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
+
+  /**
+   * The associated tax lines.
+   *
+   * @expandable
+   */
+  tax_lines?: ShippingMethodTaxLineDTO[]
+  /**
+   * The associated adjustments.
+   *
+   * @expandable
+   */
+  adjustments?: ShippingMethodAdjustmentLineDTO[]
+
+  /**
+   * When the shipping method was created.
+   */
+  created_at: Date
+  /**
+   * When the shipping method was updated.
+   */
+  updated_at: Date
 
   original_total: number
   original_subtotal: number
@@ -156,52 +233,125 @@ export interface ShippingMethodDTO {
   tax_total: number
   discount_total: number
   discount_tax_total: number
-
-  created_at: Date
-  updated_at: Date
-  deleted_at?: Date | null
 }
 
-export interface LineItemDTO {
+export interface CartLineItemDTO {
+  /**
+   * The ID of the line item.
+   */
   id: string
-
-  cart_id: string
-
+  /**
+   * The title of the line item.
+   */
   title: string
-  subtitle?: string | null
-  thumbnail?: string | null
-
+  /**
+   * The subtitle of the line item.
+   */
+  subtitle?: string
+  /**
+   * The url of the line item thumbnail.
+   */
+  thumbnail?: string
+  /**
+   * The line item quantity
+   */
   quantity: number
-
-  product_id?: string | null
-  product_title?: string | null
-  product_description?: string | null
-  product_subtitle?: string | null
-  product_type?: string | null
-  product_collection?: string | null
-  product_handle?: string | null
-
-  variant_id?: string | null
-  variant_sku?: string | null
-  variant_barcode?: string | null
-  variant_title?: string | null
-  variant_option_values?: Record<string, unknown> | null
-
+  /**
+   * The product ID of the line item.
+   */
+  product_id?: string
+  /**
+   * The product title of the line item.
+   */
+  product_title?: string
+  /**
+   * The product description of the line item.
+   */
+  product_description?: string
+  /**
+   * The product subtitle of the line item.
+   */
+  product_subtitle?: string
+  /**
+   * The product type of the line item.
+   */
+  product_type?: string
+  /**
+   * The product collection of the line item.
+   */
+  product_collection?: string
+  /**
+   * The product handle of the line item.
+   */
+  product_handle?: string
+  /**
+   * The variant ID of the line item.
+   */
+  variant_id?: string
+  /**
+   * The variant sku of the line item.
+   */
+  variant_sku?: string
+  /**
+   * The variant barcode of the line item.
+   */
+  variant_barcode?: string
+  /**
+   * The variant title of the line item.
+   */
+  variant_title?: string
+  /**
+   * The variant option values of the line item.
+   */
+  variant_option_values?: Record<string, unknown>
+  /**
+   * Whether the line item requires shipping or not
+   */
   requires_shipping: boolean
+  /**
+   * Whether the line item is discountable or not
+   */
   is_discountable: boolean
+  /**
+   * Whether the line item price is tax inclusive or not
+   */
   is_tax_inclusive: boolean
-
-  compare_at_unit_price?: number | null
+  /**
+   * The original price of the item before an adjustment or a sale.
+   */
+  compare_at_unit_price?: number
+  /**
+   * The price of the item
+   */
   unit_price: number
+  /**
+   * The associated tax lines.
+   *
+   * @expandable
+   */
+  tax_lines?: LineItemTaxLineDTO[]
+  /**
+   * The associated adjustments.
+   *
+   * @expandable
+   */
+  adjustments?: LineItemAdjustmentLineDTO[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+  /**
+   * When the line item was created.
+   */
+  created_at?: Date
+  /**
+   * When the line item was updated.
+   */
+  updated_at?: Date
 
-  cart: CartDTO
-
-  tax_lines: LineItemTaxLineDTO[]
-  adjustments: LineItemAdjustmentLine[]
-
-  compare_at_total: number
-  compare_at_subtotal: number
-  compare_at_tax_total: number
+  compare_at_total?: number
+  compare_at_subtotal?: number
+  compare_at_tax_total?: number
 
   original_total: number
   original_subtotal: number
@@ -216,104 +366,73 @@ export interface LineItemDTO {
   tax_total: number
   discount_total: number
   discount_tax_total: number
-
-  created_at?: Date
-  updated_at?: Date
-  deleted_at?: Date | null
-}
-
-export interface CreateLineItemDTO {
-  cart_id: string
-
-  title: string
-  subtitle?: string | null
-  thumbnail?: string | null
-
-  quantity: number
-
-  product_id?: string | null
-  product_title?: string | null
-  product_description?: string | null
-  product_subtitle?: string | null
-  product_type?: string | null
-  product_collection?: string | null
-  product_handle?: string | null
-
-  variant_id?: string | null
-  variant_sku?: string | null
-  variant_barcode?: string | null
-  variant_title?: string | null
-  variant_option_values?: Record<string, unknown> | null
-
-  requires_shipping?: boolean | null
-  is_discountable?: boolean | null
-  is_tax_inclusive?: boolean | null
-
-  compare_at_unit_price?: number | null
-  unit_price: number
-
-  // tax_lines: LineItemTaxLineDTO[]
-  // adjustments: LineItemAdjustmentLine[]
-}
-
-export interface UpdateLineItemDTO {
-  id: string
-
-  title?: string | null
-  subtitle?: string | null
-  thumbnail?: string | null
-
-  quantity?: number | null
-
-  product_id?: string | null
-  product_title?: string | null
-  product_description?: string | null
-  product_subtitle?: string | null
-  product_type?: string | null
-  product_collection?: string | null
-  product_handle?: string | null
-
-  variant_id?: string | null
-  variant_sku?: string | null
-  variant_barcode?: string | null
-  variant_title?: string | null
-  variant_option_values?: Record<string, unknown> | null
-
-  requires_shipping?: boolean | null
-  is_discountable?: boolean | null
-  is_tax_inclusive?: boolean | null
-
-  compare_at_unit_price?: number | null
-  unit_price?: number | null
-
-  // tax_lines: LineItemTaxLineDTO[]
-  // adjustments: LineItemAdjustmentLine[]
 }
 
 export interface CartDTO {
+  /**
+   * The ID of the cart.
+   */
   id: string
-  region_id?: string | null
-  customer_id?: string | null
-  sales_channel_id?: string | null
-
-  email: string
+  /**
+   * The ID of the region the cart belongs to.
+   */
+  region_id?: string
+  /**
+   * The ID of the customer on the cart.
+   */
+  customer_id?: string
+  /**
+   * The ID of the sales channel the cart belongs to.
+   */
+  sales_channel_id?: string
+  /**
+   * The email of the cart.
+   */
+  email?: string
+  /**
+   * The currency of the cart
+   */
   currency_code: string
+  /**
+   * The associated shipping address.
+   *
+   * @expandable
+   */
+  shipping_address?: CartAddressDTO
+  /**
+   * The associated billing address.
+   *
+   * @expandable
+   */
+  billing_address?: CartAddressDTO
+  /**
+   * The associated line items.
+   *
+   * @expandable
+   */
+  items?: CartLineItemDTO[]
+  /**
+   * The associated shipping methods
+   *
+   * @expandable
+   */
+  shipping_methods?: CartShippingMethodDTO[]
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
+  /**
+   * When the cart was created.
+   */
+  created_at?: string | Date
+  /**
+   * When the cart was updated.
+   */
+  updated_at?: string | Date
 
-  shipping_address_id?: string | null
-  shipping_address?: AddressDTO | null
-
-  billing_address_id?: string | null
-  billing_address?: AddressDTO | null
-
-  metadata?: Record<string, unknown> | null
-
-  items: LineItemDTO[]
-
-  shipping_methods: ShippingMethodDTO[]
-
-  compare_at_item_total: number
-  compare_at_item_subtotal: number
-  compare_at_item_tax_total: number
+  compare_at_item_total?: number
+  compare_at_item_subtotal?: number
+  compare_at_item_tax_total?: number
 
   original_item_total: number
   original_item_subtotal: number
@@ -340,10 +459,6 @@ export interface CartDTO {
   original_shipping_total: number
   original_shipping_subtotal: number
   original_shipping_tax_total: number
-
-  created_at?: Date
-  updated_at?: Date
-  deleted_at?: Date | null
 }
 
 export interface FilterableCartProps
