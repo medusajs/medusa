@@ -229,19 +229,41 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
     .offset(optionsWithoutRelations.skip)
     .limit(optionsWithoutRelations.take)
 
+  const mapToEntities = (array: any) => {
+    return array.map((rawProduct) => ({
+      id: rawProduct[`${alias}_id`],
+    })) as unknown as T[]
+  }
+
   let entities: T[]
   let count = 0
   if (shouldCount) {
-    const result = await promiseAll([outerQb.getRawMany(), qb.getCount()])
-    entities = result[0].map((rawProduct) => ({
-      id: rawProduct[`${alias}_id`],
-    })) as unknown as T[]
-    count = result[1]
+    const outerQbCount = new SelectQueryBuilder(
+      qb.connection,
+      (qb as any).obtainQueryRunner()
+    )
+      .select(`COUNT(1)`, `count`)
+      .from(`(${qb.getQuery()})`, alias)
+      .where(`${alias}.rownum = 1`)
+      .setParameters(qb.getParameters())
+      .setNativeParameters(qb.expressionMap.nativeParameters)
+      .orderBy()
+      .groupBy()
+      .offset(undefined)
+      .limit(undefined)
+      .skip(undefined)
+      .take(undefined)
+
+    const result = await promiseAll([
+      outerQb.getRawMany(),
+      outerQbCount.getRawOne(),
+    ])
+
+    entities = mapToEntities(result[0])
+    count = Number(result[1].count)
   } else {
     const result = await outerQb.getRawMany()
-    entities = result?.map((rawProduct) => ({
-      id: rawProduct[`${alias}_id`],
-    })) as unknown as T[]
+    entities = mapToEntities(result)
   }
 
   return [entities, count]
