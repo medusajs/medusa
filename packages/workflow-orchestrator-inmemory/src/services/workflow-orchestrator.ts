@@ -66,18 +66,15 @@ const AnySubscriber = "any"
 
 export class WorkflowOrchestratorService {
   private subscribers: Subscribers = new Map()
-  private workflowOrchestratorService_: WorkflowOrchestratorService
 
   constructor({
     inMemoryDistributedTransactionStorage,
-    workflowOrchestratorService,
   }: {
     inMemoryDistributedTransactionStorage: InMemoryDistributedTransactionStorage
     workflowOrchestratorService: WorkflowOrchestratorService
   }) {
+    inMemoryDistributedTransactionStorage.setWorkflowOrchestratorService(this)
     DistributedTransaction.setStorage(inMemoryDistributedTransactionStorage)
-
-    this.workflowOrchestratorService_ = workflowOrchestratorService
   }
 
   @InjectSharedContext()
@@ -129,7 +126,7 @@ export class WorkflowOrchestratorService {
 
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
-      this.workflowOrchestratorService_.notify({
+      this.notify({
         eventType: "onFinish",
         workflowId,
         transactionId: context.transactionId,
@@ -215,7 +212,7 @@ export class WorkflowOrchestratorService {
 
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
-      this.workflowOrchestratorService_.notify({
+      this.notify({
         eventType: "onFinish",
         workflowId,
         transactionId,
@@ -272,7 +269,7 @@ export class WorkflowOrchestratorService {
 
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
-      this.workflowOrchestratorService_.notify({
+      this.notify({
         eventType: "onFinish",
         workflowId,
         transactionId,

@@ -22,15 +22,16 @@ type OptionalFields = "deleted_at"
 export default class WorkflowExecution {
   [OptionalProps]?: OptionalFields
 
-  @PrimaryKey({ columnType: "text" })
+  @Property({ columnType: "text", nullable: false })
+  @Index({ name: "IDX_workflow_execution_id" })
   id!: string
 
-  @Property({ columnType: "text" })
   @Index({ name: "IDX_workflow_execution_workflow_id" })
+  @PrimaryKey({ columnType: "text" })
   workflow_id: string
 
-  @Property({ columnType: "text" })
   @Index({ name: "IDX_workflow_execution_transaction_id" })
+  @PrimaryKey({ columnType: "text" })
   transaction_id: string
 
   @Property({ columnType: "jsonb", nullable: true })

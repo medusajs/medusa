@@ -21,15 +21,31 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
 
   constructor({
     workflowExecutionService,
-    workflowOrchestratorService,
   }: {
     workflowExecutionService: WorkflowExecutionService
-    workflowOrchestratorService: WorkflowOrchestratorService
   }) {
     super()
 
     this.workflowExecutionService_ = workflowExecutionService
+  }
+
+  setWorkflowOrchestratorService(workflowOrchestratorService) {
     this.workflowOrchestratorService_ = workflowOrchestratorService
+  }
+
+  private async saveToDb(data: TransactionCheckpoint) {
+    await this.workflowExecutionService_.upsert([
+      {
+        workflow_id: data.flow.modelId,
+        transaction_id: data.flow.transactionId,
+        definition: JSON.stringify(data.flow.definition),
+        context: JSON.stringify({
+          data: data.context,
+          errors: data.errors,
+        }),
+        state: data.flow.state,
+      },
+    ])
   }
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
@@ -46,28 +62,30 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     ttl?: number
   ): Promise<void> {
     this.storage.set(key, data)
-    // TODO: check if step is async or initializing the flow
 
-    await this.workflowExecutionService_.upsert([
-      {
-        workflow_id: data.flow.modelId,
-        transaction_id: data.flow.transactionId,
-        definition: JSON.stringify(data.flow.definition),
-        context: JSON.stringify({
-          data: data.context,
-          errors: data.errors,
-        }),
-        state: data.flow.state,
-      },
-    ])
+    if (data.flow.options?.retentionTime == undefined) {
+      return
+    }
+
+    await this.saveToDb(data)
   }
 
   async delete(key: string): Promise<void> {
     this.storage.delete(key)
   }
 
-  async archive(key: string, options?: TransactionModelOptions): Promise<void> {
+  async archive(
+    key: string,
+    data: TransactionCheckpoint,
+    options?: TransactionModelOptions
+  ): Promise<void> {
     this.storage.delete(key)
+
+    if (options?.retentionTime == undefined) {
+      return
+    }
+
+    await this.saveToDb(data)
   }
 
   async scheduleRetry(

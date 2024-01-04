@@ -5,6 +5,7 @@ import {
   DistributedTransaction,
   DistributedTransactionEvent,
   DistributedTransactionEvents,
+  TransactionModelOptions,
   TransactionOrchestrator,
   TransactionStepsDefinition,
 } from "../transaction"
@@ -24,6 +25,7 @@ export class LocalWorkflow {
   protected container: MedusaContainer
   protected workflowId: string
   protected flow: OrchestratorBuilder
+  protected customOptions: Partial<TransactionModelOptions> = {}
   protected workflow: WorkflowDefinition
   protected handlers: Map<string, StepHandler>
 
@@ -64,10 +66,21 @@ export class LocalWorkflow {
   protected commit() {
     const finalFlow = this.flow.build()
 
+    const globalWorkflow = WorkflowManager.getWorkflow(this.workflowId)
+    const customOptions = {
+      ...globalWorkflow?.options,
+      ...this.customOptions,
+    }
+
     this.workflow = {
       id: this.workflowId,
       flow_: finalFlow,
-      orchestrator: new TransactionOrchestrator(this.workflowId, finalFlow),
+      orchestrator: new TransactionOrchestrator(
+        this.workflowId,
+        finalFlow,
+        customOptions
+      ),
+      options: customOptions,
       handler: WorkflowManager.buildHandlers(this.handlers),
       handlers_: this.handlers,
     }
@@ -359,6 +372,10 @@ export class LocalWorkflow {
     cleanUpEventListeners()
 
     return transaction
+  }
+
+  setOptions(options: Partial<TransactionModelOptions>) {
+    return this
   }
 
   addAction(

@@ -23,7 +23,7 @@ export default async ({
       defaultServices.WorkflowExecutionService
     ).singleton(),
     workflowOrchestratorService: asClass(
-      defaultServices.WorkflowExecutionService
+      defaultServices.WorkflowOrchestratorService
     ).singleton(),
 
     inMemoryDistributedTransactionStorage: asClass(

@@ -31,7 +31,11 @@ export class BaseInMemoryDistributedTransactionStorage extends DistributedTransa
     this.storage.delete(key)
   }
 
-  async archive(key: string, options?: TransactionModelOptions): Promise<void> {
+  async archive(
+    key: string,
+    data: TransactionCheckpoint,
+    options?: TransactionModelOptions
+  ): Promise<void> {
     this.storage.delete(key)
   }
 }

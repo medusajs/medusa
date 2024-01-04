@@ -68,6 +68,10 @@ export class TransactionOrchestrator extends EventEmitter {
     return flow.steps[parentId]
   }
 
+  public getOptions(): TransactionModelOptions {
+    return this.options ?? {}
+  }
+
   private getInvokeSteps(flow: TransactionFlow): string[] {
     if (this.invokeSteps.length) {
       return this.invokeSteps

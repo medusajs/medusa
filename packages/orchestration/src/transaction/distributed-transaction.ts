@@ -248,7 +248,14 @@ export class DistributedTransaction extends EventEmitter {
       this.modelId,
       this.transactionId
     )
-    await DistributedTransaction.keyValueStore.archive(key, options)
+
+    const data = new TransactionCheckpoint(
+      this.getFlow(),
+      this.getContext(),
+      this.getErrors()
+    )
+
+    await DistributedTransaction.keyValueStore.archive(key, data, options)
   }
 
   public async scheduleRetry(
