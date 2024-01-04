@@ -33,6 +33,9 @@ export interface PriceRuleDTO {
   priority: number
   price_set_money_amount_id: string
   price_list_id: string
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
 }
 
 export interface FilterablePriceRuleProps
