@@ -6,6 +6,11 @@ import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
+import { createPriceSets } from "../../../__fixtures__/price-set"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { createPriceRules } from "../../../__fixtures__/price-rule"
+import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 
 jest.setTimeout(30000)
 
@@ -261,6 +266,94 @@ describe("PricingModule Service - MoneyAmount", () => {
       })
 
       expect(moneyAmounts).toHaveLength(0)
+    })
+  })
+
+  describe("softDeleteMoneyAmounts", () => {
+    const id = "money-amount-USD"
+
+    it("should softDelete priceSetMoneyAmount and PriceRule when soft-deleting money amount", async () => {
+      await createPriceSets(testManager)
+      await createRuleTypes(testManager)
+      await createPriceSetMoneyAmounts(testManager)
+      await createPriceRules(testManager)
+      await createPriceSetMoneyAmountRules(testManager)
+      await service.softDeleteMoneyAmounts([id])
+
+      const [moneyAmount] = await service.listMoneyAmounts(
+        {
+          id: [id],
+        },
+        {
+          relations: [
+            "price_set_money_amount",
+            "price_set_money_amount.price_rules",
+          ],
+          withDeleted: true,
+        }
+      )
+
+      expect(moneyAmount).toBeTruthy()
+
+      const deletedAt = moneyAmount.deleted_at
+
+      expect(moneyAmount).toEqual(
+        expect.objectContaining({
+          deleted_at: deletedAt,
+          price_set_money_amount: expect.objectContaining({
+            deleted_at: deletedAt,
+            price_rules: [
+              expect.objectContaining({
+                deleted_at: deletedAt,
+              }),
+            ],
+          }),
+        })
+      )
+    })
+  })
+
+  describe("restoreDeletedMoneyAmounts", () => {
+    const id = "money-amount-USD"
+
+    it("should restore softDeleted priceSetMoneyAmount and PriceRule when restoring soft-deleting money amount", async () => {
+      await createPriceSets(testManager)
+      await createRuleTypes(testManager)
+      await createPriceSetMoneyAmounts(testManager)
+      await createPriceRules(testManager)
+      await createPriceSetMoneyAmountRules(testManager)
+      await service.softDeleteMoneyAmounts([id])
+      await service.restoreDeletedMoneyAmounts([id])
+
+      const [moneyAmount] = await service.listMoneyAmounts(
+        {
+          id: [id],
+        },
+        {
+          relations: [
+            "price_set_money_amount",
+            "price_set_money_amount.price_rules",
+          ],
+        }
+      )
+
+      expect(moneyAmount).toBeTruthy()
+
+      const deletedAt = null
+
+      expect(moneyAmount).toEqual(
+        expect.objectContaining({
+          deleted_at: deletedAt,
+          price_set_money_amount: expect.objectContaining({
+            deleted_at: deletedAt,
+            price_rules: [
+              expect.objectContaining({
+                deleted_at: deletedAt,
+              }),
+            ],
+          }),
+        })
+      )
     })
   })
 
