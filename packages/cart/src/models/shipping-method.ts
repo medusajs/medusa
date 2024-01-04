@@ -1,11 +1,10 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Check,
   Collection,
   Entity,
-  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -17,13 +16,16 @@ import ShippingMethodAdjustmentLine from "./shipping-method-adjustment-line"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
 
 @Entity({ tableName: "cart_shipping_method" })
-@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingMethod {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
-  cart_id: string
+  @ManyToOne(() => Cart, {
+    onDelete: "cascade",
+    index: "IDX_shipping_method_cart_id",
+    fieldName: "cart_id",
+  })
+  cart: Cart
 
   @Property({ columnType: "text" })
   title: string
@@ -35,8 +37,8 @@ export default class ShippingMethod {
   @Check({ expression: "amount >= 0" }) // TODO: Validate that numeric types work with the expression
   amount: number
 
-  @Property({ columnType: "boolean", default: false })
-  tax_inclusive: boolean
+  @Property({ columnType: "boolean" })
+  tax_inclusive = false
 
   @Property({ columnType: "text", nullable: true })
   shipping_option_id?: string | null
@@ -47,18 +49,11 @@ export default class ShippingMethod {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
-  @ManyToOne(() => Cart, {
-    onDelete: "cascade",
-    index: "IDX_shipping_method_cart_id",
-    fieldName: "cart_id",
-  })
-  cart: Cart
-
   @OneToMany(
     () => ShippingMethodTaxLine,
     (taxLine) => taxLine.shipping_method,
     {
-      cascade: [Cascade.REMOVE, "soft-remove"] as any,
+      cascade: [Cascade.REMOVE],
     }
   )
   tax_lines = new Collection<ShippingMethodTaxLine>(this)
@@ -67,20 +62,24 @@ export default class ShippingMethod {
     () => ShippingMethodAdjustmentLine,
     (adjustment) => adjustment.shipping_method,
     {
-      cascade: [Cascade.REMOVE, "soft-remove"] as any,
+      cascade: [Cascade.REMOVE],
     }
   )
   adjustments = new Collection<ShippingMethodAdjustmentLine>(this)
 
-  original_total: number
-  original_subtotal: number
-  original_tax_total: number
+  /** COMPUTED PROPERTIES - START */
 
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  discount_tax_total: number
+  // original_total: number
+  // original_subtotal: number
+  // original_tax_total: number
+
+  // total: number
+  // subtotal: number
+  // tax_total: number
+  // discount_total: number
+  // discount_tax_total: number
+
+  /** COMPUTED PROPERTIES - END */
 
   @Property({
     onCreate: () => new Date(),
@@ -96,9 +95,6 @@ export default class ShippingMethod {
     defaultRaw: "now()",
   })
   updated_at: Date
-
-  @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date | null
 
   @BeforeCreate()
   onCreate() {

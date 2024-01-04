@@ -1,18 +1,23 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
-  Filter,
   OnInit,
+  OptionalProps,
   PrimaryKey,
-  Property,
+  Property
 } from "@mikro-orm/core"
 
+
+type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+
 @Entity({ tableName: "cart_address" })
-@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Address {
+  [OptionalProps]: OptionalAddressProps
+
   @PrimaryKey({ columnType: "text" })
-  id: string
+  id!: string
 
   @Property({ columnType: "text", nullable: true })
   customer_id?: string | null
@@ -64,9 +69,6 @@ export default class Address {
     defaultRaw: "now()",
   })
   updated_at: Date
-
-  @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date | null
 
   @BeforeCreate()
   onCreate() {

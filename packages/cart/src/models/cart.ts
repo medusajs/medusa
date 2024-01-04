@@ -1,12 +1,12 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
   Entity,
-  Filter,
-  ManyToOne,
   OnInit,
   OneToMany,
+  OneToOne,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -14,8 +14,12 @@ import Address from "./address"
 import LineItem from "./line-item"
 import ShippingMethod from "./shipping-method"
 
+type OptionalCartProps =
+  | "shipping_address"
+  | "billing_address"
+  | DAL.EntityDateColumns // TODO: To be revisited when more clear
+
 @Entity({ tableName: "cart" })
-@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Cart {
   @PrimaryKey({ columnType: "text" })
   id: string
@@ -35,21 +39,17 @@ export default class Cart {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @Property({ columnType: "text", nullable: true })
-  shipping_address_id?: string | null
-
-  @ManyToOne(() => Address, {
-    nullable: true,
-    fieldName: "shipping_address_id",
+  @OneToOne({
+    entity: () => Address,
+    joinColumn: "shipping_address_id",
+    orphanRemoval: true,
   })
   shipping_address?: Address | null
 
-  @Property({ columnType: "text", nullable: true })
-  billing_address_id?: string | null
-
-  @ManyToOne(() => Address, {
-    nullable: true,
-    fieldName: "billing_address_id",
+  @OneToOne({
+    entity: () => Address,
+    joinColumn: "billing_address_id",
+    orphanRemoval: true,
   })
   billing_address?: Address | null
 
@@ -57,44 +57,48 @@ export default class Cart {
   metadata?: Record<string, unknown> | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
-    cascade: ["soft-remove"] as any,
+    orphanRemoval: true,
   })
   items = new Collection<LineItem>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.cart, {
-    cascade: ["soft-remove"] as any,
+    orphanRemoval: true,
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
-  compare_at_item_total?: number | null
-  compare_at_item_subtotal?: number  | null
-  compare_at_item_tax_total?: number | null
+  /** COMPUTED PROPERTIES - START */
 
-  original_item_total: number
-  original_item_subtotal: number
-  original_item_tax_total: number
+  // compare_at_item_total?: number
+  // compare_at_item_subtotal?: number
+  // compare_at_item_tax_total?: number
 
-  item_total: number
-  item_subtotal: number
-  item_tax_total: number
+  // original_item_total: number
+  // original_item_subtotal: number
+  // original_item_tax_total: number
 
-  original_total: number
-  original_subtotal: number
-  original_tax_total: number
+  // item_total: number
+  // item_subtotal: number
+  // item_tax_total: number
 
-  total: number
-  subtotal: number
-  tax_total: number
-  discount_total: number
-  discount_tax_total: number
+  // original_total: number
+  // original_subtotal: number
+  // original_tax_total: number
 
-  shipping_total: number
-  shipping_subtotal: number
-  shipping_tax_total: number
+  // total: number
+  // subtotal: number
+  // tax_total: number
+  // discount_total: number
+  // discount_tax_total: number
 
-  original_shipping_total: number
-  original_shipping_subtotal: number
-  original_shipping_tax_total: number
+  // shipping_total: number
+  // shipping_subtotal: number
+  // shipping_tax_total: number
+
+  // original_shipping_total: number
+  // original_shipping_subtotal: number
+  // original_shipping_tax_total: number
+
+  /** COMPUTED PROPERTIES - END */
 
   @Property({
     onCreate: () => new Date(),
@@ -110,9 +114,6 @@ export default class Cart {
     defaultRaw: "now()",
   })
   updated_at: Date
-
-  @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date | null
 
   @BeforeCreate()
   onCreate() {
