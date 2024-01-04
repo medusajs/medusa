@@ -1,5 +1,5 @@
 ---
-"@medusajs/medusa-react": patch
+"medusa-react": patch
 "@medusajs/types": patch
 "@medusajs/modules-sdk": patch
 ---
