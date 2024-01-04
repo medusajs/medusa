@@ -1,9 +1,9 @@
 import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 
 import { MoneyAmount } from "@models"
@@ -72,7 +72,7 @@ export class MoneyAmountRepository extends DALUtils.MikroOrmBaseRepository {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const moneyAmounts = data.map((moneyAmountData) => {
-      return manager.create(MoneyAmount, moneyAmountData)
+      return manager.create(MoneyAmount, moneyAmountData as any)
     })
 
     manager.persist(moneyAmounts)
