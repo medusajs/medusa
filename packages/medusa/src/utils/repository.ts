@@ -217,10 +217,7 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
    *
    * see: node_modules/typeorm/query-builder/SelectQueryBuilder.js(1973)
    */
-  const outerQb = new SelectQueryBuilder(
-    qb.connection,
-    (qb as any).obtainQueryRunner()
-  )
+  const outerQb = new SelectQueryBuilder(qb.connection, (qb as any).queryRunner)
     .select(`${qb.escape(`${alias}_id`)}`)
     .from(`(${qb.getQuery()})`, alias)
     .where(`${alias}.rownum = 1`)
@@ -240,7 +237,7 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
   if (shouldCount) {
     const outerQbCount = new SelectQueryBuilder(
       qb.connection,
-      (qb as any).obtainQueryRunner()
+      (qb as any).queryRunner
     )
       .select(`COUNT(1)`, `count`)
       .from(`(${qb.getQuery()})`, alias)
