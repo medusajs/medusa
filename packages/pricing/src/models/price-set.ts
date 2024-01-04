@@ -6,6 +6,7 @@ import {
   Entity,
   ManyToMany,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
 } from "@mikro-orm/core"
@@ -48,6 +49,11 @@ export default class PriceSet {
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "pset")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "pset")
   }
 }
