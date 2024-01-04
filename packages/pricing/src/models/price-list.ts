@@ -1,4 +1,8 @@
-import { generateEntityId } from "@medusajs/utils"
+import {
+  generateEntityId,
+  PriceListStatus,
+  PriceListType,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -8,12 +12,11 @@ import {
   Index,
   ManyToMany,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
-import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import PriceListRule from "./price-list-rule"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
@@ -47,22 +50,22 @@ export default class PriceList {
   description: string
 
   @Enum({ items: () => PriceListStatus, default: PriceListStatus.DRAFT })
-  status?: PriceListStatus
+  status: PriceListStatus
 
   @Enum({ items: () => PriceListType, default: PriceListType.SALE })
-  type?: PriceListType
+  type: PriceListType
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  starts_at?: Date | null
+  starts_at: Date | null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  ends_at?: Date | null
+  ends_at: Date | null
 
   @OneToMany(() => PriceSetMoneyAmount, (psma) => psma.price_list, {
     cascade: [Cascade.REMOVE],
@@ -89,7 +92,7 @@ export default class PriceList {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -97,14 +100,19 @@ export default class PriceList {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
 
   @Index({ name: "IDX_price_list_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at?: Date
+  deleted_at: Date | null
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "plist")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "plist")
   }
 }
