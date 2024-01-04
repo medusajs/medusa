@@ -30,6 +30,9 @@ export interface MoneyAmountDTO {
   min_quantity?: number
   max_quantity?: number
   price_set_money_amount?: PriceSetMoneyAmountDTO
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
 }
 
 export interface FilterableMoneyAmountProps
