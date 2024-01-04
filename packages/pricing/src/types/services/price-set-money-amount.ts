@@ -36,4 +36,7 @@ export interface PriceSetMoneyAmountDTO {
   price_set_id?: string
   price_rules?: PriceRuleDTO[]
   money_amount?: MoneyAmountDTO
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
 }
