@@ -1,4 +1,4 @@
-import { logger } from "@medusajs/admin-ui"
+import { logger } from "medusajs-admin-ui"
 import express, { Request, Response, Router } from "express"
 import fse from "fs-extra"
 import { ServerResponse } from "http"

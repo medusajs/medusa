@@ -1,4 +1,4 @@
-import { build, clean, logger } from "@medusajs/admin-ui"
+import { build, clean, logger } from "medusajs-admin-ui"
 import { getPluginPaths, loadConfig } from "../utils"
 import { createBuildManifest, shouldBuild } from "../utils/build-manifest"
 

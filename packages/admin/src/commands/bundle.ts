@@ -5,7 +5,7 @@ import {
   findAllValidWidgets,
   logger,
   normalizePath,
-} from "@medusajs/admin-ui"
+} from "medusajs-admin-ui"
 import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"

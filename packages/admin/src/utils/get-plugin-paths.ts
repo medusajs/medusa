@@ -1,4 +1,4 @@
-import { logger } from "@medusajs/admin-ui"
+import { logger } from "medusajs-admin-ui"
 import type { ConfigModule } from "@medusajs/medusa"
 import { getConfigFile } from "medusa-core-utils"
 import path from "path"

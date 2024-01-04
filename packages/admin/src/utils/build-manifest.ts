@@ -1,4 +1,4 @@
-import { AdminOptions } from "@medusajs/admin-ui"
+import { AdminOptions } from "medusajs-admin-ui"
 import fse from "fs-extra"
 import isEqual from "lodash/isEqual"
 import isNil from "lodash/isNil"

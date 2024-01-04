@@ -10,7 +10,7 @@ import type {
   ProductCollection,
 } from "@medusajs/medusa"
 
-import type { WidgetConfig, WidgetProps } from "@medusajs/admin-ui"
+import type { WidgetConfig, WidgetProps } from "medusajs-admin-ui"
 
 export interface ProductDetailsWidgetProps extends WidgetProps {
   product: Product

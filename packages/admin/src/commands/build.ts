@@ -1,4 +1,4 @@
-import { build as adminBuild, clean } from "@medusajs/admin-ui"
+import { build as adminBuild, clean } from "medusajs-admin-ui"
 import { resolve } from "path"
 import { BuildOptions } from "../types"
 import { getPluginPaths, loadConfig } from "../utils"
