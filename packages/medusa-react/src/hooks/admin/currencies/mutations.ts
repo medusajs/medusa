@@ -41,10 +41,13 @@ import { adminCurrenciesKeys } from "./queries"
  * 
  * export default Currency
  * 
- * @namespaceAsCategory Hooks.Admin.Currencies
+ * @customNamespace Hooks.Admin.Currencies
  * @category Mutations
  */
 export const useAdminUpdateCurrency = (
+  /**
+   * The currency's code.
+   */
   code: string,
   options?: UseMutationOptions<
     Response<AdminCurrenciesRes>,

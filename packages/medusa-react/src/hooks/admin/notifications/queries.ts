@@ -116,7 +116,7 @@ type NotificationQueryKeys = typeof adminNotificationKeys
  * export default Notifications
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Notifications
+ * @customNamespace Hooks.Admin.Notifications
  * @category Queries
  */
 export const useAdminNotifications = (

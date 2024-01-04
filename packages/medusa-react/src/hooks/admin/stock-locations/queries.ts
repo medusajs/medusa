@@ -129,7 +129,7 @@ type StockLocationsQueryKeys = typeof adminStockLocationsKeys
  * export default StockLocations
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Stock Locations
+ * @customNamespace Hooks.Admin.Stock Locations
  * @category Queries
  */
 export const useAdminStockLocations = (
@@ -182,7 +182,7 @@ export const useAdminStockLocations = (
  * 
  * export default StockLocation
  * 
- * @namespaceAsCategory Hooks.Admin.Stock Locations
+ * @customNamespace Hooks.Admin.Stock Locations
  * @category Queries
  */
 export const useAdminStockLocation = (

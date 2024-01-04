@@ -138,6 +138,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderRefundsReq
  * type: object
+ * description: "The details of the order refund."
  * required:
  *   - amount
  *   - reason

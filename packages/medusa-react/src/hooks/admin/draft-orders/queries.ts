@@ -85,7 +85,7 @@ type DraftOrderQueryKeys = typeof adminDraftOrderKeys
  * export default DraftOrders
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Queries
  */
 export const useAdminDraftOrders = (
@@ -135,10 +135,13 @@ export const useAdminDraftOrders = (
  * 
  * export default DraftOrder
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Queries
  */
 export const useAdminDraftOrder = (
+  /**
+   * The draft order's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminDraftOrdersRes>,

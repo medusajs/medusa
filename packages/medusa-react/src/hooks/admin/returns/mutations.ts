@@ -49,7 +49,7 @@ import { adminReturnKeys } from "./queries"
  * 
  * export default Return
  * 
- * @namespaceAsCategory Hooks.Admin.Returns
+ * @customNamespace Hooks.Admin.Returns
  * @category Mutations
  */
 export const useAdminReceiveReturn = (
@@ -105,7 +105,7 @@ export const useAdminReceiveReturn = (
  * 
  * export default Return
  * 
- * @namespaceAsCategory Hooks.Admin.Returns
+ * @customNamespace Hooks.Admin.Returns
  * @category Mutations
  */
 export const useAdminCancelReturn = (

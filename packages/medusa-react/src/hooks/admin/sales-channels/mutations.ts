@@ -45,7 +45,7 @@ import { adminSalesChannelsKeys } from "./queries"
  * 
  * export default CreateSalesChannel
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
 export const useAdminCreateSalesChannel = (
@@ -98,7 +98,7 @@ export const useAdminCreateSalesChannel = (
  * 
  * export default SalesChannel
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
 export const useAdminUpdateSalesChannel = (
@@ -154,7 +154,7 @@ export const useAdminUpdateSalesChannel = (
  * 
  * export default SalesChannel
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
 export const useAdminDeleteSalesChannel = (
@@ -218,7 +218,7 @@ export const useAdminDeleteSalesChannel = (
  * 
  * export default SalesChannel
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
 export const useAdminDeleteProductsFromSalesChannel = (
@@ -285,7 +285,7 @@ export const useAdminDeleteProductsFromSalesChannel = (
  * 
  * export default SalesChannel
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
 export const useAdminAddProductsToSalesChannel = (
@@ -351,7 +351,7 @@ export const useAdminAddProductsToSalesChannel = (
  * 
  * export default SalesChannel
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
 export const useAdminAddLocationToSalesChannel = (
@@ -423,7 +423,7 @@ export const useAdminAddLocationToSalesChannel = (
  * 
  * export default SalesChannel
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Mutations
  */
 export const useAdminRemoveLocationFromSalesChannel = (

@@ -8,7 +8,7 @@
  * 
  * Related Guide: [How to create a swap in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-swap)
  * 
- * @namespaceAsCategory Hooks.Store.Swaps
+ * @customNamespace Hooks.Store.Swaps
  */
 
 export * from "./queries"

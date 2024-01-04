@@ -30,6 +30,7 @@ import { Mapping } from "./types"
 
 export class MarkdownTheme extends Theme {
   allReflectionsHaveOwnDocument!: string[]
+  allReflectionsHaveOwnDocumentInNamespace: string[]
   entryDocument: string
   entryPoints!: string[]
   filenameSeparator!: string
@@ -66,6 +67,9 @@ export class MarkdownTheme extends Theme {
 
     // prettier-ignore
     this.allReflectionsHaveOwnDocument = this.getOption("allReflectionsHaveOwnDocument") as string[]
+    this.allReflectionsHaveOwnDocumentInNamespace = this.getOption(
+      "allReflectionsHaveOwnDocumentInNamespace"
+    ) as string[]
     this.entryDocument = this.getOption("entryDocument") as string
     this.entryPoints = this.getOption("entryPoints") as string[]
     this.filenameSeparator = this.getOption("filenameSeparator") as string
@@ -320,11 +324,14 @@ export class MarkdownTheme extends Theme {
     }
   }
 
-  getModuleParents(reflection: DeclarationReflection): DeclarationReflection[] {
+  getParentsOfKind(
+    reflection: DeclarationReflection,
+    kind: ReflectionKind
+  ): DeclarationReflection[] {
     const parents: DeclarationReflection[] = []
     let currentParent = reflection?.parent as DeclarationReflection | undefined
     do {
-      if (currentParent?.kind === ReflectionKind.Module) {
+      if (currentParent?.kind === kind) {
         parents.push(currentParent)
       }
       currentParent = currentParent?.parent as DeclarationReflection | undefined
@@ -334,10 +341,22 @@ export class MarkdownTheme extends Theme {
   }
 
   getAllReflectionsHaveOwnDocument(reflection: DeclarationReflection): boolean {
-    const moduleParents = this.getModuleParents(reflection)
+    const moduleParents = this.getParentsOfKind(
+      reflection,
+      ReflectionKind.Module
+    )
+    const namespaceParents = this.getParentsOfKind(
+      reflection,
+      ReflectionKind.Namespace
+    )
 
-    return moduleParents.some((parent) =>
-      this.allReflectionsHaveOwnDocument.includes(parent.name)
+    return (
+      moduleParents.some((parent) =>
+        this.allReflectionsHaveOwnDocument.includes(parent.name)
+      ) ||
+      namespaceParents.some((parent) =>
+        this.allReflectionsHaveOwnDocumentInNamespace.includes(parent.name)
+      )
     )
   }
 
@@ -474,6 +493,8 @@ export class MarkdownTheme extends Theme {
       page.model instanceof ProjectReflection
     ) {
       this.removeGroups(page.model)
+      this.removeCategories(page.model)
+      this.sortCategories(page.model)
     }
 
     if (
@@ -523,6 +544,34 @@ export class MarkdownTheme extends Theme {
         !(reflectionGroup.title in options.reflectionGroups) ||
         options.reflectionGroups[reflectionGroup.title]
       )
+    })
+  }
+
+  protected removeCategories(
+    model?: DeclarationReflection | ProjectReflection
+  ) {
+    if (!model?.categories) {
+      return
+    }
+
+    const options = this.getFormattingOptionsForLocation()
+
+    model.categories = model.categories.filter((category) => {
+      return (
+        !options.reflectionCategories ||
+        !(category.title in options.reflectionCategories) ||
+        options.reflectionCategories[category.title]
+      )
+    })
+  }
+
+  protected sortCategories(model?: DeclarationReflection | ProjectReflection) {
+    if (!model?.categories) {
+      return
+    }
+
+    model.categories.sort((categoryA, categoryB) => {
+      return categoryA.title.localeCompare(categoryB.title)
     })
   }
 

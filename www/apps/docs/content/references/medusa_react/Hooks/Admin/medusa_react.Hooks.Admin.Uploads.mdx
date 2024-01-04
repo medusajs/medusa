@@ -9,7 +9,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Mutations listed here are used to send requests to the [Admin Upload API Routes](https://docs.medusajs.com/api/admin#uploads).
 
-All hooks listed require [user authentication](../../../modules/medusa_react.mdx#useadminlogin).
+All hooks listed require [user authentication](medusa_react.Hooks.Admin.Auth.mdx#useadminlogin).
 
 The methods in this class are used to upload any type of resources. For example, they can be used to upload CSV files that are used to import products into the store.
 
@@ -46,50 +46,11 @@ export default UploadFile
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "AdminCreateUploadPayload",
-    "type": "`AdminCreateUploadPayload`",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"AdminCreateUploadPayload","type":"`AdminCreateUploadPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminCreateUploadPayload","type":"`AdminCreateUploadPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[
-  {
-    "name": "uploads",
-    "type": "[FileServiceUploadResult](../../../medusa/types/medusa.FileServiceUploadResult.mdx)[]",
-    "description": "Uploaded files details.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "key",
-        "type": "`string`",
-        "description": "The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "url",
-        "type": "`string`",
-        "description": "The URL of the uploaded file.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  }
-]} />
+<ParameterTypes parameters={[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../../medusa/types/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"key","type":"`string`","description":"The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"url","type":"`string`","description":"The URL of the uploaded file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
 ### useAdminUploadProtectedFile
 
@@ -120,50 +81,11 @@ export default UploadFile
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "AdminCreateUploadPayload",
-    "type": "`AdminCreateUploadPayload`",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"AdminCreateUploadPayload","type":"`AdminCreateUploadPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AdminCreateUploadPayload","type":"`AdminCreateUploadPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[
-  {
-    "name": "uploads",
-    "type": "[FileServiceUploadResult](../../../medusa/types/medusa.FileServiceUploadResult.mdx)[]",
-    "description": "Uploaded files details.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": [
-      {
-        "name": "key",
-        "type": "`string`",
-        "description": "The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "url",
-        "type": "`string`",
-        "description": "The URL of the uploaded file.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
-  }
-]} />
+<ParameterTypes parameters={[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../../medusa/types/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"key","type":"`string`","description":"The key of the file that is identifiable by the file service. It can be used later to retrieve or manipulate the file.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"url","type":"`string`","description":"The URL of the uploaded file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
 
 ### useAdminCreatePresignedDownloadUrl
 
@@ -196,31 +118,11 @@ export default Image
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "file_key",
-    "type": "`string`",
-    "description": "key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"AdminPostUploadsDownloadUrlReq","type":"[AdminPostUploadsDownloadUrlReq](../../../medusa/classes/medusa.AdminPostUploadsDownloadUrlReq.mdx)","optional":false,"defaultValue":"","description":"The details of the file to retrieve its download URL.","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[
-  {
-    "name": "download_url",
-    "type": "`string`",
-    "description": "The Download URL of the file",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"AdminUploadsDownloadUrlRes","type":"[AdminUploadsDownloadUrlRes](../../../medusa/types/medusa.AdminUploadsDownloadUrlRes.mdx)","optional":false,"defaultValue":"","description":"The download URL details.","expandable":false,"children":[{"name":"download_url","type":"`string`","description":"The Download URL of the file","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
 
 ### useAdminDeleteFile
 
@@ -253,46 +155,8 @@ export default Image
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "file_key",
-    "type": "`string`",
-    "description": "key of the file to delete. This is obtained when you first uploaded the file, or by the file service if you used it directly.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"AdminDeleteUploadsReq","type":"[AdminDeleteUploadsReq](../../../medusa/classes/medusa.AdminDeleteUploadsReq.mdx)","optional":false,"defaultValue":"","description":"The details of the file to delete.","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to delete. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[
-  {
-    "name": "deleted",
-    "type": "`boolean`",
-    "description": "Whether the item was deleted successfully.",
-    "optional": false,
-    "defaultValue": "true",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "id",
-    "type": "`string`",
-    "description": "The ID of the deleted item.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "object",
-    "type": "`string`",
-    "description": "The type of the deleted item.",
-    "optional": false,
-    "defaultValue": "product-collection",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../medusa/interfaces/medusa.DeleteResponse.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]}]}]} />

@@ -121,7 +121,7 @@ type TaxRateQueryKeys = typeof adminTaxRateKeys
  * export default TaxRates
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Queries
  */
 export const useAdminTaxRates = (
@@ -192,11 +192,17 @@ export const useAdminTaxRates = (
  * export default TaxRate
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Queries
  */
 export const useAdminTaxRate = (
+  /**
+   * The tax rate's ID.
+   */
   id: string,
+  /**
+   * Configurations to apply on retrieved tax rates.
+   */
   query?: AdminGetTaxRatesParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminTaxRatesRes>,

@@ -45,7 +45,7 @@ import { orderEditQueryKeys } from "./queries"
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Store.Order Edits
+ * @customNamespace Hooks.Store.Order Edits
  * @category Mutations
  */
 export const useDeclineOrderEdit = (
@@ -103,7 +103,7 @@ export const useDeclineOrderEdit = (
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Store.Order Edits
+ * @customNamespace Hooks.Store.Order Edits
  * @category Mutations
  */
 export const useCompleteOrderEdit = (

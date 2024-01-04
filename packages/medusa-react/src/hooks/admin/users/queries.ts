@@ -37,7 +37,7 @@ type UserQueryKeys = typeof adminUserKeys
  * 
  * export default Users
  * 
- * @namespaceAsCategory Hooks.Admin.Users
+ * @customNamespace Hooks.Admin.Users
  * @category Queries
  */
 export const useAdminUsers = (
@@ -81,7 +81,7 @@ export const useAdminUsers = (
  * 
  * export default User
  * 
- * @namespaceAsCategory Hooks.Admin.Users
+ * @customNamespace Hooks.Admin.Users
  * @category Queries
  */
 export const useAdminUser = (

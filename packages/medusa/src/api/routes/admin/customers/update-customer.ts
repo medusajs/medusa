@@ -156,6 +156,7 @@ class Group {
 /**
  * @schema AdminPostCustomersCustomerReq
  * type: object
+ * description: "The details of the customer to update."
  * properties:
  *   email:
  *     type: string

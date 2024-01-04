@@ -156,6 +156,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostDiscountsDiscountConditionsConditionBatchReq
  * type: object
+ * description: "The details of the resources to add."
  * required:
  *   - resources
  * properties:

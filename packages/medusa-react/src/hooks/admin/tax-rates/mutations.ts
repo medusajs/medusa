@@ -56,7 +56,7 @@ import { adminTaxRateKeys } from "./queries"
  * 
  * export default CreateTaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminCreateTaxRate = (
@@ -105,7 +105,7 @@ export const useAdminCreateTaxRate = (
  * 
  * export default TaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminUpdateTaxRate = (
@@ -160,7 +160,7 @@ export const useAdminUpdateTaxRate = (
  * 
  * export default TaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminDeleteTaxRate = (
@@ -212,7 +212,7 @@ export const useAdminDeleteTaxRate = (
  * 
  * export default TaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminCreateProductTaxRates = (
@@ -269,7 +269,7 @@ export const useAdminCreateProductTaxRates = (
  * 
  * export default TaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminDeleteProductTaxRates = (
@@ -330,7 +330,7 @@ export const useAdminDeleteProductTaxRates = (
  * 
  * export default TaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminCreateProductTypeTaxRates = (
@@ -394,7 +394,7 @@ export const useAdminCreateProductTypeTaxRates = (
  * 
  * export default TaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminDeleteProductTypeTaxRates = (
@@ -455,7 +455,7 @@ export const useAdminDeleteProductTypeTaxRates = (
  * 
  * export default TaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminCreateShippingTaxRates = (
@@ -517,7 +517,7 @@ export const useAdminCreateShippingTaxRates = (
  * 
  * export default TaxRate
  * 
- * @namespaceAsCategory Hooks.Admin.Tax Rates
+ * @customNamespace Hooks.Admin.Tax Rates
  * @category Mutations
  */
 export const useAdminDeleteShippingTaxRates = (

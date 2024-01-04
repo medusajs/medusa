@@ -72,7 +72,7 @@ import { adminProductKeys } from "./queries"
  * 
  * export default CreateProduct
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminCreateProduct = (
@@ -123,7 +123,7 @@ export const useAdminCreateProduct = (
  * 
  * export default Product
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminUpdateProduct = (
@@ -180,7 +180,7 @@ export const useAdminUpdateProduct = (
  * 
  * export default Product
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminDeleteProduct = (
@@ -246,7 +246,7 @@ export const useAdminDeleteProduct = (
  * 
  * export default CreateProductVariant
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminCreateVariant = (
@@ -272,6 +272,13 @@ export const useAdminCreateVariant = (
       options
     )
   )
+}
+
+export type AdminUpdateVariantReq = AdminPostProductsProductVariantsVariantReq & { 
+  /**
+   * The product variant's ID.
+   */
+  variant_id: string
 }
 
 /**
@@ -310,7 +317,7 @@ export const useAdminCreateVariant = (
  * 
  * export default ProductVariant
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminUpdateVariant = (
@@ -321,7 +328,7 @@ export const useAdminUpdateVariant = (
   options?: UseMutationOptions<
     Response<AdminProductsRes>,
     Error,
-    AdminPostProductsProductVariantsVariantReq & { variant_id: string }
+    AdminUpdateVariantReq
   >
 ) => {
   const { client } = useMedusa()
@@ -331,7 +338,7 @@ export const useAdminUpdateVariant = (
     ({
       variant_id,
       ...payload
-    }: AdminPostProductsProductVariantsVariantReq & { variant_id: string }) =>
+    }: AdminUpdateVariantReq) =>
       client.admin.products.updateVariant(productId, variant_id, payload),
     buildOptions(
       queryClient,
@@ -343,6 +350,8 @@ export const useAdminUpdateVariant = (
 
 /**
  * This hook deletes a product variant.
+ * 
+ * @typeParamDefinition string - The ID of the product variant to delete.
  * 
  * @example
  * import { useAdminDeleteVariant } from "medusa-react"
@@ -374,7 +383,7 @@ export const useAdminUpdateVariant = (
  * 
  * export default ProductVariant
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminDeleteVariant = (
@@ -435,7 +444,7 @@ export const useAdminDeleteVariant = (
  * 
  * export default CreateProductOption
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminCreateProductOption = (
@@ -457,6 +466,13 @@ export const useAdminCreateProductOption = (
       client.admin.products.addOption(productId, payload),
     buildOptions(queryClient, adminProductKeys.detail(productId), options)
   )
+}
+
+export type AdminUpdateProductOptionReq = AdminPostProductsProductOptionsOption & { 
+  /**
+   * The ID of the product option to update.
+   */
+  option_id: string
 }
 
 /**
@@ -497,7 +513,7 @@ export const useAdminCreateProductOption = (
  * 
  * export default ProductOption
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminUpdateProductOption = (
@@ -508,7 +524,7 @@ export const useAdminUpdateProductOption = (
   options?: UseMutationOptions<
     Response<AdminProductsRes>,
     Error,
-    AdminPostProductsProductOptionsOption & { option_id: string }
+    AdminUpdateProductOptionReq
   >
 ) => {
   const { client } = useMedusa()
@@ -518,7 +534,7 @@ export const useAdminUpdateProductOption = (
     ({
       option_id,
       ...payload
-    }: AdminPostProductsProductOptionsOption & { option_id: string }) =>
+    }: AdminUpdateProductOptionReq) =>
       client.admin.products.updateOption(productId, option_id, payload),
     buildOptions(queryClient, adminProductKeys.detail(productId), options)
   )
@@ -527,6 +543,8 @@ export const useAdminUpdateProductOption = (
 /**
  * This hook deletes a product option. If there are product variants that use this product option, 
  * they must be deleted before deleting the product option.
+ * 
+ * @typeParamDefinition string - The ID of the product option to delete.
  * 
  * @example
  * import { useAdminDeleteProductOption } from "medusa-react"
@@ -558,7 +576,7 @@ export const useAdminUpdateProductOption = (
  * 
  * export default ProductOption
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Mutations
  */
 export const useAdminDeleteProductOption = (

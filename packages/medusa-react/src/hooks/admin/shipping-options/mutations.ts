@@ -53,7 +53,7 @@ import { adminShippingOptionKeys } from "./queries"
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Options
+ * @customNamespace Hooks.Admin.Shipping Options
  * @category Mutations
  */
 export const useAdminCreateShippingOption = (
@@ -112,7 +112,7 @@ export const useAdminCreateShippingOption = (
  * 
  * export default ShippingOption
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Options
+ * @customNamespace Hooks.Admin.Shipping Options
  * @category Mutations
  */
 export const useAdminUpdateShippingOption = (
@@ -169,7 +169,7 @@ export const useAdminUpdateShippingOption = (
  * 
  * export default ShippingOption
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Options
+ * @customNamespace Hooks.Admin.Shipping Options
  * @category Mutations
  */
 export const useAdminDeleteShippingOption = (

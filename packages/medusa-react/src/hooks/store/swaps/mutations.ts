@@ -53,7 +53,7 @@ import { useMedusa } from "../../../contexts"
  * 
  * export default CreateSwap
  * 
- * @namespaceAsCategory Hooks.Store.Swaps
+ * @customNamespace Hooks.Store.Swaps
  * @category Mutations
  */
 export const useCreateSwap = (

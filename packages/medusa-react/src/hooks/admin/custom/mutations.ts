@@ -94,8 +94,12 @@ export const buildCustomOptions = <
 }
 
 /**
- * This hook sends a `POST` request to a custom API Route. The method accepts a tuple of type parameters: the first `TPayload` is the type of accepted body parameters,
- * which defaults to `Record<string, any>`; the second `TResponse` is the type of response, which defaults to `any`.
+ * This hook sends a `POST` request to a custom API Route.
+ * 
+ * @typeParam TPayload - The type of accepted body parameters which defaults to `Record<string, any>`.
+ * @typeParam TResponse - The type of response, which defaults to `any`.
+ * @typeParamDefinition TResponse - The response based on the specified type for `TResponse`.
+ * @typeParamDefinition TPayload - The payload based on the specified type for `TPayload`.
  * 
  * @example
  * import { useAdminCustomPost } from "medusa-react"
@@ -132,7 +136,7 @@ export const buildCustomOptions = <
  * 
  * export default Custom
  * 
- * @namespaceAsCategory Hooks.Admin.Custom
+ * @customNamespace Hooks.Admin.Custom
  * @category Mutations
  */
 export const useAdminCustomPost = <
@@ -165,7 +169,10 @@ export const useAdminCustomPost = <
 }
 
 /**
- * This hook sends a `DELETE` request to a custom API Route. The method accepts a type parameters `TResponse` indicating the type of response, which defaults to `any`.
+ * This hook sends a `DELETE` request to a custom API Route.
+ * 
+ * @typeParam TResponse - The response's type which defaults to `any`.
+ * @typeParamDefinition TResponse - The response based on the type provided for `TResponse`.
  * 
  * @example
  * import { useAdminCustomDelete } from "medusa-react"
@@ -195,7 +202,7 @@ export const useAdminCustomPost = <
  * 
  * export default Custom
  * 
- * @namespaceAsCategory Hooks.Admin.Custom
+ * @customNamespace Hooks.Admin.Custom
  * @category Mutations
  */
 export const useAdminCustomDelete = <TResponse>(

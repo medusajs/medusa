@@ -150,11 +150,12 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminPostProductCategoriesCategoryProductsBatchReq
  * type: object
+ * description: "The details of the products to add to the product category."
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to add to the Product Category
+ *     description: The IDs of the products to add to the product category
  *     type: array
  *     items:
  *       type: object

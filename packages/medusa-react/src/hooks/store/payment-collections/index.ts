@@ -5,7 +5,7 @@
  * 
  * A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
  * 
- * @namespaceAsCategory Hooks.Store.Payment Collections
+ * @customNamespace Hooks.Store.Payment Collections
  */
 
 export * from "./queries"

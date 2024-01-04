@@ -92,10 +92,13 @@ type ProductTypesQueryKeys = typeof adminProductTypeKeys
  * export default ProductTypes
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Product Types
+ * @customNamespace Hooks.Admin.Product Types
  * @category Queries
  */
 export const useAdminProductTypes = (
+  /**
+   * Filters and pagination configurations to apply on the retrieved product types.
+   */
   query?: AdminGetProductTypesParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminProductTypesListRes>,

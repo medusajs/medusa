@@ -208,6 +208,7 @@ function generateAttachInventoryToVariantHandler(
 /**
  * @schema AdminPostInventoryItemsReq
  * type: object
+ * description: "The details of the inventory item to create."
  * required:
  *   - variant_id
  * properties:

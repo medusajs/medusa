@@ -64,7 +64,7 @@ import { adminPriceListKeys } from "./queries"
  * 
  * export default CreatePriceList
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
 export const useAdminCreatePriceList = (
@@ -116,7 +116,7 @@ export const useAdminCreatePriceList = (
  * 
  * export default PriceList
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
 export const useAdminUpdatePriceList = (
@@ -177,7 +177,7 @@ export const useAdminUpdatePriceList = (
  * 
  * export default PriceList
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
 export const useAdminDeletePriceList = (
@@ -237,7 +237,7 @@ export const useAdminDeletePriceList = (
  * 
  * export default PriceList
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
 export const useAdminCreatePriceListPrices = (
@@ -299,7 +299,7 @@ export const useAdminCreatePriceListPrices = (
  * 
  * export default PriceList
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
 export const useAdminDeletePriceListPrices = (
@@ -364,7 +364,7 @@ export const useAdminDeletePriceListPrices = (
  * 
  * export default PriceList
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
 export const useAdminDeletePriceListProductsPrices = (
@@ -428,7 +428,7 @@ export const useAdminDeletePriceListProductsPrices = (
  * 
  * export default PriceListProduct
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
 export const useAdminDeletePriceListProductPrices = (
@@ -498,7 +498,7 @@ export const useAdminDeletePriceListProductPrices = (
  * 
  * export default PriceListVariant
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Mutations
  */
 export const useAdminDeletePriceListVariantPrices = (

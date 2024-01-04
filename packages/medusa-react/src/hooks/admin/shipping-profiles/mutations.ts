@@ -1,5 +1,6 @@
 import {
   AdminDeleteShippingProfileRes,
+  AdminPostShippingProfilesProfileReq,
   AdminPostShippingProfilesReq,
   AdminShippingProfilesRes,
 } from "@medusajs/medusa"
@@ -43,7 +44,7 @@ import { adminShippingProfileKeys } from "./queries"
  * 
  * export default CreateShippingProfile
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Profiles
+ * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Mutations
  */
 export const useAdminCreateShippingProfile = (
@@ -98,7 +99,7 @@ export const useAdminCreateShippingProfile = (
  * 
  * export default ShippingProfile
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Profiles
+ * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Mutations
  */
 export const useAdminUpdateShippingProfile = (
@@ -109,14 +110,14 @@ export const useAdminUpdateShippingProfile = (
   options?: UseMutationOptions<
     Response<AdminShippingProfilesRes>,
     Error,
-    AdminPostShippingProfilesReq
+    AdminPostShippingProfilesProfileReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminPostShippingProfilesReq) =>
+    (payload: AdminPostShippingProfilesProfileReq) =>
       client.admin.shippingProfiles.update(id, payload),
     buildOptions(
       queryClient,
@@ -155,7 +156,7 @@ export const useAdminUpdateShippingProfile = (
  * 
  * export default ShippingProfile
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Profiles
+ * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Mutations
  */
 export const useAdminDeleteShippingProfile = (

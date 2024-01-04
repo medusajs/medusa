@@ -128,6 +128,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReservationsReq
  * type: object
+ * description: "The details of the reservation to create."
  * required:
  *   - location_id
  *   - inventory_item_id

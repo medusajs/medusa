@@ -132,6 +132,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostPaymentRefundsReq
  * type: object
+ * description: "The details of the refund to create."
  * required:
  *   - amount
  *   - reason

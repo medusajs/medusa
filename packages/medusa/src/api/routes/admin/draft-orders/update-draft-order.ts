@@ -174,6 +174,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostDraftOrdersDraftOrderReq
  * type: object
+ * description: "The details of the draft order to update."
  * properties:
  *   region_id:
  *     type: string

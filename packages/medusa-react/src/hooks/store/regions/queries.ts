@@ -38,7 +38,7 @@ type RegionQueryType = typeof regionsKey
  * 
  * export default Regions
  * 
- * @namespaceAsCategory Hooks.Store.Regions
+ * @customNamespace Hooks.Store.Regions
  * @category Queries
  */
 export const useRegions = (
@@ -82,7 +82,7 @@ export const useRegions = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Store.Regions
+ * @customNamespace Hooks.Store.Regions
  * @category Queries
  */
 export const useRegion = (

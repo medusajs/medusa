@@ -76,7 +76,7 @@ type OrderEditQueryKeys = typeof adminOrderEditsKeys
  * export default OrderEdit
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Queries
  */
 export const useAdminOrderEdit = (
@@ -209,7 +209,7 @@ export const useAdminOrderEdit = (
  * export default OrderEdits
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Queries
  */
 export const useAdminOrderEdits = (

@@ -145,6 +145,7 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminPostPublishableApiKeySalesChannelsBatchReq
  * type: object
+ * description: "The details of the sales channels to add to the publishable API key."
  * required:
  *   - sales_channel_ids
  * properties:

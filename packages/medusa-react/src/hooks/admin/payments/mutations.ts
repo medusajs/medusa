@@ -44,7 +44,7 @@ import { adminPaymentQueryKeys } from "./queries"
  * 
  * export default Payment
  * 
- * @namespaceAsCategory Hooks.Admin.Payments
+ * @customNamespace Hooks.Admin.Payments
  * @category Mutations
  */
 export const useAdminPaymentsCapturePayment = (
@@ -105,7 +105,7 @@ export const useAdminPaymentsCapturePayment = (
  * 
  * export default Payment
  * 
- * @namespaceAsCategory Hooks.Admin.Payments
+ * @customNamespace Hooks.Admin.Payments
  * @category Mutations
  */
 export const useAdminPaymentsRefundPayment = (

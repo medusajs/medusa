@@ -44,7 +44,7 @@ import { adminOrderEditsKeys } from "./queries"
  * 
  * export default CreateOrderEdit
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminCreateOrderEdit = (
@@ -95,7 +95,7 @@ export const useAdminCreateOrderEdit = (
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminDeleteOrderEdit = (
@@ -155,7 +155,7 @@ export const useAdminDeleteOrderEdit = (
  * 
  * export default OrderEditItemChange
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminDeleteOrderEditItemChange = (
@@ -222,7 +222,7 @@ export const useAdminDeleteOrderEditItemChange = (
  * 
  * export default OrderEditItemChange
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminOrderEditUpdateLineItem = (
@@ -231,7 +231,7 @@ export const useAdminOrderEditUpdateLineItem = (
    */
   orderEditId: string,
   /**
-   * The line item change's ID.
+   * The line item's ID.
    */
   itemId: string,
   options?: UseMutationOptions<
@@ -288,7 +288,7 @@ export const useAdminOrderEditUpdateLineItem = (
  * 
  * export default OrderEditLineItem
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminOrderEditDeleteLineItem = (
@@ -347,7 +347,7 @@ export const useAdminOrderEditDeleteLineItem = (
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminUpdateOrderEdit = (
@@ -412,7 +412,7 @@ export const useAdminUpdateOrderEdit = (
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminOrderEditAddLineItem = (
@@ -474,7 +474,7 @@ export const useAdminOrderEditAddLineItem = (
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminRequestOrderEditConfirmation = (
@@ -534,7 +534,7 @@ export const useAdminRequestOrderEditConfirmation = (
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminCancelOrderEdit = (
@@ -592,7 +592,7 @@ export const useAdminCancelOrderEdit = (
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Admin.Order Edits
+ * @customNamespace Hooks.Admin.Order Edits
  * @category Mutations
  */
 export const useAdminConfirmOrderEdit = (

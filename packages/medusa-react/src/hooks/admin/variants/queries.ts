@@ -117,7 +117,7 @@ type VariantQueryKeys = typeof adminVariantKeys
  * export default Variants
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Product Variants
+ * @customNamespace Hooks.Admin.Product Variants
  * @category Queries
  */
 export const useAdminVariants = (
@@ -196,7 +196,7 @@ export const useAdminVariants = (
  * export default Variant
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Product Variants
+ * @customNamespace Hooks.Admin.Product Variants
  * @category Queries
  */
 export const useAdminVariant = (
@@ -257,7 +257,7 @@ export const useAdminVariant = (
  * 
  * export default VariantInventory
  * 
- * @namespaceAsCategory Hooks.Admin.Product Variants
+ * @customNamespace Hooks.Admin.Product Variants
  * @category Queries
  */
 export const useAdminVariantsInventory = (

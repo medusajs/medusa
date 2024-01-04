@@ -66,6 +66,10 @@ import { EntityManager } from "typeorm"
  *               last_name: lastName,
  *               password,
  *             },
+ *           }, {
+ *             onSuccess: () => {
+ *               // invite accepted successfully.
+ *             }
  *           })
  *         }
  *

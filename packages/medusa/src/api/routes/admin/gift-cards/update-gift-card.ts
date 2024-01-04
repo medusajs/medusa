@@ -123,6 +123,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostGiftCardsGiftCardReq
  * type: object
+ * description: "The details to update of the gift card."
  * properties:
  *   balance:
  *     type: integer

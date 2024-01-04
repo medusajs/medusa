@@ -121,6 +121,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostBatchesReq
  * type: object
+ * description: The details of the batch job to create.
  * required:
  *   - type
  *   - context

@@ -156,6 +156,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteTaxRatesTaxRateShippingOptionsReq
  * type: object
+ * description: "The details of the shipping options to remove their associate with the tax rate."
  * required:
  *   - shipping_options
  * properties:

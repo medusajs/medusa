@@ -7,7 +7,7 @@
  * 
  * Related Guide: [How to implement customer profiles in your storefront](https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles).
  * 
- * @namespaceAsCategory Hooks.Store.Customers
+ * @customNamespace Hooks.Store.Customers
  */
 
 export * from "./queries"

@@ -38,7 +38,7 @@ import { adminCustomerGroupKeys } from "./queries"
  * 
  * export default CreateCustomerGroup
  * 
- * @namespaceAsCategory Hooks.Admin.Customer Groups
+ * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
 export const useAdminCreateCustomerGroup = (
@@ -85,7 +85,7 @@ export const useAdminCreateCustomerGroup = (
  * 
  * export default CustomerGroup
  * 
- * @namespaceAsCategory Hooks.Admin.Customer Groups
+ * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
 export const useAdminUpdateCustomerGroup = (
@@ -138,7 +138,7 @@ export const useAdminUpdateCustomerGroup = (
  * 
  * export default CustomerGroup
  * 
- * @namespaceAsCategory Hooks.Admin.Customer Groups
+ * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
 export const useAdminDeleteCustomerGroup = (
@@ -198,7 +198,7 @@ export const useAdminDeleteCustomerGroup = (
  * 
  * export default CustomerGroup
  * 
- * @namespaceAsCategory Hooks.Admin.Customer Groups
+ * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
 export const useAdminAddCustomersToCustomerGroup = (
@@ -264,7 +264,7 @@ export const useAdminAddCustomersToCustomerGroup = (
  * 
  * export default CustomerGroup
  * 
- * @namespaceAsCategory Hooks.Admin.Customer Groups
+ * @customNamespace Hooks.Admin.Customer Groups
  * @category Mutations
  */
 export const useAdminRemoveCustomersFromCustomerGroup = (

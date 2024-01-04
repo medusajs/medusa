@@ -88,7 +88,7 @@ type OrderQueryKeys = typeof adminOrderKeys
  * export default Orders
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Queries
  */
 export const useAdminOrders = (
@@ -169,7 +169,7 @@ export const useAdminOrders = (
  * export default Order
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Queries
  */
 export const useAdminOrder = (

@@ -136,11 +136,12 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminPostSalesChannelsChannelProductsBatchReq
  * type: object
+ * description: "The details of the products to add to the sales channel."
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to add to the Sales Channel
+ *     description: The IDs of the products to add to the sales channel
  *     type: array
  *     items:
  *       type: object

@@ -341,6 +341,7 @@ type ReturnObj = {
 /**
  * @schema AdminPostOrdersOrderReturnsReq
  * type: object
+ * description: "The details of the requested return."
  * required:
  *   - items
  * properties:

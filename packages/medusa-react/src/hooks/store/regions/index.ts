@@ -8,7 +8,7 @@
  * 
  * Related Guide: [How to use regions in a storefront](https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions).
  * 
- * @namespaceAsCategory Hooks.Store.Regions
+ * @customNamespace Hooks.Store.Regions
  */
 
 export * from "./queries"

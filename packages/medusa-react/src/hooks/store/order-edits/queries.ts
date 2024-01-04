@@ -42,7 +42,7 @@ type OrderQueryKey = typeof orderEditQueryKeys
  * 
  * export default OrderEdit
  * 
- * @namespaceAsCategory Hooks.Store.Order Edits
+ * @customNamespace Hooks.Store.Order Edits
  * @category Queries
  */
 export const useOrderEdit = (

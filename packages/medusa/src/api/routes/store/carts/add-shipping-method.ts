@@ -135,6 +135,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartShippingMethodReq
  * type: object
+ * description: "The details of the shipping method to add to the cart."
  * required:
  *   - option_id
  * properties:

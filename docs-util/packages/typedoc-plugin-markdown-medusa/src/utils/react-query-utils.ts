@@ -1,4 +1,5 @@
 import {
+  Comment,
   ParameterReflection,
   ProjectReflection,
   ReferenceType,
@@ -54,9 +55,15 @@ export function isReactQueryQuery(
  * an accepted parameter. This removes the constructor from the list of parameters.
  */
 export function cleanUpParameterTypes(parameters: Parameter[]): Parameter[] {
-  return parameters.filter(
-    (parameter) => !BLACKLISTED_PARAM_NAMES.includes(parameter.name)
-  )
+  return parameters.filter((parameter, index) => {
+    const keep = !BLACKLISTED_PARAM_NAMES.includes(parameter.name)
+
+    if (keep && parameter.children) {
+      parameters[index].children = cleanUpParameterTypes(parameter.children)
+    }
+
+    return keep
+  })
 }
 
 export function getHookParams(
@@ -96,6 +103,37 @@ type GetMutationParamsParams = {
   reflectionTypeGetterOptions?: Partial<GetReflectionTypeParametersParams>
 }
 
+/**
+ * Load comments of a type param from the signature's comments if it has the
+ * `@typeParamDefinition` tag.
+ */
+function loadTypeComments(
+  signatureReflection: SignatureReflection,
+  typeName: string
+): Comment | undefined {
+  const tagRegex = /^(?<typeName>\w+) - (?<typeDef>.*)$/
+  const typeComment = new Comment()
+  signatureReflection.comment?.blockTags
+    .filter((tag) => tag.tag === "@typeParamDefinition")
+    .some((tag) => {
+      return tag.content.some((tagContent) => {
+        const match = tagContent.text.match(tagRegex)
+        if (match?.groups?.typeName === typeName && match?.groups?.typeDef) {
+          typeComment.summary.push({
+            kind: "text",
+            text: match.groups.typeDef,
+          })
+
+          return true
+        }
+
+        return false
+      })
+    })
+
+  return typeComment.summary.length > 0 ? typeComment : undefined
+}
+
 export function getMutationParams({
   signatureReflection,
   reflectionTypeGetterOptions,
@@ -113,15 +151,22 @@ export function getMutationParams({
     )
 
     if (
-      mutationOptionParam?.type &&
-      mutationOptionParam.type.type === "reference" &&
+      mutationOptionParam?.type?.type === "reference" &&
       (mutationOptionParam.type.typeArguments?.length || 0) >= 3
     ) {
+      const reflectionType = mutationOptionParam.type.typeArguments![2]
+      const comment =
+        "name" in reflectionType
+          ? loadTypeComments(signatureReflection, reflectionType.name)
+          : reflectionTypeGetterOptions?.comment
       mutationParameters = cleanUpParameterTypes(
         getReflectionTypeParameters({
           ...reflectionTypeGetterOptions,
-          reflectionType: mutationOptionParam.type.typeArguments![2],
+          wrapObject: reflectionType.type === "reference",
+          reflectionType,
           project: project,
+          isReturn: false,
+          comment,
         })
       )
     }
@@ -154,12 +199,20 @@ export function getMutationReturn({
   const returnType = signatureReflection.type! as ReferenceType
 
   if (hasResponseTypeArgument(returnType)) {
+    const reflectionType = (returnType.typeArguments![0] as ReferenceType)
+      .typeArguments![0]
+    const comment =
+      "name" in reflectionType
+        ? loadTypeComments(signatureReflection, reflectionType.name)
+        : reflectionTypeGetterOptions?.comment
     returnParams = cleanUpParameterTypes(
       getReflectionTypeParameters({
         ...reflectionTypeGetterOptions,
-        reflectionType: (returnType.typeArguments![0] as ReferenceType)
-          .typeArguments![0],
+        wrapObject: reflectionType.type === "reference",
+        reflectionType,
         project,
+        isReturn: false,
+        comment,
       })
     )
   }
@@ -179,12 +232,19 @@ export function getQueryReturn({
   const parameterType = getReactQueryQueryParameterType(signatureReflection)
 
   if (parameterType && hasResponseTypeArgument(parameterType)) {
+    const reflectionType = (parameterType.typeArguments![0] as ReferenceType)
+      .typeArguments![0]
+    const comment =
+      "name" in reflectionType
+        ? loadTypeComments(signatureReflection, reflectionType.name)
+        : reflectionTypeGetterOptions?.comment
     returnParams = cleanUpParameterTypes(
       getReflectionTypeParameters({
         ...reflectionTypeGetterOptions,
-        reflectionType: (parameterType.typeArguments![0] as ReferenceType)
-          .typeArguments![0],
+        reflectionType,
         project,
+        isReturn: false,
+        comment,
       })
     )
   }

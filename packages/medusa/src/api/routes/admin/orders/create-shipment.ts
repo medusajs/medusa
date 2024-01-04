@@ -147,6 +147,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderShipmentReq
  * type: object
+ * description: "The details of the shipment to create."
  * required:
  *   - fulfillment_id
  * properties:

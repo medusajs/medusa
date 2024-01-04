@@ -36,6 +36,10 @@ import { adminInviteKeys } from "./queries"
  *         last_name: lastName,
  *         password,
  *       },
+ *     }, {
+ *       onSuccess: () => {
+ *         // invite accepted successfully.
+ *       }
  *     })
  *   }
  * 
@@ -44,7 +48,7 @@ import { adminInviteKeys } from "./queries"
  * 
  * export default AcceptInvite
  * 
- * @namespaceAsCategory Hooks.Admin.Invites
+ * @customNamespace Hooks.Admin.Invites
  * @category Mutations
  */
 export const useAdminAcceptInvite = (
@@ -81,7 +85,11 @@ export const useAdminAcceptInvite = (
  *   // ...
  * 
  *   const handleResend = () => {
- *     resendInvite.mutate()
+ *     resendInvite.mutate(void 0, {
+ *       onSuccess: () => {
+ *         // invite resent successfully
+ *       }
+ *     })
  *   }
  * 
  *   // ...
@@ -89,7 +97,7 @@ export const useAdminAcceptInvite = (
  * 
  * export default ResendInvite
  * 
- * @namespaceAsCategory Hooks.Admin.Invites
+ * @customNamespace Hooks.Admin.Invites
  * @category Mutations
  */
 export const useAdminResendInvite = (
@@ -142,7 +150,7 @@ export const useAdminCreateInvite = (
  * 
  * export default Invite
  * 
- * @namespaceAsCategory Hooks.Admin.Invites
+ * @customNamespace Hooks.Admin.Invites
  * @category Mutations
  */
 export const useAdminDeleteInvite = (

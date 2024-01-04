@@ -97,6 +97,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteUploadsReq
  * type: object
+ * description: "The details of the file to delete."
  * required:
  *   - file_key
  * properties:

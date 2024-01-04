@@ -38,7 +38,7 @@ type CollectionQueryKey = typeof collectionKeys
  * 
  * export default ProductCollection
  * 
- * @namespaceAsCategory Hooks.Store.Product Collections
+ * @customNamespace Hooks.Store.Product Collections
  * @category Queries
  */
 export const useCollection = (
@@ -130,7 +130,7 @@ export const useCollection = (
  * export default ProductCollections
  * ```
  * 
- * @namespaceAsCategory Hooks.Store.Product Collections
+ * @customNamespace Hooks.Store.Product Collections
  * @category Queries
  */
 export const useCollections = (

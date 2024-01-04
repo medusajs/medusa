@@ -92,10 +92,13 @@ type ProductQueryKeys = typeof adminProductTagKeys
  * export default ProductTags
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Product Tags
+ * @customNamespace Hooks.Admin.Product Tags
  * @category Queries
  */
 export const useAdminProductTags = (
+  /**
+   * Filters and pagination configurations to apply on the retrieved product tags.
+   */
   query?: AdminGetProductTagsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminProductTagsListRes>,

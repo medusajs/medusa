@@ -140,6 +140,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersReq
  * type: object
+ * description: "The details of the customer to create."
  * required:
  *   - first_name
  *   - last_name

@@ -77,7 +77,15 @@ export class GenerateNamespacePlugin {
     const formattedName = this.formatName(namespaceName)
     return this.currentContext?.project
       .getReflectionsByKind(ReflectionKind.Namespace)
-      .find((m) => m.name === formattedName) as DeclarationReflection
+      .find(
+        (m) =>
+          m.name === formattedName &&
+          (!this.currentNamespaceHeirarchy.length ||
+            m.parent?.id ===
+              this.currentNamespaceHeirarchy[
+                this.currentNamespaceHeirarchy.length - 1
+              ].id)
+      ) as DeclarationReflection
   }
 
   createNamespace(namespaceName: string): DeclarationReflection | undefined {
@@ -103,7 +111,6 @@ export class GenerateNamespacePlugin {
 
   generateNamespaceFromTag({
     tag,
-    reflection,
     summary,
   }: {
     tag: CommentTag
@@ -131,9 +138,6 @@ export class GenerateNamespacePlugin {
         this.currentContext?.withScope(namespace) || this.currentContext
 
       this.currentNamespaceHeirarchy.push(namespace)
-      if (reflection) {
-        namespace.children?.push(reflection)
-      }
     })
   }
 
@@ -182,22 +186,30 @@ export class GenerateNamespacePlugin {
     }
     this.currentContext = context
     reflection.comment?.blockTags
-      .filter((tag) => tag.tag === "@namespaceAsCategory")
-      .forEach((tag) =>
+      .filter((tag) => tag.tag === "@customNamespace")
+      .forEach((tag) => {
         this.generateNamespaceFromTag({
           tag,
-          reflection,
         })
-      )
+        if (
+          reflection.parent instanceof DeclarationReflection ||
+          reflection.parent?.isProject()
+        ) {
+          reflection.parent.children = reflection.parent.children?.filter(
+            (child) => child.id !== reflection.id
+          )
+        }
+        this.currentContext?.addChild(reflection)
+      })
 
-    reflection.comment?.removeTags("@namespaceAsCategory")
+    reflection.comment?.removeTags("@customNamespace")
     this.attachCategories(reflection)
     this.currentContext = undefined
     this.currentNamespaceHeirarchy = []
   }
 
   /**
-   * Scan all source files for `@namespaceAsCategory` tag to generate namespaces
+   * Scan all source files for `@customNamespace` tag to generate namespaces
    * This is mainly helpful to pull summaries of the namespaces.
    */
   scanComments(context: Context) {
@@ -215,9 +227,21 @@ export class GenerateNamespacePlugin {
 
       const comments = context.getFileComment(sourceFile)
       comments?.blockTags
-        .filter((tag) => tag.tag === "@namespaceAsCategory")
+        .filter((tag) => tag.tag === "@customNamespace")
         .forEach((tag) => {
           this.generateNamespaceFromTag({ tag, summary: comments.summary })
+          if (this.currentNamespaceHeirarchy.length) {
+            // add comments of the file to the last created namespace
+            this.currentNamespaceHeirarchy[
+              this.currentNamespaceHeirarchy.length - 1
+            ].comment = comments
+
+            this.currentNamespaceHeirarchy[
+              this.currentNamespaceHeirarchy.length - 1
+            ].comment!.blockTags = this.currentNamespaceHeirarchy[
+              this.currentNamespaceHeirarchy.length - 1
+            ].comment!.blockTags.filter((tag) => tag.tag !== "@customNamespace")
+          }
           // reset values
           this.currentNamespaceHeirarchy = []
           this.currentContext = context

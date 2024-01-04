@@ -46,7 +46,7 @@ type ReturnReasonQueryKeys = typeof adminReturnReasonKeys
  * 
  * export default ReturnReasons
  * 
- * @namespaceAsCategory Hooks.Admin.Return Reasons
+ * @customNamespace Hooks.Admin.Return Reasons
  * @category Queries
  */
 export const useAdminReturnReasons = (
@@ -90,7 +90,7 @@ export const useAdminReturnReasons = (
  * 
  * export default ReturnReason
  * 
- * @namespaceAsCategory Hooks.Admin.Return Reasons
+ * @customNamespace Hooks.Admin.Return Reasons
  * @category Queries
  */
 export const useAdminReturnReason = (

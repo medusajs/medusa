@@ -139,6 +139,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCustomerGroupsGroupCustomersBatchReq
  * type: object
+ * description: "The customers to add to the customer group."
  * required:
  *   - customer_ids
  * properties:

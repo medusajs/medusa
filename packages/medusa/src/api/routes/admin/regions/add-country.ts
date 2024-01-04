@@ -126,6 +126,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionCountriesReq
  * type: object
+ * description: "The details of the country to add to the region."
  * required:
  *   - country_code
  * properties:

@@ -196,6 +196,20 @@ module.exports = {
         displayed_sidebar: "medusaReactSidebar",
       },
     },
+    "^modules/medusa_react\\.mdx": {
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+      },
+      reflectionGroups: {
+        Variables: false,
+        Functions: false,
+      },
+      reflectionCategories: {
+        Mutations: false,
+        Queries: false,
+        Other: false,
+      },
+    },
     "^medusa_react/(medusa_react\\.Hooks\\.mdx|.*medusa_react\\.Hooks\\.Admin\\.mdx|.*medusa_react\\.Hooks\\.Store\\.mdx|medusa_react\\.Providers\\.mdx)":
       {
         reflectionGroups: {
@@ -208,9 +222,15 @@ module.exports = {
         displayed_sidebar: "medusaReactSidebar",
         slug: "/references/medusa-react/providers/{{alias-lower}}",
       },
+      reflectionTitle: {
+        suffix: " Provider Overview",
+      },
     },
     "^medusa_react/.*Utilities": {
       expandMembers: true,
+      reflectionTitle: {
+        prefix: "Medusa React ",
+      },
     },
     "^medusa_react/medusa_react\\.Hooks\\.mdx": {
       frontmatterData: {
@@ -253,6 +273,18 @@ module.exports = {
         displayed_sidebar: "medusaReactSidebar",
         slug: "/references/medusa-react/utilities",
       },
+    },
+    "^medusa_react/Hooks/.*Admin\\.Inventory_Items": {
+      maxLevel: 4,
+    },
+    "^medusa_react/Hooks/.*Admin\\.Products": {
+      maxLevel: 4,
+    },
+    "^medusa_react/Hooks/.*Admin\\.Stock_Locations": {
+      maxLevel: 5,
+    },
+    "^medusa_react/Hooks/.*Admin\\.Users": {
+      maxLevel: 5,
     },
 
     // MEDUSA CONFIG

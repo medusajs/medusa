@@ -112,6 +112,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostShippingProfilesReq
  * type: object
+ * description: "The details of the shipping profile to create."
  * required:
  *   - name
  *   - type

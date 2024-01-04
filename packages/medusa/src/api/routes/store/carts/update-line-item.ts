@@ -161,6 +161,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartLineItemsItemReq
  * type: object
+ * description: "The details to update of the line item."
  * required:
  *   - quantity
  * properties:

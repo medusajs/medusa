@@ -169,6 +169,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateReq
  * type: object
+ * description: "The details to update of the tax rate."
  * properties:
  *   code:
  *     type: string

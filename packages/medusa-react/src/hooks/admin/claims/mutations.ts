@@ -53,7 +53,7 @@ import { adminOrderKeys } from "./../orders/queries"
  * 
  * export default CreateClaim
  * 
- * @namespaceAsCategory Hooks.Admin.Claims
+ * @customNamespace Hooks.Admin.Claims
  * @category Mutations
  */
 export const useAdminCreateClaim = (
@@ -75,6 +75,13 @@ export const useAdminCreateClaim = (
       client.admin.orders.createClaim(orderId, payload),
     buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
   )
+}
+
+export type AdminUpdateClaimReq = AdminPostOrdersOrderClaimsClaimReq & { 
+  /**
+   * The claim's ID.
+   */
+  claim_id: string
 }
 
 /**
@@ -108,7 +115,7 @@ export const useAdminCreateClaim = (
  * 
  * export default Claim
  * 
- * @namespaceAsCategory Hooks.Admin.Claims
+ * @customNamespace Hooks.Admin.Claims
  * @category Mutations
  */
 export const useAdminUpdateClaim = (
@@ -119,7 +126,7 @@ export const useAdminUpdateClaim = (
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
     Error,
-    AdminPostOrdersOrderClaimsClaimReq & { claim_id: string }
+    AdminUpdateClaimReq
   >
 ) => {
   const { client } = useMedusa()
@@ -129,7 +136,7 @@ export const useAdminUpdateClaim = (
     ({
       claim_id,
       ...payload
-    }: AdminPostOrdersOrderClaimsClaimReq & { claim_id: string }) =>
+    }: AdminUpdateClaimReq) =>
       client.admin.orders.updateClaim(orderId, claim_id, payload),
     buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
   )
@@ -138,6 +145,8 @@ export const useAdminUpdateClaim = (
 /**
  * This hook cancels a claim and change its status. A claim can't be canceled if it has a refund, if its fulfillments haven't been canceled, 
  * of if its associated return hasn't been canceled.
+ * 
+ * @typeParamDefinition string - The claim's ID.
  * 
  * @example
  * import { useAdminCancelClaim } from "medusa-react"
@@ -160,7 +169,7 @@ export const useAdminUpdateClaim = (
  * 
  * export default Claim
  * 
- * @namespaceAsCategory Hooks.Admin.Claims
+ * @customNamespace Hooks.Admin.Claims
  * @category Mutations
  */
 export const useAdminCancelClaim = (
@@ -168,7 +177,11 @@ export const useAdminCancelClaim = (
    * The ID of the order the claim is associated with.
    */
   orderId: string,
-  options?: UseMutationOptions<Response<AdminOrdersRes>, Error, string>
+  options?: UseMutationOptions<
+    Response<AdminOrdersRes>, 
+    Error, 
+    string
+  >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
@@ -210,7 +223,7 @@ export const useAdminCancelClaim = (
  * 
  * export default Claim
  * 
- * @namespaceAsCategory Hooks.Admin.Claims
+ * @customNamespace Hooks.Admin.Claims
  * @category Mutations
  */
 export const useAdminFulfillClaim = (
@@ -221,7 +234,12 @@ export const useAdminFulfillClaim = (
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
     Error,
-    AdminPostOrdersOrderClaimsClaimFulfillmentsReq & { claim_id: string }
+    AdminPostOrdersOrderClaimsClaimFulfillmentsReq & { 
+      /**
+       * The claim's ID.
+       */
+      claim_id: string
+    }
   >
 ) => {
   const { client } = useMedusa()
@@ -243,6 +261,20 @@ export const useAdminFulfillClaim = (
       options
     )
   )
+}
+
+/**
+ * The cancelation details.
+ */
+export type AdminCancelClaimFulfillmentReq = { 
+  /**
+   * The claim's ID.
+   */
+  claim_id: string; 
+  /**
+   * The fulfillment's ID.
+   */
+  fulfillment_id: string
 }
 
 /**
@@ -278,7 +310,7 @@ export const useAdminFulfillClaim = (
  * 
  * export default Claim
  * 
- * @namespaceAsCategory Hooks.Admin.Claims
+ * @customNamespace Hooks.Admin.Claims
  * @category Mutations
  */
 export const useAdminCancelClaimFulfillment = (
@@ -289,7 +321,7 @@ export const useAdminCancelClaimFulfillment = (
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
     Error,
-    { claim_id: string; fulfillment_id: string }
+    AdminCancelClaimFulfillmentReq
   >
 ) => {
   const { client } = useMedusa()
@@ -299,10 +331,7 @@ export const useAdminCancelClaimFulfillment = (
     ({
       claim_id,
       fulfillment_id,
-    }: {
-      claim_id: string
-      fulfillment_id: string
-    }) =>
+    }: AdminCancelClaimFulfillmentReq) =>
       client.admin.orders.cancelClaimFulfillment(
         orderId,
         claim_id,
@@ -344,7 +373,7 @@ export const useAdminCancelClaimFulfillment = (
  * 
  * export default Claim
  * 
- * @namespaceAsCategory Hooks.Admin.Claims
+ * @customNamespace Hooks.Admin.Claims
  * @category Mutations
  */
 export const useAdminCreateClaimShipment = (
@@ -355,7 +384,12 @@ export const useAdminCreateClaimShipment = (
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
     Error,
-    AdminPostOrdersOrderClaimsClaimShipmentsReq & { claim_id: string }
+    AdminPostOrdersOrderClaimsClaimShipmentsReq & { 
+      /**
+       * The claim's ID.
+       */
+      claim_id: string
+    }
   >
 ) => {
   const { client } = useMedusa()

@@ -106,6 +106,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostStoreReq
  * type: object
+ * description: "The details to update of the store."
  * properties:
  *   name:
  *     description: "The name of the Store"

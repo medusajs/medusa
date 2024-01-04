@@ -14,7 +14,7 @@ type AuthQueryKey = typeof adminAuthKeys
 /**
  * This hook is used to get the currently logged in user's details. Can also be used to check if there is an authenticated user.
  * 
- * This hook requires {@link useAdminLogin | user authentication}.
+ * This hook requires {@link Hooks~Admin~Auth~useAdminLogin | user authentication}.
  * 
  * @example
  * import { useAdminGetSession } from "medusa-react"
@@ -32,7 +32,7 @@ type AuthQueryKey = typeof adminAuthKeys
  * 
  * export default Profile
  * 
- * @namespaceAsCategory Hooks.Admin.Auth
+ * @customNamespace Hooks.Admin.Auth
  * @category Queries
  */
 export const useAdminGetSession = (

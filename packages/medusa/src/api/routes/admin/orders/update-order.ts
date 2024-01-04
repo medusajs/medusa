@@ -134,6 +134,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderReq
  * type: object
+ * description: "The details to update of the order."
  * properties:
  *   email:
  *     description: The email associated with the order

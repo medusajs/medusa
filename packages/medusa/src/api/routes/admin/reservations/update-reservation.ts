@@ -129,6 +129,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReservationsReservationReq
  * type: object
+ * description: "The details to update of the reservation."
  * properties:
  *   location_id:
  *     description: "The ID of the location associated with the reservation."

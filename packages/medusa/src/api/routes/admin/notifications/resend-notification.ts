@@ -129,6 +129,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostNotificationsNotificationResendReq
  * type: object
+ * description: "The resend details."
  * properties:
  *   to:
  *     description: >-

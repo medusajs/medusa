@@ -96,6 +96,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostUploadsDownloadUrlReq
  * type: object
+ * description: "The details of the file to retrieve its download URL."
  * required:
  *   - file_key
  * properties:

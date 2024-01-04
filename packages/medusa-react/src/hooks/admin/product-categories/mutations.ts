@@ -45,7 +45,7 @@ import { adminProductKeys } from "../products"
  * 
  * export default CreateCategory
  * 
- * @namespaceAsCategory Hooks.Admin.Product Categories
+ * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
 export const useAdminCreateProductCategory = (
@@ -104,7 +104,7 @@ export const useAdminCreateProductCategory = (
  * 
  * export default Category
  * 
- * @namespaceAsCategory Hooks.Admin.Product Categories
+ * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
 export const useAdminUpdateProductCategory = (
@@ -166,7 +166,7 @@ export const useAdminUpdateProductCategory = (
  * 
  * export default Category
  * 
- * @namespaceAsCategory Hooks.Admin.Product Categories
+ * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
 export const useAdminDeleteProductCategory = (
@@ -236,7 +236,7 @@ export const useAdminDeleteProductCategory = (
  * 
  * export default Category
  * 
- * @namespaceAsCategory Hooks.Admin.Product Categories
+ * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
 export const useAdminAddProductsToCategory = (
@@ -307,7 +307,7 @@ export const useAdminAddProductsToCategory = (
  * 
  * export default Category
  * 
- * @namespaceAsCategory Hooks.Admin.Product Categories
+ * @customNamespace Hooks.Admin.Product Categories
  * @category Mutations
  */
 export const useAdminDeleteProductsFromCategory = (

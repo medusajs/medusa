@@ -419,6 +419,7 @@ class ProductVariantReq {
 /**
  * @schema AdminPostProductsReq
  * type: object
+ * description: "The details of the product to create."
  * required:
  *   - title
  * properties:

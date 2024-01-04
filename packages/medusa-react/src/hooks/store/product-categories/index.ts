@@ -9,7 +9,7 @@
  * 
  * @featureFlag product_categories
  * 
- * @namespaceAsCategory Hooks.Store.Product Categories
+ * @customNamespace Hooks.Store.Product Categories
  */
 
 export * from "./queries"

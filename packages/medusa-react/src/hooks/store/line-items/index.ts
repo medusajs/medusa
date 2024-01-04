@@ -6,7 +6,7 @@
  * The hooks listed have general examples on how to use them, but it's highly recommended to use the {@link CartProvider} provider and
  * the {@link useCart} hook to manage your cart and access the current cart across your application.
  * 
- * @namespaceAsCategory Hooks.Store.Line Items
+ * @customNamespace Hooks.Store.Line Items
  */
 
 export * from "./mutations"

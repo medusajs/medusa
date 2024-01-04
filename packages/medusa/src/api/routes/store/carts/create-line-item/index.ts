@@ -224,6 +224,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartLineItemsReq
  * type: object
+ * description: "The details of the line item to create."
  * required:
  *   - variant_id
  *   - quantity

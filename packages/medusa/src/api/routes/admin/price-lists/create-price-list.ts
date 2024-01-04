@@ -216,6 +216,7 @@ class CustomerGroup {
 /**
  * @schema AdminPostPriceListsPriceListReq
  * type: object
+ * description: "The details of the price list to create."
  * required:
  *   - name
  *   - description

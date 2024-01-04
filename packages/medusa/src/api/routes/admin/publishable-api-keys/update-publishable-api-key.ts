@@ -122,6 +122,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostPublishableApiKeysPublishableApiKeyReq
  * type: object
+ * description: "The details to update of the publishable API key."
  * properties:
  *   title:
  *     description: The title of the Publishable API Key.

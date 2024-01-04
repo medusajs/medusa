@@ -41,7 +41,7 @@ import { adminNoteKeys } from "./queries"
  * 
  * export default CreateNote
  * 
- * @namespaceAsCategory Hooks.Admin.Notes
+ * @customNamespace Hooks.Admin.Notes
  * @category Mutations
  */
 export const useAdminCreateNote = (
@@ -90,7 +90,7 @@ export const useAdminCreateNote = (
  * 
  * export default Note
  * 
- * @namespaceAsCategory Hooks.Admin.Notes
+ * @customNamespace Hooks.Admin.Notes
  * @category Mutations
  */
 export const useAdminUpdateNote = (
@@ -140,7 +140,7 @@ export const useAdminUpdateNote = (
  * 
  * export default Note
  * 
- * @namespaceAsCategory Hooks.Admin.Notes
+ * @customNamespace Hooks.Admin.Notes
  * @category Mutations
  */
 export const useAdminDeleteNote = (

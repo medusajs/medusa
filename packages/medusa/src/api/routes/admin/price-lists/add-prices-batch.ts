@@ -172,6 +172,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostPriceListPricesPricesReq
  * type: object
+ * description: "The details of the prices to add."
  * properties:
  *   prices:
  *     description: The prices to update or add.

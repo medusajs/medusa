@@ -90,7 +90,7 @@ type ProductTypesQueryKeys = typeof productTypeKeys
  * export default Types
  * ```
  * 
- * @namespaceAsCategory Hooks.Store.Product Types
+ * @customNamespace Hooks.Store.Product Types
  * @category Queries
  */
 export const useProductTypes = (

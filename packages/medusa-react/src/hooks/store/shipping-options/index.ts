@@ -7,7 +7,7 @@
  * 
  * Related Guide: [Shipping Option architecture](https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option).
  * 
- * @namespaceAsCategory Hooks.Store.Shipping Options
+ * @customNamespace Hooks.Store.Shipping Options
  */
 
 export * from "./queries"

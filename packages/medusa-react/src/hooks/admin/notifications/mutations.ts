@@ -41,7 +41,7 @@ import { adminNotificationKeys } from "./queries"
  * 
  * export default Notification
  * 
- * @namespaceAsCategory Hooks.Admin.Notifications
+ * @customNamespace Hooks.Admin.Notifications
  * @category Mutations
  */
 export const useAdminResendNotification = (

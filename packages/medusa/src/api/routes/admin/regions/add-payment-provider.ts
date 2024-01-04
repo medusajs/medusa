@@ -128,6 +128,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionPaymentProvidersReq
  * type: object
+ * description: "The details of the payment provider to add to the region."
  * required:
  *   - provider_id
  * properties:

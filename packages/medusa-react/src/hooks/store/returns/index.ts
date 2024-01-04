@@ -7,7 +7,7 @@
  * 
  * Related Guide: [How to create a return in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-return).
  * 
- * @namespaceAsCategory Hooks.Store.Returns
+ * @customNamespace Hooks.Store.Returns
  */
 
 export * from "./mutations"

@@ -131,6 +131,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionReq
  * type: object
+ * description: "The details to update of the regions."
  * properties:
  *   name:
  *     description: "The name of the Region"

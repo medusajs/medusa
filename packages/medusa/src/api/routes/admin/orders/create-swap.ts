@@ -300,6 +300,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderSwapsReq
  * type: object
+ * description: "The details of the swap to create."
  * required:
  *   - return_items
  * properties:

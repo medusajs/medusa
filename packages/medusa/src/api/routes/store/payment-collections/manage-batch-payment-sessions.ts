@@ -196,6 +196,7 @@ export class StorePostPaymentCollectionsSessionsReq {
 /**
  * @schema StorePostPaymentCollectionsBatchSessionsReq
  * type: object
+ * description: "The details of the payment sessions to manage."
  * required:
  *   - sessions
  * properties:

@@ -115,6 +115,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostAuthReq
  * type: object
+ * description: The admin's credentials used to log in.
  * required:
  *   - email
  *   - password

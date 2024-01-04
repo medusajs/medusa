@@ -155,6 +155,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerOrderClaimReq
  * type: object
+ * description: "The details of the orders to claim."
  * required:
  *   - order_ids
  * properties:

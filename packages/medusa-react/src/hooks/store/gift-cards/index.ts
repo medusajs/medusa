@@ -7,7 +7,7 @@
  * 
  * Related Guide: [How to use gift cards in a storefront](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards).
  * 
- * @namespaceAsCategory Hooks.Store.Gift Cards
+ * @customNamespace Hooks.Store.Gift Cards
  */
 
 export * from "./queries"

@@ -45,7 +45,7 @@ type PaymentCollectionKey = typeof paymentCollectionQueryKeys
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Store.Payment Collections
+ * @customNamespace Hooks.Store.Payment Collections
  * @category Queries
  */
 export const usePaymentCollection = (

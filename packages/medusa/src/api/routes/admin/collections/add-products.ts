@@ -127,6 +127,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostProductsToCollectionReq
  * type: object
+ * description: "The details of the products to add to the collection."
  * required:
  *   - product_ids
  * properties:

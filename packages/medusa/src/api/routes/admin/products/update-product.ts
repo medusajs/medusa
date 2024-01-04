@@ -438,6 +438,7 @@ class ProductVariantReq {
 /**
  * @schema AdminPostProductsProductReq
  * type: object
+ * description: "The details to update of the product."
  * properties:
  *   title:
  *     description: "The title of the Product"

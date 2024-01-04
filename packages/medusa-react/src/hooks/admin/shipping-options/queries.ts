@@ -49,7 +49,7 @@ type ShippingOptionQueryKeys = typeof adminShippingOptionKeys
  * 
  * export default ShippingOptions
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Options
+ * @customNamespace Hooks.Admin.Shipping Options
  * @category Queries
  */
 export const useAdminShippingOptions = (
@@ -100,7 +100,7 @@ export const useAdminShippingOptions = (
  * 
  * export default ShippingOption
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Options
+ * @customNamespace Hooks.Admin.Shipping Options
  * @category Queries
  */
 export const useAdminShippingOption = (

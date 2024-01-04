@@ -97,7 +97,7 @@ type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
  * export default InventoryItems
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Queries
  */
 export const useAdminInventoryItems = (
@@ -150,7 +150,7 @@ export const useAdminInventoryItems = (
  * 
  * export default InventoryItem
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Queries
  */
 export const useAdminInventoryItem = (
@@ -214,7 +214,7 @@ export const useAdminInventoryItem = (
  * 
  * export default InventoryItem
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Queries
  */
 export const useAdminInventoryItemLocationLevels = (

@@ -128,7 +128,7 @@ type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
  * export default Categories
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Product Categories
+ * @customNamespace Hooks.Admin.Product Categories
  * @category Queries
  */
 export const useAdminProductCategories = (
@@ -219,7 +219,7 @@ export const useAdminProductCategories = (
  * export default Category
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Product Categories
+ * @customNamespace Hooks.Admin.Product Categories
  * @category Queries
  */
 export const useAdminProductCategory = (

@@ -6,7 +6,7 @@
  * Product types are string values that can be used to filter products by.
  * Products can have more than one tag, and products can share types.
  * 
- * @namespaceAsCategory Hooks.Store.Product Types
+ * @customNamespace Hooks.Store.Product Types
  */
 
 export * from "./queries"

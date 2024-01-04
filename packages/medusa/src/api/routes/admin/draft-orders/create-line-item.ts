@@ -190,6 +190,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostDraftOrdersDraftOrderLineItemsReq
  * type: object
+ * description: "The details of the line item to create."
  * required:
  *   - quantity
  * properties:

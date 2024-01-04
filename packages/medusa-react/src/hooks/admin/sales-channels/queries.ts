@@ -43,7 +43,7 @@ type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
  * 
  * export default SalesChannel
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Queries
  */
 export const useAdminSalesChannel = (
@@ -169,7 +169,7 @@ export const useAdminSalesChannel = (
  * export default SalesChannels
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Sales Channels
+ * @customNamespace Hooks.Admin.Sales Channels
  * @category Queries
  */
 export const useAdminSalesChannels = (

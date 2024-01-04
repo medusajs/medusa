@@ -155,6 +155,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateShippingOptionsReq
  * type: object
+ * description: "The details of the shipping options to associate with the tax rate."
  * required:
  *   - shipping_options
  * properties:

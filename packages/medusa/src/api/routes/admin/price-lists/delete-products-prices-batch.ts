@@ -161,6 +161,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeletePriceListsPriceListProductsPricesBatchReq
  * type: object
+ * description: "The details of the products' prices to delete."
  * properties:
  *   product_ids:
  *     description: The IDs of the products to delete their associated prices.

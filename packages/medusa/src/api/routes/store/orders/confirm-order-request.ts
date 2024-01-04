@@ -142,6 +142,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerAcceptClaimReq
  * type: object
+ * description: "The details necessary to grant order access."
  * required:
  *   - token
  * properties:

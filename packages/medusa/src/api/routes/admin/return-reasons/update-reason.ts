@@ -129,6 +129,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReturnReasonsReasonReq
  * type: object
+ * description: "The details to update of the return reason."
  * properties:
  *   label:
  *     description: "The label to display to the Customer."

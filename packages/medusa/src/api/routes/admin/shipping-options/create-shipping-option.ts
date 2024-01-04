@@ -169,6 +169,7 @@ class OptionRequirement {
 /**
  * @schema AdminPostShippingOptionsReq
  * type: object
+ * description: "The details of the shipping option to create."
  * required:
  *   - name
  *   - region_id

@@ -128,6 +128,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionFulfillmentProvidersReq
  * type: object
+ * description: "The details of the fulfillment provider to add to the region."
  * required:
  *   - provider_id
  * properties:

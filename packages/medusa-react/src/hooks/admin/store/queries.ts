@@ -47,7 +47,7 @@ type StoreQueryKeys = typeof adminStoreKeys
  * 
  * export default PaymentProviders
  * 
- * @namespaceAsCategory Hooks.Admin.Stores
+ * @customNamespace Hooks.Admin.Stores
  * @category Queries
  */
 export const useAdminStorePaymentProviders = (
@@ -98,7 +98,7 @@ export const useAdminStorePaymentProviders = (
  * 
  * export default TaxProviders
  * 
- * @namespaceAsCategory Hooks.Admin.Stores
+ * @customNamespace Hooks.Admin.Stores
  * @category Queries
  */
 export const useAdminStoreTaxProviders = (
@@ -139,7 +139,7 @@ export const useAdminStoreTaxProviders = (
  * 
  * export default Store
  * 
- * @namespaceAsCategory Hooks.Admin.Stores
+ * @customNamespace Hooks.Admin.Stores
  * @category Queries
  */
 export const useAdminStore = (

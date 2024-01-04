@@ -177,6 +177,7 @@ class StockLocationAddress {
 /**
  * @schema AdminPostStockLocationsLocationReq
  * type: object
+ * description: "The details to update of the stock location."
  * properties:
  *   name:
  *     description: the name of the stock location

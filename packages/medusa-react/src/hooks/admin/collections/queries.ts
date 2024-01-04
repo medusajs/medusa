@@ -79,10 +79,13 @@ type CollectionsQueryKey = typeof adminCollectionKeys
  * export default Collections
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @customNamespace Hooks.Admin.Product Collections
  * @category Queries
  */
 export const useAdminCollections = (
+  /**
+   * Filters and pagination configurations to apply on the retrieved product collections.
+   */
   query?: AdminGetCollectionsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminCollectionsListRes>,
@@ -122,10 +125,13 @@ export const useAdminCollections = (
  * 
  * export default Collection
  * 
- * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @customNamespace Hooks.Admin.Product Collections
  * @category Queries
  */
 export const useAdminCollection = (
+  /**
+   * The product collection's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminCollectionsRes>,

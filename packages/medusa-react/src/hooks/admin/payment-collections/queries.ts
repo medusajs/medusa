@@ -42,7 +42,7 @@ type AdminPaymentCollectionKey = typeof adminPaymentCollectionQueryKeys
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Admin.Payment Collections
+ * @customNamespace Hooks.Admin.Payment Collections
  * @category Queries
  */
 export const useAdminPaymentCollection = (

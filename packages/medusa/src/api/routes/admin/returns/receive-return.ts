@@ -178,6 +178,7 @@ class Item {
 /**
  * @schema AdminPostReturnsReturnReceiveReq
  * type: object
+ * description: "The details of the received return."
  * required:
  *   - items
  * properties:

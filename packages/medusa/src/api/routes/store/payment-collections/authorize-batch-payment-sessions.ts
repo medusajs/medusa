@@ -109,6 +109,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostPaymentCollectionsBatchSessionsAuthorizeReq
  * type: object
+ * description: "The details of the payment sessions to authorize."
  * required:
  *   - session_ids
  * properties:

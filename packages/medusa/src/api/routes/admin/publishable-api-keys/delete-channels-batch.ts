@@ -145,6 +145,7 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminDeletePublishableApiKeySalesChannelsBatchReq
  * type: object
+ * description: "The details of the sales channels to remove from the publishable API key."
  * required:
  *   - sales_channel_ids
  * properties:

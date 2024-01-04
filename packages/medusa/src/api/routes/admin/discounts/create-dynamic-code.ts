@@ -131,6 +131,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostDiscountsDiscountDynamicCodesReq
  * type: object
+ * description: "The details of the dynamic discount to create."
  * required:
  *   - code
  * properties:

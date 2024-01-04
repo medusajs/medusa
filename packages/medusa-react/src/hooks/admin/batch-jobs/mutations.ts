@@ -38,7 +38,7 @@ import { adminBatchJobsKeys } from "./queries"
  * 
  * export default CreateBatchJob
  * 
- * @namespaceAsCategory Hooks.Admin.Batch Jobs
+ * @customNamespace Hooks.Admin.Batch Jobs
  * @category Mutations
  */
 export const useAdminCreateBatchJob = (
@@ -84,7 +84,7 @@ export const useAdminCreateBatchJob = (
  * 
  * export default BatchJob
  * 
- * @namespaceAsCategory Hooks.Admin.Batch Jobs
+ * @customNamespace Hooks.Admin.Batch Jobs
  * @category Mutations
  */
 export const useAdminCancelBatchJob = (

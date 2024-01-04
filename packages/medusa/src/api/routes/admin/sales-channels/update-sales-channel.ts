@@ -122,6 +122,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostSalesChannelsSalesChannelReq
  * type: object
+ * description: "The details to update of the sales channel."
  * properties:
  *   name:
  *     type: string

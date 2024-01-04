@@ -39,7 +39,7 @@ type AdminPaymentKey = typeof adminPaymentQueryKeys
  * 
  * export default Payment
  * 
- * @namespaceAsCategory Hooks.Admin.Payments
+ * @customNamespace Hooks.Admin.Payments
  * @category Queries
  */
 export const useAdminPayment = (

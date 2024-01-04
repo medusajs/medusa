@@ -37,7 +37,7 @@ type GiftCardQueryKey = typeof giftCardKeys
  * 
  * export default GiftCard
  * 
- * @namespaceAsCategory Hooks.Store.Gift Cards
+ * @customNamespace Hooks.Store.Gift Cards
  * @category Queries
  */
 export const useGiftCard = (

@@ -216,6 +216,7 @@ class Discount {
 /**
  * @schema StorePostCartsCartReq
  * type: object
+ * description: "The details to update of the cart."
  * properties:
  *   region_id:
  *     type: string

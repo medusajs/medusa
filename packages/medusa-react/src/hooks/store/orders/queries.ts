@@ -43,7 +43,7 @@ type OrderQueryKey = typeof orderKeys
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Store.Orders
+ * @customNamespace Hooks.Store.Orders
  * @category Queries
  */
 export const useOrder = (
@@ -94,7 +94,7 @@ export const useOrder = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Store.Orders
+ * @customNamespace Hooks.Store.Orders
  * @category Queries
  */
 export const useCartOrder = (
@@ -152,7 +152,7 @@ export const useCartOrder = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Store.Orders
+ * @customNamespace Hooks.Store.Orders
  * @category Queries
  */
 export const useOrders = (

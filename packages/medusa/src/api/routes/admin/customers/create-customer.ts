@@ -115,6 +115,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostCustomersReq
  * type: object
+ * description: "The details of the customer to create."
  * required:
  *   - email
  *   - first_name

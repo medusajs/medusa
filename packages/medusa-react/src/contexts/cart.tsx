@@ -1,7 +1,7 @@
 /**
  * @packageDocumentation
  * 
- * @namespaceAsCategory Providers.Cart
+ * @customNamespace Providers.Cart
  */
 
 import React, { useState } from "react"
@@ -25,7 +25,7 @@ interface CartState {
 /**
  * The cart context available if the {@link CartProvider} is used previously in the React components tree.
  */
-interface CartContext extends CartState {
+export interface CartContext extends CartState {
   /**
    * A state function used to set the cart object.
    * 
@@ -73,6 +73,11 @@ const CartContext = React.createContext<CartContext | null>(null)
 /**
  * This hook exposes the context of {@link CartProvider}.
  * 
+ * The context provides helper functions and mutations for managing the cart and checkout. You can refer to the following guides for examples on how to use them:
+ * 
+ * - [How to Add Cart Functionality](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart)
+ * - [How to Implement Checkout Flow](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-checkout-flow)
+ * 
  * @example
  * ```tsx title="src/Cart.ts"
  * import * as React from "react"
@@ -116,7 +121,7 @@ const CartContext = React.createContext<CartContext | null>(null)
  * 
  * :::
  * 
- * @namespaceAsCategory Providers.Cart
+ * @customNamespace Providers.Cart
  */
 export const useCart = () => {
   const context = React.useContext(CartContext)
@@ -126,7 +131,7 @@ export const useCart = () => {
   return context
 }
 
-interface CartProps {
+export interface CartProps {
   /**
    * @ignore
    */
@@ -148,7 +153,7 @@ const defaultInitialState = {
  * 
  * It also manages one single global piece of state which represents a cart, exactly like the one created on your Medusa backend.
  * 
- * To use `CartProvider`, you first have to insert it somewhere in your component tree below the {@link MedusaProvider}. Then, in any of the child components, 
+ * To use `CartProvider`, you first have to insert it somewhere in your component tree below the {@link Providers.Medusa.MedusaProvider | MedusaProvider}. Then, in any of the child components, 
  * you can use the {@link useCart} hook exposed by `medusa-react` to get access to cart operations and data.
  * 
  * @param {CartProps} param0 - Props of the provider.
@@ -178,7 +183,7 @@ const defaultInitialState = {
  * export default App
  * ```
  * 
- * @namespaceAsCategory Providers.Cart
+ * @customNamespace Providers.Cart
  */
 export const CartProvider = ({
   children,

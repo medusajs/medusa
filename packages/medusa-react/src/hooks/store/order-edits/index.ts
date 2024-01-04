@@ -8,7 +8,7 @@
  * 
  * Related Guide: [How to handle order edits in a storefront](https://docs.medusajs.com/modules/orders/storefront/handle-order-edits).
  * 
- * @namespaceAsCategory Hooks.Store.Order Edits
+ * @customNamespace Hooks.Store.Order Edits
  */
 
 export * from "./queries"

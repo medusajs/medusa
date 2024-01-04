@@ -114,6 +114,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostNotesNoteReq
  * type: object
+ * description: "The details to update of the note."
  * required:
  *   - value
  * properties:

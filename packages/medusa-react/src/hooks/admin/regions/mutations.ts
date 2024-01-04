@@ -49,7 +49,7 @@ import { adminRegionKeys } from "./queries"
  * 
  * export default CreateRegion
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminCreateRegion = (
@@ -101,7 +101,7 @@ export const useAdminCreateRegion = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminUpdateRegion = (
@@ -158,7 +158,7 @@ export const useAdminUpdateRegion = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminDeleteRegion = (
@@ -214,7 +214,7 @@ export const useAdminDeleteRegion = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminRegionAddCountry = (
@@ -240,6 +240,8 @@ export const useAdminRegionAddCountry = (
 
 /**
  * This hook deletes a country from the list of countries in a region. The country will still be available in the system, and it can be used in other regions.
+ * 
+ * @typeParamDefinition string - The code of the country to delete from the region.
  * 
  * @example
  * import { useAdminRegionRemoveCountry } from "medusa-react"
@@ -269,7 +271,7 @@ export const useAdminRegionAddCountry = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminRegionRemoveCountry = (
@@ -325,7 +327,7 @@ export const useAdminRegionRemoveCountry = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminRegionAddFulfillmentProvider = (
@@ -351,6 +353,8 @@ export const useAdminRegionAddFulfillmentProvider = (
 
 /**
  * This hook deletes a fulfillment provider from a region. The fulfillment provider will still be available for usage in other regions.
+ * 
+ * @typeParamDefinition string - The fulfillment provider's ID to delete from the region.
  * 
  * @example
  * import { 
@@ -383,7 +387,7 @@ export const useAdminRegionAddFulfillmentProvider = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminRegionDeleteFulfillmentProvider = (
@@ -439,7 +443,7 @@ export const useAdminRegionDeleteFulfillmentProvider = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminRegionAddPaymentProvider = (
@@ -465,6 +469,8 @@ export const useAdminRegionAddPaymentProvider = (
 
 /**
  * This hook deletes a payment provider from a region. The payment provider will still be available for usage in other regions.
+ * 
+ * @typeParamDefinition string - The ID of the payment provider to delete from the region.
  * 
  * @example
  * import { 
@@ -497,7 +503,7 @@ export const useAdminRegionAddPaymentProvider = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Mutations
  */
 export const useAdminRegionDeletePaymentProvider = (

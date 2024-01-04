@@ -46,7 +46,7 @@ import { orderKeys } from "./queries"
  * 
  * export default ClaimOrder
  * 
- * @namespaceAsCategory Hooks.Store.Orders
+ * @customNamespace Hooks.Store.Orders
  * @category Mutations
  */
 export const useRequestOrderAccess = (
@@ -95,7 +95,7 @@ export const useRequestOrderAccess = (
  * 
  * export default ClaimOrder
  * 
- * @namespaceAsCategory Hooks.Store.Orders
+ * @customNamespace Hooks.Store.Orders
  * @category Mutations
  */
 export const useGrantOrderAccess = (

@@ -1,4 +1,5 @@
 import {
+  AdminPostStockLocationsLocationReq,
   AdminPostStockLocationsReq,
   AdminStockLocationsDeleteRes,
   AdminStockLocationsRes,
@@ -40,7 +41,7 @@ import { adminStockLocationsKeys } from "./queries"
  * 
  * export default CreateStockLocation
  * 
- * @namespaceAsCategory Hooks.Admin.Stock Locations
+ * @customNamespace Hooks.Admin.Stock Locations
  * @category Mutations
  */
 export const useAdminCreateStockLocation = (
@@ -91,7 +92,7 @@ export const useAdminCreateStockLocation = (
  * 
  * export default StockLocation
  * 
- * @namespaceAsCategory Hooks.Admin.Stock Locations
+ * @customNamespace Hooks.Admin.Stock Locations
  * @category Mutations
  */
 export const useAdminUpdateStockLocation = (
@@ -102,14 +103,14 @@ export const useAdminUpdateStockLocation = (
   options?: UseMutationOptions<
     Response<AdminStockLocationsRes>,
     Error,
-    AdminPostStockLocationsReq
+    AdminPostStockLocationsLocationReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminPostStockLocationsReq) =>
+    (payload: AdminPostStockLocationsLocationReq) =>
       client.admin.stockLocations.update(id, payload),
     buildOptions(
       queryClient,
@@ -146,7 +147,7 @@ export const useAdminUpdateStockLocation = (
  * 
  * export default StockLocation
  * 
- * @namespaceAsCategory Hooks.Admin.Stock Locations
+ * @customNamespace Hooks.Admin.Stock Locations
  * @category Mutations
  */
 export const useAdminDeleteStockLocation = (

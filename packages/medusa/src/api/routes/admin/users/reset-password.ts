@@ -155,6 +155,7 @@ export type payload = {
 /**
  * @schema AdminResetPasswordRequest
  * type: object
+ * description: "The details of the password reset request."
  * required:
  *   - token
  *   - password

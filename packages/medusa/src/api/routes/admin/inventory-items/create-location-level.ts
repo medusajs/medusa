@@ -140,6 +140,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostInventoryItemsItemLocationLevelsReq
  * type: object
+ * description: "The details of the location level to create."
  * required:
  *   - location_id
  *   - stocked_quantity

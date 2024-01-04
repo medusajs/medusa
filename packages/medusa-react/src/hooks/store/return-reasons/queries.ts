@@ -44,7 +44,7 @@ type ReturnReasonsQueryKey = typeof returnReasonsKey
  * 
  * export default ReturnReasons
  * 
- * @namespaceAsCategory Hooks.Store.Return Reasons
+ * @customNamespace Hooks.Store.Return Reasons
  * @category Queries
  */
 export const useReturnReasons = (
@@ -91,7 +91,7 @@ export const useReturnReasons = (
  * 
  * export default ReturnReason
  * 
- * @namespaceAsCategory Hooks.Store.Return Reasons
+ * @customNamespace Hooks.Store.Return Reasons
  * @category Queries
  */
 export const useReturnReason = (

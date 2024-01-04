@@ -51,7 +51,7 @@ import { adminOrderKeys } from "./queries"
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminUpdateOrder = (
@@ -109,7 +109,7 @@ export const useAdminUpdateOrder = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminCancelOrder = (
@@ -161,7 +161,7 @@ export const useAdminCancelOrder = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminCompleteOrder = (
@@ -213,7 +213,7 @@ export const useAdminCompleteOrder = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminCapturePayment = (
@@ -271,7 +271,7 @@ export const useAdminCapturePayment = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminRefundPayment = (
@@ -340,7 +340,7 @@ export const useAdminRefundPayment = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminCreateFulfillment = (
@@ -376,6 +376,8 @@ export const useAdminCreateFulfillment = (
 /**
  * This hook cancels an order's fulfillment and change its fulfillment status to `canceled`.
  * 
+ * @typeParamDefinition string - The fulfillment's ID.
+ * 
  * @example
  * import { useAdminCancelFulfillment } from "medusa-react"
  * 
@@ -404,7 +406,7 @@ export const useAdminCreateFulfillment = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminCancelFulfillment = (
@@ -462,7 +464,7 @@ export const useAdminCancelFulfillment = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminCreateShipment = (
@@ -525,7 +527,7 @@ export const useAdminCreateShipment = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminRequestReturn = (
@@ -584,10 +586,13 @@ export const useAdminRequestReturn = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminAddShippingMethod = (
+  /**
+   * The order's ID.
+   */
   orderId: string,
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
@@ -634,10 +639,13 @@ export const useAdminAddShippingMethod = (
  * 
  * export default Order
  * 
- * @namespaceAsCategory Hooks.Admin.Orders
+ * @customNamespace Hooks.Admin.Orders
  * @category Mutations
  */
 export const useAdminArchiveOrder = (
+  /**
+   * The order's ID.
+   */
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>
 ) => {

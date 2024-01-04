@@ -297,6 +297,7 @@ class Item {
 /**
  * @schema StorePostReturnsReq
  * type: object
+ * description: "The details of the return to create."
  * required:
  *   - order_id
  *   - items

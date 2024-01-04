@@ -78,7 +78,7 @@ type CurrenciesQueryKey = typeof adminCurrenciesKeys
  * export default Currencies
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Currencies
+ * @customNamespace Hooks.Admin.Currencies
  * @category Queries
  */
 export const useAdminCurrencies = (

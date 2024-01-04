@@ -4,7 +4,7 @@
  * This class is used to send requests custom API Routes. All its method
  * are available in the JS Client under the `medusa.admin.custom` property.
  * 
- * @namespaceAsCategory Hooks.Admin.Custom
+ * @customNamespace Hooks.Admin.Custom
  */
 
 export { useAdminCustomDelete, useAdminCustomPost } from "./mutations"

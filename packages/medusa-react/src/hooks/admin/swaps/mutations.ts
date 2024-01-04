@@ -49,7 +49,7 @@ import { adminSwapKeys } from "./queries"
  * 
  * export default CreateSwap
  * 
- * @namespaceAsCategory Hooks.Admin.Swaps
+ * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
 export const useAdminCreateSwap = (
@@ -78,6 +78,8 @@ export const useAdminCreateSwap = (
 
 /**
  * This hook cancels a swap and change its status.
+ * 
+ * @typeParamDefinition string - The swap's ID.
  * 
  * @example
  * import { useAdminCancelSwap } from "medusa-react"
@@ -109,7 +111,7 @@ export const useAdminCreateSwap = (
  * 
  * export default Swap
  * 
- * @namespaceAsCategory Hooks.Admin.Swaps
+ * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
 export const useAdminCancelSwap = (
@@ -130,6 +132,13 @@ export const useAdminCancelSwap = (
       options
     )
   )
+}
+
+export type AdminFulfillSwapReq = AdminPostOrdersOrderSwapsSwapFulfillmentsReq & { 
+  /**
+   * The swap's ID.
+   */
+  swap_id: string
 }
 
 /**
@@ -168,7 +177,7 @@ export const useAdminCancelSwap = (
  * 
  * export default Swap
  * 
- * @namespaceAsCategory Hooks.Admin.Swaps
+ * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
 export const useAdminFulfillSwap = (
@@ -179,7 +188,7 @@ export const useAdminFulfillSwap = (
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
     Error,
-    AdminPostOrdersOrderSwapsSwapFulfillmentsReq & { swap_id: string }
+    AdminFulfillSwapReq
   >
 ) => {
   const { client } = useMedusa()
@@ -189,7 +198,7 @@ export const useAdminFulfillSwap = (
     ({
       swap_id,
       ...payload
-    }: AdminPostOrdersOrderSwapsSwapFulfillmentsReq & { swap_id: string }) =>
+    }: AdminFulfillSwapReq) =>
       client.admin.orders.fulfillSwap(orderId, swap_id, payload),
     buildOptions(
       queryClient,
@@ -202,6 +211,13 @@ export const useAdminFulfillSwap = (
       options
     )
   )
+}
+
+export type AdminCreateSwapShipmentReq = AdminPostOrdersOrderSwapsSwapShipmentsReq & { 
+  /**
+   * The swap's ID.
+   */
+  swap_id: string
 }
 
 /**
@@ -243,7 +259,7 @@ export const useAdminFulfillSwap = (
  * 
  * export default Swap
  * 
- * @namespaceAsCategory Hooks.Admin.Swaps
+ * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
 export const useAdminCreateSwapShipment = (
@@ -254,7 +270,7 @@ export const useAdminCreateSwapShipment = (
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
     Error,
-    AdminPostOrdersOrderSwapsSwapShipmentsReq & { swap_id: string }
+    AdminCreateSwapShipmentReq
   >
 ) => {
   const { client } = useMedusa()
@@ -264,7 +280,7 @@ export const useAdminCreateSwapShipment = (
     ({
       swap_id,
       ...payload
-    }: AdminPostOrdersOrderSwapsSwapShipmentsReq & { swap_id: string }) =>
+    }: AdminCreateSwapShipmentReq) =>
       client.admin.orders.createSwapShipment(orderId, swap_id, payload),
     buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
   )
@@ -273,6 +289,8 @@ export const useAdminCreateSwapShipment = (
 /**
  * This hook process a swap's payment either by refunding or issuing a payment. This depends on the `difference_due` 
  * of the swap. If `difference_due` is negative, the amount is refunded. If `difference_due` is positive, the amount is captured.
+ * 
+ * @typeParamDefinition string - The swap's ID.
  * 
  * @example
  * import { useAdminProcessSwapPayment } from "medusa-react"
@@ -304,7 +322,7 @@ export const useAdminCreateSwapShipment = (
  * 
  * export default Swap
  * 
- * @namespaceAsCategory Hooks.Admin.Swaps
+ * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
 export const useAdminProcessSwapPayment = (
@@ -325,6 +343,20 @@ export const useAdminProcessSwapPayment = (
       options
     )
   )
+}
+
+/**
+ * The details of the swap's fulfillment to cancel.
+ */
+export type AdminCancelSwapFulfillmentReq = { 
+  /**
+   * The swap's ID.
+   */
+  swap_id: string
+  /**
+   * The fulfillment's ID.
+   */
+  fulfillment_id: string
 }
 
 /**
@@ -361,7 +393,7 @@ export const useAdminProcessSwapPayment = (
  * 
  * export default Swap
  * 
- * @namespaceAsCategory Hooks.Admin.Swaps
+ * @customNamespace Hooks.Admin.Swaps
  * @category Mutations
  */
 export const useAdminCancelSwapFulfillment = (

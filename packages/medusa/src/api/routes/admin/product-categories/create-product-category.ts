@@ -124,6 +124,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostProductCategoriesReq
  * type: object
+ * description: "The details of the product category to create."
  * required:
  *   - name
  * properties:

@@ -5,7 +5,7 @@
  * To use these hooks, make sure to install the
  * [@medusajs/inventory](https://docs.medusajs.com/modules/multiwarehouse/install-modules#inventory-module) module in your Medusa backend.
  * 
- * All hooks listed require {@link useAdminLogin | user authentication}.
+ * All hooks listed require {@link Hooks.Admin.Auth.useAdminLogin | user authentication}.
  * 
  * Reservations, provided by the [Inventory Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module), 
  * are quantities of an item that are reserved, typically when an order is placed but not yet fulfilled.
@@ -13,7 +13,7 @@
  * 
  * Related Guide: [How to manage item allocations in orders](https://docs.medusajs.com/modules/multiwarehouse/admin/manage-item-allocations-in-orders).
  * 
- * @namespaceAsCategory Hooks.Admin.Reservations
+ * @customNamespace Hooks.Admin.Reservations
  */
 
 export * from "./mutations"

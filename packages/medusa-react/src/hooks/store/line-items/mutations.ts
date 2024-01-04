@@ -38,7 +38,7 @@ import { useMedusa } from "../../../contexts"
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Line Items
+ * @customNamespace Hooks.Store.Line Items
  * @category Mutations
  */
 export const useCreateLineItem = (
@@ -58,6 +58,13 @@ export const useCreateLineItem = (
       client.carts.lineItems.create(cartId, data),
     options
   )
+}
+
+export type UpdateLineItemReq = StorePostCartsCartLineItemsItemReq & { 
+  /**
+   * The line item's ID.
+   */
+  lineId: string
 }
 
 /**
@@ -92,7 +99,7 @@ export const useCreateLineItem = (
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Line Items
+ * @customNamespace Hooks.Store.Line Items
  * @category Mutations
  */
 export const useUpdateLineItem = (
@@ -103,7 +110,7 @@ export const useUpdateLineItem = (
   options?: UseMutationOptions<
     StoreCartsRes,
     Error,
-    StorePostCartsCartLineItemsItemReq & { lineId: string }
+    UpdateLineItemReq
   >
 ) => {
   const { client } = useMedusa()
@@ -111,12 +118,7 @@ export const useUpdateLineItem = (
     ({
       lineId,
       ...data
-    }: StorePostCartsCartLineItemsItemReq & { 
-      /**
-       * The line item's ID.
-       */
-      lineId: string
-    }) =>
+    }: UpdateLineItemReq) =>
       client.carts.lineItems.update(cartId, lineId, data),
     options
   )
@@ -152,7 +154,7 @@ export const useUpdateLineItem = (
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Line Items
+ * @customNamespace Hooks.Store.Line Items
  * @category Mutations
  */
 export const useDeleteLineItem = (

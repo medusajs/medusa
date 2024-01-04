@@ -34,7 +34,7 @@ import { adminStoreKeys } from "./queries"
  * 
  * export default Store
  * 
- * @namespaceAsCategory Hooks.Admin.Stores
+ * @customNamespace Hooks.Admin.Stores
  * @category Mutations
  */
 export const useAdminUpdateStore = (
@@ -57,6 +57,8 @@ export const useAdminUpdateStore = (
  * This hook adds a currency code to the available currencies in a store. This doesn't create new currencies, as currencies are defined within the Medusa backend. 
  * To create a currency, you can [create a migration](https://docs.medusajs.com/development/entities/migrations/create) that inserts the currency into the database.
  * 
+ * @typeParamDefinition string - The code of the currency to add to the store.
+ * 
  * @example
  * import { useAdminAddStoreCurrency } from "medusa-react"
  * 
@@ -77,7 +79,7 @@ export const useAdminUpdateStore = (
  * 
  * export default Store
  * 
- * @namespaceAsCategory Hooks.Admin.Stores
+ * @customNamespace Hooks.Admin.Stores
  * @category Mutations
  */
 export const useAdminAddStoreCurrency = (
@@ -95,6 +97,8 @@ export const useAdminAddStoreCurrency = (
 /**
  * This hook deletes a currency code from the available currencies in a store. This doesn't completely 
  * delete the currency and it can be added again later to the store.
+ * 
+ * @typeParamDefinition string - The code of the currency to remove from the store.
  * 
  * @example
  * import { useAdminDeleteStoreCurrency } from "medusa-react"
@@ -116,7 +120,7 @@ export const useAdminAddStoreCurrency = (
  * 
  * export default Store
  * 
- * @namespaceAsCategory Hooks.Admin.Stores
+ * @customNamespace Hooks.Admin.Stores
  * @category Mutations
  */
 export const useAdminDeleteStoreCurrency = (

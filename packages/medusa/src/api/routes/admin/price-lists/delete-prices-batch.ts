@@ -144,9 +144,10 @@ export default async (req, res) => {
 /**
  * @schema AdminDeletePriceListPricesPricesReq
  * type: object
+ * description: "The details of the prices to delete."
  * properties:
  *   price_ids:
- *     description: The price IDs of the Money Amounts to delete.
+ *     description: The IDs of the prices to delete.
  *     type: array
  *     items:
  *       type: string

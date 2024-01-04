@@ -126,7 +126,7 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  * export default BatchJobs
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Batch Jobs
+ * @customNamespace Hooks.Admin.Batch Jobs
  * @category Queries
  */
 export const useAdminBatchJobs = (
@@ -172,7 +172,7 @@ export const useAdminBatchJobs = (
  * 
  * export default BatchJob
  * 
- * @namespaceAsCategory Hooks.Admin.Batch Jobs
+ * @customNamespace Hooks.Admin.Batch Jobs
  * @category Queries
  */
 export const useAdminBatchJob = (

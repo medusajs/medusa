@@ -35,10 +35,13 @@ import { adminAuthKeys } from "./queries"
  *
  * export default Login
  * 
- * @namespaceAsCategory Hooks.Admin.Auth
+ * @customNamespace Hooks.Admin.Auth
  * @category Mutations
  */
 export const useAdminLogin = (
+  /**
+   * stuff again
+   */
   options?: UseMutationOptions<Response<AdminAuthRes>, Error, AdminPostAuthReq>
 ) => {
   const { client } = useMedusa()
@@ -54,7 +57,7 @@ export const useAdminLogin = (
  * This hook is used to Log out the user and remove their authentication session. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
  * the user is still authorized to perform admin functionalities in other API Routes.
  * 
- * This hook requires {@link useAdminLogin | user authentication}.
+ * This hook requires {@link Hooks.Admin.Auth.useAdminLogin | user authentication}.
  * 
  * @example
  * import { useAdminDeleteSession } from "medusa-react"
@@ -76,7 +79,7 @@ export const useAdminLogin = (
  * 
  * export default Logout
  * 
- * @namespaceAsCategory Hooks.Admin.Auth
+ * @customNamespace Hooks.Admin.Auth
  * @category Mutations
  */
 export const useAdminDeleteSession = (

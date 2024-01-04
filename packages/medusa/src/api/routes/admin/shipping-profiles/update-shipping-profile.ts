@@ -141,6 +141,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostShippingProfilesProfileReq
  * type: object
+ * description: "The detail to update of the shipping profile."
  * properties:
  *   name:
  *     description: The name of the Shipping Profile

@@ -9,7 +9,7 @@
  * 
  * `medusa-react` exposes React Context Providers that facilitate building custom storefronts.
  * 
- * @namespaceAsCategory Providers
+ * @customNamespace Providers
  */
 
 export * from "./medusa"

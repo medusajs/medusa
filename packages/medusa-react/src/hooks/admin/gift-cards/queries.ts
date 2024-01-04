@@ -84,7 +84,7 @@ type GiftCardQueryKeys = typeof adminGiftCardKeys
  * export default CustomGiftCards
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Gift Cards
+ * @customNamespace Hooks.Admin.Gift Cards
  * @category Queries
  */
 export const useAdminGiftCards = (
@@ -130,10 +130,13 @@ export const useAdminGiftCards = (
  * 
  * export default CustomGiftCard
  * 
- * @namespaceAsCategory Hooks.Admin.Gift Cards
+ * @customNamespace Hooks.Admin.Gift Cards
  * @category Queries
  */
 export const useAdminGiftCard = (
+  /**
+   * The gift card's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminGiftCardsRes>,

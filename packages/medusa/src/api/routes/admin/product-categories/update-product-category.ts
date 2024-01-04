@@ -141,6 +141,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostProductCategoriesCategoryReq
  * type: object
+ * description: "The details to update of the product category."
  * properties:
  *   name:
  *     type: string

@@ -39,7 +39,7 @@ type CustomerQueryKey = typeof customerKeys
  * 
  * export default Customer
  * 
- * @namespaceAsCategory Hooks.Store.Customers
+ * @customNamespace Hooks.Store.Customers
  * @category Queries
  */
 export const useMeCustomer = (
@@ -86,7 +86,7 @@ export const useMeCustomer = (
  * 
  * export default Orders
  * 
- * @namespaceAsCategory Hooks.Store.Customers
+ * @customNamespace Hooks.Store.Customers
  * @category Queries
  */
 export const useCustomerOrders = (

@@ -120,7 +120,7 @@ type ReservationsQueryKeys = typeof adminReservationsKeys
  * export default Reservations
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Reservations
+ * @customNamespace Hooks.Admin.Reservations
  * @category Queries
  */
 export const useAdminReservations = (
@@ -172,7 +172,7 @@ export const useAdminReservations = (
  * 
  * export default Reservation
  * 
- * @namespaceAsCategory Hooks.Admin.Reservations
+ * @customNamespace Hooks.Admin.Reservations
  * @category Queries
  */
 export const useAdminReservation = (

@@ -135,6 +135,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCustomerGroupsGroupReq
  * type: object
+ * description: "The details to update in the customer group."
  * properties:
  *   name:
  *     description: "Name of the customer group"

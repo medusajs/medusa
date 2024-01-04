@@ -124,6 +124,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartPaymentSessionReq
  * type: object
+ * description: "The details of the payment session to set."
  * required:
  *   - provider_id
  * properties:

@@ -11,7 +11,7 @@
  * 
  * Related Guide: [How to implement cart functionality in your storefront](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart).
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  */
 
 export * from "./queries"

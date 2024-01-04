@@ -166,6 +166,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostDiscountsReq
  * type: object
+ * description: "The details of the discount to create."
  * required:
  *   - code
  *   - rule

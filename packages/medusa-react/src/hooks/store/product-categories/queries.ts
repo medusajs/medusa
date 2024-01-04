@@ -172,7 +172,7 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  * export default Categories
  * ```
  * 
- * @namespaceAsCategory Hooks.Store.Product Categories
+ * @customNamespace Hooks.Store.Product Categories
  * @category Queries
  */
 export const useProductCategories = (
@@ -252,7 +252,7 @@ export const useProductCategories = (
  * export default Category
  * ```
  * 
- * @namespaceAsCategory Hooks.Store.Product Categories
+ * @customNamespace Hooks.Store.Product Categories
  * @category Queries
  */
 export const useProductCategory = (

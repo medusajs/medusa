@@ -132,6 +132,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostOrderEditsOrderEditReq
  * type: object
+ * description: "The details to update of the order edit."
  * properties:
  *   internal_note:
  *     description: An optional note to create or update in the order edit.

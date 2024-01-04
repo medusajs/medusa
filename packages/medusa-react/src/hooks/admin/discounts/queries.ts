@@ -127,7 +127,7 @@ type DiscountQueryKeys = typeof adminDiscountKeys
  * export default Discounts
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Queries
  */
 export const useAdminDiscounts = (
@@ -175,7 +175,7 @@ export const useAdminDiscounts = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Queries
  */
 export const useAdminDiscount = (
@@ -228,7 +228,7 @@ export const useAdminDiscount = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Queries
  */
 export const useAdminGetDiscountByCode = (
@@ -286,7 +286,7 @@ export const useAdminGetDiscountByCode = (
  * 
  * export default DiscountCondition
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Queries
  */
 export const useAdminGetDiscountCondition = (

@@ -79,7 +79,7 @@ type SwapsQueryKey = typeof adminSwapKeys
  * export default Swaps
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Swaps
+ * @customNamespace Hooks.Admin.Swaps
  * @category Queries
  */
 export const useAdminSwaps = (
@@ -125,7 +125,7 @@ export const useAdminSwaps = (
  * 
  * export default Swap
  * 
- * @namespaceAsCategory Hooks.Admin.Swaps
+ * @customNamespace Hooks.Admin.Swaps
  * @category Queries
  */
 export const useAdminSwap = (

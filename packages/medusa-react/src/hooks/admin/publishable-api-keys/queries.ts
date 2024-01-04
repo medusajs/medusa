@@ -59,7 +59,7 @@ type PublishableApiKeyQueryKeys = typeof adminPublishableApiKeysKeys
  * 
  * export default PublishableApiKey
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Queries
  */
 export const useAdminPublishableApiKey = (
@@ -67,6 +67,9 @@ export const useAdminPublishableApiKey = (
    * The publishable API key's ID.
    */
   id: string,
+  /**
+   * @ignore
+   */
   query?: GetPublishableApiKeysParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminPublishableApiKeysRes>,
@@ -166,7 +169,7 @@ export const useAdminPublishableApiKey = (
  * export default PublishableApiKeys
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Queries
  */
 export const useAdminPublishableApiKeys = (
@@ -229,7 +232,7 @@ export const useAdminPublishableApiKeys = (
  * 
  * export default SalesChannels
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Queries
  */
 export const useAdminPublishableApiKeySalesChannels = (

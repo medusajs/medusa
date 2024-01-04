@@ -118,6 +118,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostNotesReq
  * type: object
+ * description: "The details of the note to be created."
  * required:
  *   - resource_id
  *   - resource_type

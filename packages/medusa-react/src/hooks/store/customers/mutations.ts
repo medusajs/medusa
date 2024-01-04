@@ -38,7 +38,7 @@ import { useMedusa } from "../../../contexts/medusa"
  * 
  * export default RegisterCustomer
  * 
- * @namespaceAsCategory Hooks.Store.Customers
+ * @customNamespace Hooks.Store.Customers
  * @category Mutations
  */
 export const useCreateCustomer = (
@@ -49,6 +49,13 @@ export const useCreateCustomer = (
     (data: StorePostCustomersReq) => client.customers.create(data),
     options
   )
+}
+
+export type UpdateMeReq = StorePostCustomersCustomerReq & { 
+  /**
+   * The customer's ID.
+   */
+  id: string
 }
 
 /**
@@ -84,24 +91,19 @@ export const useCreateCustomer = (
  * 
  * export default Customer
  * 
- * @namespaceAsCategory Hooks.Store.Customers
+ * @customNamespace Hooks.Store.Customers
  * @category Mutations
  */
 export const useUpdateMe = (
   options?: UseMutationOptions<
     StoreCustomersRes,
     Error,
-    { 
-      /**
-       * The customer's ID.
-       */
-      id: string
-    } & StorePostCustomersCustomerReq
+    UpdateMeReq
   >
 ) => {
   const { client } = useMedusa()
   return useMutation(
-    ({ id, ...data }: { id: string } & StorePostCustomersCustomerReq) =>
+    ({ id, ...data }: UpdateMeReq) =>
       client.customers.update(data),
     options
   )

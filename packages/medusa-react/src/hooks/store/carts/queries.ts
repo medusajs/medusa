@@ -42,7 +42,7 @@ type CartQueryKey = typeof cartKeys
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Queries
  */
 export const useGetCart = (

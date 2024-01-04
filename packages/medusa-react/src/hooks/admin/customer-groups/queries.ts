@@ -50,11 +50,17 @@ type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
  * 
  * export default CustomerGroup
  * 
- * @namespaceAsCategory Hooks.Admin.Customer Groups
+ * @customNamespace Hooks.Admin.Customer Groups
  * @category Queries
  */
 export const useAdminCustomerGroup = (
+  /**
+   * The customer group's ID.
+   */
   id: string,
+  /**
+   * Configurations to apply on the retrieved customer group.
+   */
   query?: AdminGetCustomerGroupsGroupParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminCustomerGroupsRes>,
@@ -189,7 +195,7 @@ export const useAdminCustomerGroup = (
  * export default CustomerGroups
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Customer Groups
+ * @customNamespace Hooks.Admin.Customer Groups
  * @category Queries
  */
 export const useAdminCustomerGroups = (
@@ -250,7 +256,7 @@ export const useAdminCustomerGroups = (
  * 
  * export default CustomerGroup
  * 
- * @namespaceAsCategory Hooks.Admin.Customer Groups
+ * @customNamespace Hooks.Admin.Customer Groups
  * @category Queries
  */
 export const useAdminCustomerGroupCustomers = (

@@ -1,7 +1,7 @@
 /**
  * @packageDocumentation
  * 
- * @namespaceAsCategory Providers.Session Cart
+ * @customNamespace Providers.Session Cart
  */
 
 import React, { useContext, useEffect } from "react"
@@ -13,7 +13,7 @@ import { isArray, isEmpty, isObject } from "../utils"
 /**
  * A session cart's item.
  */
-interface Item {
+export interface Item {
   /**
    * The product variant represented by this item in the cart.
    */
@@ -47,7 +47,7 @@ export interface SessionCartState {
   total: number
 }
 
-interface SessionCartContextState extends SessionCartState {
+export interface SessionCartContextState extends SessionCartState {
   /**
    * A state function used to set the region.
    * 
@@ -219,7 +219,7 @@ const calculateSessionCartTotal = (items: Item[]) => {
   )
 }
 
-interface SessionCartProviderProps {
+export interface SessionCartProviderProps {
   /**
    * @ignore
    */
@@ -243,7 +243,7 @@ const defaultInitialState: SessionCartState = {
  * 
  * You can use the `SessionProvider` as a lightweight client-side cart functionality. It’s not stored in any database or on the Medusa backend.
  * 
- * To use `SessionProvider`, you first have to insert it somewhere in your component tree below the {@link MedusaProvider}. Then, in any of the child components, 
+ * To use `SessionProvider`, you first have to insert it somewhere in your component tree below the {@link Providers.Medusa.MedusaProvider | MedusaProvider}. Then, in any of the child components, 
  * you can use the {@link useSessionCart} hook to get access to client-side cart item functionalities.
  * 
  * @param {SessionCartProviderProps} param0 - Props of the provider.
@@ -273,7 +273,7 @@ const defaultInitialState: SessionCartState = {
  * export default App
  * ```
  * 
- * @namespaceAsCategory Providers.Session Cart
+ * @customNamespace Providers.Session Cart
  */
 export const SessionCartProvider = ({
   initialState = defaultInitialState,
@@ -426,7 +426,7 @@ export const SessionCartProvider = ({
  * }
  * ```
  * 
- * @namespaceAsCategory Providers.Session Cart
+ * @customNamespace Providers.Session Cart
  */
 export const useSessionCart = () => {
   const context = useContext(SessionCartContext)

@@ -47,7 +47,7 @@ type ShippingProfileQueryKeys = typeof adminShippingProfileKeys
  * 
  * export default ShippingProfiles
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Profiles
+ * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Queries
  */
 export const useAdminShippingProfiles = (
@@ -96,7 +96,7 @@ export const useAdminShippingProfiles = (
  * 
  * export default ShippingProfile
  * 
- * @namespaceAsCategory Hooks.Admin.Shipping Profiles
+ * @customNamespace Hooks.Admin.Shipping Profiles
  * @category Queries
  */
 export const useAdminShippingProfile = (

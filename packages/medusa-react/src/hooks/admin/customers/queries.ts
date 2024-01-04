@@ -86,7 +86,7 @@ type CustomerQueryKeys = typeof adminCustomerKeys
  * export default Customers
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Customers
+ * @customNamespace Hooks.Admin.Customers
  * @category Queries
  */
 export const useAdminCustomers = (
@@ -134,7 +134,7 @@ export const useAdminCustomers = (
  * 
  * export default Customer
  * 
- * @namespaceAsCategory Hooks.Admin.Customers
+ * @customNamespace Hooks.Admin.Customers
  * @category Queries
  */
 export const useAdminCustomer = (

@@ -336,6 +336,7 @@ class AdditionalItem {
 /**
  * @schema StorePostSwapsReq
  * type: object
+ * description: "The details of the swap to create."
  * required:
  *   - order_id
  *   - return_items

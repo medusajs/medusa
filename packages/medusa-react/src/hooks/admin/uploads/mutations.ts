@@ -37,7 +37,7 @@ import { buildOptions } from "../../utils/buildOptions"
  * 
  * export default UploadFile
  * 
- * @namespaceAsCategory Hooks.Admin.Uploads
+ * @customNamespace Hooks.Admin.Uploads
  * @category Mutations
  */
 export const useAdminUploadFile = (
@@ -78,7 +78,7 @@ export const useAdminUploadFile = (
  * 
  * export default UploadFile
  * 
- * @namespaceAsCategory Hooks.Admin.Uploads
+ * @customNamespace Hooks.Admin.Uploads
  * @category Mutations
  */
 export const useAdminUploadProtectedFile = (
@@ -121,7 +121,7 @@ export const useAdminUploadProtectedFile = (
  * 
  * export default Image
  * 
- * @namespaceAsCategory Hooks.Admin.Uploads
+ * @customNamespace Hooks.Admin.Uploads
  * @category Mutations
  */
 export const useAdminCreatePresignedDownloadUrl = (
@@ -166,7 +166,7 @@ export const useAdminCreatePresignedDownloadUrl = (
  * 
  * export default Image
  * 
- * @namespaceAsCategory Hooks.Admin.Uploads
+ * @customNamespace Hooks.Admin.Uploads
  * @category Mutations
  */
 export const useAdminDeleteFile = (

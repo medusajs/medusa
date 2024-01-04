@@ -102,7 +102,7 @@ import { paymentCollectionQueryKeys } from "./queries"
  * export default PaymentCollection
  * ```
  * 
- * @namespaceAsCategory Hooks.Store.Payment Collections
+ * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
 export const useManageMultiplePaymentSessions = (
@@ -167,7 +167,7 @@ export const useManageMultiplePaymentSessions = (
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Store.Payment Collections
+ * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
 export const useManagePaymentSession = (
@@ -201,6 +201,8 @@ export const useManagePaymentSession = (
 /**
  * This hook authorizes a Payment Session of a Payment Collection.
  * 
+ * @typeParamDefinition string - The payment session's ID.
+ * 
  * @example
  * import { useAuthorizePaymentSession } from "medusa-react"
  * 
@@ -229,7 +231,7 @@ export const useManagePaymentSession = (
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Store.Payment Collections
+ * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
 export const useAuthorizePaymentSession = (
@@ -296,7 +298,7 @@ export const useAuthorizePaymentSession = (
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Store.Payment Collections
+ * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
 export const useAuthorizePaymentSessionsBatch = (
@@ -330,6 +332,8 @@ export const useAuthorizePaymentSessionsBatch = (
 /**
  * This hook refreshes a Payment Session's data to ensure that it is in sync with the Payment Collection.
  * 
+ * @typeParamDefinition string - The payment session's ID.
+ * 
  * @example
  * import { usePaymentCollectionRefreshPaymentSession } from "medusa-react"
  * 
@@ -358,7 +362,7 @@ export const useAuthorizePaymentSessionsBatch = (
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Store.Payment Collections
+ * @customNamespace Hooks.Store.Payment Collections
  * @category Mutations
  */
 export const usePaymentCollectionRefreshPaymentSession = (

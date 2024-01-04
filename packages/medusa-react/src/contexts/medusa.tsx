@@ -1,7 +1,7 @@
 /**
  * @packageDocumentation
  * 
- * @namespaceAsCategory Providers.Medusa
+ * @customNamespace Providers.Medusa
  */
 
 import Medusa from "@medusajs/medusa-js"
@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-query"
 import React from "react"
 
-interface MedusaContextState {
+export interface MedusaContextState {
   /**
    * The Medusa JS Client instance.
    */
@@ -52,7 +52,7 @@ const MedusaContext = React.createContext<MedusaContextState | null>(null)
  *   // ...
  * }
  * 
- * @namespaceAsCategory Providers.Medusa
+ * @customNamespace Providers.Medusa
  */
 export const useMedusa = () => {
   const context = React.useContext(MedusaContext)
@@ -62,7 +62,7 @@ export const useMedusa = () => {
   return context
 }
 
-interface MedusaProviderProps {
+export interface MedusaProviderProps {
   /**
    * The URL to your Medusa backend.
    */
@@ -133,7 +133,7 @@ interface MedusaProviderProps {
  * 
  * The `Storefront` component and its child components can now use hooks exposed by Medusa React.
  * 
- * @namespaceAsCategory Providers.Medusa
+ * @customNamespace Providers.Medusa
  */
 export const MedusaProvider = ({
   queryClientProviderProps,

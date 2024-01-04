@@ -48,7 +48,7 @@ type ShippingOptionQueryKey = typeof shippingOptionKey
  * 
  * export default ShippingOptions
  * 
- * @namespaceAsCategory Hooks.Store.Shipping Options
+ * @customNamespace Hooks.Store.Shipping Options
  * @category Queries
  */
 export const useShippingOptions = (
@@ -108,7 +108,7 @@ export const useShippingOptions = (
  * 
  * export default ShippingOptions
  * 
- * @namespaceAsCategory Hooks.Store.Shipping Options
+ * @customNamespace Hooks.Store.Shipping Options
  * @category Queries
  */
 export const useCartShippingOptions = (

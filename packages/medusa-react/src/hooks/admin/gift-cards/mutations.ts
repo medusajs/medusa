@@ -43,7 +43,7 @@ import { adminGiftCardKeys } from "./queries"
  * 
  * export default CreateCustomGiftCards
  * 
- * @namespaceAsCategory Hooks.Admin.Gift Cards
+ * @customNamespace Hooks.Admin.Gift Cards
  * @category Mutations
  */
 export const useAdminCreateGiftCard = (
@@ -92,7 +92,7 @@ export const useAdminCreateGiftCard = (
  * 
  * export default CustomGiftCard
  * 
- * @namespaceAsCategory Hooks.Admin.Gift Cards
+ * @customNamespace Hooks.Admin.Gift Cards
  * @category Mutations
  */
 export const useAdminUpdateGiftCard = (
@@ -149,7 +149,7 @@ export const useAdminUpdateGiftCard = (
  * 
  * export default CustomGiftCard
  * 
- * @namespaceAsCategory Hooks.Admin.Gift Cards
+ * @customNamespace Hooks.Admin.Gift Cards
  * @category Mutations
  */
 export const useAdminDeleteGiftCard = (

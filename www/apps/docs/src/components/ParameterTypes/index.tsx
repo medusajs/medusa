@@ -1,6 +1,7 @@
 import clsx from "clsx"
-import React from "react"
-import ParameterTypesItems from "./Items"
+import React, { Suspense, lazy } from "react"
+// import ParameterTypesItems from "./Items"
+import { Loading } from "docs-ui"
 
 export type Parameter = {
   name: string
@@ -18,6 +19,8 @@ type ParameterTypesType = {
   expandUrl?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
+const ParameterTypesItems = lazy(async () => import("./Items"))
+
 const ParameterTypes = ({
   parameters,
   className,
@@ -28,10 +31,12 @@ const ParameterTypes = ({
       className={clsx("bg-docs-bg-surface shadow-card-rest rounded", className)}
       {...props}
     >
-      <ParameterTypesItems
-        parameters={parameters}
-        expandUrl={props.expandUrl}
-      />
+      <Suspense fallback={<Loading />}>
+        <ParameterTypesItems
+          parameters={parameters}
+          expandUrl={props.expandUrl}
+        />
+      </Suspense>
     </div>
   )
 }

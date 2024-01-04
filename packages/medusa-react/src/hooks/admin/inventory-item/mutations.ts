@@ -42,7 +42,7 @@ import { adminInventoryItemsKeys } from "./queries"
  * 
  * export default CreateInventoryItem
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
 export const useAdminCreateInventoryItem = (
@@ -98,7 +98,7 @@ export const useAdminCreateInventoryItem = (
  * 
  * export default InventoryItem
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
 export const useAdminUpdateInventoryItem = (
@@ -151,7 +151,7 @@ export const useAdminUpdateInventoryItem = (
  * 
  * export default InventoryItem
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
 export const useAdminDeleteInventoryItem = (
@@ -176,6 +176,13 @@ export const useAdminDeleteInventoryItem = (
       options
     )
   )
+}
+
+export type AdminUpdateLocationLevelReq = AdminPostInventoryItemsItemLocationLevelsLevelReq & {
+  /**
+   * The ID of the location level to update.
+   */
+  stockLocationId: string
 }
 
 /**
@@ -213,7 +220,7 @@ export const useAdminDeleteInventoryItem = (
  * 
  * export default InventoryItem
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
 export const useAdminUpdateLocationLevel = (
@@ -224,9 +231,7 @@ export const useAdminUpdateLocationLevel = (
   options?: UseMutationOptions<
     Response<AdminInventoryItemsRes>,
     Error,
-    AdminPostInventoryItemsItemLocationLevelsLevelReq & {
-      stockLocationId: string
-    }
+    AdminUpdateLocationLevelReq
   >
 ) => {
   const { client } = useMedusa()
@@ -234,9 +239,7 @@ export const useAdminUpdateLocationLevel = (
 
   return useMutation(
     (
-      payload: AdminPostInventoryItemsItemLocationLevelsLevelReq & {
-        stockLocationId: string
-      }
+      payload: AdminUpdateLocationLevelReq
     ) =>
       client.admin.inventoryItems.updateLocationLevel(
         inventoryItemId,
@@ -259,6 +262,8 @@ export const useAdminUpdateLocationLevel = (
 
 /**
  * This hook deletes a location level of an Inventory Item.
+ * 
+ * @typeParamDefinition string - The ID of the location level to delete.
  * 
  * @example
  * import { useAdminDeleteLocationLevel } from "medusa-react"
@@ -284,7 +289,7 @@ export const useAdminUpdateLocationLevel = (
  * 
  * export default InventoryItem
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
 export const useAdminDeleteLocationLevel = (
@@ -349,7 +354,7 @@ export const useAdminDeleteLocationLevel = (
  * 
  * export default InventoryItem
  * 
- * @namespaceAsCategory Hooks.Admin.Inventory Items
+ * @customNamespace Hooks.Admin.Inventory Items
  * @category Mutations
  */
 export const useAdminCreateLocationLevel = (

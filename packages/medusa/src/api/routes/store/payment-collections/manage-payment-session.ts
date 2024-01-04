@@ -120,6 +120,7 @@ export default async (req, res) => {
 /**
  * @schema StorePaymentCollectionSessionsReq
  * type: object
+ * description: "The details of the payment session to manage."
  * required:
  *   - provider_id
  * properties:

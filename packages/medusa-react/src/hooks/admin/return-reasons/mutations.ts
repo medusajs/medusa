@@ -42,7 +42,7 @@ import { adminReturnReasonKeys } from "./queries"
  * 
  * export default CreateReturnReason
  * 
- * @namespaceAsCategory Hooks.Admin.Return Reasons
+ * @customNamespace Hooks.Admin.Return Reasons
  * @category Mutations
  */
 export const useAdminCreateReturnReason = (
@@ -95,7 +95,7 @@ export const useAdminCreateReturnReason = (
  * 
  * export default ReturnReason
  * 
- * @namespaceAsCategory Hooks.Admin.Return Reasons
+ * @customNamespace Hooks.Admin.Return Reasons
  * @category Mutations
  */
 export const useAdminUpdateReturnReason = (
@@ -152,7 +152,7 @@ export const useAdminUpdateReturnReason = (
  * 
  * export default ReturnReason
  * 
- * @namespaceAsCategory Hooks.Admin.Return Reasons
+ * @customNamespace Hooks.Admin.Return Reasons
  * @category Mutations
  */
 export const useAdminDeleteReturnReason = (

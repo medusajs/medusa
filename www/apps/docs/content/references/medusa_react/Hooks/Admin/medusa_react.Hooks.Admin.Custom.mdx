@@ -14,7 +14,7 @@ are available in the JS Client under the `medusa.admin.custom` property.
 
 ### useAdminCustomDelete
 
-This hook sends a `DELETE` request to a custom API Route. The method accepts a type parameters `TResponse` indicating the type of response, which defaults to `any`.
+This hook sends a `DELETE` request to a custom API Route.
 
 #### Example
 
@@ -49,68 +49,19 @@ export default Custom
 
 #### Type Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "TResponse",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"TResponse","type":"`object`","description":"The response's type which defaults to `any`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Hook Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "path",
-    "type": "`string`",
-    "description": "The path to the custom endpoint.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "queryKey",
-    "type": "`QueryKey`",
-    "description": "A list of query keys, used to invalidate data.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "relatedDomains",
-    "type": "`RelatedDomains`",
-    "description": "A list of related domains that should be invalidated and refetch when the mutation\nfunction is invoked.",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"path","type":"`string`","description":"The path to the custom endpoint.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"queryKey","type":"`QueryKey`","description":"A list of query keys, used to invalidate data.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"relatedDomains","type":"`RelatedDomains`","description":"A list of related domains that should be invalidated and refetch when the mutation\nfunction is invoked.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[
-  {
-    "name": "TResponse",
-    "type": "`TResponse`",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"TResponse","type":"`TResponse`","optional":false,"defaultValue":"","description":"The response based on the type provided for ","expandable":false,"children":[]}]} />
 
 ### useAdminCustomPost
 
-This hook sends a `POST` request to a custom API Route. The method accepts a tuple of type parameters: the first `TPayload` is the type of accepted body parameters,
-which defaults to `Record<string, any>`; the second `TResponse` is the type of response, which defaults to `any`.
+This hook sends a `POST` request to a custom API Route.
 
 #### Example
 
@@ -152,91 +103,23 @@ export default Custom
 
 #### Type Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "TPayload",
-    "type": "`Record<string, any>`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "TResponse",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"TPayload","type":"`Record<string, any>`","description":"The type of accepted body parameters which defaults to `Record<string, any>`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TResponse","type":"`object`","description":"The type of response, which defaults to `any`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Hook Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "path",
-    "type": "`string`",
-    "description": "The path to the custom endpoint.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "queryKey",
-    "type": "`QueryKey`",
-    "description": "A list of query keys, used to invalidate data.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "relatedDomains",
-    "type": "`RelatedDomains`",
-    "description": "A list of related domains that should be invalidated and refetch when the mutation\nfunction is invoked.",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"path","type":"`string`","description":"The path to the custom endpoint.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"queryKey","type":"`QueryKey`","description":"A list of query keys, used to invalidate data.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"relatedDomains","type":"`RelatedDomains`","description":"A list of related domains that should be invalidated and refetch when the mutation\nfunction is invoked.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "TPayload",
-    "type": "`TPayload`",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"TPayload","type":"`TPayload`","optional":false,"defaultValue":"","description":"The payload based on the specified type for ","expandable":false,"children":[]}]} />
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[
-  {
-    "name": "TResponse",
-    "type": "`TResponse`",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"TResponse","type":"`TResponse`","optional":false,"defaultValue":"","description":"The response based on the specified type for ","expandable":false,"children":[]}]} />
 
 ### useAdminCustomQuery
 
-This hook sends a `GET` request to a custom API Route. The method accepts a tuple of type parameters: the first `TQuery` is the type of accepted query parameters,
-which defaults to `Record<string, any>`; the second `TResponse` is the type of response, which defaults to `any`.
+This hook sends a `GET` request to a custom API Route.
 
 #### Example
 
@@ -284,69 +167,12 @@ export default Custom
 
 #### Type Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "TQuery",
-    "type": "`Record<string, any>`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "TResponse",
-    "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"TQuery","type":"`Record<string, any>`","description":"The type of accepted query parameters which defaults to `Record<string, any>`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TResponse","type":"`object`","description":"The type of response which defaults to `any`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Hook Parameters
 
-<ParameterTypes parameters={[
-  {
-    "name": "path",
-    "type": "`string`",
-    "description": "The path to the custom endpoint.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "queryKey",
-    "type": "`QueryKey`",
-    "description": "A list of query keys, used to invalidate data.",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "query",
-    "type": "`TQuery`",
-    "description": "Query parameters to pass to the request.",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"path","type":"`string`","description":"The path to the custom endpoint.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"queryKey","type":"`QueryKey`","description":"A list of query keys, used to invalidate data.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`TQuery`","description":"Query parameters to pass to the request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Query Returned Data
 
-<ParameterTypes parameters={[
-  {
-    "name": "TResponse",
-    "type": "`TResponse`",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
+<ParameterTypes parameters={[{"name":"TResponse","type":"`TResponse`","optional":false,"defaultValue":"","description":"The response based on the type specified for ","expandable":false,"children":[]}]} />

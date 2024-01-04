@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query"
 
 import {
+  AdminDeletePublishableApiKeySalesChannelsBatchReq,
   AdminPostPublishableApiKeySalesChannelsBatchReq,
   AdminPostPublishableApiKeysPublishableApiKeyReq,
   AdminPostPublishableApiKeysReq,
@@ -42,7 +43,7 @@ import { adminPublishableApiKeysKeys } from "./queries"
  * 
  * export default CreatePublishableApiKey
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
 export const useAdminCreatePublishableApiKey = (
@@ -94,7 +95,7 @@ export const useAdminCreatePublishableApiKey = (
  * 
  * export default PublishableApiKey
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
 export const useAdminUpdatePublishableApiKey = (
@@ -157,7 +158,7 @@ export const useAdminUpdatePublishableApiKey = (
  * 
  * export default PublishableApiKey
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
 export const useAdminDeletePublishableApiKey = (
@@ -218,7 +219,7 @@ export const useAdminDeletePublishableApiKey = (
  * 
  * export default PublishableApiKey
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
 export const useAdminRevokePublishableApiKey = (
@@ -284,7 +285,7 @@ export const useAdminRevokePublishableApiKey = (
  * 
  * export default PublishableApiKey
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
 export const useAdminAddPublishableKeySalesChannelsBatch = (
@@ -353,7 +354,7 @@ export const useAdminAddPublishableKeySalesChannelsBatch = (
  * 
  * export default PublishableApiKey
  * 
- * @namespaceAsCategory Hooks.Admin.Publishable API Keys
+ * @customNamespace Hooks.Admin.Publishable API Keys
  * @category Mutations
  */
 export const useAdminRemovePublishableKeySalesChannelsBatch = (
@@ -364,14 +365,14 @@ export const useAdminRemovePublishableKeySalesChannelsBatch = (
   options?: UseMutationOptions<
     Response<AdminPublishableApiKeysRes>,
     Error,
-    AdminPostPublishableApiKeySalesChannelsBatchReq
+    AdminDeletePublishableApiKeySalesChannelsBatchReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminPostPublishableApiKeySalesChannelsBatchReq) =>
+    (payload: AdminDeletePublishableApiKeySalesChannelsBatchReq) =>
       client.admin.publishableApiKeys.deleteSalesChannelsBatch(id, payload),
     buildOptions(
       queryClient,

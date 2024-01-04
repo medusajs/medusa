@@ -191,6 +191,7 @@ class StockLocationAddress {
 /**
  * @schema AdminPostStockLocationsReq
  * type: object
+ * description: "The details of the stock location to create."
  * required:
  *   - name
  * properties:

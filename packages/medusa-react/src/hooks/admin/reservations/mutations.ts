@@ -48,7 +48,7 @@ import { adminReservationsKeys } from "./queries"
  * 
  * export default CreateReservation
  * 
- * @namespaceAsCategory Hooks.Admin.Reservations
+ * @customNamespace Hooks.Admin.Reservations
  * @category Mutations
  */
 export const useAdminCreateReservation = (
@@ -101,7 +101,7 @@ export const useAdminCreateReservation = (
  * 
  * export default Reservation
  * 
- * @namespaceAsCategory Hooks.Admin.Reservations
+ * @customNamespace Hooks.Admin.Reservations
  * @category Mutations
  */
 export const useAdminUpdateReservation = (
@@ -163,7 +163,7 @@ export const useAdminUpdateReservation = (
  * 
  * export default Reservation
  * 
- * @namespaceAsCategory Hooks.Admin.Reservations
+ * @customNamespace Hooks.Admin.Reservations
  * @category Mutations
  */
 export const useAdminDeleteReservation = (

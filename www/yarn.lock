@@ -11861,6 +11861,7 @@ __metadata:
     react-dom: ^18.2.0
     react-tooltip: 5.7.4
     react-transition-group: ^4.4.5
+    swc-loader: ^0.2.3
     tailwind: "*"
     tailwindcss: ^3.3.2
     tsconfig: "*"
@@ -21638,6 +21639,16 @@ __metadata:
   bin:
     svgo: bin/svgo
   checksum: 0741f5d5cad63111a90a0ce7a1a5a9013f6d293e871b75efe39addb57f29a263e45294e485a4d2ff9cc260a5d142c8b5937b2234b4ef05efdd2706fb2d360ecc
+  languageName: node
+  linkType: hard
+
+"swc-loader@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "swc-loader@npm:0.2.3"
+  peerDependencies:
+    "@swc/core": ^1.2.147
+    webpack: ">=2"
+  checksum: cb3f9b116fbd292b881e804a4fe66cd6d543a7de2572f5a68e067e4780ee2d59a8da87a90736ba6e8e286e4368c98214ae3486b1b872080292814e5d3062f09c
   languageName: node
   linkType: hard
 

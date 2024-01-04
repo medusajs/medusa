@@ -244,6 +244,7 @@ class ProductVariantOptionReq {
 /**
  * @schema AdminPostProductsProductVariantsReq
  * type: object
+ * description: "The details of the product variant to create."
  * required:
  *   - title
  *   - prices

@@ -140,6 +140,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeleteCustomerGroupsGroupCustomerBatchReq
  * type: object
+ * description: "The customers to remove from the customer group."
  * required:
  *   - customer_ids
  * properties:

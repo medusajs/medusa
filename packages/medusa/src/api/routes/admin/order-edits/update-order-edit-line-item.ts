@@ -139,6 +139,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostOrderEditsEditLineItemsLineItemReq
  * type: object
+ * description: "The details to create or update of the line item change."
  * required:
  *   - quantity
  * properties:

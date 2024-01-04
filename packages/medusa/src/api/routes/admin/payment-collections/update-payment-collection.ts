@@ -120,6 +120,7 @@ export default async (req, res) => {
 /**
  * @schema AdminUpdatePaymentCollectionsReq
  * type: object
+ * description: "The details to update of the payment collection."
  * properties:
  *   description:
  *     description: A description to create or update the payment collection.

@@ -117,6 +117,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostGiftCardsReq
  * type: object
+ * description: "The details of the gift card to create."
  * required:
  *   - region_id
  * properties:

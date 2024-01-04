@@ -130,6 +130,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostProductsProductOptionsReq
  * type: object
+ * description: "The details of the product option to create."
  * required:
  *   - title
  * properties:

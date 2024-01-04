@@ -4,8 +4,12 @@ import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 
 /**
- * This hook sends a `GET` request to a custom API Route. The method accepts a tuple of type parameters: the first `TQuery` is the type of accepted query parameters,
- * which defaults to `Record<string, any>`; the second `TResponse` is the type of response, which defaults to `any`.
+ * This hook sends a `GET` request to a custom API Route.
+ * 
+ * @typeParam TQuery - The type of accepted query parameters which defaults to `Record<string, any>`.
+ * @typeParam TResponse - The type of response which defaults to `any`.
+ * @typeParamDefinition TQuery - The query parameters based on the type specified for `TQuery`.
+ * @typeParamDefinition TResponse - The response based on the type specified for `TResponse`.
  * 
  * @example
  * import { useAdminCustomQuery } from "medusa-react"
@@ -48,7 +52,7 @@ import { UseQueryOptionsWrapper } from "../../../types"
  * 
  * export default Custom
  * 
- * @namespaceAsCategory Hooks.Admin.Custom
+ * @customNamespace Hooks.Admin.Custom
  * @category Mutations
  */
 export const useAdminCustomQuery = <

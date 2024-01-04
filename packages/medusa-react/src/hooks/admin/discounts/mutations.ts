@@ -112,7 +112,7 @@ import { adminDiscountKeys } from "./queries"
  * export default DiscountCondition
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminAddDiscountConditionResourceBatch = (
@@ -191,7 +191,7 @@ export const useAdminAddDiscountConditionResourceBatch = (
  * 
  * export default DiscountCondition
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminDeleteDiscountConditionResourceBatch = (
@@ -264,7 +264,7 @@ export const useAdminDeleteDiscountConditionResourceBatch = (
  * 
  * export default CreateDiscount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminCreateDiscount = (
@@ -307,7 +307,7 @@ export const useAdminCreateDiscount = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminUpdateDiscount = (
@@ -349,7 +349,7 @@ export const useAdminUpdateDiscount = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminDeleteDiscount = (
@@ -369,6 +369,8 @@ export const useAdminDeleteDiscount = (
 
 /**
  * This hook adds a Region to the list of Regions a Discount can be used in.
+ * 
+ * @typeParamDefinition string - The ID of the region to add.
  * 
  * @example
  * import { useAdminDiscountAddRegion } from "medusa-react"
@@ -394,7 +396,7 @@ export const useAdminDeleteDiscount = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminDiscountAddRegion = (
@@ -415,6 +417,8 @@ export const useAdminDiscountAddRegion = (
 /**
  * This hook removes a Region from the list of Regions that a Discount can be used in. 
  * This does not delete a region, only the association between it and the discount.
+ * 
+ * @typeParamDefinition string - The ID of the region to remove.
  * 
  * @example
  * import { useAdminDiscountRemoveRegion } from "medusa-react"
@@ -440,7 +444,7 @@ export const useAdminDiscountAddRegion = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminDiscountRemoveRegion = (
@@ -492,7 +496,7 @@ export const useAdminDiscountRemoveRegion = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminCreateDynamicDiscountCode = (
@@ -522,6 +526,8 @@ export const useAdminCreateDynamicDiscountCode = (
 /**
  * This hook deletes a dynamic code from a discount.
  * 
+ * @typeParamDefinition string - The code of the dynamic discount to delete.
+ * 
  * @example
  * import { useAdminDeleteDynamicDiscountCode } from "medusa-react"
  * 
@@ -546,7 +552,7 @@ export const useAdminCreateDynamicDiscountCode = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminDeleteDynamicDiscountCode = (
@@ -604,7 +610,7 @@ export const useAdminDeleteDynamicDiscountCode = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminDiscountCreateCondition = (
@@ -667,7 +673,7 @@ export const useAdminDiscountCreateCondition = (
  * 
  * export default DiscountCondition
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminDiscountUpdateCondition = (
@@ -697,6 +703,8 @@ export const useAdminDiscountUpdateCondition = (
 /**
  * This hook deletes a discount condition. This doesn't delete resources associated to the discount condition.
  * 
+ * @typeParamDefinition string - The ID of the condition to delete.
+ * 
  * @example
  * import { useAdminDiscountRemoveCondition } from "medusa-react"
  * 
@@ -725,7 +733,7 @@ export const useAdminDiscountUpdateCondition = (
  * 
  * export default Discount
  * 
- * @namespaceAsCategory Hooks.Admin.Discounts
+ * @customNamespace Hooks.Admin.Discounts
  * @category Mutations
  */
 export const useAdminDiscountRemoveCondition = (

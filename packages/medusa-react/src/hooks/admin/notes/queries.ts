@@ -80,7 +80,7 @@ type NoteQueryKeys = typeof adminNoteKeys
  * export default Notes
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Notes
+ * @customNamespace Hooks.Admin.Notes
  * @category Queries
  */
 export const useAdminNotes = (
@@ -126,10 +126,13 @@ export const useAdminNotes = (
  * 
  * export default Note
  * 
- * @namespaceAsCategory Hooks.Admin.Notes
+ * @customNamespace Hooks.Admin.Notes
  * @category Queries
  */
 export const useAdminNote = (
+  /**
+   * The note's ID.
+   */
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminNotesRes>,

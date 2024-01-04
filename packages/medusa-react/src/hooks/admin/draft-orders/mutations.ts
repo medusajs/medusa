@@ -53,7 +53,7 @@ import { adminDraftOrderKeys } from "./queries"
  * 
  * export default CreateDraftOrder
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Mutations
  */
 export const useAdminCreateDraftOrder = (
@@ -103,7 +103,7 @@ export const useAdminCreateDraftOrder = (
  * 
  * export default DraftOrder
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Mutations
  */
 export const useAdminUpdateDraftOrder = (
@@ -159,7 +159,7 @@ export const useAdminUpdateDraftOrder = (
  * 
  * export default DraftOrder
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Mutations
  */
 export const useAdminDeleteDraftOrder = (
@@ -211,7 +211,7 @@ export const useAdminDeleteDraftOrder = (
  * 
  * export default DraftOrder
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Mutations
  */
 export const useAdminDraftOrderRegisterPayment = (
@@ -264,7 +264,7 @@ export const useAdminDraftOrderRegisterPayment = (
  * 
  * export default DraftOrder
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Mutations
  */
 export const useAdminDraftOrderAddLineItem = (
@@ -289,6 +289,8 @@ export const useAdminDraftOrderAddLineItem = (
 
 /**
  * This hook deletes a Line Item from a Draft Order.
+ * 
+ * @typeParamDefinition string - The ID of the line item to remove.
  * 
  * @example
  * import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
@@ -316,7 +318,7 @@ export const useAdminDraftOrderAddLineItem = (
  * 
  * export default DraftOrder
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Mutations
  */
 export const useAdminDraftOrderRemoveLineItem = (
@@ -332,6 +334,16 @@ export const useAdminDraftOrderRemoveLineItem = (
     (itemId: string) => client.admin.draftOrders.removeLineItem(id, itemId),
     buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
   )
+}
+
+/**
+ * The details to update of the line item.
+ */
+export type AdminDraftOrderUpdateLineItemReq = AdminPostDraftOrdersDraftOrderLineItemsItemReq & { 
+  /**
+   * The line item's ID to update.
+   */
+  item_id: string
 }
 
 /**
@@ -365,7 +377,7 @@ export const useAdminDraftOrderRemoveLineItem = (
  * 
  * export default DraftOrder
  * 
- * @namespaceAsCategory Hooks.Admin.Draft Orders
+ * @customNamespace Hooks.Admin.Draft Orders
  * @category Mutations
  */
 export const useAdminDraftOrderUpdateLineItem = (
@@ -376,7 +388,7 @@ export const useAdminDraftOrderUpdateLineItem = (
   options?: UseMutationOptions<
     Response<AdminDraftOrdersRes>,
     Error,
-    AdminPostDraftOrdersDraftOrderLineItemsItemReq & { item_id: string }
+    AdminDraftOrderUpdateLineItemReq
   >
 ) => {
   const { client } = useMedusa()
@@ -385,7 +397,7 @@ export const useAdminDraftOrderUpdateLineItem = (
     ({
       item_id,
       ...payload
-    }: AdminPostDraftOrdersDraftOrderLineItemsItemReq & { item_id: string }) =>
+    }: AdminDraftOrderUpdateLineItemReq) =>
       client.admin.draftOrders.updateLineItem(id, item_id, payload),
     buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
   )

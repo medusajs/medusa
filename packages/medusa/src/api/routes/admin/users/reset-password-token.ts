@@ -116,6 +116,7 @@ export default async (req, res) => {
 /**
  * @schema AdminResetPasswordTokenRequest
  * type: object
+ * description: "The details of the password reset token request."
  * required:
  *   - email
  * properties:

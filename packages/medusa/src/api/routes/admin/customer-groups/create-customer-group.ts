@@ -108,6 +108,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCustomerGroupsReq
  * type: object
+ * description: "The details of the customer group to create."
  * required:
  *   - name
  * properties:

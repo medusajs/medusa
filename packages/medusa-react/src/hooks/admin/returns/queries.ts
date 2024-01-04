@@ -41,7 +41,7 @@ type ReturnQueryKeys = typeof adminReturnKeys
  * 
  * export default Returns
  * 
- * @namespaceAsCategory Hooks.Admin.Returns
+ * @customNamespace Hooks.Admin.Returns
  * @category Queries
  */
 export const useAdminReturns = (

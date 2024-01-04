@@ -42,7 +42,7 @@ import { useMedusa } from "../../../contexts"
  * 
  * export default CreateReturn
  * 
- * @namespaceAsCategory Hooks.Store.Returns
+ * @customNamespace Hooks.Store.Returns
  * @category Mutations
  */
 export const useCreateReturn = (

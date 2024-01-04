@@ -114,6 +114,7 @@ export default async (req: ExtendedRequest<Currency>, res) => {
 /**
  * @schema AdminPostCurrenciesCurrencyReq
  * type: object
+ * description: "The details to update in the currency"
  * properties:
  *   includes_tax:
  *     type: boolean

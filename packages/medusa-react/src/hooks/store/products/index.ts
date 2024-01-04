@@ -8,7 +8,7 @@
  * 
  * Related Guide: [How to show products in a storefront](https://docs.medusajs.com/modules/products/storefront/show-products).
  * 
- * @namespaceAsCategory Hooks.Store.Products
+ * @customNamespace Hooks.Store.Products
  */
 
 export * from "./queries"

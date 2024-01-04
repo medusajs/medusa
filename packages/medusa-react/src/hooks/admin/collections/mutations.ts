@@ -42,7 +42,7 @@ import { adminCollectionKeys } from "./queries"
  * 
  * export default CreateCollection
  * 
- * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
 export const useAdminCreateCollection = (
@@ -90,7 +90,7 @@ export const useAdminCreateCollection = (
  * 
  * export default Collection
  * 
- * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
 export const useAdminUpdateCollection = (
@@ -144,7 +144,7 @@ export const useAdminUpdateCollection = (
  * 
  * export default Collection
  * 
- * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
 export const useAdminDeleteCollection = (
@@ -195,7 +195,7 @@ export const useAdminDeleteCollection = (
  * 
  * export default Collection
  * 
- * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
 export const useAdminAddProductsToCollection = (
@@ -253,7 +253,7 @@ export const useAdminAddProductsToCollection = (
  * 
  * export default Collection
  * 
- * @namespaceAsCategory Hooks.Admin.Product Collections
+ * @customNamespace Hooks.Admin.Product Collections
  * @category Mutations
  */
 export const useAdminRemoveProductsFromCollection = (

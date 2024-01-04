@@ -45,7 +45,7 @@ import { buildOptions } from "../../utils/buildOptions"
  * 
  * export default CreateUser
  * 
- * @namespaceAsCategory Hooks.Admin.Users
+ * @customNamespace Hooks.Admin.Users
  * @category Mutations
  */
 export const useAdminCreateUser = (
@@ -95,7 +95,7 @@ export const useAdminCreateUser = (
  * 
  * export default User
  * 
- * @namespaceAsCategory Hooks.Admin.Users
+ * @customNamespace Hooks.Admin.Users
  * @category Mutations
  */
 export const useAdminUpdateUser = (
@@ -149,7 +149,7 @@ export const useAdminUpdateUser = (
  * 
  * export default User
  * 
- * @namespaceAsCategory Hooks.Admin.Users
+ * @customNamespace Hooks.Admin.Users
  * @category Mutations
  */
 export const useAdminDeleteUser = (
@@ -202,7 +202,7 @@ export const useAdminDeleteUser = (
  * 
  * export default ResetPassword
  * 
- * @namespaceAsCategory Hooks.Admin.Users
+ * @customNamespace Hooks.Admin.Users
  * @category Mutations
  */
 export const useAdminResetPassword = (
@@ -249,7 +249,7 @@ export const useAdminResetPassword = (
  * 
  * export default Login
  * 
- * @namespaceAsCategory Hooks.Admin.Users
+ * @customNamespace Hooks.Admin.Users
  * @category Mutations
  */
 export const useAdminSendResetPasswordToken = (

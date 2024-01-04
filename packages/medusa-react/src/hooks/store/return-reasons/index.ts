@@ -5,7 +5,7 @@
  * 
  * Return reasons are key-value pairs that are used to specify why an order return is being created.
  * 
- * @namespaceAsCategory Hooks.Store.Return Reasons
+ * @customNamespace Hooks.Store.Return Reasons
  */
 
 export * from "./queries"

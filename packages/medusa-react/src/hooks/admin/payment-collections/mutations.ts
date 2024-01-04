@@ -44,7 +44,7 @@ import { adminPaymentCollectionQueryKeys } from "./queries"
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Admin.Payment Collections
+ * @customNamespace Hooks.Admin.Payment Collections
  * @category Mutations
  */
 export const useAdminDeletePaymentCollection = (
@@ -107,7 +107,7 @@ export const useAdminDeletePaymentCollection = (
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Admin.Payment Collections
+ * @customNamespace Hooks.Admin.Payment Collections
  * @category Mutations
  */
 export const useAdminUpdatePaymentCollection = (
@@ -167,7 +167,7 @@ export const useAdminUpdatePaymentCollection = (
  * 
  * export default PaymentCollection
  * 
- * @namespaceAsCategory Hooks.Admin.Payment Collections
+ * @customNamespace Hooks.Admin.Payment Collections
  * @category Mutations
  */
 export const useAdminMarkPaymentCollectionAsAuthorized = (

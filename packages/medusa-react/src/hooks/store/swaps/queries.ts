@@ -41,10 +41,13 @@ type SwapQueryKey = typeof swapKey
  * 
  * export default Swap
  * 
- * @namespaceAsCategory Hooks.Store.Swaps
+ * @customNamespace Hooks.Store.Swaps
  * @category Queries
  */
 export const useCartSwap = (
+  /**
+   * The ID of the swap's cart.
+   */
   cartId: string,
   options?: UseQueryOptionsWrapper<
     Response<StoreSwapsRes>,

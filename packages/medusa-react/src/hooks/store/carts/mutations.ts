@@ -11,8 +11,16 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 
 /**
+ * The details of the cart to create.
+ */
+export type CreateCartReq = StorePostCartReq | undefined
+
+/**
  * This hook creates a Cart. Although optional, specifying the cart's region and sales channel can affect the cart's pricing and
- * the products that can be added to the cart respectively. So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
+ * the products that can be added to the cart respectively.
+ * 
+ * So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
+ * 
  * If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
  * 
  * @example
@@ -41,7 +49,7 @@ import { useMedusa } from "../../../contexts/medusa"
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useCreateCart = (
@@ -89,7 +97,7 @@ export const useCreateCart = (
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useUpdateCart = (
@@ -136,7 +144,7 @@ export const useUpdateCart = (
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useCompleteCart = (
@@ -177,7 +185,7 @@ export const useCompleteCart = (
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useCreatePaymentSession = (
@@ -224,7 +232,7 @@ export const useCreatePaymentSession = (
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useUpdatePaymentSession = (
@@ -252,9 +260,9 @@ export const useUpdatePaymentSession = (
 }
 
 /**
- * @interface
+ * The details of the payment session to refresh.
  */
-type RefreshPaymentSessionMutationData = {
+export type RefreshPaymentSessionMutationData = {
   /**
    * The payment provider's identifier.
    */
@@ -291,7 +299,7 @@ type RefreshPaymentSessionMutationData = {
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useRefreshPaymentSession = (
@@ -311,16 +319,6 @@ export const useRefreshPaymentSession = (
       client.carts.refreshPaymentSession(cartId, provider_id),
     options
   )
-}
-
-/**
- * @interface
- */
-type SetPaymentSessionMutationData = { 
-  /**
-   * The payment provider's identifier.
-   */
-  provider_id: string
 }
 
 /**
@@ -354,7 +352,7 @@ type SetPaymentSessionMutationData = {
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useSetPaymentSession = (
@@ -365,7 +363,7 @@ export const useSetPaymentSession = (
   options?: UseMutationOptions<
     StoreCartsRes,
     Error,
-    SetPaymentSessionMutationData
+    StorePostCartsCartPaymentSessionReq
   >
 ) => {
   const { client } = useMedusa()
@@ -406,7 +404,7 @@ export const useSetPaymentSession = (
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useAddShippingMethodToCart = (
@@ -429,9 +427,9 @@ export const useAddShippingMethodToCart = (
 }
 
 /**
- * @interface
+ * The details of the payment session to delete.
  */
-type DeletePaymentSessionMutationData = {
+export type DeletePaymentSessionMutationData = {
   /**
    * The payment provider's identifier.
    */
@@ -468,7 +466,7 @@ type DeletePaymentSessionMutationData = {
  * 
  * export default Cart
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useDeletePaymentSession = (
@@ -519,7 +517,7 @@ export const useDeletePaymentSession = (
  * 
  * export default Checkout
  * 
- * @namespaceAsCategory Hooks.Store.Carts
+ * @customNamespace Hooks.Store.Carts
  * @category Mutations
  */
 export const useStartCheckout = (

@@ -126,6 +126,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeleteProductsFromCollectionReq
  * type: object
+ * description: "The details of the products to remove from the collection."
  * required:
  *   - product_ids
  * properties:

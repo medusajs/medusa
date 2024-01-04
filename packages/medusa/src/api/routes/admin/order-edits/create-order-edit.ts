@@ -115,6 +115,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostOrderEditsReq
  * type: object
+ * description: "The details of the order edit to create."
  * required:
  *   - order_id
  * properties:

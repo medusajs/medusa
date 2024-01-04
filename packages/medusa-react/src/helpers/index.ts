@@ -3,7 +3,7 @@
  * 
  * `medusa-react` exposes a set of utility functions that are mainly used to retrieve or format the price of a product variant.
  * 
- * @namespaceAsCategory Utilities
+ * @customNamespace Utilities
  */
 
 import { ProductVariantInfo, RegionInfo } from "../types"
@@ -14,7 +14,7 @@ import { isEmpty } from "../utils"
  * 
  * Options to format a variant's price.
  */
-type FormatVariantPriceParams = {
+export type FormatVariantPriceParams = {
   /**
    * A variant's details.
    */
@@ -84,7 +84,7 @@ type FormatVariantPriceParams = {
  * }
  * ```
  * 
- * @namespaceAsCategory Utilities
+ * @customNamespace Utilities
  */
 export const formatVariantPrice = ({
   variant,
@@ -106,7 +106,7 @@ export const formatVariantPrice = ({
  * 
  * Options to format a variant's price.
  */
-type ComputeVariantPriceParams = {
+export type ComputeVariantPriceParams = {
   /**
    * A variant's details.
    */
@@ -159,7 +159,7 @@ type ComputeVariantPriceParams = {
  * }
  * ```
  * 
- * @namespaceAsCategory Utilities
+ * @customNamespace Utilities
  */
 export const computeVariantPrice = ({
   variant,
@@ -212,7 +212,7 @@ export const computeVariantPrice = ({
  * }
  * ```
  * 
- * @namespaceAsCategory Utilities
+ * @customNamespace Utilities
  */
 export const getVariantPrice = (
   variant: ProductVariantInfo,
@@ -229,7 +229,7 @@ export const getVariantPrice = (
 /**
  * Options to compute an amount.
  */
-type ComputeAmountParams = {
+export type ComputeAmountParams = {
   /**
    * The original amount used for computation.
    */
@@ -272,7 +272,7 @@ type ComputeAmountParams = {
  * }
  * ```
  * 
- * @namespaceAsCategory Utilities
+ * @customNamespace Utilities
  */
 export const computeAmount = ({
   amount,
@@ -291,7 +291,7 @@ export const computeAmount = ({
 /**
  * Options to format an amount.
  */
-type FormatAmountParams = {
+export type FormatAmountParams = {
   /**
    * The original amount used for computation.
    */
@@ -361,7 +361,7 @@ type FormatAmountParams = {
  *   )
  * }
  * 
- * @namespaceAsCategory Utilities
+ * @customNamespace Utilities
  */
 export const formatAmount = ({
   amount,
@@ -422,3 +422,8 @@ type ConvertToLocaleParams = {
   maximumFractionDigits?: number
   locale?: string
 }
+
+/**
+ * @internal We need to export these types so that they're included in the generated reference documentation.
+ */
+export { ProductVariantInfo, RegionInfo }

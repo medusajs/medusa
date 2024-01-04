@@ -81,7 +81,7 @@ type RegionQueryKeys = typeof adminRegionKeys
  * export default Regions
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Queries
  */
 export const useAdminRegions = (
@@ -131,7 +131,7 @@ export const useAdminRegions = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Queries
  */
 export const useAdminRegion = (
@@ -198,7 +198,7 @@ export const useAdminRegion = (
  * 
  * export default Region
  * 
- * @namespaceAsCategory Hooks.Admin.Regions
+ * @customNamespace Hooks.Admin.Regions
  * @category Queries
  */
 export const useAdminRegionFulfillmentOptions = (

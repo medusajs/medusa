@@ -182,6 +182,7 @@ class CustomerGroup {
 /**
  * @schema AdminPostPriceListsPriceListPriceListReq
  * type: object
+ * description: "The details to update of the payment collection."
  * properties:
  *   name:
  *     description: "The name of the Price List"

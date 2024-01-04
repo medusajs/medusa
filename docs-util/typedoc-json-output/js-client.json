@@ -10743,7 +10743,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Delete a Draft Order"
+										"text": "Delete a Draft Order."
 									}
 								],
 								"blockTags": [
@@ -11856,15 +11856,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Create a gift card that can redeemed by its unique code. The Gift Card is only valid within "
-									},
-									{
-										"kind": "code",
-										"text": "`1`"
-									},
-									{
-										"kind": "text",
-										"text": " region."
+										"text": "Create a gift card that can redeemed by its unique code. The Gift Card is only valid within one region."
 									}
 								],
 								"blockTags": [
@@ -13306,15 +13298,6 @@
 											{
 												"kind": "text",
 												"text": "The list of inventory items with pagination fields."
-											}
-										]
-									},
-									{
-										"tag": "@example",
-										"content": [
-											{
-												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.inventoryItems.list()\n.then(({ inventory_items, count, offset, limit }) => {\n  console.log(inventory_items.length);\n})\n```"
 											}
 										]
 									},
@@ -19457,7 +19440,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves to the order's details. You can access the swap under the "
+												"text": "Resolves to the order's details. You can access the claim under the "
 											},
 											{
 												"kind": "code",
@@ -19803,7 +19786,7 @@
 									},
 									{
 										"kind": "text",
-										"text": ", depending on\n whether all the items were fulfilled."
+										"text": ", depending on\nwhether all the items were fulfilled."
 									}
 								],
 								"blockTags": [
@@ -20133,7 +20116,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.orders.createSwap(orderId, {\n  return_items: [\n    {\n      item_id,\n      quantity: 1\n    }\n  ]\n})\n.then(({ order }) => {\n  console.log(order.id);\n})\n```"
+												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.orders.createSwap(orderId, {\n  return_items: [\n    {\n      item_id,\n      quantity: 1\n    }\n  ]\n})\n.then(({ order }) => {\n  console.log(order.swaps);\n})\n```"
 											}
 										]
 									}
@@ -21656,7 +21639,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Update and order's details."
+										"text": "Update an order's details."
 									}
 								],
 								"blockTags": [
@@ -21809,7 +21792,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Resolves to the order's details. You can access the swap under the "
+												"text": "Resolves to the order's details. You can access the claims under the "
 											},
 											{
 												"kind": "code",
@@ -22930,7 +22913,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.payments.refundPayment(paymentId, {\n  amount: 1000,\n  reason: \"return\",\n  note: \"Do not like it\",\n})\n.then(({ payment }) => {\n  console.log(payment.id);\n})\n```"
+												"text": "```ts\nimport { RefundReason } from \"@medusajs/medusa\";\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.payments.refundPayment(paymentId, {\n  amount: 1000,\n  reason: RefundReason.RETURN,\n  note: \"Do not like it\",\n})\n.then(({ refund }) => {\n  console.log(refund.amount);\n})\n```"
 											}
 										]
 									}
@@ -29699,33 +29682,6 @@
 									}
 								},
 								{
-									"id": 1184,
-									"name": "query",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "reference",
-										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-											"qualifiedName": "Record"
-										},
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "any"
-											}
-										],
-										"name": "Record",
-										"package": "typescript"
-									},
-									"defaultValue": "{}"
-								},
-								{
 									"id": 1185,
 									"name": "customHeaders",
 									"variant": "param",
@@ -33503,7 +33459,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Registers a return as canceled. The return can be associated with an order, claim, or swap."
+										"text": "Register a return as canceled. The return can be associated with an order, claim, or swap."
 									}
 								],
 								"blockTags": [
@@ -34042,7 +33998,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Associate a stock location with a sales channel."
+										"text": "Associate a stock location with a sales channel. It requires the \n[@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module to be installed in\nyour Medusa backend."
 									}
 								],
 								"blockTags": [
@@ -36232,7 +36188,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.shippingProfiles.create({\n  name: \"Large Products\"\n})\n.then(({ shipping_profile }) => {\n  console.log(shipping_profile.id);\n})\n```"
+												"text": "```ts\nimport { ShippingProfileType } from \"@medusajs/medusa\"\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.shippingProfiles.create({\n  name: \"Large Products\",\n  type: ShippingProfileType.DEFAULT\n})\n.then(({ shipping_profile }) => {\n  console.log(shipping_profile.id);\n})\n```"
 											}
 										]
 									}
@@ -39768,7 +39724,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.taxRates.list({\n  expand: \"shipping_options\"\n})\n.then(({ tax_rates, limit, offset, count }) => {\n  console.log(tax_rates.length);\n})\n```"
+												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.taxRates.list({\n  expand: [\"shipping_options\"]\n})\n.then(({ tax_rates, limit, offset, count }) => {\n  console.log(tax_rates.length);\n})\n```"
 											},
 											{
 												"kind": "text",
@@ -39800,7 +39756,7 @@
 											},
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.taxRates.list({\n  expand: \"shipping_options\",\n  limit,\n  offset\n})\n.then(({ tax_rates, limit, offset, count }) => {\n  console.log(tax_rates.length);\n})\n```"
+												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.admin.taxRates.list({\n  expand: [\"shipping_options\"],\n  limit,\n  offset\n})\n.then(({ tax_rates, limit, offset, count }) => {\n  console.log(tax_rates.length);\n})\n```"
 											}
 										]
 									}
@@ -40912,7 +40868,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Upload a file to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend."
+										"text": "Upload a file or multiple files to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend."
 									}
 								],
 								"blockTags": [
@@ -40947,7 +40903,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The file to upload."
+												"text": "The file(s) to upload."
 											}
 										]
 									},
@@ -43975,7 +43931,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.complete(cartId)\n.then(({ cart }) => {\n  console.log(cart.id);\n})\n```"
+												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.carts.complete(cartId)\n.then(({ data, type }) => {\n  console.log(data.id, type);\n})\n```"
 											}
 										]
 									}
@@ -47041,7 +46997,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Generates a Line Item with a given Product Variant and adds it to the Cart"
+										"text": "Generate a Line Item with a given Product Variant and adds it to the Cart"
 									}
 								],
 								"blockTags": [
@@ -47589,7 +47545,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Complete an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the "
+										"text": "Complete and confirm an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the "
 									},
 									{
 										"kind": "inline-tag",
@@ -48976,7 +48932,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.paymentCollections.authorize(paymentId)\n.then(({ payment_collection }) => {\n  console.log(payment_collection.id);\n})\n```"
+												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\n// must be previously logged in or use api token\nmedusa.paymentCollections.authorizePaymentSessionsBatch(paymentCollectionId, {\n session_ids: [\"ps_123456\"]\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection.id);\n})\n```"
 											}
 										]
 									}
@@ -49428,7 +49384,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.paymentCollections.refreshPaymentSession(paymentCollectionId, sessionId)\n.then(({ payment_session }) => {\n  console.log(payment_session.id);\n})\n```"
+												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.paymentCollections.refreshPaymentSession(paymentCollectionId, sessionId)\n.then(({ payment_session }) => {\n  console.log(payment_session.status);\n})\n```"
 											}
 										]
 									}
@@ -51593,7 +51549,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "Retrieves a list of products. The products can be filtered by fields such as "
+										"text": "Retrieve a list of products. The products can be filtered by fields such as "
 									},
 									{
 										"kind": "code",
@@ -52149,7 +52105,7 @@
 					},
 					{
 						"kind": "text",
-						"text": " property.\n\nRegions are different countries or geographical regions that the commerce store serves customers in.\nCustomers can choose what region they're in, which can be used to change the prices shown based on the region and its currency.\n\nRelated Guide: [How to use regions in a storefront](https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions)"
+						"text": " property.\n\nRegions are different countries or geographical regions that the commerce store serves customers in.\nCustomers can choose what region they're in, which can be used to change the prices shown based on the region and its currency.\n\nRelated Guide: [How to use regions in a storefront](https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions)."
 					}
 				]
 			},
@@ -58521,10 +58477,6 @@
 		"1183": {
 			"sourceFileName": "../../../packages/medusa-js/src/resources/admin/publishable-api-keys.ts",
 			"qualifiedName": "id"
-		},
-		"1184": {
-			"sourceFileName": "../../../packages/medusa-js/src/resources/admin/publishable-api-keys.ts",
-			"qualifiedName": "query"
 		},
 		"1185": {
 			"sourceFileName": "../../../packages/medusa-js/src/resources/admin/publishable-api-keys.ts",

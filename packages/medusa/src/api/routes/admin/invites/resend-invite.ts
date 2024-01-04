@@ -40,7 +40,11 @@ import { EntityManager } from "typeorm"
  *         // ...
  *
  *         const handleResend = () => {
- *           resendInvite.mutate()
+ *           resendInvite.mutate(void 0, {
+ *             onSuccess: () => {
+ *               // invite resent successfully
+ *             }
+ *           })
  *         }
  *
  *         // ...

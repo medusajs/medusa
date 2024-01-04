@@ -111,7 +111,7 @@ type ProductQueryKeys = typeof adminProductKeys
  * export default Products
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Queries
  */
 export const useAdminProducts = (
@@ -161,7 +161,7 @@ export const useAdminProducts = (
  * 
  * export default Product
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Queries
  */
 export const useAdminProduct = (
@@ -214,7 +214,7 @@ export const useAdminProduct = (
  * 
  * export default ProductTags
  * 
- * @namespaceAsCategory Hooks.Admin.Products
+ * @customNamespace Hooks.Admin.Products
  * @category Queries
  */
 export const useAdminProductTagUsage = (

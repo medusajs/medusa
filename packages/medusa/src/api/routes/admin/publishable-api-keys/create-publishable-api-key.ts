@@ -110,6 +110,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostPublishableApiKeysReq
  * type: object
+ * description: "The details of the publishable API key to create."
  * required:
  *   - title
  * properties:

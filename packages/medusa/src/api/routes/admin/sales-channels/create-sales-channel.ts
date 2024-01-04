@@ -111,6 +111,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostSalesChannelsReq
  * type: object
+ * description: "The details of the sales channel to create."
  * required:
  *   - name
  * properties:

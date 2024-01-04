@@ -151,6 +151,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsReq
  * type: object
+ * description: "The details of the region to create."
  * required:
  *   - name
  *   - currency_code

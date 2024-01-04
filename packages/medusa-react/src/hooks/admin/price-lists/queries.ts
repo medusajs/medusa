@@ -126,7 +126,7 @@ type PriceListQueryKeys = typeof adminPriceListKeys
  * export default PriceLists
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Queries
  */
 export const useAdminPriceLists = (
@@ -275,7 +275,7 @@ export const useAdminPriceLists = (
  * export default PriceListProducts
  * ```
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Queries
  */
 export const useAdminPriceListProducts = (
@@ -330,7 +330,7 @@ export const useAdminPriceListProducts = (
  * 
  * export default PriceList
  * 
- * @namespaceAsCategory Hooks.Admin.Price Lists
+ * @customNamespace Hooks.Admin.Price Lists
  * @category Queries
  */
 export const useAdminPriceList = (

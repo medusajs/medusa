@@ -122,6 +122,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReturnReasonsReq
  * type: object
+ * description: "The details of the return reason to create."
  * required:
  *  - label
  *  - value

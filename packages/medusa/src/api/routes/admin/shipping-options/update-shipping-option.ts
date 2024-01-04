@@ -173,6 +173,7 @@ class OptionRequirement {
 /**
  * @schema AdminPostShippingOptionsOptionReq
  * type: object
+ * description: "The details to update of the shipping option."
  * required:
  *   - requirements
  * properties:

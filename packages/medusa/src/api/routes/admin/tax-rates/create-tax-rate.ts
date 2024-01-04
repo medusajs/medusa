@@ -177,6 +177,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesReq
  * type: object
+ * description: "The details of the tax rate to create."
  * required:
  *   - code
  *   - name

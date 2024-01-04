@@ -114,6 +114,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema StorePostOrderEditsOrderEditDecline
  * type: object
+ * description: "The details of the order edit's decline."
  * properties:
  *   declined_reason:
  *     type: string

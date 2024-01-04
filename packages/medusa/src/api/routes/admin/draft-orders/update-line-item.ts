@@ -179,6 +179,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostDraftOrdersDraftOrderLineItemsItemReq
  * type: object
+ * description: "The details to update of the line item."
  * properties:
  *   unit_price:
  *     description: The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.

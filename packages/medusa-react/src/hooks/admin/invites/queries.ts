@@ -39,7 +39,7 @@ type InviteQueryKeys = typeof adminInviteKeys
  * 
  * export default Invites
  * 
- * @namespaceAsCategory Hooks.Admin.Invites
+ * @customNamespace Hooks.Admin.Invites
  * @category Queries
  */
 export const useAdminInvites = (

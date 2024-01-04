@@ -8,7 +8,7 @@
  * 
  * Related Guide: [How to retrieve order details in a storefront](https://docs.medusajs.com/modules/orders/storefront/retrieve-order-details).
  * 
- * @namespaceAsCategory Hooks.Store.Orders
+ * @customNamespace Hooks.Store.Orders
  */
 
 export * from "./queries"

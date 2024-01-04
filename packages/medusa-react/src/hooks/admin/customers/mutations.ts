@@ -45,7 +45,7 @@ import { adminCustomerKeys } from "./queries"
  * 
  * export default CreateCustomer
  * 
- * @namespaceAsCategory Hooks.Admin.Customers
+ * @customNamespace Hooks.Admin.Customers
  * @category Mutations
  */
 export const useAdminCreateCustomer = (
@@ -94,7 +94,7 @@ export const useAdminCreateCustomer = (
  * 
  * export default Customer
  * 
- * @namespaceAsCategory Hooks.Admin.Customers
+ * @customNamespace Hooks.Admin.Customers
  * @category Mutations
  */
 export const useAdminUpdateCustomer = (

@@ -201,6 +201,7 @@ enum Status {
 /**
  * @schema AdminPostDraftOrdersReq
  * type: object
+ * description: "The details of the draft order to create."
  * required:
  *   - email
  *   - region_id

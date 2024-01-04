@@ -112,6 +112,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCollectionsReq
  * type: object
+ * description: The product collection's details.
  * required:
  *   - title
  * properties:
