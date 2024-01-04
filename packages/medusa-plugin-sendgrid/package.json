@@ -17,6 +17,7 @@
   "author": "Oliver Juhl | Lucjan Grzesik",
   "license": "MIT",
   "devDependencies": {
+    "@medusajs/medusa": "^1.19.0",
     "@medusajs/types": "^1.11.9",
     "client-sessions": "^0.8.0",
     "cross-env": "^7.0.3",

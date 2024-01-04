@@ -1,6 +1,6 @@
 import { EventBusService, SubscriberArgs, SubscriberConfig } from "@medusajs/medusa"
 import SendGridService from "../services/sendgrid"
-import { EventData } from "../types"
+import { EventData } from "../types/generic"
 
 export default async function userHandler({ 
   data, eventName, container, pluginOptions, 

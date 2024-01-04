@@ -1,5 +1,5 @@
 import { LineItem, Notification } from "@medusajs/medusa"
-import { LineItemTotals } from "@medusajs/medusa/dist/services/totals"
+import { LineItemTotals } from "@medusajs/medusa"
 
 export interface AttachmentsArray {
   name: string
@@ -24,6 +24,8 @@ export interface EventData {
 }
 
 export class SendGridData extends Notification {
+  event_name: string
+  to: string
   data: {
     template_id: string
     from: string
