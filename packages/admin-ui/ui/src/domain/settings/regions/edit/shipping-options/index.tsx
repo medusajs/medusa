@@ -1,10 +1,11 @@
 import { Region } from "@medusajs/medusa"
-import { useAdminShippingOptions } from "medusa-react"
+import { useAdminShippingOptions, useAdminCustomPost } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import Section from "../../../../../components/organisms/section"
 import useToggleState from "../../../../../hooks/use-toggle-state"
 import ShippingOptionCard from "../../components/shipping-option-card"
 import CreateShippingOptionModal from "./create-shipping-option-modal"
+import { useToast } from "@medusajs/ui"
 
 type Props = {
   region: Region
@@ -12,10 +13,26 @@ type Props = {
 
 const ShippingOptions = ({ region }: Props) => {
   const { t } = useTranslation()
+  const { toast } = useToast()
   const { shipping_options: shippingOptions } = useAdminShippingOptions({
     region_id: region.id,
     is_return: false,
   })
+
+  const { mutateAsync } = useAdminCustomPost(
+    `custom/stripe-shipping-option-price/${region.id}/sync`,
+    ["stripe-shipping-option-price", region.id]
+  )
+
+  const handleStripeSync = async () => {
+    await mutateAsync({})
+    toast({
+      title: "Success",
+      description: "Successfully Synced to Stripe",
+      variant: "success",
+      duration: 5000,
+    })
+  }
 
   const { state, toggle, close } = useToggleState()
 
@@ -24,6 +41,10 @@ const ShippingOptions = ({ region }: Props) => {
       <Section
         title={t("shipping-options-shipping-options", "Shipping Options")}
         actions={[
+          {
+            label: "Sync to Stripe",
+            onClick: handleStripeSync,
+          },
           {
             label: t("shipping-options-add-option", "Add Option"),
             onClick: toggle,
