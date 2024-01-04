@@ -15,15 +15,18 @@ import {
   TriangleRightMini,
 } from "@medusajs/icons"
 import IconFlagMini from "../../../theme/Icon/FlagMini"
+import decodeStr from "../../../utils/decode-str"
 
 type ParameterTypesItemsProps = {
   parameters: Parameter[]
   level?: number
+  expandUrl?: string
 }
 
 const ParameterTypesItems = ({
   parameters,
   level = 1,
+  expandUrl,
 }: ParameterTypesItemsProps) => {
   function getGroupName() {
     switch (level) {
@@ -76,7 +79,7 @@ const ParameterTypesItems = ({
           parameter.description || parameter.defaultValue ? (
             <>
               <MarkdownContent
-                allowedElements={["a", "strong", "code"]}
+                allowedElements={["a", "strong", "code", "ul", "ol", "li"]}
                 unwrapDisallowed={true}
                 className="text-medium"
               >
@@ -125,7 +128,7 @@ const ParameterTypesItems = ({
             />
           )}
           <div className="flex gap-0.75 flex-wrap">
-            <InlineCode>{parameter.name}</InlineCode>
+            <InlineCode>{decodeStr(parameter.name)}</InlineCode>
             <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
               <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
                 {parameter.type}
@@ -154,7 +157,7 @@ const ParameterTypesItems = ({
             {parameter.expandable && (
               <ExpandableNotice
                 type="method"
-                link="https://docs.medusajs.com/js-client/overview#expanding-fields"
+                link={expandUrl || "#"}
                 badgeClassName="!p-0 leading-none"
                 badgeContent={<ArrowsPointingOutMini />}
               />
@@ -181,6 +184,7 @@ const ParameterTypesItems = ({
                   <ParameterTypesItems
                     parameters={parameter.children}
                     level={level + 1}
+                    expandUrl={expandUrl}
                   />
                 )}
               </Details>

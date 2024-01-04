@@ -1,18 +1,17 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
+import { createContainerLike, createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
 import {
   DistributedTransaction,
   TransactionOrchestrator,
   TransactionStepsDefinition,
 } from "../transaction"
+import { OrchestratorBuilder } from "../transaction/orchestrator-builder"
 import {
   WorkflowDefinition,
   WorkflowManager,
   WorkflowStepHandler,
 } from "./workflow-manager"
-
-import { OrchestratorBuilder } from "../transaction/orchestrator-builder"
-import { asValue } from "awilix"
-import { createMedusaContainer } from "@medusajs/utils"
 
 type StepHandler = {
   invoke: WorkflowStepHandler
@@ -28,7 +27,7 @@ export class LocalWorkflow {
 
   constructor(
     workflowId: string,
-    modulesLoaded?: LoadedModule[] | MedusaContainer
+    modulesLoaded: LoadedModule[] | MedusaContainer
   ) {
     const globalWorkflow = WorkflowManager.getWorkflow(workflowId)
     if (!globalWorkflow) {
@@ -40,17 +39,17 @@ export class LocalWorkflow {
     this.workflow = globalWorkflow
     this.handlers = new Map(globalWorkflow.handlers_)
 
-    const container = createMedusaContainer()
+    let container
 
-    // Medusa container
     if (!Array.isArray(modulesLoaded) && modulesLoaded) {
-      const cradle = modulesLoaded.cradle
-      for (const key in cradle) {
-        container.register(key, asValue(cradle[key]))
+      if (!("cradle" in modulesLoaded)) {
+        container = createContainerLike(modulesLoaded)
+      } else {
+        container = modulesLoaded
       }
-    }
-    // Array of modules
-    else if (modulesLoaded?.length) {
+    } else if (Array.isArray(modulesLoaded) && modulesLoaded.length) {
+      container = createMedusaContainer()
+
       for (const mod of modulesLoaded) {
         const registrationName = mod.__definition.registrationName
         container.register(registrationName, asValue(mod))
@@ -70,6 +69,14 @@ export class LocalWorkflow {
       handler: WorkflowManager.buildHandlers(this.handlers),
       handlers_: this.handlers,
     }
+  }
+
+  public getFlow() {
+    if (this.flow.hasChanges) {
+      this.commit()
+    }
+
+    return this.workflow.flow_
   }
 
   async run(uniqueTransactionId: string, input?: unknown, context?: Context) {

@@ -78,7 +78,7 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
                     )}
                     key={index}
                   >
-                    <div className={clsx("flex items-center gap-1")}>
+                    <div className={clsx("flex items-center gap-1 relative")}>
                       <div className="w-2 flex-none flex items-center justify-center">
                         {index === currentStep && (
                           <IconCircleDottedLine
@@ -102,6 +102,14 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
                       >
                         {step.title}
                       </span>
+                      <Link
+                        href={step.path}
+                        className={clsx("absolute top-0 left-0 w-full h-full")}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          goToStep(index)
+                        }}
+                      />
                     </div>
                     {index === currentStep && (
                       <div className={clsx("flex items-center gap-1")}>
@@ -113,14 +121,6 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
                         </div>
                       </div>
                     )}
-                    <Link
-                      href={step.path}
-                      className={clsx("absolute top-0 left-0 w-full h-full")}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        goToStep(index)
-                      }}
-                    />
                   </div>
                 ))}
               </div>

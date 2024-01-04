@@ -8,6 +8,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-source-shopify"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Kasper Fabrcius Kristensen <kasper@medusa-commerce.com>",
   "license": "MIT",
   "scripts": {
@@ -21,7 +24,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.15.4",
-    "@medusajs/utils": "workspace:^",
+    "@medusajs/utils": "^1.10.5",
     "@shopify/shopify-api": "^1.4.1",
     "axios": "^0.21.4",
     "body-parser": "^1.19.0",

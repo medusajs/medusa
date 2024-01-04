@@ -16,7 +16,8 @@ import {
   tempReorderRank,
   UpdateProductCategoryInput,
 } from "../types/product-category"
-import { buildQuery, nullableValue } from "../utils"
+import { buildQuery, nullableValue, setMetadata } from "../utils"
+import {selectorConstraintsToString} from "@medusajs/utils";
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -115,9 +116,7 @@ class ProductCategoryService extends TransactionBaseService {
     )
 
     if (!productCategory) {
-      const selectorConstraints = Object.entries(selector)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ")
+      const selectorConstraints = selectorConstraintsToString(selector)
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -228,6 +227,12 @@ class ProductCategoryService extends TransactionBaseService {
       const productCategoryRepo = manager.withRepository(
         this.productCategoryRepo_
       )
+
+      const { metadata, ...rest } = productCategoryInput
+
+      if (metadata) {
+        productCategory.metadata = setMetadata(productCategory, metadata)
+      }
 
       const conditions = this.fetchReorderConditions(
         productCategory,

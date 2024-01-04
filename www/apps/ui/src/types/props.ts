@@ -1,4 +1,8 @@
-import { ComponentType, LazyExoticComponent } from "react"
+import {
+  PropDescriptor,
+  TSFunctionSignatureType,
+  TypeDescriptor,
+} from "react-docgen/dist/Documentation"
 
 export type EnumType = {
   type: "enum"
@@ -16,6 +20,7 @@ export type FunctionType = {
   signature: string
 }
 
+// Keeping this as it's still used by hooks
 export type PropType =
   | "string"
   | "number"
@@ -26,17 +31,11 @@ export type PropType =
   | FunctionType
   | string
 
-export type PropData = {
-  prop: string
-  type: PropType
-  defaultValue?: string | number | boolean | null
-}
+export type PropData = PropDescriptor
 
-export type PropDataMap = PropData[]
+export type PropSpecType = TypeDescriptor<TSFunctionSignatureType>
 
-export type PropRegistryItem = {
-  table: LazyExoticComponent<ComponentType>
-}
+export type PropDataMap = Record<string, PropData>
 
 // resolve type errors related to
 // key with radix components

@@ -1,8 +1,4 @@
 import {
-  DateComparisonOperator,
-  extendedFindParamsMixin,
-} from "../../../../types/common"
-import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -10,14 +6,20 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined } from "medusa-core-utils"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
-import { FilterableProductProps } from "../../../../types/product"
-import PriceListService from "../../../../services/price-list"
-import { ProductStatus } from "../../../../models"
-import { Request } from "express"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
+import { Request } from "express"
 import { pickBy } from "lodash"
+import { ProductStatus } from "../../../../models"
+import PriceListService from "../../../../services/price-list"
+import { FilterableProductProps } from "../../../../types/product"
+import { listProducts } from "../../../../utils"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -181,6 +183,9 @@ import { pickBy } from "lodash"
 export default async (req: Request, res) => {
   const { id } = req.params
   const { offset, limit } = req.validatedQuery
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  let products
+  let count
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
@@ -190,11 +195,19 @@ export default async (req: Request, res) => {
     price_list_id: [id],
   }
 
-  const [products, count] = await priceListService.listProducts(
-    id,
-    pickBy(filterableFields, (val) => isDefined(val)),
-    req.listConfig
-  )
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    ;[products, count] = await listProducts(
+      req.scope,
+      filterableFields,
+      req.listConfig
+    )
+  } else {
+    ;[products, count] = await priceListService.listProducts(
+      id,
+      pickBy(filterableFields, (val) => isDefined(val)),
+      req.listConfig
+    )
+  }
 
   res.json({
     products,

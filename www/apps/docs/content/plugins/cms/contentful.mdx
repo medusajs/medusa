@@ -38,7 +38,7 @@ npm install medusa-plugin-contentful
 
 Next, add the plugin into the `plugins` array in `medusa-config.js`:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -76,7 +76,7 @@ When the plugin syncs data between Contentful and Medusa, it expects a set of fi
 
 For example, to change the name of the product’s `title` field, pass the following option to the plugin:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -168,7 +168,7 @@ npm install --save-dev contentful-migration
 
   Create the file `src/loaders/contentful-migrations/product.ts` with the following content:
 
-  ```ts title=src/loaders/contentful-migrations/product.ts
+  ```ts title="src/loaders/contentful-migrations/product.ts"
   import Migration, { 
     MigrationContext,
   } from "contentful-migration"
@@ -247,7 +247,7 @@ npm install --save-dev contentful-migration
 
   Create the file `src/loaders/contentful-migrations/product-variant.ts` with the following content:
 
-  ```ts title=src/loaders/contentful-migrations/product-variant.ts
+  ```ts title="src/loaders/contentful-migrations/product-variant.ts"
   import Migration, { 
     MigrationContext,
   } from "contentful-migration"
@@ -292,7 +292,7 @@ npm install --save-dev contentful-migration
 
   Create the file `src/loaders/contentful-migrations/product-collection.ts` with the following content:
 
-  ```ts title=src/loaders/contentful-migrations/product-collection.ts
+  ```ts title="src/loaders/contentful-migrations/product-collection.ts"
   import Migration, { 
     MigrationContext,
   } from "contentful-migration"
@@ -325,7 +325,7 @@ npm install --save-dev contentful-migration
 
   Create the file `src/loaders/contentful-migrations/product-type.ts` with the following content:
 
-  ```ts title=src/loaders/contentful-migrations/product-type.ts
+  ```ts title="src/loaders/contentful-migrations/product-type.ts"
   import Migration, { 
     MigrationContext,
   } from "contentful-migration"
@@ -358,7 +358,7 @@ npm install --save-dev contentful-migration
 
   Create the file `src/loaders/contentful-migrations/region.ts` with the following content:
 
-  ```ts title=src/loaders/contentful-migrations/region.ts
+  ```ts title="src/loaders/contentful-migrations/region.ts"
   import Migration, { 
     MigrationContext,
   } from "contentful-migration"
@@ -404,9 +404,12 @@ npm install --save-dev contentful-migration
 
 Finally, create a [loader](../../development/loaders/overview.mdx) at `src/loaders/index.ts` with the following content:
 
-```ts title=src/loaders/index.ts
-import { ConfigModule, StoreService } from "@medusajs/medusa"
-import { AwilixContainer } from "awilix"
+```ts title="src/loaders/index.ts"
+import { 
+  ConfigModule, 
+  StoreService, 
+  MedusaContainer,
+} from "@medusajs/medusa"
 import { runMigration } from "contentful-migration"
 import { 
   productMigration,
@@ -434,7 +437,7 @@ type ContentfulPluginType = {
 }
 
 export default async (
-  container: AwilixContainer,
+  container: MedusaContainer,
   config: ConfigModule
 ): Promise<void> => {
   // ensure that migration only runs once

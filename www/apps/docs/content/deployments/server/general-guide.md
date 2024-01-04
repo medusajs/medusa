@@ -25,7 +25,7 @@ If your hosting provider supports that, create a GitHub repository and push your
 
 Make sure the `start` script in your `package.json` runs migrations, the `build` command, and the `medusa start` command:
 
-```json title=package.json
+```json title="package.json"
 "start": "npm run build && medusa migrations run && medusa start"
 ```
 
@@ -35,11 +35,16 @@ Make sure the `start` script in your `package.json` runs migrations, the `build`
 
 In production, it’s recommended to set the [database_extra option](../../development/backend/configurations.md#database_extra) in `medusa-config.js` to disable the `ssl.rejectUnauthorized` option:
 
-```jsx title=medusa-config.js
+```jsx title="medusa-config.js"
 module.exports = {
   projectConfig: {
     // ...
-    database_extra: { ssl: { rejectUnauthorized: false } },
+    database_extra: process.env.NODE_ENV !== "development" ?
+      {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      } : {},
   },
 }
 ```

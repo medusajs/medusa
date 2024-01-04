@@ -1,5 +1,11 @@
 # @medusajs/client-types
 
+## 0.2.7
+
+### Patch Changes
+
+- [#5599](https://github.com/medusajs/medusa/pull/5599) [`b3093c3e3`](https://github.com/medusajs/medusa/commit/b3093c3e3d64e4c024a04d76fb0f727c1c38108b) Thanks [@bqst](https://github.com/bqst)! - feat(medusa): Add `metadata` to Product Category
+
 ## 0.2.6
 
 ### Patch Changes

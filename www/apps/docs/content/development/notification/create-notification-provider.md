@@ -25,7 +25,7 @@ Creating a Notification Provider is as simple as creating a TypeScript or JavaS
 
 For example, create the file `src/services/email-sender.ts` with the following content:
 
-```ts title=src/services/email-sender.ts
+```ts title="src/services/email-sender.ts"
 import { AbstractNotificationService } from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
 
@@ -77,7 +77,7 @@ Notification Provider Services must have a static property `identifier`.
 
 The `NotificationProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the Service class is used when the Notification Provider is created in the database.
 
-The value of this property is also used later when you want to subscribe the Notification Provider to events in a Subscriber.
+The value of this property is also used later when you want to subscribe the Notification Provider to events in a Loader.
 
 For example, in the class you created in the previous code snippet you can add the following property:
 
@@ -102,7 +102,7 @@ You can learn more about plugins and how to create them in the [Plugins](../plug
 
 :::
 
-Continuing on with the previous example, if you want to use the [`OrderService`](../../references/services/classes/OrderService.mdx) later when sending notifications, you can inject it into the constructor:
+Continuing on with the previous example, if you want to use the [`OrderService`](../../references/services/classes/services.OrderService.mdx) later when sending notifications, you can inject it into the constructor:
 
 ```ts
 import { 
@@ -130,7 +130,7 @@ class EmailSenderService extends AbstractNotificationService {
 
 ### sendNotification
 
-When an event is triggered that your Notification Provider is registered as a handler for, the [`NotificationService`](../../references/services/classes/NotificationService.mdx) in Medusa’s core will execute the `sendNotification` method of your Notification Provider.
+When an event is triggered that your Notification Provider is registered as a handler for, the [`NotificationService`](../../references/services/classes/services.NotificationService.mdx) in Medusa’s core will execute the `sendNotification` method of your Notification Provider.
 
 In this method, you can perform the necessary operation to send the Notification. Following the example above, you can send an email to the customer when they place an order.
 
@@ -138,7 +138,7 @@ This method receives three parameters:
 
 1. `eventName`: This is the name of the event that was triggered. For example, `order.placed`.
 2. `eventData`: This is the data payload of the event that was triggered. For example, if the `order.placed` event is triggered, the `eventData` object contains the property `id` which is the ID of the order that was placed.
-3. `attachmentGenerator`: If you’ve previously attached a generator to the `NotificationService` using the [`registerAttachmentGenerator`](../../references/services/classes/NotificationService.mdx#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
+3. `attachmentGenerator`: If you’ve previously attached a generator to the `NotificationService` using the [`registerAttachmentGenerator`](../../references/services/classes/services.NotificationService.mdx#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
 
 :::info
 
@@ -200,13 +200,13 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 ### resendNotification
 
-Using the [Resend Notification API Route](https://docs.medusajs.com/api/admin#notifications_postnotificationsnotificationresend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../references/services/classes/NotificationService.mdx) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
+Using the [Resend Notification API Route](https://docs.medusajs.com/api/admin#notifications_postnotificationsnotificationresend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../references/services/classes/services.NotificationService.mdx) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
 
 This method receives three parameters:
 
 1. `notification`: This is the original Notification record that was created after you sent the notification with `sendNotification`. You can get an overview of the entity and its attributes in the [architecture overview](./overview.mdx#notification-entity-overview), but most notably it includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of the object you return in `sendNotification`.
 2. `config`: In the Resend Notification API Route you may specify an alternative receiver of the notification using the `to` request body parameter. For example, you may want to resend the order confirmation email to a different email. If that’s the case, you have access to it in the `config` parameter object. Otherwise, `config` will be an empty object.
-3. `attachmentGenerator`: If you’ve previously attached a generator to the Notification Service using the [`registerAttachmentGenerator`](../../references/services/classes/NotificationService.mdx#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
+3. `attachmentGenerator`: If you’ve previously attached a generator to the Notification Service using the [`registerAttachmentGenerator`](../../references/services/classes/services.NotificationService.mdx#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
 
 Similarly to the `sendNotification` method, this method must return an object containing two properties:
 
@@ -257,39 +257,33 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 ---
 
-## Create a Subscriber
+## Subscribe with Loaders
 
-After creating your Notification Provider Service, you must create a Subscriber that registers this Service as a notification handler of events.
+After creating your Notification Provider Service, you must create a [Loader](../loaders/overview.mdx) that registers this Service as a notification handler of events.
 
-:::note
+Following the previous example, to make sure the `email-sender` Notification Provider handles the `order.placed` event, create the file `src/loaders/notification.ts` with the following content:
 
-This section will not cover the basics of Subscribers. You can read the [Subscribers](../events/create-subscriber.md) documentation to learn more about them and how to create them.
+```ts title="src/loaders/notification.ts"
+import { 
+  MedusaContainer, 
+  NotificationService,
+} from "@medusajs/medusa"
 
-:::
+export default async (
+  container: MedusaContainer
+): Promise<void> => {
+  const notificationService = container.resolve<
+    NotificationService
+  >("notificationService")
 
-Following the previous example, to make sure the `email-sender` Notification Provider handles the `order.placed` event, create the file `src/subscribers/notification.js` with the following content:
-
-```ts title=src/subscribers/notification.js
-class NotificationSubscriber {
-  constructor({ notificationService }) {
-    notificationService.subscribe(
-      "order.placed", 
-      "email-sender"
-    )
-  }
-  // ...
+  notificationService.subscribe(
+    "order.placed", 
+    "email-sender"
+  )
 }
-
-export default NotificationSubscriber
 ```
 
-This subscriber accesses the `notificationService` using dependency injection. The `notificationService` contains a `subscribe` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that is subscribing to that event.
-
-:::tip
-
-Notice that the value of the `identifier` static property defined in the `EmailSenderService` is used to register the Notification Provider to handle the `order.placed` event.
-
-:::
+This loader accesses the `notificationService` through the [MedusaContainer](../fundamentals/dependency-injection.md). The `notificationService` has a `subscribe` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that's subscribing to that event.
 
 ---
 

@@ -15,11 +15,12 @@ export function load(app: Application) {
   })
 
   app.converter.on(Converter.EVENT_RESOLVE_BEGIN, (context: Context) => {
+    const isIgnoreApiEnabled = app.options.getValue("ignoreApi")
     for (const reflection of context.project.getReflectionsByKind(
       ReflectionKind.All
     )) {
       if (reflection.comment?.hasModifier("@apiIgnore")) {
-        if (app.options.getValue("ignoreApi")) {
+        if (isIgnoreApiEnabled) {
           context.project.removeReflection(reflection)
         } else {
           reflection.comment.removeModifier(`@apiIgnore`)

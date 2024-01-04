@@ -2457,8 +2457,8 @@ describe("/admin/orders", () => {
         refunded_total: 0,
         total: 8200,
         subtotal: 8000,
-        paid_total: 0,
-        refundable_amount: 0,
+        paid_total: 10000,
+        refundable_amount: 10000,
         gift_card_total: 0,
         gift_card_tax_total: 0,
       })

@@ -1,0 +1,57 @@
+---
+displayed_sidebar: pricingReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# UpdateMoneyAmountDTO
+
+The data to update in a money amount. The `id` is used to identify which money amount to update.
+
+<ParameterTypes parameters={[
+  {
+    "name": "amount",
+    "type": "`number`",
+    "description": "The price of this money amount.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "currency_code",
+    "type": "`string`",
+    "description": "The code of the currency to associate with the money amount.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the money amount to update.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "max_quantity",
+    "type": "`number`",
+    "description": "The maximum quantity required to be purchased for this money amount to be applied.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "min_quantity",
+    "type": "`number`",
+    "description": "The minimum quantity required to be purchased for this money amount to be applied.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

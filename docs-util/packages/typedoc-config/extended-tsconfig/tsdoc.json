@@ -17,6 +17,22 @@
     {
       "tagName": "@apiIgnore",
       "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@mainSignature",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@docHideSignature",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@keep",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@excludeExternal",
+      "syntaxKind": "modifier"
     }
   ]
 }

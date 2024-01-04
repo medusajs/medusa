@@ -14,13 +14,11 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  Validate,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
 
 import { BaseEntity } from "../interfaces"
 import { ClassConstructor } from "./global"
-import { ExactlyOne } from "./validators/exactly-one"
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 import { transformDate } from "../utils/validators/date-transform"
@@ -70,7 +68,7 @@ export type TreeQuerySelector<TEntity> = QuerySelector<TEntity> & {
   include_descendants_tree?: boolean
 }
 
-export type Selector<TEntity> = {
+type InnerSelector<TEntity> = {
   [key in keyof TEntity]?:
     | TEntity[key]
     | TEntity[key][]
@@ -79,6 +77,10 @@ export type Selector<TEntity> = {
     | NumericalComparisonOperator
     | FindOperator<TEntity[key][] | string | string[]>
 }
+
+export type Selector<TEntity> =
+  | InnerSelector<TEntity>
+  | InnerSelector<TEntity>[]
 
 export type TotalField =
   | "shipping_total"
@@ -142,12 +144,21 @@ export type RequestQueryFields = {
  * @interface
  *
  * Pagination fields returned in the response of an API route.
- *
- * @prop limit - The maximum number of items that can be returned in the list.
- * @prop offset - The number of items skipped before the returned items in the list.
- * @prop count - The total number of items available.
  */
-export type PaginatedResponse = { limit: number; offset: number; count: number }
+export type PaginatedResponse = {
+  /**
+   * The maximum number of items that can be returned in the list.
+   */
+  limit: number
+  /**
+   * The number of items skipped before the returned items in the list.
+   */
+  offset: number
+  /**
+   * The total number of items available.
+   */
+  count: number
+}
 
 /**
  * @interface

@@ -31,13 +31,13 @@ function getReturnFromType(
     return ""
   }
 
-  const componentItems = returnReflectionComponentFormatter(
-    reflection.type,
-    reflection.project || theme.project,
-    reflection.comment,
-    1,
-    maxLevel
-  )
+  const componentItems = returnReflectionComponentFormatter({
+    reflectionType: reflection.type,
+    project: reflection.project || theme.project,
+    comment: reflection.comment,
+    level: 1,
+    maxLevel,
+  })
 
   if (parameterStyle === "component") {
     return `<${parameterComponent} parameters={${JSON.stringify(
@@ -88,7 +88,12 @@ function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
             commentPart.target instanceof DeclarationReflection
           ) {
             const content = commentPart.target.children?.map((childItem) =>
-              reflectionFormatter(childItem, parameterStyle, 1, maxLevel)
+              reflectionFormatter({
+                reflection: childItem,
+                type: parameterStyle,
+                level: 1,
+                maxLevel,
+              })
             )
             result +=
               parameterStyle === "component"

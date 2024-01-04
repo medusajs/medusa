@@ -36,8 +36,8 @@
   "dependencies": {
     "@medusajs/medusa": "^1.17.4",
     "@medusajs/openapi-typescript-codegen": "^0.2.1",
-    "@medusajs/types": "workspace:^",
-    "@medusajs/utils": "workspace:^",
+    "@medusajs/types": "^1.11.6",
+    "@medusajs/utils": "^1.10.5",
     "@readme/json-schema-ref-parser": "^1.2.0",
     "@readme/openapi-parser": "^2.4.0",
     "@redocly/cli": "1.0.0-beta.123",

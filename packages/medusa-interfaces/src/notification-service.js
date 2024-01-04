@@ -3,8 +3,15 @@ import BaseService from "./base-service"
 /**
  * Interface for Notification Providers
  * @interface
+ * @deprecated use AbstractNotificationService from @medusajs/medusa instead
  */
 class BaseNotificationService extends BaseService {
+  static _isNotificationService = true
+
+  static isNotificationService(obj) {
+    return obj?.constructor?._isNotificationService
+  }
+
   constructor() {
     super()
   }

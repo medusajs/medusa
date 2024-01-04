@@ -39,9 +39,6 @@ export default class PriceRule {
   })
   rule_type: RuleType
 
-  @Property({ columnType: "boolean", default: false })
-  is_dynamic: boolean
-
   @Property({ columnType: "text" })
   value: string
 
@@ -56,11 +53,6 @@ export default class PriceRule {
     index: "IDX_price_rule_price_set_money_amount_id",
   })
   price_set_money_amount: PriceSetMoneyAmount
-
-  @Property({ columnType: "text" })
-  price_list_id!: string
-
-  // TODO: Add price list
 
   @BeforeCreate()
   beforeCreate() {
