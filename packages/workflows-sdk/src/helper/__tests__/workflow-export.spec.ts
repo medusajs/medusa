@@ -23,6 +23,28 @@ jest.mock("@medusajs/orchestration", () => {
             }),
           }
         }),
+        registerStepSuccess: jest.fn(() => {
+          return {
+            getErrors: jest.fn(),
+            getState: jest.fn(() => "done"),
+            getContext: jest.fn(() => {
+              return {
+                invoke: { result_step: "invoke_test" },
+              }
+            }),
+          }
+        }),
+        registerStepFailure: jest.fn(() => {
+          return {
+            getErrors: jest.fn(),
+            getState: jest.fn(() => "done"),
+            getContext: jest.fn(() => {
+              return {
+                invoke: { result_step: "invoke_test" },
+              }
+            }),
+          }
+        }),
       }
     }),
   }
