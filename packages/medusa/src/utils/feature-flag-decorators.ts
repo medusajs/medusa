@@ -51,7 +51,7 @@ export function FeatureFlagDecorators(
 }
 
 export function FeatureFlagClassDecorators(
-  featureFlag: string,
+  featureFlag: string | string[],
   decorators: ClassDecorator[]
 ): ClassDecorator {
   return function (target) {
