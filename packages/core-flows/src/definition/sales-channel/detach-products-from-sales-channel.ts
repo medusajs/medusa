@@ -11,5 +11,5 @@ export const detachProductsFromSalesChannelWorkflow = createWorkflow<
   WorkflowInput,
   void
 >("detach-products-from-sales-channels", function (input) {
-  detachProductsToSalesChannelStep(input)
+  return detachProductsToSalesChannelStep(input)
 })
