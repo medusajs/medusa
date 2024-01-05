@@ -1,6 +1,5 @@
 import clsx from "clsx"
 import React, { Suspense, lazy } from "react"
-// import ParameterTypesItems from "./Items"
 import { Loading } from "docs-ui"
 
 export type Parameter = {

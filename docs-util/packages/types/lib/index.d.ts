@@ -201,5 +201,9 @@ export declare module "typedoc" {
      * @defaultValue false
      */
     enableReactQueryManipulator: boolean
+    /**
+     * Namespace names whose child members should have their own documents.
+     */
+    allReflectionsHaveOwnDocumentInNamespace: string[]
   }
 }

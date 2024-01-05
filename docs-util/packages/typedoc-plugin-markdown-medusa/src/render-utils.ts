@@ -60,8 +60,6 @@ import ifHasQueryReturnHelper from "./resources/helpers/if-has-query-return"
 import reactQueryQueryReturnHelper from "./resources/helpers/react-query-query-return"
 import { MarkdownTheme } from "./theme"
 
-// test
-
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
 
 export const indexTemplate = Handlebars.compile(
