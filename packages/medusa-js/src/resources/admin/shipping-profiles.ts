@@ -27,11 +27,13 @@ class AdminShippingProfilesResource extends BaseResource {
    * @returns {ResponsePromise<AdminShippingProfilesRes>} Resolves to the shipping profile's details.
    * 
    * @example
+   * import { ShippingProfileType } from "@medusajs/medusa"
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.shippingProfiles.create({
-   *   name: "Large Products"
+   *   name: "Large Products",
+   *   type: ShippingProfileType.DEFAULT
    * })
    * .then(({ shipping_profile }) => {
    *   console.log(shipping_profile.id);

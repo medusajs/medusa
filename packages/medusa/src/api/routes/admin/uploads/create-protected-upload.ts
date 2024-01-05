@@ -28,6 +28,28 @@ import { IFileService } from "../../../../interfaces"
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUploadProtectedFile } from "medusa-react"
+ *
+ *       const UploadFile = () => {
+ *         const uploadFile = useAdminUploadProtectedFile()
+ *         // ...
+ *
+ *         const handleFileUpload = (file: File) => {
+ *           uploadFile.mutate(file, {
+ *             onSuccess: ({ uploads }) => {
+ *               console.log(uploads[0].key)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default UploadFile
  *   - lang: Shell
  *     label: cURL
  *     source: |

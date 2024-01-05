@@ -128,10 +128,10 @@ export default class TypedocManager {
       const signature = mappedSignature.signatures[0]
       // get the props of the component from the
       // first parameter in the signature.
-      const props = getTypeChildren(
-        signature.parameters![0].type!,
-        this.project
-      )
+      const props = getTypeChildren({
+        reflectionType: signature.parameters![0].type!,
+        project: this.project,
+      })
 
       // this stores props that should be removed from the
       // spec
@@ -482,7 +482,10 @@ export default class TypedocManager {
         childName
       ) as DeclarationReflection
     } else if (reflection.type) {
-      getTypeChildren(reflection.type, this.project).some((child) => {
+      getTypeChildren({
+        reflectionType: reflection.type,
+        project: this.project,
+      }).some((child) => {
         if (child.name === childName) {
           childReflection = child
           return true

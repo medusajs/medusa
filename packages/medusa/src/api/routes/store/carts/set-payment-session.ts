@@ -35,6 +35,35 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useSetPaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const setPaymentSession = useSetPaymentSession(cartId)
+ *
+ *         const handleSetPaymentSession = (
+ *           providerId: string
+ *         ) => {
+ *           setPaymentSession.mutate({
+ *             provider_id: providerId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.payment_session)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -96,6 +125,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartPaymentSessionReq
  * type: object
+ * description: "The details of the payment session to set."
  * required:
  *   - provider_id
  * properties:

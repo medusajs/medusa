@@ -6,6 +6,7 @@ A plugin that forks and customizes the [typedoc-plugin-markdown](https://github.
 
 Aside from the options detailed in [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/typedoc-plugin-markdown#options), the following options are accepted:
 
+- `allReflectionsHaveOwnDocumentInNamespace`: An array of namespace names whose child members should have their own documents.
 - `mdxImports`: A boolean value indicating whether the outputted files should be MDX files with the `.mdx` extension.
 - `formatting`: An object whose keys are string patterns used to target specific files. You can also use the string `*` to target all files. The values are objects having the following properties:
   - `sections`: (optional) an object whose keys are of type [`SectionKey`](./src/types.ts#L19) and values are boolean. This property is used to enable/disable certain sections in the outputted generated docs.

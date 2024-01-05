@@ -56,6 +56,41 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateTaxRate } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const CreateTaxRate = ({ regionId }: Props) => {
+ *         const createTaxRate = useAdminCreateTaxRate()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           code: string,
+ *           name: string,
+ *           rate: number
+ *         ) => {
+ *           createTaxRate.mutate({
+ *             code,
+ *             name,
+ *             region_id: regionId,
+ *             rate,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateTaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -143,6 +178,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesReq
  * type: object
+ * description: "The details of the tax rate to create."
  * required:
  *   - code
  *   - name

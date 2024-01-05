@@ -32,6 +32,34 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateReservation } from "medusa-react"
+ *
+ *       type Props = {
+ *         reservationId: string
+ *       }
+ *
+ *       const Reservation = ({ reservationId }: Props) => {
+ *         const updateReservation = useAdminUpdateReservation(
+ *           reservationId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           quantity: number
+ *         ) => {
+ *           updateReservation.mutate({
+ *             quantity,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Reservation
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -102,6 +130,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostReservationsReservationReq
  * type: object
+ * description: "The details to update of the reservation."
  * properties:
  *   location_id:
  *     description: "The ID of the location associated with the reservation."

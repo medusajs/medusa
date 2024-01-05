@@ -63,6 +63,51 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ swap }) => {
  *         console.log(swap.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateSwap } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       type CreateData = {
+ *         return_items: {
+ *           item_id: string
+ *           quantity: number
+ *         }[]
+ *         additional_items: {
+ *           variant_id: string
+ *           quantity: number
+ *         }[]
+ *         return_shipping_option: string
+ *       }
+ *
+ *       const CreateSwap = ({
+ *         orderId
+ *       }: Props) => {
+ *         const createSwap = useCreateSwap()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateData
+ *         ) => {
+ *           createSwap.mutate({
+ *             ...data,
+ *             order_id: orderId
+ *           }, {
+ *             onSuccess: ({ swap }) => {
+ *               console.log(swap.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateSwap
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -292,6 +337,7 @@ class AdditionalItem {
 /**
  * @schema StorePostSwapsReq
  * type: object
+ * description: "The details of the swap to create."
  * required:
  *   - order_id
  *   - return_items

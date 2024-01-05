@@ -22,6 +22,24 @@ import { EntityManager } from "typeorm"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteDiscount } from "medusa-react"
+ *
+ *       const Discount = () => {
+ *         const deleteDiscount = useAdminDeleteDiscount(discount_id)
+ *         // ...
+ *
+ *         const handleDelete = () => {
+ *           deleteDiscount.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Discount
  *   - lang: Shell
  *     label: cURL
  *     source: |

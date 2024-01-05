@@ -46,6 +46,37 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateOrder } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const Order = ({ orderId }: Props) => {
+ *         const updateOrder = useAdminUpdateOrder(
+ *           orderId
+ *         )
+ *
+ *         const handleUpdate = (
+ *           email: string
+ *         ) => {
+ *           updateOrder.mutate({
+ *             email,
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.email)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Order
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -104,6 +135,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderReq
  * type: object
+ * description: "The details to update of the order."
  * properties:
  *   email:
  *     description: The email associated with the order

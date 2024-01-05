@@ -49,9 +49,16 @@ import decrementCurrentTitleLevelHelper from "./resources/helpers/decrement-curr
 import incrementCurrentTitleLevelHelper from "./resources/helpers/increment-current-title-level"
 import hasMoreThanOneSignatureHelper from "./resources/helpers/has-more-than-one-signature"
 import ifCanShowConstructorsTitleHelper from "./resources/helpers/if-can-show-constructors-title"
+import ifReactQueryTypeHelper from "./resources/helpers/if-react-query-type"
+import ifHasHookParamsHelper from "./resources/helpers/if-has-hook-params"
+import reactQueryHookParamsHelper from "./resources/helpers/react-query-hook-params"
+import ifHasMutationParamsHelper from "./resources/helpers/if-has-mutation-params"
+import reactQueryMutationParamsHelper from "./resources/helpers/react-query-mutation-params"
+import ifHasMutationReturnHelper from "./resources/helpers/if-has-mutation-return"
+import reactQueryMutationReturnHelper from "./resources/helpers/react-query-mutation-return"
+import ifHasQueryReturnHelper from "./resources/helpers/if-has-query-return"
+import reactQueryQueryReturnHelper from "./resources/helpers/react-query-query-return"
 import { MarkdownTheme } from "./theme"
-
-// test
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
 
@@ -128,4 +135,13 @@ export function registerHelpers(theme: MarkdownTheme) {
   incrementCurrentTitleLevelHelper(theme)
   hasMoreThanOneSignatureHelper(theme)
   ifCanShowConstructorsTitleHelper()
+  ifReactQueryTypeHelper()
+  ifHasHookParamsHelper()
+  reactQueryHookParamsHelper()
+  ifHasMutationParamsHelper(theme)
+  reactQueryMutationParamsHelper(theme)
+  ifHasMutationReturnHelper(theme)
+  reactQueryMutationReturnHelper(theme)
+  ifHasQueryReturnHelper(theme)
+  reactQueryQueryReturnHelper(theme)
 }
