@@ -64,6 +64,7 @@ module.exports = {
     "stock-location",
     "workflows",
   ],
+  allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],
   formatting: {
     "*": {
       showCommentsAsHeader: true,
@@ -221,15 +222,23 @@ module.exports = {
       frontmatterData: {
         displayed_sidebar: "medusaReactSidebar",
         slug: "/references/medusa-react/providers/{{alias-lower}}",
+        sidebar_label: "{{alias}}",
       },
       reflectionTitle: {
         suffix: " Provider Overview",
       },
     },
-    "^medusa_react/.*Utilities": {
+    "^medusa_react/medusa_react\\.Utilities": {
       expandMembers: true,
       reflectionTitle: {
         prefix: "Medusa React ",
+      },
+    },
+    "^medusa_react/Utilities/.*": {
+      expandMembers: true,
+      frontmatterData: {
+        displayed_sidebar: "medusaReactSidebar",
+        slug: "/references/medusa-react/utilities/{{alias}}",
       },
     },
     "^medusa_react/medusa_react\\.Hooks\\.mdx": {
