@@ -5,7 +5,7 @@ import {
   TransactionStep,
 } from "@medusajs/orchestration"
 import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
-import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
+import { InjectSharedContext, isString, MedusaContext } from "@medusajs/utils"
 import { FlowRunOptions, MedusaWorkflow } from "@medusajs/workflows-sdk"
 import { ulid } from "ulid"
 import { InMemoryDistributedTransactionStorage } from "../utils"
@@ -106,9 +106,12 @@ export class WorkflowOrchestratorService {
       transactionId: context.transactionId,
     })
 
-    const flow = MedusaWorkflow.getWorkflow(workflowId)(
-      container as MedusaContainer
-    )
+    const exportedWorkflow: any = MedusaWorkflow.getWorkflow(workflowId)
+    if (!exportedWorkflow) {
+      throw new Error(`Workflow with id "${workflowId}" not found.`)
+    }
+
+    const flow = exportedWorkflow(container as MedusaContainer)
 
     const ret = await flow.run({
       input,
@@ -158,9 +161,12 @@ export class WorkflowOrchestratorService {
     context ??= {}
     context.transactionId ??= transactionId
 
-    const flow = MedusaWorkflow.getWorkflow(workflowId)(
-      container as MedusaContainer
-    )
+    const exportedWorkflow: any = MedusaWorkflow.getWorkflow(workflowId)
+    if (!exportedWorkflow) {
+      throw new Error(`Workflow with id "${workflowId}" not found.`)
+    }
+
+    const flow = exportedWorkflow(container as MedusaContainer)
 
     const transaction = await flow.getRunningTransaction(transactionId, context)
 
@@ -191,9 +197,12 @@ export class WorkflowOrchestratorService {
     const [idempotencyKey_, { workflowId, transactionId }] =
       this.buildIdempotencyKeyAndParts(idempotencyKey)
 
-    const flow = MedusaWorkflow.getWorkflow(workflowId)(
-      container as MedusaContainer
-    )
+    const exportedWorkflow: any = MedusaWorkflow.getWorkflow(workflowId)
+    if (!exportedWorkflow) {
+      throw new Error(`Workflow with id "${workflowId}" not found.`)
+    }
+
+    const flow = exportedWorkflow(container as MedusaContainer)
 
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,
@@ -248,9 +257,12 @@ export class WorkflowOrchestratorService {
     const [idempotencyKey_, { workflowId, transactionId }] =
       this.buildIdempotencyKeyAndParts(idempotencyKey)
 
-    const flow = MedusaWorkflow.getWorkflow(workflowId)(
-      container as MedusaContainer
-    )
+    const exportedWorkflow: any = MedusaWorkflow.getWorkflow(workflowId)
+    if (!exportedWorkflow) {
+      throw new Error(`Workflow with id "${workflowId}" not found.`)
+    }
+
+    const flow = exportedWorkflow(container as MedusaContainer)
 
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,
