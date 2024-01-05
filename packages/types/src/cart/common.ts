@@ -473,6 +473,11 @@ export interface FilterableCartProps
   updated_at?: OperatorMap<string>
 }
 
+export interface FilterableAddressProps
+  extends BaseFilterable<FilterableAddressProps> {
+  id?: string | string[]
+}
+
 export type legacy_CartDTO = {
   id?: string
   email?: string
