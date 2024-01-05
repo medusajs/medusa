@@ -11,16 +11,21 @@ import * as PromotionModels from "@models"
  * @param logger
  * @param moduleDeclaration
  */
-export async function runMigrations({
-  options,
-  logger,
-}: Pick<
-  LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
-  "options" | "logger"
-> = {}) {
+export async function runMigrations(
+  {
+    options,
+    logger,
+  }: Pick<
+    LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
+    "options" | "logger"
+  > = {} as any
+) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig(Modules.PROMOTION, options)!
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(
+    Modules.WORKFLOW_ORCHESTRATOR,
+    options
+  )!
   const entities = Object.values(PromotionModels) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 
@@ -46,9 +51,11 @@ export async function runMigrations({
       migrations: pendingMigrations.map((m) => m.name),
     })
 
-    logger.info("Promotion module migration executed")
+    logger.info("Workflow orchestrator module migration executed")
   } catch (error) {
-    logger.error(`Promotion module migration failed to run - Error: ${error}`)
+    logger.error(
+      `Workflow orchestrator module migration failed to run - Error: ${error}`
+    )
   }
 
   await orm.close()

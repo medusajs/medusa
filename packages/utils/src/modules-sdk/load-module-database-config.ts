@@ -75,15 +75,20 @@ export function loadDatabaseConfig(
         JSON.stringify(getDefaultDriverOptions(clientUrl))
     ),
     debug: false,
+    connection: undefined,
   }
 
   if (isModuleServiceInitializeOptions(options)) {
-    database.clientUrl = getDatabaseUrl(options)
+    database.clientUrl = getDatabaseUrl({
+      ...options,
+      database: { ...options.database, clientUrl },
+    })
     database.schema = options.database!.schema ?? database.schema
     database.driverOptions =
       options.database!.driverOptions ??
       getDefaultDriverOptions(database.clientUrl)
     database.debug = options.database!.debug ?? database.debug
+    database.connection = options.database!.connection
   }
 
   if (!database.clientUrl && !silent) {
