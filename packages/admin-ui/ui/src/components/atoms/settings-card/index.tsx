@@ -1,11 +1,13 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import ChevronRightIcon from "../../fundamentals/icons/chevron-right-icon"
+import { useTranslation } from "react-i18next"
+import { TranslationText } from "../../../types/shared"
 
 type SettingsCardProps = {
   icon: React.ReactNode
-  heading: string
-  description: string
+  heading: TranslationText
+  description: TranslationText
   to?: string
   externalLink?: string
   disabled?: boolean
@@ -13,12 +15,20 @@ type SettingsCardProps = {
 
 const SettingsCard: React.FC<SettingsCardProps> = ({
   icon,
-  heading,
-  description,
+  heading: {
+    defaultText: headingDefaultText,
+    translationKey: headingTranslationKey,
+  },
+  description: {
+    defaultText: descriptionDefaultText,
+    translationKey: descriptionTranslationKey,
+  },
   to = null,
   externalLink = null,
   disabled = false,
 }) => {
+  const { t } = useTranslation()
+
   if (disabled) {
     to = null
   }
@@ -41,10 +51,10 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
         </div>
         <div className="mx-large flex-1 text-left">
           <h3 className="inter-large-semibold text-grey-90 group-disabled:text-grey-40 m-0">
-            {heading}
+            {t(headingTranslationKey, headingDefaultText)}
           </h3>
           <p className="inter-base-regular text-grey-50 group-disabled:text-grey-40 m-0">
-            {description}
+            {t(descriptionTranslationKey, descriptionDefaultText)}
           </p>
         </div>
         <div className="text-grey-40 group-disabled:text-grey-30">
