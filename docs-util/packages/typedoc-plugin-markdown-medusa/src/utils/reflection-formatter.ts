@@ -85,7 +85,10 @@ export function reflectionListFormatter({
   ) {
     const children = hasChildren
       ? reflection.children
-      : getTypeChildren(reflection.type!, reflection.project)
+      : getTypeChildren({
+          reflectionType: reflection.type!,
+          project: reflection.project,
+        })
     const itemChildren: string[] = []
     let itemChildrenKind: ReflectionKind | null = null
     children?.forEach((childItem: DeclarationReflection) => {
@@ -156,7 +159,11 @@ export function reflectionComponentFormatter({
   ) {
     const children = hasChildren
       ? reflection.children
-      : getTypeChildren(reflection.type!, project || reflection.project)
+      : getTypeChildren({
+          reflectionType: reflection.type!,
+          project: project || reflection.project,
+          maxLevel,
+        })
 
     children
       ?.filter((childItem: DeclarationReflection) =>

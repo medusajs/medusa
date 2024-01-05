@@ -62,7 +62,7 @@ class OrderEditsResource extends BaseResource {
   }
 
   /**
-   * Complete an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the {@link PaymentCollectionsResource} routes.
+   * Complete and confirm an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the {@link PaymentCollectionsResource} routes.
    * @param {string} id - The ID of the order edit.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreOrderEditsRes>} Resolves to the order edit's details.

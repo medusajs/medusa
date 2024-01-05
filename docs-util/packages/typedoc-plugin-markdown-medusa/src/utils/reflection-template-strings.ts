@@ -10,6 +10,16 @@ export function replaceTemplateVariables(
 
   return text
     .replaceAll("{{alias}}", reflection.getAlias())
+    .replaceAll("{{alias-lower}}", reflection.getAlias().toLowerCase())
+    .replaceAll("{{parent.alias}}", reflection.parent?.getAlias() || "")
+    .replaceAll(
+      "{{parent.alias-lower}}",
+      reflection.parent?.getAlias().toLowerCase() || ""
+    )
+    .replaceAll(
+      "{{parent.parent.alias}}",
+      reflection.parent?.parent?.getAlias() || ""
+    )
     .replaceAll("{{kind}}", getKindAsText(reflection.kind))
 }
 

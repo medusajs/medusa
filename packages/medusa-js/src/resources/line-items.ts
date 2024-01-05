@@ -12,7 +12,7 @@ import BaseResource from "./base"
  */
 class LineItemsResource extends BaseResource {
   /**
-   * Generates a Line Item with a given Product Variant and adds it to the Cart
+   * Generate a Line Item with a given Product Variant and adds it to the Cart
    * @param {string} cart_id - The cart's ID.
    * @param {StorePostCartsCartLineItemsReq} payload - The line item to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.

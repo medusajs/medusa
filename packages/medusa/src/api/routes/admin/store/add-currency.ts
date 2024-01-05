@@ -31,6 +31,28 @@ import { EntityManager } from "typeorm"
  *       .then(({ store }) => {
  *         console.log(store.currencies);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddStoreCurrency } from "medusa-react"
+ *
+ *       const Store = () => {
+ *         const addCurrency = useAdminAddStoreCurrency()
+ *         // ...
+ *
+ *         const handleAdd = (code: string) => {
+ *           addCurrency.mutate(code, {
+ *             onSuccess: ({ store }) => {
+ *               console.log(store.currencies)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |

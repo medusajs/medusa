@@ -42,6 +42,38 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateRegion } from "medusa-react"
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({
+ *         regionId
+ *       }: Props) => {
+ *         const updateRegion = useAdminUpdateRegion(regionId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           countries: string[]
+ *         ) => {
+ *           updateRegion.mutate({
+ *             countries,
+ *           }, {
+ *             onSuccess: ({ region }) => {
+ *               console.log(region.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -100,6 +132,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostRegionsRegionReq
  * type: object
+ * description: "The details to update of the regions."
  * properties:
  *   name:
  *     description: "The name of the Region"

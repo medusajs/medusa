@@ -36,6 +36,32 @@ import { removePriceListPrices } from "@medusajs/core-flows"
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeletePriceListPrices } from "medusa-react"
+ *
+ *       const PriceList = (
+ *         priceListId: string
+ *       ) => {
+ *         const deletePrices = useAdminDeletePriceListPrices(priceListId)
+ *         // ...
+ *
+ *         const handleDeletePrices = (priceIds: string[]) => {
+ *           deletePrices.mutate({
+ *             price_ids: priceIds
+ *           }, {
+ *             onSuccess: ({ ids, deleted, object }) => {
+ *               console.log(ids)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -119,9 +145,10 @@ export default async (req, res) => {
 /**
  * @schema AdminDeletePriceListPricesPricesReq
  * type: object
+ * description: "The details of the prices to delete."
  * properties:
  *   price_ids:
- *     description: The price IDs of the Money Amounts to delete.
+ *     description: The IDs of the prices to delete.
  *     type: array
  *     items:
  *       type: string

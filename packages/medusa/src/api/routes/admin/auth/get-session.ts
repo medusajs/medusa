@@ -20,6 +20,24 @@ import _ from "lodash"
  *       .then(({ user }) => {
  *         console.log(user.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminGetSession } from "medusa-react"
+ *
+ *       const Profile = () => {
+ *         const { user, isLoading } = useAdminGetSession()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {user && <span>{user.email}</span>}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Profile
  *   - lang: Shell
  *     label: cURL
  *     source: |

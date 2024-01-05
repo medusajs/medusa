@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { AddressPayload } from "./AddressPayload"
 
+/**
+ * The details to update of the customer.
+ */
 export interface StorePostCustomersCustomerReq {
   /**
    * The customer's first name.

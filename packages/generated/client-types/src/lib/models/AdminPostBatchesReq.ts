@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the batch job to create.
+ */
 export interface AdminPostBatchesReq {
   /**
    * The type of batch job to start, which is defined by the `batchType` property of the associated batch job strategy.

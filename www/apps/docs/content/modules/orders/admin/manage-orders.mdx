@@ -398,7 +398,11 @@ You can retrieve an order by sending a request to the [Get an Order API Route](h
     ```tsx
     import { useAdminOrder } from "medusa-react"
 
-    const Order = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const { 
         order, 
         isLoading, 
@@ -481,22 +485,31 @@ You can update any of the above details of an order by sending a request to the 
     ```tsx
     import { useAdminUpdateOrder } from "medusa-react"
 
-    const UpdateOrder = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const updateOrder = useAdminUpdateOrder(
         orderId
       )
-      // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        email: string
+      ) => {
         updateOrder.mutate({
           email,
+        }, {
+          onSuccess: ({ order }) => {
+            console.log(order.email)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateOrder
+    export default Order
     ```
 
   </TabItem>
@@ -564,20 +577,28 @@ You can capture an orderâ€™s payment by sending a request to the [Capture Orderâ
     ```tsx
     import { useAdminCapturePayment } from "medusa-react"
 
-    const CapturePayment = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const capturePayment = useAdminCapturePayment(
         orderId
       )
       // ...
 
       const handleCapture = () => {
-        capturePayment.mutate()
+        capturePayment.mutate(void 0, {
+          onSuccess: ({ order }) => {
+            console.log(order.status)
+          }
+        })
       }
 
       // ...
     }
 
-    export default CapturePayment
+    export default Order
     ```
 
   </TabItem>
@@ -634,23 +655,34 @@ To refund payment, send a request to the [Refund Payment API Route](https://docs
     ```tsx
     import { useAdminRefundPayment } from "medusa-react"
 
-    const RefundPayment = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const refundPayment = useAdminRefundPayment(
         orderId
       )
       // ...
 
-      const handleRefund = () => {
+      const handleRefund = (
+        amount: number,
+        reason: string
+      ) => {
         refundPayment.mutate({
           amount,
           reason,
+        }, {
+          onSuccess: ({ order }) => {
+            console.log(order.refunds)
+          }
         })
       }
 
       // ...
     }
 
-    export default RefundPayment
+    export default Order
     ```
 
   </TabItem>
@@ -732,27 +764,38 @@ You can create a fulfillment by sending a request to the [Create a Fulfillment A
     ```tsx
     import { useAdminCreateFulfillment } from "medusa-react"
 
-    const CreateFullfillment = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const createFulfillment = useAdminCreateFulfillment(
         orderId
       )
       // ...
 
-      const handleCreate = () => {
+      const handleCreateFulfillment = (
+        itemId: string,
+        quantity: number
+      ) => {
         createFulfillment.mutate({
           items: [
             {
-              itemId,
+              item_id: itemId,
               quantity,
             },
           ],
+        }, {
+          onSuccess: ({ order }) => {
+            console.log(order.fulfillments)
+          }
         })
       }
 
       // ...
     }
 
-    export default CreateFullfillment
+    export default Order
     ```
 
   </TabItem>
@@ -835,22 +878,32 @@ You can create a shipment for a fulfillment by sending a request to the [Create 
     ```tsx
     import { useAdminCreateShipment } from "medusa-react"
 
-    const CreateShipment = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const createShipment = useAdminCreateShipment(
         orderId
       )
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (
+        fulfillmentId: string
+      ) => {
         createShipment.mutate({
-          fulfillment_id,
+          fulfillment_id: fulfillmentId,
+        }, {
+          onSuccess: ({ order }) => {
+            console.log(order.fulfillment_status)
+          }
         })
       }
 
       // ...
     }
 
-    export default CreateShipment
+    export default Order
     ```
 
   </TabItem>
@@ -914,20 +967,30 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
     ```tsx
     import { useAdminCancelFulfillment } from "medusa-react"
 
-    const CancelFulfillment = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const cancelFulfillment = useAdminCancelFulfillment(
         orderId
       )
       // ...
 
-      const handleCancel = () => {
-        cancelFulfillment.mutate(fulfillment_id)
+      const handleCancel = (
+        fulfillmentId: string
+      ) => {
+        cancelFulfillment.mutate(fulfillmentId, {
+          onSuccess: ({ order }) => {
+            console.log(order.fulfillments)
+          }
+        })
       }
 
       // ...
     }
 
-    export default CancelFulfillment
+    export default Order
     ```
 
   </TabItem>
@@ -983,20 +1046,28 @@ You can mark an order completed, changing its status, by sending a request to th
     ```tsx
     import { useAdminCompleteOrder } from "medusa-react"
 
-    const CompleteOrder = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const completeOrder = useAdminCompleteOrder(
         orderId
       )
       // ...
 
       const handleComplete = () => {
-        completeOrder.mutate()
+        completeOrder.mutate(void 0, {
+          onSuccess: ({ order }) => {
+            console.log(order.status)
+          }
+        })
       }
 
       // ...
     }
 
-    export default CompleteOrder
+    export default Order
     ```
 
   </TabItem>
@@ -1050,20 +1121,28 @@ You can cancel an order by sending a request to the [Cancel Order API Route](htt
     ```tsx
     import { useAdminCancelOrder } from "medusa-react"
 
-    const CancelOrder = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const cancelOrder = useAdminCancelOrder(
         orderId
       )
       // ...
 
       const handleCancel = () => {
-        cancelOrder.mutate()
+        cancelOrder.mutate(void 0, {
+          onSuccess: ({ order }) => {
+            console.log(order.status)
+          }
+        })
       }
 
       // ...
     }
 
-    export default CancelOrder
+    export default Order
     ```
 
   </TabItem>
@@ -1117,20 +1196,28 @@ You can archive an order by sending a request to the [Archive Order API Route](h
     ```tsx
     import { useAdminArchiveOrder } from "medusa-react"
 
-    const ArchiveOrder = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const Order = ({ orderId }: Props) => {
       const archiveOrder = useAdminArchiveOrder(
         orderId
       )
       // ...
 
-      const handleArchive = () => {
-        archiveOrder.mutate()
+      const handleArchivingOrder = () => {
+        archiveOrder.mutate(void 0, {
+          onSuccess: ({ order }) => {
+            console.log(order.status)
+          }
+        })
       }
 
       // ...
     }
 
-    export default ArchiveOrder
+    export default Order
     ```
 
   </TabItem>

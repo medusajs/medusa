@@ -1,4 +1,5 @@
 type: object
+description: The details of the sales channel to create.
 required:
   - name
 properties:
