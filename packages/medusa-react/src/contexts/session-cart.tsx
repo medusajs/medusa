@@ -238,7 +238,7 @@ const defaultInitialState: SessionCartState = {
 }
 
 /**
- * Unlike the {@link CartProvider}, `SessionProvider` never interacts with the Medusa backend. It can be used to implement the user experience related to managing a cart’s items. 
+ * Unlike the {@link Providers.Cart.CartProvider | CartProvider}, `SessionProvider` never interacts with the Medusa backend. It can be used to implement the user experience related to managing a cart’s items. 
  * Its state variables are JavaScript objects living in the browser, but are in no way communicated with the backend.
  * 
  * You can use the `SessionProvider` as a lightweight client-side cart functionality. It’s not stored in any database or on the Medusa backend.

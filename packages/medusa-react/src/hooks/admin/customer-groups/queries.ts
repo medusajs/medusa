@@ -15,6 +15,9 @@ import { queryKeysFactory } from "../../utils"
 
 const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const
 
+/**
+ * @ignore
+ */
 export const adminCustomerGroupKeys = {
   ...queryKeysFactory(ADMIN_CUSTOMER_GROUPS_QUERY_KEY),
   detailCustomer(id: string, query?: AdminGetCustomersParams) {

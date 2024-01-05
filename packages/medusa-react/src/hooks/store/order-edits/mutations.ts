@@ -76,7 +76,7 @@ export const useDeclineOrderEdit = (
 
 /**
  * This hook completes and confirms an Order Edit and reflect its changes on the original order. Any additional payment required must 
- * be authorized first using the {@link useAuthorizePaymentSession} hook.
+ * be authorized first using the {@link Hooks.Store."Payment Collections".useAuthorizePaymentSession | useAuthorizePaymentSession} hook.
  * 
  * @example
  * import React from "react"

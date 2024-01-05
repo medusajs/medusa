@@ -4,7 +4,7 @@ import { useMedusa } from "../../../contexts"
 
 /**
  * This hook creates a Swap for an Order. This will also create a return and associate it with the swap. If a return shipping option is specified, the return will automatically be fulfilled.
- * To complete the swap, you must use the {@link useCompleteCart} hook passing it the ID of the swap's cart.
+ * To complete the swap, you must use the {@link Hooks.Store.Carts.useCompleteCart | useCompleteCart} hook passing it the ID of the swap's cart.
  * 
  * An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
  * the response. If an error occurs during swap creation or the request is interrupted for any reason, the swap creation can be retried by passing the idempotency

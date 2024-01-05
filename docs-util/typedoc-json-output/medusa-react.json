@@ -17156,7 +17156,8 @@
 									{
 										"kind": "inline-tag",
 										"tag": "@link",
-										"text": "useAdminCreateProduct"
+										"text": "useAdminCreateProduct",
+										"target": 2385
 									},
 									{
 										"kind": "text",
@@ -73872,7 +73873,8 @@
 									{
 										"kind": "inline-tag",
 										"tag": "@link",
-										"text": "CartProvider"
+										"text": "CartProvider",
+										"target": 174
 									},
 									{
 										"kind": "text",
@@ -73881,7 +73883,8 @@
 									{
 										"kind": "inline-tag",
 										"tag": "@link",
-										"text": "useCart"
+										"text": "useCart",
+										"target": 169
 									},
 									{
 										"kind": "text",
@@ -78080,7 +78083,8 @@
 									{
 										"kind": "inline-tag",
 										"tag": "@link",
-										"text": "CartProvider"
+										"text": "CartProvider",
+										"target": 174
 									},
 									{
 										"kind": "text",
@@ -78089,7 +78093,8 @@
 									{
 										"kind": "inline-tag",
 										"tag": "@link",
-										"text": "useCart"
+										"text": "useCart",
+										"target": 169
 									},
 									{
 										"kind": "text",
@@ -78724,7 +78729,8 @@
 													{
 														"kind": "inline-tag",
 														"tag": "@link",
-														"text": "useAuthorizePaymentSession"
+														"text": "useAuthorizePaymentSession",
+														"target": 538
 													},
 													{
 														"kind": "text",
@@ -90986,7 +90992,8 @@
 													{
 														"kind": "inline-tag",
 														"tag": "@link",
-														"text": "useCompleteCart"
+														"text": "useCompleteCart",
+														"target": 202
 													},
 													{
 														"kind": "text",
@@ -91727,7 +91734,8 @@
 											{
 												"kind": "inline-tag",
 												"tag": "@link",
-												"text": "CartProvider"
+												"text": "CartProvider",
+												"target": 174
 											},
 											{
 												"kind": "text",
