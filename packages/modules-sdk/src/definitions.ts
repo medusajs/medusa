@@ -16,6 +16,7 @@ export enum Modules {
   PROMOTION = "promotion",
   AUTHENTICATION = "authentication",
   WORKFLOW_ORCHESTRATOR = "workflowOrchestrator",
+  CART = "cart",
 }
 
 export enum ModuleRegistrationName {
@@ -28,6 +29,7 @@ export enum ModuleRegistrationName {
   PROMOTION = "promotionModuleService",
   AUTHENTICATION = "authenticationModuleService",
   WORKFLOW_ORCHESTRATOR = "workflowOrchestratorService",
+  CART = "cartModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -40,6 +42,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.PROMOTION]: "@medusajs/promotion",
   [Modules.AUTHENTICATION]: "@medusajs/authentication",
   [Modules.WORKFLOW_ORCHESTRATOR]: "@medusajs/workflow-orchestrator-inmemory",
+  [Modules.CART]: "@medusajs/cart",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -162,6 +165,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.WORKFLOW_ORCHESTRATOR,
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ORCHESTRATOR],
       label: upperCaseFirst(ModuleRegistrationName.WORKFLOW_ORCHESTRATOR),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.CART]: {
+      key: Modules.CART,
+      registrationName: ModuleRegistrationName.CART,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.CART),
       isRequired: false,
       canOverride: true,
       isQueryable: true,

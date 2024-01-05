@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Unique,
@@ -52,6 +53,11 @@ export default class PriceListRule {
 
   @BeforeCreate()
   beforeCreate() {
+    this.id = generateEntityId(this.id, "plrule")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "plrule")
   }
 }

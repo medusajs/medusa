@@ -375,6 +375,7 @@ export class LocalWorkflow {
   }
 
   setOptions(options: Partial<TransactionModelOptions>) {
+    this.customOptions = options
     return this
   }
 

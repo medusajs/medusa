@@ -9,11 +9,11 @@ import {
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionState,
-  TransactionStepStatus,
   TransactionStepsDefinition,
+  TransactionStepStatus,
 } from "./types"
 
-import { MedusaError, TransactionStepState, promiseAll } from "@medusajs/utils"
+import { MedusaError, promiseAll, TransactionStepState } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import {
   PermanentStepFailureError,
@@ -436,6 +436,7 @@ export class TransactionOrchestrator extends EventEmitter {
 
       hasTimedOut = true
     }
+
     return hasTimedOut
   }
 

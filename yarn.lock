@@ -7412,10 +7412,10 @@ __metadata:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
-    "@mikro-orm/cli": 5.7.12
-    "@mikro-orm/core": 5.7.12
-    "@mikro-orm/migrations": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.1.4
@@ -7461,6 +7461,35 @@ __metadata:
     rimraf: ^5.0.1
     ts-jest: ^29.1.1
     typescript: ^5.1.6
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/cart@workspace:packages/cart":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/cart@workspace:packages/cart"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.12.5
+    "@medusajs/types": ^1.11.9
+    "@medusajs/utils": ^1.11.2
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    dotenv: ^16.1.4
+    jest: ^29.6.3
+    knex: 2.4.2
+    medusa-test-utils: ^1.1.40
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-node: ^10.9.1
+    tsc-alias: ^1.8.6
+    typescript: ^5.1.6
+  bin:
+    medusa-cart-migrations-down: dist/scripts/bin/run-migration-down.js
+    medusa-cart-migrations-up: dist/scripts/bin/run-migration-up.js
+    medusa-cart-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -7605,8 +7634,8 @@ __metadata:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
-    "@mikro-orm/core": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^29.6.3
@@ -7879,10 +7908,10 @@ __metadata:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
-    "@mikro-orm/cli": 5.7.12
-    "@mikro-orm/core": 5.7.12
-    "@mikro-orm/migrations": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.1.4
@@ -7908,10 +7937,10 @@ __metadata:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
-    "@mikro-orm/cli": 5.7.12
-    "@mikro-orm/core": 5.7.12
-    "@mikro-orm/migrations": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.1.4
@@ -7940,10 +7969,10 @@ __metadata:
     "@medusajs/modules-sdk": ^1.12.5
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
-    "@mikro-orm/cli": 5.7.12
-    "@mikro-orm/core": 5.7.12
-    "@mikro-orm/migrations": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
+    "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.1.4
@@ -8113,9 +8142,9 @@ __metadata:
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
     "@medusajs/types": ^1.11.9
-    "@mikro-orm/core": 5.7.12
-    "@mikro-orm/migrations": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     "@types/express": ^4.17.17
     awilix: ^8.0.1
     cross-env: ^5.2.1
@@ -8226,7 +8255,56 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mikro-orm/core@npm:5.7.12, @mikro-orm/core@npm:~5.7.12":
+"@mikro-orm/cli@npm:5.9.7":
+  version: 5.9.7
+  resolution: "@mikro-orm/cli@npm:5.9.7"
+  dependencies:
+    "@jercle/yargonaut": 1.1.5
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/knex": 5.9.7
+    fs-extra: 11.1.1
+    tsconfig-paths: 4.2.0
+    yargs: 17.7.2
+  peerDependencies:
+    "@mikro-orm/better-sqlite": ^5.0.0
+    "@mikro-orm/entity-generator": ^5.0.0
+    "@mikro-orm/mariadb": ^5.0.0
+    "@mikro-orm/migrations": ^5.0.0
+    "@mikro-orm/migrations-mongodb": ^5.0.0
+    "@mikro-orm/mongodb": ^5.0.0
+    "@mikro-orm/mysql": ^5.0.0
+    "@mikro-orm/postgresql": ^5.0.0
+    "@mikro-orm/seeder": ^5.0.0
+    "@mikro-orm/sqlite": ^5.0.0
+  peerDependenciesMeta:
+    "@mikro-orm/better-sqlite":
+      optional: true
+    "@mikro-orm/entity-generator":
+      optional: true
+    "@mikro-orm/mariadb":
+      optional: true
+    "@mikro-orm/migrations":
+      optional: true
+    "@mikro-orm/migrations-mongodb":
+      optional: true
+    "@mikro-orm/mongodb":
+      optional: true
+    "@mikro-orm/mysql":
+      optional: true
+    "@mikro-orm/postgresql":
+      optional: true
+    "@mikro-orm/seeder":
+      optional: true
+    "@mikro-orm/sqlite":
+      optional: true
+  bin:
+    mikro-orm: cli.js
+    mikro-orm-esm: esm.js
+  checksum: 2b0f430485ff4e25a0ee53d776a30832d8b53c83db8f70d2d5305039c042384714e9525169e9bfd897f1c9936242aaf80aaf9e9f917c8894517343cc14f56987
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/core@npm:5.7.12":
   version: 5.7.12
   resolution: "@mikro-orm/core@npm:5.7.12"
   dependencies:
@@ -8273,12 +8351,106 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mikro-orm/knex@npm:~5.7.12":
-  version: 5.7.12
-  resolution: "@mikro-orm/knex@npm:5.7.12"
+"@mikro-orm/core@npm:5.9.7":
+  version: 5.9.7
+  resolution: "@mikro-orm/core@npm:5.9.7"
+  dependencies:
+    acorn-loose: 8.3.0
+    acorn-walk: 8.2.0
+    dotenv: 16.3.1
+    fs-extra: 11.1.1
+    globby: 11.1.0
+    mikro-orm: 5.9.7
+    reflect-metadata: 0.1.13
+  peerDependencies:
+    "@mikro-orm/better-sqlite": ^5.0.0
+    "@mikro-orm/entity-generator": ^5.0.0
+    "@mikro-orm/mariadb": ^5.0.0
+    "@mikro-orm/migrations": ^5.0.0
+    "@mikro-orm/migrations-mongodb": ^5.0.0
+    "@mikro-orm/mongodb": ^5.0.0
+    "@mikro-orm/mysql": ^5.0.0
+    "@mikro-orm/postgresql": ^5.0.0
+    "@mikro-orm/seeder": ^5.0.0
+    "@mikro-orm/sqlite": ^5.0.0
+  peerDependenciesMeta:
+    "@mikro-orm/better-sqlite":
+      optional: true
+    "@mikro-orm/entity-generator":
+      optional: true
+    "@mikro-orm/mariadb":
+      optional: true
+    "@mikro-orm/migrations":
+      optional: true
+    "@mikro-orm/migrations-mongodb":
+      optional: true
+    "@mikro-orm/mongodb":
+      optional: true
+    "@mikro-orm/mysql":
+      optional: true
+    "@mikro-orm/postgresql":
+      optional: true
+    "@mikro-orm/seeder":
+      optional: true
+    "@mikro-orm/sqlite":
+      optional: true
+  checksum: f58ad6b717571b6c9d4f880a886a34f7de51e7d299c93be5ac9b0733c41fdd22278eae14ca5a1e1e7efb045bc36caa83b639745fc0be7b5a696e49b13bdbbd03
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/core@npm:~5.7.12":
+  version: 5.7.14
+  resolution: "@mikro-orm/core@npm:5.7.14"
+  dependencies:
+    acorn-loose: 8.3.0
+    acorn-walk: 8.2.0
+    dotenv: 16.3.1
+    fs-extra: 11.1.1
+    globby: 11.1.0
+    mikro-orm: ~5.7.14
+    reflect-metadata: 0.1.13
+  peerDependencies:
+    "@mikro-orm/better-sqlite": ^5.0.0
+    "@mikro-orm/entity-generator": ^5.0.0
+    "@mikro-orm/mariadb": ^5.0.0
+    "@mikro-orm/migrations": ^5.0.0
+    "@mikro-orm/migrations-mongodb": ^5.0.0
+    "@mikro-orm/mongodb": ^5.0.0
+    "@mikro-orm/mysql": ^5.0.0
+    "@mikro-orm/postgresql": ^5.0.0
+    "@mikro-orm/seeder": ^5.0.0
+    "@mikro-orm/sqlite": ^5.0.0
+  peerDependenciesMeta:
+    "@mikro-orm/better-sqlite":
+      optional: true
+    "@mikro-orm/entity-generator":
+      optional: true
+    "@mikro-orm/mariadb":
+      optional: true
+    "@mikro-orm/migrations":
+      optional: true
+    "@mikro-orm/migrations-mongodb":
+      optional: true
+    "@mikro-orm/mongodb":
+      optional: true
+    "@mikro-orm/mysql":
+      optional: true
+    "@mikro-orm/postgresql":
+      optional: true
+    "@mikro-orm/seeder":
+      optional: true
+    "@mikro-orm/sqlite":
+      optional: true
+  checksum: 9c9805f58cf0828ae188f0d07501ec7d194120f5a90ebf0f0b7bc21cfbffe1652ef17b9388c7667a8f914b70b8b54e4ad0207fc9c8cc4b148548bc56b56d5572
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/knex@npm:5.9.7":
+  version: 5.9.7
+  resolution: "@mikro-orm/knex@npm:5.9.7"
   dependencies:
     fs-extra: 11.1.1
-    knex: 2.4.2
+    knex: 2.5.1
     sqlstring: 2.3.3
   peerDependencies:
     "@mikro-orm/core": ^5.0.0
@@ -8307,7 +8479,45 @@ __metadata:
       optional: true
     sqlite3:
       optional: true
-  checksum: f8b334ce7d776303cebbfd3cf1181daa5b797bd287e94b54d0151866b24c18ac2a7c68a850ed27a26565a850d2e62cd4478af601deb6e24f83ec5db4a556d11b
+  checksum: 2cce6ef6907d0785e84a9c801980e58ddd3539dbd3dd0b0ced1e3ccddcbc5dfb704816abb97ae7d9c608d6b30d842dd1f59a6ea97ca1d854ebd55df303070500
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/knex@npm:~5.7.12":
+  version: 5.7.14
+  resolution: "@mikro-orm/knex@npm:5.7.14"
+  dependencies:
+    fs-extra: 11.1.1
+    knex: 2.5.1
+    sqlstring: 2.3.3
+  peerDependencies:
+    "@mikro-orm/core": ^5.0.0
+    "@mikro-orm/entity-generator": ^5.0.0
+    "@mikro-orm/migrations": ^5.0.0
+    better-sqlite3: "*"
+    mssql: "*"
+    mysql: "*"
+    mysql2: "*"
+    pg: "*"
+    sqlite3: "*"
+  peerDependenciesMeta:
+    "@mikro-orm/entity-generator":
+      optional: true
+    "@mikro-orm/migrations":
+      optional: true
+    better-sqlite3:
+      optional: true
+    mssql:
+      optional: true
+    mysql:
+      optional: true
+    mysql2:
+      optional: true
+    pg:
+      optional: true
+    sqlite3:
+      optional: true
+  checksum: b33520b512b134ec5c61b5ee5f21013fd6c818587a04cbfa8bb4c9e746f7ee6ffd294ff56713e582d8b2051b6eb97cfa0cb6b697c4d77e1b095666f47cc5a0bf
   languageName: node
   linkType: hard
 
@@ -8322,6 +8532,20 @@ __metadata:
   peerDependencies:
     "@mikro-orm/core": ^5.0.0
   checksum: 93513f15f46f8f612fb90762712e24aa8d877bc6b59bfa903221f42e85140fcc724cb519bf74fa8be2acd40819525684acbc0d4b44a8579f1c84457f6962523b
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/migrations@npm:5.9.7":
+  version: 5.9.7
+  resolution: "@mikro-orm/migrations@npm:5.9.7"
+  dependencies:
+    "@mikro-orm/knex": 5.9.7
+    fs-extra: 11.1.1
+    knex: 2.5.1
+    umzug: 3.3.1
+  peerDependencies:
+    "@mikro-orm/core": ^5.0.0
+  checksum: 3b1c3e449d2aee7ed7f03153e17e2772423115b895836e4ece40c9b318849d8de9cce1ad9fa545a8ef54fa7fe5ab474c3444e2c598ebc9f3e070fe382882862a
   languageName: node
   linkType: hard
 
@@ -8344,6 +8568,28 @@ __metadata:
     "@mikro-orm/seeder":
       optional: true
   checksum: b6aecd3eb9013720e242390f9a4b470ff45f222ccddfeb8b260a9c0682073dbe9b6cfb9f688b7fde19197748a9026073d0693d66a7a0b2de2c83abfbd1fec291
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/postgresql@npm:5.9.7":
+  version: 5.9.7
+  resolution: "@mikro-orm/postgresql@npm:5.9.7"
+  dependencies:
+    "@mikro-orm/knex": 5.9.7
+    pg: 8.11.3
+  peerDependencies:
+    "@mikro-orm/core": ^5.0.0
+    "@mikro-orm/entity-generator": ^5.0.0
+    "@mikro-orm/migrations": ^5.0.0
+    "@mikro-orm/seeder": ^5.0.0
+  peerDependenciesMeta:
+    "@mikro-orm/entity-generator":
+      optional: true
+    "@mikro-orm/migrations":
+      optional: true
+    "@mikro-orm/seeder":
+      optional: true
+  checksum: 9380c0a5795fe6c25448a5c302877043a0239d25e087a0dec4ebca63e8f06a6af9435953a55141ac8317cb14e2b141df4c10c4615be1a1deecc5cce7127bf42c
   languageName: node
   linkType: hard
 
@@ -24437,7 +24683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emittery@npm:^0.13.1":
+"emittery@npm:^0.13.0, emittery@npm:^0.13.1":
   version: 0.13.1
   resolution: "emittery@npm:0.13.1"
   checksum: 1573d0ae29ab34661b6c63251ff8f5facd24ccf6a823f19417ae8ba8c88ea450325788c67f16c99edec8de4b52ce93a10fe441ece389fd156e88ee7dab9bfa35
@@ -34400,6 +34646,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"knex@npm:2.5.1":
+  version: 2.5.1
+  resolution: "knex@npm:2.5.1"
+  dependencies:
+    colorette: 2.0.19
+    commander: ^10.0.0
+    debug: 4.3.4
+    escalade: ^3.1.1
+    esm: ^3.2.25
+    get-package-type: ^0.1.0
+    getopts: 2.3.0
+    interpret: ^2.2.0
+    lodash: ^4.17.21
+    pg-connection-string: 2.6.1
+    rechoir: ^0.8.0
+    resolve-from: ^5.0.0
+    tarn: ^3.0.2
+    tildify: 2.0.0
+  peerDependenciesMeta:
+    better-sqlite3:
+      optional: true
+    mysql:
+      optional: true
+    mysql2:
+      optional: true
+    pg:
+      optional: true
+    pg-native:
+      optional: true
+    sqlite3:
+      optional: true
+    tedious:
+      optional: true
+  bin:
+    knex: bin/cli.js
+  checksum: 33580641feaa93074bdc10e78f06382e5017d46a3cd22821c09057e7da303c35772add39a110fffe685c2f438a78751a0eb6f50aad1c4bdb032e8ec9b7879b69
+  languageName: node
+  linkType: hard
+
 "kuler@npm:^2.0.0":
   version: 2.0.0
   resolution: "kuler@npm:2.0.0"
@@ -35966,6 +36251,7 @@ __metadata:
   dependencies:
     "@medusajs/admin": ^7.1.7
     "@medusajs/medusa": ^1.17.4
+    "@medusajs/utils": ^1.11.2
     "@tanstack/react-table": ^8.7.9
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
@@ -35973,7 +36259,6 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
     medusa-react: ^9.0.11
     rimraf: ^5.0.1
     stripe: ^11.10.0
@@ -36459,8 +36744,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
-    "@mikro-orm/migrations": 5.7.12
-    "@mikro-orm/postgresql": 5.7.12
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     cross-env: ^5.2.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
@@ -36711,10 +36996,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mikro-orm@npm:~5.7.12":
-  version: 5.7.12
-  resolution: "mikro-orm@npm:5.7.12"
-  checksum: 6b71e7b9803b7cbd934c6830df7fc010201ef48a9efaebbce98f3613896114cd464bf5a1d0746b42b14aea92e29a593f75775482d64e4cf856ffdbe341379edf
+"mikro-orm@npm:5.9.7":
+  version: 5.9.7
+  resolution: "mikro-orm@npm:5.9.7"
+  checksum: 01eb2b71e5f830c064749779d30ed1772e28420cfedeafbbbce8599714eae308af467014001e0404d7ba43de9f1f979a05fd6b267a89c8f7e1e8ec6013fb5120
+  languageName: node
+  linkType: hard
+
+"mikro-orm@npm:~5.7.12, mikro-orm@npm:~5.7.14":
+  version: 5.7.14
+  resolution: "mikro-orm@npm:5.7.14"
+  checksum: 1a72b863e130b86f2cc9aa6828b49546cde1dfc7f6ba9b8035c88dc6fff9f60d038cada2dc4332304c6bdc197dece709a6fad845490ab2584546852278b62f6d
   languageName: node
   linkType: hard
 
@@ -39389,7 +39681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-connection-string@npm:^2.5.0":
+"pg-connection-string@npm:2.6.1, pg-connection-string@npm:^2.5.0":
   version: 2.6.1
   resolution: "pg-connection-string@npm:2.6.1"
   checksum: e5a71a2da143b8dc17143a9db7737679b210643771aa678d3bc60c7bc70da11bbb8e2d531be91c8c4eddd6ac6046307811e793f5850b9ba595a11785c948a417
@@ -39689,7 +39981,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pony-cause@npm:^2.1.2":
+"pony-cause@npm:^2.1.2, pony-cause@npm:^2.1.4":
   version: 2.1.10
   resolution: "pony-cause@npm:2.1.10"
   checksum: 55ad0ca52039895f273c69e55fc9fe882deff38689dc5962558bfa16cce0ea7cb5bb7b67d0c43ec9c3e7edeb81f81ee8c1113014930d77b2cbac5adc4ac7fb64
@@ -47742,6 +48034,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"type-fest@npm:^3.0.0":
+  version: 3.13.1
+  resolution: "type-fest@npm:3.13.1"
+  checksum: 547d22186f73a8c04590b70dcf63baff390078c75ea8acd366bbd510fd0646e348bd1970e47ecf795b7cff0b41d26e9c475c1fedd6ef5c45c82075fbf916b629
+  languageName: node
+  linkType: hard
+
 "type-fest@npm:^3.6.0":
   version: 3.12.0
   resolution: "type-fest@npm:3.12.0"
@@ -48006,6 +48305,19 @@ __metadata:
     pony-cause: ^2.1.2
     type-fest: ^2.18.0
   checksum: ff5d417c5f0211e8c3c2529c347313ecef5db3ff4b219c71098e09884674387ac14870749ecf42ac26aabcf7559207b855fb0016eb8c50f7cd979f816d4b1545
+  languageName: node
+  linkType: hard
+
+"umzug@npm:3.3.1":
+  version: 3.3.1
+  resolution: "umzug@npm:3.3.1"
+  dependencies:
+    "@rushstack/ts-command-line": ^4.12.2
+    emittery: ^0.13.0
+    glob: ^8.0.3
+    pony-cause: ^2.1.4
+    type-fest: ^3.0.0
+  checksum: 52ace90860f9e2adc9f33c786582ca758651f2de8894b5bda7af2353bec8906234dbb456eb37513ec9ceeb45eabfcd286d4abced871cc45c01015a05e4247187
   languageName: node
   linkType: hard
 

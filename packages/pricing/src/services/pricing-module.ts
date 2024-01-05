@@ -13,6 +13,7 @@ import {
   PricingFilters,
   PricingRepositoryService,
   PricingTypes,
+  RestoreReturn,
   RuleTypeDTO,
 } from "@medusajs/types"
 import {
@@ -24,6 +25,7 @@ import {
   arrayDifference,
   deduplicate,
   groupBy,
+  mapObjectTo,
   removeNullish,
 } from "@medusajs/utils"
 
@@ -54,7 +56,11 @@ import {
   PriceSetService,
   RuleTypeService,
 } from "@services"
-import { joinerConfig } from "../joiner-config"
+import {
+  LinkableKeys,
+  entityNameToLinkableKeysMap,
+  joinerConfig,
+} from "../joiner-config"
 import { validatePriceListDates } from "@utils"
 import { ServiceTypes } from "@types"
 import { CreatePriceListRuleValueDTO } from "src/types/services"
@@ -861,6 +867,41 @@ export default class PricingModuleService<
     await this.moneyAmountService_.delete(ids, sharedContext)
   }
 
+  @InjectTransactionManager("baseRepository_")
+  async softDeleteMoneyAmounts(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.moneyAmountService_.softDelete(ids, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restoreDeletedMoneyAmounts<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    ids: string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.moneyAmountService_.restore(
+      ids,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
   @InjectManager("baseRepository_")
   async retrieveCurrency(
     code: string,
@@ -1132,7 +1173,7 @@ export default class PricingModuleService<
     )
 
     return this.baseRepository_.serialize<
-      PricingTypes.PriceSetMoneyAmountRulesDTO[]
+      PricingTypes.PriceSetMoneyAmountDTO[]
     >(records, {
       populate: true,
     })
@@ -1153,7 +1194,7 @@ export default class PricingModuleService<
 
     return [
       await this.baseRepository_.serialize<
-        PricingTypes.PriceSetMoneyAmountRulesDTO[]
+        PricingTypes.PriceSetMoneyAmountDTO[]
       >(records, {
         populate: true,
       }),

@@ -6,8 +6,8 @@ import {
 import {
   TransactionHandlerType,
   TransactionState,
-  TransactionStepStatus,
   TransactionStepsDefinition,
+  TransactionStepStatus,
 } from "./types"
 
 export type TransactionStepHandler = (
