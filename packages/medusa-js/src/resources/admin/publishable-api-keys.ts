@@ -33,8 +33,6 @@ class AdminPublishableApiKeyResource extends BaseResource {
   /**
    * Retrieve a publishable API key's details.
    * @param {string} id - The ID of the publishable API key.
-   * @privateRemarks The query parameter serves no purpose, so will leave this without a description until it's removed/fixed.
-   * @param {Record<string, any>} query
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminPublishableApiKeysRes>} Resolves to the publishable API key's details.
    *

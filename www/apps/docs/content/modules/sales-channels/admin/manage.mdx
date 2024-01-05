@@ -81,6 +81,10 @@ You can create a sales channel by sending a request to the Create a Sales Channe
         createSalesChannel.mutate({
           name,
           description,
+        }, {
+          onSuccess: ({ sales_channel }) => {
+            console.log(sales_channel.id)
+          }
         })
       }
 
@@ -151,7 +155,6 @@ You can list all sales channels by sending a request to the List Sales Channels 
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { SalesChannel } from "@medusajs/medusa"
     import { useAdminSalesChannels } from "medusa-react"
 
     const SalesChannels = () => {
@@ -165,7 +168,7 @@ You can list all sales channels by sending a request to the List Sales Channels 
           )}
           {sales_channels && sales_channels.length > 0 && (
             <ul>
-              {sales_channels.map((salesChannel: SalesChannel) => (
+              {sales_channels.map((salesChannel) => (
                 <li key={salesChannel.id}>{salesChannel.name}</li>
               ))}
             </ul>
@@ -224,8 +227,12 @@ You can retrieve a sales channel’s details by its ID using the Get Sales Chann
 
     ```tsx
     import { useAdminSalesChannel } from "medusa-react"
-
-    const SalesChannel = () => {
+ 
+    type Props = {
+      salesChannelId: string
+    }
+    
+    const SalesChannel = ({ salesChannelId }: Props) => {
       const { 
         sales_channel, 
         isLoading, 
@@ -292,22 +299,32 @@ You can update a Sales Channel’s details and attributes by sending a request t
     ```tsx
     import { useAdminUpdateSalesChannel } from "medusa-react"
 
-    const UpdateSalesChannel = () => {
+    type Props = {
+      salesChannelId: string
+    }
+
+    const SalesChannel = ({ salesChannelId }: Props) => {
       const updateSalesChannel = useAdminUpdateSalesChannel(
         salesChannelId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        is_disabled: boolean
+      ) => {
         updateSalesChannel.mutate({
-          is_disabled: false,
+          is_disabled,
+        }, {
+          onSuccess: ({ sales_channel }) => {
+            console.log(sales_channel.is_disabled)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateSalesChannel
+    export default SalesChannel
     ```
 
   </TabItem>
@@ -373,14 +390,22 @@ You can delete a sales channel by sending a request to the Delete Sales Channel 
     ```tsx
     import { useAdminDeleteSalesChannel } from "medusa-react"
 
-    const SalesChannel = () => {
+    type Props = {
+      salesChannelId: string
+    }
+
+    const SalesChannel = ({ salesChannelId }: Props) => {
       const deleteSalesChannel = useAdminDeleteSalesChannel(
         salesChannelId
       )
       // ...
 
       const handleDelete = () => {
-        deleteSalesChannel.mutate()
+        deleteSalesChannel.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
@@ -446,7 +471,11 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
     ```tsx
     import { useAdminAddProductsToSalesChannel } from "medusa-react"
 
-    const SalesChannel = () => {
+    type Props = {
+      salesChannelId: string
+    }
+
+    const SalesChannel = ({ salesChannelId }: Props) => {
       const addProducts = useAdminAddProductsToSalesChannel(
         salesChannelId
       )
@@ -459,6 +488,10 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
               id: productId,
             },
           ],
+        }, {
+          onSuccess: ({ sales_channel }) => {
+            console.log(sales_channel.id)
+          }
         })
       }
 
@@ -642,7 +675,11 @@ You can delete a product from a sales channel by sending a request to the Sales 
       useAdminDeleteProductsFromSalesChannel, 
     } from "medusa-react"
 
-    const SalesChannel = () => {
+    type Props = {
+      salesChannelId: string
+    }
+
+    const SalesChannel = ({ salesChannelId }: Props) => {
       const deleteProducts = useAdminDeleteProductsFromSalesChannel(
         salesChannelId
       )
@@ -655,6 +692,10 @@ You can delete a product from a sales channel by sending a request to the Sales 
               id: productId,
             },
           ],
+        }, {
+          onSuccess: ({ sales_channel }) => {
+            console.log(sales_channel.id)
+          }
         })
       }
 

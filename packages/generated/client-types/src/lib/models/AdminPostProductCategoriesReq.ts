@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the product category to create.
+ */
 export interface AdminPostProductCategoriesReq {
   /**
    * The name of the product category

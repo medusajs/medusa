@@ -41,19 +41,13 @@ describe("PublishableApiKeyService", () => {
     await publishableApiKeyService.retrieve(
       IdMap.getId("order-edit-with-changes")
     )
-    expect(
-      publishableApiKeyRepository.findOne
-    ).toHaveBeenCalledTimes(1)
-    expect(
-      publishableApiKeyRepository.findOne
-    ).toHaveBeenCalledWith(
-      {
-        relationLoadStrategy: "query",
-        where: {
-          id: IdMap.getId("order-edit-with-changes")
-        }
-      }
-    )
+    expect(publishableApiKeyRepository.findOne).toHaveBeenCalledTimes(1)
+    expect(publishableApiKeyRepository.findOne).toHaveBeenCalledWith({
+      relationLoadStrategy: "query",
+      where: {
+        id: IdMap.getId("order-edit-with-changes"),
+      },
+    })
   })
 
   it("should create a publishable api key and call the repository with the right arguments as well as the event bus service", async () => {

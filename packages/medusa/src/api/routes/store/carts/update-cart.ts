@@ -46,6 +46,35 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useUpdateCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const updateCart = useUpdateCart(cartId)
+ *
+ *         const handleUpdate = (
+ *           email: string
+ *         ) => {
+ *           updateCart.mutate({
+ *             email
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.email)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -188,6 +217,7 @@ class Discount {
 /**
  * @schema StorePostCartsCartReq
  * type: object
+ * description: "The details to update of the cart."
  * properties:
  *   region_id:
  *     type: string

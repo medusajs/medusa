@@ -42,6 +42,36 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const updateLineItem = useAdminDraftOrderUpdateLineItem(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           itemId: string,
+ *           quantity: number
+ *         ) => {
+ *           updateLineItem.mutate({
+ *             item_id: itemId,
+ *             quantity,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -150,6 +180,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostDraftOrdersDraftOrderLineItemsItemReq
  * type: object
+ * description: "The details to update of the line item."
  * properties:
  *   unit_price:
  *     description: The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.

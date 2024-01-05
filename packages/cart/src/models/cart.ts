@@ -2,12 +2,12 @@ import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   OnInit,
   OneToMany,
   OneToOne,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -30,7 +30,11 @@ export default class Cart {
   @Property({ columnType: "text", nullable: true })
   region_id?: string | null
 
-  @Property({ columnType: "text", nullable: true })
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_cart_customer_id",
+  })
   customer_id?: string | null
 
   @Property({ columnType: "text", nullable: true })
@@ -45,14 +49,16 @@ export default class Cart {
   @OneToOne({
     entity: () => Address,
     joinColumn: "shipping_address_id",
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
+    nullable: true,
   })
   shipping_address?: Address | null
 
   @OneToOne({
     entity: () => Address,
     joinColumn: "billing_address_id",
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
+    nullable: true,
   })
   billing_address?: Address | null
 

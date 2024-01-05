@@ -153,6 +153,10 @@ You can create a user by sending a request to the [Create User API Route](https:
         createUser.mutate({
           email: "user@example.com",
           password: "supersecret",
+        }, {
+          onSuccess: ({ user }) => {
+            console.log(user.id)
+          }
         })
       }
 
@@ -232,20 +236,30 @@ You can update a user’s details by sending a request to the [Update User API R
     ```tsx
     import { useAdminUpdateUser } from "medusa-react"
 
-    const UpdateUser = () => {
+    type Props = {
+      userId: string
+    }
+
+    const User = ({ userId }: Props) => {
       const updateUser = useAdminUpdateUser(userId)
       // ...
 
-      const handleUpdateUser = () => {
+      const handleUpdateUser = (
+        firstName: string
+      ) => {
         updateUser.mutate({
-          first_name: "Marcellus",
+          first_name: firstName,
+        }, {
+          onSuccess: ({ user }) => {
+            console.log(user.first_name)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateUser
+    export default User
     ```
 
   </TabItem>
@@ -311,18 +325,26 @@ You can delete a user by sending a request to the [Delete User API Route](https:
     ```tsx
     import { useAdminDeleteUser } from "medusa-react"
 
-    const DeleteUser = () => {
+    type Props = {
+      userId: string
+    }
+
+    const User = ({ userId }: Props) => {
       const deleteUser = useAdminDeleteUser(userId)
       // ...
 
       const handleDeleteUser = () => {
-        deleteUser.mutate()
+        deleteUser.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteUser
+    export default User
     ```
 
   </TabItem>

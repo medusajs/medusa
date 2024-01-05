@@ -475,10 +475,17 @@ To create a line item of a product and add it to a cart, you can use the followi
 
       const createLineItem = useCreateLineItem(cart_id)
 
-      const handleAddItem = () => {
+      const handleAddItem = (
+        variantId: string,
+        quantity: amount
+      ) => {
         createLineItem.mutate({
-          variant_id,
+          variant_id: variantId,
           quantity,
+        }, {
+          onSuccess: ({ cart }) => {
+            console.log(cart.items)
+          }
         })
       }
 
@@ -549,10 +556,17 @@ To update a line item's quantity in the cart, you can use the following code sni
 
       const updateLineItem = useUpdateLineItem(cart_id)
 
-      const handleUpdateItem = () => {
+      const handleUpdateItem = (
+        lineItemId: string,
+        quantity: number
+      ) => {
         updateLineItem.mutate({
-          lineId,
-          quantity: 3,
+          lineId: lineItemId,
+          quantity,
+        }, {
+          onSuccess: ({ cart }) => {
+            console.log(cart.items)
+          }
         })
       }
 
@@ -614,9 +628,15 @@ To delete a line item from the cart, you can use the following code snippet:
 
       const deleteLineItem = useDeleteLineItem(cart_id)
 
-      const handleDeleteItem = () => {
+      const handleDeleteItem = (
+        lineItemId: string
+      ) => {
         deleteLineItem.mutate({
-          lineId,
+          lineId: lineItemId,
+        }, {
+          onSuccess: ({ cart }) => {
+            console.log(cart.items)
+          }
         })
       }
 

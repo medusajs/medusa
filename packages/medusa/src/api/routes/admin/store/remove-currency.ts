@@ -30,6 +30,28 @@ import { EntityManager } from "typeorm"
  *       .then(({ store }) => {
  *         console.log(store.currencies);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteStoreCurrency } from "medusa-react"
+ *
+ *       const Store = () => {
+ *         const deleteCurrency = useAdminDeleteStoreCurrency()
+ *         // ...
+ *
+ *         const handleAdd = (code: string) => {
+ *           deleteCurrency.mutate(code, {
+ *             onSuccess: ({ store }) => {
+ *               console.log(store.currencies)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Store
  *   - lang: Shell
  *     label: cURL
  *     source: |

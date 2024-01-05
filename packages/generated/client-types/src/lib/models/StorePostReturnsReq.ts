@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the return to create.
+ */
 export interface StorePostReturnsReq {
   /**
    * The ID of the Order to create the return for.
