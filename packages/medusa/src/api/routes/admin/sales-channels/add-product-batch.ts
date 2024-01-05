@@ -1,10 +1,12 @@
 import { IsArray, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
-
 import { EntityManager } from "typeorm"
+import { Type } from "class-transformer"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { attachProductsToSalesChannelWorkflow } from "@medusajs/core-flows"
+
 import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
 import { SalesChannelService } from "../../../../services"
-import { Type } from "class-transformer"
 
 /**
  * @oas [post] /admin/sales-channels/{id}/products/batch
@@ -78,24 +80,45 @@ import { Type } from "class-transformer"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response): Promise<void> => {
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const validatedBody =
     req.validatedBody as AdminPostSalesChannelsChannelProductsBatchReq
 
   const { id } = req.params
 
-  const salesChannelService: SalesChannelService = req.scope.resolve(
-    "salesChannelService"
-  )
+  let salesChannel
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const salesChannel = await manager.transaction(async (transactionManager) => {
-    return await salesChannelService
-      .withTransaction(transactionManager)
-      .addProducts(
-        id,
-        validatedBody.product_ids.map((p) => p.id)
-      )
-  })
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
+  )
+
+  if (isMedusaV2FlagEnabled) {
+    const attachProductsWorkflow = attachProductsToSalesChannelWorkflow(
+      req.scope
+    )
+
+    await attachProductsWorkflow.run({
+      input: {
+        salesChannelId: id,
+        productIds: validatedBody.product_ids.map((p) => p.id),
+      },
+      context: { manager },
+    })
+  } else {
+    const salesChannelService: SalesChannelService = req.scope.resolve(
+      "salesChannelService"
+    )
+
+    salesChannel = await manager.transaction(async (transactionManager) => {
+      return await salesChannelService
+        .withTransaction(transactionManager)
+        .addProducts(
+          id,
+          validatedBody.product_ids.map((p) => p.id)
+        )
+    })
+  }
 
   res.status(200).json({ sales_channel: salesChannel })
 }
