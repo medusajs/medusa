@@ -5,10 +5,8 @@ const WEBHOOK_DELAY = process.env.STRIPE_WEBHOOK_DELAY ?? 5000 // 5s
 const WEBHOOK_RETRIES = process.env.STRIPE_WEBHOOK_RETRIES ?? 3
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  let event
-
   try {
-    event = constructWebhook({
+    const event = constructWebhook({
       signature: req.headers["stripe-signature"],
       body: req.body,
       container: req.scope,
