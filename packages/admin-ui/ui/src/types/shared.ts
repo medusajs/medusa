@@ -53,3 +53,8 @@ export interface DragItem {
 export type Subset<K> = {
   [attr in keyof K]?: K[attr] extends object ? Subset<K[attr]> : K[attr]
 }
+
+export type TranslationText = {
+  defaultText: string
+  translationKey: string
+}

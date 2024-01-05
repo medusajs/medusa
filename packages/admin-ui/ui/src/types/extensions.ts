@@ -1,6 +1,7 @@
 import type { ComponentType } from "react"
 import { forbiddenRoutes } from "../constants/forbidden-routes"
 import { injectionZones } from "../constants/injection-zones"
+import { TranslationText } from "./shared"
 
 // Constants
 
@@ -39,8 +40,8 @@ export interface GeneratedRouteConfig
 // Setting
 
 export type CardConfig = {
-  label: string
-  description: string
+  label: TranslationText
+  description: TranslationText
   icon?: ComponentType
 }
 
@@ -116,8 +117,8 @@ export type Link = {
 }
 
 export type Card = {
-  label: string
-  description: string
+  label: TranslationText
+  description: TranslationText
   icon?: ComponentType<any>
   path: string
 }
