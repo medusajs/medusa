@@ -5,7 +5,6 @@ import {
   Cascade,
   Collection,
   Entity,
-  Index,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -45,50 +44,50 @@ export default class LineItem {
   subtitle: string | null
 
   @Property({ columnType: "text", nullable: true })
-  thumbnail: string | null
+  thumbnail?: string | null
 
   @Property({ columnType: "text" })
   quantity: number
 
-  @Index({
-    name: "IDX_line_item_variant_id",
-    properties: ["variant_id"],
+  @Property({
+    columnType: "text",
+    nullable: true,
+    index: "IDX_line_item_variant_id",
   })
-  @Property({ columnType: "text", nullable: true })
-  variant_id: string | null
+  variant_id?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  product_id: string | null
+  product_id?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  product_title: string | null
+  product_title?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  product_description: string | null
+  product_description?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  product_subtitle: string | null
+  product_subtitle?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  product_type: string | null
+  product_type?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  product_collection: string | null
+  product_collection?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  product_handle: string | null
+  product_handle?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  variant_sku: string | null
+  variant_sku?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  variant_barcode: string | null
+  variant_barcode?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  variant_title: string | null
+  variant_title?: string | null
 
   @Property({ columnType: "jsonb", nullable: true })
-  variant_option_values: Record<string, unknown> | null
+  variant_option_values?: Record<string, unknown> | null
 
   @Property({ columnType: "boolean" })
   requires_shipping = true
