@@ -24,10 +24,11 @@ import Regions from "./regions"
 import ReturnReasons from "./return-reasons"
 import Taxes from "./taxes"
 import Users from "./users"
+import { TranslationText } from "../../types/shared"
 
 type SettingsCardType = {
-  heading: string
-  description: string
+  heading: TranslationText
+  description: TranslationText
   icon?: React.ComponentType
   to: string
   feature_flag?: string
@@ -35,58 +36,112 @@ type SettingsCardType = {
 
 const settings: SettingsCardType[] = [
   {
-    heading: "API Key Management",
-    description: "Create and manage API keys",
+    heading: {
+      defaultText: "API Key Management",
+      translationKey: "settings-api-key-management",
+    },
+    description: {
+      defaultText: "Create and manage API keys",
+      translationKey: "settings-api-key-management-description",
+    },
     icon: KeyIcon,
     to: "/a/publishable-api-keys",
     feature_flag: "publishable_api_keys",
   },
   {
-    heading: "Currencies",
-    description: "Manage the currencies of your store",
+    heading: {
+      defaultText: "Currencies",
+      translationKey: "settings-currencies",
+    },
+    description: {
+      defaultText: "Manage the currencies of your store",
+      translationKey: "settings-currencies-description",
+    },
     icon: CoinsIcon,
     to: "/a/settings/currencies",
   },
   {
-    heading: "Personal Information",
-    description: "Manage your Medusa profile",
+    heading: {
+      defaultText: "Personal Information",
+      translationKey: "settings-personal-information",
+    },
+    description: {
+      defaultText: "Manage your Medusa profile",
+      translationKey: "settings-personal-information-description",
+    },
     icon: HappyIcon,
     to: "/a/settings/personal-information",
   },
   {
-    heading: "Regions",
-    description: "Manage shipping, payment, and fulfillment across regions",
+    heading: {
+      defaultText: "Regions",
+      translationKey: "settings-regions",
+    },
+    description: {
+      defaultText: "Manage shipping, payment, and fulfillment across regions",
+      translationKey: "settings-regions-description",
+    },
     icon: MapPinIcon,
     to: "/a/settings/regions",
   },
   {
-    heading: "Return Reasons",
-    description: "Manage reasons for returned items",
+    heading: {
+      defaultText: "Return Reasons",
+      translationKey: "settings-return-reasons",
+    },
+    description: {
+      defaultText: "Manage reasons for returned items",
+      translationKey: "settings-return-reasons-description",
+    },
     icon: ArrowUTurnLeft,
     to: "/a/settings/return-reasons",
   },
   {
-    heading: "Sales Channels",
-    description: "Control which product are available in which channels",
+    heading: {
+      defaultText: "Sales Channels",
+      translationKey: "settings-sales-channels",
+    },
+    description: {
+      defaultText: "Control which product are available in which channels",
+      translationKey: "settings-sales-channels-description",
+    },
     icon: ChannelsIcon,
     feature_flag: "sales_channels",
     to: "/a/sales-channels",
   },
   {
-    heading: "Store Details",
-    description: "Manage your business details",
+    heading: {
+      defaultText: "Store Details",
+      translationKey: "settings-store-details",
+    },
+    description: {
+      defaultText: "Manage your business details",
+      translationKey: "settings-store-details-description",
+    },
     icon: CrosshairIcon,
     to: "/a/settings/details",
   },
   {
-    heading: "Taxes",
-    description: "Manage taxes across regions and products",
+    heading: {
+      defaultText: "Taxes",
+      translationKey: "settings-taxes",
+    },
+    description: {
+      defaultText: "Manage taxes across regions and products",
+      translationKey: "settings-taxes-description",
+    },
     icon: TaxesIcon,
     to: "/a/settings/taxes",
   },
   {
-    heading: "The Team",
-    description: "Manage users of your Medusa Store",
+    heading: {
+      defaultText: "The Team",
+      translationKey: "settings-the-team",
+    },
+    description: {
+      defaultText: "Manage users of your Medusa Store",
+      translationKey: "settings-the-team-description",
+    },
     icon: UsersIcon,
     to: "/a/settings/team",
   },
