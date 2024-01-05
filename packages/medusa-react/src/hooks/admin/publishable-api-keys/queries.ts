@@ -68,10 +68,6 @@ export const useAdminPublishableApiKey = (
    * The publishable API key's ID.
    */
   id: string,
-  /**
-   * @ignore
-   */
-  query?: GetPublishableApiKeysParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminPublishableApiKeysRes>,
     Error,
@@ -81,7 +77,7 @@ export const useAdminPublishableApiKey = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminPublishableApiKeysKeys.detail(id),
-    () => client.admin.publishableApiKeys.retrieve(id, query),
+    () => client.admin.publishableApiKeys.retrieve(id),
     options
   )
   return { ...data, ...rest } as const
