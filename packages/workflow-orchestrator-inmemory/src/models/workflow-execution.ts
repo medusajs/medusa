@@ -35,7 +35,7 @@ export default class WorkflowExecution {
   transaction_id: string
 
   @Property({ columnType: "jsonb", nullable: true })
-  definition: string
+  definition: Record<string, unknown> | null
 
   @Property({ columnType: "jsonb", nullable: true })
   context?: Record<string, unknown> | null

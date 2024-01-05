@@ -15,8 +15,8 @@ export interface WorkflowExecutionDTO {
 export interface UpsertWorkflowExecutionDTO {
   workflow_id: string
   transaction_id: string
-  definition: string
-  context: string
+  definition: Record<string, unknown>
+  context: Record<string, unknown>
   state: any
 }
 

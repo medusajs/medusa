@@ -38,11 +38,11 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
       {
         workflow_id: data.flow.modelId,
         transaction_id: data.flow.transactionId,
-        definition: JSON.stringify(data.flow.definition),
-        context: JSON.stringify({
+        definition: data.flow.definition,
+        context: {
           data: data.context,
           errors: data.errors,
-        }),
+        },
         state: data.flow.state,
       },
     ])
