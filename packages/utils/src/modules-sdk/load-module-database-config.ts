@@ -66,7 +66,7 @@ export function loadDatabaseConfig(
   "clientUrl" | "schema" | "driverOptions" | "debug"
 > {
   const clientUrl = getEnv("POSTGRES_URL", moduleName)
-  
+
   const database = {
     clientUrl,
     schema: getEnv("POSTGRES_SCHEMA", moduleName) ?? "public",
@@ -74,7 +74,7 @@ export function loadDatabaseConfig(
       getEnv("POSTGRES_DRIVER_OPTIONS", moduleName) ||
         JSON.stringify(getDefaultDriverOptions(clientUrl))
     ),
-    debug: process.env.NODE_ENV?.startsWith("dev") ?? false,
+    debug: false,
   }
 
   if (isModuleServiceInitializeOptions(options)) {
