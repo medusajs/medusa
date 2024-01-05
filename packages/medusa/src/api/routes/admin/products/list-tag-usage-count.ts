@@ -9,7 +9,7 @@ import { ProductService } from "../../../../services"
  * x-codegen:
  *   method: listTags
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -19,9 +19,10 @@ import { ProductService } from "../../../../services"
  *       .then(({ tags }) => {
  *         console.log(tags.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminProductTagUsage } from "medusa-react"
  *
  *       const ProductTags = (productId: string) => {

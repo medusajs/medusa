@@ -22,7 +22,7 @@ import { FindParams } from "../../../../types/common"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,9 +34,10 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminUpdateStockLocation } from "medusa-react"
  *
  *       type Props = {

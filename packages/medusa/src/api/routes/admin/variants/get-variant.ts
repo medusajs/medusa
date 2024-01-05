@@ -16,7 +16,7 @@ import { FindParams } from "../../../../types/common"
  *   method: retrieve
  *   queryParams: AdminGetVariantParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,9 +26,10 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ variant }) => {
  *         console.log(variant.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminVariant } from "medusa-react"
  *
  *       type Props = {

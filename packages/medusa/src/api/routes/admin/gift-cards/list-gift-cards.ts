@@ -20,7 +20,7 @@ import { isDefined } from "medusa-core-utils"
  *   method: list
  *   queryParams: AdminGetGiftCardsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,9 +30,10 @@ import { isDefined } from "medusa-core-utils"
  *       .then(({ gift_cards, limit, offset, count }) => {
  *         console.log(gift_cards.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { GiftCard } from "@medusajs/medusa"
  *       import { useAdminGiftCards } from "medusa-react"
  *

@@ -42,9 +42,10 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import {
  *         useAdminAddDiscountConditionResourceBatch
  *       } from "medusa-react"

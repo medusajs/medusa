@@ -104,7 +104,7 @@ import { Type } from "class-transformer"
  *   method: list
  *   queryParams: AdminGetCustomerGroupsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -114,9 +114,10 @@ import { Type } from "class-transformer"
  *       .then(({ customer_groups, limit, offset, count }) => {
  *         console.log(customer_groups.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCustomerGroups } from "medusa-react"
  *
  *       const CustomerGroups = () => {

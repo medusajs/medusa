@@ -139,7 +139,7 @@ import { listProducts } from "../../../../utils"
  *   method: listProducts
  *   queryParams: AdminGetPriceListsPriceListProductsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -149,9 +149,10 @@ import { listProducts } from "../../../../utils"
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminPriceListProducts } from "medusa-react"
  *
  *       type Props = {

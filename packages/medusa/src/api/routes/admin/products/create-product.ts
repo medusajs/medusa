@@ -62,7 +62,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -76,9 +76,10 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreateProduct } from "medusa-react"
  *
  *       type CreateProductData = {

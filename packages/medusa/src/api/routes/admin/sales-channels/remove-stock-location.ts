@@ -20,7 +20,7 @@ import { SalesChannelLocationService } from "../../../../services"
  * x-codegen:
  *   method: removeLocation
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -32,9 +32,10 @@ import { SalesChannelLocationService } from "../../../../services"
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import {
  *         useAdminRemoveLocationFromSalesChannel
  *       } from "medusa-react"

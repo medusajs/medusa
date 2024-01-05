@@ -21,7 +21,7 @@ import { defaultAdminProductRemoteQueryObject } from "./index"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -31,9 +31,10 @@ import { defaultAdminProductRemoteQueryObject } from "./index"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminProduct } from "medusa-react"
  *
  *       type Props = {

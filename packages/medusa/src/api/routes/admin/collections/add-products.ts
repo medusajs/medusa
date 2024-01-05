@@ -21,7 +21,7 @@ import { defaultAdminCollectionsRelations } from "./index"
  * x-codegen:
  *   method: addProducts
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,9 +36,10 @@ import { defaultAdminCollectionsRelations } from "./index"
  *       .then(({ collection }) => {
  *         console.log(collection.products)
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminAddProductsToCollection } from "medusa-react"
  *
  *       type Props = {

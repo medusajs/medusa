@@ -12,7 +12,7 @@ import { IsString } from "class-validator"
  *       schema:
  *         $ref: "#/components/schemas/AdminDeleteUploadsReq"
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -24,9 +24,10 @@ import { IsString } from "class-validator"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminDeleteFile } from "medusa-react"
  *
  *       const Image = () => {

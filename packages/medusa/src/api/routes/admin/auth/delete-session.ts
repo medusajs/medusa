@@ -8,16 +8,17 @@
  * x-codegen:
  *   method: deleteSession
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in
  *       medusa.admin.auth.deleteSession()
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminDeleteSession } from "medusa-react"
  *
  *       const Logout = () => {

@@ -44,7 +44,7 @@ import { promiseAll } from "@medusajs/utils"
  *   method: createFulfillment
  *   params: AdminPostOrdersOrderFulfillmentsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -61,9 +61,10 @@ import { promiseAll } from "@medusajs/utils"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreateFulfillment } from "medusa-react"
  *
  *       type Props = {

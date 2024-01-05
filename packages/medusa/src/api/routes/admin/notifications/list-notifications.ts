@@ -31,7 +31,7 @@ import { validator } from "../../../../utils/validator"
  *   method: list
  *   queryParams: AdminGetNotificationsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -41,9 +41,10 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ notifications }) => {
  *         console.log(notifications.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminNotifications } from "medusa-react"
  *
  *       const Notifications = () => {

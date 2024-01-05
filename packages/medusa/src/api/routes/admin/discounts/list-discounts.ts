@@ -53,9 +53,10 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       .then(({ discounts, limit, offset, count }) => {
  *         console.log(discounts.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminDiscounts } from "medusa-react"
  *
  *       const Discounts = () => {

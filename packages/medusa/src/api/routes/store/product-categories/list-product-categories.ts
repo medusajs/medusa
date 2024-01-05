@@ -30,7 +30,7 @@ import { defaultStoreCategoryScope } from "."
  *   method: list
  *   queryParams: StoreGetProductCategoriesParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -39,9 +39,10 @@ import { defaultStoreCategoryScope } from "."
  *       .then(({ product_categories, limit, offset, count }) => {
  *         console.log(product_categories.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useProductCategories } from "medusa-react"
  *
  *       function Categories() {

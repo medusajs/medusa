@@ -23,7 +23,7 @@ import {
  * x-codegen:
  *   method: addLocation
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -35,9 +35,10 @@ import {
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import {
  *         useAdminAddLocationToSalesChannel
  *       } from "medusa-react"

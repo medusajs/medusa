@@ -144,7 +144,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *   method: listOrders
  *   queryParams: StoreGetCustomersCustomerOrdersParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -154,9 +154,10 @@ import { DateComparisonOperator } from "../../../../types/common"
  *       .then(({ orders, limit, offset, count }) => {
  *         console.log(orders);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useCustomerOrders } from "medusa-react"
  *
  *       const Orders = () => {

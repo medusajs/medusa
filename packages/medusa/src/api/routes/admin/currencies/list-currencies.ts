@@ -27,7 +27,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   method: list
  *   queryParams: AdminGetCurrenciesParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -37,9 +37,10 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       .then(({ currencies, count, offset, limit }) => {
  *         console.log(currencies.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCurrencies } from "medusa-react"
  *
  *       const Currencies = () => {

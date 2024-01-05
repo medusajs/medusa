@@ -93,7 +93,7 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *   method: list
  *   queryParams: AdminGetStockLocationsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -103,9 +103,10 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *       .then(({ stock_locations, limit, offset, count }) => {
  *         console.log(stock_locations.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminStockLocations } from "medusa-react"
  *
  *       function StockLocations() {

@@ -9299,7 +9299,7 @@ __metadata:
     openapi-sampler: ^1.3.1
     openapi-types: ^12.1.3
     postcss: 8.4.27
-    prism-react-renderer: ^2.3.0
+    prism-react-renderer: 2.3.1
     react: latest
     react-dom: latest
     react-instantsearch: ^7.0.1
@@ -11799,7 +11799,7 @@ __metadata:
     cpy-cli: ^5.0.0
     eslint-config-docs: "*"
     next: latest
-    prism-react-renderer: ^2.3.0
+    prism-react-renderer: 2.3.1
     react: ^18.2.0
     react-dom: ^18.2.0
     react-google-recaptcha: ^3.1.0
@@ -19442,6 +19442,18 @@ __metadata:
   version: 1.1.0
   resolution: "pretty-time@npm:1.1.0"
   checksum: ba9d7af19cd43838fb2b147654990949575e400dc2cc24bf71ec4a6c4033a38ba8172b1014b597680c6d4d3c075e94648b2c13a7206c5f0c90b711c7388726f3
+  languageName: node
+  linkType: hard
+
+"prism-react-renderer@npm:2.3.1":
+  version: 2.3.1
+  resolution: "prism-react-renderer@npm:2.3.1"
+  dependencies:
+    "@types/prismjs": ^1.26.0
+    clsx: ^2.0.0
+  peerDependencies:
+    react: ">=16.0.0"
+  checksum: 566932127ca18049a651aa038a8f8c7c1ca15950d21b659c2ce71fd95bd03bef2b5d40c489e7aa3453eaf15d984deef542a609d7842e423e6a13427dd90bd371
   languageName: node
   linkType: hard
 

@@ -46,7 +46,7 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  * x-codegen:
  *   method: createVariant
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -71,9 +71,10 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreateVariant } from "medusa-react"
  *
  *       type CreateVariantData = {

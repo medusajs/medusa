@@ -12,7 +12,7 @@ import { FindParams } from "../../../../types/common"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,9 +22,10 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminRegion } from "medusa-react"
  *
  *       type Props = {

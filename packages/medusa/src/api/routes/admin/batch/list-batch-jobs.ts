@@ -214,7 +214,7 @@ import { isDefined } from "medusa-core-utils"
  *   method: list
  *   queryParams: AdminGetBatchParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -224,9 +224,10 @@ import { isDefined } from "medusa-core-utils"
  *       .then(({ batch_jobs, limit, offset, count }) => {
  *         console.log(batch_jobs.length)
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminBatchJobs } from "medusa-react"
  *
  *       const BatchJobs = () => {

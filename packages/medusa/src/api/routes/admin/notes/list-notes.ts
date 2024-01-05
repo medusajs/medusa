@@ -19,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  *   method: list
  *   queryParams: AdminGetNotesParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -29,9 +29,10 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ notes, limit, offset, count }) => {
  *         console.log(notes.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminNotes } from "medusa-react"
  *
  *       const Notes = () => {

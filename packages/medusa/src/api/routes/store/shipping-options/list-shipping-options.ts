@@ -14,7 +14,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  * x-codegen:
  *   method: listCartOptions
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -23,9 +23,10 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useCartShippingOptions } from "medusa-react"
  *
  *       type Props = {

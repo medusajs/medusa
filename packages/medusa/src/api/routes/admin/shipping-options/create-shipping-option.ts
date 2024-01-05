@@ -33,7 +33,7 @@ import { CreateShippingOptionInput } from "../../../../types/shipping-options"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -50,9 +50,10 @@ import { CreateShippingOptionInput } from "../../../../types/shipping-options"
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreateShippingOption } from "medusa-react"
  *
  *       type CreateShippingOption = {

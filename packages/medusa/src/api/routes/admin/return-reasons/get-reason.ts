@@ -16,7 +16,7 @@ import { ReturnReasonService } from "../../../../services"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,9 +26,10 @@ import { ReturnReasonService } from "../../../../services"
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminReturnReason } from "medusa-react"
  *
  *       type Props = {

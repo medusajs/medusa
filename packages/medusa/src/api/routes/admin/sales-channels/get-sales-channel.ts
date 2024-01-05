@@ -13,7 +13,7 @@ import { SalesChannelService } from "../../../../services"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -23,9 +23,10 @@ import { SalesChannelService } from "../../../../services"
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminSalesChannel } from "medusa-react"
  *
  *       type Props = {

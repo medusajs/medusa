@@ -27,7 +27,7 @@ import { getPriceListPricingModule } from "./modules-queries"
  * x-codegen:
  *   method: addPrices
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -45,9 +45,10 @@ import { getPriceListPricingModule } from "./modules-queries"
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreatePriceListPrices } from "medusa-react"
  *
  *       type PriceData = {

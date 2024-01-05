@@ -17,7 +17,7 @@ import { joinLevels } from "./utils/join-levels"
  *   method: retrieve
  *   queryParams: AdminGetInventoryItemsItemParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,9 +27,10 @@ import { joinLevels } from "./utils/join-levels"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminInventoryItem } from "medusa-react"
  *
  *       type Props = {

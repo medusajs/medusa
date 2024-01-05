@@ -26,7 +26,7 @@ import { FindParams } from "../../../../types/common"
  *   method: updateCondition
  *   queryParams: AdminPostDiscountsDiscountConditionsConditionParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -40,9 +40,10 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminDiscountUpdateCondition } from "medusa-react"
  *
  *       type Props = {

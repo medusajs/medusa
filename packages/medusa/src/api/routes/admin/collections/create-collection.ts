@@ -18,7 +18,7 @@ import { defaultAdminCollectionsRelations } from "."
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,9 +30,10 @@ import { defaultAdminCollectionsRelations } from "."
  *       .then(({ collection }) => {
  *         console.log(collection.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreateCollection } from "medusa-react"
  *
  *       const CreateCollection = () => {

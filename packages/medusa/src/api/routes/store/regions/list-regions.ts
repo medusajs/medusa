@@ -67,7 +67,7 @@ import {
  *   method: list
  *   queryParams: StoreGetRegionsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -76,9 +76,10 @@ import {
  *       .then(({ regions, count, limit, offset }) => {
  *         console.log(regions.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useRegions } from "medusa-react"
  *
  *       const Regions = () => {

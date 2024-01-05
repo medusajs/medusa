@@ -20,7 +20,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   method: list
  *   queryParams: GetPublishableApiKeysParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,9 +30,10 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       .then(({ publishable_api_keys, count, limit, offset }) => {
  *         console.log(publishable_api_keys)
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { PublishableApiKey } from "@medusajs/medusa"
  *       import { useAdminPublishableApiKeys } from "medusa-react"
  *

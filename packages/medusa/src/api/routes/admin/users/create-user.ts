@@ -20,7 +20,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: create
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,9 +33,10 @@ import { EntityManager } from "typeorm"
  *       .then(({ user }) => {
  *         console.log(user.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreateUser } from "medusa-react"
  *
  *       const CreateUser = () => {

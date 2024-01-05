@@ -9,7 +9,7 @@ import { PaymentProviderService } from "../../../../services"
  * x-codegen:
  *   method: listPaymentProviders
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -19,9 +19,10 @@ import { PaymentProviderService } from "../../../../services"
  *       .then(({ payment_providers }) => {
  *         console.log(payment_providers.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminStorePaymentProviders } from "medusa-react"
  *
  *       const PaymentProviders = () => {

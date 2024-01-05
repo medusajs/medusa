@@ -13,7 +13,7 @@ import { Logger } from "@medusajs/types"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,9 +22,10 @@ import { Logger } from "@medusajs/types"
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useGiftCard } from "medusa-react"
  *
  *       type Props = {

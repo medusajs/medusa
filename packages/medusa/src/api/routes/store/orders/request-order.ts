@@ -25,7 +25,7 @@ import { TokenEvents } from "../../../../types/token"
  * x-codegen:
  *   method: requestCustomerOrders
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -40,9 +40,10 @@ import { TokenEvents } from "../../../../types/token"
  *       .catch(() => {
  *         // an error occurred
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useRequestOrderAccess } from "medusa-react"
  *
  *       const ClaimOrder = () => {

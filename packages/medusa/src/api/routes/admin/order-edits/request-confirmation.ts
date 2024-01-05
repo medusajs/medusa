@@ -23,7 +23,7 @@ import {
  * x-codegen:
  *   method: requestConfirmation
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -33,9 +33,10 @@ import {
  *       .then({ order_edit }) => {
  *         console.log(order_edit.id)
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import {
  *         useAdminRequestOrderEditConfirmation,
  *       } from "medusa-react"

@@ -12,7 +12,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: cancel
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,9 +22,10 @@ import { EntityManager } from "typeorm"
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCancelBatchJob } from "medusa-react"
  *
  *       type Props = {

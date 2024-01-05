@@ -28,7 +28,7 @@ import { defaultRelations } from "."
  * x-codegen:
  *   method: receive
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -45,9 +45,10 @@ import { defaultRelations } from "."
  *       .then((data) => {
  *         console.log(data.return.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminReceiveReturn } from "medusa-react"
  *
  *       type ReceiveReturnData = {

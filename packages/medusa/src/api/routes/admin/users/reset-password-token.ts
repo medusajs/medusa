@@ -21,7 +21,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: sendResetPasswordToken
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,9 +36,10 @@ import { EntityManager } from "typeorm"
  *       .catch(() => {
  *         // error occurred
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminSendResetPasswordToken } from "medusa-react"
  *
  *       const Login = () => {

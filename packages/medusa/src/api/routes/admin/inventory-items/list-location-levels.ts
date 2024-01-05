@@ -28,7 +28,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   method: listLocationLevels
  *   queryParams: AdminGetInventoryItemsItemLocationLevelsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -38,9 +38,10 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.location_levels);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import {
  *         useAdminInventoryItemLocationLevels,
  *       } from "medusa-react"

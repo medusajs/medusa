@@ -67,7 +67,7 @@ import { Transform } from "class-transformer"
  *   method: list
  *   queryParams: AdminGetInventoryItemsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -77,9 +77,10 @@ import { Transform } from "class-transformer"
  *       .then(({ inventory_items, count, offset, limit }) => {
  *         console.log(inventory_items.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminInventoryItems } from "medusa-react"
  *
  *       function InventoryItems() {

@@ -59,9 +59,10 @@ import { PaymentCollectionService } from "../../../../services"
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useManageMultiplePaymentSessions } from "medusa-react"
  *
  *       type Props = {

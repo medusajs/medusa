@@ -69,7 +69,7 @@ import { Type } from "class-transformer"
  *   method: list
  *   queryParams: StoreGetCollectionsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -78,9 +78,10 @@ import { Type } from "class-transformer"
  *       .then(({ collections, limit, offset, count }) => {
  *         console.log(collections.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useCollections } from "medusa-react"
  *
  *       const ProductCollections = () => {

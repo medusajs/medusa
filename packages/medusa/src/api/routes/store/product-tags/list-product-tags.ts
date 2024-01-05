@@ -87,7 +87,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *            description: filter by dates greater than or equal to this date
  *            format: date
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -96,9 +96,10 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useProductTags } from "medusa-react"
  *
  *       function Tags() {

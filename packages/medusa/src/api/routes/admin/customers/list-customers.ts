@@ -28,7 +28,7 @@ import customerController from "../../../../controllers/customers"
  *   method: list
  *   queryParams: AdminGetCustomersParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -38,9 +38,10 @@ import customerController from "../../../../controllers/customers"
  *       .then(({ customers, limit, offset, count }) => {
  *         console.log(customers.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCustomers } from "medusa-react"
  *
  *       const Customers = () => {

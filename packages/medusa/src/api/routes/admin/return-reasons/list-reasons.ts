@@ -15,7 +15,7 @@ import { Selector } from "../../../../types/common"
  * x-codegen:
  *   method: list
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -25,9 +25,10 @@ import { Selector } from "../../../../types/common"
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminReturnReasons } from "medusa-react"
  *
  *       const ReturnReasons = () => {

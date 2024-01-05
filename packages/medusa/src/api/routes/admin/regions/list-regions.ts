@@ -100,7 +100,7 @@ import {
  *   method: list
  *   queryParams: AdminGetRegionsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -110,9 +110,10 @@ import {
  *       .then(({ regions, limit, offset, count }) => {
  *         console.log(regions.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminRegions } from "medusa-react"
  *
  *       const Regions = () => {

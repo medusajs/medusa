@@ -12,7 +12,7 @@ import InviteService from "../../../../services/invite"
  * x-codegen:
  *   method: delete
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,9 +22,10 @@ import InviteService from "../../../../services/invite"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminDeleteInvite } from "medusa-react"
  *
  *       type Props = {

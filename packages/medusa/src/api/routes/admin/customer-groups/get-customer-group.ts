@@ -17,7 +17,7 @@ import { FindParams } from "../../../../types/common"
  *   method: retrieve
  *   queryParams: AdminGetCustomerGroupsGroupParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,9 +27,10 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCustomerGroup } from "medusa-react"
  *
  *       type Props = {

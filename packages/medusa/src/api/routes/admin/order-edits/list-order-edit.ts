@@ -20,7 +20,7 @@ import { IsOptional, IsString } from "class-validator"
  *   method: list
  *   queryParams: GetOrderEditsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,9 +30,10 @@ import { IsOptional, IsString } from "class-validator"
  *       .then(({ order_edits, count, limit, offset }) => {
  *         console.log(order_edits.length)
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminOrderEdits } from "medusa-react"
  *
  *       const OrderEdits = () => {

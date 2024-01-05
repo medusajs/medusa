@@ -22,7 +22,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: update
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -34,9 +34,10 @@ import { EntityManager } from "typeorm"
  *       .then(({ currency }) => {
  *         console.log(currency.code);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminUpdateCurrency } from "medusa-react"
  *
  *       type Props = {

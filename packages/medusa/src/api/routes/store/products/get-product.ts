@@ -46,7 +46,7 @@ import { defaultStoreProductRemoteQueryObject } from "./index"
  *   method: retrieve
  *   queryParams: StoreGetProductsProductParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -55,9 +55,10 @@ import { defaultStoreProductRemoteQueryObject } from "./index"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useProduct } from "medusa-react"
  *
  *       type Props = {

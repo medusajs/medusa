@@ -13,7 +13,7 @@ import { SwapService } from "../../../../services"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -23,9 +23,10 @@ import { SwapService } from "../../../../services"
  *       .then(({ swap }) => {
  *         console.log(swap.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminSwap } from "medusa-react"
  *
  *       type Props = {

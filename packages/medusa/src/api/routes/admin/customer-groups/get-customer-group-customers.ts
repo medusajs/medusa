@@ -20,7 +20,7 @@ import { Type } from "class-transformer"
  *   method: listCustomers
  *   queryParams: AdminGetGroupsGroupCustomersParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -30,9 +30,10 @@ import { Type } from "class-transformer"
  *       .then(({ customers }) => {
  *         console.log(customers.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCustomerGroupCustomers } from "medusa-react"
  *
  *       type Props = {

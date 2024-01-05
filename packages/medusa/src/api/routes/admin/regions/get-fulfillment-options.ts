@@ -13,7 +13,7 @@ import RegionService from "../../../../services/region"
  * x-codegen:
  *   method: retrieveFulfillmentOptions
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -23,9 +23,10 @@ import RegionService from "../../../../services/region"
  *       .then(({ fulfillment_options }) => {
  *         console.log(fulfillment_options.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminRegionFulfillmentOptions } from "medusa-react"
  *
  *       type Props = {

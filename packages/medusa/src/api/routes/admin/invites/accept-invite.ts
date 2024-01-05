@@ -24,7 +24,7 @@ import { EntityManager } from "typeorm"
  * x-codegen:
  *   method: accept
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -44,9 +44,10 @@ import { EntityManager } from "typeorm"
  *       .catch(() => {
  *         // an error occurred
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminAcceptInvite } from "medusa-react"
  *
  *       const AcceptInvite = () => {

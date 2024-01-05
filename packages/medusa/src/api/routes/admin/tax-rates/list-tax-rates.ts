@@ -75,7 +75,7 @@ import { validator } from "../../../../utils/validator"
  *   method: list
  *   queryParams: AdminGetTaxRatesParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -85,9 +85,10 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ tax_rates, limit, offset, count }) => {
  *         console.log(tax_rates.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminTaxRates } from "medusa-react"
  *
  *       const TaxRates = () => {

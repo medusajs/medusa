@@ -189,7 +189,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *   method: list
  *   queryParams: AdminGetProductsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -199,9 +199,10 @@ import { FilterableProductProps } from "../../../../types/product"
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminProducts } from "medusa-react"
  *
  *       const Products = () => {

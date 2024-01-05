@@ -11,7 +11,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -21,9 +21,10 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminGiftCard } from "medusa-react"
  *
  *       type Props = {

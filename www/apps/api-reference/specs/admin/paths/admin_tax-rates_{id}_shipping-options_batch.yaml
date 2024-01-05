@@ -45,6 +45,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_tax-rates_{id}_shipping-options_batch/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_tax-rates_{id}_shipping-options_batch/postundefined
     - lang: Shell
       label: cURL
       source:
@@ -125,6 +130,11 @@ delete:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_tax-rates_{id}_shipping-options_batch/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_tax-rates_{id}_shipping-options_batch/deleteundefined
     - lang: Shell
       label: cURL
       source:

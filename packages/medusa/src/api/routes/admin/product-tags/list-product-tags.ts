@@ -87,7 +87,7 @@ import { Request, Response } from "express"
  *   method: list
  *   queryParams: AdminGetProductTagsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -97,9 +97,10 @@ import { Request, Response } from "express"
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminProductTags } from "medusa-react"
  *
  *       function ProductTags() {

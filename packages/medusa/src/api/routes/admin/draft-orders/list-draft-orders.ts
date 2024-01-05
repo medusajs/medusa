@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *   method: list
  *   queryParams: AdminGetDraftOrdersParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -35,9 +35,10 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ draft_orders, limit, offset, count }) => {
  *         console.log(draft_orders.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminDraftOrders } from "medusa-react"
  *
  *       const DraftOrders = () => {

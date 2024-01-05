@@ -10,7 +10,7 @@ import { MedusaError } from "@medusajs/utils"
  * parameters:
  *   - (path) id=* {string} The ID of the reservation.
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -20,9 +20,10 @@ import { MedusaError } from "@medusajs/utils"
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminReservation } from "medusa-react"
  *
  *       type Props = {

@@ -24,7 +24,7 @@ import { IInventoryService } from "@medusajs/types"
  *   method: update
  *   queryParams: AdminPostInventoryItemsInventoryItemParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -36,9 +36,10 @@ import { IInventoryService } from "@medusajs/types"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminUpdateInventoryItem } from "medusa-react"
  *
  *       type Props = {

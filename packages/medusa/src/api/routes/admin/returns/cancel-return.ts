@@ -12,7 +12,7 @@ import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
  * x-codegen:
  *   method: cancel
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,9 +22,10 @@ import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
  *       .then(({ order }) => {
  *         console.log(order.id)
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCancelReturn } from "medusa-react"
  *
  *       type Props = {

@@ -13,7 +13,7 @@ import { PaymentCollectionService } from "../../../../services"
  * x-codegen:
  *   method: refreshPaymentSession
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -22,9 +22,10 @@ import { PaymentCollectionService } from "../../../../services"
  *       .then(({ payment_session }) => {
  *         console.log(payment_session.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { usePaymentCollectionRefreshPaymentSession } from "medusa-react"
  *
  *       type Props = {

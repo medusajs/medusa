@@ -9,7 +9,7 @@ import { TaxProviderService } from "../../../../services"
  * x-codegen:
  *   method: listTaxProviders
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -19,9 +19,10 @@ import { TaxProviderService } from "../../../../services"
  *       .then(({ tax_providers }) => {
  *         console.log(tax_providers.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminStoreTaxProviders } from "medusa-react"
  *
  *       const TaxProviders = () => {

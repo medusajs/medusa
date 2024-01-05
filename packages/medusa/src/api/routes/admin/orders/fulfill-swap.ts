@@ -35,7 +35,7 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *   method: fulfillSwap
  *   params: AdminPostOrdersOrderSwapsSwapFulfillmentsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -47,9 +47,10 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminFulfillSwap } from "medusa-react"
  *
  *       type Props = {

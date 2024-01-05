@@ -16,7 +16,7 @@ import { WorkflowTypes } from "@medusajs/types"
  * x-codegen:
  *   method: deleteVariantPrices
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -26,9 +26,10 @@ import { WorkflowTypes } from "@medusajs/types"
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import {
  *         useAdminDeletePriceListVariantPrices
  *       } from "medusa-react"

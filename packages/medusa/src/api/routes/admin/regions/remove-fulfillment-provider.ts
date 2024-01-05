@@ -15,7 +15,7 @@ import RegionService from "../../../../services/region"
  * x-codegen:
  *   method: deleteFulfillmentProvider
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -25,9 +25,10 @@ import RegionService from "../../../../services/region"
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import {
  *         useAdminRegionDeleteFulfillmentProvider
  *       } from "medusa-react"

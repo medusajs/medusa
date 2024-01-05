@@ -32,7 +32,7 @@ import { validator } from "../../../../utils/validator"
  *   method: list
  *   queryParams: AdminGetShippingOptionsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -42,9 +42,10 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ shipping_options, count }) => {
  *         console.log(shipping_options.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminShippingOptions } from "medusa-react"
  *
  *       const ShippingOptions = () => {

@@ -28,7 +28,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   method: createClaimShipment
  *   params: AdminPostOrdersOrderClaimsClaimShipmentsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -40,9 +40,10 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreateClaimShipment } from "medusa-react"
  *
  *       type Props = {

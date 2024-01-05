@@ -17,7 +17,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   method: listSalesChannels
  *   queryParams: GetPublishableApiKeySalesChannelsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -27,9 +27,10 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *       .then(({ sales_channels }) => {
  *         console.log(sales_channels.length)
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import {
  *         useAdminPublishableApiKeySalesChannels,
  *       } from "medusa-react"

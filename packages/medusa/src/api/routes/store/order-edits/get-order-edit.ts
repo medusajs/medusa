@@ -11,7 +11,7 @@ import { OrderEditService } from "../../../../services"
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -20,9 +20,10 @@ import { OrderEditService } from "../../../../services"
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useOrderEdit } from "medusa-react"
  *
  *       type Props = {

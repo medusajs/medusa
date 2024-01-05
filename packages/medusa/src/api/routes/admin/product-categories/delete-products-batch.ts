@@ -27,7 +27,7 @@ import { FindParams } from "../../../../types/common"
  *   method: removeProducts
  *   queryParams: AdminDeleteProductCategoriesCategoryProductsBatchParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -43,9 +43,10 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminDeleteProductsFromCategory } from "medusa-react"
  *
  *       type ProductsData = {

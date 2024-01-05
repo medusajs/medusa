@@ -116,7 +116,7 @@ import { omit } from "lodash"
  *   method: list
  *   queryParams: AdminGetVariantsParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -126,9 +126,10 @@ import { omit } from "lodash"
  *       .then(({ variants, limit, offset, count }) => {
  *         console.log(variants.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminVariants } from "medusa-react"
  *
  *       const Variants = () => {

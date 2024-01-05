@@ -42,7 +42,7 @@ import { validator } from "../../../../utils/validator"
  *   method: create
  *   queryParams: AdminPostTaxRatesParams
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -56,9 +56,10 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminCreateTaxRate } from "medusa-react"
  *
  *       type Props = {

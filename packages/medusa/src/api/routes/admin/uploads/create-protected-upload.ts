@@ -18,7 +18,7 @@ import { IFileService } from "../../../../interfaces"
  *             type: string
  *             format: binary
  * x-codeSamples:
- *   - lang: TypeScript
+ *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
@@ -28,9 +28,10 @@ import { IFileService } from "../../../../interfaces"
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
  *       })
- *   - lang: TypeScript
+ *   - lang: tsx
  *     label: Medusa React
  *     source: |
+ *       import React from "react"
  *       import { useAdminUploadProtectedFile } from "medusa-react"
  *
  *       const UploadFile = () => {
