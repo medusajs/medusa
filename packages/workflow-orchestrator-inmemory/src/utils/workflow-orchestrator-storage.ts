@@ -2,13 +2,13 @@ import {
   DistributedTransaction,
   DistributedTransactionStorage,
   TransactionCheckpoint,
-  TransactionModelOptions,
   TransactionStep,
 } from "@medusajs/orchestration"
 import {
   WorkflowExecutionService,
   WorkflowOrchestratorService,
 } from "@services"
+import { TransactionState } from "@medusajs/utils"
 
 // eslint-disable-next-line max-len
 export class InMemoryDistributedTransactionStorage extends DistributedTransactionStorage {
@@ -63,29 +63,35 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
   ): Promise<void> {
     this.storage.set(key, data)
 
-    if (data.flow.options?.retentionTime == undefined) {
-      return
+    let retentionTime
+
+    /**
+     * Store the rentention time only if the transaction is done, failed or reverted.
+     * From that moment, this tuple can be later on archived or deleted after the retention time.
+     */
+    const finalStatus = [
+      TransactionState.DONE,
+      TransactionState.FAILED,
+      TransactionState.REVERTED,
+    ]
+    const isFinalStatus = finalStatus.includes(data.flow.state)
+
+    if (isFinalStatus) {
+      retentionTime = data.flow.options?.retentionTime
+      Object.assign(data, {
+        retention_time: retentionTime,
+      })
     }
 
     await this.saveToDb(data)
+
+    if (isFinalStatus) {
+      this.storage.delete(key)
+    }
   }
 
   async delete(key: string): Promise<void> {
     this.storage.delete(key)
-  }
-
-  async archive(
-    key: string,
-    data: TransactionCheckpoint,
-    options?: TransactionModelOptions
-  ): Promise<void> {
-    this.storage.delete(key)
-
-    if (options?.retentionTime == undefined) {
-      return
-    }
-
-    await this.saveToDb(data)
   }
 
   async scheduleRetry(

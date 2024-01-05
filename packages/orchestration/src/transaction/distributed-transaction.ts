@@ -240,24 +240,6 @@ export class DistributedTransaction extends EventEmitter {
     await DistributedTransaction.keyValueStore.delete(key)
   }
 
-  public async archiveCheckpoint(): Promise<void> {
-    const options = this.getFlow().options
-
-    const key = TransactionOrchestrator.getKeyName(
-      DistributedTransaction.keyPrefix,
-      this.modelId,
-      this.transactionId
-    )
-
-    const data = new TransactionCheckpoint(
-      this.getFlow(),
-      this.getContext(),
-      this.getErrors()
-    )
-
-    await DistributedTransaction.keyValueStore.archive(key, data, options)
-  }
-
   public async scheduleRetry(
     step: TransactionStep,
     interval: number
