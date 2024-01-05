@@ -24,6 +24,7 @@ type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
  * To list product categories:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProductCategories } from "medusa-react"
  * 
  * function Categories() {
@@ -57,6 +58,7 @@ type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
  * To specify relations that should be retrieved within the product category:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProductCategories } from "medusa-react"
  * 
  * function Categories() {
@@ -92,6 +94,7 @@ type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
  * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProductCategories } from "medusa-react"
  * 
  * function Categories() {
@@ -158,6 +161,7 @@ export const useAdminProductCategories = (
  * A simple example that retrieves an order by its ID:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProductCategory } from "medusa-react"
  * 
  * type Props = {
@@ -189,6 +193,7 @@ export const useAdminProductCategories = (
  * To specify relations that should be retrieved:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProductCategory } from "medusa-react"
  * 
  * type Props = {

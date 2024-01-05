@@ -21,6 +21,7 @@ import { adminReservationsKeys } from "./queries"
  * This hook creates a reservation which can be associated with any resource, such as an order's line item.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateReservation } from "medusa-react"
  * 
  * const CreateReservation = () => {
@@ -76,6 +77,7 @@ export const useAdminCreateReservation = (
  * This hook updates a reservation's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateReservation } from "medusa-react"
  * 
  * type Props = {
@@ -138,6 +140,7 @@ export const useAdminUpdateReservation = (
  * This hook deletes a reservation. Associated resources, such as the line item, will not be deleted.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteReservation } from "medusa-react"
  * 
  * type Props = {

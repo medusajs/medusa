@@ -23,6 +23,7 @@ import { adminOrderKeys } from "./queries"
  * This hook updates an order's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateOrder } from "medusa-react"
  * 
  * type Props = {
@@ -84,6 +85,7 @@ export const useAdminUpdateOrder = (
  * and it may fail if the payment or fulfillment Provider is unable to cancel the payment/fulfillment.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCancelOrder } from "medusa-react"
  * 
  * type Props = {
@@ -136,6 +138,7 @@ export const useAdminCancelOrder = (
  * This hook completes an order and change its status. A canceled order can't be completed.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCompleteOrder } from "medusa-react"
  * 
  * type Props = {
@@ -188,6 +191,7 @@ export const useAdminCompleteOrder = (
  * This hook captures all the payments associated with an order. The payment of canceled orders can't be captured.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCapturePayment } from "medusa-react"
  * 
  * type Props = {
@@ -240,6 +244,7 @@ export const useAdminCapturePayment = (
  * This hook refunds an amount for an order. The amount must be less than or equal the `refundable_amount` of the order.
  * 
  * @example
+ * import React from "react"
  * import { useAdminRefundPayment } from "medusa-react"
  * 
  * type Props = {
@@ -305,6 +310,7 @@ export const useAdminRefundPayment = (
  * whether all the items were fulfilled.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateFulfillment } from "medusa-react"
  * 
  * type Props = {
@@ -379,6 +385,7 @@ export const useAdminCreateFulfillment = (
  * @typeParamDefinition string - The fulfillment's ID.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCancelFulfillment } from "medusa-react"
  * 
  * type Props = {
@@ -435,6 +442,7 @@ export const useAdminCancelFulfillment = (
  * `partially_shipped` or `shipped`, depending on whether all the items were shipped.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateShipment } from "medusa-react"
  * 
  * type Props = {
@@ -492,6 +500,7 @@ export const useAdminCreateShipment = (
  * This hook requests and create a return for items in an order. If the return shipping method is specified, it will be automatically fulfilled.
  * 
  * @example
+ * import React from "react"
  * import { useAdminRequestReturn } from "medusa-react"
  * 
  * type Props = {
@@ -555,6 +564,7 @@ export const useAdminRequestReturn = (
  * This hook adds a shipping method to an order. If another shipping method exists with the same shipping profile, the previous shipping method will be replaced.
  * 
  * @example
+ * import React from "react"
  * import { useAdminAddShippingMethod } from "medusa-react"
  * 
  * type Props = {
@@ -614,6 +624,7 @@ export const useAdminAddShippingMethod = (
  * The hook archives an order and change its status.
  * 
  * @example
+ * import React from "react"
  * import { useAdminArchiveOrder } from "medusa-react"
  * 
  * type Props = {

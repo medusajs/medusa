@@ -24,6 +24,7 @@ type RegionQueryKeys = typeof adminRegionKeys
  * To list regions:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminRegions } from "medusa-react"
  * 
  * const Regions = () => {
@@ -50,6 +51,7 @@ type RegionQueryKeys = typeof adminRegionKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminRegions } from "medusa-react"
  * 
  * const Regions = () => {
@@ -108,6 +110,7 @@ export const useAdminRegions = (
  * This hook retrieves a region's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminRegion } from "medusa-react"
  * 
  * type Props = {
@@ -158,6 +161,7 @@ export const useAdminRegion = (
  * This hook retrieves a list of fulfillment options available in a region.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRegionFulfillmentOptions
  * } from "medusa-react"

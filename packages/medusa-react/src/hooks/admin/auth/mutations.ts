@@ -13,6 +13,7 @@ import { adminAuthKeys } from "./queries"
  * This hook is used to log a User in using their credentials. If the user is authenticated successfully, the cookie is automatically attached to subsequent requests sent with other hooks.
  * 
  * @example
+ * import React from "react"
  * import { useAdminLogin } from "medusa-react"
  *
  * const Login = () => {
@@ -60,6 +61,7 @@ export const useAdminLogin = (
  * This hook requires {@link Hooks.Admin.Auth.useAdminLogin | user authentication}.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteSession } from "medusa-react"
  * 
  * const Logout = () => {

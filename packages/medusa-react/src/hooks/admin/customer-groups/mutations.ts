@@ -21,6 +21,7 @@ import { adminCustomerGroupKeys } from "./queries"
  * This hook creates a customer group.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateCustomerGroup } from "medusa-react"
  * 
  * const CreateCustomerGroup = () => {
@@ -62,6 +63,7 @@ export const useAdminCreateCustomerGroup = (
  * This hook updates a customer group's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateCustomerGroup } from "medusa-react"
  * 
  * type Props = {
@@ -117,6 +119,7 @@ export const useAdminUpdateCustomerGroup = (
  * This hook deletes a customer group. This doesn't delete the customers associated with the customer group.
  *
  * @example
+ * import React from "react"
  * import { useAdminDeleteCustomerGroup } from "medusa-react"
  * 
  * type Props = {
@@ -169,6 +172,7 @@ export const useAdminDeleteCustomerGroup = (
  * The hook adds a list of customers to a customer group.
  *
  * @example
+ * import React from "react"
  * import { 
  *   useAdminAddCustomersToCustomerGroup,
  * } from "medusa-react"
@@ -234,6 +238,7 @@ export const useAdminAddCustomersToCustomerGroup = (
  * only the association between the customer and the customer group.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRemoveCustomersFromCustomerGroup,
  * } from "medusa-react"

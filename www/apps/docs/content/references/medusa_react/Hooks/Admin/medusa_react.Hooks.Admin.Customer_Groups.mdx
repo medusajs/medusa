@@ -25,6 +25,7 @@ This hook creates a customer group.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateCustomerGroup } from "medusa-react"
 
 const CreateCustomerGroup = () => {
@@ -58,6 +59,7 @@ This hook updates a customer group's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateCustomerGroup } from "medusa-react"
 
 type Props = {
@@ -101,6 +103,7 @@ This hook deletes a customer group. This doesn't delete the customers associated
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteCustomerGroup } from "medusa-react"
 
 type Props = {
@@ -138,6 +141,7 @@ The hook adds a list of customers to a customer group.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminAddCustomersToCustomerGroup,
 } from "medusa-react"
@@ -188,6 +192,7 @@ only the association between the customer and the customer group.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminRemoveCustomersFromCustomerGroup,
 } from "medusa-react"
@@ -243,6 +248,7 @@ select the fields that should be returned.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCustomerGroup } from "medusa-react"
 
 type Props = {
@@ -283,6 +289,7 @@ The customer groups can also be sorted or paginated.
 To list customer groups:
 
 ```tsx
+import React from "react"
 import { useAdminCustomerGroups } from "medusa-react"
 
 const CustomerGroups = () => {
@@ -318,6 +325,7 @@ export default CustomerGroups
 To specify relations that should be retrieved within the customer groups:
 
 ```tsx
+import React from "react"
 import { useAdminCustomerGroups } from "medusa-react"
 
 const CustomerGroups = () => {
@@ -355,6 +363,7 @@ export default CustomerGroups
 By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminCustomerGroups } from "medusa-react"
 
 const CustomerGroups = () => {
@@ -409,6 +418,7 @@ by the `query` field. The customers can also be paginated.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCustomerGroupCustomers } from "medusa-react"
 
 type Props = {

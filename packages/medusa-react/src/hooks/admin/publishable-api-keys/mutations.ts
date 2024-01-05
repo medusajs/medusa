@@ -22,6 +22,7 @@ import { adminPublishableApiKeysKeys } from "./queries"
  * This hook creates a publishable API key.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreatePublishableApiKey } from "medusa-react"
  * 
  * const CreatePublishableApiKey = () => {
@@ -66,6 +67,7 @@ export const useAdminCreatePublishableApiKey = (
  * This hook updates a publishable API key's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdatePublishableApiKey } from "medusa-react"
  * 
  * type Props = {
@@ -131,6 +133,7 @@ export const useAdminUpdatePublishableApiKey = (
  * This hook deletes a publishable API key. Associated resources, such as sales channels, are not deleted.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeletePublishableApiKey } from "medusa-react"
  * 
  * type Props = {
@@ -192,6 +195,7 @@ export const useAdminDeletePublishableApiKey = (
  * This hook revokes a publishable API key. Revoking the publishable API Key can't be undone, and the key can't be used in future requests.
  * 
  * @example
+ * import React from "react"
  * import { useAdminRevokePublishableApiKey } from "medusa-react"
  * 
  * type Props = {
@@ -249,6 +253,7 @@ export const useAdminRevokePublishableApiKey = (
  * This hook adds a list of sales channels to a publishable API key.
  * 
  * @example
+ * import React from "react"
  * import {
  *   useAdminAddPublishableKeySalesChannelsBatch,
  * } from "medusa-react"
@@ -318,6 +323,7 @@ export const useAdminAddPublishableKeySalesChannelsBatch = (
  * removes the association between them and the publishable API key.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRemovePublishableKeySalesChannelsBatch,
  * } from "medusa-react"

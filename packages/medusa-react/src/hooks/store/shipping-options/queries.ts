@@ -21,6 +21,7 @@ type ShippingOptionQueryKey = typeof shippingOptionKey
  * This hook retrieves a list of shipping options. The shipping options can be filtered using the `query` parameter.
  * 
  * @example
+ * import React from "react"
  * import { useShippingOptions } from "medusa-react"
  * 
  * const ShippingOptions = () => {
@@ -75,6 +76,7 @@ export const useShippingOptions = (
  * This hook retrieves a list of shipping options available for a cart.
  * 
  * @example
+ * import React from "react"
  * import { useCartShippingOptions } from "medusa-react"
  * 
  * type Props = {

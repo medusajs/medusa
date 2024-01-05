@@ -29,6 +29,7 @@ type OrderQueryKeys = typeof adminOrderKeys
  * To list orders:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrders } from "medusa-react"
  * 
  * const Orders = () => {
@@ -56,6 +57,7 @@ type OrderQueryKeys = typeof adminOrderKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrders } from "medusa-react"
  * 
  * const Orders = () => {
@@ -118,6 +120,7 @@ export const useAdminOrders = (
  * A simple example that retrieves an order by its ID:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrder } from "medusa-react"
  * 
  * type Props = {
@@ -145,6 +148,7 @@ export const useAdminOrders = (
  * To specify relations that should be retrieved:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrder } from "medusa-react"
  * 
  * const Order = (

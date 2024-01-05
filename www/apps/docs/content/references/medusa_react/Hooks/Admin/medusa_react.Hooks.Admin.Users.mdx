@@ -25,6 +25,7 @@ authenticate and perform admin functionalities right after creation.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateUser } from "medusa-react"
 
 const CreateUser = () => {
@@ -63,6 +64,7 @@ This hook updates an admin user's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateUser } from "medusa-react"
 
 type Props = {
@@ -110,6 +112,7 @@ This hook deletes a user. Once deleted, the user will not be able to authenticat
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteUser } from "medusa-react"
 
 type Props = {
@@ -150,6 +153,7 @@ for the user using the [useAdminSendResetPasswordToken](medusa_react.Hooks.Admin
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminResetPassword } from "medusa-react"
 
 const ResetPassword = () => {
@@ -193,6 +197,7 @@ That token must be used later to reset the password using the [useAdminResetPass
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminSendResetPasswordToken } from "medusa-react"
 
 const Login = () => {
@@ -232,6 +237,7 @@ This hook retrieves all admin users.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUsers } from "medusa-react"
 
 const Users = () => {
@@ -266,6 +272,7 @@ This hook retrieves an admin user's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUser } from "medusa-react"
 
 type Props = {

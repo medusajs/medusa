@@ -23,6 +23,7 @@ type NoteQueryKeys = typeof adminNoteKeys
  * To list notes:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminNotes } from "medusa-react"
  * 
  * const Notes = () => {
@@ -49,6 +50,7 @@ type NoteQueryKeys = typeof adminNoteKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminNotes } from "medusa-react"
  * 
  * const Notes = () => {
@@ -107,6 +109,7 @@ export const useAdminNotes = (
  * This hook retrieves a note's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminNote } from "medusa-react"
  * 
  * type Props = {

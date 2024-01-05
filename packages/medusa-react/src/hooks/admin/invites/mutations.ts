@@ -17,6 +17,7 @@ import { adminInviteKeys } from "./queries"
  * The user will have the email associated with the invite, and the password provided in the mutation function's parameter.
  * 
  * @example
+ * import React from "react"
  * import { useAdminAcceptInvite } from "medusa-react"
  * 
  * const AcceptInvite = () => {
@@ -74,6 +75,7 @@ export const useAdminAcceptInvite = (
  * invite to allow them to accept the invite.
  * 
  * @example
+ * import React from "react"
  * import { useAdminResendInvite } from "medusa-react"
  * 
  * type Props = {
@@ -127,6 +129,7 @@ export const useAdminCreateInvite = (
  * This hook deletes an invite. Only invites that weren't accepted can be deleted.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteInvite } from "medusa-react"
  * 
  * type Props = {

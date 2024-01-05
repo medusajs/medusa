@@ -18,6 +18,7 @@ import { adminShippingProfileKeys } from "./queries"
  * This hook creates a shipping profile.
  * 
  * @example
+ * import React from "react"
  * import { ShippingProfileType } from "@medusajs/medusa"
  * import { useAdminCreateShippingProfile } from "medusa-react"
  * 
@@ -67,6 +68,7 @@ export const useAdminCreateShippingProfile = (
  * This hook updates a shipping profile's details.
  * 
  * @example
+ * import React from "react"
  * import { ShippingProfileType } from "@medusajs/medusa"
  * import { useAdminUpdateShippingProfile } from "medusa-react"
  * 
@@ -131,6 +133,7 @@ export const useAdminUpdateShippingProfile = (
  * This hook deletes a shipping profile. Associated shipping options are deleted as well.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteShippingProfile } from "medusa-react"
  * 
  * type Props = {

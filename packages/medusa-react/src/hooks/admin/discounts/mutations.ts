@@ -28,6 +28,7 @@ import { adminDiscountKeys } from "./queries"
  * To add resources to a discount condition:
  * 
  * ```tsx
+ * import React from "react"
  * import { 
  *   useAdminAddDiscountConditionResourceBatch
  * } from "medusa-react"
@@ -70,6 +71,7 @@ import { adminDiscountKeys } from "./queries"
  * To specify relations to include in the returned discount:
  * 
  * ```tsx
+ * import React from "react"
  * import { 
  *   useAdminAddDiscountConditionResourceBatch
  * } from "medusa-react"
@@ -153,6 +155,7 @@ export const useAdminAddDiscountConditionResourceBatch = (
  * the discount condition, not the resource itself.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminDeleteDiscountConditionResourceBatch
  * } from "medusa-react"
@@ -227,6 +230,7 @@ export const useAdminDeleteDiscountConditionResourceBatch = (
  * This hook creates a discount with a given set of rules that defines how the discount is applied.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminCreateDiscount,
  * } from "medusa-react"
@@ -286,6 +290,7 @@ export const useAdminCreateDiscount = (
  * This hook updates a discount with a given set of rules that define how the discount is applied.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateDiscount } from "medusa-react"
  * 
  * type Props = {
@@ -334,6 +339,7 @@ export const useAdminUpdateDiscount = (
  * This hook deletes a discount. Deleting the discount will make it unavailable for customers to use.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteDiscount } from "medusa-react"
  * 
  * const Discount = () => {
@@ -373,6 +379,7 @@ export const useAdminDeleteDiscount = (
  * @typeParamDefinition string - The ID of the region to add.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDiscountAddRegion } from "medusa-react"
  * 
  * type Props = {
@@ -421,6 +428,7 @@ export const useAdminDiscountAddRegion = (
  * @typeParamDefinition string - The ID of the region to remove.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDiscountRemoveRegion } from "medusa-react"
  * 
  * type Props = {
@@ -467,6 +475,7 @@ export const useAdminDiscountRemoveRegion = (
  * automatically generate codes with the same rules and conditions.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateDynamicDiscountCode } from "medusa-react"
  * 
  * type Props = {
@@ -529,6 +538,7 @@ export const useAdminCreateDynamicDiscountCode = (
  * @typeParamDefinition string - The code of the dynamic discount to delete.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteDynamicDiscountCode } from "medusa-react"
  * 
  * type Props = {
@@ -580,6 +590,7 @@ export const useAdminDeleteDynamicDiscountCode = (
  * the `products` field should be provided in the `payload` parameter.
  * 
  * @example
+ * import React from "react"
  * import { DiscountConditionOperator } from "@medusajs/medusa"
  * import { useAdminDiscountCreateCondition } from "medusa-react"
  * 
@@ -639,6 +650,7 @@ export const useAdminDiscountCreateCondition = (
  * type is `products`, the `products` field should be provided in the `payload` parameter.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDiscountUpdateCondition } from "medusa-react"
  * 
  * type Props = {
@@ -706,6 +718,7 @@ export const useAdminDiscountUpdateCondition = (
  * @typeParamDefinition string - The ID of the condition to delete.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDiscountRemoveCondition } from "medusa-react"
  * 
  * type Props = {

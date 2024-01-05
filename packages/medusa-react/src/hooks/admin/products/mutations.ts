@@ -24,6 +24,7 @@ import { adminProductKeys } from "./queries"
  * This hook creates a new Product. This hook can also be used to create a gift card if the `is_giftcard` field is set to `true`.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateProduct } from "medusa-react"
  * 
  * type CreateProductData = {
@@ -94,6 +95,7 @@ export const useAdminCreateProduct = (
  * This hook updates a Product's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateProduct } from "medusa-react"
  * 
  * type Props = {
@@ -155,6 +157,7 @@ export const useAdminUpdateProduct = (
  * This hook deletes a product and its associated product variants and options.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteProduct } from "medusa-react"
  * 
  * type Props = {
@@ -207,6 +210,7 @@ export const useAdminDeleteProduct = (
  * This hook creates a product variant associated with a product. Each product variant must have a unique combination of product option values.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateVariant } from "medusa-react"
  * 
  * type CreateVariantData = {
@@ -285,6 +289,7 @@ export type AdminUpdateVariantReq = AdminPostProductsProductVariantsVariantReq &
  * This hook updates a product variant's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateVariant } from "medusa-react"
  * 
  * type Props = {
@@ -354,6 +359,7 @@ export const useAdminUpdateVariant = (
  * @typeParamDefinition string - The ID of the product variant to delete.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteVariant } from "medusa-react"
  * 
  * type Props = {
@@ -415,6 +421,7 @@ export const useAdminDeleteVariant = (
  * This hook adds a product option to a product.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateProductOption } from "medusa-react"
  * 
  * type Props = {
@@ -479,6 +486,7 @@ export type AdminUpdateProductOptionReq = AdminPostProductsProductOptionsOption 
  * This hook updates a product option's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateProductOption } from "medusa-react"
  * 
  * type Props = {
@@ -547,6 +555,7 @@ export const useAdminUpdateProductOption = (
  * @typeParamDefinition string - The ID of the product option to delete.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteProductOption } from "medusa-react"
  * 
  * type Props = {

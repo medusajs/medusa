@@ -24,6 +24,7 @@ type ProductTypesQueryKeys = typeof adminProductTypeKeys
  * To list product types:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProductTypes } from "medusa-react"
  * 
  * function ProductTypes() {
@@ -57,6 +58,7 @@ type ProductTypesQueryKeys = typeof adminProductTypeKeys
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProductTypes } from "medusa-react"
  * 
  * function ProductTypes() {

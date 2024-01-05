@@ -17,6 +17,7 @@ type PaymentCollectionKey = typeof paymentCollectionQueryKeys
  * This hook retrieves a Payment Collection's details.
  * 
  * @example
+ * import React from "react"
  * import { usePaymentCollection } from "medusa-react"
  * 
  * type Props = {

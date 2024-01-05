@@ -25,6 +25,7 @@ const MedusaContext = React.createContext<MedusaContextState | null>(null)
  * [Medusa JS Client](https://docs.medusajs.com/js-client/overview).
  * 
  * @example
+ * import React from "react"
  * import { useMeCustomer, useMedusa } from "medusa-react"
  * 
  * const CustomerLogin = () => {

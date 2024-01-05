@@ -31,6 +31,7 @@ If a customer is logged in, make sure to pass its ID or email within the cart's 
 #### Example
 
 ```ts
+import React from "react"
 import { useCreateCart } from "medusa-react"
 
 type Props = {
@@ -73,6 +74,7 @@ the payment sessions are updated. The cart's totals are also recalculated.
 #### Example
 
 ```ts
+import React from "react"
 import { useUpdateCart } from "medusa-react"
 
 type Props = {
@@ -123,6 +125,7 @@ key in the `Idempotency-Key` header.
 #### Example
 
 ```ts
+import React from "react"
 import { useCompleteCart } from "medusa-react"
 
 type Props = {
@@ -162,6 +165,7 @@ it will be selected by default. The creation of the payment session uses the pay
 #### Example
 
 ```ts
+import React from "react"
 import { useCreatePaymentSession } from "medusa-react"
 
 type Props = {
@@ -201,6 +205,7 @@ All payment sessions are updated and cart totals are recalculated afterwards.
 #### Example
 
 ```ts
+import React from "react"
 import { useUpdatePaymentSession } from "medusa-react"
 
 type Props = {
@@ -249,6 +254,7 @@ This hook refreshes a Payment Session to ensure that it is in sync with the Cart
 #### Example
 
 ```ts
+import React from "react"
 import { useRefreshPaymentSession } from "medusa-react"
 
 type Props = {
@@ -296,6 +302,7 @@ The totals of the cart will be recalculated.
 #### Example
 
 ```ts
+import React from "react"
 import { useSetPaymentSession } from "medusa-react"
 
 type Props = {
@@ -342,6 +349,7 @@ This hook adds a shipping method to the cart. The validation of the `data` field
 #### Example
 
 ```ts
+import React from "react"
 import { useAddShippingMethodToCart } from "medusa-react"
 
 type Props = {
@@ -388,6 +396,7 @@ This hook deletes a Payment Session in a Cart. May be useful if a payment has fa
 #### Example
 
 ```ts
+import React from "react"
 import { useDeletePaymentSession } from "medusa-react"
 
 type Props = {
@@ -435,6 +444,7 @@ It performs the same actions as the [useCreateCart](medusa_react.Hooks.Store.Car
 #### Example
 
 ```ts
+import React from "react"
 import { useStartCheckout } from "medusa-react"
 
 type Props = {
@@ -475,6 +485,7 @@ This hook retrieves a Cart's details. This includes recalculating its totals.
 #### Example
 
 ```ts
+import React from "react"
 import { useGetCart } from "medusa-react"
 
 type Props = {

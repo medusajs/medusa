@@ -22,6 +22,7 @@ type CurrenciesQueryKey = typeof adminCurrenciesKeys
  * To list currencies:
  * 
  * ```ts
+ * import React from "react"
  * import { useAdminCurrencies } from "medusa-react"
  * 
  * const Currencies = () => {
@@ -50,6 +51,7 @@ type CurrenciesQueryKey = typeof adminCurrenciesKeys
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```ts
+ * import React from "react"
  * import { useAdminCurrencies } from "medusa-react"
  * 
  * const Currencies = () => {

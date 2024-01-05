@@ -24,6 +24,7 @@ This hook creates an order edit.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateOrderEdit } from "medusa-react"
 
 const CreateOrderEdit = () => {
@@ -60,6 +61,7 @@ This hook deletes an order edit. Only order edits that have the status `created`
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteOrderEdit } from "medusa-react"
 
 type Props = {
@@ -100,6 +102,7 @@ This hook deletes a line item change that indicates the addition, deletion, or u
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteOrderEditItemChange } from "medusa-react"
 
 type Props = {
@@ -146,6 +149,7 @@ into an original order. Line item changes are only reflected on the original ord
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminOrderEditUpdateLineItem } from "medusa-react"
 
 type Props = {
@@ -198,6 +202,7 @@ The item in the original order will not be deleted until the order edit is confi
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminOrderEditDeleteLineItem } from "medusa-react"
 
 type Props = {
@@ -243,6 +248,7 @@ This hook updates an Order Edit's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateOrderEdit } from "medusa-react"
 
 type Props = {
@@ -292,6 +298,7 @@ The item will not be added to the original order until the order edit is confirm
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminOrderEditAddLineItem } from "medusa-react"
 
 type Props = {
@@ -341,6 +348,7 @@ a notification to the customer about the order edit.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminRequestOrderEditConfirmation,
 } from "medusa-react"
@@ -387,6 +395,7 @@ This hook cancels an order edit.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminCancelOrderEdit,
 } from "medusa-react"
@@ -432,6 +441,7 @@ This hook confirms an order edit. This will reflect the changes in the order edi
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminConfirmOrderEdit } from "medusa-react"
 
 type Props = {
@@ -481,6 +491,7 @@ This hook retrieves an order edit's details.
 A simple example that retrieves an order edit by its ID:
 
 ```tsx
+import React from "react"
 import { useAdminOrderEdit } from "medusa-react"
 
 type Props = {
@@ -507,6 +518,7 @@ export default OrderEdit
 To specify relations that should be retrieved:
 
 ```tsx
+import React from "react"
 import { useAdminOrderEdit } from "medusa-react"
 
 type Props = {
@@ -553,6 +565,7 @@ The order edits can also be paginated.
 To list order edits:
 
 ```tsx
+import React from "react"
 import { useAdminOrderEdits } from "medusa-react"
 
 const OrderEdits = () => {
@@ -583,6 +596,7 @@ export default OrderEdits
 To specify relations that should be retrieved within the order edits:
 
 ```tsx
+import React from "react"
 import { useAdminOrderEdits } from "medusa-react"
 
 const OrderEdits = () => {
@@ -615,6 +629,7 @@ export default OrderEdits
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminOrderEdits } from "medusa-react"
 
 const OrderEdits = () => {

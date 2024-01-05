@@ -21,6 +21,7 @@ import { adminRegionKeys } from "./queries"
  * This hook creates a region.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateRegion } from "medusa-react"
  * 
  * type CreateData = {
@@ -72,6 +73,7 @@ export const useAdminCreateRegion = (
  * This hook updates a region's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateRegion } from "medusa-react"
  * 
  * type Props = {
@@ -133,6 +135,7 @@ export const useAdminUpdateRegion = (
  * This hook deletes a region. Associated resources, such as providers or currencies are not deleted. Associated tax rates are deleted.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteRegion } from "medusa-react"
  * 
  * type Props = {
@@ -185,6 +188,7 @@ export const useAdminDeleteRegion = (
  * This hook adds a country to the list of countries in a region.
  * 
  * @example
+ * import React from "react"
  * import { useAdminRegionAddCountry } from "medusa-react"
  * 
  * type Props = {
@@ -244,6 +248,7 @@ export const useAdminRegionAddCountry = (
  * @typeParamDefinition string - The code of the country to delete from the region.
  * 
  * @example
+ * import React from "react"
  * import { useAdminRegionRemoveCountry } from "medusa-react"
  * 
  * type Props = {
@@ -295,6 +300,7 @@ export const useAdminRegionRemoveCountry = (
  * This hook adds a fulfillment provider to the list of fulfullment providers in a region.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRegionAddFulfillmentProvider
  * } from "medusa-react"
@@ -357,6 +363,7 @@ export const useAdminRegionAddFulfillmentProvider = (
  * @typeParamDefinition string - The fulfillment provider's ID to delete from the region.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRegionDeleteFulfillmentProvider
  * } from "medusa-react"
@@ -411,6 +418,7 @@ export const useAdminRegionDeleteFulfillmentProvider = (
  * This hook adds a payment provider to the list of payment providers in a region.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRegionAddPaymentProvider
  * } from "medusa-react"
@@ -473,6 +481,7 @@ export const useAdminRegionAddPaymentProvider = (
  * @typeParamDefinition string - The ID of the payment provider to delete from the region.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRegionDeletePaymentProvider
  * } from "medusa-react"

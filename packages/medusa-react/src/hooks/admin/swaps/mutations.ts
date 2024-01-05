@@ -19,6 +19,7 @@ import { adminSwapKeys } from "./queries"
  * This hook creates a swap for an order. This includes creating a return that is associated with the swap.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateSwap } from "medusa-react"
  * 
  * type Props = {
@@ -82,6 +83,7 @@ export const useAdminCreateSwap = (
  * @typeParamDefinition string - The swap's ID.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCancelSwap } from "medusa-react"
  * 
  * type Props = {
@@ -146,6 +148,7 @@ export type AdminFulfillSwapReq = AdminPostOrdersOrderSwapsSwapFulfillmentsReq &
  * its fulfillment status may change to `requires_action`.
  * 
  * @example
+ * import React from "react"
  * import { useAdminFulfillSwap } from "medusa-react"
  * 
  * type Props = {
@@ -225,6 +228,7 @@ export type AdminCreateSwapShipmentReq = AdminPostOrdersOrderSwapsSwapShipmentsR
  * to either `shipped` or `partially_shipped`, depending on whether all the items were shipped.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateSwapShipment } from "medusa-react"
  * 
  * type Props = {
@@ -293,6 +297,7 @@ export const useAdminCreateSwapShipment = (
  * @typeParamDefinition string - The swap's ID.
  * 
  * @example
+ * import React from "react"
  * import { useAdminProcessSwapPayment } from "medusa-react"
  * 
  * type Props = {
@@ -363,6 +368,7 @@ export type AdminCancelSwapFulfillmentReq = {
  * This hook cancels a swap's fulfillment and change its fulfillment status to `canceled`.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCancelSwapFulfillment } from "medusa-react"
  * 
  * type Props = {

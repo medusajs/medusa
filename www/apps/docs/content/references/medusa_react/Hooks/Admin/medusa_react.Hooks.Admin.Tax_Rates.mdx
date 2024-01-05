@@ -24,6 +24,7 @@ This hook creates a tax rate.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateTaxRate } from "medusa-react"
 
 type Props = {
@@ -72,6 +73,7 @@ This hook updates a tax rate's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateTaxRate } from "medusa-react"
 
 type Props = {
@@ -119,6 +121,7 @@ This hook deletes a tax rate. Resources associated with the tax rate, such as pr
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteTaxRate } from "medusa-react"
 
 type Props = {
@@ -158,6 +161,7 @@ This hook adds products to a tax rate.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateProductTaxRates } from "medusa-react"
 
 type Props = {
@@ -203,6 +207,7 @@ This hook removes products from a tax rate. This only removes the association be
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteProductTaxRates } from "medusa-react"
 
 type Props = {
@@ -248,6 +253,7 @@ This hook adds product types to a tax rate.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminCreateProductTypeTaxRates,
 } from "medusa-react"
@@ -298,6 +304,7 @@ product types and the tax rate. It does not delete the product types.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminDeleteProductTypeTaxRates,
 } from "medusa-react"
@@ -349,6 +356,7 @@ This hook adds shipping options to a tax rate.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateShippingTaxRates } from "medusa-react"
 
 type Props = {
@@ -399,6 +407,7 @@ the shipping options and the tax rate. It does not delete the shipping options.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteShippingTaxRates } from "medusa-react"
 
 type Props = {
@@ -455,6 +464,7 @@ passed in the `query` parameter. The tax rates can also be paginated.
 To list tax rates:
 
 ```tsx
+import React from "react"
 import { useAdminTaxRates } from "medusa-react"
 
 const TaxRates = () => {
@@ -486,6 +496,7 @@ export default TaxRates
 To specify relations that should be retrieved within the tax rates:
 
 ```tsx
+import React from "react"
 import { useAdminTaxRates } from "medusa-react"
 
 const TaxRates = () => {
@@ -519,6 +530,7 @@ export default TaxRates
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminTaxRates } from "medusa-react"
 
 const TaxRates = () => {
@@ -570,6 +582,7 @@ This hook retrieves a tax rate's details.
 A simple example that retrieves a tax rate by its ID:
 
 ```tsx
+import React from "react"
 import { useAdminTaxRate } from "medusa-react"
 
 type Props = {
@@ -593,6 +606,7 @@ export default TaxRate
 To specify relations that should be retrieved:
 
 ```tsx
+import React from "react"
 import { useAdminTaxRate } from "medusa-react"
 
 const TaxRate = (taxRateId: string) => {

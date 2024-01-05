@@ -31,6 +31,7 @@ The product categories can also be paginated. This hook can also be used to retr
 To list product categories:
 
 ```tsx
+import React from "react"
 import { useProductCategories } from "medusa-react"
 
 function Categories() {
@@ -64,6 +65,7 @@ export default Categories
 To retrieve a product category by its handle:
 
 ```tsx
+import React from "react"
 import { useProductCategories } from "medusa-react"
 
 function Categories(
@@ -101,6 +103,7 @@ export default Categories
 To specify relations that should be retrieved within the product categories:
 
 ```tsx
+import React from "react"
 import { useProductCategories } from "medusa-react"
 
 function Categories(
@@ -195,6 +198,7 @@ This hook retrieves a Product Category's details.
 A simple example that retrieves a product category by its ID:
 
 ```tsx
+import React from "react"
 import { useProductCategory } from "medusa-react"
 
 type Props = {
@@ -220,6 +224,7 @@ export default Category
 To specify relations that should be retrieved:
 
 ```tsx
+import React from "react"
 import { useProductCategory } from "medusa-react"
 
 type Props = {

@@ -12,6 +12,7 @@ import { UseQueryOptionsWrapper } from "../../../types"
  * @typeParamDefinition TResponse - The response based on the type specified for `TResponse`.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCustomQuery } from "medusa-react"
  * import Post from "./models/Post"
  * 

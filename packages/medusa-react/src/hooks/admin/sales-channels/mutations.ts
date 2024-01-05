@@ -23,6 +23,7 @@ import { adminSalesChannelsKeys } from "./queries"
  * This hook creates a sales channel.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateSalesChannel } from "medusa-react"
  * 
  * const CreateSalesChannel = () => {
@@ -69,6 +70,7 @@ export const useAdminCreateSalesChannel = (
  * This hook updates a sales channel's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateSalesChannel } from "medusa-react"
  * 
  * type Props = {
@@ -129,6 +131,7 @@ export const useAdminUpdateSalesChannel = (
  * This hook deletes a sales channel. Associated products, stock locations, and other resources are not deleted.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteSalesChannel } from "medusa-react"
  * 
  * type Props = {
@@ -185,6 +188,7 @@ export const useAdminDeleteSalesChannel = (
  * association between the product and the sales channel.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminDeleteProductsFromSalesChannel, 
  * } from "medusa-react"
@@ -254,6 +258,7 @@ export const useAdminDeleteProductsFromSalesChannel = (
  * This hook adds a list of products to a sales channel.
  * 
  * @example
+ * import React from "react"
  * import { useAdminAddProductsToSalesChannel } from "medusa-react"
  * 
  * type Props = {
@@ -323,6 +328,7 @@ export const useAdminAddProductsToSalesChannel = (
  * your Medusa backend.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminAddLocationToSalesChannel
  * } from "medusa-react"
@@ -395,6 +401,7 @@ export const useAdminAddLocationToSalesChannel = (
  * your Medusa backend.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRemoveLocationFromSalesChannel
  * } from "medusa-react"

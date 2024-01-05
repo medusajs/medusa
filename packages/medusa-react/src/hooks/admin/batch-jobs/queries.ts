@@ -22,6 +22,7 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  * To list batch jobs:
  * 
  * ```ts
+ * import React from "react"
  * import { useAdminBatchJobs } from "medusa-react"
  * 
  * const BatchJobs = () => {
@@ -55,6 +56,7 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  * To specify relations that should be retrieved within the batch jobs:
  * 
  * ```ts
+ * import React from "react"
  * import { useAdminBatchJobs } from "medusa-react"
  * 
  * const BatchJobs = () => {
@@ -92,6 +94,7 @@ type BatchJobsQueryKey = typeof adminBatchJobsKeys
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```ts
+ * import React from "react"
  * import { useAdminBatchJobs } from "medusa-react"
  * 
  * const BatchJobs = () => {
@@ -153,6 +156,7 @@ export const useAdminBatchJobs = (
  * This hook retrieves the details of a batch job.
  * 
  * @example
+ * import React from "react"
  * import { useAdminBatchJob } from "medusa-react"
  * 
  * type Props = {

@@ -15,6 +15,7 @@ type GiftCardQueryKey = typeof giftCardKeys
  * This hook retrieves a Gift Card's details by its associated unique code.
  * 
  * @example
+ * import React from "react"
  * import { useGiftCard } from "medusa-react"
  * 
  * type Props = {

@@ -21,6 +21,7 @@ import { adminCollectionKeys } from "./queries"
  * This hook creates a product collection.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateCollection } from "medusa-react"
  * 
  * const CreateCollection = () => {
@@ -65,6 +66,7 @@ export const useAdminCreateCollection = (
  * This hook updates a product collection's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateCollection } from "medusa-react"
  * 
  * type Props = {
@@ -121,6 +123,7 @@ export const useAdminUpdateCollection = (
  * This hook deletes a product collection. This does not delete associated products.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteCollection } from "medusa-react"
  * 
  * type Props = {
@@ -170,6 +173,7 @@ export const useAdminDeleteCollection = (
  * This hook adds products to a collection.
  * 
  * @example
+ * import React from "react"
  * import { useAdminAddProductsToCollection } from "medusa-react"
  * 
  * type Props = {
@@ -228,6 +232,7 @@ export const useAdminAddProductsToCollection = (
  * only the association between the product and the collection.
  * 
  * @example
+ * import React from "react"
  * import { useAdminRemoveProductsFromCollection } from "medusa-react"
  * 
  * type Props = {

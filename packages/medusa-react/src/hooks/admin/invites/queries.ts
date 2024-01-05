@@ -15,6 +15,7 @@ type InviteQueryKeys = typeof adminInviteKeys
  * This hook retrieves a list of invites.
  * 
  * @example
+ * import React from "react"
  * import { useAdminInvites } from "medusa-react"
  * 
  * const Invites = () => {

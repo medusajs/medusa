@@ -22,6 +22,7 @@ type ProductTypesQueryKeys = typeof productTagKeys
  * To list product tags:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProductTags } from "medusa-react"
  * 
  * function Tags() {
@@ -55,6 +56,7 @@ type ProductTypesQueryKeys = typeof productTagKeys
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProductTags } from "medusa-react"
  * 
  * function Tags() {

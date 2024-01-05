@@ -23,6 +23,7 @@ type TaxRateQueryKeys = typeof adminTaxRateKeys
  * To list tax rates:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminTaxRates } from "medusa-react"
  * 
  * const TaxRates = () => {
@@ -54,6 +55,7 @@ type TaxRateQueryKeys = typeof adminTaxRateKeys
  * To specify relations that should be retrieved within the tax rates:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminTaxRates } from "medusa-react"
  * 
  * const TaxRates = () => {
@@ -87,6 +89,7 @@ type TaxRateQueryKeys = typeof adminTaxRateKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminTaxRates } from "medusa-react"
  * 
  * const TaxRates = () => {
@@ -151,6 +154,7 @@ export const useAdminTaxRates = (
  * A simple example that retrieves a tax rate by its ID:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminTaxRate } from "medusa-react"
  * 
  * type Props = {
@@ -174,6 +178,7 @@ export const useAdminTaxRates = (
  * To specify relations that should be retrieved:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminTaxRate } from "medusa-react"
  * 
  * const TaxRate = (taxRateId: string) => {

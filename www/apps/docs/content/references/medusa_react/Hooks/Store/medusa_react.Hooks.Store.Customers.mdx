@@ -23,6 +23,7 @@ Subsequent requests sent with other hooks are sent with the Cookie session autom
 #### Example
 
 ```ts
+import React from "react"
 import { useCreateCustomer } from "medusa-react"
 
 const RegisterCustomer = () => {
@@ -66,6 +67,7 @@ This hook updates the logged-in customer's details. This hook requires customer 
 #### Example
 
 ```ts
+import React from "react"
 import { useUpdateMe } from "medusa-react"
 
 type Props = {
@@ -115,6 +117,7 @@ This hook retrieves the logged-in customer's details. It requires customer authe
 #### Example
 
 ```ts
+import React from "react"
 import { useMeCustomer } from "medusa-react"
 
 const Customer = () => {
@@ -145,6 +148,7 @@ This hook requires customer authentication.
 #### Example
 
 ```ts
+import React from "react"
 import { useCustomerOrders } from "medusa-react"
 
 const Orders = () => {

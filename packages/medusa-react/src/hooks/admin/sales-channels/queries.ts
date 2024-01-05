@@ -21,6 +21,7 @@ type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
  * This hook retrieves a sales channel's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminSalesChannel } from "medusa-react"
  * 
  * type Props = {
@@ -74,6 +75,7 @@ export const useAdminSalesChannel = (
  * To list sales channels:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminSalesChannels } from "medusa-react"
  * 
  * const SalesChannels = () => {
@@ -102,6 +104,7 @@ export const useAdminSalesChannel = (
  * To specify relations that should be retrieved within the sales channels:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminSalesChannels } from "medusa-react"
  * 
  * const SalesChannels = () => {
@@ -135,6 +138,7 @@ export const useAdminSalesChannel = (
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminSalesChannels } from "medusa-react"
  * 
  * const SalesChannels = () => {

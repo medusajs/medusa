@@ -24,6 +24,7 @@ This hook creates a Draft Order. A draft order is not transformed into an order 
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateDraftOrder } from "medusa-react"
 
 type DraftOrderData = {
@@ -72,6 +73,7 @@ This hook updates a Draft Order's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateDraftOrder } from "medusa-react"
 
 type Props = {
@@ -119,6 +121,7 @@ This hook deletes a Draft Order.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteDraftOrder } from "medusa-react"
 
 type Props = {
@@ -161,6 +164,7 @@ which is manual payment that isn't integrated with any third-party payment provi
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDraftOrderRegisterPayment } from "medusa-react"
 
 type Props = {
@@ -202,6 +206,7 @@ This hook creates a Line Item in the Draft Order.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDraftOrderAddLineItem } from "medusa-react"
 
 type Props = {
@@ -249,6 +254,7 @@ This hook deletes a Line Item from a Draft Order.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
 
 type Props = {
@@ -294,6 +300,7 @@ This hook updates a Line Item in a Draft Order.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
 
 type Props = {
@@ -347,6 +354,7 @@ This hook retrieves an list of Draft Orders. The draft orders can be filtered by
 To list draft orders:
 
 ```tsx
+import React from "react"
 import { useAdminDraftOrders } from "medusa-react"
 
 const DraftOrders = () => {
@@ -375,6 +383,7 @@ export default DraftOrders
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminDraftOrders } from "medusa-react"
 
 const DraftOrders = () => {
@@ -423,6 +432,7 @@ This hook retrieves a Draft Order's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDraftOrder } from "medusa-react"
 
 type Props = {

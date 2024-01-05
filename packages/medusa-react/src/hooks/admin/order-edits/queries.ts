@@ -22,6 +22,7 @@ type OrderEditQueryKeys = typeof adminOrderEditsKeys
  * A simple example that retrieves an order edit by its ID:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrderEdit } from "medusa-react"
  * 
  * type Props = {
@@ -48,6 +49,7 @@ type OrderEditQueryKeys = typeof adminOrderEditsKeys
  * To specify relations that should be retrieved:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrderEdit } from "medusa-react"
  * 
  * type Props = {
@@ -111,6 +113,7 @@ export const useAdminOrderEdit = (
  * To list order edits:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrderEdits } from "medusa-react"
  * 
  * const OrderEdits = () => {
@@ -141,6 +144,7 @@ export const useAdminOrderEdit = (
  * To specify relations that should be retrieved within the order edits:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrderEdits } from "medusa-react"
  * 
  * const OrderEdits = () => {
@@ -173,6 +177,7 @@ export const useAdminOrderEdit = (
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminOrderEdits } from "medusa-react"
  * 
  * const OrderEdits = () => {

@@ -26,6 +26,7 @@ which can be done using the [useAdminConfirmBatchJob](../../../modules/medusa_re
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateBatchJob } from "medusa-react"
 
 const CreateBatchJob = () => {
@@ -65,6 +66,7 @@ This hook marks a batch job as canceled. When a batch job is canceled, the proce
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCancelBatchJob } from "medusa-react"
 
 type Props = {
@@ -110,6 +112,7 @@ This hook retrieves a list of Batch Jobs. The batch jobs can be filtered by fiel
 To list batch jobs:
 
 ```ts
+import React from "react"
 import { useAdminBatchJobs } from "medusa-react"
 
 const BatchJobs = () => {
@@ -143,6 +146,7 @@ export default BatchJobs
 To specify relations that should be retrieved within the batch jobs:
 
 ```ts
+import React from "react"
 import { useAdminBatchJobs } from "medusa-react"
 
 const BatchJobs = () => {
@@ -180,6 +184,7 @@ export default BatchJobs
 By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```ts
+import React from "react"
 import { useAdminBatchJobs } from "medusa-react"
 
 const BatchJobs = () => {
@@ -229,6 +234,7 @@ This hook retrieves the details of a batch job.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminBatchJob } from "medusa-react"
 
 type Props = {

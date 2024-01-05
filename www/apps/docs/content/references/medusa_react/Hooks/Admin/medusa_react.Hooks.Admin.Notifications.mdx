@@ -23,6 +23,7 @@ This hook resends a previously sent notifications, with the same data but option
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminResendNotification } from "medusa-react"
 
 type Props = {
@@ -75,6 +76,7 @@ The notifications can also be paginated.
 To list notifications:
 
 ```tsx
+import React from "react"
 import { useAdminNotifications } from "medusa-react"
 
 const Notifications = () => {
@@ -103,6 +105,7 @@ export default Notifications
 To specify relations that should be retrieved within the notifications:
 
 ```tsx
+import React from "react"
 import { useAdminNotifications } from "medusa-react"
 
 const Notifications = () => {
@@ -133,6 +136,7 @@ export default Notifications
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminNotifications } from "medusa-react"
 
 const Notifications = () => {

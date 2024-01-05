@@ -25,6 +25,7 @@ This hook creates a gift card that can redeemed by its unique code. The Gift Car
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateGiftCard } from "medusa-react"
 
 const CreateCustomGiftCards = () => {
@@ -66,6 +67,7 @@ This hook updates a gift card's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateGiftCard } from "medusa-react"
 
 type Props = {
@@ -113,6 +115,7 @@ This hook deletes a gift card. Once deleted, it can't be used by customers.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteGiftCard } from "medusa-react"
 
 type Props = {
@@ -161,6 +164,7 @@ parameter. The gift cards can also paginated.
 To list gift cards:
 
 ```tsx
+import React from "react"
 import { useAdminGiftCards } from "medusa-react"
 
 const CustomGiftCards = () => {
@@ -189,6 +193,7 @@ export default CustomGiftCards
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminGiftCards } from "medusa-react"
 
 const CustomGiftCards = () => {
@@ -237,6 +242,7 @@ This hook retrieves a gift card's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminGiftCard } from "medusa-react"
 
 type Props = {

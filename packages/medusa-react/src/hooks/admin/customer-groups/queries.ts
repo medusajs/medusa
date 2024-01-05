@@ -29,6 +29,7 @@ type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
  * select the fields that should be returned.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCustomerGroup } from "medusa-react"
  * 
  * type Props = {
@@ -85,6 +86,7 @@ export const useAdminCustomerGroup = (
  * To list customer groups:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminCustomerGroups } from "medusa-react"
  * 
  * const CustomerGroups = () => {
@@ -120,6 +122,7 @@ export const useAdminCustomerGroup = (
  * To specify relations that should be retrieved within the customer groups:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminCustomerGroups } from "medusa-react"
  * 
  * const CustomerGroups = () => {
@@ -157,6 +160,7 @@ export const useAdminCustomerGroup = (
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminCustomerGroups } from "medusa-react"
  * 
  * const CustomerGroups = () => {
@@ -223,6 +227,7 @@ export const useAdminCustomerGroups = (
  * by the `query` field. The customers can also be paginated.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCustomerGroupCustomers } from "medusa-react"
  * 
  * type Props = {

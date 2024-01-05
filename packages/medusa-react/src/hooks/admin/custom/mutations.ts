@@ -102,6 +102,7 @@ export const buildCustomOptions = <
  * @typeParamDefinition TPayload - The payload based on the specified type for `TPayload`.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCustomPost } from "medusa-react"
  * import Post from "./models/Post"
  * 
@@ -175,6 +176,7 @@ export const useAdminCustomPost = <
  * @typeParamDefinition TResponse - The response based on the type provided for `TResponse`.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCustomDelete } from "medusa-react"
  * 
  * type Props = {

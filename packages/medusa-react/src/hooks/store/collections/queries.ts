@@ -19,6 +19,7 @@ type CollectionQueryKey = typeof collectionKeys
  * This hook retrieves a product collection's details.
  * 
  * @example
+ * import React from "react"
  * import { useCollection } from "medusa-react"
  * 
  * type Props = {
@@ -69,6 +70,7 @@ export const useCollection = (
  * To list product collections:
  * 
  * ```tsx
+ * import React from "react"
  * import { useCollections } from "medusa-react"
  * 
  * const ProductCollections = () => {
@@ -97,6 +99,7 @@ export const useCollection = (
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useCollections } from "medusa-react"
  * 
  * const ProductCollections = () => {

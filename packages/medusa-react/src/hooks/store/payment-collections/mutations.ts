@@ -24,6 +24,7 @@ import { paymentCollectionQueryKeys } from "./queries"
  * To add two new payment sessions:
  * 
  * ```tsx
+ * import React from "react"
  * import { useManageMultiplePaymentSessions } from "medusa-react"
  * 
  * type Props = {
@@ -66,6 +67,7 @@ import { paymentCollectionQueryKeys } from "./queries"
  * To update a payment session and another one by not including it in the payload:
  * 
  * ```tsx
+ * import React from "react"
  * import { useManageMultiplePaymentSessions } from "medusa-react"
  * 
  * type Props = {
@@ -137,6 +139,7 @@ export const useManageMultiplePaymentSessions = (
  * This hook creates a Payment Session for a payment provider in a Payment Collection.
  * 
  * @example
+ * import React from "react"
  * import { useManagePaymentSession } from "medusa-react"
  * 
  * type Props = {
@@ -204,6 +207,7 @@ export const useManagePaymentSession = (
  * @typeParamDefinition string - The payment session's ID.
  * 
  * @example
+ * import React from "react"
  * import { useAuthorizePaymentSession } from "medusa-react"
  * 
  * type Props = {
@@ -269,6 +273,7 @@ export const useAuthorizePaymentSession = (
  * This hook authorize the Payment Sessions of a Payment Collection.
  * 
  * @example
+ * import React from "react"
  * import { useAuthorizePaymentSessionsBatch } from "medusa-react"
  * 
  * type Props = {
@@ -335,6 +340,7 @@ export const useAuthorizePaymentSessionsBatch = (
  * @typeParamDefinition string - The payment session's ID.
  * 
  * @example
+ * import React from "react"
  * import { usePaymentCollectionRefreshPaymentSession } from "medusa-react"
  * 
  * type Props = {

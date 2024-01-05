@@ -23,6 +23,7 @@ import { buildOptions } from "../../utils/buildOptions"
  * authenticate and perform admin functionalities right after creation.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateUser } from "medusa-react"
  * 
  * const CreateUser = () => {
@@ -68,6 +69,7 @@ export const useAdminCreateUser = (
  * This hook updates an admin user's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateUser } from "medusa-react"
  * 
  * type Props = {
@@ -126,6 +128,7 @@ export const useAdminUpdateUser = (
  * This hook deletes a user. Once deleted, the user will not be able to authenticate or perform admin functionalities.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteUser } from "medusa-react"
  * 
  * type Props = {
@@ -177,6 +180,7 @@ export const useAdminDeleteUser = (
  * for the user using the {@link useAdminSendResetPasswordToken} hook, then use that token to reset the password in this hook.
  * 
  * @example
+ * import React from "react"
  * import { useAdminResetPassword } from "medusa-react"
  * 
  * const ResetPassword = () => {
@@ -226,6 +230,7 @@ export const useAdminResetPassword = (
  * That token must be used later to reset the password using the {@link useAdminResetPassword} hook.
  * 
  * @example
+ * import React from "react"
  * import { useAdminSendResetPasswordToken } from "medusa-react"
  * 
  * const Login = () => {

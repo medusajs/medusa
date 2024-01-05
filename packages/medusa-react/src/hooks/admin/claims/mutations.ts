@@ -22,6 +22,7 @@ import { adminOrderKeys } from "./../orders/queries"
  * the refund is processed as well.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateClaim } from "medusa-react"
  * 
  * type Props = {
@@ -88,6 +89,7 @@ export type AdminUpdateClaimReq = AdminPostOrdersOrderClaimsClaimReq & {
  * This hook updates a claim's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateClaim } from "medusa-react"
  * 
  * type Props = {
@@ -149,6 +151,7 @@ export const useAdminUpdateClaim = (
  * @typeParamDefinition string - The claim's ID.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCancelClaim } from "medusa-react"
  * 
  * type Props = {
@@ -197,6 +200,7 @@ export const useAdminCancelClaim = (
  * It may also change the status to `requires_action` if any actions are required.
  * 
  * @example
+ * import React from "react"
  * import { useAdminFulfillClaim } from "medusa-react"
  * 
  * type Props = {
@@ -281,6 +285,7 @@ export type AdminCancelClaimFulfillmentReq = {
  * This hook cancels a claim's fulfillment and change its fulfillment status to `canceled`.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCancelClaimFulfillment } from "medusa-react"
  * 
  * type Props = {
@@ -346,6 +351,7 @@ export const useAdminCancelClaimFulfillment = (
  * to either `partially_shipped` or `shipped`, depending on whether all the items were shipped.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateClaimShipment } from "medusa-react"
  * 
  * type Props = {

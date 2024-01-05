@@ -17,6 +17,7 @@ import { adminReturnKeys } from "./queries"
  * This hook marks a return as received. This also updates the status of associated order, claim, or swap accordingly.
  * 
  * @example
+ * import React from "react"
  * import { useAdminReceiveReturn } from "medusa-react"
  * 
  * type ReceiveReturnData = {
@@ -80,6 +81,7 @@ export const useAdminReceiveReturn = (
  * This hook registers a return as canceled. The return can be associated with an order, claim, or swap.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCancelReturn } from "medusa-react"
  * 
  * type Props = {

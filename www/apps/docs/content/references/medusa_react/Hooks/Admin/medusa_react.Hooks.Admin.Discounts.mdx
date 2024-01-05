@@ -28,6 +28,7 @@ For example, if the discount condition's type is `products`, the resources being
 To add resources to a discount condition:
 
 ```tsx
+import React from "react"
 import { 
   useAdminAddDiscountConditionResourceBatch
 } from "medusa-react"
@@ -70,6 +71,7 @@ export default DiscountCondition
 To specify relations to include in the returned discount:
 
 ```tsx
+import React from "react"
 import { 
   useAdminAddDiscountConditionResourceBatch
 } from "medusa-react"
@@ -132,6 +134,7 @@ the discount condition, not the resource itself.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminDeleteDiscountConditionResourceBatch
 } from "medusa-react"
@@ -190,6 +193,7 @@ This hook creates a discount with a given set of rules that defines how the disc
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminCreateDiscount,
 } from "medusa-react"
@@ -243,6 +247,7 @@ This hook updates a discount with a given set of rules that define how the disco
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateDiscount } from "medusa-react"
 
 type Props = {
@@ -284,6 +289,7 @@ This hook deletes a discount. Deleting the discount will make it unavailable for
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteDiscount } from "medusa-react"
 
 const Discount = () => {
@@ -315,6 +321,7 @@ This hook adds a Region to the list of Regions a Discount can be used in.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDiscountAddRegion } from "medusa-react"
 
 type Props = {
@@ -359,6 +366,7 @@ This does not delete a region, only the association between it and the discount.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDiscountRemoveRegion } from "medusa-react"
 
 type Props = {
@@ -403,6 +411,7 @@ automatically generate codes with the same rules and conditions.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateDynamicDiscountCode } from "medusa-react"
 
 type Props = {
@@ -452,6 +461,7 @@ This hook deletes a dynamic code from a discount.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteDynamicDiscountCode } from "medusa-react"
 
 type Props = {
@@ -497,6 +507,7 @@ the `products` field should be provided in the `payload` parameter.
 #### Example
 
 ```ts
+import React from "react"
 import { DiscountConditionOperator } from "@medusajs/medusa"
 import { useAdminDiscountCreateCondition } from "medusa-react"
 
@@ -549,6 +560,7 @@ type is `products`, the `products` field should be provided in the `payload` par
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDiscountUpdateCondition } from "medusa-react"
 
 type Props = {
@@ -603,6 +615,7 @@ This hook deletes a discount condition. This doesn't delete resources associated
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDiscountRemoveCondition } from "medusa-react"
 
 type Props = {
@@ -657,6 +670,7 @@ The discounts can also be paginated.
 To list discounts:
 
 ```tsx
+import React from "react"
 import { useAdminDiscounts } from "medusa-react"
 
 const Discounts = () => {
@@ -685,6 +699,7 @@ export default Discounts
 To specify relations that should be retrieved within the discounts:
 
 ```tsx
+import React from "react"
 import { useAdminDiscounts } from "medusa-react"
 
 const Discounts = () => {
@@ -715,6 +730,7 @@ export default Discounts
 By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminDiscounts } from "medusa-react"
 
 const Discounts = () => {
@@ -764,6 +780,7 @@ This hook retrieves a discount.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDiscount } from "medusa-react"
 
 type Props = {
@@ -802,6 +819,7 @@ the resources being added should be products.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminGetDiscountByCode } from "medusa-react"
 
 type Props = {
@@ -839,6 +857,7 @@ This hook retries a Discount Condition's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminGetDiscountCondition } from "medusa-react"
 
 type Props = {

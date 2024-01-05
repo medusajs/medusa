@@ -18,6 +18,7 @@ import { orderEditQueryKeys } from "./queries"
  * This hook declines an Order Edit. The changes are not reflected on the original order.
  * 
  * @example
+ * import React from "react"
  * import { useDeclineOrderEdit } from "medusa-react"
  * 
  * type Props = {
@@ -78,6 +79,7 @@ export const useDeclineOrderEdit = (
  * be authorized first using the {@link useAuthorizePaymentSession} hook.
  * 
  * @example
+ * import React from "react"
  * import { useCompleteOrderEdit } from "medusa-react"
  * 
  * type Props = {

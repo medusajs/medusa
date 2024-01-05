@@ -22,6 +22,7 @@ type ShippingOptionQueryKeys = typeof adminShippingOptionKeys
  * or `is_return` passed in the `query` parameter.
  * 
  * @example
+ * import React from "react"
  * import { useAdminShippingOptions } from "medusa-react"
  * 
  * const ShippingOptions = () => {
@@ -76,6 +77,7 @@ export const useAdminShippingOptions = (
  * This hook retrieves a shipping option's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminShippingOption } from "medusa-react"
  * 
  * type Props = {

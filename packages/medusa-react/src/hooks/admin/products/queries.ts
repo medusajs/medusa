@@ -25,6 +25,7 @@ type ProductQueryKeys = typeof adminProductKeys
  * To list products:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProducts } from "medusa-react"
  * 
  * const Products = () => {
@@ -51,6 +52,7 @@ type ProductQueryKeys = typeof adminProductKeys
  * To specify relations that should be retrieved within the products:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProducts } from "medusa-react"
  * 
  * const Products = () => {
@@ -79,6 +81,7 @@ type ProductQueryKeys = typeof adminProductKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminProducts } from "medusa-react"
  * 
  * const Products = () => {
@@ -138,6 +141,7 @@ export const useAdminProducts = (
  * This hook retrieves a product's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminProduct } from "medusa-react"
  * 
  * type Props = {
@@ -192,6 +196,7 @@ export const useAdminProduct = (
  * This hook retrieves a list of Product Tags with how many times each is used in products.
  * 
  * @example
+ * import React from "react"
  * import { useAdminProductTagUsage } from "medusa-react"
  * 
  * const ProductTags = (productId: string) => {

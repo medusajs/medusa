@@ -15,6 +15,7 @@ type UserQueryKeys = typeof adminUserKeys
  * This hook retrieves all admin users.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUsers } from "medusa-react"
  * 
  * const Users = () => {
@@ -60,6 +61,7 @@ export const useAdminUsers = (
  * This hook retrieves an admin user's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUser } from "medusa-react"
  * 
  * type Props = {

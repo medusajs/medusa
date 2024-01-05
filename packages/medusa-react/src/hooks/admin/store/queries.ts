@@ -19,6 +19,7 @@ type StoreQueryKeys = typeof adminStoreKeys
  * This hook retrieves a list of available payment providers in a store.
  * 
  * @example
+ * import React from "react"
  * import { useAdminStorePaymentProviders } from "medusa-react"
  * 
  * const PaymentProviders = () => {
@@ -70,6 +71,7 @@ export const useAdminStorePaymentProviders = (
  * This hook retrieves a list of available tax providers in a store.
  * 
  * @example
+ * import React from "react"
  * import { useAdminStoreTaxProviders } from "medusa-react"
  * 
  * const TaxProviders = () => {
@@ -121,6 +123,7 @@ export const useAdminStoreTaxProviders = (
  * This hook retrieves the store's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminStore } from "medusa-react"
  * 
  * const Store = () => {

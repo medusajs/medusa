@@ -23,6 +23,7 @@ type CustomerQueryKeys = typeof adminCustomerKeys
  * To list customers:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminCustomers } from "medusa-react"
  * 
  * const Customers = () => {
@@ -52,6 +53,7 @@ type CustomerQueryKeys = typeof adminCustomerKeys
  * You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminCustomers } from "medusa-react"
  * 
  * const Customers = () => {
@@ -113,6 +115,7 @@ export const useAdminCustomers = (
  * This hook retrieves the details of a customer.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCustomer } from "medusa-react"
  * 
  * type Props = {

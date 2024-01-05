@@ -18,6 +18,7 @@ import { adminNoteKeys } from "./queries"
  * This hook creates a Note which can be associated with any resource.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateNote } from "medusa-react"
  * 
  * const CreateNote = () => {
@@ -63,6 +64,7 @@ export const useAdminCreateNote = (
  * This hook updates a Note's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateNote } from "medusa-react"
  * 
  * type Props = {
@@ -121,6 +123,7 @@ export const useAdminUpdateNote = (
  * This hook deletes a Note.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteNote } from "medusa-react"
  * 
  * type Props = {

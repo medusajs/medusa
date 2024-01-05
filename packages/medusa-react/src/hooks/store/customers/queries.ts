@@ -22,6 +22,7 @@ type CustomerQueryKey = typeof customerKeys
  * This hook retrieves the logged-in customer's details. It requires customer authentication.
  * 
  * @example
+ * import React from "react"
  * import { useMeCustomer } from "medusa-react"
  * 
  * const Customer = () => {
@@ -63,6 +64,7 @@ export const useMeCustomer = (
  * This hook requires customer authentication.
  * 
  * @example
+ * import React from "react"
  * import { useCustomerOrders } from "medusa-react"
  * 
  * const Orders = () => {

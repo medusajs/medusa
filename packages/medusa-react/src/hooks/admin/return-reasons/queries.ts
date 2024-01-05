@@ -20,6 +20,7 @@ type ReturnReasonQueryKeys = typeof adminReturnReasonKeys
  * This hook retrieves a list of return reasons.
  * 
  * @example
+ * import React from "react"
  * import { useAdminReturnReasons } from "medusa-react"
  * 
  * const ReturnReasons = () => {
@@ -69,6 +70,7 @@ export const useAdminReturnReasons = (
  * This hook retrieves a return reason's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminReturnReason } from "medusa-react"
  * 
  * type Props = {

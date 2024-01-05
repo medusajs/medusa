@@ -17,6 +17,7 @@ type AuthQueryKey = typeof adminAuthKeys
  * This hook requires {@link Hooks~Admin~Auth~useAdminLogin | user authentication}.
  * 
  * @example
+ * import React from "react"
  * import { useAdminGetSession } from "medusa-react"
  * 
  * const Profile = () => {

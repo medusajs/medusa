@@ -25,6 +25,7 @@ This hook creates a swap for an order. This includes creating a return that is a
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateSwap } from "medusa-react"
 
 type Props = {
@@ -75,6 +76,7 @@ This hook cancels a swap and change its status.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCancelSwap } from "medusa-react"
 
 type Props = {
@@ -125,6 +127,7 @@ its fulfillment status may change to `requires_action`.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminFulfillSwap } from "medusa-react"
 
 type Props = {
@@ -177,6 +180,7 @@ to either `shipped` or `partially_shipped`, depending on whether all the items w
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateSwapShipment } from "medusa-react"
 
 type Props = {
@@ -232,6 +236,7 @@ of the swap. If `difference_due` is negative, the amount is refunded. If `differ
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminProcessSwapPayment } from "medusa-react"
 
 type Props = {
@@ -281,6 +286,7 @@ This hook cancels a swap's fulfillment and change its fulfillment status to `can
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCancelSwapFulfillment } from "medusa-react"
 
 type Props = {
@@ -337,6 +343,7 @@ This hook retrieves a list of swaps. The swaps can be paginated.
 To list swaps:
 
 ```tsx
+import React from "react"
 import { useAdminSwaps } from "medusa-react"
 
 const Swaps = () => {
@@ -363,6 +370,7 @@ export default Swaps
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminSwaps } from "medusa-react"
 
 const Swaps = () => {
@@ -409,6 +417,7 @@ This hook retrieves a swap's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminSwap } from "medusa-react"
 
 type Props = {

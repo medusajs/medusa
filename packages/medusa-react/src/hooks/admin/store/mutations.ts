@@ -13,6 +13,7 @@ import { adminStoreKeys } from "./queries"
  * This hook updates the store's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateStore } from "medusa-react"
  * 
  * function Store() {
@@ -60,6 +61,7 @@ export const useAdminUpdateStore = (
  * @typeParamDefinition string - The code of the currency to add to the store.
  * 
  * @example
+ * import React from "react"
  * import { useAdminAddStoreCurrency } from "medusa-react"
  * 
  * const Store = () => {
@@ -101,6 +103,7 @@ export const useAdminAddStoreCurrency = (
  * @typeParamDefinition string - The code of the currency to remove from the store.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteStoreCurrency } from "medusa-react"
  * 
  * const Store = () => {

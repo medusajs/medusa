@@ -31,6 +31,7 @@ type ProductQueryKey = typeof productKeys
  * To list products:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProducts } from "medusa-react"
  * 
  * const Products = () => {
@@ -57,6 +58,7 @@ type ProductQueryKey = typeof productKeys
  * To specify relations that should be retrieved within the products:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProducts } from "medusa-react"
  * 
  * const Products = () => {
@@ -85,6 +87,7 @@ type ProductQueryKey = typeof productKeys
  * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProducts } from "medusa-react"
  * 
  * const Products = () => {
@@ -148,6 +151,7 @@ export const useProducts = (
  * You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
  * 
  * @example
+ * import React from "react"
  * import { useProduct } from "medusa-react"
  * 
  * type Props = {

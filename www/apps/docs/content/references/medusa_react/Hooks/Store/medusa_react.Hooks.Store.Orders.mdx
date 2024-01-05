@@ -26,6 +26,7 @@ finalize their claim ownership.
 #### Example
 
 ```ts
+import React from "react"
 import { useRequestOrderAccess } from "medusa-react"
 
 const ClaimOrder = () => {
@@ -63,6 +64,7 @@ This hook verifies the claim order token provided to the customer when they requ
 #### Example
 
 ```ts
+import React from "react"
 import { useGrantOrderAccess } from "medusa-react"
 
 const ClaimOrder = () => {
@@ -104,6 +106,7 @@ This hook retrieves an Order's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useOrder } from "medusa-react"
 
 type Props = {
@@ -143,6 +146,7 @@ This hook retrieves an order's details by the ID of the cart that was used to cr
 #### Example
 
 ```ts
+import React from "react"
 import { useCartOrder } from "medusa-react"
 
 type Props = {
@@ -182,6 +186,7 @@ This hook looks up an order using filters. If the filters don't narrow down the 
 #### Example
 
 ```ts
+import React from "react"
 import { useOrders } from "medusa-react"
 
 type Props = {

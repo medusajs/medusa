@@ -24,6 +24,7 @@ type NotificationQueryKeys = typeof adminNotificationKeys
  * To list notifications:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminNotifications } from "medusa-react"
  * 
  * const Notifications = () => {
@@ -52,6 +53,7 @@ type NotificationQueryKeys = typeof adminNotificationKeys
  * To specify relations that should be retrieved within the notifications:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminNotifications } from "medusa-react"
  * 
  * const Notifications = () => {
@@ -82,6 +84,7 @@ type NotificationQueryKeys = typeof adminNotificationKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminNotifications } from "medusa-react"
  * 
  * const Notifications = () => {

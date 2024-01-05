@@ -24,6 +24,7 @@ passed in the `query` parameter. The product tags can also be sorted or paginate
 To list product tags:
 
 ```tsx
+import React from "react"
 import { useProductTags } from "medusa-react"
 
 function Tags() {
@@ -57,6 +58,7 @@ export default Tags
 By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useProductTags } from "medusa-react"
 
 function Tags() {

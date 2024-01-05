@@ -6,6 +6,7 @@ import { useMedusa } from "../../../contexts"
  * This hook creates a return for an order. If a return shipping method is specified, the return is automatically fulfilled.
  * 
  * @example
+ * import React from "react"
  * import { useCreateReturn } from "medusa-react"
  * 
  * type CreateReturnData = {

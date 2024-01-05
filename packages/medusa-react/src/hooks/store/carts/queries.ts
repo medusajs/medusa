@@ -14,6 +14,7 @@ type CartQueryKey = typeof cartKeys
  * This hook retrieves a Cart's details. This includes recalculating its totals.
  * 
  * @example
+ * import React from "react"
  * import { useGetCart } from "medusa-react"
  * 
  * type Props = {

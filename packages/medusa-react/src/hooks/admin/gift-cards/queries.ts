@@ -23,6 +23,7 @@ type GiftCardQueryKeys = typeof adminGiftCardKeys
  * To list gift cards:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminGiftCards } from "medusa-react"
  * 
  * const CustomGiftCards = () => {
@@ -51,6 +52,7 @@ type GiftCardQueryKeys = typeof adminGiftCardKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminGiftCards } from "medusa-react"
  * 
  * const CustomGiftCards = () => {
@@ -111,6 +113,7 @@ export const useAdminGiftCards = (
  * This hook retrieves a gift card's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminGiftCard } from "medusa-react"
  * 
  * type Props = {

@@ -35,6 +35,7 @@ type DiscountQueryKeys = typeof adminDiscountKeys
  * To list discounts:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminDiscounts } from "medusa-react"
  * 
  * const Discounts = () => {
@@ -63,6 +64,7 @@ type DiscountQueryKeys = typeof adminDiscountKeys
  * To specify relations that should be retrieved within the discounts:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminDiscounts } from "medusa-react"
  * 
  * const Discounts = () => {
@@ -93,6 +95,7 @@ type DiscountQueryKeys = typeof adminDiscountKeys
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminDiscounts } from "medusa-react"
  * 
  * const Discounts = () => {
@@ -154,6 +157,7 @@ export const useAdminDiscounts = (
  * This hook retrieves a discount.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDiscount } from "medusa-react"
  * 
  * type Props = {
@@ -207,6 +211,7 @@ export const useAdminDiscount = (
  * the resources being added should be products.
  * 
  * @example
+ * import React from "react"
  * import { useAdminGetDiscountByCode } from "medusa-react"
  * 
  * type Props = {
@@ -255,6 +260,7 @@ export const useAdminGetDiscountByCode = (
  * This hook retries a Discount Condition's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminGetDiscountCondition } from "medusa-react"
  * 
  * type Props = {

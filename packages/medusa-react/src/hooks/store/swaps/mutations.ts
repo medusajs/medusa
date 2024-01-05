@@ -11,6 +11,7 @@ import { useMedusa } from "../../../contexts"
  * key in the `Idempotency-Key` header.
  * 
  * @example
+ * import React from "react"
  * import { useCreateSwap } from "medusa-react"
  * 
  * type Props = {

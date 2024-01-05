@@ -29,6 +29,7 @@ type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
  * To list inventory items:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminInventoryItems } from "medusa-react"
  * 
  * function InventoryItems() {
@@ -62,6 +63,7 @@ type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminInventoryItems } from "medusa-react"
  * 
  * function InventoryItems() {
@@ -126,6 +128,7 @@ export const useAdminInventoryItems = (
  * This hook retrieves an Inventory Item's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminInventoryItem } from "medusa-react"
  * 
  * type Props = {
@@ -184,6 +187,7 @@ export const useAdminInventoryItem = (
  * such as `location_id` passed in the `query` parameter.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminInventoryItemLocationLevels,
  * } from "medusa-react"

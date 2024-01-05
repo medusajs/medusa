@@ -25,6 +25,7 @@ This hook creates a sales channel.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateSalesChannel } from "medusa-react"
 
 const CreateSalesChannel = () => {
@@ -63,6 +64,7 @@ This hook updates a sales channel's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateSalesChannel } from "medusa-react"
 
 type Props = {
@@ -112,6 +114,7 @@ This hook deletes a sales channel. Associated products, stock locations, and oth
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteSalesChannel } from "medusa-react"
 
 type Props = {
@@ -154,6 +157,7 @@ association between the product and the sales channel.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminDeleteProductsFromSalesChannel, 
 } from "medusa-react"
@@ -207,6 +211,7 @@ This hook adds a list of products to a sales channel.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminAddProductsToSalesChannel } from "medusa-react"
 
 type Props = {
@@ -260,6 +265,7 @@ your Medusa backend.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminAddLocationToSalesChannel
 } from "medusa-react"
@@ -307,6 +313,7 @@ your Medusa backend.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminRemoveLocationFromSalesChannel
 } from "medusa-react"
@@ -355,6 +362,7 @@ This hook retrieves a sales channel's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminSalesChannel } from "medusa-react"
 
 type Props = {
@@ -396,6 +404,7 @@ passed in the `query` parameter. The sales channels can also be sorted or pagina
 To list sales channels:
 
 ```tsx
+import React from "react"
 import { useAdminSalesChannels } from "medusa-react"
 
 const SalesChannels = () => {
@@ -424,6 +433,7 @@ export default SalesChannels
 To specify relations that should be retrieved within the sales channels:
 
 ```tsx
+import React from "react"
 import { useAdminSalesChannels } from "medusa-react"
 
 const SalesChannels = () => {
@@ -457,6 +467,7 @@ export default SalesChannels
 By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminSalesChannels } from "medusa-react"
 
 const SalesChannels = () => {

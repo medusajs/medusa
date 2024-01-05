@@ -18,6 +18,7 @@ import { buildOptions } from "../../utils/buildOptions"
  * This hook uploads a file to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUploadFile } from "medusa-react"
  * 
  * const UploadFile = () => {
@@ -59,6 +60,7 @@ export const useAdminUploadFile = (
  * This hook uploads a file to an ACL or a non-public bucket. The file upload is handled by the file service installed on the Medusa backend.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUploadProtectedFile } from "medusa-react"
  * 
  * const UploadFile = () => {
@@ -100,6 +102,7 @@ export const useAdminUploadProtectedFile = (
  * This hook creates and retrieve a presigned or public download URL for a file. The URL creation is handled by the file service installed on the Medusa backend.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreatePresignedDownloadUrl } from "medusa-react"
  * 
  * const Image = () => {
@@ -145,6 +148,7 @@ export const useAdminCreatePresignedDownloadUrl = (
  * This hook deletes an uploaded file from storage. The file is deleted using the installed file service on the Medusa backend.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteFile } from "medusa-react"
  * 
  * const Image = () => {

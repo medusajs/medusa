@@ -25,6 +25,7 @@ This hook creates a shipping option.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateShippingOption } from "medusa-react"
 
 type CreateShippingOption = {
@@ -77,6 +78,7 @@ This hook updates a shipping option's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateShippingOption } from "medusa-react"
 
 type Props = {
@@ -132,6 +134,7 @@ This hook deletes a shipping option. Once deleted, it can't be used when creatin
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteShippingOption } from "medusa-react"
 
 type Props = {
@@ -178,6 +181,7 @@ or `is_return` passed in the `query` parameter.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminShippingOptions } from "medusa-react"
 
 const ShippingOptions = () => {
@@ -221,6 +225,7 @@ This hook retrieves a shipping option's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminShippingOption } from "medusa-react"
 
 type Props = {

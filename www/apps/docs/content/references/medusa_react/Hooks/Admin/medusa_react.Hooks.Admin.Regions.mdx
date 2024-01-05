@@ -25,6 +25,7 @@ This hook creates a region.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateRegion } from "medusa-react"
 
 type CreateData = {
@@ -69,6 +70,7 @@ This hook updates a region's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateRegion } from "medusa-react"
 
 type Props = {
@@ -118,6 +120,7 @@ This hook deletes a region. Associated resources, such as providers or currencie
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteRegion } from "medusa-react"
 
 type Props = {
@@ -159,6 +162,7 @@ This hook adds a country to the list of countries in a region.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminRegionAddCountry } from "medusa-react"
 
 type Props = {
@@ -208,6 +212,7 @@ This hook deletes a country from the list of countries in a region. The country 
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminRegionRemoveCountry } from "medusa-react"
 
 type Props = {
@@ -255,6 +260,7 @@ This hook adds a fulfillment provider to the list of fulfullment providers in a 
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminRegionAddFulfillmentProvider
 } from "medusa-react"
@@ -307,6 +313,7 @@ This hook deletes a fulfillment provider from a region. The fulfillment provider
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminRegionDeleteFulfillmentProvider
 } from "medusa-react"
@@ -357,6 +364,7 @@ This hook adds a payment provider to the list of payment providers in a region.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminRegionAddPaymentProvider
 } from "medusa-react"
@@ -409,6 +417,7 @@ This hook deletes a payment provider from a region. The payment provider will st
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminRegionDeletePaymentProvider
 } from "medusa-react"
@@ -466,6 +475,7 @@ The regions can also be paginated.
 To list regions:
 
 ```tsx
+import React from "react"
 import { useAdminRegions } from "medusa-react"
 
 const Regions = () => {
@@ -492,6 +502,7 @@ export default Regions
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminRegions } from "medusa-react"
 
 const Regions = () => {
@@ -538,6 +549,7 @@ This hook retrieves a region's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminRegion } from "medusa-react"
 
 type Props = {
@@ -577,6 +589,7 @@ This hook retrieves a list of fulfillment options available in a region.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminRegionFulfillmentOptions
 } from "medusa-react"

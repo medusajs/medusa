@@ -24,6 +24,7 @@ import { adminTaxRateKeys } from "./queries"
  * This hook creates a tax rate.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateTaxRate } from "medusa-react"
  * 
  * type Props = {
@@ -78,6 +79,7 @@ export const useAdminCreateTaxRate = (
  * This hook updates a tax rate's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateTaxRate } from "medusa-react"
  * 
  * type Props = {
@@ -137,6 +139,7 @@ export const useAdminUpdateTaxRate = (
  * This hook deletes a tax rate. Resources associated with the tax rate, such as products or product types, are not deleted.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteTaxRate } from "medusa-react"
  * 
  * type Props = {
@@ -187,6 +190,7 @@ export const useAdminDeleteTaxRate = (
  * This hook adds products to a tax rate.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateProductTaxRates } from "medusa-react"
  * 
  * type Props = {
@@ -244,6 +248,7 @@ export const useAdminCreateProductTaxRates = (
  * This hook removes products from a tax rate. This only removes the association between the products and the tax rate. It does not delete the products.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteProductTaxRates } from "medusa-react"
  * 
  * type Props = {
@@ -301,6 +306,7 @@ export const useAdminDeleteProductTaxRates = (
  * This hook adds product types to a tax rate.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminCreateProductTypeTaxRates,
  * } from "medusa-react"
@@ -363,6 +369,7 @@ export const useAdminCreateProductTypeTaxRates = (
  * product types and the tax rate. It does not delete the product types.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminDeleteProductTypeTaxRates,
  * } from "medusa-react"
@@ -426,6 +433,7 @@ export const useAdminDeleteProductTypeTaxRates = (
  * This hook adds shipping options to a tax rate.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateShippingTaxRates } from "medusa-react"
  * 
  * type Props = {
@@ -488,6 +496,7 @@ export const useAdminCreateShippingTaxRates = (
  * the shipping options and the tax rate. It does not delete the shipping options.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteShippingTaxRates } from "medusa-react"
  * 
  * type Props = {

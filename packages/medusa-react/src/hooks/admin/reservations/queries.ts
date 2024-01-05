@@ -25,6 +25,7 @@ type ReservationsQueryKeys = typeof adminReservationsKeys
  * To list reservations:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminReservations } from "medusa-react"
  * 
  * const Reservations = () => {
@@ -53,6 +54,7 @@ type ReservationsQueryKeys = typeof adminReservationsKeys
  * To specify relations that should be retrieved within the reservations:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminReservations } from "medusa-react"
  * 
  * const Reservations = () => {
@@ -86,6 +88,7 @@ type ReservationsQueryKeys = typeof adminReservationsKeys
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminReservations } from "medusa-react"
  * 
  * const Reservations = () => {
@@ -149,6 +152,7 @@ export const useAdminReservations = (
  * This hook retrieves a reservation's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminReservation } from "medusa-react"
  * 
  * type Props = {

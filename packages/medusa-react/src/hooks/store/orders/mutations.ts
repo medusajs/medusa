@@ -21,6 +21,7 @@ import { orderKeys } from "./queries"
  * finalize their claim ownership.
  * 
  * @example
+ * import React from "react"
  * import { useRequestOrderAccess } from "medusa-react"
  * 
  * const ClaimOrder = () => {
@@ -70,6 +71,7 @@ export const useRequestOrderAccess = (
  * This hook verifies the claim order token provided to the customer when they request ownership of an order.
  * 
  * @example
+ * import React from "react"
  * import { useGrantOrderAccess } from "medusa-react"
  * 
  * const ClaimOrder = () => {

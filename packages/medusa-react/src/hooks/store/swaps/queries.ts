@@ -18,6 +18,7 @@ type SwapQueryKey = typeof swapKey
  * This hook retrieves a Swap's details by the ID of its cart.
  * 
  * @example
+ * import React from "react"
  * import { useCartSwap } from "medusa-react"
  * 
  * type Props = {

@@ -20,6 +20,7 @@ type OrderQueryKey = typeof orderKeys
  * This hook retrieves an Order's details.
  * 
  * @example
+ * import React from "react"
  * import { useOrder } from "medusa-react"
  * 
  * type Props = {
@@ -71,6 +72,7 @@ export const useOrder = (
  * This hook retrieves an order's details by the ID of the cart that was used to create the order.
  * 
  * @example
+ * import React from "react"
  * import { useCartOrder } from "medusa-react"
  * 
  * type Props = {
@@ -122,6 +124,7 @@ export const useCartOrder = (
  * This hook looks up an order using filters. If the filters don't narrow down the results to a single order, a `404` response is returned with no orders.
  * 
  * @example
+ * import React from "react"
  * import { useOrders } from "medusa-react"
  * 
  * type Props = {

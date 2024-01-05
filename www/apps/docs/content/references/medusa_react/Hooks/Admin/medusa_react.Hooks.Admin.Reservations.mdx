@@ -28,6 +28,7 @@ This hook creates a reservation which can be associated with any resource, such 
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateReservation } from "medusa-react"
 
 const CreateReservation = () => {
@@ -71,6 +72,7 @@ This hook updates a reservation's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateReservation } from "medusa-react"
 
 type Props = {
@@ -116,6 +118,7 @@ This hook deletes a reservation. Associated resources, such as the line item, wi
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteReservation } from "medusa-react"
 
 type Props = {
@@ -164,6 +167,7 @@ passed in the `query` parameter. The reservations can also be paginated.
 To list reservations:
 
 ```tsx
+import React from "react"
 import { useAdminReservations } from "medusa-react"
 
 const Reservations = () => {
@@ -192,6 +196,7 @@ export default Reservations
 To specify relations that should be retrieved within the reservations:
 
 ```tsx
+import React from "react"
 import { useAdminReservations } from "medusa-react"
 
 const Reservations = () => {
@@ -225,6 +230,7 @@ export default Reservations
 By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminReservations } from "medusa-react"
 
 const Reservations = () => {
@@ -274,6 +280,7 @@ This hook retrieves a reservation's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminReservation } from "medusa-react"
 
 type Props = {

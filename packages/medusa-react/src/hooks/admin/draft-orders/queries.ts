@@ -24,6 +24,7 @@ type DraftOrderQueryKeys = typeof adminDraftOrderKeys
  * To list draft orders:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminDraftOrders } from "medusa-react"
  * 
  * const DraftOrders = () => {
@@ -52,6 +53,7 @@ type DraftOrderQueryKeys = typeof adminDraftOrderKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminDraftOrders } from "medusa-react"
  * 
  * const DraftOrders = () => {
@@ -112,6 +114,7 @@ export const useAdminDraftOrders = (
  * This hook retrieves a Draft Order's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDraftOrder } from "medusa-react"
  * 
  * type Props = {

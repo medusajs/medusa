@@ -16,6 +16,7 @@ import { adminCurrenciesKeys } from "./queries"
  * This hook updates a currency's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateCurrency } from "medusa-react"
  * 
  * type Props = {

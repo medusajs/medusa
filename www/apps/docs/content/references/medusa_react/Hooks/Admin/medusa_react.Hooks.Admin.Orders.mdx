@@ -24,6 +24,7 @@ This hook updates an order's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateOrder } from "medusa-react"
 
 type Props = {
@@ -73,6 +74,7 @@ and it may fail if the payment or fulfillment Provider is unable to cancel the p
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCancelOrder } from "medusa-react"
 
 type Props = {
@@ -114,6 +116,7 @@ This hook completes an order and change its status. A canceled order can't be co
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCompleteOrder } from "medusa-react"
 
 type Props = {
@@ -155,6 +158,7 @@ This hook captures all the payments associated with an order. The payment of can
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCapturePayment } from "medusa-react"
 
 type Props = {
@@ -196,6 +200,7 @@ This hook refunds an amount for an order. The amount must be less than or equal 
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminRefundPayment } from "medusa-react"
 
 type Props = {
@@ -249,6 +254,7 @@ whether all the items were fulfilled.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateFulfillment } from "medusa-react"
 
 type Props = {
@@ -304,6 +310,7 @@ This hook cancels an order's fulfillment and change its fulfillment status to `c
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCancelFulfillment } from "medusa-react"
 
 type Props = {
@@ -352,6 +359,7 @@ This hook creates a shipment and mark a fulfillment as shipped. This changes the
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateShipment } from "medusa-react"
 
 type Props = {
@@ -401,6 +409,7 @@ This hook requests and create a return for items in an order. If the return ship
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminRequestReturn } from "medusa-react"
 
 type Props = {
@@ -456,6 +465,7 @@ This hook adds a shipping method to an order. If another shipping method exists 
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminAddShippingMethod } from "medusa-react"
 
 type Props = {
@@ -507,6 +517,7 @@ The hook archives an order and change its status.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminArchiveOrder } from "medusa-react"
 
 type Props = {
@@ -555,6 +566,7 @@ in the `query` parameter. The order can also be paginated.
 To list orders:
 
 ```tsx
+import React from "react"
 import { useAdminOrders } from "medusa-react"
 
 const Orders = () => {
@@ -582,6 +594,7 @@ You can use the `query` parameter to pass filters and specify relations that sho
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminOrders } from "medusa-react"
 
 const Orders = () => {
@@ -631,6 +644,7 @@ This hook retrieve an order's details.
 A simple example that retrieves an order by its ID:
 
 ```tsx
+import React from "react"
 import { useAdminOrder } from "medusa-react"
 
 type Props = {
@@ -658,6 +672,7 @@ export default Order
 To specify relations that should be retrieved:
 
 ```tsx
+import React from "react"
 import { useAdminOrder } from "medusa-react"
 
 const Order = (

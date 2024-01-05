@@ -20,6 +20,7 @@ import { adminStockLocationsKeys } from "./queries"
  * This hook creates a stock location.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateStockLocation } from "medusa-react"
  * 
  * const CreateStockLocation = () => {
@@ -65,6 +66,7 @@ export const useAdminCreateStockLocation = (
  * This hook updates a stock location's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateStockLocation } from "medusa-react"
  * 
  * type Props = {
@@ -124,6 +126,7 @@ export const useAdminUpdateStockLocation = (
  * This hook deletes a stock location.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteStockLocation } from "medusa-react"
  * 
  * type Props = {

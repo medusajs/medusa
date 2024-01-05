@@ -17,6 +17,7 @@ type OrderQueryKey = typeof orderEditQueryKeys
  * This hook retrieves an Order Edit's details.
  * 
  * @example
+ * import React from "react"
  * import { useOrderEdit } from "medusa-react"
  * 
  * type Props = {

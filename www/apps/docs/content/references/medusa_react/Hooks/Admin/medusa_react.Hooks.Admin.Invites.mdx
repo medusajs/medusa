@@ -25,6 +25,7 @@ The user will have the email associated with the invite, and the password provid
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminAcceptInvite } from "medusa-react"
 
 const AcceptInvite = () => {
@@ -70,6 +71,7 @@ invite to allow them to accept the invite.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminResendInvite } from "medusa-react"
 
 type Props = {
@@ -105,6 +107,7 @@ This hook deletes an invite. Only invites that weren't accepted can be deleted.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteInvite } from "medusa-react"
 
 type Props = {
@@ -148,6 +151,7 @@ This hook retrieves a list of invites.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminInvites } from "medusa-react"
 
 const Invites = () => {

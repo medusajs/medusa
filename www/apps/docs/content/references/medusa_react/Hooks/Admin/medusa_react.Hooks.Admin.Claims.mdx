@@ -26,6 +26,7 @@ the refund is processed as well.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateClaim } from "medusa-react"
 
 type Props = {
@@ -77,6 +78,7 @@ This hook updates a claim's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateClaim } from "medusa-react"
 
 type Props = {
@@ -125,6 +127,7 @@ of if its associated return hasn't been canceled.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCancelClaim } from "medusa-react"
 
 type Props = {
@@ -166,6 +169,7 @@ It may also change the status to `requires_action` if any actions are required.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminFulfillClaim } from "medusa-react"
 
 type Props = {
@@ -212,6 +216,7 @@ This hook cancels a claim's fulfillment and change its fulfillment status to `ca
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCancelClaimFulfillment } from "medusa-react"
 
 type Props = {
@@ -262,6 +267,7 @@ to either `partially_shipped` or `shipped`, depending on whether all the items w
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateClaimShipment } from "medusa-react"
 
 type Props = {

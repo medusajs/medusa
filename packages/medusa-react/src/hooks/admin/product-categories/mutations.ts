@@ -22,6 +22,7 @@ import { adminProductKeys } from "../products"
  * This hook creates a product category.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateProductCategory } from "medusa-react"
  * 
  * const CreateCategory = () => {
@@ -73,6 +74,7 @@ export const useAdminCreateProductCategory = (
  * This hook updates a product category.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateProductCategory } from "medusa-react"
  * 
  * type Props = {
@@ -139,6 +141,7 @@ export const useAdminUpdateProductCategory = (
  * This hook deletes a product category. This does not delete associated products.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteProductCategory } from "medusa-react"
  * 
  * type Props = {
@@ -201,6 +204,7 @@ export const useAdminDeleteProductCategory = (
  * This hook adds a list of products to a product category.
  * 
  * @example
+ * import React from "react"
  * import { useAdminAddProductsToCategory } from "medusa-react"
  * 
  * type ProductsData = {
@@ -272,6 +276,7 @@ export const useAdminAddProductsToCategory = (
  * This hook removes a list of products from a product category.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteProductsFromCategory } from "medusa-react"
  * 
  * type ProductsData = {

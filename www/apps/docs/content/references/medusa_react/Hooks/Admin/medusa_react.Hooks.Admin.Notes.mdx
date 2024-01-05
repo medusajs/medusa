@@ -22,6 +22,7 @@ This hook creates a Note which can be associated with any resource.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateNote } from "medusa-react"
 
 const CreateNote = () => {
@@ -61,6 +62,7 @@ This hook updates a Note's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateNote } from "medusa-react"
 
 type Props = {
@@ -108,6 +110,7 @@ This hook deletes a Note.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteNote } from "medusa-react"
 
 type Props = {
@@ -150,6 +153,7 @@ the `query` parameter. The notes can also be paginated.
 To list notes:
 
 ```tsx
+import React from "react"
 import { useAdminNotes } from "medusa-react"
 
 const Notes = () => {
@@ -176,6 +180,7 @@ export default Notes
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminNotes } from "medusa-react"
 
 const Notes = () => {
@@ -222,6 +227,7 @@ This hook retrieves a note's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminNote } from "medusa-react"
 
 type Props = {

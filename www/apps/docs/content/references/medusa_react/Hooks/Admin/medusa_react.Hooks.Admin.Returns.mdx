@@ -25,6 +25,7 @@ This hook marks a return as received. This also updates the status of associated
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminReceiveReturn } from "medusa-react"
 
 type ReceiveReturnData = {
@@ -77,6 +78,7 @@ This hook registers a return as canceled. The return can be associated with an o
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCancelReturn } from "medusa-react"
 
 type Props = {
@@ -122,6 +124,7 @@ This hook retrieves a list of Returns. The returns can be paginated.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminReturns } from "medusa-react"
 
 const Returns = () => {

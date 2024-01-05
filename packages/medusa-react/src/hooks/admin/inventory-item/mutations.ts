@@ -21,6 +21,7 @@ import { adminInventoryItemsKeys } from "./queries"
  * This hook creates an Inventory Item for a product variant.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateInventoryItem } from "medusa-react"
  * 
  * const CreateInventoryItem = () => {
@@ -71,6 +72,7 @@ export const useAdminCreateInventoryItem = (
  * This hook updates an Inventory Item's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateInventoryItem } from "medusa-react"
  * 
  * type Props = {
@@ -130,6 +132,7 @@ export const useAdminUpdateInventoryItem = (
  * This hook deletes an Inventory Item. This does not delete the associated product variant.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteInventoryItem } from "medusa-react"
  * 
  * type Props = {
@@ -189,6 +192,7 @@ export type AdminUpdateLocationLevelReq = AdminPostInventoryItemsItemLocationLev
  * This hook updates a location level's details for a given inventory item.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateLocationLevel } from "medusa-react"
  * 
  * type Props = {
@@ -266,6 +270,7 @@ export const useAdminUpdateLocationLevel = (
  * @typeParamDefinition string - The ID of the location level to delete.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteLocationLevel } from "medusa-react"
  * 
  * type Props = {
@@ -323,6 +328,7 @@ export const useAdminDeleteLocationLevel = (
  * This hook creates a Location Level for a given Inventory Item.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateLocationLevel } from "medusa-react"
  * 
  * type Props = {

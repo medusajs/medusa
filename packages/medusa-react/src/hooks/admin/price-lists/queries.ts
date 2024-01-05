@@ -34,6 +34,7 @@ type PriceListQueryKeys = typeof adminPriceListKeys
  * To list price lists:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminPriceLists } from "medusa-react"
  * 
  * const PriceLists = () => {
@@ -62,6 +63,7 @@ type PriceListQueryKeys = typeof adminPriceListKeys
  * To specify relations that should be retrieved within the price lists:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminPriceLists } from "medusa-react"
  * 
  * const PriceLists = () => {
@@ -92,6 +94,7 @@ type PriceListQueryKeys = typeof adminPriceListKeys
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminPriceLists } from "medusa-react"
  * 
  * const PriceLists = () => {
@@ -157,6 +160,7 @@ export const useAdminPriceLists = (
  * To list products in a price list:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminPriceListProducts } from "medusa-react"
  * 
  * type Props = {
@@ -193,6 +197,7 @@ export const useAdminPriceLists = (
  * To specify relations that should be retrieved within the products:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminPriceListProducts } from "medusa-react"
  * 
  * type Props = {
@@ -232,6 +237,7 @@ export const useAdminPriceLists = (
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminPriceListProducts } from "medusa-react"
  * 
  * type Props = {
@@ -306,6 +312,7 @@ export const useAdminPriceListProducts = (
  * This hook retrieves a price list's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminPriceList } from "medusa-react"
  * 
  * type Props = {

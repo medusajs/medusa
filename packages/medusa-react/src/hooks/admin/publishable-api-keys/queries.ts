@@ -32,6 +32,7 @@ type PublishableApiKeyQueryKeys = typeof adminPublishableApiKeysKeys
  * This hook retrieves a publishable API key's details.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminPublishableApiKey,
  * } from "medusa-react"
@@ -94,6 +95,7 @@ export const useAdminPublishableApiKey = (
  * To list publishable API keys:
  * 
  * ```tsx
+ * import React from "react"
  * import { PublishableApiKey } from "@medusajs/medusa"
  * import { useAdminPublishableApiKeys } from "medusa-react"
  * 
@@ -129,6 +131,7 @@ export const useAdminPublishableApiKey = (
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { PublishableApiKey } from "@medusajs/medusa"
  * import { useAdminPublishableApiKeys } from "medusa-react"
  * 
@@ -197,6 +200,7 @@ export const useAdminPublishableApiKeys = (
  * filtered by fields such as `q` passed in the `query` parameter.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminPublishableApiKeySalesChannels,
  * } from "medusa-react"

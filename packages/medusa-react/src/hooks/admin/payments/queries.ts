@@ -16,6 +16,7 @@ type AdminPaymentKey = typeof adminPaymentQueryKeys
  * This hook retrieves a payment's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminPayment } from "medusa-react"
  * 
  * type Props = {

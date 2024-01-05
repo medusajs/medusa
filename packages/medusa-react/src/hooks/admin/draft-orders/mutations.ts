@@ -21,6 +21,7 @@ import { adminDraftOrderKeys } from "./queries"
  * This hook creates a Draft Order. A draft order is not transformed into an order until payment is captured.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateDraftOrder } from "medusa-react"
  * 
  * type DraftOrderData = {
@@ -76,6 +77,7 @@ export const useAdminCreateDraftOrder = (
  * This hook updates a Draft Order's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateDraftOrder } from "medusa-react"
  * 
  * type Props = {
@@ -134,6 +136,7 @@ export const useAdminUpdateDraftOrder = (
  * This hook deletes a Draft Order.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteDraftOrder } from "medusa-react"
  * 
  * type Props = {
@@ -186,6 +189,7 @@ export const useAdminDeleteDraftOrder = (
  * which is manual payment that isn't integrated with any third-party payment provider. It is assumed that the payment capturing is handled manually by the admin.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDraftOrderRegisterPayment } from "medusa-react"
  * 
  * type Props = {
@@ -237,6 +241,7 @@ export const useAdminDraftOrderRegisterPayment = (
  * This hook creates a Line Item in the Draft Order.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDraftOrderAddLineItem } from "medusa-react"
  * 
  * type Props = {
@@ -293,6 +298,7 @@ export const useAdminDraftOrderAddLineItem = (
  * @typeParamDefinition string - The ID of the line item to remove.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
  * 
  * type Props = {
@@ -350,6 +356,7 @@ export type AdminDraftOrderUpdateLineItemReq = AdminPostDraftOrdersDraftOrderLin
  * This hook updates a Line Item in a Draft Order.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
  * 
  * type Props = {

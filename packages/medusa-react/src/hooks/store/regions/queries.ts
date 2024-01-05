@@ -15,6 +15,7 @@ type RegionQueryType = typeof regionsKey
  * This hook retrieves a list of regions. This hook is useful to show the customer all available regions to choose from.
  * 
  * @example
+ * import React from "react"
  * import { useRegions } from "medusa-react"
  * 
  * const Regions = () => {
@@ -61,6 +62,7 @@ export const useRegions = (
  * This hook retrieves a Region's details.
  * 
  * @example
+ * import React from "react"
  * import { useRegion } from "medusa-react"
  * 
  * type Props = {

@@ -25,6 +25,7 @@ type VariantQueryKeys = typeof adminVariantKeys
  * To list product variants:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminVariants } from "medusa-react"
  * 
  * const Variants = () => {
@@ -53,6 +54,7 @@ type VariantQueryKeys = typeof adminVariantKeys
  * To specify relations that should be retrieved within the product variants:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminVariants } from "medusa-react"
  * 
  * const Variants = () => {
@@ -83,6 +85,7 @@ type VariantQueryKeys = typeof adminVariantKeys
  * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminVariants } from "medusa-react"
  * 
  * const Variants = () => {
@@ -147,6 +150,7 @@ export const useAdminVariants = (
  * A simple example that retrieves a product variant by its ID:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminVariant } from "medusa-react"
  * 
  * type Props = {
@@ -172,6 +176,7 @@ export const useAdminVariants = (
  * To specify relations that should be retrieved:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminVariant } from "medusa-react"
  * 
  * type Props = {
@@ -227,6 +232,7 @@ export const useAdminVariant = (
  * This hook retrieves the available inventory of a product variant.
  * 
  * @example
+ * import React from "react"
  * import { useAdminVariantsInventory } from "medusa-react"
  * 
  * type Props = {

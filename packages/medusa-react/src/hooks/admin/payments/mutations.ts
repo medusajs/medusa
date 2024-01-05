@@ -19,6 +19,7 @@ import { adminPaymentQueryKeys } from "./queries"
  * This hook captures a payment.
  * 
  * @example
+ * import React from "react"
  * import { useAdminPaymentsCapturePayment } from "medusa-react"
  * 
  * type Props = {
@@ -71,6 +72,7 @@ export const useAdminPaymentsCapturePayment = (
  * This hook refunds a payment. The payment must be captured first.
  * 
  * @example
+ * import React from "react"
  * import { RefundReason } from "@medusajs/medusa"
  * import { useAdminPaymentsRefundPayment } from "medusa-react"
  * 

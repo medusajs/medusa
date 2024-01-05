@@ -24,6 +24,7 @@ import { adminOrderEditsKeys } from "./queries"
  * This hook creates an order edit.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateOrderEdit } from "medusa-react"
  * 
  * const CreateOrderEdit = () => {
@@ -71,6 +72,7 @@ export const useAdminCreateOrderEdit = (
  * This hook deletes an order edit. Only order edits that have the status `created` can be deleted.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteOrderEdit } from "medusa-react"
  * 
  * type Props = {
@@ -126,6 +128,7 @@ export const useAdminDeleteOrderEdit = (
  * This hook deletes a line item change that indicates the addition, deletion, or update of a line item in the original order.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteOrderEditItemChange } from "medusa-react"
  * 
  * type Props = {
@@ -191,6 +194,7 @@ export const useAdminDeleteOrderEditItemChange = (
  * into an original order. Line item changes are only reflected on the original order after the order edit is confirmed.
  * 
  * @example
+ * import React from "react"
  * import { useAdminOrderEditUpdateLineItem } from "medusa-react"
  * 
  * type Props = {
@@ -259,6 +263,7 @@ export const useAdminOrderEditUpdateLineItem = (
  * The item in the original order will not be deleted until the order edit is confirmed.
  * 
  * @example
+ * import React from "react"
  * import { useAdminOrderEditDeleteLineItem } from "medusa-react"
  * 
  * type Props = {
@@ -319,6 +324,7 @@ export const useAdminOrderEditDeleteLineItem = (
  * This hook updates an Order Edit's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateOrderEdit } from "medusa-react"
  * 
  * type Props = {
@@ -384,6 +390,7 @@ export const useAdminUpdateOrderEdit = (
  * The item will not be added to the original order until the order edit is confirmed.
  * 
  * @example
+ * import React from "react"
  * import { useAdminOrderEditAddLineItem } from "medusa-react"
  * 
  * type Props = {
@@ -444,6 +451,7 @@ export const useAdminOrderEditAddLineItem = (
  * a notification to the customer about the order edit.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminRequestOrderEditConfirmation,
  * } from "medusa-react"
@@ -505,6 +513,7 @@ export const useAdminRequestOrderEditConfirmation = (
  * This hook cancels an order edit.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminCancelOrderEdit,
  * } from "medusa-react"
@@ -565,6 +574,7 @@ export const useAdminCancelOrderEdit = (
  * This hook confirms an order edit. This will reflect the changes in the order edit on the associated order.
  * 
  * @example
+ * import React from "react"
  * import { useAdminConfirmOrderEdit } from "medusa-react"
  * 
  * type Props = {

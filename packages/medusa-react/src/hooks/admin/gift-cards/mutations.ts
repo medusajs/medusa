@@ -18,6 +18,7 @@ import { adminGiftCardKeys } from "./queries"
  * This hook creates a gift card that can redeemed by its unique code. The Gift Card is only valid within one region.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateGiftCard } from "medusa-react"
  * 
  * const CreateCustomGiftCards = () => {
@@ -65,6 +66,7 @@ export const useAdminCreateGiftCard = (
  * This hook updates a gift card's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateGiftCard } from "medusa-react"
  * 
  * type Props = {
@@ -124,6 +126,7 @@ export const useAdminUpdateGiftCard = (
  * This hook deletes a gift card. Once deleted, it can't be used by customers.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteGiftCard } from "medusa-react"
  * 
  * type Props = {

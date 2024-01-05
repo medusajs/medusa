@@ -19,6 +19,7 @@ import { adminCustomerKeys } from "./queries"
  * This hook creates a customer as an admin.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateCustomer } from "medusa-react"
  * 
  * type CustomerData = {
@@ -68,6 +69,7 @@ export const useAdminCreateCustomer = (
  * This hook updates a customer's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateCustomer } from "medusa-react"
  * 
  * type CustomerData = {

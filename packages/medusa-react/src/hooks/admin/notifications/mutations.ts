@@ -16,6 +16,7 @@ import { adminNotificationKeys } from "./queries"
  * This hook resends a previously sent notifications, with the same data but optionally to a different address.
  * 
  * @example
+ * import React from "react"
  * import { useAdminResendNotification } from "medusa-react"
  * 
  * type Props = {

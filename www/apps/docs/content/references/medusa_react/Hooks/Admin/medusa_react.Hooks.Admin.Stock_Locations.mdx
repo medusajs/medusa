@@ -28,6 +28,7 @@ This hook creates a stock location.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateStockLocation } from "medusa-react"
 
 const CreateStockLocation = () => {
@@ -65,6 +66,7 @@ This hook updates a stock location's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateStockLocation } from "medusa-react"
 
 type Props = {
@@ -112,6 +114,7 @@ This hook deletes a stock location.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteStockLocation } from "medusa-react"
 
 type Props = {
@@ -158,6 +161,7 @@ The stock locations can also be sorted or paginated.
 To list stock locations:
 
 ```tsx
+import React from "react"
 import { useAdminStockLocations } from "medusa-react"
 
 function StockLocations() {
@@ -191,6 +195,7 @@ export default StockLocations
 To specify relations that should be retrieved within the stock locations:
 
 ```tsx
+import React from "react"
 import { useAdminStockLocations } from "medusa-react"
 
 function StockLocations() {
@@ -226,6 +231,7 @@ export default StockLocations
 By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminStockLocations } from "medusa-react"
 
 function StockLocations() {
@@ -277,6 +283,7 @@ This hook retrieves a stock location's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminStockLocation } from "medusa-react"
 
 type Props = {

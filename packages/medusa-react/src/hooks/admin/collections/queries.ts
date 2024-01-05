@@ -23,6 +23,7 @@ type CollectionsQueryKey = typeof adminCollectionKeys
  * To list product collections:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminCollections } from "medusa-react"
  * 
  * const Collections = () => {
@@ -51,6 +52,7 @@ type CollectionsQueryKey = typeof adminCollectionKeys
  * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminCollections } from "medusa-react"
  * 
  * const Collections = () => {
@@ -106,6 +108,7 @@ export const useAdminCollections = (
  * This hook retrieves a product collection by its ID. The products associated with it are expanded and returned as well.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCollection } from "medusa-react"
  * 
  * type Props = {

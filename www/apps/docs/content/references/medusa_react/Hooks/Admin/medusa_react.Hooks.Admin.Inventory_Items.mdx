@@ -27,6 +27,7 @@ This hook creates an Inventory Item for a product variant.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateInventoryItem } from "medusa-react"
 
 const CreateInventoryItem = () => {
@@ -64,6 +65,7 @@ This hook updates an Inventory Item's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateInventoryItem } from "medusa-react"
 
 type Props = {
@@ -111,6 +113,7 @@ This hook deletes an Inventory Item. This does not delete the associated product
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteInventoryItem } from "medusa-react"
 
 type Props = {
@@ -148,6 +151,7 @@ This hook updates a location level's details for a given inventory item.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateLocationLevel } from "medusa-react"
 
 type Props = {
@@ -199,6 +203,7 @@ This hook deletes a location level of an Inventory Item.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteLocationLevel } from "medusa-react"
 
 type Props = {
@@ -242,6 +247,7 @@ This hook creates a Location Level for a given Inventory Item.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateLocationLevel } from "medusa-react"
 
 type Props = {
@@ -300,6 +306,7 @@ The inventory items can also be paginated.
 To list inventory items:
 
 ```tsx
+import React from "react"
 import { useAdminInventoryItems } from "medusa-react"
 
 function InventoryItems() {
@@ -333,6 +340,7 @@ export default InventoryItems
 By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminInventoryItems } from "medusa-react"
 
 function InventoryItems() {
@@ -383,6 +391,7 @@ This hook retrieves an Inventory Item's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminInventoryItem } from "medusa-react"
 
 type Props = {
@@ -424,6 +433,7 @@ such as `location_id` passed in the `query` parameter.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminInventoryItemLocationLevels,
 } from "medusa-react"

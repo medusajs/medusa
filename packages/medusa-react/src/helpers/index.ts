@@ -57,6 +57,7 @@ export type FormatVariantPriceParams = {
  * 
  * @example
  * ```tsx title="src/Products.ts"
+ * import React from "react"
  * import { formatVariantPrice } from "medusa-react"
  * import { Product, ProductVariant } from "@medusajs/medusa"
  * 
@@ -132,6 +133,7 @@ export type ComputeVariantPriceParams = {
  * 
  * @example
  * ```tsx title="src/Products.ts"
+ * import React from "react"
  * import { computeVariantPrice } from "medusa-react"
  * import { Product, ProductVariant } from "@medusajs/medusa"
  * 
@@ -185,6 +187,7 @@ export const computeVariantPrice = ({
  * 
  * @example
  * ```tsx title="src/Products.ts"
+ * import React from "react"
  * import { getVariantPrice } from "medusa-react"
  * import { Product, ProductVariant } from "@medusajs/medusa"
  * 
@@ -257,6 +260,7 @@ export type ComputeAmountParams = {
  * 
  * @example
  * ```tsx title="src/MyComponent.ts"
+ * import React from "react"
  * import { computeAmount } from "medusa-react"
  * 
  * const MyComponent = () => {
@@ -335,6 +339,7 @@ export type FormatAmountParams = {
  * @returns {string} The formatted price.
  * 
  * @example
+ * import React from "react"
  * import { formatVariantPrice } from "medusa-react"
  * import { Product, ProductVariant } from "@medusajs/medusa"
  * 

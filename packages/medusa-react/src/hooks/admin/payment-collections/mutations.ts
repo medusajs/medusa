@@ -19,6 +19,7 @@ import { adminPaymentCollectionQueryKeys } from "./queries"
  * This hook deletes a payment collection. Only payment collections with the statuses `canceled` or `not_paid` can be deleted.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeletePaymentCollection } from "medusa-react"
  * 
  * type Props = {
@@ -78,6 +79,7 @@ export const useAdminDeletePaymentCollection = (
  * This hook updates a payment collection's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdatePaymentCollection } from "medusa-react"
  * 
  * type Props = {
@@ -142,6 +144,7 @@ export const useAdminUpdatePaymentCollection = (
  * This hook sets the status of a payment collection as `authorized`. This will also change the `authorized_amount` of the payment collection.
  * 
  * @example
+ * import React from "react"
  * import { useAdminMarkPaymentCollectionAsAuthorized } from "medusa-react"
  * 
  * type Props = {

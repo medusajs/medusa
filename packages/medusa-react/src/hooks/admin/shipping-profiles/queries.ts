@@ -20,6 +20,7 @@ type ShippingProfileQueryKeys = typeof adminShippingProfileKeys
  * This hook retrieves a list of shipping profiles.
  * 
  * @example
+ * import React from "react"
  * import { useAdminShippingProfiles } from "medusa-react"
  * 
  * const ShippingProfiles = () => {
@@ -70,6 +71,7 @@ export const useAdminShippingProfiles = (
  * This hook retrieves a shipping profile's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminShippingProfile } from "medusa-react"
  * 
  * type Props = {

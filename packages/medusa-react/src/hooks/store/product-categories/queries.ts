@@ -25,6 +25,7 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  * To list product categories:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProductCategories } from "medusa-react"
  * 
  * function Categories() {
@@ -58,6 +59,7 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  * To retrieve a product category by its handle:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProductCategories } from "medusa-react"
  * 
  * function Categories(
@@ -95,6 +97,7 @@ type ProductCategoryQueryKeys = typeof storeProductCategoryKeys
  * To specify relations that should be retrieved within the product categories:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProductCategories } from "medusa-react"
  * 
  * function Categories(
@@ -202,6 +205,7 @@ export const useProductCategories = (
  * A simple example that retrieves a product category by its ID:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProductCategory } from "medusa-react"
  * 
  * type Props = {
@@ -227,6 +231,7 @@ export const useProductCategories = (
  * To specify relations that should be retrieved:
  * 
  * ```tsx
+ * import React from "react"
  * import { useProductCategory } from "medusa-react"
  * 
  * type Props = {

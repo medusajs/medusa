@@ -22,6 +22,7 @@ This hook creates, updates, or deletes a list of payment sessions of a Payment C
 To add two new payment sessions:
 
 ```tsx
+import React from "react"
 import { useManageMultiplePaymentSessions } from "medusa-react"
 
 type Props = {
@@ -64,6 +65,7 @@ export default PaymentCollection
 To update a payment session and another one by not including it in the payload:
 
 ```tsx
+import React from "react"
 import { useManageMultiplePaymentSessions } from "medusa-react"
 
 type Props = {
@@ -119,6 +121,7 @@ This hook creates a Payment Session for a payment provider in a Payment Collecti
 #### Example
 
 ```ts
+import React from "react"
 import { useManagePaymentSession } from "medusa-react"
 
 type Props = {
@@ -169,6 +172,7 @@ This hook authorizes a Payment Session of a Payment Collection.
 #### Example
 
 ```ts
+import React from "react"
 import { useAuthorizePaymentSession } from "medusa-react"
 
 type Props = {
@@ -216,6 +220,7 @@ This hook authorize the Payment Sessions of a Payment Collection.
 #### Example
 
 ```ts
+import React from "react"
 import { useAuthorizePaymentSessionsBatch } from "medusa-react"
 
 type Props = {
@@ -265,6 +270,7 @@ This hook refreshes a Payment Session's data to ensure that it is in sync with t
 #### Example
 
 ```ts
+import React from "react"
 import { usePaymentCollectionRefreshPaymentSession } from "medusa-react"
 
 type Props = {
@@ -316,6 +322,7 @@ This hook retrieves a Payment Collection's details.
 #### Example
 
 ```ts
+import React from "react"
 import { usePaymentCollection } from "medusa-react"
 
 type Props = {

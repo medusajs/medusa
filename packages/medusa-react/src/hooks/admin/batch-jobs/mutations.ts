@@ -15,6 +15,7 @@ import { adminBatchJobsKeys } from "./queries"
  * which can be done using the {@link useAdminConfirmBatchJob} hook.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateBatchJob } from "medusa-react"
  * 
  * const CreateBatchJob = () => {
@@ -61,6 +62,7 @@ export const useAdminCreateBatchJob = (
  * This hook marks a batch job as canceled. When a batch job is canceled, the processing of the batch job doesn’t automatically stop.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCancelBatchJob } from "medusa-react"
  * 
  * type Props = {
@@ -113,6 +115,7 @@ export const useAdminCancelBatchJob = (
  * When a batch job is created, it's not executed automatically if `dry_run` is set to `true`. This hook confirms that the batch job should be executed.
  * 
  * @example
+ * import React from "react"
  * import { useAdminConfirmBatchJob } from "medusa-react"
  * 
  * type Props = {

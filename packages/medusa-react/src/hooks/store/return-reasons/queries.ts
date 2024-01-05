@@ -18,6 +18,7 @@ type ReturnReasonsQueryKey = typeof returnReasonsKey
  * This hook retrieves a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront.
  * 
  * @example
+ * import React from "react"
  * import { useReturnReasons } from "medusa-react"
  * 
  * const ReturnReasons = () => {
@@ -67,6 +68,7 @@ export const useReturnReasons = (
  * This hook retrieves a Return Reason's details.
  * 
  * @example
+ * import React from "react"
  * import { useReturnReason } from "medusa-react"
  * 
  * type Props = {

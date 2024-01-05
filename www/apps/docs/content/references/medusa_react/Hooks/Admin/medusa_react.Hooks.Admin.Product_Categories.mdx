@@ -30,6 +30,7 @@ This hook creates a product category.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateProductCategory } from "medusa-react"
 
 const CreateCategory = () => {
@@ -69,6 +70,7 @@ This hook updates a product category.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateProductCategory } from "medusa-react"
 
 type Props = {
@@ -120,6 +122,7 @@ This hook deletes a product category. This does not delete associated products.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteProductCategory } from "medusa-react"
 
 type Props = {
@@ -163,6 +166,7 @@ This hook adds a list of products to a product category.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminAddProductsToCategory } from "medusa-react"
 
 type ProductsData = {
@@ -218,6 +222,7 @@ This hook removes a list of products from a product category.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteProductsFromCategory } from "medusa-react"
 
 type ProductsData = {
@@ -279,6 +284,7 @@ This hook
 To list product categories:
 
 ```tsx
+import React from "react"
 import { useAdminProductCategories } from "medusa-react"
 
 function Categories() {
@@ -312,6 +318,7 @@ export default Categories
 To specify relations that should be retrieved within the product category:
 
 ```tsx
+import React from "react"
 import { useAdminProductCategories } from "medusa-react"
 
 function Categories() {
@@ -347,6 +354,7 @@ export default Categories
 By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminProductCategories } from "medusa-react"
 
 function Categories() {
@@ -400,6 +408,7 @@ This hook retrieves a product category's details.
 A simple example that retrieves an order by its ID:
 
 ```tsx
+import React from "react"
 import { useAdminProductCategory } from "medusa-react"
 
 type Props = {
@@ -431,6 +440,7 @@ export default Category
 To specify relations that should be retrieved:
 
 ```tsx
+import React from "react"
 import { useAdminProductCategory } from "medusa-react"
 
 type Props = {

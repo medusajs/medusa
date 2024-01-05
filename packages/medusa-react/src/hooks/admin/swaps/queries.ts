@@ -22,6 +22,7 @@ type SwapsQueryKey = typeof adminSwapKeys
  * To list swaps:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminSwaps } from "medusa-react"
  * 
  * const Swaps = () => {
@@ -48,6 +49,7 @@ type SwapsQueryKey = typeof adminSwapKeys
  * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminSwaps } from "medusa-react"
  * 
  * const Swaps = () => {
@@ -106,6 +108,7 @@ export const useAdminSwaps = (
  * This hook retrieves a swap's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminSwap } from "medusa-react"
  * 
  * type Props = {

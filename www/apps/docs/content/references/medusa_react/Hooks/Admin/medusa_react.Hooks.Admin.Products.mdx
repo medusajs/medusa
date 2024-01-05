@@ -24,6 +24,7 @@ This hook creates a new Product. This hook can also be used to create a gift car
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateProduct } from "medusa-react"
 
 type CreateProductData = {
@@ -88,6 +89,7 @@ This hook updates a Product's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateProduct } from "medusa-react"
 
 type Props = {
@@ -137,6 +139,7 @@ This hook deletes a product and its associated product variants and options.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteProduct } from "medusa-react"
 
 type Props = {
@@ -178,6 +181,7 @@ This hook creates a product variant associated with a product. Each product vari
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateVariant } from "medusa-react"
 
 type CreateVariantData = {
@@ -237,6 +241,7 @@ This hook updates a product variant's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateVariant } from "medusa-react"
 
 type Props = {
@@ -289,6 +294,7 @@ This hook deletes a product variant.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteVariant } from "medusa-react"
 
 type Props = {
@@ -338,6 +344,7 @@ This hook adds a product option to a product.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreateProductOption } from "medusa-react"
 
 type Props = {
@@ -387,6 +394,7 @@ This hook updates a product option's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdateProductOption } from "medusa-react"
 
 type Props = {
@@ -442,6 +450,7 @@ they must be deleted before deleting the product option.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeleteProductOption } from "medusa-react"
 
 type Props = {
@@ -498,6 +507,7 @@ the `query` parameter. The products can also be sorted or paginated.
 To list products:
 
 ```tsx
+import React from "react"
 import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
@@ -524,6 +534,7 @@ export default Products
 To specify relations that should be retrieved within the products:
 
 ```tsx
+import React from "react"
 import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
@@ -552,6 +563,7 @@ export default Products
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminProducts } from "medusa-react"
 
 const Products = () => {
@@ -599,6 +611,7 @@ This hook retrieves a product's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminProduct } from "medusa-react"
 
 type Props = {
@@ -638,6 +651,7 @@ This hook retrieves a list of Product Tags with how many times each is used in p
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminProductTagUsage } from "medusa-react"
 
 const ProductTags = (productId: string) => {

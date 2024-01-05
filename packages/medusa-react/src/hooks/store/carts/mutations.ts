@@ -24,6 +24,7 @@ export type CreateCartReq = StorePostCartReq | undefined
  * If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
  * 
  * @example
+ * import React from "react"
  * import { useCreateCart } from "medusa-react"
  * 
  * type Props = {
@@ -71,6 +72,7 @@ export const useCreateCart = (
  * the payment sessions are updated. The cart's totals are also recalculated.
  * 
  * @example
+ * import React from "react"
  * import { useUpdateCart } from "medusa-react"
  * 
  * type Props = {
@@ -122,6 +124,7 @@ export const useUpdateCart = (
  * key in the `Idempotency-Key` header.
  * 
  * @example
+ * import React from "react"
  * import { useCompleteCart } from "medusa-react"
  * 
  * type Props = {
@@ -163,6 +166,7 @@ export const useCompleteCart = (
  * it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services.
  * 
  * @example
+ * import React from "react"
  * import { useCreatePaymentSession } from "medusa-react"
  * 
  * type Props = {
@@ -204,6 +208,7 @@ export const useCreatePaymentSession = (
  * All payment sessions are updated and cart totals are recalculated afterwards.
  * 
  * @example
+ * import React from "react"
  * import { useUpdatePaymentSession } from "medusa-react"
  * 
  * type Props = {
@@ -273,6 +278,7 @@ export type RefreshPaymentSessionMutationData = {
  * This hook refreshes a Payment Session to ensure that it is in sync with the Cart. This is usually not necessary, but is provided for edge cases.
  * 
  * @example
+ * import React from "react"
  * import { useRefreshPaymentSession } from "medusa-react"
  * 
  * type Props = {
@@ -326,6 +332,7 @@ export const useRefreshPaymentSession = (
  * The totals of the cart will be recalculated.
  * 
  * @example
+ * import React from "react"
  * import { useSetPaymentSession } from "medusa-react"
  * 
  * type Props = {
@@ -378,6 +385,7 @@ export const useSetPaymentSession = (
  * This hook adds a shipping method to the cart. The validation of the `data` field is handled by the fulfillment provider of the chosen shipping option.
  * 
  * @example
+ * import React from "react"
  * import { useAddShippingMethodToCart } from "medusa-react"
  * 
  * type Props = {
@@ -440,6 +448,7 @@ export type DeletePaymentSessionMutationData = {
  * This hook deletes a Payment Session in a Cart. May be useful if a payment has failed. The totals will be recalculated.
  * 
  * @example
+ * import React from "react"
  * import { useDeletePaymentSession } from "medusa-react"
  * 
  * type Props = {
@@ -493,6 +502,7 @@ export const useDeletePaymentSession = (
  * It performs the same actions as the {@link useCreateCart} and {@link useCreatePaymentSession} hooks.
  * 
  * @example
+ * import React from "react"
  * import { useStartCheckout } from "medusa-react"
  * 
  * type Props = {

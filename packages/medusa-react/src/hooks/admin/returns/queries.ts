@@ -15,6 +15,7 @@ type ReturnQueryKeys = typeof adminReturnKeys
  * This hook retrieves a list of Returns. The returns can be paginated.
  * 
  * @example
+ * import React from "react"
  * import { useAdminReturns } from "medusa-react"
  * 
  * const Returns = () => {

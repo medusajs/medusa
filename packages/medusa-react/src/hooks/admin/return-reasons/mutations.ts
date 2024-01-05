@@ -17,6 +17,7 @@ import { adminReturnReasonKeys } from "./queries"
  * This hook creates a return reason.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateReturnReason } from "medusa-react"
  * 
  * const CreateReturnReason = () => {
@@ -66,6 +67,7 @@ export const useAdminCreateReturnReason = (
  * This hook updates a return reason's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateReturnReason } from "medusa-react"
  * 
  * type Props = {
@@ -127,6 +129,7 @@ export const useAdminUpdateReturnReason = (
  * This hook deletes a return reason.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteReturnReason } from "medusa-react"
  * 
  * type Props = {

@@ -17,6 +17,7 @@ import { adminShippingOptionKeys } from "./queries"
  * This hook creates a shipping option.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreateShippingOption } from "medusa-react"
  * 
  * type CreateShippingOption = {
@@ -77,6 +78,7 @@ export const useAdminCreateShippingOption = (
  * This hook updates a shipping option's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdateShippingOption } from "medusa-react"
  * 
  * type Props = {
@@ -144,6 +146,7 @@ export const useAdminUpdateShippingOption = (
  * This hook deletes a shipping option. Once deleted, it can't be used when creating orders or returns.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeleteShippingOption } from "medusa-react"
  * 
  * type Props = {

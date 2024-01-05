@@ -26,6 +26,7 @@ import { adminPriceListKeys } from "./queries"
  * This hook creates a price list.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   PriceListStatus, 
  *   PriceListType, 
@@ -87,6 +88,7 @@ export const useAdminCreatePriceList = (
  * This hook updates a price list's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminUpdatePriceList } from "medusa-react"
  * 
  * type Props = {
@@ -152,6 +154,7 @@ export const useAdminUpdatePriceList = (
  * This hook deletes a price list and its associated prices.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeletePriceList } from "medusa-react"
  * 
  * type Props = {
@@ -204,6 +207,7 @@ export const useAdminDeletePriceList = (
  * This hook adds or updates a list of prices in a price list.
  * 
  * @example
+ * import React from "react"
  * import { useAdminCreatePriceListPrices } from "medusa-react"
  * 
  * type PriceData = {
@@ -272,6 +276,7 @@ export const useAdminCreatePriceListPrices = (
  * This hook deletes a list of prices in a price list.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeletePriceListPrices } from "medusa-react"
  * 
  * type Props = {
@@ -335,6 +340,7 @@ export const useAdminDeletePriceListPrices = (
  * This hook deletes all the prices associated with multiple products in a price list.
  * 
  * @example
+ * import React from "react"
  * import { useAdminDeletePriceListProductsPrices } from "medusa-react"
  * 
  * type Props = {
@@ -396,6 +402,7 @@ export const useAdminDeletePriceListProductsPrices = (
  * This hook deletes all the prices related to a specific product in a price list.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminDeletePriceListProductPrices
  * } from "medusa-react"
@@ -466,6 +473,7 @@ export const useAdminDeletePriceListProductPrices = (
  * This hook deletes all the prices related to a specific product variant in a price list.
  * 
  * @example
+ * import React from "react"
  * import { 
  *   useAdminDeletePriceListVariantPrices
  * } from "medusa-react"

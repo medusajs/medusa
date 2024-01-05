@@ -11,6 +11,7 @@ import { useMedusa } from "../../../contexts/medusa"
  * Subsequent requests sent with other hooks are sent with the Cookie session automatically.
  * 
  * @example
+ * import React from "react"
  * import { useCreateCustomer } from "medusa-react"
  * 
  * const RegisterCustomer = () => {
@@ -62,6 +63,7 @@ export type UpdateMeReq = StorePostCustomersCustomerReq & {
  * This hook updates the logged-in customer's details. This hook requires customer authentication.
  * 
  * @example
+ * import React from "react"
  * import { useUpdateMe } from "medusa-react"
  * 
  * type Props = {

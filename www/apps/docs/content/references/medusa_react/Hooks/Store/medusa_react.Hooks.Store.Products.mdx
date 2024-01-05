@@ -32,6 +32,7 @@ You can alternatively use a publishable API key in the request header instead of
 To list products:
 
 ```tsx
+import React from "react"
 import { useProducts } from "medusa-react"
 
 const Products = () => {
@@ -58,6 +59,7 @@ export default Products
 To specify relations that should be retrieved within the products:
 
 ```tsx
+import React from "react"
 import { useProducts } from "medusa-react"
 
 const Products = () => {
@@ -86,6 +88,7 @@ export default Products
 By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useProducts } from "medusa-react"
 
 const Products = () => {
@@ -137,6 +140,7 @@ You can alternatively use a publishable API key in the request header instead of
 #### Example
 
 ```ts
+import React from "react"
 import { useProduct } from "medusa-react"
 
 type Props = {

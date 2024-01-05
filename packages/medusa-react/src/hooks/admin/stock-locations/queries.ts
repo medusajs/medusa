@@ -25,6 +25,7 @@ type StockLocationsQueryKeys = typeof adminStockLocationsKeys
  * To list stock locations:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminStockLocations } from "medusa-react"
  * 
  * function StockLocations() {
@@ -58,6 +59,7 @@ type StockLocationsQueryKeys = typeof adminStockLocationsKeys
  * To specify relations that should be retrieved within the stock locations:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminStockLocations } from "medusa-react"
  * 
  * function StockLocations() {
@@ -93,6 +95,7 @@ type StockLocationsQueryKeys = typeof adminStockLocationsKeys
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
  * 
  * ```tsx
+ * import React from "react"
  * import { useAdminStockLocations } from "medusa-react"
  * 
  * function StockLocations() {
@@ -158,6 +161,7 @@ export const useAdminStockLocations = (
  * This hook retrieves a stock location's details.
  * 
  * @example
+ * import React from "react"
  * import { useAdminStockLocation } from "medusa-react"
  * 
  * type Props = {

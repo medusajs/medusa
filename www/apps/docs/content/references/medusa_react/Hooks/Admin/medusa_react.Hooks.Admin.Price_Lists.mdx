@@ -24,6 +24,7 @@ This hook creates a price list.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   PriceListStatus, 
   PriceListType, 
@@ -78,6 +79,7 @@ This hook updates a price list's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminUpdatePriceList } from "medusa-react"
 
 type Props = {
@@ -127,6 +129,7 @@ This hook deletes a price list and its associated prices.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeletePriceList } from "medusa-react"
 
 type Props = {
@@ -168,6 +171,7 @@ This hook adds or updates a list of prices in a price list.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminCreatePriceListPrices } from "medusa-react"
 
 type PriceData = {
@@ -221,6 +225,7 @@ This hook deletes a list of prices in a price list.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeletePriceListPrices } from "medusa-react"
 
 type Props = {
@@ -268,6 +273,7 @@ This hook deletes all the prices associated with multiple products in a price li
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminDeletePriceListProductsPrices } from "medusa-react"
 
 type Props = {
@@ -317,6 +323,7 @@ This hook deletes all the prices related to a specific product in a price list.
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminDeletePriceListProductPrices
 } from "medusa-react"
@@ -365,6 +372,7 @@ This hook deletes all the prices related to a specific product variant in a pric
 #### Example
 
 ```ts
+import React from "react"
 import { 
   useAdminDeletePriceListVariantPrices
 } from "medusa-react"
@@ -420,6 +428,7 @@ in the `query` parameter. The price lists can also be sorted or paginated.
 To list price lists:
 
 ```tsx
+import React from "react"
 import { useAdminPriceLists } from "medusa-react"
 
 const PriceLists = () => {
@@ -448,6 +457,7 @@ export default PriceLists
 To specify relations that should be retrieved within the price lists:
 
 ```tsx
+import React from "react"
 import { useAdminPriceLists } from "medusa-react"
 
 const PriceLists = () => {
@@ -478,6 +488,7 @@ export default PriceLists
 By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminPriceLists } from "medusa-react"
 
 const PriceLists = () => {
@@ -530,6 +541,7 @@ passed in the `query` parameter. The products can also be sorted or paginated.
 To list products in a price list:
 
 ```tsx
+import React from "react"
 import { useAdminPriceListProducts } from "medusa-react"
 
 type Props = {
@@ -566,6 +578,7 @@ export default PriceListProducts
 To specify relations that should be retrieved within the products:
 
 ```tsx
+import React from "react"
 import { useAdminPriceListProducts } from "medusa-react"
 
 type Props = {
@@ -605,6 +618,7 @@ export default PriceListProducts
 By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
 
 ```tsx
+import React from "react"
 import { useAdminPriceListProducts } from "medusa-react"
 
 type Props = {
@@ -663,6 +677,7 @@ This hook retrieves a price list's details.
 #### Example
 
 ```ts
+import React from "react"
 import { useAdminPriceList } from "medusa-react"
 
 type Props = {

@@ -10,6 +10,7 @@ import { useMedusa } from "../../../contexts"
  * This hook generates a Line Item with a given Product Variant and adds it to the Cart.
  * 
  * @example
+ * import React from "react"
  * import { useCreateLineItem } from "medusa-react"
  * 
  * type Props = {
@@ -71,6 +72,7 @@ export type UpdateLineItemReq = StorePostCartsCartLineItemsItemReq & {
  * This hook updates a line item's data.
  * 
  * @example
+ * import React from "react"
  * import { useUpdateLineItem } from "medusa-react"
  * 
  * type Props = {
@@ -128,6 +130,7 @@ export const useUpdateLineItem = (
  * This hook deletes a line item from a cart. The payment sessions will be updated and the totals will be recalculated.
  * 
  * @example
+ * import React from "react"
  * import { useDeleteLineItem } from "medusa-react"
  * 
  * type Props = {
