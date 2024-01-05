@@ -338,14 +338,14 @@ describe("Publishable API keys", () => {
       expect(response.status).toBe(200)
 
       expect(mappings).toEqual([
-        {
+        expect.objectContaining({
           sales_channel_id: salesChannel1.id,
           publishable_key_id: pubKeyId,
-        },
-        {
+        }),
+        expect.objectContaining({
           sales_channel_id: salesChannel2.id,
           publishable_key_id: pubKeyId,
-        },
+        }),
       ])
 
       expect(response.data.publishable_api_key).toMatchObject({
@@ -386,10 +386,10 @@ describe("Publishable API keys", () => {
 
       await dbConnection.manager.query(
         `INSERT INTO publishable_api_key_sales_channel
-             (publishable_key_id, sales_channel_id)
-         VALUES ('${pubKeyId}', '${salesChannel1.id}'),
-                ('${pubKeyId}', '${salesChannel2.id}'),
-                ('${pubKeyId}', '${salesChannel3.id}');`
+             (id, publishable_key_id, sales_channel_id)
+         VALUES ('pksc-1','${pubKeyId}', '${salesChannel1.id}'),
+                ('pksc-2','${pubKeyId}', '${salesChannel2.id}'),
+                ('pksc-3','${pubKeyId}', '${salesChannel3.id}');`
       )
     })
 
@@ -417,16 +417,16 @@ describe("Publishable API keys", () => {
       const mappings = await dbConnection.manager.query(
         `SELECT *
          FROM publishable_api_key_sales_channel
-         WHERE publishable_key_id = '${pubKeyId}'`
+         WHERE publishable_key_id = '${pubKeyId}';`
       )
 
       expect(response.status).toBe(200)
 
       expect(mappings).toEqual([
-        {
+        expect.objectContaining({
           sales_channel_id: salesChannel3.id,
           publishable_key_id: pubKeyId,
-        },
+        }),
       ])
 
       expect(response.data.publishable_api_key).toMatchObject({
@@ -467,9 +467,9 @@ describe("Publishable API keys", () => {
 
       await dbConnection.manager.query(
         `INSERT INTO publishable_api_key_sales_channel
-             (publishable_key_id, sales_channel_id)
-         VALUES ('${pubKeyId}', '${salesChannel1.id}'),
-                ('${pubKeyId}', '${salesChannel2.id}');`
+             (id, publishable_key_id, sales_channel_id)
+         VALUES ('pksc-1', '${pubKeyId}', '${salesChannel1.id}'),
+                ('pksc-2', '${pubKeyId}', '${salesChannel2.id}');`
       )
     })
 

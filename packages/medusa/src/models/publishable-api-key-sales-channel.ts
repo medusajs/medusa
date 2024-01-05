@@ -1,12 +1,25 @@
-import { Entity, PrimaryColumn } from "typeorm"
+import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
+import { BaseEntity } from "../interfaces"
+import { generateEntityId } from "../utils"
 
-@Entity()
-export class PublishableApiKeySalesChannel {
-  @PrimaryColumn()
+@Entity("publishable_api_key_sales_channel")
+export class PublishableApiKeySalesChannel extends BaseEntity {
+  @Column({ type: "text" })
+  id: string
+
+  @PrimaryColumn({ type: "text" })
   sales_channel_id: string
 
-  @PrimaryColumn()
+  @PrimaryColumn({ type: "text" })
   publishable_key_id: string
+
+  /**
+   * @apiIgnore
+   */
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "pksc")
+  }
 }
 
 /**
