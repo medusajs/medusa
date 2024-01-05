@@ -60,7 +60,7 @@ export type UpdateMeReq = StorePostCustomersCustomerReq & {
 }
 
 /**
- * This hook updates the logged-in customer's details. This hook requires customer authentication.
+ * This hook updates the logged-in customer's details. This hook requires [customer authentication](https://docs.medusajs.com/medusa-react/overview#customer-authentication).
  * 
  * @example
  * import React from "react"

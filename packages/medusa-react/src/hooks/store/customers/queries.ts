@@ -19,7 +19,7 @@ export const customerKeys = {
 type CustomerQueryKey = typeof customerKeys
 
 /**
- * This hook retrieves the logged-in customer's details. It requires customer authentication.
+ * This hook retrieves the logged-in customer's details. It requires [customer authentication](https://docs.medusajs.com/medusa-react/overview#customer-authentication).
  * 
  * @example
  * import React from "react"
@@ -61,7 +61,7 @@ export const useMeCustomer = (
 
 /**
  * This hook retrieves a list of the logged-in customer's orders. The orders can be filtered by fields such as `status` or `fulfillment_status`. The orders can also be paginated.
- * This hook requires customer authentication.
+ * This hook requires [customer authentication](https://docs.medusajs.com/medusa-react/overview#customer-authentication).
  * 
  * @example
  * import React from "react"

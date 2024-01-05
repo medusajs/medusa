@@ -640,7 +640,7 @@
 												"summary": [
 													{
 														"kind": "text",
-														"text": "This hook is used to log a User in using their credentials. If the user is authenticated successfully, the cookie is automatically attached to subsequent requests sent with other hooks."
+														"text": "This hook is used to log a User in using their credentials. If the user is authenticated successfully, \nthe cookie is automatically attached to subsequent requests sent with other hooks."
 													}
 												],
 												"blockTags": [
@@ -76414,7 +76414,7 @@
 													},
 													{
 														"kind": "text",
-														"text": ". The orders can also be paginated.\nThis hook requires customer authentication."
+														"text": ". The orders can also be paginated.\nThis hook requires [customer authentication](https://docs.medusajs.com/medusa-react/overview#customer-authentication)."
 													}
 												],
 												"blockTags": [
@@ -77088,7 +77088,7 @@
 												"summary": [
 													{
 														"kind": "text",
-														"text": "This hook retrieves the logged-in customer's details. It requires customer authentication."
+														"text": "This hook retrieves the logged-in customer's details. It requires [customer authentication](https://docs.medusajs.com/medusa-react/overview#customer-authentication)."
 													}
 												],
 												"blockTags": [
@@ -77501,7 +77501,7 @@
 												"summary": [
 													{
 														"kind": "text",
-														"text": "This hook updates the logged-in customer's details. This hook requires customer authentication."
+														"text": "This hook updates the logged-in customer's details. This hook requires [customer authentication](https://docs.medusajs.com/medusa-react/overview#customer-authentication)."
 													}
 												],
 												"blockTags": [
