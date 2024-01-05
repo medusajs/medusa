@@ -196,6 +196,10 @@ module.exports = {
       frontmatterData: {
         displayed_sidebar: "medusaReactSidebar",
       },
+      parameterComponentExtraProps: {
+        expandUrl:
+          "https://docs.medusajs.com/medusa-react/overview#expanding-fields",
+      },
     },
     "^modules/medusa_react\\.mdx": {
       frontmatterData: {
