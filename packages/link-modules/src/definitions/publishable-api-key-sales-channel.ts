@@ -36,6 +36,9 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   extends: [
     {
       serviceName: "publishableApiKeyService",
+      fieldAlias: {
+        sales_channels: "sales_channels_link.sales_channel",
+      },
       relationship: {
         serviceName: LINKS.PublishableApiKeySalesChannel,
         isInternalService: true,
