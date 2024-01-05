@@ -19,6 +19,7 @@ import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
+import { generateEntityId } from "@medusajs/utils"
 
 export type CartFactoryData = {
   id?: string
@@ -31,6 +32,8 @@ export type CartFactoryData = {
   sales_channel?: SalesChannelFactoryData
   sales_channel_id?: string
 }
+
+const isMedusaV2Enabled = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
 export const simpleCartFactory = async (
   dataSource: DataSource,
@@ -77,7 +80,7 @@ export const simpleCartFactory = async (
   }
 
   const id = data.id || `simple-cart-${Math.random() * 1000}`
-  const toSave = manager.create(Cart, {
+  let toSave = {
     id,
     email:
       typeof data.email !== "undefined" ? data.email : faker.internet.email(),
@@ -85,7 +88,18 @@ export const simpleCartFactory = async (
     customer_id: customerId,
     shipping_address_id: address.id,
     sales_channel_id: sales_channel?.id ?? data.sales_channel_id ?? null,
-  })
+  }
+
+  if (isMedusaV2Enabled) {
+    await manager.query(
+      `INSERT INTO "cart_sales_channel" (id, cart_id, sales_channel_id) 
+        VALUES ('${generateEntityId(undefined, "cartsc")}', '${toSave.id}', '${
+        sales_channel?.id ?? data.sales_channel_id
+      }');`
+    )
+  }
+
+  toSave = manager.create(Cart, toSave)
 
   const cart = await manager.save(toSave)
 

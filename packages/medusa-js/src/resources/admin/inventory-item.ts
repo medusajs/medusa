@@ -280,7 +280,6 @@ class AdminInventoryItemsResource extends BaseResource {
    * Delete a location level of an Inventory Item.
    * @param {string} inventoryItemId - The ID of the inventory item.
    * @param {string} locationId - The ID of the location level to delete.
-   * @param {AdminGetInventoryItemsParams} query - Configurations to apply on the returned inventory item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminInventoryItemsRes>} the inventory item's details.
    * 
@@ -296,15 +295,9 @@ class AdminInventoryItemsResource extends BaseResource {
   deleteLocationLevel(
     inventoryItemId: string,
     locationId: string,
-    query?: AdminGetInventoryItemsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
-    let path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
-
-    if (query) {
-      const queryString = qs.stringify(query)
-      path += `?${queryString}`
-    }
+    const path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
 
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }

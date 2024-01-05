@@ -44,7 +44,7 @@ export async function addOrUpdateLineItem({
   })
 }
 
-export async function setPaymentSession({ cart, container, manager }) {
+export async function setPaymentSessions({ cart, container, manager }) {
   const cartService: CartService = container.resolve("cartService")
 
   const txCartService = cartService.withTransaction(manager)

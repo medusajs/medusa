@@ -1,8 +1,5 @@
-import {
-  resolveValue,
-  SymbolMedusaWorkflowComposerContext,
-  SymbolWorkflowHook,
-} from "./helpers"
+import { OrchestrationUtils } from "@medusajs/utils"
+import { resolveValue } from "./helpers"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
@@ -104,7 +101,9 @@ export function hook<TOutput>(
   value: any
 ): WorkflowData<TOutput> {
   const hookBinder = (
-    global[SymbolMedusaWorkflowComposerContext] as CreateWorkflowComposerContext
+    global[
+      OrchestrationUtils.SymbolMedusaWorkflowComposerContext
+    ] as CreateWorkflowComposerContext
   ).hookBinder
 
   return hookBinder(name, function (context) {
@@ -130,7 +129,7 @@ export function hook<TOutput>(
         }
         return finalResult
       },
-      __type: SymbolWorkflowHook,
+      __type: OrchestrationUtils.SymbolWorkflowHook,
     }
   })
 }
