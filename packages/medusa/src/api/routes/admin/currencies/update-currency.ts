@@ -34,6 +34,34 @@ import { EntityManager } from "typeorm"
  *       .then(({ currency }) => {
  *         console.log(currency.code);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateCurrency } from "medusa-react"
+ *
+ *       type Props = {
+ *         currencyCode: string
+ *       }
+ *
+ *       const Currency = ({ currencyCode }: Props) => {
+ *         const updateCurrency = useAdminUpdateCurrency(currencyCode)
+ *         // ...
+ *
+ *         const handleUpdate = (includes_tax: boolean) => {
+ *           updateCurrency.mutate({
+ *             includes_tax,
+ *           }, {
+ *             onSuccess: ({ currency }) => {
+ *               console.log(currency)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Currency
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -87,6 +115,7 @@ export default async (req: ExtendedRequest<Currency>, res) => {
 /**
  * @schema AdminPostCurrenciesCurrencyReq
  * type: object
+ * description: "The details to update in the currency"
  * properties:
  *   includes_tax:
  *     type: boolean

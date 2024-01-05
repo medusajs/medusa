@@ -23,7 +23,7 @@ import BaseResource from "../base"
  */
 class AdminGiftCardsResource extends BaseResource {
   /**
-   * Create a gift card that can redeemed by its unique code. The Gift Card is only valid within `1` region.
+   * Create a gift card that can redeemed by its unique code. The Gift Card is only valid within one region.
    * @param {AdminPostGiftCardsReq} payload - The gift card to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminGiftCardsRes>} Resolves to the gift card's details.

@@ -54,6 +54,44 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateShippingOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         shippingOptionId: string
+ *       }
+ *
+ *       const ShippingOption = ({ shippingOptionId }: Props) => {
+ *         const updateShippingOption = useAdminUpdateShippingOption(
+ *           shippingOptionId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string,
+ *           requirements: {
+ *             id: string,
+ *             type: string,
+ *             amount: number
+ *           }[]
+ *         ) => {
+ *           updateShippingOption.mutate({
+ *             name,
+ *             requirements
+ *           }, {
+ *             onSuccess: ({ shipping_option }) => {
+ *               console.log(shipping_option.requirements)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ShippingOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -136,6 +174,7 @@ class OptionRequirement {
 /**
  * @schema AdminPostShippingOptionsOptionReq
  * type: object
+ * description: "The details to update of the shipping option."
  * required:
  *   - requirements
  * properties:

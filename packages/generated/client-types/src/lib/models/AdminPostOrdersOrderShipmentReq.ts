@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the shipment to create.
+ */
 export interface AdminPostOrdersOrderShipmentReq {
   /**
    * The ID of the Fulfillment.

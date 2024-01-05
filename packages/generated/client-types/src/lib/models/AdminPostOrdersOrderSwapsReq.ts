@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the swap to create.
+ */
 export interface AdminPostOrdersOrderSwapsReq {
   /**
    * The Line Items to associate with the swap's return.

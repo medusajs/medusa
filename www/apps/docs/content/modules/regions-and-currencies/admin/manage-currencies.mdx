@@ -154,20 +154,24 @@ You can update a currency by sending a request to the [Update Currency API Route
     ```tsx
     import { useAdminUpdateCurrency } from "medusa-react"
 
-    const UpdateCode = () => {
-      const updateCode = useAdminUpdateCurrency(code)
+    const Currency = (currencyCode: string) => {
+      const updateCurrency = useAdminUpdateCurrency(currencyCode)
       // ...
 
-      const handleUpdate = () => {
-        updateCode.mutate({
+      const handleUpdate = (includes_tax: boolean) => {
+        updateCurrency.mutate({
           includes_tax,
+        }, {
+          onSuccess: ({ currency }) => {
+            console.log(currency)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateCode
+    export default Currency
     ```
 
   </TabItem>
@@ -321,18 +325,22 @@ You can add a currency to a store using the [Add a Currency Code API Route](http
     ```tsx
     import { useAdminAddStoreCurrency } from "medusa-react"
 
-    const AddCurrency = () => {
-      const addCode = useAdminAddStoreCurrency()
+    const Store = () => {
+      const addCurrency = useAdminAddStoreCurrency()
       // ...
 
-      const handleAdd = () => {
-        addCode.mutate(code)
+      const handleAdd = (code: string) => {
+        addCurrency.mutate(code, {
+          onSuccess: ({ store }) => {
+            console.log(store.currencies)
+          }
+        })
       }
 
       // ...
     }
 
-    export default AddCurrency
+    export default Store
     ```
 
   </TabItem>
@@ -384,18 +392,22 @@ You can remove a currency from a store by sending a request to the [Delete Curre
     ```tsx
     import { useAdminDeleteStoreCurrency } from "medusa-react"
 
-    const DeleteCurrency = () => {
+    const Store = () => {
       const deleteCurrency = useAdminDeleteStoreCurrency()
       // ...
 
-      const handleDelete = () => {
-        deleteCurrency.mutate(code)
+      const handleAdd = (code: string) => {
+        deleteCurrency.mutate(code, {
+          onSuccess: ({ store }) => {
+            console.log(store.currencies)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteCurrency
+    export default Store
     ```
 
   </TabItem>

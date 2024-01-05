@@ -5,8 +5,7 @@ import {
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { OrchestrationUtils } from "@medusajs/utils"
-import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
-import { resolveValue } from "./helpers"
+import { ExportedWorkflow, exportWorkflow } from "../../helper"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -66,17 +65,11 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
 type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
-  ): Omit<LocalWorkflow, "run"> & {
-    run: (
-      args?: FlowRunOptions<
-        TDataOverride extends undefined ? TData : TDataOverride
-      >
-    ) => Promise<
-      WorkflowResult<
-        TResultOverride extends undefined ? TResult : TResultOverride
-      >
-    >
-  }
+  ): Omit<
+    LocalWorkflow,
+    "run" | "registerStepSuccess" | "registerStepFailure"
+  > &
+    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 } & THooks & {
     getName: () => string
   }
@@ -198,43 +191,19 @@ export function createWorkflow<
 
   WorkflowManager.update(name, context.flow, handlers)
 
-  const workflow = exportWorkflow<TData, TResult>(name)
+  const workflow = exportWorkflow<TData, TResult>(
+    name,
+    returnedStep,
+    undefined,
+    {
+      wrappedInput: true,
+    }
+  )
 
   const mainFlow = <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ) => {
     const workflow_ = workflow<TDataOverride, TResultOverride>(container)
-    const originalRun = workflow_.run
-
-    workflow_.run = (async (
-      args?: FlowRunOptions<
-        TDataOverride extends undefined ? TData : TDataOverride
-      >
-    ): Promise<
-      WorkflowResult<
-        TResultOverride extends undefined ? TResult : TResultOverride
-      >
-    > => {
-      args ??= {}
-      args.resultFrom ??=
-        returnedStep?.__type === OrchestrationUtils.SymbolWorkflowStep
-          ? returnedStep.__step__
-          : undefined
-
-      // Forwards the input to the ref object on composer.apply
-      const workflowResult = (await originalRun(
-        args
-      )) as unknown as WorkflowResult<
-        TResultOverride extends undefined ? TResult : TResultOverride
-      >
-
-      workflowResult.result = await resolveValue(
-        workflowResult.result || returnedStep,
-        workflowResult.transaction.getContext()
-      )
-
-      return workflowResult
-    }) as any
 
     return workflow_
   }

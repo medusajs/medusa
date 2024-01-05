@@ -3,6 +3,7 @@ import { PageEvent, ParameterReflection, ReflectionKind } from "typedoc"
 import { MarkdownTheme } from "../../theme"
 import { getDisplayName } from "../../utils"
 import { escapeChars } from "utils"
+import { replaceTemplateVariables } from "../../utils/reflection-template-strings"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -12,10 +13,16 @@ export default function (theme: MarkdownTheme) {
       const { reflectionTitle } = theme.getFormattingOptionsForLocation()
 
       if (reflectionTitle?.fullReplacement?.length) {
-        return reflectionTitle.fullReplacement
+        return theme.reflection
+          ? replaceTemplateVariables(
+              theme.reflection,
+              reflectionTitle.fullReplacement
+            )
+          : reflectionTitle.fullReplacement
       }
 
-      const title: string[] = [""]
+      const title: string[] = [reflectionTitle?.prefix || ""]
+
       if (
         reflectionTitle?.kind &&
         this.model?.kind &&

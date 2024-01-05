@@ -85,23 +85,23 @@ You can register a new customer by sending a request to the [Create a Customer A
       const createCustomer = useCreateCustomer()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (
+        customerData: {
+          first_name: string
+          last_name: string
+          email: string
+          password: string
+        }
+      ) => {
         // ...
-        createCustomer.mutate({
-          first_name,
-          last_name,
-          email,
-          password,
+        createCustomer.mutate(customerData, {
+          onSuccess: ({ customer }) => {
+            console.log(customer.id)
+          }
         })
       }
 
       // ...
-      
-      return (
-        <form>
-          {/* Render form */}
-        </form>
-      )
     }
 
     export default RegisterCustomer
@@ -370,28 +370,32 @@ You can edit a customer’s info using the [Update Customer API Route](https://d
     ```tsx
     import { useUpdateMe } from "medusa-react"
 
-    const UpdateCustomer = () => {
+    type Props = {
+      customerId: string
+    }
+
+    const Customer = ({ customerId }: Props) => {
       const updateCustomer = useUpdateMe()
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        firstName: string
+      ) => {
         // ...
         updateCustomer.mutate({
-          id: customer_id,
-          first_name,
+          id: customerId,
+          first_name: firstName,
+        }, {
+          onSuccess: ({ customer }) => {
+            console.log(customer.first_name)
+          }
         })
       }
 
       // ...
-      
-      return (
-        <form>
-          {/* Render form */}
-        </form>
-      )
     }
 
-    export default UpdateCustomer
+    export default Customer
     ```
 
   </TabItem>
@@ -612,19 +616,18 @@ You can retrieve a customer’s orders by sending a request to the [List Orders 
 
     ```tsx
     import { useCustomerOrders } from "medusa-react"
-    import { Order } from "@medusajs/medusa"
 
     const Orders = () => {
       // refetch a function that can be used to
       // re-retrieve orders after the customer logs in
-      const { orders, isLoading, refetch } = useCustomerOrders()
+      const { orders, isLoading } = useCustomerOrders()
 
       return (
         <div>
           {isLoading && <span>Loading orders...</span>}
           {orders?.length && (
             <ul>
-              {orders.map((order: Order) => (
+              {orders.map((order) => (
                 <li key={order.id}>{order.display_id}</li>
               ))}
             </ul>

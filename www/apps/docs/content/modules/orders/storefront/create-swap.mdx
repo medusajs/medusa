@@ -113,6 +113,10 @@ After collecting the swap details in step 1, you can create a swap in the Medusa
             },
           ],
           return_shipping_option,
+        }, {
+          onSuccess: ({ swap }) => {
+            console.log(swap.id)
+          }
         })
       }
 
@@ -205,8 +209,11 @@ During your checkout flow, you might need to retrieve the swap using the cart’
 
     ```tsx
     import { useCartSwap } from "medusa-react"
+    type Props = {
+      cartId: string
+    }
 
-    const Swap = () => {
+    const Swap = ({ cartId }: Props) => {
       const { 
         swap, 
         isLoading, 

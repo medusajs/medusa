@@ -14176,6 +14176,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The customers to remove from the customer group."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 151,
@@ -14190,6 +14198,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The customers to remove from the customer group."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 150,
@@ -14611,6 +14627,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the prices to delete."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1100,
@@ -14625,6 +14649,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the prices to delete."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1099,
@@ -14644,7 +14676,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The price IDs of the Money Amounts to delete."
+								"text": "The IDs of the prices to delete."
 							}
 						]
 					},
@@ -14678,6 +14710,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products' prices to delete."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1104,
@@ -14692,6 +14732,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products' prices to delete."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1103,
@@ -14869,6 +14917,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products to delete from the product category."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1228,
@@ -14883,6 +14939,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products to delete from the product category."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1227,
@@ -14902,7 +14966,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The IDs of the products to delete from the Product Category."
+								"text": "The IDs of the products to delete from the product category."
 							}
 						]
 					},
@@ -14938,6 +15002,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products to remove from the collection."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 106,
@@ -14952,6 +15024,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products to remove from the collection."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 105,
@@ -15005,6 +15085,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the sales channels to remove from the publishable API key."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1512,
@@ -15019,6 +15107,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the sales channels to remove from the publishable API key."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1511,
@@ -15074,6 +15170,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products to delete from the sales channel."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1720,
@@ -15088,6 +15192,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products to delete from the sales channel."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1719,
@@ -15107,7 +15219,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The IDs of the products to remove from the Sales Channel."
+								"text": "The IDs of the products to remove from the sales channel."
 							}
 						]
 					},
@@ -15494,6 +15606,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products to remove their associated with the tax rate."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1936,
@@ -15508,6 +15628,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products to remove their associated with the tax rate."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1935,
@@ -15663,6 +15791,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the shipping options to remove their associate with the tax rate."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1945,
@@ -15677,6 +15813,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the shipping options to remove their associate with the tax rate."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1944,
@@ -15730,6 +15874,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the file to delete."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2023,
@@ -15744,6 +15896,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the file to delete."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2022,
@@ -28589,6 +28749,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The admin's credentials used to log in."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 22,
@@ -28603,6 +28771,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The admin's credentials used to log in."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 21,
@@ -28673,6 +28849,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the batch job to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 34,
@@ -28687,6 +28871,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the batch job to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 33,
@@ -28793,6 +28985,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The product collection's details to update."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 110,
@@ -28807,6 +29007,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The product collection's details to update."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 109,
@@ -28918,6 +29126,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The product collection's details."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 83,
@@ -28932,6 +29148,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The product collection's details."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 82,
@@ -29041,6 +29265,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update in the currency"
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 130,
@@ -29055,6 +29287,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update in the currency"
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 129,
@@ -29129,6 +29369,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The customers to add to the customer group."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 142,
@@ -29143,6 +29391,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The customers to add to the customer group."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 141,
@@ -29198,6 +29454,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update in the customer group."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 173,
@@ -29212,6 +29476,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update in the customer group."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 172,
@@ -29301,6 +29573,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the customer group to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 146,
@@ -29315,6 +29595,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the customer group to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 145,
@@ -29402,6 +29690,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the customer to update."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 203,
@@ -29416,6 +29712,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the customer to update."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 202,
@@ -29620,6 +29924,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the customer to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 185,
@@ -29634,6 +29946,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the customer to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 184,
@@ -30456,6 +30776,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the resources to add."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 365,
@@ -30470,6 +30798,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the resources to add."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 364,
@@ -30806,6 +31142,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the dynamic discount to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 279,
@@ -30820,6 +31164,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the dynamic discount to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 278,
@@ -31052,6 +31404,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the discount to update."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 330,
@@ -31066,6 +31426,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the discount to update."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 329,
@@ -31646,6 +32014,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the discount to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 244,
@@ -31660,6 +32036,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the discount to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 243,
@@ -31932,6 +32316,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the line item."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 447,
@@ -31946,6 +32338,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the line item."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 446,
@@ -32080,6 +32480,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the line item to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 415,
@@ -32094,6 +32502,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the line item to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 414,
@@ -32249,6 +32665,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the draft order to update."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 436,
@@ -32263,6 +32687,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the draft order to update."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 435,
@@ -32496,6 +32928,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the draft order to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 401,
@@ -32510,6 +32950,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the draft order to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 400,
@@ -32829,6 +33277,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the gift card."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 477,
@@ -32843,6 +33299,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the gift card."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 476,
@@ -33012,6 +33476,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the gift card to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 463,
@@ -33026,6 +33498,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the gift card to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 462,
@@ -33982,6 +34462,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the location level to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 532,
@@ -33996,6 +34484,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the location level to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 531,
@@ -34212,6 +34708,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the inventory item to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 510,
@@ -34226,6 +34730,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the inventory item to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 509,
@@ -34880,6 +35392,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the note."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 648,
@@ -34894,6 +35414,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the note."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 647,
@@ -34944,6 +35472,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the note to be created."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 636,
@@ -34958,6 +35494,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the note to be created."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 635,
@@ -35048,6 +35592,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The resend details."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 672,
@@ -35062,6 +35614,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The resend details."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 671,
@@ -35114,6 +35674,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to create or update of the line item change."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 723,
@@ -35128,6 +35696,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to create or update of the line item change."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 722,
@@ -35178,6 +35754,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the line item change to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 688,
@@ -35192,6 +35776,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the line item change to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 687,
@@ -35299,6 +35891,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the order edit."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 719,
@@ -35313,6 +35913,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the order edit."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 718,
@@ -35365,6 +35973,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the order edit to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 694,
@@ -35379,6 +35995,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the order edit to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 693,
@@ -38115,6 +38739,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the order refund."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 940,
@@ -38129,6 +38761,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the order refund."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 939,
@@ -38243,6 +38883,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the order."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 979,
@@ -38257,6 +38905,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the order."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 978,
@@ -38678,6 +39334,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the requested return."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 952,
@@ -38692,6 +39356,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the requested return."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 951,
@@ -39006,6 +39678,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the shipment to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 847,
@@ -39020,6 +39700,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the shipment to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 846,
@@ -39627,6 +40315,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the swap to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 858,
@@ -39641,6 +40337,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the swap to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 857,
@@ -40597,6 +41301,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the refund to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1029,
@@ -40611,6 +41323,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the refund to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1028,
@@ -40708,6 +41428,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the prices to add."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1083,
@@ -40722,6 +41450,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the prices to add."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1082,
@@ -40799,6 +41535,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the payment collection."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1147,
@@ -40813,6 +41557,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the payment collection."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1146,
@@ -41105,6 +41857,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the price list to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1088,
@@ -41119,6 +41879,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the price list to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1087,
@@ -41633,6 +42401,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products to add to the product category."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1219,
@@ -41647,6 +42423,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products to add to the product category."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1218,
@@ -41666,7 +42450,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The IDs of the products to add to the Product Category"
+								"text": "The IDs of the products to add to the product category"
 							}
 						]
 					},
@@ -41702,6 +42486,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the product category."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1203,
@@ -41716,6 +42508,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the product category."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1202,
@@ -42113,6 +42913,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the product category to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1188,
@@ -42127,6 +42935,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the product category to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1187,
@@ -42524,6 +43340,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the product option to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1349,
@@ -42538,6 +43362,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the product option to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1348,
@@ -42588,6 +43420,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the product."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1450,
@@ -42602,6 +43442,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the product."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1449,
@@ -43214,6 +44062,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the product variant to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1381,
@@ -43228,6 +44084,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the product variant to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1380,
@@ -44188,6 +45052,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the product to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1353,
@@ -44202,6 +45074,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the product to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1352,
@@ -44851,6 +45731,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products to add to the collection."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 79,
@@ -44865,6 +45753,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products to add to the collection."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 78,
@@ -44918,6 +45814,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the sales channels to add to the publishable API key."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1508,
@@ -44932,6 +45836,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the sales channels to add to the publishable API key."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1507,
@@ -44987,6 +45899,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the publishable API key."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1538,
@@ -45001,6 +45921,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the publishable API key."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1537,
@@ -45053,6 +45981,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the publishable API key to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1534,
@@ -45067,6 +46003,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the publishable API key to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1533,
@@ -45117,6 +46061,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the country to add to the region."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1560,
@@ -45131,6 +46083,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the country to add to the region."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1559,
@@ -45181,6 +46141,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the fulfillment provider to add to the region."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1564,
@@ -45195,6 +46163,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the fulfillment provider to add to the region."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1563,
@@ -45245,6 +46221,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the payment provider to add to the region."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1568,
@@ -45259,6 +46243,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the payment provider to add to the region."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1567,
@@ -45309,6 +46301,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the regions."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1595,
@@ -45323,6 +46323,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the regions."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1594,
@@ -45664,6 +46672,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the region to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1572,
@@ -45678,6 +46694,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the region to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1571,
@@ -45932,6 +46956,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the reservation to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1671,
@@ -45946,6 +46978,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the reservation to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1670,
@@ -46117,6 +47157,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the reservation."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1695,
@@ -46131,6 +47179,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the reservation."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1694,
@@ -46264,6 +47320,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the return reason."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1627,
@@ -46278,6 +47342,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the return reason."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1626,
@@ -46411,6 +47483,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the return reason to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1619,
@@ -46425,6 +47505,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the return reason to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1618,
@@ -46576,6 +47664,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the received return."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1652,
@@ -46590,6 +47686,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the received return."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1651,
@@ -46689,6 +47793,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products to add to the sales channel."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1710,
@@ -46703,6 +47815,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products to add to the sales channel."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1709,
@@ -46722,7 +47842,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The IDs of the products to add to the Sales Channel"
+								"text": "The IDs of the products to add to the sales channel"
 							}
 						]
 					},
@@ -46822,6 +47942,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the sales channel to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1714,
@@ -46836,6 +47964,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the sales channel to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1713,
@@ -46928,6 +48064,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the sales channel."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1740,
@@ -46942,6 +48086,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the sales channel."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1739,
@@ -47038,6 +48190,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the shipping option."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1783,
@@ -47052,6 +48212,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the shipping option."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1782,
@@ -47271,6 +48439,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the shipping option to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1762,
@@ -47285,6 +48461,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the shipping option to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1761,
@@ -47633,6 +48817,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The detail to update of the shipping profile."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1808,
@@ -47647,6 +48839,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The detail to update of the shipping profile."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1807,
@@ -47813,6 +49013,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the shipping profile to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1802,
@@ -47827,6 +49035,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the shipping profile to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1801,
@@ -48063,6 +49279,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the stock location."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1854,
@@ -48077,6 +49301,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the stock location."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1853,
@@ -48336,6 +49568,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the stock location to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1825,
@@ -48350,6 +49590,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the stock location to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1824,
@@ -48483,6 +49731,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the store."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1879,
@@ -48497,6 +49753,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the store."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1878,
@@ -48801,6 +50065,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the tax rate to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1981,
@@ -48815,6 +50087,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the tax rate to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1980,
@@ -49400,6 +50680,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the products to associat with the tax rate."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1963,
@@ -49414,6 +50702,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the products to associat with the tax rate."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1962,
@@ -49467,6 +50763,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the tax rate."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1996,
@@ -49481,6 +50785,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the tax rate."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1995,
@@ -49785,6 +51097,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the shipping options to associate with the tax rate."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1972,
@@ -49799,6 +51119,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the shipping options to associate with the tax rate."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1971,
@@ -49852,6 +51180,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the file to retrieve its download URL."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2027,
@@ -49866,6 +51202,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the file to retrieve its download URL."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2026,
@@ -50651,6 +51995,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the password reset request."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2046,
@@ -50665,6 +52017,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the password reset request."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2045,
@@ -50757,6 +52117,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the password reset token request."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2052,
@@ -50771,6 +52139,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the password reset token request."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2051,
@@ -50991,6 +52367,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the payment collection."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 1012,
@@ -51005,6 +52389,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the payment collection."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 1011,
@@ -66506,6 +67898,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the payment session to manage."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2373,
@@ -66520,6 +67920,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the payment session to manage."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2372,
@@ -66829,6 +68237,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the line item."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2188,
@@ -66843,6 +68259,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the line item."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2187,
@@ -66930,6 +68354,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the line item to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2165,
@@ -66944,6 +68376,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the line item to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2164,
@@ -67051,6 +68491,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the payment session to set."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2171,
@@ -67065,6 +68513,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the payment session to set."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2170,
@@ -67194,6 +68650,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the cart."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2175,
@@ -67208,6 +68672,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the cart."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2174,
@@ -67490,6 +68962,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the shipping method to add to the cart."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2147,
@@ -67504,6 +68984,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the shipping method to add to the cart."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2146,
@@ -67592,6 +69080,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details necessary to grant order access."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2327,
@@ -67606,6 +69102,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details necessary to grant order access."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2326,
@@ -68096,6 +69600,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the orders to claim."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2343,
@@ -68110,6 +69622,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the orders to claim."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2342,
@@ -68227,6 +69747,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details to update of the customer."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2296,
@@ -68241,6 +69769,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details to update of the customer."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2295,
@@ -68451,6 +69987,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the customer to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2236,
@@ -68465,6 +70009,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the customer to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2235,
@@ -68701,6 +70253,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the order edit's decline."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2316,
@@ -68715,6 +70275,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the order edit's decline."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2315,
@@ -68767,6 +70335,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the payment sessions to authorize."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2354,
@@ -68781,6 +70357,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the payment sessions to authorize."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2353,
@@ -68834,6 +70418,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the payment sessions to manage."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2369,
@@ -68848,6 +70440,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the payment sessions to manage."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2368,
@@ -69009,6 +70609,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the return to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2566,
@@ -69023,6 +70631,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the return to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2565,
@@ -69254,6 +70870,14 @@
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the swap to create."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2589,
@@ -69268,6 +70892,14 @@
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The details of the swap to create."
+									}
+								]
+							},
 							"type": {
 								"type": "reference",
 								"target": 2588,
@@ -70737,7 +72369,15 @@
 				"summary": [
 					{
 						"kind": "text",
-						"text": "The response returned for a DELETE request."
+						"text": "The response returned for a "
+					},
+					{
+						"kind": "code",
+						"text": "`DELETE`"
+					},
+					{
+						"kind": "text",
+						"text": " request."
 					}
 				]
 			},
@@ -87204,7 +88844,12 @@
 			"kind": 2097152,
 			"flags": {},
 			"comment": {
-				"summary": [],
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The payment collection's details."
+					}
+				],
 				"modifierTags": [
 					"@interface"
 				]
@@ -90343,6 +91988,14 @@
 									"variant": "declaration",
 									"kind": 1024,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The list of stock locations."
+											}
+										]
+									},
 									"type": {
 										"type": "array",
 										"elementType": {
@@ -103914,7 +105567,12 @@
 			"kind": 2097152,
 			"flags": {},
 			"comment": {
-				"summary": [],
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the payment session."
+					}
+				],
 				"modifierTags": [
 					"@interface"
 				]

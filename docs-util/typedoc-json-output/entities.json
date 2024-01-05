@@ -1623,6 +1623,14 @@
 			"variant": "declaration",
 			"kind": 8,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The status of a payment session."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 908,
@@ -1630,6 +1638,14 @@
 					"variant": "declaration",
 					"kind": 16,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment is authorized."
+							}
+						]
+					},
 					"type": {
 						"type": "literal",
 						"value": "authorized"
@@ -1641,6 +1657,14 @@
 					"variant": "declaration",
 					"kind": 16,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment is canceled."
+							}
+						]
+					},
 					"type": {
 						"type": "literal",
 						"value": "canceled"
@@ -1652,6 +1676,14 @@
 					"variant": "declaration",
 					"kind": 16,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An error occurred while processing the payment."
+							}
+						]
+					},
 					"type": {
 						"type": "literal",
 						"value": "error"
@@ -1663,6 +1695,14 @@
 					"variant": "declaration",
 					"kind": 16,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment is pending."
+							}
+						]
+					},
 					"type": {
 						"type": "literal",
 						"value": "pending"
@@ -1674,6 +1714,14 @@
 					"variant": "declaration",
 					"kind": 16,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment requires an action."
+							}
+						]
+					},
 					"type": {
 						"type": "literal",
 						"value": "requires_more"
@@ -2086,7 +2134,7 @@
 			]
 		},
 		{
-			"id": 1376,
+			"id": 1377,
 			"name": "RequirementType",
 			"variant": "declaration",
 			"kind": 8,
@@ -2101,7 +2149,7 @@
 			},
 			"children": [
 				{
-					"id": 1378,
+					"id": 1379,
 					"name": "MAX_SUBTOTAL",
 					"variant": "declaration",
 					"kind": 16,
@@ -2120,7 +2168,7 @@
 					}
 				},
 				{
-					"id": 1377,
+					"id": 1378,
 					"name": "MIN_SUBTOTAL",
 					"variant": "declaration",
 					"kind": 16,
@@ -2143,8 +2191,8 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						1378,
-						1377
+						1379,
+						1378
 					]
 				}
 			]
@@ -2254,7 +2302,7 @@
 			]
 		},
 		{
-			"id": 1349,
+			"id": 1350,
 			"name": "ShippingOptionPriceType",
 			"variant": "declaration",
 			"kind": 8,
@@ -2269,7 +2317,7 @@
 			},
 			"children": [
 				{
-					"id": 1351,
+					"id": 1352,
 					"name": "CALCULATED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2304,7 +2352,7 @@
 					}
 				},
 				{
-					"id": 1350,
+					"id": 1351,
 					"name": "FLAT_RATE",
 					"variant": "declaration",
 					"kind": 16,
@@ -2327,14 +2375,14 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						1351,
-						1350
+						1352,
+						1351
 					]
 				}
 			]
 		},
 		{
-			"id": 1390,
+			"id": 1391,
 			"name": "ShippingProfileType",
 			"variant": "declaration",
 			"kind": 8,
@@ -2349,7 +2397,7 @@
 			},
 			"children": [
 				{
-					"id": 1393,
+					"id": 1394,
 					"name": "CUSTOM",
 					"variant": "declaration",
 					"kind": 16,
@@ -2368,7 +2416,7 @@
 					}
 				},
 				{
-					"id": 1391,
+					"id": 1392,
 					"name": "DEFAULT",
 					"variant": "declaration",
 					"kind": 16,
@@ -2387,7 +2435,7 @@
 					}
 				},
 				{
-					"id": 1392,
+					"id": 1393,
 					"name": "GIFT_CARD",
 					"variant": "declaration",
 					"kind": 16,
@@ -2410,15 +2458,15 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						1393,
-						1391,
-						1392
+						1394,
+						1392,
+						1393
 					]
 				}
 			]
 		},
 		{
-			"id": 1446,
+			"id": 1447,
 			"name": "SwapFulfillmentStatus",
 			"variant": "declaration",
 			"kind": 8,
@@ -2433,7 +2481,7 @@
 			},
 			"children": [
 				{
-					"id": 1451,
+					"id": 1452,
 					"name": "CANCELED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2452,7 +2500,7 @@
 					}
 				},
 				{
-					"id": 1448,
+					"id": 1449,
 					"name": "FULFILLED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2471,7 +2519,7 @@
 					}
 				},
 				{
-					"id": 1447,
+					"id": 1448,
 					"name": "NOT_FULFILLED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2490,7 +2538,7 @@
 					}
 				},
 				{
-					"id": 1450,
+					"id": 1451,
 					"name": "PARTIALLY_SHIPPED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2509,7 +2557,7 @@
 					}
 				},
 				{
-					"id": 1452,
+					"id": 1453,
 					"name": "REQUIRES_ACTION",
 					"variant": "declaration",
 					"kind": 16,
@@ -2528,7 +2576,7 @@
 					}
 				},
 				{
-					"id": 1449,
+					"id": 1450,
 					"name": "SHIPPED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2551,18 +2599,18 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						1451,
-						1448,
-						1447,
-						1450,
 						1452,
-						1449
+						1449,
+						1448,
+						1451,
+						1453,
+						1450
 					]
 				}
 			]
 		},
 		{
-			"id": 1453,
+			"id": 1454,
 			"name": "SwapPaymentStatus",
 			"variant": "declaration",
 			"kind": 8,
@@ -2577,7 +2625,7 @@
 			},
 			"children": [
 				{
-					"id": 1455,
+					"id": 1456,
 					"name": "AWAITING",
 					"variant": "declaration",
 					"kind": 16,
@@ -2596,7 +2644,7 @@
 					}
 				},
 				{
-					"id": 1458,
+					"id": 1459,
 					"name": "CANCELED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2615,7 +2663,7 @@
 					}
 				},
 				{
-					"id": 1456,
+					"id": 1457,
 					"name": "CAPTURED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2634,7 +2682,7 @@
 					}
 				},
 				{
-					"id": 1457,
+					"id": 1458,
 					"name": "CONFIRMED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2653,7 +2701,7 @@
 					}
 				},
 				{
-					"id": 1459,
+					"id": 1460,
 					"name": "DIFFERENCE_REFUNDED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2672,7 +2720,7 @@
 					}
 				},
 				{
-					"id": 1454,
+					"id": 1455,
 					"name": "NOT_PAID",
 					"variant": "declaration",
 					"kind": 16,
@@ -2691,7 +2739,7 @@
 					}
 				},
 				{
-					"id": 1460,
+					"id": 1461,
 					"name": "PARTIALLY_REFUNDED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2710,7 +2758,7 @@
 					}
 				},
 				{
-					"id": 1461,
+					"id": 1462,
 					"name": "REFUNDED",
 					"variant": "declaration",
 					"kind": 16,
@@ -2729,7 +2777,7 @@
 					}
 				},
 				{
-					"id": 1462,
+					"id": 1463,
 					"name": "REQUIRES_ACTION",
 					"variant": "declaration",
 					"kind": 16,
@@ -2752,21 +2800,21 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						1455,
-						1458,
 						1456,
-						1457,
 						1459,
-						1454,
+						1457,
+						1458,
 						1460,
+						1455,
 						1461,
-						1462
+						1462,
+						1463
 					]
 				}
 			]
 		},
 		{
-			"id": 1532,
+			"id": 1533,
 			"name": "UserRoles",
 			"variant": "declaration",
 			"kind": 8,
@@ -2781,7 +2829,7 @@
 			},
 			"children": [
 				{
-					"id": 1533,
+					"id": 1534,
 					"name": "ADMIN",
 					"variant": "declaration",
 					"kind": 16,
@@ -2800,7 +2848,7 @@
 					}
 				},
 				{
-					"id": 1535,
+					"id": 1536,
 					"name": "DEVELOPER",
 					"variant": "declaration",
 					"kind": 16,
@@ -2819,7 +2867,7 @@
 					}
 				},
 				{
-					"id": 1534,
+					"id": 1535,
 					"name": "MEMBER",
 					"variant": "declaration",
 					"kind": 16,
@@ -2842,9 +2890,9 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						1533,
-						1535,
-						1534
+						1534,
+						1536,
+						1535
 					]
 				}
 			]
@@ -3965,7 +4013,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1536,
+						"target": 1537,
 						"name": "User",
 						"package": "@medusajs/medusa"
 					}
@@ -5415,7 +5463,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1310,
+							"target": 1311,
 							"name": "ShippingMethod",
 							"package": "@medusajs/medusa"
 						}
@@ -7076,7 +7124,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1310,
+							"target": 1311,
 							"name": "ShippingMethod",
 							"package": "@medusajs/medusa"
 						}
@@ -8175,7 +8223,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1352,
+						"target": 1353,
 						"name": "ShippingOption",
 						"package": "@medusajs/medusa"
 					}
@@ -12733,7 +12781,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1463,
+						"target": 1464,
 						"name": "Swap",
 						"package": "@medusajs/medusa"
 					}
@@ -12778,7 +12826,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1517,
+							"target": 1518,
 							"name": "TrackingLink",
 							"package": "@medusajs/medusa"
 						}
@@ -14823,7 +14871,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1532,
+						"target": 1533,
 						"name": "UserRoles",
 						"package": "@medusajs/medusa"
 					},
@@ -15892,7 +15940,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1463,
+						"target": 1464,
 						"name": "Swap",
 						"package": "@medusajs/medusa"
 					}
@@ -17593,7 +17641,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1536,
+						"target": 1537,
 						"name": "User",
 						"package": "@medusajs/medusa"
 					}
@@ -19795,7 +19843,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1310,
+							"target": 1311,
 							"name": "ShippingMethod",
 							"package": "@medusajs/medusa"
 						}
@@ -19910,7 +19958,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1463,
+							"target": 1464,
 							"name": "Swap",
 							"package": "@medusajs/medusa"
 						}
@@ -21819,7 +21867,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1463,
+						"target": 1464,
 						"name": "Swap",
 						"package": "@medusajs/medusa"
 					}
@@ -24197,7 +24245,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1394,
+						"target": 1395,
 						"name": "ShippingProfile",
 						"package": "@medusajs/medusa"
 					}
@@ -24239,7 +24287,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1394,
+							"target": 1395,
 							"name": "ShippingProfile",
 							"package": "@medusajs/medusa"
 						}
@@ -26762,7 +26810,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1497,
+						"target": 1498,
 						"name": "TaxRate",
 						"package": "@medusajs/medusa"
 					}
@@ -27289,7 +27337,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1497,
+						"target": 1498,
 						"name": "TaxRate",
 						"package": "@medusajs/medusa"
 					}
@@ -29997,7 +30045,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1492,
+						"target": 1493,
 						"name": "TaxProvider",
 						"package": "@medusajs/medusa"
 					}
@@ -30077,7 +30125,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 1497,
+									"target": 1498,
 									"name": "TaxRate",
 									"package": "@medusajs/medusa"
 								}
@@ -30649,7 +30697,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1310,
+						"target": 1311,
 						"name": "ShippingMethod",
 						"package": "@medusajs/medusa"
 					}
@@ -30695,7 +30743,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1463,
+						"target": 1464,
 						"name": "Swap",
 						"package": "@medusajs/medusa"
 					}
@@ -31636,7 +31684,7 @@
 					}
 				},
 				{
-					"id": 1296,
+					"id": 1297,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -31665,7 +31713,7 @@
 					}
 				},
 				{
-					"id": 1294,
+					"id": 1295,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -31731,7 +31779,7 @@
 					}
 				},
 				{
-					"id": 1295,
+					"id": 1296,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -31775,7 +31823,7 @@
 					"defaultValue": false
 				},
 				{
-					"id": 1291,
+					"id": 1292,
 					"name": "locations",
 					"variant": "declaration",
 					"kind": 1024,
@@ -31795,7 +31843,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1298,
+							"target": 1299,
 							"name": "SalesChannelLocation",
 							"package": "@medusajs/medusa"
 						}
@@ -31864,7 +31912,23 @@
 					}
 				},
 				{
-					"id": 1297,
+					"id": 1291,
+					"name": "products",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 954,
+							"name": "Product",
+							"package": "@medusajs/medusa"
+						}
+					}
+				},
+				{
+					"id": 1298,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -31893,7 +31957,7 @@
 					}
 				},
 				{
-					"id": 1292,
+					"id": 1293,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -31902,7 +31966,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1293,
+							"id": 1294,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -31925,21 +31989,22 @@
 				{
 					"title": "Properties",
 					"children": [
-						1296,
-						1294,
-						1288,
+						1297,
 						1295,
+						1288,
+						1296,
 						1289,
-						1291,
+						1292,
 						1290,
 						1287,
-						1297
+						1291,
+						1298
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1292
+						1293
 					]
 				}
 			],
@@ -31956,7 +32021,7 @@
 			]
 		},
 		{
-			"id": 1298,
+			"id": 1299,
 			"name": "SalesChannelLocation",
 			"variant": "declaration",
 			"kind": 128,
@@ -31971,14 +32036,14 @@
 			},
 			"children": [
 				{
-					"id": 1299,
+					"id": 1300,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1300,
+							"id": 1301,
 							"name": "new SalesChannelLocation",
 							"variant": "signature",
 							"kind": 16384,
@@ -31993,7 +32058,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1298,
+								"target": 1299,
 								"name": "SalesChannelLocation",
 								"package": "@medusajs/medusa"
 							},
@@ -32011,7 +32076,7 @@
 					}
 				},
 				{
-					"id": 1308,
+					"id": 1309,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32040,7 +32105,7 @@
 					}
 				},
 				{
-					"id": 1306,
+					"id": 1307,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32078,7 +32143,7 @@
 					}
 				},
 				{
-					"id": 1307,
+					"id": 1308,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32102,7 +32167,7 @@
 					}
 				},
 				{
-					"id": 1302,
+					"id": 1303,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32121,7 +32186,7 @@
 					}
 				},
 				{
-					"id": 1303,
+					"id": 1304,
 					"name": "sales_channel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32145,7 +32210,7 @@
 					}
 				},
 				{
-					"id": 1301,
+					"id": 1302,
 					"name": "sales_channel_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32164,7 +32229,7 @@
 					}
 				},
 				{
-					"id": 1309,
+					"id": 1310,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32193,7 +32258,7 @@
 					}
 				},
 				{
-					"id": 1304,
+					"id": 1305,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -32202,7 +32267,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1305,
+							"id": 1306,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -32219,25 +32284,25 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1299
+						1300
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1308,
-						1306,
+						1309,
 						1307,
-						1302,
+						1308,
 						1303,
-						1301,
-						1309
+						1304,
+						1302,
+						1310
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1304
+						1305
 					]
 				}
 			],
@@ -32254,7 +32319,7 @@
 			]
 		},
 		{
-			"id": 1310,
+			"id": 1311,
 			"name": "ShippingMethod",
 			"variant": "declaration",
 			"kind": 128,
@@ -32269,14 +32334,14 @@
 			},
 			"children": [
 				{
-					"id": 1311,
+					"id": 1312,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1312,
+							"id": 1313,
 							"name": "new ShippingMethod",
 							"variant": "signature",
 							"kind": 16384,
@@ -32291,7 +32356,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1310,
+								"target": 1311,
 								"name": "ShippingMethod",
 								"package": "@medusajs/medusa"
 							}
@@ -32299,7 +32364,7 @@
 					]
 				},
 				{
-					"id": 1320,
+					"id": 1321,
 					"name": "cart",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32323,7 +32388,7 @@
 					}
 				},
 				{
-					"id": 1319,
+					"id": 1320,
 					"name": "cart_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32342,7 +32407,7 @@
 					}
 				},
 				{
-					"id": 1318,
+					"id": 1319,
 					"name": "claim_order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32366,7 +32431,7 @@
 					}
 				},
 				{
-					"id": 1317,
+					"id": 1318,
 					"name": "claim_order_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32394,7 +32459,7 @@
 					}
 				},
 				{
-					"id": 1328,
+					"id": 1329,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32428,7 +32493,7 @@
 					}
 				},
 				{
-					"id": 1313,
+					"id": 1314,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32447,7 +32512,7 @@
 					}
 				},
 				{
-					"id": 1329,
+					"id": 1330,
 					"name": "includes_tax",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32489,7 +32554,7 @@
 					"defaultValue": false
 				},
 				{
-					"id": 1316,
+					"id": 1317,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32513,7 +32578,7 @@
 					}
 				},
 				{
-					"id": 1315,
+					"id": 1316,
 					"name": "order_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32532,7 +32597,7 @@
 					}
 				},
 				{
-					"id": 1327,
+					"id": 1328,
 					"name": "price",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32551,7 +32616,7 @@
 					}
 				},
 				{
-					"id": 1323,
+					"id": 1324,
 					"name": "return_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32570,7 +32635,7 @@
 					}
 				},
 				{
-					"id": 1324,
+					"id": 1325,
 					"name": "return_order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32594,7 +32659,7 @@
 					}
 				},
 				{
-					"id": 1325,
+					"id": 1326,
 					"name": "shipping_option",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32612,13 +32677,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1352,
+						"target": 1353,
 						"name": "ShippingOption",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1314,
+					"id": 1315,
 					"name": "shipping_option_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32637,7 +32702,7 @@
 					}
 				},
 				{
-					"id": 1330,
+					"id": 1331,
 					"name": "subtotal",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32658,7 +32723,7 @@
 					}
 				},
 				{
-					"id": 1322,
+					"id": 1323,
 					"name": "swap",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32676,13 +32741,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1463,
+						"target": 1464,
 						"name": "Swap",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1321,
+					"id": 1322,
 					"name": "swap_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32701,7 +32766,7 @@
 					}
 				},
 				{
-					"id": 1326,
+					"id": 1327,
 					"name": "tax_lines",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32721,14 +32786,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1335,
+							"target": 1336,
 							"name": "ShippingMethodTaxLine",
 							"package": "@medusajs/medusa"
 						}
 					}
 				},
 				{
-					"id": 1332,
+					"id": 1333,
 					"name": "tax_total",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32749,7 +32814,7 @@
 					}
 				},
 				{
-					"id": 1331,
+					"id": 1332,
 					"name": "total",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32770,7 +32835,7 @@
 					}
 				},
 				{
-					"id": 1333,
+					"id": 1334,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -32779,7 +32844,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1334,
+							"id": 1335,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -32796,44 +32861,44 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1311
+						1312
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
+						1321,
 						1320,
 						1319,
 						1318,
-						1317,
-						1328,
-						1313,
 						1329,
-						1316,
-						1315,
-						1327,
-						1323,
-						1324,
-						1325,
 						1314,
 						1330,
-						1322,
-						1321,
+						1317,
+						1316,
+						1328,
+						1324,
+						1325,
 						1326,
-						1332,
-						1331
+						1315,
+						1331,
+						1323,
+						1322,
+						1327,
+						1333,
+						1332
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1333
+						1334
 					]
 				}
 			]
 		},
 		{
-			"id": 1335,
+			"id": 1336,
 			"name": "ShippingMethodTaxLine",
 			"variant": "declaration",
 			"kind": 128,
@@ -32848,14 +32913,14 @@
 			},
 			"children": [
 				{
-					"id": 1336,
+					"id": 1337,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1337,
+							"id": 1338,
 							"name": "new ShippingMethodTaxLine",
 							"variant": "signature",
 							"kind": 16384,
@@ -32870,7 +32935,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1335,
+								"target": 1336,
 								"name": "ShippingMethodTaxLine",
 								"package": "@medusajs/medusa"
 							},
@@ -32888,7 +32953,7 @@
 					}
 				},
 				{
-					"id": 1344,
+					"id": 1345,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32921,7 +32986,7 @@
 					}
 				},
 				{
-					"id": 1347,
+					"id": 1348,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32950,7 +33015,7 @@
 					}
 				},
 				{
-					"id": 1346,
+					"id": 1347,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -32974,7 +33039,7 @@
 					}
 				},
 				{
-					"id": 1345,
+					"id": 1346,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33013,7 +33078,7 @@
 					}
 				},
 				{
-					"id": 1343,
+					"id": 1344,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33037,7 +33102,7 @@
 					}
 				},
 				{
-					"id": 1342,
+					"id": 1343,
 					"name": "rate",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33061,7 +33126,7 @@
 					}
 				},
 				{
-					"id": 1339,
+					"id": 1340,
 					"name": "shipping_method",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33079,13 +33144,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1310,
+						"target": 1311,
 						"name": "ShippingMethod",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1338,
+					"id": 1339,
 					"name": "shipping_method_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33104,7 +33169,7 @@
 					}
 				},
 				{
-					"id": 1348,
+					"id": 1349,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33133,7 +33198,7 @@
 					}
 				},
 				{
-					"id": 1340,
+					"id": 1341,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -33142,7 +33207,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1341,
+							"id": 1342,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -33159,27 +33224,27 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1336
+						1337
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1344,
+						1345,
+						1348,
 						1347,
 						1346,
-						1345,
+						1344,
 						1343,
-						1342,
+						1340,
 						1339,
-						1338,
-						1348
+						1349
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1340
+						1341
 					]
 				}
 			],
@@ -33196,7 +33261,7 @@
 			]
 		},
 		{
-			"id": 1352,
+			"id": 1353,
 			"name": "ShippingOption",
 			"variant": "declaration",
 			"kind": 128,
@@ -33211,14 +33276,14 @@
 			},
 			"children": [
 				{
-					"id": 1353,
+					"id": 1354,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1354,
+							"id": 1355,
 							"name": "new ShippingOption",
 							"variant": "signature",
 							"kind": 16384,
@@ -33233,7 +33298,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1352,
+								"target": 1353,
 								"name": "ShippingOption",
 								"package": "@medusajs/medusa"
 							},
@@ -33251,7 +33316,7 @@
 					}
 				},
 				{
-					"id": 1365,
+					"id": 1366,
 					"name": "admin_only",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33271,7 +33336,7 @@
 					"defaultValue": false
 				},
 				{
-					"id": 1363,
+					"id": 1364,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33299,7 +33364,7 @@
 					}
 				},
 				{
-					"id": 1374,
+					"id": 1375,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33328,7 +33393,7 @@
 					}
 				},
 				{
-					"id": 1367,
+					"id": 1368,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33362,7 +33427,7 @@
 					}
 				},
 				{
-					"id": 1372,
+					"id": 1373,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33400,7 +33465,7 @@
 					}
 				},
 				{
-					"id": 1373,
+					"id": 1374,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33424,7 +33489,7 @@
 					}
 				},
 				{
-					"id": 1369,
+					"id": 1370,
 					"name": "includes_tax",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33466,7 +33531,7 @@
 					"defaultValue": false
 				},
 				{
-					"id": 1364,
+					"id": 1365,
 					"name": "is_return",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33486,7 +33551,7 @@
 					"defaultValue": false
 				},
 				{
-					"id": 1368,
+					"id": 1369,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33520,7 +33585,7 @@
 					}
 				},
 				{
-					"id": 1355,
+					"id": 1356,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33539,7 +33604,7 @@
 					}
 				},
 				{
-					"id": 1362,
+					"id": 1363,
 					"name": "price_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33554,13 +33619,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1349,
+						"target": 1350,
 						"name": "ShippingOptionPriceType",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1359,
+					"id": 1360,
 					"name": "profile",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33578,13 +33643,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1394,
+						"target": 1395,
 						"name": "ShippingProfile",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1358,
+					"id": 1359,
 					"name": "profile_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33603,7 +33668,7 @@
 					}
 				},
 				{
-					"id": 1361,
+					"id": 1362,
 					"name": "provider",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33627,7 +33692,7 @@
 					}
 				},
 				{
-					"id": 1360,
+					"id": 1361,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33646,7 +33711,7 @@
 					}
 				},
 				{
-					"id": 1357,
+					"id": 1358,
 					"name": "region",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33670,7 +33735,7 @@
 					}
 				},
 				{
-					"id": 1356,
+					"id": 1357,
 					"name": "region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33689,7 +33754,7 @@
 					}
 				},
 				{
-					"id": 1366,
+					"id": 1367,
 					"name": "requirements",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33709,14 +33774,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1379,
+							"target": 1380,
 							"name": "ShippingOptionRequirement",
 							"package": "@medusajs/medusa"
 						}
 					}
 				},
 				{
-					"id": 1375,
+					"id": 1376,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33745,7 +33810,7 @@
 					}
 				},
 				{
-					"id": 1370,
+					"id": 1371,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -33754,7 +33819,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1371,
+							"id": 1372,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -33771,37 +33836,37 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1353
+						1354
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1365,
-						1363,
-						1374,
-						1367,
-						1372,
-						1373,
-						1369,
-						1364,
-						1368,
-						1355,
-						1362,
-						1359,
-						1358,
-						1361,
-						1360,
-						1357,
-						1356,
 						1366,
-						1375
+						1364,
+						1375,
+						1368,
+						1373,
+						1374,
+						1370,
+						1365,
+						1369,
+						1356,
+						1363,
+						1360,
+						1359,
+						1362,
+						1361,
+						1358,
+						1357,
+						1367,
+						1376
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1370
+						1371
 					]
 				}
 			],
@@ -33818,7 +33883,7 @@
 			]
 		},
 		{
-			"id": 1379,
+			"id": 1380,
 			"name": "ShippingOptionRequirement",
 			"variant": "declaration",
 			"kind": 128,
@@ -33833,14 +33898,14 @@
 			},
 			"children": [
 				{
-					"id": 1380,
+					"id": 1381,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1381,
+							"id": 1382,
 							"name": "new ShippingOptionRequirement",
 							"variant": "signature",
 							"kind": 16384,
@@ -33855,7 +33920,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1379,
+								"target": 1380,
 								"name": "ShippingOptionRequirement",
 								"package": "@medusajs/medusa"
 							}
@@ -33863,7 +33928,7 @@
 					]
 				},
 				{
-					"id": 1386,
+					"id": 1387,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33882,7 +33947,7 @@
 					}
 				},
 				{
-					"id": 1387,
+					"id": 1388,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33906,7 +33971,7 @@
 					}
 				},
 				{
-					"id": 1382,
+					"id": 1383,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33925,7 +33990,7 @@
 					}
 				},
 				{
-					"id": 1384,
+					"id": 1385,
 					"name": "shipping_option",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33943,13 +34008,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1352,
+						"target": 1353,
 						"name": "ShippingOption",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1383,
+					"id": 1384,
 					"name": "shipping_option_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33968,7 +34033,7 @@
 					}
 				},
 				{
-					"id": 1385,
+					"id": 1386,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -33983,13 +34048,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1376,
+						"target": 1377,
 						"name": "RequirementType",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1388,
+					"id": 1389,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -33998,7 +34063,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1389,
+							"id": 1390,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -34015,30 +34080,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1380
+						1381
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1386,
 						1387,
-						1382,
-						1384,
+						1388,
 						1383,
-						1385
+						1385,
+						1384,
+						1386
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1388
+						1389
 					]
 				}
 			]
 		},
 		{
-			"id": 1394,
+			"id": 1395,
 			"name": "ShippingProfile",
 			"variant": "declaration",
 			"kind": 128,
@@ -34053,14 +34118,14 @@
 			},
 			"children": [
 				{
-					"id": 1395,
+					"id": 1396,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1396,
+							"id": 1397,
 							"name": "new ShippingProfile",
 							"variant": "signature",
 							"kind": 16384,
@@ -34075,7 +34140,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1394,
+								"target": 1395,
 								"name": "ShippingProfile",
 								"package": "@medusajs/medusa"
 							},
@@ -34093,7 +34158,7 @@
 					}
 				},
 				{
-					"id": 1406,
+					"id": 1407,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34122,7 +34187,7 @@
 					}
 				},
 				{
-					"id": 1404,
+					"id": 1405,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34160,7 +34225,7 @@
 					}
 				},
 				{
-					"id": 1405,
+					"id": 1406,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34184,7 +34249,7 @@
 					}
 				},
 				{
-					"id": 1401,
+					"id": 1402,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34218,7 +34283,7 @@
 					}
 				},
 				{
-					"id": 1397,
+					"id": 1398,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34237,7 +34302,7 @@
 					}
 				},
 				{
-					"id": 1399,
+					"id": 1400,
 					"name": "products",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34264,7 +34329,7 @@
 					}
 				},
 				{
-					"id": 1400,
+					"id": 1401,
 					"name": "shipping_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34284,14 +34349,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1352,
+							"target": 1353,
 							"name": "ShippingOption",
 							"package": "@medusajs/medusa"
 						}
 					}
 				},
 				{
-					"id": 1398,
+					"id": 1399,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34306,13 +34371,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1390,
+						"target": 1391,
 						"name": "ShippingProfileType",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1407,
+					"id": 1408,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34341,7 +34406,7 @@
 					}
 				},
 				{
-					"id": 1402,
+					"id": 1403,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -34350,7 +34415,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1403,
+							"id": 1404,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -34367,27 +34432,27 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1395
+						1396
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1406,
-						1404,
+						1407,
 						1405,
-						1401,
-						1397,
-						1399,
-						1400,
+						1406,
+						1402,
 						1398,
-						1407
+						1400,
+						1401,
+						1399,
+						1408
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1402
+						1403
 					]
 				}
 			],
@@ -34404,7 +34469,7 @@
 			]
 		},
 		{
-			"id": 1408,
+			"id": 1409,
 			"name": "ShippingTaxRate",
 			"variant": "declaration",
 			"kind": 128,
@@ -34419,14 +34484,14 @@
 			},
 			"children": [
 				{
-					"id": 1409,
+					"id": 1410,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1410,
+							"id": 1411,
 							"name": "new ShippingTaxRate",
 							"variant": "signature",
 							"kind": 16384,
@@ -34441,7 +34506,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1408,
+								"target": 1409,
 								"name": "ShippingTaxRate",
 								"package": "@medusajs/medusa"
 							}
@@ -34449,7 +34514,7 @@
 					]
 				},
 				{
-					"id": 1415,
+					"id": 1416,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34473,7 +34538,7 @@
 					}
 				},
 				{
-					"id": 1417,
+					"id": 1418,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34507,7 +34572,7 @@
 					}
 				},
 				{
-					"id": 1412,
+					"id": 1413,
 					"name": "rate_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34526,7 +34591,7 @@
 					}
 				},
 				{
-					"id": 1413,
+					"id": 1414,
 					"name": "shipping_option",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34546,13 +34611,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1352,
+						"target": 1353,
 						"name": "ShippingOption",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1411,
+					"id": 1412,
 					"name": "shipping_option_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34571,7 +34636,7 @@
 					}
 				},
 				{
-					"id": 1414,
+					"id": 1415,
 					"name": "tax_rate",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34591,13 +34656,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1497,
+						"target": 1498,
 						"name": "TaxRate",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1416,
+					"id": 1417,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34625,25 +34690,25 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1409
+						1410
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1415,
-						1417,
-						1412,
+						1416,
+						1418,
 						1413,
-						1411,
 						1414,
-						1416
+						1412,
+						1415,
+						1417
 					]
 				}
 			]
 		},
 		{
-			"id": 1418,
+			"id": 1419,
 			"name": "StagedJob",
 			"variant": "declaration",
 			"kind": 128,
@@ -34658,14 +34723,14 @@
 			},
 			"children": [
 				{
-					"id": 1419,
+					"id": 1420,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1420,
+							"id": 1421,
 							"name": "new StagedJob",
 							"variant": "signature",
 							"kind": 16384,
@@ -34680,7 +34745,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1418,
+								"target": 1419,
 								"name": "StagedJob",
 								"package": "@medusajs/medusa"
 							}
@@ -34688,7 +34753,7 @@
 					]
 				},
 				{
-					"id": 1423,
+					"id": 1424,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34722,7 +34787,7 @@
 					}
 				},
 				{
-					"id": 1422,
+					"id": 1423,
 					"name": "event_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34741,7 +34806,7 @@
 					}
 				},
 				{
-					"id": 1421,
+					"id": 1422,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34760,7 +34825,7 @@
 					}
 				},
 				{
-					"id": 1424,
+					"id": 1425,
 					"name": "options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34786,7 +34851,7 @@
 					}
 				},
 				{
-					"id": 1425,
+					"id": 1426,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -34795,7 +34860,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1426,
+							"id": 1427,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -34812,28 +34877,28 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1419
+						1420
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
+						1424,
 						1423,
 						1422,
-						1421,
-						1424
+						1425
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1425
+						1426
 					]
 				}
 			]
 		},
 		{
-			"id": 1427,
+			"id": 1428,
 			"name": "Store",
 			"variant": "declaration",
 			"kind": 128,
@@ -34848,14 +34913,14 @@
 			},
 			"children": [
 				{
-					"id": 1428,
+					"id": 1429,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1429,
+							"id": 1430,
 							"name": "new Store",
 							"variant": "signature",
 							"kind": 16384,
@@ -34870,7 +34935,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1427,
+								"target": 1428,
 								"name": "Store",
 								"package": "@medusajs/medusa"
 							},
@@ -34888,7 +34953,7 @@
 					}
 				},
 				{
-					"id": 1444,
+					"id": 1445,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34917,7 +34982,7 @@
 					}
 				},
 				{
-					"id": 1433,
+					"id": 1434,
 					"name": "currencies",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34944,7 +35009,7 @@
 					}
 				},
 				{
-					"id": 1432,
+					"id": 1433,
 					"name": "default_currency",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34969,7 +35034,7 @@
 					"defaultValue": "usd"
 				},
 				{
-					"id": 1431,
+					"id": 1432,
 					"name": "default_currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -34988,7 +35053,7 @@
 					}
 				},
 				{
-					"id": 1437,
+					"id": 1438,
 					"name": "default_location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35007,7 +35072,7 @@
 					}
 				},
 				{
-					"id": 1440,
+					"id": 1441,
 					"name": "default_sales_channel",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35031,7 +35096,7 @@
 					}
 				},
 				{
-					"id": 1439,
+					"id": 1440,
 					"name": "default_sales_channel_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35059,7 +35124,7 @@
 					}
 				},
 				{
-					"id": 1443,
+					"id": 1444,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35083,7 +35148,7 @@
 					}
 				},
 				{
-					"id": 1436,
+					"id": 1437,
 					"name": "invite_link_template",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35111,7 +35176,7 @@
 					}
 				},
 				{
-					"id": 1438,
+					"id": 1439,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35154,7 +35219,7 @@
 					}
 				},
 				{
-					"id": 1430,
+					"id": 1431,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35174,7 +35239,7 @@
 					"defaultValue": "Medusa Store"
 				},
 				{
-					"id": 1435,
+					"id": 1436,
 					"name": "payment_link_template",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35202,7 +35267,7 @@
 					}
 				},
 				{
-					"id": 1434,
+					"id": 1435,
 					"name": "swap_link_template",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35230,7 +35295,7 @@
 					}
 				},
 				{
-					"id": 1445,
+					"id": 1446,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35259,7 +35324,7 @@
 					}
 				},
 				{
-					"id": 1441,
+					"id": 1442,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -35268,7 +35333,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1442,
+							"id": 1443,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -35285,32 +35350,32 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1428
+						1429
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1444,
+						1445,
+						1434,
 						1433,
 						1432,
-						1431,
-						1437,
-						1440,
-						1439,
-						1443,
-						1436,
 						1438,
-						1430,
+						1441,
+						1440,
+						1444,
+						1437,
+						1439,
+						1431,
+						1436,
 						1435,
-						1434,
-						1445
+						1446
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1441
+						1442
 					]
 				}
 			],
@@ -35327,7 +35392,7 @@
 			]
 		},
 		{
-			"id": 1463,
+			"id": 1464,
 			"name": "Swap",
 			"variant": "declaration",
 			"kind": 128,
@@ -35342,14 +35407,14 @@
 			},
 			"children": [
 				{
-					"id": 1464,
+					"id": 1465,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1465,
+							"id": 1466,
 							"name": "new Swap",
 							"variant": "signature",
 							"kind": 16384,
@@ -35364,7 +35429,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1463,
+								"target": 1464,
 								"name": "Swap",
 								"package": "@medusajs/medusa"
 							},
@@ -35382,7 +35447,7 @@
 					}
 				},
 				{
-					"id": 1470,
+					"id": 1471,
 					"name": "additional_items",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35409,7 +35474,7 @@
 					}
 				},
 				{
-					"id": 1483,
+					"id": 1484,
 					"name": "allow_backorder",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35429,7 +35494,7 @@
 					"defaultValue": false
 				},
 				{
-					"id": 1481,
+					"id": 1482,
 					"name": "canceled_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35453,7 +35518,7 @@
 					}
 				},
 				{
-					"id": 1479,
+					"id": 1480,
 					"name": "cart",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35477,7 +35542,7 @@
 					}
 				},
 				{
-					"id": 1478,
+					"id": 1479,
 					"name": "cart_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35496,7 +35561,7 @@
 					}
 				},
 				{
-					"id": 1480,
+					"id": 1481,
 					"name": "confirmed_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35520,7 +35585,7 @@
 					}
 				},
 				{
-					"id": 1490,
+					"id": 1491,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35549,7 +35614,7 @@
 					}
 				},
 				{
-					"id": 1488,
+					"id": 1489,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35587,7 +35652,7 @@
 					}
 				},
 				{
-					"id": 1474,
+					"id": 1475,
 					"name": "difference_due",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35606,7 +35671,7 @@
 					}
 				},
 				{
-					"id": 1466,
+					"id": 1467,
 					"name": "fulfillment_status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35621,13 +35686,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1446,
+						"target": 1447,
 						"name": "SwapFulfillmentStatus",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1472,
+					"id": 1473,
 					"name": "fulfillments",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35654,7 +35719,7 @@
 					}
 				},
 				{
-					"id": 1489,
+					"id": 1490,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35678,7 +35743,7 @@
 					}
 				},
 				{
-					"id": 1484,
+					"id": 1485,
 					"name": "idempotency_key",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35697,7 +35762,7 @@
 					}
 				},
 				{
-					"id": 1485,
+					"id": 1486,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35731,7 +35796,7 @@
 					}
 				},
 				{
-					"id": 1482,
+					"id": 1483,
 					"name": "no_notification",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35750,7 +35815,7 @@
 					}
 				},
 				{
-					"id": 1469,
+					"id": 1470,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35774,7 +35839,7 @@
 					}
 				},
 				{
-					"id": 1468,
+					"id": 1469,
 					"name": "order_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35793,7 +35858,7 @@
 					}
 				},
 				{
-					"id": 1473,
+					"id": 1474,
 					"name": "payment",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35817,7 +35882,7 @@
 					}
 				},
 				{
-					"id": 1467,
+					"id": 1468,
 					"name": "payment_status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35832,13 +35897,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1453,
+						"target": 1454,
 						"name": "SwapPaymentStatus",
 						"package": "@medusajs/medusa"
 					}
 				},
 				{
-					"id": 1471,
+					"id": 1472,
 					"name": "return_order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35862,7 +35927,7 @@
 					}
 				},
 				{
-					"id": 1476,
+					"id": 1477,
 					"name": "shipping_address",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35886,7 +35951,7 @@
 					}
 				},
 				{
-					"id": 1475,
+					"id": 1476,
 					"name": "shipping_address_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35905,7 +35970,7 @@
 					}
 				},
 				{
-					"id": 1477,
+					"id": 1478,
 					"name": "shipping_methods",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35925,14 +35990,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1310,
+							"target": 1311,
 							"name": "ShippingMethod",
 							"package": "@medusajs/medusa"
 						}
 					}
 				},
 				{
-					"id": 1491,
+					"id": 1492,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -35961,7 +36026,7 @@
 					}
 				},
 				{
-					"id": 1486,
+					"id": 1487,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -35970,7 +36035,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1487,
+							"id": 1488,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -35987,42 +36052,42 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1464
+						1465
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1470,
-						1483,
-						1481,
-						1479,
-						1478,
-						1480,
-						1490,
-						1488,
-						1474,
-						1466,
-						1472,
-						1489,
-						1484,
-						1485,
-						1482,
-						1469,
-						1468,
-						1473,
-						1467,
 						1471,
-						1476,
+						1484,
+						1482,
+						1480,
+						1479,
+						1481,
+						1491,
+						1489,
 						1475,
+						1467,
+						1473,
+						1490,
+						1485,
+						1486,
+						1483,
+						1470,
+						1469,
+						1474,
+						1468,
+						1472,
 						1477,
-						1491
+						1476,
+						1478,
+						1492
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1486
+						1487
 					]
 				}
 			],
@@ -36039,7 +36104,7 @@
 			]
 		},
 		{
-			"id": 1492,
+			"id": 1493,
 			"name": "TaxProvider",
 			"variant": "declaration",
 			"kind": 128,
@@ -36054,14 +36119,14 @@
 			},
 			"children": [
 				{
-					"id": 1493,
+					"id": 1494,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1494,
+							"id": 1495,
 							"name": "new TaxProvider",
 							"variant": "signature",
 							"kind": 16384,
@@ -36076,7 +36141,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1492,
+								"target": 1493,
 								"name": "TaxProvider",
 								"package": "@medusajs/medusa"
 							}
@@ -36084,7 +36149,7 @@
 					]
 				},
 				{
-					"id": 1495,
+					"id": 1496,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36103,7 +36168,7 @@
 					}
 				},
 				{
-					"id": 1496,
+					"id": 1497,
 					"name": "is_installed",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36127,20 +36192,20 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1493
+						1494
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1495,
-						1496
+						1496,
+						1497
 					]
 				}
 			]
 		},
 		{
-			"id": 1497,
+			"id": 1498,
 			"name": "TaxRate",
 			"variant": "declaration",
 			"kind": 128,
@@ -36155,14 +36220,14 @@
 			},
 			"children": [
 				{
-					"id": 1498,
+					"id": 1499,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1499,
+							"id": 1500,
 							"name": "new TaxRate",
 							"variant": "signature",
 							"kind": 16384,
@@ -36177,7 +36242,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1497,
+								"target": 1498,
 								"name": "TaxRate",
 								"package": "@medusajs/medusa"
 							},
@@ -36195,7 +36260,7 @@
 					}
 				},
 				{
-					"id": 1501,
+					"id": 1502,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36223,7 +36288,7 @@
 					}
 				},
 				{
-					"id": 1515,
+					"id": 1516,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36252,7 +36317,7 @@
 					}
 				},
 				{
-					"id": 1514,
+					"id": 1515,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36276,7 +36341,7 @@
 					}
 				},
 				{
-					"id": 1505,
+					"id": 1506,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36310,7 +36375,7 @@
 					}
 				},
 				{
-					"id": 1502,
+					"id": 1503,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36329,7 +36394,7 @@
 					}
 				},
 				{
-					"id": 1509,
+					"id": 1510,
 					"name": "product_count",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36350,7 +36415,7 @@
 					}
 				},
 				{
-					"id": 1510,
+					"id": 1511,
 					"name": "product_type_count",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36371,7 +36436,7 @@
 					}
 				},
 				{
-					"id": 1507,
+					"id": 1508,
 					"name": "product_types",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36398,7 +36463,7 @@
 					}
 				},
 				{
-					"id": 1506,
+					"id": 1507,
 					"name": "products",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36425,7 +36490,7 @@
 					}
 				},
 				{
-					"id": 1500,
+					"id": 1501,
 					"name": "rate",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36453,7 +36518,7 @@
 					}
 				},
 				{
-					"id": 1504,
+					"id": 1505,
 					"name": "region",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36477,7 +36542,7 @@
 					}
 				},
 				{
-					"id": 1503,
+					"id": 1504,
 					"name": "region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36496,7 +36561,7 @@
 					}
 				},
 				{
-					"id": 1511,
+					"id": 1512,
 					"name": "shipping_option_count",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36517,7 +36582,7 @@
 					}
 				},
 				{
-					"id": 1508,
+					"id": 1509,
 					"name": "shipping_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36537,14 +36602,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 1352,
+							"target": 1353,
 							"name": "ShippingOption",
 							"package": "@medusajs/medusa"
 						}
 					}
 				},
 				{
-					"id": 1516,
+					"id": 1517,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36573,7 +36638,7 @@
 					}
 				},
 				{
-					"id": 1512,
+					"id": 1513,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -36582,7 +36647,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1513,
+							"id": 1514,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -36599,33 +36664,33 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1498
+						1499
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1501,
-						1515,
-						1514,
-						1505,
 						1502,
-						1509,
-						1510,
-						1507,
+						1516,
+						1515,
 						1506,
-						1500,
-						1504,
 						1503,
+						1510,
 						1511,
 						1508,
-						1516
+						1507,
+						1501,
+						1505,
+						1504,
+						1512,
+						1509,
+						1517
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1512
+						1513
 					]
 				}
 			],
@@ -36642,7 +36707,7 @@
 			]
 		},
 		{
-			"id": 1517,
+			"id": 1518,
 			"name": "TrackingLink",
 			"variant": "declaration",
 			"kind": 128,
@@ -36657,14 +36722,14 @@
 			},
 			"children": [
 				{
-					"id": 1518,
+					"id": 1519,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1519,
+							"id": 1520,
 							"name": "new TrackingLink",
 							"variant": "signature",
 							"kind": 16384,
@@ -36679,7 +36744,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1517,
+								"target": 1518,
 								"name": "TrackingLink",
 								"package": "@medusajs/medusa"
 							},
@@ -36697,7 +36762,7 @@
 					}
 				},
 				{
-					"id": 1530,
+					"id": 1531,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36726,7 +36791,7 @@
 					}
 				},
 				{
-					"id": 1528,
+					"id": 1529,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36764,7 +36829,7 @@
 					}
 				},
 				{
-					"id": 1523,
+					"id": 1524,
 					"name": "fulfillment",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36788,7 +36853,7 @@
 					}
 				},
 				{
-					"id": 1522,
+					"id": 1523,
 					"name": "fulfillment_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36807,7 +36872,7 @@
 					}
 				},
 				{
-					"id": 1529,
+					"id": 1530,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36831,7 +36896,7 @@
 					}
 				},
 				{
-					"id": 1524,
+					"id": 1525,
 					"name": "idempotency_key",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36850,7 +36915,7 @@
 					}
 				},
 				{
-					"id": 1525,
+					"id": 1526,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36884,7 +36949,7 @@
 					}
 				},
 				{
-					"id": 1521,
+					"id": 1522,
 					"name": "tracking_number",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36903,7 +36968,7 @@
 					}
 				},
 				{
-					"id": 1531,
+					"id": 1532,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36932,7 +36997,7 @@
 					}
 				},
 				{
-					"id": 1520,
+					"id": 1521,
 					"name": "url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -36951,7 +37016,7 @@
 					}
 				},
 				{
-					"id": 1526,
+					"id": 1527,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -36960,7 +37025,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1527,
+							"id": 1528,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -36977,28 +37042,28 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1518
+						1519
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1530,
-						1528,
-						1523,
-						1522,
+						1531,
 						1529,
 						1524,
+						1523,
+						1530,
 						1525,
-						1521,
-						1531,
-						1520
+						1526,
+						1522,
+						1532,
+						1521
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1526
+						1527
 					]
 				}
 			],
@@ -37015,7 +37080,7 @@
 			]
 		},
 		{
-			"id": 1536,
+			"id": 1537,
 			"name": "User",
 			"variant": "declaration",
 			"kind": 128,
@@ -37030,14 +37095,14 @@
 			},
 			"children": [
 				{
-					"id": 1537,
+					"id": 1538,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 1538,
+							"id": 1539,
 							"name": "new User",
 							"variant": "signature",
 							"kind": 16384,
@@ -37052,7 +37117,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 1536,
+								"target": 1537,
 								"name": "User",
 								"package": "@medusajs/medusa"
 							},
@@ -37070,7 +37135,7 @@
 					}
 				},
 				{
-					"id": 1544,
+					"id": 1545,
 					"name": "api_token",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37089,7 +37154,7 @@
 					}
 				},
 				{
-					"id": 1550,
+					"id": 1551,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37118,7 +37183,7 @@
 					}
 				},
 				{
-					"id": 1548,
+					"id": 1549,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37156,7 +37221,7 @@
 					}
 				},
 				{
-					"id": 1540,
+					"id": 1541,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37175,7 +37240,7 @@
 					}
 				},
 				{
-					"id": 1541,
+					"id": 1542,
 					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37194,7 +37259,7 @@
 					}
 				},
 				{
-					"id": 1549,
+					"id": 1550,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37218,7 +37283,7 @@
 					}
 				},
 				{
-					"id": 1542,
+					"id": 1543,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37237,7 +37302,7 @@
 					}
 				},
 				{
-					"id": 1545,
+					"id": 1546,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37271,7 +37336,7 @@
 					}
 				},
 				{
-					"id": 1543,
+					"id": 1544,
 					"name": "password_hash",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37282,7 +37347,7 @@
 					}
 				},
 				{
-					"id": 1539,
+					"id": 1540,
 					"name": "role",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37297,14 +37362,14 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 1532,
+						"target": 1533,
 						"name": "UserRoles",
 						"package": "@medusajs/medusa"
 					},
 					"defaultValue": "member"
 				},
 				{
-					"id": 1551,
+					"id": 1552,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -37333,7 +37398,7 @@
 					}
 				},
 				{
-					"id": 1546,
+					"id": 1547,
 					"name": "beforeInsert",
 					"variant": "declaration",
 					"kind": 2048,
@@ -37342,7 +37407,7 @@
 					},
 					"signatures": [
 						{
-							"id": 1547,
+							"id": 1548,
 							"name": "beforeInsert",
 							"variant": "signature",
 							"kind": 4096,
@@ -37359,29 +37424,29 @@
 				{
 					"title": "Constructors",
 					"children": [
-						1537
+						1538
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						1544,
-						1550,
-						1548,
-						1540,
-						1541,
-						1549,
-						1542,
 						1545,
+						1551,
+						1549,
+						1541,
+						1542,
+						1550,
 						1543,
-						1539,
-						1551
+						1546,
+						1544,
+						1540,
+						1552
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						1546
+						1547
 					]
 				}
 			],
@@ -37422,13 +37487,13 @@
 				716,
 				949,
 				1177,
-				1376,
+				1377,
 				1224,
-				1349,
-				1390,
-				1446,
-				1453,
-				1532
+				1350,
+				1391,
+				1447,
+				1454,
+				1533
 			]
 		},
 		{
@@ -37500,20 +37565,20 @@
 				1253,
 				1268,
 				1284,
-				1298,
-				1310,
-				1335,
-				1352,
-				1379,
-				1394,
-				1408,
-				1418,
-				1427,
-				1463,
-				1492,
-				1497,
-				1517,
-				1536
+				1299,
+				1311,
+				1336,
+				1353,
+				1380,
+				1395,
+				1409,
+				1419,
+				1428,
+				1464,
+				1493,
+				1498,
+				1518,
+				1537
 			]
 		}
 	],
@@ -42157,933 +42222,937 @@
 		},
 		"1291": {
 			"sourceFileName": "../../../packages/medusa/src/models/sales-channel.ts",
-			"qualifiedName": "SalesChannel.locations"
+			"qualifiedName": "SalesChannel.products"
 		},
 		"1292": {
 			"sourceFileName": "../../../packages/medusa/src/models/sales-channel.ts",
-			"qualifiedName": "SalesChannel.beforeInsert"
+			"qualifiedName": "SalesChannel.locations"
 		},
 		"1293": {
 			"sourceFileName": "../../../packages/medusa/src/models/sales-channel.ts",
 			"qualifiedName": "SalesChannel.beforeInsert"
 		},
 		"1294": {
+			"sourceFileName": "../../../packages/medusa/src/models/sales-channel.ts",
+			"qualifiedName": "SalesChannel.beforeInsert"
+		},
+		"1295": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/soft-deletable-entity.ts",
 			"qualifiedName": "SoftDeletableEntity.deleted_at"
 		},
-		"1295": {
+		"1296": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.id"
 		},
-		"1296": {
+		"1297": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.created_at"
 		},
-		"1297": {
+		"1298": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.updated_at"
 		},
-		"1298": {
+		"1299": {
 			"sourceFileName": "../../../packages/medusa/src/models/sales-channel-location.ts",
 			"qualifiedName": "SalesChannelLocation"
 		},
-		"1301": {
+		"1302": {
 			"sourceFileName": "../../../packages/medusa/src/models/sales-channel-location.ts",
 			"qualifiedName": "SalesChannelLocation.sales_channel_id"
 		},
-		"1302": {
+		"1303": {
 			"sourceFileName": "../../../packages/medusa/src/models/sales-channel-location.ts",
 			"qualifiedName": "SalesChannelLocation.location_id"
 		},
-		"1303": {
-			"sourceFileName": "../../../packages/medusa/src/models/sales-channel-location.ts",
-			"qualifiedName": "SalesChannelLocation.sales_channel"
-		},
 		"1304": {
 			"sourceFileName": "../../../packages/medusa/src/models/sales-channel-location.ts",
-			"qualifiedName": "SalesChannelLocation.beforeInsert"
+			"qualifiedName": "SalesChannelLocation.sales_channel"
 		},
 		"1305": {
 			"sourceFileName": "../../../packages/medusa/src/models/sales-channel-location.ts",
 			"qualifiedName": "SalesChannelLocation.beforeInsert"
 		},
 		"1306": {
+			"sourceFileName": "../../../packages/medusa/src/models/sales-channel-location.ts",
+			"qualifiedName": "SalesChannelLocation.beforeInsert"
+		},
+		"1307": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/soft-deletable-entity.ts",
 			"qualifiedName": "SoftDeletableEntity.deleted_at"
 		},
-		"1307": {
+		"1308": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.id"
 		},
-		"1308": {
+		"1309": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.created_at"
 		},
-		"1309": {
+		"1310": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.updated_at"
 		},
-		"1310": {
+		"1311": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod"
 		},
-		"1313": {
+		"1314": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.id"
 		},
-		"1314": {
+		"1315": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.shipping_option_id"
 		},
-		"1315": {
+		"1316": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.order_id"
 		},
-		"1316": {
+		"1317": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.order"
 		},
-		"1317": {
+		"1318": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.claim_order_id"
 		},
-		"1318": {
+		"1319": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.claim_order"
 		},
-		"1319": {
+		"1320": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.cart_id"
 		},
-		"1320": {
+		"1321": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.cart"
 		},
-		"1321": {
+		"1322": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.swap_id"
 		},
-		"1322": {
+		"1323": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.swap"
 		},
-		"1323": {
+		"1324": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.return_id"
 		},
-		"1324": {
+		"1325": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.return_order"
 		},
-		"1325": {
+		"1326": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.shipping_option"
 		},
-		"1326": {
+		"1327": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.tax_lines"
 		},
-		"1327": {
+		"1328": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.price"
 		},
-		"1328": {
+		"1329": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.data"
 		},
-		"1329": {
+		"1330": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.includes_tax"
 		},
-		"1330": {
+		"1331": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.subtotal"
 		},
-		"1331": {
+		"1332": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.total"
 		},
-		"1332": {
-			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
-			"qualifiedName": "ShippingMethod.tax_total"
-		},
 		"1333": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
-			"qualifiedName": "ShippingMethod.beforeInsert"
+			"qualifiedName": "ShippingMethod.tax_total"
 		},
 		"1334": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
 			"qualifiedName": "ShippingMethod.beforeInsert"
 		},
 		"1335": {
+			"sourceFileName": "../../../packages/medusa/src/models/shipping-method.ts",
+			"qualifiedName": "ShippingMethod.beforeInsert"
+		},
+		"1336": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
 			"qualifiedName": "ShippingMethodTaxLine"
 		},
-		"1338": {
+		"1339": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
 			"qualifiedName": "ShippingMethodTaxLine.shipping_method_id"
 		},
-		"1339": {
-			"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
-			"qualifiedName": "ShippingMethodTaxLine.shipping_method"
-		},
 		"1340": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
-			"qualifiedName": "ShippingMethodTaxLine.beforeInsert"
+			"qualifiedName": "ShippingMethodTaxLine.shipping_method"
 		},
 		"1341": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
 			"qualifiedName": "ShippingMethodTaxLine.beforeInsert"
 		},
 		"1342": {
-			"sourceFileName": "../../../packages/medusa/src/models/tax-line.ts",
-			"qualifiedName": "TaxLine.rate"
+			"sourceFileName": "../../../packages/medusa/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "ShippingMethodTaxLine.beforeInsert"
 		},
 		"1343": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-line.ts",
-			"qualifiedName": "TaxLine.name"
+			"qualifiedName": "TaxLine.rate"
 		},
 		"1344": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-line.ts",
-			"qualifiedName": "TaxLine.code"
+			"qualifiedName": "TaxLine.name"
 		},
 		"1345": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-line.ts",
-			"qualifiedName": "TaxLine.metadata"
+			"qualifiedName": "TaxLine.code"
 		},
 		"1346": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.id"
+			"sourceFileName": "../../../packages/medusa/src/models/tax-line.ts",
+			"qualifiedName": "TaxLine.metadata"
 		},
 		"1347": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.created_at"
+			"qualifiedName": "BaseEntity.id"
 		},
 		"1348": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.updated_at"
+			"qualifiedName": "BaseEntity.created_at"
 		},
 		"1349": {
-			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOptionPriceType"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
+			"qualifiedName": "BaseEntity.updated_at"
 		},
 		"1350": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOptionPriceType.FLAT_RATE"
+			"qualifiedName": "ShippingOptionPriceType"
 		},
 		"1351": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOptionPriceType.CALCULATED"
+			"qualifiedName": "ShippingOptionPriceType.FLAT_RATE"
 		},
 		"1352": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption"
+			"qualifiedName": "ShippingOptionPriceType.CALCULATED"
 		},
-		"1355": {
+		"1353": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.name"
+			"qualifiedName": "ShippingOption"
 		},
 		"1356": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.region_id"
+			"qualifiedName": "ShippingOption.name"
 		},
 		"1357": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.region"
+			"qualifiedName": "ShippingOption.region_id"
 		},
 		"1358": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.profile_id"
+			"qualifiedName": "ShippingOption.region"
 		},
 		"1359": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.profile"
+			"qualifiedName": "ShippingOption.profile_id"
 		},
 		"1360": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.provider_id"
+			"qualifiedName": "ShippingOption.profile"
 		},
 		"1361": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.provider"
+			"qualifiedName": "ShippingOption.provider_id"
 		},
 		"1362": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.price_type"
+			"qualifiedName": "ShippingOption.provider"
 		},
 		"1363": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.amount"
+			"qualifiedName": "ShippingOption.price_type"
 		},
 		"1364": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.is_return"
+			"qualifiedName": "ShippingOption.amount"
 		},
 		"1365": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.admin_only"
+			"qualifiedName": "ShippingOption.is_return"
 		},
 		"1366": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.requirements"
+			"qualifiedName": "ShippingOption.admin_only"
 		},
 		"1367": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.data"
+			"qualifiedName": "ShippingOption.requirements"
 		},
 		"1368": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.metadata"
+			"qualifiedName": "ShippingOption.data"
 		},
 		"1369": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.includes_tax"
+			"qualifiedName": "ShippingOption.metadata"
 		},
 		"1370": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
-			"qualifiedName": "ShippingOption.beforeInsert"
+			"qualifiedName": "ShippingOption.includes_tax"
 		},
 		"1371": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
 			"qualifiedName": "ShippingOption.beforeInsert"
 		},
 		"1372": {
+			"sourceFileName": "../../../packages/medusa/src/models/shipping-option.ts",
+			"qualifiedName": "ShippingOption.beforeInsert"
+		},
+		"1373": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/soft-deletable-entity.ts",
 			"qualifiedName": "SoftDeletableEntity.deleted_at"
 		},
-		"1373": {
+		"1374": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.id"
 		},
-		"1374": {
+		"1375": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.created_at"
 		},
-		"1375": {
+		"1376": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.updated_at"
 		},
-		"1376": {
+		"1377": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "RequirementType"
 		},
-		"1377": {
+		"1378": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "RequirementType.MIN_SUBTOTAL"
 		},
-		"1378": {
+		"1379": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "RequirementType.MAX_SUBTOTAL"
 		},
-		"1379": {
+		"1380": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "ShippingOptionRequirement"
 		},
-		"1382": {
+		"1383": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "ShippingOptionRequirement.id"
 		},
-		"1383": {
+		"1384": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "ShippingOptionRequirement.shipping_option_id"
 		},
-		"1384": {
+		"1385": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "ShippingOptionRequirement.shipping_option"
 		},
-		"1385": {
+		"1386": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "ShippingOptionRequirement.type"
 		},
-		"1386": {
+		"1387": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "ShippingOptionRequirement.amount"
 		},
-		"1387": {
-			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
-			"qualifiedName": "ShippingOptionRequirement.deleted_at"
-		},
 		"1388": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
-			"qualifiedName": "ShippingOptionRequirement.beforeInsert"
+			"qualifiedName": "ShippingOptionRequirement.deleted_at"
 		},
 		"1389": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
 			"qualifiedName": "ShippingOptionRequirement.beforeInsert"
 		},
 		"1390": {
-			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfileType"
+			"sourceFileName": "../../../packages/medusa/src/models/shipping-option-requirement.ts",
+			"qualifiedName": "ShippingOptionRequirement.beforeInsert"
 		},
 		"1391": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfileType.DEFAULT"
+			"qualifiedName": "ShippingProfileType"
 		},
 		"1392": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfileType.GIFT_CARD"
+			"qualifiedName": "ShippingProfileType.DEFAULT"
 		},
 		"1393": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfileType.CUSTOM"
+			"qualifiedName": "ShippingProfileType.GIFT_CARD"
 		},
 		"1394": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfile"
+			"qualifiedName": "ShippingProfileType.CUSTOM"
 		},
-		"1397": {
+		"1395": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfile.name"
+			"qualifiedName": "ShippingProfile"
 		},
 		"1398": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfile.type"
+			"qualifiedName": "ShippingProfile.name"
 		},
 		"1399": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfile.products"
+			"qualifiedName": "ShippingProfile.type"
 		},
 		"1400": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfile.shipping_options"
+			"qualifiedName": "ShippingProfile.products"
 		},
 		"1401": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfile.metadata"
+			"qualifiedName": "ShippingProfile.shipping_options"
 		},
 		"1402": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
-			"qualifiedName": "ShippingProfile.beforeInsert"
+			"qualifiedName": "ShippingProfile.metadata"
 		},
 		"1403": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
 			"qualifiedName": "ShippingProfile.beforeInsert"
 		},
 		"1404": {
+			"sourceFileName": "../../../packages/medusa/src/models/shipping-profile.ts",
+			"qualifiedName": "ShippingProfile.beforeInsert"
+		},
+		"1405": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/soft-deletable-entity.ts",
 			"qualifiedName": "SoftDeletableEntity.deleted_at"
 		},
-		"1405": {
+		"1406": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.id"
 		},
-		"1406": {
+		"1407": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.created_at"
 		},
-		"1407": {
+		"1408": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.updated_at"
 		},
-		"1408": {
+		"1409": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-tax-rate.ts",
 			"qualifiedName": "ShippingTaxRate"
 		},
-		"1411": {
+		"1412": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-tax-rate.ts",
 			"qualifiedName": "ShippingTaxRate.shipping_option_id"
 		},
-		"1412": {
+		"1413": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-tax-rate.ts",
 			"qualifiedName": "ShippingTaxRate.rate_id"
 		},
-		"1413": {
+		"1414": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-tax-rate.ts",
 			"qualifiedName": "ShippingTaxRate.shipping_option"
 		},
-		"1414": {
+		"1415": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-tax-rate.ts",
 			"qualifiedName": "ShippingTaxRate.tax_rate"
 		},
-		"1415": {
+		"1416": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-tax-rate.ts",
 			"qualifiedName": "ShippingTaxRate.created_at"
 		},
-		"1416": {
+		"1417": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-tax-rate.ts",
 			"qualifiedName": "ShippingTaxRate.updated_at"
 		},
-		"1417": {
+		"1418": {
 			"sourceFileName": "../../../packages/medusa/src/models/shipping-tax-rate.ts",
 			"qualifiedName": "ShippingTaxRate.metadata"
 		},
-		"1418": {
+		"1419": {
 			"sourceFileName": "../../../packages/medusa/src/models/staged-job.ts",
 			"qualifiedName": "StagedJob"
 		},
-		"1421": {
+		"1422": {
 			"sourceFileName": "../../../packages/medusa/src/models/staged-job.ts",
 			"qualifiedName": "StagedJob.id"
 		},
-		"1422": {
+		"1423": {
 			"sourceFileName": "../../../packages/medusa/src/models/staged-job.ts",
 			"qualifiedName": "StagedJob.event_name"
 		},
-		"1423": {
+		"1424": {
 			"sourceFileName": "../../../packages/medusa/src/models/staged-job.ts",
 			"qualifiedName": "StagedJob.data"
 		},
-		"1424": {
-			"sourceFileName": "../../../packages/medusa/src/models/staged-job.ts",
-			"qualifiedName": "StagedJob.options"
-		},
 		"1425": {
 			"sourceFileName": "../../../packages/medusa/src/models/staged-job.ts",
-			"qualifiedName": "StagedJob.beforeInsert"
+			"qualifiedName": "StagedJob.options"
 		},
 		"1426": {
 			"sourceFileName": "../../../packages/medusa/src/models/staged-job.ts",
 			"qualifiedName": "StagedJob.beforeInsert"
 		},
 		"1427": {
+			"sourceFileName": "../../../packages/medusa/src/models/staged-job.ts",
+			"qualifiedName": "StagedJob.beforeInsert"
+		},
+		"1428": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store"
 		},
-		"1430": {
+		"1431": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.name"
 		},
-		"1431": {
+		"1432": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.default_currency_code"
 		},
-		"1432": {
+		"1433": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.default_currency"
 		},
-		"1433": {
+		"1434": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.currencies"
 		},
-		"1434": {
+		"1435": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.swap_link_template"
 		},
-		"1435": {
+		"1436": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.payment_link_template"
 		},
-		"1436": {
+		"1437": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.invite_link_template"
 		},
-		"1437": {
+		"1438": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.default_location_id"
 		},
-		"1438": {
+		"1439": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.metadata"
 		},
-		"1439": {
+		"1440": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.default_sales_channel_id"
 		},
-		"1440": {
-			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
-			"qualifiedName": "Store.default_sales_channel"
-		},
 		"1441": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
-			"qualifiedName": "Store.beforeInsert"
+			"qualifiedName": "Store.default_sales_channel"
 		},
 		"1442": {
 			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
 			"qualifiedName": "Store.beforeInsert"
 		},
 		"1443": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.id"
+			"sourceFileName": "../../../packages/medusa/src/models/store.ts",
+			"qualifiedName": "Store.beforeInsert"
 		},
 		"1444": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.created_at"
+			"qualifiedName": "BaseEntity.id"
 		},
 		"1445": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.updated_at"
+			"qualifiedName": "BaseEntity.created_at"
 		},
 		"1446": {
-			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapFulfillmentStatus"
+			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
+			"qualifiedName": "BaseEntity.updated_at"
 		},
 		"1447": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapFulfillmentStatus.NOT_FULFILLED"
+			"qualifiedName": "SwapFulfillmentStatus"
 		},
 		"1448": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapFulfillmentStatus.FULFILLED"
+			"qualifiedName": "SwapFulfillmentStatus.NOT_FULFILLED"
 		},
 		"1449": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapFulfillmentStatus.SHIPPED"
+			"qualifiedName": "SwapFulfillmentStatus.FULFILLED"
 		},
 		"1450": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapFulfillmentStatus.PARTIALLY_SHIPPED"
+			"qualifiedName": "SwapFulfillmentStatus.SHIPPED"
 		},
 		"1451": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapFulfillmentStatus.CANCELED"
+			"qualifiedName": "SwapFulfillmentStatus.PARTIALLY_SHIPPED"
 		},
 		"1452": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapFulfillmentStatus.REQUIRES_ACTION"
+			"qualifiedName": "SwapFulfillmentStatus.CANCELED"
 		},
 		"1453": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus"
+			"qualifiedName": "SwapFulfillmentStatus.REQUIRES_ACTION"
 		},
 		"1454": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.NOT_PAID"
+			"qualifiedName": "SwapPaymentStatus"
 		},
 		"1455": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.AWAITING"
+			"qualifiedName": "SwapPaymentStatus.NOT_PAID"
 		},
 		"1456": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.CAPTURED"
+			"qualifiedName": "SwapPaymentStatus.AWAITING"
 		},
 		"1457": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.CONFIRMED"
+			"qualifiedName": "SwapPaymentStatus.CAPTURED"
 		},
 		"1458": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.CANCELED"
+			"qualifiedName": "SwapPaymentStatus.CONFIRMED"
 		},
 		"1459": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.DIFFERENCE_REFUNDED"
+			"qualifiedName": "SwapPaymentStatus.CANCELED"
 		},
 		"1460": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.PARTIALLY_REFUNDED"
+			"qualifiedName": "SwapPaymentStatus.DIFFERENCE_REFUNDED"
 		},
 		"1461": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.REFUNDED"
+			"qualifiedName": "SwapPaymentStatus.PARTIALLY_REFUNDED"
 		},
 		"1462": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "SwapPaymentStatus.REQUIRES_ACTION"
+			"qualifiedName": "SwapPaymentStatus.REFUNDED"
 		},
 		"1463": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap"
+			"qualifiedName": "SwapPaymentStatus.REQUIRES_ACTION"
 		},
-		"1466": {
+		"1464": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.fulfillment_status"
+			"qualifiedName": "Swap"
 		},
 		"1467": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.payment_status"
+			"qualifiedName": "Swap.fulfillment_status"
 		},
 		"1468": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.order_id"
+			"qualifiedName": "Swap.payment_status"
 		},
 		"1469": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.order"
+			"qualifiedName": "Swap.order_id"
 		},
 		"1470": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.additional_items"
+			"qualifiedName": "Swap.order"
 		},
 		"1471": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.return_order"
+			"qualifiedName": "Swap.additional_items"
 		},
 		"1472": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.fulfillments"
+			"qualifiedName": "Swap.return_order"
 		},
 		"1473": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.payment"
+			"qualifiedName": "Swap.fulfillments"
 		},
 		"1474": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.difference_due"
+			"qualifiedName": "Swap.payment"
 		},
 		"1475": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.shipping_address_id"
+			"qualifiedName": "Swap.difference_due"
 		},
 		"1476": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.shipping_address"
+			"qualifiedName": "Swap.shipping_address_id"
 		},
 		"1477": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.shipping_methods"
+			"qualifiedName": "Swap.shipping_address"
 		},
 		"1478": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.cart_id"
+			"qualifiedName": "Swap.shipping_methods"
 		},
 		"1479": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.cart"
+			"qualifiedName": "Swap.cart_id"
 		},
 		"1480": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.confirmed_at"
+			"qualifiedName": "Swap.cart"
 		},
 		"1481": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.canceled_at"
+			"qualifiedName": "Swap.confirmed_at"
 		},
 		"1482": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.no_notification"
+			"qualifiedName": "Swap.canceled_at"
 		},
 		"1483": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.allow_backorder"
+			"qualifiedName": "Swap.no_notification"
 		},
 		"1484": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.idempotency_key"
+			"qualifiedName": "Swap.allow_backorder"
 		},
 		"1485": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.metadata"
+			"qualifiedName": "Swap.idempotency_key"
 		},
 		"1486": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
-			"qualifiedName": "Swap.beforeInsert"
+			"qualifiedName": "Swap.metadata"
 		},
 		"1487": {
 			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
 			"qualifiedName": "Swap.beforeInsert"
 		},
 		"1488": {
+			"sourceFileName": "../../../packages/medusa/src/models/swap.ts",
+			"qualifiedName": "Swap.beforeInsert"
+		},
+		"1489": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/soft-deletable-entity.ts",
 			"qualifiedName": "SoftDeletableEntity.deleted_at"
 		},
-		"1489": {
+		"1490": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.id"
 		},
-		"1490": {
+		"1491": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.created_at"
 		},
-		"1491": {
+		"1492": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.updated_at"
 		},
-		"1492": {
+		"1493": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-provider.ts",
 			"qualifiedName": "TaxProvider"
 		},
-		"1495": {
+		"1496": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-provider.ts",
 			"qualifiedName": "TaxProvider.id"
 		},
-		"1496": {
+		"1497": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-provider.ts",
 			"qualifiedName": "TaxProvider.is_installed"
 		},
-		"1497": {
+		"1498": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate"
 		},
-		"1500": {
+		"1501": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.rate"
 		},
-		"1501": {
+		"1502": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.code"
 		},
-		"1502": {
+		"1503": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.name"
 		},
-		"1503": {
+		"1504": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.region_id"
 		},
-		"1504": {
+		"1505": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.region"
 		},
-		"1505": {
+		"1506": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.metadata"
 		},
-		"1506": {
+		"1507": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.products"
 		},
-		"1507": {
+		"1508": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.product_types"
 		},
-		"1508": {
+		"1509": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.shipping_options"
 		},
-		"1509": {
+		"1510": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.product_count"
 		},
-		"1510": {
+		"1511": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.product_type_count"
 		},
-		"1511": {
-			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
-			"qualifiedName": "TaxRate.shipping_option_count"
-		},
 		"1512": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
-			"qualifiedName": "TaxRate.beforeInsert"
+			"qualifiedName": "TaxRate.shipping_option_count"
 		},
 		"1513": {
 			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
 			"qualifiedName": "TaxRate.beforeInsert"
 		},
 		"1514": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.id"
+			"sourceFileName": "../../../packages/medusa/src/models/tax-rate.ts",
+			"qualifiedName": "TaxRate.beforeInsert"
 		},
 		"1515": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.created_at"
+			"qualifiedName": "BaseEntity.id"
 		},
 		"1516": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
-			"qualifiedName": "BaseEntity.updated_at"
+			"qualifiedName": "BaseEntity.created_at"
 		},
 		"1517": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
+			"qualifiedName": "BaseEntity.updated_at"
+		},
+		"1518": {
 			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
 			"qualifiedName": "TrackingLink"
 		},
-		"1520": {
+		"1521": {
 			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
 			"qualifiedName": "TrackingLink.url"
 		},
-		"1521": {
+		"1522": {
 			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
 			"qualifiedName": "TrackingLink.tracking_number"
 		},
-		"1522": {
+		"1523": {
 			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
 			"qualifiedName": "TrackingLink.fulfillment_id"
 		},
-		"1523": {
+		"1524": {
 			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
 			"qualifiedName": "TrackingLink.fulfillment"
 		},
-		"1524": {
+		"1525": {
 			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
 			"qualifiedName": "TrackingLink.idempotency_key"
 		},
-		"1525": {
-			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
-			"qualifiedName": "TrackingLink.metadata"
-		},
 		"1526": {
 			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
-			"qualifiedName": "TrackingLink.beforeInsert"
+			"qualifiedName": "TrackingLink.metadata"
 		},
 		"1527": {
 			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
 			"qualifiedName": "TrackingLink.beforeInsert"
 		},
 		"1528": {
+			"sourceFileName": "../../../packages/medusa/src/models/tracking-link.ts",
+			"qualifiedName": "TrackingLink.beforeInsert"
+		},
+		"1529": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/soft-deletable-entity.ts",
 			"qualifiedName": "SoftDeletableEntity.deleted_at"
 		},
-		"1529": {
+		"1530": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.id"
 		},
-		"1530": {
+		"1531": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.created_at"
 		},
-		"1531": {
+		"1532": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.updated_at"
 		},
-		"1532": {
+		"1533": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "UserRoles"
 		},
-		"1533": {
+		"1534": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "UserRoles.ADMIN"
 		},
-		"1534": {
+		"1535": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "UserRoles.MEMBER"
 		},
-		"1535": {
+		"1536": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "UserRoles.DEVELOPER"
 		},
-		"1536": {
+		"1537": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "User"
 		},
-		"1539": {
+		"1540": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "User.role"
 		},
-		"1540": {
+		"1541": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "User.email"
 		},
-		"1541": {
+		"1542": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "User.first_name"
 		},
-		"1542": {
+		"1543": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "User.last_name"
 		},
-		"1543": {
+		"1544": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "User.password_hash"
 		},
-		"1544": {
+		"1545": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "User.api_token"
 		},
-		"1545": {
-			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
-			"qualifiedName": "User.metadata"
-		},
 		"1546": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
-			"qualifiedName": "User.beforeInsert"
+			"qualifiedName": "User.metadata"
 		},
 		"1547": {
 			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
 			"qualifiedName": "User.beforeInsert"
 		},
 		"1548": {
+			"sourceFileName": "../../../packages/medusa/src/models/user.ts",
+			"qualifiedName": "User.beforeInsert"
+		},
+		"1549": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/soft-deletable-entity.ts",
 			"qualifiedName": "SoftDeletableEntity.deleted_at"
 		},
-		"1549": {
+		"1550": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.id"
 		},
-		"1550": {
+		"1551": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.created_at"
 		},
-		"1551": {
+		"1552": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/models/base-entity.ts",
 			"qualifiedName": "BaseEntity.updated_at"
 		}
