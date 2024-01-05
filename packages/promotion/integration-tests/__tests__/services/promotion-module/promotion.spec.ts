@@ -427,7 +427,7 @@ describe("Promotion Service", () => {
             target_type: "item",
             allocation: "each",
             value: "100",
-            max_quantity: "500",
+            max_quantity: 500,
           },
         },
       ])
@@ -607,7 +607,7 @@ describe("Promotion Service", () => {
             target_type: "item",
             allocation: "each",
             value: "100",
-            max_quantity: "500",
+            max_quantity: 500,
           },
         },
       ])
@@ -679,7 +679,7 @@ describe("Promotion Service", () => {
             target_type: "item",
             allocation: "each",
             value: "100",
-            max_quantity: "500",
+            max_quantity: 500,
           },
         },
       ])
@@ -763,7 +763,7 @@ describe("Promotion Service", () => {
             target_type: "item",
             allocation: "each",
             value: "100",
-            max_quantity: "500",
+            max_quantity: 500,
           },
         },
       ])
@@ -824,7 +824,7 @@ describe("Promotion Service", () => {
             target_type: "item",
             allocation: "each",
             value: "100",
-            max_quantity: "500",
+            max_quantity: 500,
             target_rules: [
               {
                 attribute: "customer_group_id",

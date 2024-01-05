@@ -29,7 +29,7 @@ export function validateApplicationMethodAttributes(data: {
   type: ApplicationMethodTypeValues
   target_type: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
-  max_quantity?: string | null
+  max_quantity?: number | null
 }) {
   const allTargetTypes: string[] = Object.values(ApplicationMethodTargetType)
 

@@ -291,7 +291,7 @@ export default class PromotionModuleService<
         applicationMethodData.allocation &&
         !allowedAllocationForQuantity.includes(applicationMethodData.allocation)
       ) {
-        applicationMethodData.max_quantity = "0"
+        applicationMethodData.max_quantity = null
       }
 
       validateApplicationMethodAttributes({

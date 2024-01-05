@@ -12,7 +12,7 @@ export interface ApplicationMethodDTO {
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
   value?: string | null
-  max_quantity?: string | null
+  max_quantity?: number | null
   promotion?: PromotionDTO | string
   target_rules?: PromotionRuleDTO[]
 }
@@ -22,7 +22,7 @@ export interface CreateApplicationMethodDTO {
   target_type: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
   value?: string | null
-  max_quantity?: string | null
+  max_quantity?: number | null
   promotion?: PromotionDTO | string
   target_rules?: CreatePromotionRuleDTO[]
 }
@@ -33,7 +33,7 @@ export interface UpdateApplicationMethodDTO {
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
   value?: string | null
-  max_quantity?: string | null
+  max_quantity?: number | null
   promotion?: PromotionDTO | string
 }
 

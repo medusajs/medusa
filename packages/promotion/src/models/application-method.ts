@@ -27,6 +27,7 @@ type OptionalFields =
   | "created_at"
   | "updated_at"
   | "deleted_at"
+
 @Entity()
 export default class ApplicationMethod {
   [OptionalProps]?: OptionalFields
@@ -38,7 +39,7 @@ export default class ApplicationMethod {
   value?: string | null
 
   @Property({ columnType: "numeric", nullable: true, serializer: Number })
-  max_quantity?: string | null
+  max_quantity?: number | null
 
   @Index({ name: "IDX_application_method_type" })
   @Enum(() => PromotionUtils.ApplicationMethodType)
