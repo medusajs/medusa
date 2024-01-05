@@ -66,7 +66,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
     let retentionTime
 
     /**
-     * Store the rentention time only if the transaction is done, failed or reverted.
+     * Store the retention time only if the transaction is done, failed or reverted.
      * From that moment, this tuple can be later on archived or deleted after the retention time.
      */
     const finalStatus = [
