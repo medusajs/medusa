@@ -4,6 +4,7 @@ import { Context } from "../shared-context"
 import {
   FilterableWorkflowExecutionProps,
   WorkflowExecutionDTO,
+  WorkflowOrchestratorRunDTO,
 } from "./common"
 
 export interface IWorkflowOrchestratorModuleService extends IModuleService {
@@ -21,7 +22,7 @@ export interface IWorkflowOrchestratorModuleService extends IModuleService {
 
   run(
     workflowId: string,
-    options?: Record<string, any>,
+    options?: WorkflowOrchestratorRunDTO,
     sharedContext?: Context
   ): Promise<{
     errors: Error[]

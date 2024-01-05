@@ -3,8 +3,8 @@ import {
   DAL,
   FilterableWorkflowExecutionProps,
   FindConfig,
-  IWorkflowOrchestratorModuleService,
   InternalModuleDeclaration,
+  IWorkflowOrchestratorModuleService,
   ModuleJoinerConfig,
   WorkflowOrchestratorTypes,
 } from "@medusajs/types"
@@ -18,6 +18,7 @@ import {
   WorkflowOrchestratorService,
 } from "@services"
 import { joinerConfig } from "../joiner-config"
+import { WorkflowOrchestratorRunDTO } from "@medusajs/types/src"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -92,8 +93,16 @@ export class WorkflowOrchestratorModuleService
   }
 
   @InjectSharedContext()
-  async run(workflowId: string, context: Context = {}) {
-    const ret = await this.workflowOrchestratorService_.run(workflowId, context)
+  async run(
+    workflowId: string,
+    options: WorkflowOrchestratorRunDTO = {},
+    @MedusaContext() context: Context = {}
+  ) {
+    const ret = await this.workflowOrchestratorService_.run(
+      workflowId,
+      options,
+      context
+    )
 
     return ret as any
   }
@@ -102,7 +111,7 @@ export class WorkflowOrchestratorModuleService
   async getRunningTransaction(
     workflowId: string,
     transactionId: string,
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ) {
     return this.workflowOrchestratorService_.getRunningTransaction(
       workflowId,
@@ -122,7 +131,7 @@ export class WorkflowOrchestratorModuleService
       stepResponse: unknown
       options?: Record<string, any>
     },
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ) {
     return this.workflowOrchestratorService_.setStepSuccess(
       {
@@ -145,7 +154,7 @@ export class WorkflowOrchestratorModuleService
       stepResponse: unknown
       options?: Record<string, any>
     },
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ) {
     return this.workflowOrchestratorService_.setStepFailure(
       {
@@ -165,7 +174,7 @@ export class WorkflowOrchestratorModuleService
       subscriber: Function
       subscriberId?: string
     },
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ) {
     return this.workflowOrchestratorService_.subscribe(args as any, context)
   }
@@ -177,7 +186,7 @@ export class WorkflowOrchestratorModuleService
       transactionId?: string
       subscriberOrId: string | Function
     },
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ) {
     return this.workflowOrchestratorService_.unsubscribe(args as any, context)
   }
