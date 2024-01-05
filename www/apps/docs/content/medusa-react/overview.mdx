@@ -291,7 +291,7 @@ const CustomerLogin = () => {
   ) => {
     client.auth.authenticate({
       email,
-      password
+      password,
     })
     .then(() => {
       // customer is logged-in successfully
