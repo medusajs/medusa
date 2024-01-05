@@ -33,7 +33,7 @@ export default class ShippingMethod {
   @Property({ columnType: "jsonb", nullable: true })
   description?: string | null
 
-  @Property({ columnType: "numeric" })
+  @Property({ columnType: "numeric", serializer: Number })
   @Check({ expression: "amount >= 0" }) // TODO: Validate that numeric types work with the expression
   amount: number
 

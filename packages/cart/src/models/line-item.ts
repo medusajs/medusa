@@ -3,6 +3,7 @@ import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
+  Check,
   Collection,
   Entity,
   ManyToOne,
@@ -10,7 +11,7 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-  Property,
+  Property
 } from "@mikro-orm/core"
 import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"
@@ -101,7 +102,8 @@ export default class LineItem {
   @Property({ columnType: "numeric", nullable: true })
   compare_at_unit_price?: number
 
-  @Property({ columnType: "numeric" })
+  @Property({ columnType: "numeric", serializer: Number })
+  @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
   unit_price: number
 
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
