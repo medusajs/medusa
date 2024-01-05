@@ -21,7 +21,82 @@ export const adminOrderKeys = {
 
 type OrderQueryKeys = typeof adminOrderKeys
 
+/**
+ * This hook retrieves a list of orders. The orders can be filtered by fields such as `status` or `display_id` passed 
+ * in the `query` parameter. The order can also be paginated.
+ * 
+ * @example
+ * To list orders:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminOrders } from "medusa-react"
+ * 
+ * const Orders = () => {
+ *   const { orders, isLoading } = useAdminOrders()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {orders && !orders.length && <span>No Orders</span>}
+ *       {orders && orders.length > 0 && (
+ *         <ul>
+ *           {orders.map((order) => (
+ *             <li key={order.id}>{order.display_id}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Orders
+ * ```
+ * 
+ * You can use the `query` parameter to pass filters and specify relations that should be retrieved within the orders. In addition,
+ * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminOrders } from "medusa-react"
+ * 
+ * const Orders = () => {
+ *   const { 
+ *     orders,
+ *     limit,
+ *     offset,
+ *     isLoading
+ *   } = useAdminOrders({
+ *     expand: "customers",
+ *     limit: 20,
+ *     offset: 0
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {orders && !orders.length && <span>No Orders</span>}
+ *       {orders && orders.length > 0 && (
+ *         <ul>
+ *           {orders.map((order) => (
+ *             <li key={order.id}>{order.display_id}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Orders
+ * ```
+ * 
+ * @customNamespace Hooks.Admin.Orders
+ * @category Queries
+ */
 export const useAdminOrders = (
+  /**
+   * Filters and pagination configurations applied on the retrieved orders.
+   */
   query?: AdminGetOrdersParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminOrdersListRes>,
@@ -38,8 +113,77 @@ export const useAdminOrders = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieve an order's details.
+ * 
+ * @example
+ * A simple example that retrieves an order by its ID:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminOrder } from "medusa-react"
+ * 
+ * type Props = {
+ *   orderId: string
+ * }
+ * 
+ * const Order = ({ orderId }: Props) => {
+ *   const { 
+ *     order, 
+ *     isLoading, 
+ *   } = useAdminOrder(orderId)
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {order && <span>{order.display_id}</span>}
+ *       
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Order
+ * ```
+ * 
+ * To specify relations that should be retrieved:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminOrder } from "medusa-react"
+ * 
+ * const Order = (
+ *   orderId: string
+ * ) => {
+ *   const { 
+ *     order, 
+ *     isLoading, 
+ *   } = useAdminOrder(orderId, {
+ *     expand: "customer"
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {order && <span>{order.display_id}</span>}
+ *       
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Order
+ * ```
+ * 
+ * @customNamespace Hooks.Admin.Orders
+ * @category Queries
+ */
 export const useAdminOrder = (
+  /**
+   * The order's ID.
+   */
   id: string,
+  /**
+   * Configurations to apply on the retrieved order.
+   */
   query?: FindParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminOrdersRes>,

@@ -2,13 +2,12 @@ import {
   IEventBusService,
   IInventoryService,
   ReservationItemDTO,
-  WithRequiredProperty,
 } from "@medusajs/types"
 import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
 } from "../interfaces"
-import { Cart, IdempotencyKey, Order } from "../models"
+import { IdempotencyKey, Order } from "../models"
 import {
   PaymentProviderService,
   ProductVariantInventoryService,
@@ -247,39 +246,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     const txCartService = this.cartService_.withTransaction(manager)
 
-    let cart: Cart | WithRequiredProperty<Cart, "total"> =
-      await txCartService.retrieveWithTotals(id, {
-        relations: [
-          "items.variant.product.profiles",
-          "items.adjustments",
-          "discounts",
-          "discounts.rule",
-          "gift_cards",
-          "shipping_methods",
-          "shipping_methods.shipping_option",
-          "billing_address",
-          "shipping_address",
-          "region",
-          "region.tax_rates",
-          "region.payment_providers",
-          "payment_sessions",
-          "customer",
-        ],
-      })
-
-    if (cart.payment_sessions?.length) {
-      await txCartService.setPaymentSessions(
-        cart as WithRequiredProperty<Cart, "total">
-      )
-    }
-
-    cart = await txCartService.authorizePayment(
-      cart as WithRequiredProperty<Cart, "total">,
-      {
-        ...context,
-        idempotency_key: idempotencyKey,
-      }
-    )
+    const cart = await txCartService.authorizePayment(id, {
+      ...context,
+      idempotency_key: idempotencyKey,
+    })
 
     if (cart.payment_session) {
       if (

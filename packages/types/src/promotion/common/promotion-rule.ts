@@ -24,6 +24,10 @@ export interface UpdatePromotionRuleDTO {
   id: string
 }
 
+export interface RemovePromotionRuleDTO {
+  id: string
+}
+
 export interface FilterablePromotionRuleProps
   extends BaseFilterable<FilterablePromotionRuleProps> {
   id?: string[]

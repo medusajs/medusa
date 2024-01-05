@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the order refund.
+ */
 export interface AdminPostOrdersOrderRefundsReq {
   /**
    * The amount to refund. It should be less than or equal the `refundable_amount` of the order.

@@ -55,6 +55,34 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateProductTaxRates } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const addProduct = useAdminCreateProductTaxRates(taxRateId)
+ *         // ...
+ *
+ *         const handleAddProduct = (productIds: string[]) => {
+ *           addProduct.mutate({
+ *             products: productIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -122,6 +150,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateProductsReq
  * type: object
+ * description: "The details of the products to associat with the tax rate."
  * required:
  *   - products
  * properties:

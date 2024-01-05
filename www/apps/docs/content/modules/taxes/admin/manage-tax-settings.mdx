@@ -148,20 +148,24 @@ You can change the tax provider of a region using the [Update Region API Route](
     ```tsx
     import { useAdminUpdateRegion } from "medusa-react"
 
-    const UpdateRegion = () => {
+    type Props = {
+      regionId: string
+    }
+
+    const Region = ({ regionId }: Props) => {
       const updateRegion = useAdminUpdateRegion(regionId)
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (taxProviderId: string) => {
         updateRegion.mutate({
-          tax_provider_id,
+          tax_provider_id: taxProviderId,
         })
       }
 
       // ...
     }
 
-    export default UpdateRegion
+    export default Region
     ```
 
   </TabItem>
@@ -233,24 +237,30 @@ In addition to changing the tax provider, you can use the same [Update Region AP
     ```tsx
     import { useAdminUpdateRegion } from "medusa-react"
 
-    const UpdateRegion = () => {
+    type RegionData = {
+      tax_provider_id: string
+      automatic_taxes?: boolean
+      gift_cards_taxable?: boolean
+      tax_code: string
+      tax_rate: number
+    }
+
+    type Props = {
+      regionId: string
+    }
+
+    const Region = ({ regionId }: Props) => {
       const updateRegion = useAdminUpdateRegion(regionId)
       // ...
 
-      const handleUpdate = () => {
-        updateRegion.mutate({
-          tax_provider_id,
-          automatic_taxes,
-          gift_cards_taxable,
-          tax_code,
-          tax_rate,
-        })
+      const handleUpdate = (data: RegionData) => {
+        updateRegion.mutate(data)
       }
 
       // ...
     }
 
-    export default UpdateRegion
+    export default Region
     ```
 
   </TabItem>

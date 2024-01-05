@@ -37,6 +37,32 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateProductCategory } from "medusa-react"
+ *
+ *       const CreateCategory = () => {
+ *         const createCategory = useAdminCreateProductCategory()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           name: string
+ *         ) => {
+ *           createCategory.mutate({
+ *             name,
+ *           }, {
+ *             onSuccess: ({ product_category }) => {
+ *               console.log(product_category.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCategory
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -99,6 +125,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostProductCategoriesReq
  * type: object
+ * description: "The details of the product category to create."
  * required:
  *   - name
  * properties:

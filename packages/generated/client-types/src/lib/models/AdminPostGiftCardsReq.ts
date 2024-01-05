@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the gift card to create.
+ */
 export interface AdminPostGiftCardsReq {
   /**
    * The value (excluding VAT) that the Gift Card should represent.

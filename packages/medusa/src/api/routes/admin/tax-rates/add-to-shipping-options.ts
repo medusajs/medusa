@@ -55,6 +55,38 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateShippingTaxRates } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const addShippingOption = useAdminCreateShippingTaxRates(
+ *           taxRateId
+ *         )
+ *         // ...
+ *
+ *         const handleAddShippingOptions = (
+ *           shippingOptionIds: string[]
+ *         ) => {
+ *           addShippingOption.mutate({
+ *             shipping_options: shippingOptionIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.shipping_options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -124,6 +156,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateShippingOptionsReq
  * type: object
+ * description: "The details of the shipping options to associate with the tax rate."
  * required:
  *   - shipping_options
  * properties:
