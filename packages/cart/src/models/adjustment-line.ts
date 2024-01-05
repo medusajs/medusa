@@ -3,7 +3,11 @@ import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
 type OptionalAdjustmentLineProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
-export default class AdjustmentLine {
+/**
+ * As per the Mikro ORM docs, superclasses should use the abstract class definition
+ * Source: https://mikro-orm.io/docs/inheritance-mapping
+ */
+export default abstract class AdjustmentLine {
   [OptionalProps]: OptionalAdjustmentLineProps
 
   @PrimaryKey({ columnType: "text" })
