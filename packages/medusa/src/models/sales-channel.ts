@@ -11,6 +11,7 @@ import { SalesChannelLocation } from "./sales-channel-location"
 import { Product } from "./product"
 import { Cart } from "./cart"
 import { Order } from "./order"
+import { PublishableApiKey } from "./publishable-api-key"
 
 @FeatureFlagEntity("sales_channels")
 export class SalesChannel extends SoftDeletableEntity {
@@ -73,6 +74,20 @@ export class SalesChannel extends SoftDeletableEntity {
     ]
   )
   orders: Order[]
+
+  @ManyToMany(() => PublishableApiKey)
+  @JoinTable({
+    name: "publishable_api_key_sales_channel",
+    inverseJoinColumn: {
+      name: "publishable_key_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "sales_channel_id",
+      referencedColumnName: "id",
+    },
+  })
+  publishableKeys: PublishableApiKey[]
 
   @OneToMany(
     () => SalesChannelLocation,
