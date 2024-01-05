@@ -1,21 +1,22 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
+import { Context, DAL, FindConfig } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  doNotForceTransaction,
   retrieveEntity,
-  shouldForceTransaction,
 } from "@medusajs/utils"
 import { PriceSet, PriceSetRuleType } from "@models"
 import { PriceSetRuleTypeRepository } from "src/repositories/price-set-rule-type"
+import { ServiceTypes } from "@types"
 
 type InjectedDependencies = {
   priceSetRuleTypeRepository: DAL.RepositoryService
 }
 
-export default class PriceSetRuleTypeService<TEntity extends PriceSetRuleType = PriceSetRuleType> {
+export default class PriceSetRuleTypeService<
+  TEntity extends PriceSetRuleType = PriceSetRuleType
+> {
   protected readonly priceSetRuleTypeRepository_: DAL.RepositoryService
 
   constructor({ priceSetRuleTypeRepository }: InjectedDependencies) {
@@ -25,10 +26,13 @@ export default class PriceSetRuleTypeService<TEntity extends PriceSetRuleType = 
   @InjectManager("priceSetRuleTypeRepository_")
   async retrieve(
     priceSetId: string,
-    config: FindConfig<PricingTypes.PriceSetRuleTypeDTO> = {},
+    config: FindConfig<ServiceTypes.PriceSetRuleTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<PriceSetRuleType, PricingTypes.PriceSetRuleTypeDTO>({
+    return (await retrieveEntity<
+      PriceSetRuleType,
+      ServiceTypes.PriceSetRuleTypeDTO
+    >({
       id: priceSetId,
       entityName: PriceSet.name,
       repository: this.priceSetRuleTypeRepository_,
@@ -39,8 +43,8 @@ export default class PriceSetRuleTypeService<TEntity extends PriceSetRuleType = 
 
   @InjectManager("priceSetRuleTypeRepository_")
   async list(
-    filters: PricingTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<PricingTypes.PriceSetDTO> = {},
+    filters: ServiceTypes.FilterablePriceSetRuleTypeProps = {},
+    config: FindConfig<ServiceTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await this.priceSetRuleTypeRepository_.find(
@@ -51,8 +55,8 @@ export default class PriceSetRuleTypeService<TEntity extends PriceSetRuleType = 
 
   @InjectManager("priceSetRuleTypeRepository_")
   async listAndCount(
-    filters: PricingTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<PricingTypes.PriceSetDTO> = {},
+    filters: ServiceTypes.FilterablePriceSetRuleTypeProps = {},
+    config: FindConfig<ServiceTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     return (await this.priceSetRuleTypeRepository_.findAndCount(
@@ -62,8 +66,8 @@ export default class PriceSetRuleTypeService<TEntity extends PriceSetRuleType = 
   }
 
   private buildQueryForList(
-    filters: PricingTypes.FilterablePriceSetRuleTypeProps = {},
-    config: FindConfig<PricingTypes.PriceSetDTO> = {}
+    filters: ServiceTypes.FilterablePriceSetRuleTypeProps = {},
+    config: FindConfig<ServiceTypes.PriceSetDTO> = {}
   ) {
     const queryOptions = ModulesSdkUtils.buildQuery<PriceSet>(filters, config)
 
@@ -74,29 +78,27 @@ export default class PriceSetRuleTypeService<TEntity extends PriceSetRuleType = 
     return queryOptions
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "priceSetRuleTypeRepository_")
+  @InjectTransactionManager("priceSetRuleTypeRepository_")
   async create(
-    data: PricingTypes.CreatePriceSetRuleTypeDTO[],
+    data: ServiceTypes.CreatePriceSetRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.priceSetRuleTypeRepository_ as PriceSetRuleTypeRepository).create(
-      data,
-      sharedContext
-    )) as TEntity[]
+    return (await (
+      this.priceSetRuleTypeRepository_ as PriceSetRuleTypeRepository
+    ).create(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "priceSetRuleTypeRepository_")
+  @InjectTransactionManager("priceSetRuleTypeRepository_")
   async update(
-    data: PricingTypes.UpdatePriceSetRuleTypeDTO[],
+    data: ServiceTypes.UpdatePriceSetRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.priceSetRuleTypeRepository_ as PriceSetRuleTypeRepository).update(
-      data,
-      sharedContext
-    )) as TEntity[]
+    return (await (
+      this.priceSetRuleTypeRepository_ as PriceSetRuleTypeRepository
+    ).update(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "priceSetRuleTypeRepository_")
+  @InjectTransactionManager("priceSetRuleTypeRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

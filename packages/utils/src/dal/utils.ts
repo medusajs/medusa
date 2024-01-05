@@ -28,9 +28,12 @@ export async function transactionWrapper<TManager = unknown>(
     Object.assign(options, { isolationLevel })
   }
 
+  const freshManager = this.getFreshManager
+    ? this.getFreshManager()
+    : this.manager_
   const transactionMethod =
-    this.manager_.transaction ?? this.manager_.transactional
-  return await transactionMethod.bind(this.manager_)(task, options)
+    freshManager.transaction ?? freshManager.transactional
+  return await transactionMethod.bind(freshManager)(task, options)
 }
 
 /**

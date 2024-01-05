@@ -38,7 +38,7 @@ import { PaymentService } from "../../../../services"
  *       })
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

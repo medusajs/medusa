@@ -19,7 +19,7 @@ import CustomerService from "../../../../services/customer"
  *       medusa.customers.retrieve()
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

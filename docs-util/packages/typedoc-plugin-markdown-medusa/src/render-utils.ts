@@ -43,6 +43,12 @@ import typeParameterComponentHelper from "./resources/helpers/type-parameter-com
 import showPropertiesAsComponentHelper from "./resources/helpers/show-properties-as-component"
 import commentTagHelper from "./resources/helpers/comment-tag"
 import exampleHelper from "./resources/helpers/example"
+import ifFeatureFlagHelper from "./resources/helpers/if-feature-flag"
+import featureFlagHelper from "./resources/helpers/feature-flag"
+import decrementCurrentTitleLevelHelper from "./resources/helpers/decrement-current-title-level"
+import incrementCurrentTitleLevelHelper from "./resources/helpers/increment-current-title-level"
+import hasMoreThanOneSignatureHelper from "./resources/helpers/has-more-than-one-signature"
+import ifCanShowConstructorsTitleHelper from "./resources/helpers/if-can-show-constructors-title"
 import { MarkdownTheme } from "./theme"
 
 // test
@@ -85,7 +91,7 @@ export function registerHelpers(theme: MarkdownTheme) {
   ifShowBreadcrumbsHelper(theme)
   ifShowNamedAnchorsHelper(theme)
   ifShowPageTitleHelper(theme)
-  ifShowReturnsHelper()
+  ifShowReturnsHelper(theme)
   ifShowTypeHierarchyHelper()
   indexSignatureTitleHelper()
   parameterTableHelper()
@@ -116,4 +122,10 @@ export function registerHelpers(theme: MarkdownTheme) {
   showPropertiesAsComponentHelper(theme)
   commentTagHelper(theme)
   exampleHelper()
+  ifFeatureFlagHelper()
+  featureFlagHelper()
+  decrementCurrentTitleLevelHelper(theme)
+  incrementCurrentTitleLevelHelper(theme)
+  hasMoreThanOneSignatureHelper(theme)
+  ifCanShowConstructorsTitleHelper()
 }

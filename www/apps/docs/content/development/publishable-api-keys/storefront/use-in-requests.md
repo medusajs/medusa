@@ -20,7 +20,7 @@ If you don't pass a publishable API Key for the store API Routes `/store/product
 
 ## Using Medusa JS Client
 
-When using [Medusa’s JS Client](../../../js-client/overview.md), you can pass it to the client only once when you create the instance of the client:
+When using [Medusa’s JS Client](../../../js-client/overview.mdx), you can pass it to the client only once when you create the instance of the client:
 
 ```ts
 const medusa = new Medusa({

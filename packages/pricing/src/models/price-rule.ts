@@ -1,21 +1,31 @@
 import {
   BeforeCreate,
   Entity,
+  Filter,
+  Index,
   ManyToOne,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 
-import { generateEntityId } from "@medusajs/utils"
 import PriceSet from "./price-set"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
 
-type OptionalFields = "id" | "is_dynamic" | "priority"
+type OptionalFields =
+  | "id"
+  | "is_dynamic"
+  | "priority"
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
 type OptionalRelations = "price_set" | "rule_type" | "price_set_money_amount"
 
 @Entity()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class PriceRule {
   [OptionalProps]: OptionalFields | OptionalRelations
 
@@ -39,9 +49,6 @@ export default class PriceRule {
   })
   rule_type: RuleType
 
-  @Property({ columnType: "boolean", default: false })
-  is_dynamic: boolean
-
   @Property({ columnType: "text" })
   value: string
 
@@ -57,13 +64,32 @@ export default class PriceRule {
   })
   price_set_money_amount: PriceSetMoneyAmount
 
-  @Property({ columnType: "text" })
-  price_list_id!: string
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
 
-  // TODO: Add price list
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
+  @Index({ name: "IDX_price_rule_deleted_at" })
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null
 
   @BeforeCreate()
   beforeCreate() {
+    this.id = generateEntityId(this.id, "prule")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "prule")
   }
 }

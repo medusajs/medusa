@@ -1,6 +1,8 @@
 import * as Handlebars from "handlebars"
 import { Comment } from "typedoc"
 
+const EXCLUDED_TAGS = ["@returns", "@example", "@featureFlag"]
+
 export default function () {
   Handlebars.registerHelper(
     "comments",
@@ -8,7 +10,6 @@ export default function () {
       comment: Comment,
       showSummary = true,
       showTags = true,
-      commentLevel = 4,
       parent = null
     ) {
       const md: string[] = []
@@ -18,15 +19,11 @@ export default function () {
       }
 
       if (showTags && comment.blockTags?.length) {
-        const filteredTags = comment.blockTags
-          .filter((tag) => tag.tag !== "@returns")
-          .filter((tag) => tag.tag !== "@example")
+        const filteredTags = comment.blockTags.filter(
+          (tag) => !EXCLUDED_TAGS.includes(tag.tag)
+        )
         const tags = filteredTags.map((tag) => {
-          return Handlebars.helpers.commentTag(
-            tag,
-            commentLevel,
-            parent || comment
-          )
+          return Handlebars.helpers.commentTag(tag, parent || comment)
         })
         md.push(tags.join("\n\n"))
       }

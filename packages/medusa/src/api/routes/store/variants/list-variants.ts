@@ -1,4 +1,3 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -6,12 +5,14 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { Type } from "class-transformer"
+import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/variants
@@ -100,6 +101,16 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   method: list
  *   queryParams: StoreGetVariantsParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.product.variants.list()
+ *       .then(({ variants }) => {
+ *         console.log(variants.length);
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -154,11 +165,9 @@ export default async (req, res) => {
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
   const regionService: RegionService = req.scope.resolve("regionService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const rawVariants = await variantService.list(
-    filterableFields,
-    req.listConfig
-  )
+  const variants = await variantService.list(filterableFields, req.listConfig)
 
   let regionId = validated.region_id
   let currencyCode = validated.currency_code
@@ -173,49 +182,82 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const pricedVariants = await pricingService.setVariantPrices(rawVariants, {
-    cart_id: validated.cart_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    customer_id: customer_id,
-    include_discount_prices: true,
-  })
+  const decoratePromises: Promise<any>[] = []
 
-  const variants = await productVariantInventoryService.setVariantAvailability(
-    pricedVariants,
-    sales_channel_id
+  decoratePromises.push(
+    (await pricingService.setVariantPrices(variants, {
+      cart_id: validated.cart_id,
+      region_id: regionId,
+      currency_code: currencyCode,
+      customer_id: customer_id,
+      include_discount_prices: true,
+    })) as any
   )
+
+  decoratePromises.push(
+    (await productVariantInventoryService.setVariantAvailability(
+      variants,
+      sales_channel_id
+    )) as any
+  )
+  await promiseAll(decoratePromises)
 
   res.json({ variants })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product variants.
+ */
 export class StoreGetVariantsParams extends PriceSelectionParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 100
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 100
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * ID to filter the product variants by.
+   */
   @IsOptional()
   @IsString()
   ids?: string
 
+  /**
+   * Filter product variants by the ID of their associated sales channel.
+   */
   @IsOptional()
   @IsString()
   sales_channel_id?: string
 
+  /**
+   * IDs to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Titles to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   title?: string | string[]
 
+  /**
+   * Number filters to apply on the product variants' `inventory_quantity` field.
+   */
   @IsOptional()
   @IsType([Number, NumericalComparisonOperator])
   inventory_quantity?: number | NumericalComparisonOperator

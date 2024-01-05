@@ -1,17 +1,14 @@
-import {
-  Context,
-  CreatePriceSetMoneyAmountDTO,
-  DAL,
-  UpdatePriceSetMoneyAmountDTO,
-} from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+
 import { PriceSetMoneyAmount } from "@models"
+import { RepositoryTypes } from "@types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PriceSetMoneyAmountRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -69,22 +66,25 @@ export class PriceSetMoneyAmountRepository extends DALUtils.MikroOrmBaseReposito
   }
 
   async create(
-    data: CreatePriceSetMoneyAmountDTO[],
+    data: RepositoryTypes.CreatePriceSetMoneyAmountDTO[],
     context: Context = {}
   ): Promise<PriceSetMoneyAmount[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const currencies = data.map((currencyData) => {
-      return manager.create(PriceSetMoneyAmount, currencyData as PriceSetMoneyAmount)
+    const psma = data.map((psmaData) => {
+      return manager.create(
+        PriceSetMoneyAmount,
+        psmaData as unknown as PriceSetMoneyAmount
+      )
     })
 
-    manager.persist(currencies)
+    manager.persist(psma)
 
-    return currencies
+    return psma
   }
 
   async update(
-    data: UpdatePriceSetMoneyAmountDTO[],
+    data: RepositoryTypes.UpdatePriceSetMoneyAmountDTO[],
     context: Context = {}
   ): Promise<PriceSetMoneyAmount[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -101,23 +101,22 @@ export class PriceSetMoneyAmountRepository extends DALUtils.MikroOrmBaseReposito
     )
 
     const existingPSMAMap = new Map(
-      existingPriceSetMoneyAmounts.map<[string, PriceSetMoneyAmount]>((psma) => [
-        psma.id,
-        psma,
-      ])
+      existingPriceSetMoneyAmounts.map<[string, PriceSetMoneyAmount]>(
+        (psma) => [psma.id, psma]
+      )
     )
 
-    const priceSetMoneyAmounts = data.map((currencyData) => {
-      const existingPSMA = existingPSMAMap.get(currencyData.id)
+    const priceSetMoneyAmounts = data.map((psmaData) => {
+      const existingPSMA = existingPSMAMap.get(psmaData.id)
 
       if (!existingPSMA) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `PriceSetMoneyAmount with id "${currencyData.id}" not found`
+          `PriceSetMoneyAmount with id "${psmaData.id}" not found`
         )
       }
 
-      return manager.assign(existingPSMA, currencyData)
+      return manager.assign(existingPSMA, psmaData)
     })
 
     manager.persist(priceSetMoneyAmounts)

@@ -6,7 +6,7 @@ import {
 } from "@medusajs/types"
 import { isString } from "../../common"
 import { MedusaContext } from "../../decorators"
-import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
+import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
@@ -137,6 +137,8 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     retrieveConstraintsToApply: (q: string) => any[]
   ): void {
     if (!("q" in findOptions.where) || !findOptions.where.q) {
+      delete findOptions.where.q
+
       return
     }
 

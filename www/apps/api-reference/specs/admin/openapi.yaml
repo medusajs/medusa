@@ -31,7 +31,7 @@ tags:
       asynchronusly. For example, the Import Product feature is implemented
       using batch jobs.
 
-      Batch Job API Routes allows admins to manage the batch jobs and their
+      Batch Job API Routes allow admins to manage the batch jobs and their
       state.
     externalDocs:
       description: How to import products
@@ -289,7 +289,7 @@ tags:
       They are created by the admin and they're not associated with a
       fulfillment provider.
     externalDocs:
-      description: Shipping Option architecture
+      description: Shipping Profile architecture
       url: >-
         https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-profile
   - name: Stock Locations
@@ -345,6 +345,7 @@ tags:
       description: How to manage users
       url: https://docs.medusajs.com/modules/users/admin/manage-users
 servers:
+  - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 paths:
   /admin/apps:
@@ -563,8 +564,6 @@ paths:
     $ref: paths/admin_products_{id}_variants.yaml
   /admin/products/{id}/variants/{variant_id}:
     $ref: paths/admin_products_{id}_variants_{variant_id}.yaml
-  /admin/publishable-api-key/{id}:
-    $ref: paths/admin_publishable-api-key_{id}.yaml
   /admin/publishable-api-keys:
     $ref: paths/admin_publishable-api-keys.yaml
   /admin/publishable-api-keys/{id}:

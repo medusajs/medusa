@@ -1,18 +1,16 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
-import _, { identity } from "lodash"
-import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-
-import { DateComparisonOperator } from "../../../../types/common"
-import { Region } from "../../../.."
-import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { IsOptional, ValidateNested } from "class-validator"
+import RegionService from "../../../../services/region"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
 /**
  * @oas [get] /admin/regions
  * operationId: "GetRegions"
  * summary: "List Regions"
- * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated"
+ * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated."
  * x-authenticated: true
  * parameters:
  *  - in: query
@@ -111,7 +109,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.regions.list()
  *       .then(({ regions, limit, offset, count }) => {
  *         console.log(regions.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -144,55 +142,48 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetRegionsParams, req.query)
-
   const regionService: RegionService = req.scope.resolve("regionService")
-
-  const filterableFields = _.omit(validated, ["limit", "offset"])
-
-  const listConfig = {
-    select: defaultAdminRegionFields,
-    relations: defaultAdminRegionRelations,
-    skip: validated.offset,
-    take: validated.limit,
-  }
+  const { limit, offset } = req.validatedQuery
 
   const [regions, count] = await regionService.listAndCount(
-    _.pickBy(filterableFields, identity),
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
   res.json({
     regions,
     count,
-    offset: validated.offset,
-    limit: validated.limit,
+    offset,
+    limit,
   })
 }
 
-export class AdminGetRegionsPaginationParams {
-  @IsInt()
-  @IsOptional()
-  @Type(() => Number)
-  limit?: number = 50
-
-  @IsInt()
-  @IsOptional()
-  @Type(() => Number)
-  offset?: number = 0
-}
-
-export class AdminGetRegionsParams extends AdminGetRegionsPaginationParams {
+/**
+ * Parameters used to filter and configure the pagination of the retrieved regions.
+ */
+export class AdminGetRegionsParams extends extendedFindParamsMixin({
+  limit: 50,
+  offset: 0,
+}) {
+  /**
+   * Date filters to apply on the regions' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the regions' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the regions' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)

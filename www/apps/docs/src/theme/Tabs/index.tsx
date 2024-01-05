@@ -1,13 +1,19 @@
-import React, { ReactElement, cloneElement, useEffect, useRef } from "react"
+import React, {
+  cloneElement,
+  useRef,
+  type ReactElement,
+  useEffect,
+  useState,
+} from "react"
 import clsx from "clsx"
 import {
   useScrollPositionBlocker,
   useTabs,
+  sanitizeTabsChildren,
   type TabItemProps,
 } from "@docusaurus/theme-common/internal"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import type { Props as OldProps } from "@theme/Tabs"
-// import styles from "./styles.module.css"
 
 type TabsCustomProps = {
   isCodeTabs?: boolean
@@ -15,6 +21,13 @@ type TabsCustomProps = {
 }
 
 type TabListProps = OldProps & ReturnType<typeof useTabs> & TabsCustomProps
+
+type TabsComponentProp = TabsCustomProps & OldProps
+
+type TabsProps = {
+  wrapperClassName?: string
+  isCodeTabs?: boolean
+} & OldProps
 
 function TabList({
   className,
@@ -29,6 +42,8 @@ function TabList({
     useScrollPositionBlocker()
   const codeTabSelectorRef = useRef(null)
   const codeTabsWrapperRef = useRef(null)
+  const [tabsTitle, setTabsTitle] = useState(codeTitle)
+
   const handleTabChange = (
     event:
       | React.FocusEvent<HTMLLIElement>
@@ -95,9 +110,18 @@ function TabList({
     }
   }, [codeTabSelectorRef, tabRefs])
 
+  useEffect(() => {
+    const selectedTab = tabValues.find((tab) => tab.value === selectedValue)
+    if (selectedTab?.attributes?.title) {
+      setTabsTitle(selectedTab.attributes.title as string)
+    } else {
+      setTabsTitle(codeTitle)
+    }
+  }, [selectedValue])
+
   return (
     <div
-      className={clsx(isCodeTabs && "code-header", !isCodeTabs && "[&+*]:pt-2")}
+      className={clsx(isCodeTabs && "code-header", !isCodeTabs && "[&+*]:pt-1")}
     >
       <div
         className={clsx(isCodeTabs && "relative overflow-auto")}
@@ -116,8 +140,10 @@ function TabList({
           aria-orientation="horizontal"
           className={clsx(
             "tabs",
-            isCodeTabs && "no-scrollbar",
             "list-none",
+            isCodeTabs && "no-scrollbar",
+            !isCodeTabs &&
+              "overflow-visible border-0 border-b border-solid border-medusa-border-base pb-1",
             className
           )}
         >
@@ -133,29 +159,28 @@ function TabList({
               onClick={handleTabChange}
               {...attributes}
               className={clsx(
-                isCodeTabs &&
+                isCodeTabs && [
                   "text-compact-small-plus py-0.25 border border-solid border-transparent whitespace-nowrap rounded-full [&:not(:first-child)]:ml-0.25",
-                "!mt-0 cursor-pointer",
-                attributes?.className,
-                isCodeTabs && "z-[2] flex justify-center items-center",
-                isCodeTabs &&
+                  "z-[2] flex justify-center items-center",
                   selectedValue !== value &&
-                  "text-medusa-code-text-subtle hover:!bg-medusa-code-bg-base",
-                isCodeTabs &&
+                    "text-medusa-code-text-subtle hover:!bg-medusa-code-bg-base",
                   selectedValue === value &&
-                  "text-medusa-code-text-base border border-solid border-medusa-code-border bg-medusa-code-bg-base xs:!border-none xs:!bg-transparent",
-                !isCodeTabs &&
-                  "border-0 border-b-[3px] rounded inline-flex p-1 transition-[background-color] duration-200 ease-ease",
-                !isCodeTabs &&
-                  selectedValue === value &&
-                  "border-solid border-medusa-fg-base rounded-b-none",
-                !isCodeTabs &&
-                  selectedValue !== value &&
-                  "text-medusa-fg-subtle",
-                (!isCodeTabs || !attributes?.badge) && "px-0.75",
-                isCodeTabs &&
+                    "text-medusa-code-text-base border border-solid border-medusa-code-border bg-medusa-code-bg-base xs:!border-none xs:!bg-transparent",
                   attributes?.badge &&
-                  "[&_.badge]:ml-0.5 [&_.badge]:py-0.125 [&_.badge]:px-[6px] [&_.badge]:rounded-full pl-0.75 pr-0.25"
+                    "[&_.badge]:ml-0.5 [&_.badge]:py-0.125 [&_.badge]:px-[6px] [&_.badge]:rounded-full pl-0.75 pr-0.25",
+                  !attributes?.badge && "px-0.75",
+                ],
+                !isCodeTabs && [
+                  "[&:not(:last-child)]:mr-0.5 px-0.75 py-[6px] txt-compact-small-plus",
+                  "border-0 rounded-full transition-shadow duration-200 ease-ease",
+                  selectedValue === value &&
+                    "text-medusa-fg-base shadow-card-rest dark:shadow-card-rest-dark",
+                  selectedValue !== value &&
+                    "text-medusa-fg-subtle hover:text-medusa-fg-base",
+                  "flex gap-0.5",
+                ],
+                "!mt-0 cursor-pointer",
+                attributes?.className
               )}
             >
               {label ?? value}
@@ -169,7 +194,7 @@ function TabList({
             "text-compact-small-plus text-medusa-code-text-subtle hidden xs:block"
           )}
         >
-          {codeTitle}
+          {tabsTitle}
         </span>
       )}
     </div>
@@ -206,8 +231,6 @@ function TabContent({
   )
 }
 
-type TabsComponentProp = TabsCustomProps & OldProps
-
 function TabsComponent(props: TabsComponentProp): JSX.Element {
   const tabs = useTabs(props)
   return (
@@ -217,11 +240,6 @@ function TabsComponent(props: TabsComponentProp): JSX.Element {
     </div>
   )
 }
-
-type TabsProps = {
-  wrapperClassName?: string
-  isCodeTabs?: boolean
-} & OldProps
 
 function checkCodeTabs(props: TabsProps): boolean {
   return props.groupId === "npm2yarn" || props.isCodeTabs
@@ -245,8 +263,7 @@ export default function Tabs(props: TabsProps): JSX.Element {
         "tabs-wrapper",
         props.wrapperClassName,
         isCodeTabs && "code-tabs",
-        !isCodeTabs &&
-          "bg-docs-bg-surface p-1 border border-solid border-medusa-border-base rounded"
+        !isCodeTabs && "my-4"
       )}
     >
       <TabsComponent
@@ -255,7 +272,9 @@ export default function Tabs(props: TabsProps): JSX.Element {
         key={String(isBrowser)}
         isCodeTabs={isCodeTabs}
         {...props}
-      />
+      >
+        {sanitizeTabsChildren(props.children)}
+      </TabsComponent>
     </div>
   )
 }

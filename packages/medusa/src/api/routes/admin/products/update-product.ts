@@ -1,6 +1,11 @@
+import { Workflows, updateProducts } from "@medusajs/core-flows"
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { FlagRouter, MedusaError } from "@medusajs/utils"
-import { Workflows, updateProducts } from "@medusajs/workflows"
+import {
+  FlagRouter,
+  MedusaError,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -40,6 +45,7 @@ import {
   ProductVariantPricesUpdateReq,
   UpdateProductVariantInput,
 } from "../../../../types/product-variant"
+import { retrieveProduct } from "../../../../utils"
 import {
   createVariantsTransaction,
   revertVariantTransaction,
@@ -51,7 +57,6 @@ import { ProductVariantRepository } from "../../../../repositories/product-varia
 import { Logger } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -81,7 +86,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -137,21 +142,18 @@ export default async (req, res) => {
     req.scope.resolve("inventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-
   const productModuleService = req.scope.resolve("productModuleService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.UpdateProducts,
-  })
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  if (isWorkflowEnabled && !productModuleService) {
+  if (isMedusaV2Enabled && !productModuleService) {
     logger.warn(
       `Cannot run ${Workflows.UpdateProducts} workflow without '@medusajs/product' installed`
     )
   }
 
-  if (isWorkflowEnabled && !!productModuleService) {
+  if (isMedusaV2Enabled) {
     const updateProductWorkflow = updateProducts(req.scope)
 
     const input = {
@@ -211,6 +213,7 @@ export default async (req, res) => {
             prices: variant.prices || [],
           })
           variantsToCreate.push(variant)
+
           continue
         }
 
@@ -272,7 +275,7 @@ export default async (req, res) => {
           )
           allVariantTransactions.push(varTransaction)
         } catch (e) {
-          await Promise.all(
+          await promiseAll(
             allVariantTransactions.map(async (transaction) => {
               await revertVariantTransaction(
                 transactionDependencies,
@@ -289,8 +292,12 @@ export default async (req, res) => {
 
   let rawProduct
 
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
-    rawProduct = await getProductWithIsolatedProductModule(req, id)
+  if (isMedusaV2Enabled) {
+    rawProduct = await retrieveProduct(
+      req.scope,
+      id,
+      defaultAdminProductRemoteQueryObject
+    )
   } else {
     rawProduct = await productService.retrieve(id, {
       select: defaultAdminProductFields,
@@ -298,29 +305,9 @@ export default async (req, res) => {
     })
   }
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
-}
-
-async function getProductWithIsolatedProductModule(req, id) {
-  // TODO: Add support for fields/expands
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const [product] = await remoteQuery(query)
-
-  product.profile_id = product.profile?.id
-
-  return product
 }
 
 class ProductVariantOptionReq {
@@ -621,6 +608,9 @@ class ProductVariantReq {
  *   width:
  *     description: The width of the Product.
  *     type: number
+ *   hs_code:
+ *     description: The Harmonized System code of the product variant.
+ *     type: string
  *   origin_country:
  *     description: The country of origin of the Product.
  *     type: string

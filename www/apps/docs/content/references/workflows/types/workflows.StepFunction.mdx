@@ -1,0 +1,34 @@
+---
+displayed_sidebar: workflowsSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# StepFunction
+
+ **StepFunction**: (`input`: &#123; [K in string \| number \| symbol]: WorkflowData&#60;TInput[K]&#62; &#125;) => [WorkflowData](workflows.WorkflowData.mdx)&#60;&#123; [K in string \| number \| symbol]: TOutput[K] &#125;&#62; & [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;&#123; [K in keyof TOutput]: TOutput[K] &#125;&#62;
+
+A step function to be used in a workflow.
+
+## Type Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "TInput",
+    "type": "`object`",
+    "description": "The type of the input of the step.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TOutput",
+    "type": "`object`",
+    "description": "The type of the output of the step.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

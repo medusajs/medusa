@@ -1,4 +1,5 @@
 type: object
+description: Deletion operation details
 required:
   - id
   - object

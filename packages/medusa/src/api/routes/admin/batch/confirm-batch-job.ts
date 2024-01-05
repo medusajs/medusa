@@ -21,7 +21,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.batchJobs.confirm(batchJobId)
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

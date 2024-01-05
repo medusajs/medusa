@@ -3,27 +3,31 @@ import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import {
   CreateInventoryItemActions,
   createInventoryItems,
-  pipe,
-} from "@medusajs/workflows"
+} from "@medusajs/core-flows"
+
+import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 jest.setTimeout(30000)
 
 describe("CreateInventoryItem workflow", function () {
   let medusaContainer
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    await initDb({ cwd } as any)
-    const { container } = await bootstrapApp({ cwd })
-    medusaContainer = container
+    await initDb({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd, skipExpressListen: true })
+    medusaContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
+    await shutdownServer()
   })
 
   it("should compensate all the invoke if something fails", async () => {

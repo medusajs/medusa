@@ -12,6 +12,7 @@ required:
   - id
   - is_active
   - is_internal
+  - metadata
   - mpath
   - name
   - parent_category_id
@@ -25,6 +26,10 @@ properties:
     description: The product category's name
     type: string
     example: Regular Fit
+  description:
+    description: The product category's description.
+    type: string
+    default: ''
   handle:
     description: >-
       A unique string that identifies the Product Category - can for example be
@@ -80,3 +85,13 @@ properties:
     description: The date with timezone at which the resource was updated.
     type: string
     format: date-time
+  metadata:
+    description: An optional key-value map with additional details
+    nullable: true
+    type: object
+    example:
+      car: white
+    externalDocs:
+      description: Learn about the metadata attribute, and how to delete and update it.
+      url: >-
+        https://docs.medusajs.com/development/entities/overview#metadata-attribute

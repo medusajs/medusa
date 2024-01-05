@@ -1,7 +1,7 @@
 delete:
   operationId: DeletePriceListsPriceListVariantsVariantPrices
   summary: Delete a Variant's Prices
-  description: Delete all the prices related to a specific variant in a price list
+  description: Delete all the prices related to a specific variant in a price list.
   x-authenticated: true
   parameters:
     - in: path

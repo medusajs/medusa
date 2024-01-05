@@ -26,7 +26,7 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.customerGroups.retrieve(customerGroupId)
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

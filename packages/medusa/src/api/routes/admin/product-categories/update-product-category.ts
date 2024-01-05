@@ -1,4 +1,11 @@
-import { IsOptional, IsString, IsInt, Min, IsNotEmpty } from "class-validator"
+import {
+  IsOptional,
+  IsString,
+  IsInt,
+  Min,
+  IsNotEmpty,
+  IsObject,
+} from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -37,7 +44,7 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -123,6 +130,12 @@ export default async (req: Request, res: Response) => {
  *   rank:
  *     type: number
  *     description: The rank of the category in the tree node (starting from 0)
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesCategoryReq extends AdminProductCategoriesReqBase {
@@ -140,6 +153,10 @@ export class AdminPostProductCategoriesCategoryReq extends AdminProductCategorie
   @IsNotEmpty()
   @Min(0)
   rank?: number
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }
 
 export class AdminPostProductCategoriesCategoryParams extends FindParams {}

@@ -3,8 +3,15 @@ import BaseService from "./base-service"
 /**
  * The interface that all search services must implement.
  * @interface
+ * @deprecated use AbstractSearchService from @medusajs/utils instead
  */
 class SearchService extends BaseService {
+  static _isSearchService = true
+
+  static isSearchService(obj) {
+    return obj?.constructor?._isSearchService
+  }
+
   constructor() {
     super()
   }

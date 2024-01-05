@@ -25,6 +25,7 @@ export async function develop({
       port: 7001,
       logLevel: "error",
       stats: "normal",
+      allowedHosts: 'auto',
     },
   },
 }: DevelopArgs) {
@@ -59,6 +60,7 @@ export async function develop({
         errors: true,
         warnings: false,
       },
+      webSocketURL: options.develop.webSocketURL ? options.develop.webSocketURL : `ws://localhost:${options.develop.port}/ws`,
     },
     open: false,
     onListening: options.develop.open
@@ -83,6 +85,7 @@ export async function develop({
       disableDotRule: true,
     },
     hot: true,
+    allowedHosts: options.develop.allowedHosts ? options.develop.allowedHosts : 'auto',
   }
 
   const server = new WebpackDevDerver(devServerArgs, compiler)

@@ -35,7 +35,7 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

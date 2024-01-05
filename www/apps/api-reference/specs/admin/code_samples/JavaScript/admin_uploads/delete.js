@@ -6,4 +6,4 @@ medusa.admin.uploads.delete({
 })
 .then(({ id, object, deleted }) => {
   console.log(id);
-});
+})

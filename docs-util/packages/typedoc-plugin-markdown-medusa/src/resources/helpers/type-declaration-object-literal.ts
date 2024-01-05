@@ -1,16 +1,17 @@
 import * as Handlebars from "handlebars"
 import { DeclarationReflection, ReflectionType } from "typedoc"
 import { MarkdownTheme } from "../../theme"
-import { escapeChars, stripLineBreaks } from "../../utils"
 import { parseParams } from "../../utils/params-utils"
 import { ReflectionParameterType } from "../../types"
 import reflectionFormatter from "../../utils/reflection-formatter"
+import { escapeChars, stripLineBreaks } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "typeDeclarationMembers",
     function (this: DeclarationReflection[]) {
-      const { parameterComponent } = theme.getFormattingOptionsForLocation()
+      const { parameterComponent, maxLevel } =
+        theme.getFormattingOptionsForLocation()
       const comments = this.map(
         (param) => !!param.comment?.hasVisibleComponent()
       )
@@ -18,7 +19,7 @@ export default function (theme: MarkdownTheme) {
 
       const properties = this.reduce(
         (acc: ReflectionParameterType[], current: ReflectionParameterType) =>
-          parseParams(current, acc),
+          parseParams(current, acc, false),
         []
       ) as DeclarationReflection[]
 
@@ -29,7 +30,11 @@ export default function (theme: MarkdownTheme) {
           break
         }
         case "component": {
-          result = getComponentMarkdownContent(properties, parameterComponent)
+          result = getComponentMarkdownContent(
+            properties,
+            parameterComponent,
+            maxLevel
+          )
           break
         }
         case "table": {
@@ -44,7 +49,10 @@ export default function (theme: MarkdownTheme) {
 
 function getListMarkdownContent(properties: DeclarationReflection[]) {
   const items = properties.map((property) =>
-    reflectionFormatter(property, "list")
+    reflectionFormatter({
+      reflection: property,
+      type: "list",
+    })
   )
 
   return items.join("\n")
@@ -52,10 +60,16 @@ function getListMarkdownContent(properties: DeclarationReflection[]) {
 
 function getComponentMarkdownContent(
   properties: DeclarationReflection[],
-  parameterComponent?: string
+  parameterComponent?: string,
+  maxLevel?: number | undefined
 ) {
   const parameters = properties.map((property) =>
-    reflectionFormatter(property, "component")
+    reflectionFormatter({
+      reflection: property,
+      type: "component",
+      level: 1,
+      maxLevel,
+    })
   )
 
   return `<${parameterComponent} parameters={${JSON.stringify(

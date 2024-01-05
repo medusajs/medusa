@@ -6,4 +6,4 @@ medusa.admin.regions.update(regionId, {
 })
 .then(({ region }) => {
   console.log(region.id);
-});
+})

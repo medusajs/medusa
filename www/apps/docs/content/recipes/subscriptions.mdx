@@ -93,7 +93,7 @@ By implementing the subscription logic within your backend, you can have full co
 
 Implementing the logic depends on your use case, but you'll mainly need to do two things:
 
-1. Perform an action when an order is placed, such as saving subscription details. This can be done using subscribers, which register handler methods to be triggered when an event is emitted. When an order is placed, the `order.placed` event is emitted.
+1. Perform an action when an order is placed, such as saving subscription details. This can be done using subscribers, which register handler functions to be triggered when an event is emitted. When an order is placed, the `order.placed` event is emitted.
 2. Check daily for subscriptions that need renewal. This can be done using a scheduled job, which is a cron job that can be executed on a defined interval. Within that job, you can define your renewal logic.
 
 <DocCardList colSize={6} items={[

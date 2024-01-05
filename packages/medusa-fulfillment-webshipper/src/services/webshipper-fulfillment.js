@@ -1,6 +1,7 @@
 import { humanizeAmount } from "medusa-core-utils"
 import Webshipper from "../utils/webshipper"
 import { AbstractFulfillmentService } from "@medusajs/medusa"
+import { promiseAll } from "@medusajs/utils"
 
 class WebshipperFulfillmentService extends AbstractFulfillmentService {
   static identifier = "webshipper"
@@ -9,7 +10,7 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
     { logger, totalsService, claimService, swapService, orderService },
     options
   ) {
-    super()
+    super(...arguments)
 
     this.options_ = options
 
@@ -242,7 +243,7 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
               width: 15,
               length: 15,
             },
-            customs_lines: await Promise.all(
+            customs_lines: await promiseAll(
               returnOrder.items.map(async ({ item, quantity }) => {
                 const customLine = await this.buildWebshipperItem(
                   item,
@@ -405,7 +406,7 @@ class WebshipperFulfillmentService extends AbstractFulfillmentService {
           status: "pending",
           ext_ref,
           visible_ref,
-          order_lines: await Promise.all(
+          order_lines: await promiseAll(
             fulfillmentItems.map(async (item) => {
               const orderLine = await this.buildWebshipperItem(
                 item,

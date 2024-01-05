@@ -32,7 +32,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -55,75 +55,75 @@ You can learn more about [authenticating as an admin user in the API reference](
 You can log in a user by sending a request to the [User Login API Route](https://docs.medusajs.com/api/admin#auth_postauth):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.auth.createSession({
-  email: "user@example.com",
-  password: "supersecret",
-})
-.then(({ user }) => {
-  console.log(user.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminLogin } from "medusa-react"
-
-const Login = () => {
-  const adminLogin = useAdminLogin()
-  // ...
-
-  const handleLogin = () => {
-    adminLogin.mutate({
+    ```ts
+    medusa.admin.auth.createSession({
       email: "user@example.com",
       password: "supersecret",
     })
-  }
+    .then(({ user }) => {
+      console.log(user.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default Login
-```
+    ```tsx
+    import { useAdminLogin } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const Login = () => {
+      const adminLogin = useAdminLogin()
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/auth`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email: "user@example.com",
-    password: "supersecret",
-  }),
-})
-.then((response) => response.json())
-.then(({ user }) => {
-  console.log(user.id)
-})
-```
+      const handleLogin = () => {
+        adminLogin.mutate({
+          email: "user@example.com",
+          password: "supersecret",
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/auth' \
--H 'Content-Type: application/json' \
---data-raw '{
-  "email": "user@example.com",
-  "password": "supersecret"
-}'
-```
+    export default Login
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/auth`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "user@example.com",
+        password: "supersecret",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ user }) => {
+      console.log(user.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/auth' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "email": "user@example.com",
+      "password": "supersecret"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the following request body parameters:
@@ -138,58 +138,58 @@ The request returns the logged-in user as an object.
 You can log out a user by sending a request to the [User Logout API Route](https://docs.medusajs.com/api/admin#auth_deleteauth):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.auth.deleteSession()
-.then(() => {
-  // logged out successfully
-})
-```
+    ```ts
+    medusa.admin.auth.deleteSession()
+    .then(() => {
+      // logged out successfully
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDeleteSession } from "medusa-react"
+    ```tsx
+    import { useAdminDeleteSession } from "medusa-react"
 
-const Logout = () => {
-  const adminLogout = useAdminDeleteSession()
-  // ...
+    const Logout = () => {
+      const adminLogout = useAdminDeleteSession()
+      // ...
 
-  const handleLogout = () => {
-    adminLogout.mutate()
-  }
+      const handleLogout = () => {
+        adminLogout.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default Logout
-```
+    export default Logout
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/auth`, {
-  credentials: "include",
-  method: "DELETE",
-})
-.then((response) => response.json())
-.then(() => {
-  // logged out successfully
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/auth`, {
+      credentials: "include",
+      method: "DELETE",
+    })
+    .then((response) => response.json())
+    .then(() => {
+      // logged out successfully
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/auth' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/auth' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 The API Route doesn't require any path or query parameters.
@@ -203,57 +203,57 @@ The request doesn't return any data. The response code will be `200` for success
 You can retrieve the current user’s details for their profile by sending a request to the [Get Current User API Route](https://docs.medusajs.com/api/admin#auth_getauth):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.auth.getSession()
-.then(({ user }) => {
-  console.log(user.id)
-})
-```
+    ```ts
+    medusa.admin.auth.getSession()
+    .then(({ user }) => {
+      console.log(user.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminGetSession } from "medusa-react"
+    ```tsx
+    import { useAdminGetSession } from "medusa-react"
 
-const Profile = () => {
-  const { user, isLoading } = useAdminGetSession()
+    const Profile = () => {
+      const { user, isLoading } = useAdminGetSession()
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {user && <span>{user.email}</span>}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {user && <span>{user.email}</span>}
+        </div>
+      )
+    }
 
-export default Profile
-```
+    export default Profile
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/auth`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ user }) => {
-  console.log(user.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/auth`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ user }) => {
+      console.log(user.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/auth' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/auth' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route doesn't require any parameters.
@@ -267,75 +267,75 @@ The request returns the current user as an object.
 You can update a user’s details in their profile by sending a request to the [Update User API Route](https://docs.medusajs.com/api/admin#users_postusersuser):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.users.update(userId, {
-  first_name: "Marcellus",
-})
-.then(({ user }) => {
-  console.log(user.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import {
-  useAdminDeleteSession,
-  useAdminUpdateUser,
-} from "medusa-react"
-
-const Profile = () => {
-  const updateUser = useAdminUpdateUser(userId)
-  // ...
-
-  const handleUpdate = () => {
-    updateUser.mutate({
+    ```ts
+    medusa.admin.users.update(userId, {
       first_name: "Marcellus",
     })
-  }
+    .then(({ user }) => {
+      console.log(user.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default Profile
-```
+    ```tsx
+    import {
+      useAdminDeleteSession,
+      useAdminUpdateUser,
+    } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const Profile = () => {
+      const updateUser = useAdminUpdateUser(userId)
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/users/${userId}`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    first_name: "Marcellus",
-  }),
-})
-.then((response) => response.json())
-.then(({ user }) => {
-  console.log(user.id)
-})
-```
+      const handleUpdate = () => {
+        updateUser.mutate({
+          first_name: "Marcellus",
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-  "first_name": "Marcellus"
-}'
-```
+    export default Profile
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/users/${userId}`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        first_name: "Marcellus",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ user }) => {
+      console.log(user.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "first_name": "Marcellus"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the ID of the user as a path parameter.
@@ -363,71 +363,71 @@ Sending the password reset email is not handled by default in the Medusa backend
 You can request a password reset by sending a request to the [Request Password Reset API Route](https://docs.medusajs.com/api/admin#users_postusersuserpasswordtoken):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.users.sendResetPasswordToken({
-  email: "user@example.com",
-})
-.then(() => {
-  // successful
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminSendResetPasswordToken } from "medusa-react"
-
-const Login = () => {
-  const requestPasswordReset = useAdminSendResetPasswordToken()
-  // ...
-
-  const handleResetPassword = () => {
-    requestPasswordReset.mutate({
+    ```ts
+    medusa.admin.users.sendResetPasswordToken({
       email: "user@example.com",
     })
-  }
+    .then(() => {
+      // successful
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default Login
-```
+    ```tsx
+    import { useAdminSendResetPasswordToken } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const Login = () => {
+      const requestPasswordReset = useAdminSendResetPasswordToken()
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/users/password-token`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email: "user@example.com",
-  }),
-})
-.then((response) => response.json())
-.then(() => {
-  // successful
-})
-```
+      const handleResetPassword = () => {
+        requestPasswordReset.mutate({
+          email: "user@example.com",
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/users/password-token' \
--H 'Content-Type: application/json' \
---data-raw '{
-  "email": "user@example.com"
-}'
-```
+    export default Login
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/users/password-token`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "user@example.com",
+      }),
+    })
+    .then((response) => response.json())
+    .then(() => {
+      // successful
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/users/password-token' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "email": "user@example.com"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the `email` parameter in the request body, which is the email of the user requesting to reset their password.
@@ -441,75 +441,75 @@ After the user resets their password and, typically, receives an email with a li
 You can reset the password by sending a request to the [Reset Password API Route](https://docs.medusajs.com/api/admin#users_postusersuserpassword):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.users.resetPassword({
-  token: "supersecrettoken",
-  password: "supersecret",
-})
-.then(({ user }) => {
-  console.log(user.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminResetPassword } from "medusa-react"
-
-const ResetPassword = () => {
-  const resetPassword = useAdminResetPassword()
-  // ...
-
-  const handleResetPassword = () => {
-    resetPassword.mutate({
+    ```ts
+    medusa.admin.users.resetPassword({
       token: "supersecrettoken",
       password: "supersecret",
     })
-  }
+    .then(({ user }) => {
+      console.log(user.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default ResetPassword
-```
+    ```tsx
+    import { useAdminResetPassword } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const ResetPassword = () => {
+      const resetPassword = useAdminResetPassword()
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/users/reset-password`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    token: "supersecrettoken",
-    password: "supersecret",
-  }),
-})
-.then((response) => response.json())
-.then(({ user }) => {
-  console.log(user.id)
-})
-```
+      const handleResetPassword = () => {
+        resetPassword.mutate({
+          token: "supersecrettoken",
+          password: "supersecret",
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/users/reset-password' \
--H 'Content-Type: application/json' \
---data-raw '{
-  "token": "supersecrettoken",
-  "password": "supersecret"
-}'
-```
+    export default ResetPassword
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/users/reset-password`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: "supersecrettoken",
+        password: "supersecret",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ user }) => {
+      console.log(user.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/users/reset-password' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "token": "supersecrettoken",
+      "password": "supersecret"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the following request body parameters:

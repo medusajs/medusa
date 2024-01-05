@@ -2,9 +2,12 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 
-import { FlagRouter } from "@medusajs/utils"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  selectorConstraintsToString,
+} from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   LineItem,
@@ -385,11 +388,7 @@ class LineItemService extends TransactionBaseService {
       should_merge: shouldMerge,
     }
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       rawLineItem.product_id = variant.product_id
     }
 
@@ -466,9 +465,7 @@ class LineItemService extends TransactionBaseService {
         let lineItems = await this.list(selector)
 
         if (!lineItems.length) {
-          const selectorConstraints = Object.entries(selector)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join(", ")
+          const selectorConstraints = selectorConstraintsToString(selector)
 
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
@@ -486,23 +483,33 @@ class LineItemService extends TransactionBaseService {
     )
   }
 
+  async delete(ids: string[]): Promise<LineItem[]>
+  async delete(id: string): Promise<LineItem | void>
+
   /**
    * Deletes a line item.
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async delete(id: string): Promise<LineItem | undefined | null> {
+  async delete(id: string | string[]): Promise<LineItem[] | LineItem | void> {
+    const ids = Array.isArray(id) ? id : [id]
+
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const lineItemRepository = transactionManager.withRepository(
           this.lineItemRepository_
         )
 
-        return await lineItemRepository
-          .findOne({ where: { id } })
-          .then(
-            async (lineItem) => lineItem && lineItemRepository.remove(lineItem)
-          )
+        const lineItems = await lineItemRepository.find({
+          where: { id: In(ids) },
+        })
+
+        if (!lineItems?.length) {
+          return Array.isArray(id) ? [] : void 0
+        }
+
+        const removedItems = await lineItemRepository.remove(lineItems)
+        return Array.isArray(id) ? removedItems : removedItems[0]
       }
     )
   }
@@ -513,7 +520,7 @@ class LineItemService extends TransactionBaseService {
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async deleteWithTaxLines(id: string): Promise<LineItem | undefined | null> {
+  async deleteWithTaxLines(id: string): Promise<LineItem | void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         await this.taxProviderService_

@@ -2,8 +2,8 @@ import {
   BeforeCreate,
   Entity,
   ManyToOne,
+  OnInit,
   PrimaryKey,
-  PrimaryKeyType,
 } from "@mikro-orm/core"
 
 import PriceSet from "./price-set"
@@ -28,6 +28,11 @@ export default class PriceSetRuleType {
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "psrt")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "psrt")
   }
 }

@@ -1,3 +1,5 @@
+import { Workflows, createProducts } from "@medusajs/core-flows"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import {
   IsArray,
   IsBoolean,
@@ -37,17 +39,14 @@ import {
 } from "./transaction/create-product-variant"
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
-import { createProducts, Workflows } from "@medusajs/workflows"
+import { FlagRouter, MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
-import { validator } from "../../../../utils"
+import { retrieveProduct, validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products
@@ -76,7 +75,7 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -137,12 +136,9 @@ export default async (req, res) => {
 
   const entityManager: EntityManager = req.scope.resolve("manager")
   const productModuleService = req.scope.resolve("productModuleService")
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.CreateProducts,
-  })
-
-  if (isWorkflowEnabled && !productModuleService) {
+  if (isMedusaV2Enabled && !productModuleService) {
     logger.warn(
       `Cannot run ${Workflows.CreateProducts} workflow without '@medusajs/product' installed`
     )
@@ -150,7 +146,7 @@ export default async (req, res) => {
 
   let product
 
-  if (isWorkflowEnabled && !!productModuleService) {
+  if (isMedusaV2Enabled && !!productModuleService) {
     const createProductWorkflow = createProducts(req.scope)
 
     const input = {
@@ -242,7 +238,7 @@ export default async (req, res) => {
           )
           allVariantTransactions.push(varTransaction)
         } catch (e) {
-          await Promise.all(
+          await promiseAll(
             allVariantTransactions.map(async (transaction) => {
               await revertVariantTransaction(
                 transactionDependencies,
@@ -260,8 +256,12 @@ export default async (req, res) => {
   }
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
-    rawProduct = await getProductWithIsolatedProductModule(req, product.id)
+  if (isMedusaV2Enabled) {
+    rawProduct = await retrieveProduct(
+      req.scope,
+      product.id,
+      defaultAdminProductRemoteQueryObject
+    )
   } else {
     rawProduct = await productService.retrieve(product.id, {
       select: defaultAdminProductFields,
@@ -269,29 +269,11 @@ export default async (req, res) => {
     })
   }
 
-  const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
+  const [pricedProduct] = await pricingService.setAdminProductPricing([
+    rawProduct,
+  ])
 
   res.json({ product: pricedProduct })
-}
-
-async function getProductWithIsolatedProductModule(req, id) {
-  // TODO: Add support for fields/expands
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variables = { id }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const [product] = await remoteQuery(query)
-
-  product.profile_id = product.profile?.id
-
-  return product
 }
 
 class ProductVariantOptionReq {

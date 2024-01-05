@@ -21,7 +21,7 @@ import InviteService from "../../../../services/invite"
  *       medusa.admin.invites.delete(inviteId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

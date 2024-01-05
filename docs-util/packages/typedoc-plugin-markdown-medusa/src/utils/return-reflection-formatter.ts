@@ -4,29 +4,57 @@ import {
   ProjectReflection,
   ReflectionFlags,
   SomeType,
+  TypeParameterReflection,
 } from "typedoc"
 import * as Handlebars from "handlebars"
-import getType from "./type-utils"
 import { Parameter } from "../types"
 import {
   getDefaultValue,
   reflectionComponentFormatter,
 } from "./reflection-formatter"
+import { MarkdownTheme } from "../theme"
+import { getProjectChild, getType, getTypeChildren } from "utils"
 
-const MAX_LEVEL = 3
+type ReturnReflectionComponentFormatterParams = {
+  reflectionType: SomeType
+  project: ProjectReflection
+  comment?: Comment
+  level: number
+  maxLevel?: number | undefined
+}
 
-export function returnReflectionComponentFormatter(
-  reflectionType: SomeType,
-  project: ProjectReflection,
-  comment?: Comment,
-  level = 1
-): Parameter[] {
-  const typeName = getType(reflectionType, "object", false)
-  const type = getType(reflectionType, "object")
+export function returnReflectionComponentFormatter({
+  reflectionType,
+  project,
+  comment,
+  level = 1,
+  maxLevel,
+}: ReturnReflectionComponentFormatterParams): Parameter[] {
+  const typeName = getType({
+    reflectionType,
+    collapse: "object",
+    wrapBackticks: false,
+    escape: false,
+    hideLink: true,
+    project,
+    getRelativeUrlMethod: Handlebars.helpers.relativeURL,
+  })
+  // if (
+  //   typeName === "Record&#60;string, unknown&#62; \\| PaymentProcessorError"
+  // ) {
+  //   console.log(reflectionType)
+  // }
+  const type = getType({
+    reflectionType: reflectionType,
+    collapse: "object",
+    project,
+    escape: true,
+    getRelativeUrlMethod: Handlebars.helpers.relativeURL,
+  })
   const componentItem: Parameter[] = []
+  const canRetrieveChildren = level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   if (reflectionType.type === "reference") {
-    // put type name as a title and its referenced items as children.
-    if (reflectionType.typeArguments) {
+    if (reflectionType.typeArguments || reflectionType.refersToTypeParameter) {
       const parentKey = componentItem.push({
         name: "name" in reflectionType ? reflectionType.name : typeName,
         type,
@@ -41,42 +69,84 @@ export function returnReflectionComponentFormatter(
               ) || ""
             : "",
         description: comment ? getReturnComment(comment) : "",
+        expandable: comment?.hasModifier(`@expandable`) || false,
+        featureFlag: Handlebars.helpers.featureFlag(comment),
         children: [],
       })
-      if (!isOnlyVoid(reflectionType.typeArguments) && level + 1 <= MAX_LEVEL) {
-        reflectionType.typeArguments.forEach((typeArg) => {
-          const typeArgComponent = returnReflectionComponentFormatter(
-            typeArg,
-            project,
-            undefined,
-            level + 1
-          )
-          if (typeArgComponent.length) {
-            componentItem[parentKey - 1].children?.push(...typeArgComponent)
+      const typeArgs = reflectionType.typeArguments
+        ? reflectionType.typeArguments
+        : "typeParameters" in reflectionType
+          ? (reflectionType.typeParameters as TypeParameterReflection[])
+          : undefined
+      if (
+        typeArgs &&
+        !isOnlyVoid(typeArgs as unknown as SomeType[]) &&
+        canRetrieveChildren
+      ) {
+        typeArgs.forEach((typeArg) => {
+          const reflectionTypeArg =
+            typeArg instanceof TypeParameterReflection ? typeArg.type : typeArg
+          if (!reflectionTypeArg) {
+            return
           }
+          const typeArgComponent = returnReflectionComponentFormatter({
+            reflectionType: reflectionTypeArg,
+            project,
+            level: level + 1,
+            maxLevel,
+          })
+
+          componentItem[parentKey - 1].children?.push(...typeArgComponent)
         })
       }
     } else {
       const reflection = (reflectionType.reflection ||
-        project.getChildByName(reflectionType.name)) as DeclarationReflection
+        getProjectChild(project, reflectionType.name)) as DeclarationReflection
       if (reflection) {
-        if (reflection.children?.length) {
-          reflection.children.forEach((childItem) => {
+        const reflectionChildren = canRetrieveChildren
+          ? reflection.children ||
+            getTypeChildren(reflectionType, project, level)
+          : undefined
+        if (reflectionChildren?.length) {
+          reflectionChildren.forEach((childItem) => {
             componentItem.push(
-              reflectionComponentFormatter(
-                childItem as DeclarationReflection,
-                level
-              )
+              reflectionComponentFormatter({
+                reflection: childItem as DeclarationReflection,
+                level,
+                maxLevel,
+                project,
+              })
             )
           })
         } else {
           componentItem.push(
-            reflectionComponentFormatter(
-              reflection as DeclarationReflection,
-              level
-            )
+            reflectionComponentFormatter({
+              reflection,
+              level,
+              maxLevel,
+              project,
+            })
           )
         }
+      } else {
+        componentItem.push({
+          name: "name" in reflectionType ? reflectionType.name : typeName,
+          type,
+          optional:
+            "flags" in reflectionType
+              ? (reflectionType.flags as ReflectionFlags).isOptional
+              : false,
+          defaultValue:
+            "declaration" in reflectionType
+              ? getDefaultValue(
+                  reflectionType.declaration as DeclarationReflection
+                ) || ""
+              : "",
+          description: comment ? getReturnComment(comment) : "",
+          expandable: comment?.hasModifier(`@expandable`) || false,
+          featureFlag: Handlebars.helpers.featureFlag(comment),
+          children: [],
+        })
       }
     }
   } else if (reflectionType.type === "array") {
@@ -95,18 +165,18 @@ export function returnReflectionComponentFormatter(
             ) || ""
           : "",
       description: comment ? getReturnComment(comment) : "",
+      expandable: comment?.hasModifier(`@expandable`) || false,
+      featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
     })
-    if (level + 1 <= MAX_LEVEL) {
-      const elementTypeItem = returnReflectionComponentFormatter(
-        reflectionType.elementType,
+    if (canRetrieveChildren) {
+      const elementTypeItem = returnReflectionComponentFormatter({
+        reflectionType: reflectionType.elementType,
         project,
-        undefined,
-        level + 1
-      )
-      if (elementTypeItem.length) {
-        componentItem[parentKey - 1].children?.push(...elementTypeItem)
-      }
+        level: level + 1,
+        maxLevel,
+      })
+      componentItem[parentKey - 1].children?.push(...elementTypeItem)
     }
   } else if (reflectionType.type === "tuple") {
     let pushTo: Parameter[] = []
@@ -126,23 +196,23 @@ export function returnReflectionComponentFormatter(
               ) || ""
             : "",
         description: comment ? getReturnComment(comment) : "",
+        expandable: comment?.hasModifier(`@expandable`) || false,
+        featureFlag: Handlebars.helpers.featureFlag(comment),
         children: [],
       })
       pushTo = componentItem[parentKey - 1].children!
     } else {
       pushTo = componentItem
     }
-    if (level + 1 <= MAX_LEVEL) {
+    if (canRetrieveChildren) {
       reflectionType.elements.forEach((element) => {
-        const elementTypeItem = returnReflectionComponentFormatter(
-          element,
+        const elementTypeItem = returnReflectionComponentFormatter({
+          reflectionType: element,
           project,
-          undefined,
-          level + 1
-        )
-        if (elementTypeItem.length) {
-          pushTo.push(...elementTypeItem)
-        }
+          level: level + 1,
+          maxLevel,
+        })
+        pushTo.push(...elementTypeItem)
       })
     }
   } else {
@@ -159,6 +229,8 @@ export function returnReflectionComponentFormatter(
           ? getDefaultValue(reflectionType.declaration) || ""
           : "",
       description: comment ? getReturnComment(comment) : "",
+      expandable: comment?.hasModifier(`@expandable`) || false,
+      featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
     })
   }

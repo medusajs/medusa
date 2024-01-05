@@ -16,7 +16,7 @@ import {
   TBuiltPriceListImportLine,
   TParsedPriceListImportRowData,
 } from "./types"
-import { MedusaError, computerizeAmount } from "medusa-core-utils"
+import { computerizeAmount, MedusaError } from "medusa-core-utils"
 
 import { BatchJob } from "../../../models"
 import { CreateBatchJobInput } from "../../../types/batch-job"
@@ -24,6 +24,7 @@ import CsvParser from "../../../services/csv-parser"
 import { EntityManager } from "typeorm"
 import { PriceListPriceCreateInput } from "../../../types/price-list"
 import { TParsedProductImportRowData } from "../product/types"
+import { promiseAll } from "@medusajs/utils"
 
 /*
  * Default strategy class used for a batch import of products/variants.
@@ -365,7 +366,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
         result: { files },
       })
 
-    await Promise.all(uploadPromises)
+    await promiseAll(uploadPromises)
   }
 
   /**

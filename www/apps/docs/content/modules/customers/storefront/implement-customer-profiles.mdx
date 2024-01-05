@@ -44,7 +44,7 @@ It's also assumed you already have a storefront set up. It can be a custom store
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../../js-client/overview.md) and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../../js-client/overview.mdx) and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -61,76 +61,76 @@ A customer can register with an email and a password to store and manage their d
 You can register a new customer by sending a request to the [Create a Customer API Route](https://docs.medusajs.com/api/store#customers_postcustomers):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.customers.create({
-  email,
-  password,
-  first_name,
-  last_name,
-})
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useCreateCustomer } from "medusa-react"
-
-const RegisterCustomer = () => {
-  const createCustomer = useCreateCustomer()
-  // ...
-
-  const handleCreate = () => {
-    // ...
-    createCustomer.mutate({
-      first_name,
-      last_name,
+    ```ts
+    medusa.customers.create({
       email,
       password,
+      first_name,
+      last_name,
     })
-  }
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-  // ...
-  
-  return (
-    <form>
-      {/* Render form */}
-    </form>
-  )
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default RegisterCustomer
-```
+    ```tsx
+    import { useCreateCustomer } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const RegisterCustomer = () => {
+      const createCustomer = useCreateCustomer()
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/store/customers`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email,
-    password,
-    first_name,
-    last_name,
-  }),
-})
-.then((response) => response.json())
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+      const handleCreate = () => {
+        // ...
+        createCustomer.mutate({
+          first_name,
+          last_name,
+          email,
+          password,
+        })
+      }
 
-</TabItem>
+      // ...
+      
+      return (
+        <form>
+          {/* Render form */}
+        </form>
+      )
+    }
+
+    export default RegisterCustomer
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/store/customers`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        first_name,
+        last_name,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
+
+  </TabItem>
 </Tabs>
 
 This request requires the following body parameters:
@@ -153,40 +153,40 @@ A customer can log in to your store to manage their data and make purchases usin
 You can log in a customer into your store by sending a request to the [Customer Login API Route](https://docs.medusajs.com/api/store#auth_postauth):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.auth.authenticate({
-  email,
-  password,
-})
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    ```ts
+    medusa.auth.authenticate({
+      email,
+      password,
+    })
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/store/auth`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email,
-    password,
-  }),
-})
-.then((response) => response.json())
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/store/auth`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the body parameters `email` and `password`. It returns the customer object in the response.
@@ -202,29 +202,29 @@ However, if you’re using the Fetch API, you must include the option `credentia
 You can log out a customer by sending a request to the [Customer Logout API Route](https://docs.medusajs.com/api/store#auth_deleteauth):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.auth.deleteSession()
-.then(() => {
-  // success
-})
-```
+    ```ts
+    medusa.auth.deleteSession()
+    .then(() => {
+      // success
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/store/auth`, {
-  method: "DELETE",
-  credentials: "include",
-})
-.then(() => {
-  // success
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/store/auth`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+    .then(() => {
+      // success
+    })
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 If this request is successful, the customer’s session will be deleted and they’ll be logged out.
@@ -242,43 +242,43 @@ The customer must first enter their account’s email. Then, if an account with 
 You can request to reset a customer’s password by sending a request to the [Request Password Reset API Route](https://docs.medusajs.com/api/store#customers_postcustomerscustomerpasswordtoken):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.customers.generatePasswordToken({
-  email,
-})
-.then(() => {
-  // successful
-})
-.catch(() => {
-  // failed
-})
-```
+    ```ts
+    medusa.customers.generatePasswordToken({
+      email,
+    })
+    .then(() => {
+      // successful
+    })
+    .catch(() => {
+      // failed
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/store/customers/password-token`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email,
-  }),
-})
-.then(() => {
-  // successful
-})
-.catch(() => {
-  // failed
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/store/customers/password-token`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    })
+    .then(() => {
+      // successful
+    })
+    .catch(() => {
+      // failed
+    })
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the body parameter `email`. Its value must be the email associated with the customer’s account.
@@ -287,7 +287,7 @@ If the request has been processed successfully, it returns a `204` status code i
 
 :::note
 
-If the customer doesn’t receive an email after this request, make sure that you’ve set up a Notification provider like [SendGrid](../../../plugins/notifications/sendgrid.mdx) successfully. You also need to add a subscriber that handles the [customer.password_reset](../../../development/events/events-list.md#customer-events) event and sends the email.
+If the customer doesn’t receive an email after this request, make sure that you’ve set up a Notification provider like [SendGrid](../../../plugins/notifications/sendgrid.mdx) successfully. You also need to add a [subscriber](../../../development/events/create-subscriber.md) that handles the [customer.password_reset](../../../development/events/events-list.md#customer-events) event and sends the email.
 
 :::
 
@@ -298,42 +298,42 @@ After the first step, the customer should receive an email with a link to a page
 You can then reset the customer’s password to the new password they enter by sending a request to the [Reset Password API Route](https://docs.medusajs.com/api/store#customers_postcustomersresetpassword):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.customers.resetPassword({
-  email,
-  password,
-  token,
-})
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    ```ts
+    medusa.customers.resetPassword({
+      email,
+      password,
+      token,
+    })
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/store/customers/password-reset`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email,
-    password,
-    token,
-  }),
-})
-.then((response) => response.json())
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/store/customers/password-reset`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        token,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the following body parameters:
@@ -353,68 +353,68 @@ A logged-in customer can edit their info, such as their first name or email addr
 You can edit a customer’s info using the [Update Customer API Route](https://docs.medusajs.com/api/store#customers_postcustomerscustomer):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.customers.update({
-  first_name,
-})
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useUpdateMe } from "medusa-react"
-
-const UpdateCustomer = () => {
-  const updateCustomer = useUpdateMe()
-  // ...
-
-  const handleUpdate = () => {
-    // ...
-    updateCustomer.mutate({
-      id: customer_id,
+    ```ts
+    medusa.customers.update({
       first_name,
     })
-  }
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-  // ...
-  
-  return (
-    <form>
-      {/* Render form */}
-    </form>
-  )
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default UpdateCustomer
-```
+    ```tsx
+    import { useUpdateMe } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const UpdateCustomer = () => {
+      const updateCustomer = useUpdateMe()
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/store/customers/me`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    first_name,
-  }),
-})
-.then((response) => response.json())
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+      const handleUpdate = () => {
+        // ...
+        updateCustomer.mutate({
+          id: customer_id,
+          first_name,
+        })
+      }
 
-</TabItem>
+      // ...
+      
+      return (
+        <form>
+          {/* Render form */}
+        </form>
+      )
+    }
+
+    export default UpdateCustomer
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/store/customers/me`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        first_name,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
+
+  </TabItem>
 </Tabs>
 
 This request accepts any of the customer’s details that should be updated as body parameters. In the example above, the `first_name` of the customer is updated. You can check out the [API reference](https://docs.medusajs.com/api/api/store#customers_postcustomerscustomer) for a full list of accepted body parameters.
@@ -438,62 +438,62 @@ The customer object returned in the requests mentioned in this document include 
 You can add a shipping address to a customer’s account by sending a request to the [Add a Shipping Address API Route](https://docs.medusajs.com/api/store#customers_postcustomerscustomeraddresses):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.customers.addresses.addAddress({
-  address: {
-    first_name,
-    last_name,
-    address_1,
-    city,
-    country_code,
-    postal_code,
-    phone,
-    company,
-    address_2,
-    province,
-    metadata,
-  },
-})
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    ```ts
+    medusa.customers.addresses.addAddress({
+      address: {
+        first_name,
+        last_name,
+        address_1,
+        city,
+        country_code,
+        postal_code,
+        phone,
+        company,
+        address_2,
+        province,
+        metadata,
+      },
+    })
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/store/customers/me/addresses`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    address: {
-      first_name,
-      last_name,
-      address_1,
-      city,
-      country_code,
-      postal_code,
-      phone,
-      company,
-      address_2,
-      province,
-      metadata,
-    },
-  }),
-})
-.then((response) => response.json())
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/store/customers/me/addresses`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        address: {
+          first_name,
+          last_name,
+          address_1,
+          city,
+          country_code,
+          postal_code,
+          phone,
+          company,
+          address_2,
+          province,
+          metadata,
+        },
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires an `address` object as a body parameter. The `address` object must have the following properties:
@@ -514,40 +514,40 @@ This request returns the updated customer object in the response.
 You can edit a customer’s shipping address using the [Update a Shipping Address API Route](https://docs.medusajs.com/api/store#customers_postcustomerscustomeraddressesaddress):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.customers.addresses.updateAddress(addressId, {
-  first_name,
-})
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
-
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-```ts
-fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
-  {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+    ```ts
+    medusa.customers.addresses.updateAddress(addressId, {
       first_name,
-    }),
-  }
-)
-.then((response) => response.json())
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    })
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name,
+        }),
+      }
+    )
+    .then((response) => response.json())
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
+
+  </TabItem>
 </Tabs>
 
 This request requires the address’s ID as a path parameter. It accepts as a body parameter any of the address’s properties. In the example above, the `first_name` of the shipping address is updated. You can check the [API reference](https://docs.medusajs.com/api/store#customers_postcustomerscustomeraddressesaddress) for all the available body parameters.
@@ -559,32 +559,32 @@ This request returns the updated customer object in the response.
 You can delete a shipping address by sending a request to the [Delete an Address API Route](https://docs.medusajs.com/api/store#customers_deletecustomerscustomeraddressesaddress):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.customers.addresses.deleteAddress(addressId)
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    ```ts
+    medusa.customers.addresses.deleteAddress(addressId)
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
-  {
-    method: "DELETE",
-    credentials: "include",
-  }
-)
-.then((response) => response.json())
-.then(({ customer }) => {
-  console.log(customer.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    )
+    .then((response) => response.json())
+    .then(({ customer }) => {
+      console.log(customer.id)
+    })
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the address’s ID as a path parameter. It returns in the response the updated customer object.
@@ -598,58 +598,58 @@ Logged-in customers can see their orders along with the orders’ details.
 You can retrieve a customer’s orders by sending a request to the [List Orders API Route](https://docs.medusajs.com/api/store#customers_getcustomerscustomerorders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.customers.listOrders()
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders)
-})
-```
+    ```ts
+    medusa.customers.listOrders()
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useCustomerOrders } from "medusa-react"
-import { Order } from "@medusajs/medusa"
+    ```tsx
+    import { useCustomerOrders } from "medusa-react"
+    import { Order } from "@medusajs/medusa"
 
-const Orders = () => {
-  // refetch a function that can be used to
-  // re-retrieve orders after the customer logs in
-  const { orders, isLoading, refetch } = useCustomerOrders()
+    const Orders = () => {
+      // refetch a function that can be used to
+      // re-retrieve orders after the customer logs in
+      const { orders, isLoading, refetch } = useCustomerOrders()
 
-  return (
-    <div>
-      {isLoading && <span>Loading orders...</span>}
-      {orders?.length && (
-        <ul>
-          {orders.map((order: Order) => (
-            <li key={order.id}>{order.display_id}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading orders...</span>}
+          {orders?.length && (
+            <ul>
+              {orders.map((order: Order) => (
+                <li key={order.id}>{order.display_id}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default Orders
-```
+    export default Orders
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/store/customers/me/orders`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/store/customers/me/orders`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders)
+    })
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request doesn’t require any path or query parameters. You can, however, send optional query parameters used for filters, pagination, and sorting. You can learn more in the [API reference](https://docs.medusajs.com/api/store#customers_getcustomerscustomerorders).

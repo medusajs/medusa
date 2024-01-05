@@ -1,8 +1,5 @@
-import { FlagRouter } from "@medusajs/utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import {
   Cart,
   Order,
@@ -11,9 +8,6 @@ import {
   ShippingOptionPriceType,
   ShippingOptionRequirement,
 } from "../models"
-import { ShippingMethodRepository } from "../repositories/shipping-method"
-import { ShippingOptionRepository } from "../repositories/shipping-option"
-import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
 import { FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
@@ -21,8 +15,16 @@ import {
   ShippingMethodUpdate,
   UpdateShippingOptionInput,
   ValidatePriceTypeAndAmountInput,
+  ValidateRequirementTypeInput,
 } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
+
+import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
+import { ShippingOptionRepository } from "../repositories/shipping-option"
+import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
 
@@ -75,7 +77,7 @@ class ShippingOptionService extends TransactionBaseService {
    * @return {ShippingOptionRequirement} a validated shipping requirement
    */
   async validateRequirement_(
-    requirement: ShippingOptionRequirement,
+    requirement: ValidateRequirementTypeInput,
     optionId: string | undefined = undefined
   ): Promise<ShippingOptionRequirement> {
     return await this.atomicPhase_(async (manager) => {
@@ -617,7 +619,7 @@ class ShippingOptionService extends TransactionBaseService {
           const toRemove = option.requirements.filter(
             (r) => !accReqs.includes(r.id)
           )
-          await Promise.all(
+          await promiseAll(
             toRemove.map(async (req) => {
               await this.removeRequirement(req.id)
             })

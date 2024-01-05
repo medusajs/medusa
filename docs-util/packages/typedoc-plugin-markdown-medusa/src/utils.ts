@@ -6,6 +6,7 @@ import {
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
+import { stripLineBreaks } from "utils"
 
 export function formatContents(contents: string) {
   return (
@@ -14,15 +15,6 @@ export function formatContents(contents: string) {
       .replace(/!spaces/g, "")
       .replace(/^\s+|\s+$/g, "") + "\n"
   )
-}
-
-export function escapeChars(str: string) {
-  return str
-    .replace(/>/g, "\\>")
-    .replace(/>/g, "\\>")
-    .replace(/_/g, "\\_")
-    .replace(/`/g, "\\`")
-    .replace(/\|/g, "\\|")
 }
 
 export function memberSymbol(
@@ -53,15 +45,8 @@ export function stripComments(str: string) {
     .replace(/^\s+|\s+$|(\s)+/g, "$1")
 }
 
-export function stripLineBreaks(str: string) {
-  return str
-    ? str
-        .replace(/\n/g, " ")
-        .replace(/\r/g, " ")
-        .replace(/\t/g, " ")
-        .replace(/[\s]{2,}/g, " ")
-        .trim()
-    : ""
+export function stripCode(str: string) {
+  return stripLineBreaks(str.replace("```ts", "").replace("```", ""))
 }
 
 export function camelToTitleCase(text: string) {

@@ -23,14 +23,14 @@ The loader file must export a function.
 
 When the loader is defined in the Medusa backend or a plugin, the function receives the following parameters:
 
-1. `container`: the first parameter, which is a `AwilixContainer` object. You can use the container to register custom resources into the dependency container or resolve resources from the dependency container.
+1. `container`: the first parameter, which is a `MedusaContainer` object. You can use the container to register custom resources into the dependency container or resolve resources from the dependency container.
 2. `config`: the second parameter, which is an object that holds the loader’s plugin options. If the loader is not created inside a plugin, the config object will be empty.
 
 ### Parameters of Loaders in Modules
 
 When the loader is defined in a module, it receives the following parameters:
 
-1. `container`: the first parameter, which is a `AwilixContainer` object. You can use the container to register custom resources into the dependency container or resolve resources from the dependency container.
+1. `container`: the first parameter, which is a `MedusaContainer` object. You can use the container to register custom resources into the dependency container or resolve resources from the dependency container.
 2. `logger`: the second parameter, which is a `Logger` object. The logger can be used to log messages in the console.
 3. `config`: the third parameter, which is an object that holds the loader’s module options.
 
@@ -38,12 +38,15 @@ When the loader is defined in a module, it receives the following parameters:
 
 For example, this loader function resolves the `ProductService` and logs in the console the count of products in the Medusa backend:
 
-```ts title=src/loaders/my-loader.ts
-import { ProductService, ConfigModule } from "@medusajs/medusa"
-import { AwilixContainer } from "awilix"
+```ts title="src/loaders/my-loader.ts"
+import { 
+  ProductService, 
+  ConfigModule,
+  MedusaContainer,
+} from "@medusajs/medusa"
 
 export default async (
-  container: AwilixContainer,
+  container: MedusaContainer,
   config: ConfigModule
 ): Promise<void> => {
   console.info("Starting loader...")

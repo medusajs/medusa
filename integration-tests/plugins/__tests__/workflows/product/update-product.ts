@@ -1,33 +1,35 @@
+import { WorkflowTypes } from "@medusajs/types"
 import {
   Handlers,
-  pipe,
   updateProducts,
   UpdateProductsActions,
-} from "@medusajs/workflows"
-import { WorkflowTypes } from "@medusajs/types"
+} from "@medusajs/core-flows"
+import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
 
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { simpleProductFactory } from "../../../../factories"
 
+jest.setTimeout(100000)
+
 describe("UpdateProduct workflow", function () {
-  let medusaProcess
   let dbConnection
   let medusaContainer
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd } as any)
-    const { container } = await bootstrapApp({ cwd })
-    medusaContainer = container
+    dbConnection = await initDb({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd, skipExpressListen: true })
+    medusaContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   beforeEach(async () => {

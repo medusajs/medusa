@@ -48,17 +48,32 @@ export class FilterableDiscountProps {
   rule?: AdminGetDiscountsDiscountRuleParams
 }
 
+/**
+ * Filters to apply on discounts' rules.
+ */
 export class AdminGetDiscountsDiscountRuleParams {
+  /**
+   * Type to filter discount rules by.
+   */
   @IsOptional()
   @IsEnum(DiscountRuleType)
   type?: DiscountRuleType
 
+  /**
+   * Allocation to filter discount rules by.
+   */
   @IsOptional()
   @IsEnum(AllocationType)
   allocation?: AllocationType
 }
 
+/**
+ * Fields to create or update a discount condition.
+ */
 export class AdminUpsertConditionsReq {
+  /**
+   * The products associated with the discount condition, if the discount condition's type is `products`.
+   */
   @Validate(ExactlyOne, [
     "product_collections",
     "product_types",
@@ -70,6 +85,9 @@ export class AdminUpsertConditionsReq {
   @IsString({ each: true })
   products?: string[]
 
+  /**
+   * The product collections associated with the discount condition, if the discount condition's type is `product_collections`.
+   */
   @Validate(ExactlyOne, [
     "products",
     "product_types",
@@ -81,6 +99,9 @@ export class AdminUpsertConditionsReq {
   @IsString({ each: true })
   product_collections?: string[]
 
+  /**
+   * The product types associated with the discount condition, if the discount condition's type is `product_types`.
+   */
   @Validate(ExactlyOne, [
     "product_collections",
     "products",
@@ -92,6 +113,9 @@ export class AdminUpsertConditionsReq {
   @IsString({ each: true })
   product_types?: string[]
 
+  /**
+   * The product tags associated with the discount condition, if the discount condition's type is `product_tags`.
+   */
   @Validate(ExactlyOne, [
     "product_collections",
     "product_types",
@@ -103,6 +127,9 @@ export class AdminUpsertConditionsReq {
   @IsString({ each: true })
   product_tags?: string[]
 
+  /**
+   * The customer groups associated with the discount condition, if the discount condition's type is `customer_groups`.
+   */
   @Validate(ExactlyOne, [
     "product_collections",
     "product_types",

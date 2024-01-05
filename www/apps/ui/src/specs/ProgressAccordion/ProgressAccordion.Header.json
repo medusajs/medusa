@@ -1,0 +1,33 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "ProgressAccordion.Header",
+  "props": {
+    "status": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"not-started\" \\| \"in-progress\" \\| \"completed\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"not-started\""
+          },
+          {
+            "name": "literal",
+            "value": "\"in-progress\""
+          },
+          {
+            "name": "literal",
+            "value": "\"completed\""
+          }
+        ]
+      },
+      "description": "The current status.",
+      "defaultValue": {
+        "value": "\"not-started\"",
+        "computed": false
+      }
+    }
+  }
+}
