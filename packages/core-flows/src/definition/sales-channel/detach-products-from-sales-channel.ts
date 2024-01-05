@@ -10,6 +10,6 @@ type WorkflowInput = {
 export const detachProductsFromSalesChannelWorkflow = createWorkflow<
   WorkflowInput,
   void
->("create-sales-channels", function (input) {
+>("detach-products-from-sales-channels", function (input) {
   detachProductsToSalesChannelStep(input)
 })

@@ -10,6 +10,6 @@ type WorkflowInput = {
 export const attachProductsToSalesChannelWorkflow = createWorkflow<
   WorkflowInput,
   void
->("create-sales-channels", function (input) {
-  attachProductsToSalesChannelStep(input)
+>("attach-product-to-sales-channels", function (input) {
+  return attachProductsToSalesChannelStep(input)
 })

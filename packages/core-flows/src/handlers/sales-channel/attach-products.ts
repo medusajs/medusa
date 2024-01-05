@@ -21,7 +21,7 @@ export const attachProductsToSalesChannelStep = createStep<Input, void, Input>(
         },
       })
     )
-    await remoteLink.create(links)
+    return await remoteLink.create(links)
   },
   async (data, { container }) => {
     if (!data) return
