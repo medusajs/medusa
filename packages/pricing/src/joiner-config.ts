@@ -16,6 +16,7 @@ export const LinkableKeys = {
   price_list_id: PriceList.name,
   price_set_money_amount_id: PriceSetMoneyAmount.name,
 }
+
 const entityLinkableKeysMap: MapToConfig = {}
 Object.entries(LinkableKeys).forEach(([key, value]) => {
   entityLinkableKeysMap[value] ??= []

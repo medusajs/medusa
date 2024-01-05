@@ -2,6 +2,7 @@ import {
   BeforeCreate,
   Entity,
   ManyToOne,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -16,7 +17,7 @@ export default class PriceListRuleValue {
 
   @ManyToOne(() => PriceListRule, {
     onDelete: "cascade",
-    fieldName: 'price_list_rule_id',
+    fieldName: "price_list_rule_id",
     index: "IDX_price_list_rule_price_list_rule_value_id",
   })
   price_list_rule: PriceListRule
@@ -26,6 +27,11 @@ export default class PriceListRuleValue {
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "plrv")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "plrv")
   }
 }
