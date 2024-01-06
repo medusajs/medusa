@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { AddressPayload } from "./AddressPayload"
 
+/**
+ * The details of the draft order to create.
+ */
 export interface AdminPostDraftOrdersReq {
   /**
    * The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.

@@ -38,6 +38,37 @@ import {
  *       .then(({ order_edit }) => {
  *          console.log(order_edit.id)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminOrderEditAddLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const addLineItem = useAdminOrderEditAddLineItem(
+ *           orderEditId
+ *         )
+ *
+ *         const handleAddLineItem =
+ *           (quantity: number, variantId: string) => {
+ *             addLineItem.mutate({
+ *               quantity,
+ *               variant_id: variantId,
+ *             }, {
+ *               onSuccess: ({ order_edit }) => {
+ *                 console.log(order_edit.changes)
+ *               }
+ *             })
+ *           }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -103,6 +134,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostOrderEditsEditLineItemsReq
  * type: object
+ * description: "The details of the line item change to create."
  * required:
  *   - variant_id
  *   - quantity

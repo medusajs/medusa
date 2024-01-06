@@ -35,6 +35,39 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCancelSwapFulfillment } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string,
+ *         swapId: string
+ *       }
+ *
+ *       const Swap = ({
+ *         orderId,
+ *         swapId
+ *       }: Props) => {
+ *         const cancelFulfillment = useAdminCancelSwapFulfillment(
+ *           orderId
+ *         )
+ *         // ...
+ *
+ *         const handleCancelFulfillment = (
+ *           fulfillmentId: string
+ *         ) => {
+ *           cancelFulfillment.mutate({
+ *             swap_id: swapId,
+ *             fulfillment_id: fulfillmentId,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Swap
  *   - lang: Shell
  *     label: cURL
  *     source: |

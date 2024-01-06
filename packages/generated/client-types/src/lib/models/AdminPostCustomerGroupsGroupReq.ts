@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update in the customer group.
+ */
 export interface AdminPostCustomerGroupsGroupReq {
   /**
    * Name of the customer group

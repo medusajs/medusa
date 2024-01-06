@@ -168,8 +168,14 @@ You can retrieve the details of a gift card by sending a request to the [Get Gif
     ```tsx
     import { useGiftCard } from "medusa-react"
 
-    const GiftCard = () => {
-      const { gift_card, isLoading, isError } = useGiftCard("code")
+    type Props = {
+      giftCardCode: string
+    }
+
+    const GiftCard = ({ giftCardCode }: Props) => {
+      const { gift_card, isLoading, isError } = useGiftCard(
+        giftCardCode
+      )
 
       return (
         <div>

@@ -6,6 +6,7 @@ import {
   PaymentProcessorSessionResponse,
   PaymentSessionStatus,
 } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
 import { EOL } from "os"
 import Stripe from "stripe"
 import {
@@ -14,7 +15,6 @@ import {
   PaymentIntentOptions,
   StripeOptions,
 } from "../types"
-import { MedusaError } from "@medusajs/utils"
 
 abstract class StripeBase extends AbstractPaymentProcessor {
   static identifier = ""

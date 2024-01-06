@@ -38,6 +38,34 @@ import { promiseAll } from "@medusajs/utils"
  *       .catch(() => {
  *         // an error occurred
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useGrantOrderAccess } from "medusa-react"
+ *
+ *       const ClaimOrder = () => {
+ *         const confirmOrderRequest = useGrantOrderAccess()
+ *
+ *         const handleOrderRequestConfirmation = (
+ *           token: string
+ *         ) => {
+ *           confirmOrderRequest.mutate({
+ *             token
+ *           }, {
+ *             onSuccess: () => {
+ *               // successful
+ *             },
+ *             onError: () => {
+ *               // an error occurred.
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default ClaimOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -115,6 +143,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerAcceptClaimReq
  * type: object
+ * description: "The details necessary to grant order access."
  * required:
  *   - token
  * properties:

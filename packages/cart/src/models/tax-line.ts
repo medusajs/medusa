@@ -1,6 +1,10 @@
 import { PrimaryKey, Property } from "@mikro-orm/core"
 
-export default class TaxLine {
+/** 
+ * As per the Mikro ORM docs, superclasses should use the abstract class definition
+ * Source: https://mikro-orm.io/docs/inheritance-mapping
+ */
+export default abstract class TaxLine {
   @PrimaryKey({ columnType: "text" })
   id: string
 

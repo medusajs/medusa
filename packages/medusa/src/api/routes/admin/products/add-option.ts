@@ -33,6 +33,38 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateProductOption } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const CreateProductOption = ({ productId }: Props) => {
+ *         const createOption = useAdminCreateProductOption(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           title: string
+ *         ) => {
+ *           createOption.mutate({
+ *             title
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.options)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateProductOption
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -99,6 +131,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostProductsProductOptionsReq
  * type: object
+ * description: "The details of the product option to create."
  * required:
  *   - title
  * properties:

@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the discount to update.
+ */
 export interface AdminPostDiscountsDiscountReq {
   /**
    * A unique code that will be used to redeem the discount

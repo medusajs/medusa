@@ -34,6 +34,36 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateStockLocation } from "medusa-react"
+ *
+ *       type Props = {
+ *         stockLocationId: string
+ *       }
+ *
+ *       const StockLocation = ({ stockLocationId }: Props) => {
+ *         const updateLocation = useAdminUpdateStockLocation(
+ *           stockLocationId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           name: string
+ *         ) => {
+ *           updateLocation.mutate({
+ *             name
+ *           }, {
+ *             onSuccess: ({ stock_location }) => {
+ *               console.log(stock_location.name)
+ *             }
+ *           })
+ *         }
+ *       }
+ *
+ *       export default StockLocation
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -148,6 +178,7 @@ class StockLocationAddress {
 /**
  * @schema AdminPostStockLocationsLocationReq
  * type: object
+ * description: "The details to update of the stock location."
  * properties:
  *   name:
  *     description: the name of the stock location

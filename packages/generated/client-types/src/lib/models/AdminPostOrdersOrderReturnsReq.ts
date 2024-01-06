@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the requested return.
+ */
 export interface AdminPostOrdersOrderReturnsReq {
   /**
    * The line items that will be returned.
