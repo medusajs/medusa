@@ -58,6 +58,20 @@ describe("Address Service", () => {
   })
 
   describe("update", () => {
+    it("should throw an error if address does not exist", async () => {
+      const error = await service
+        .update([
+          {
+            id: "none-existing",
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Address with id \"none-existing\" not found"
+      )
+    })
+
     it("should update an address successfully", async () => {
       const [createdAddress] = await service.create([
         {

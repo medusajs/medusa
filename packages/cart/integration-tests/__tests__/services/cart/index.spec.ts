@@ -65,6 +65,20 @@ describe("Cart Service", () => {
   })
 
   describe("update", () => {
+    it("should throw an error if cart does not exist", async () => {
+      const error = await service
+        .update([
+          {
+            id: "none-existing",
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Cart with id \"none-existing\" not found"
+      )
+    })
+
     it("should update a cart successfully", async () => {
       const [createdCart] = await service.create([
         {
