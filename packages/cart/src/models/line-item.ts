@@ -3,7 +3,7 @@ import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
-
+  Check,
   Collection,
   Entity,
   ManyToOne,
@@ -11,7 +11,6 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-
   Property
 } from "@mikro-orm/core"
 import Cart from "./cart"

@@ -8,9 +8,8 @@ import {
   ICartModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  UpdateCartDTO,
 } from "@medusajs/types"
-
-import { Cart } from "@models"
 
 import {
   InjectManager,
@@ -27,9 +26,7 @@ type InjectedDependencies = {
   addressService: AddressService
 }
 
-export default class CartModuleService<TCart extends Cart = Cart>
-  implements ICartModuleService
-{
+export default class CartModuleService implements ICartModuleService {
   protected baseRepository_: DAL.RepositoryService
   protected cartService_: CartService
   protected addressService_: AddressService
@@ -113,5 +110,37 @@ export default class CartModuleService<TCart extends Cart = Cart>
     @MedusaContext() sharedContext: Context = {}
   ) {
     return await this.cartService_.create(data, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async update(
+    data: UpdateCartDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<CartDTO[]> {
+    const carts = await this.update_(data, sharedContext)
+
+    return await this.list(
+      { id: carts.map((p) => p!.id) },
+      {
+        relations: ["shipping_address", "billing_address"],
+      },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async update_(
+    data: UpdateCartDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    return await this.cartService_.update(data, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async delete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.cartService_.delete(ids, sharedContext)
   }
 }

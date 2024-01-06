@@ -8,6 +8,7 @@ import {
   OnInit,
   OneToMany,
   OneToOne,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
