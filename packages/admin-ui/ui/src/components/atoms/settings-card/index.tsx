@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { Link } from "react-router-dom"
 import ChevronRightIcon from "../../fundamentals/icons/chevron-right-icon"
 import { useTranslation } from "react-i18next"
@@ -6,8 +6,8 @@ import { TranslationText } from "../../../types/shared"
 
 type SettingsCardProps = {
   icon: React.ReactNode
-  heading: TranslationText
-  description: TranslationText
+  heading: TranslationText | string
+  description: TranslationText | string
   to?: string
   externalLink?: string
   disabled?: boolean
@@ -15,14 +15,8 @@ type SettingsCardProps = {
 
 const SettingsCard: React.FC<SettingsCardProps> = ({
   icon,
-  heading: {
-    defaultText: headingDefaultText,
-    translationKey: headingTranslationKey,
-  },
-  description: {
-    defaultText: descriptionDefaultText,
-    translationKey: descriptionTranslationKey,
-  },
+  heading,
+  description,
   to = null,
   externalLink = null,
   disabled = false,
@@ -32,6 +26,15 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
   if (disabled) {
     to = null
   }
+
+  const generateTranslation = useCallback(
+    (textProp: TranslationText | string) => {
+      return typeof textProp === "string"
+        ? textProp
+        : t(textProp.defaultText, textProp.translationKey)
+    },
+    [t]
+  )
 
   return (
     <Link to={to ?? ""} className="flex flex-1 items-center">
@@ -51,10 +54,10 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
         </div>
         <div className="mx-large flex-1 text-left">
           <h3 className="inter-large-semibold text-grey-90 group-disabled:text-grey-40 m-0">
-            {t(headingTranslationKey, headingDefaultText)}
+            {generateTranslation(heading)}
           </h3>
           <p className="inter-base-regular text-grey-50 group-disabled:text-grey-40 m-0">
-            {t(descriptionTranslationKey, descriptionDefaultText)}
+            {generateTranslation(description)}
           </p>
         </div>
         <div className="text-grey-40 group-disabled:text-grey-30">

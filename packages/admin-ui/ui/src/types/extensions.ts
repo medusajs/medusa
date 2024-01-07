@@ -117,8 +117,8 @@ export type Link = {
 }
 
 export type Card = {
-  label: TranslationText
-  description: TranslationText
+  label: TranslationText | string
+  description: TranslationText | string
   icon?: ComponentType<any>
   path: string
 }

@@ -27,8 +27,8 @@ import Users from "./users"
 import { TranslationText } from "../../types/shared"
 
 type SettingsCardType = {
-  heading: TranslationText
-  description: TranslationText
+  heading: TranslationText | string
+  description: TranslationText | string
   icon?: React.ComponentType
   to: string
   feature_flag?: string
