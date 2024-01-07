@@ -35980,6 +35980,7 @@ __metadata:
   dependencies:
     "@medusajs/admin": ^7.1.7
     "@medusajs/medusa": ^1.17.4
+    "@medusajs/utils": ^1.11.2
     "@tanstack/react-table": ^8.7.9
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
@@ -35987,7 +35988,6 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.2.0
     medusa-react: ^9.0.11
     rimraf: ^5.0.1
     stripe: ^11.10.0

@@ -87,7 +87,7 @@ class AdminDraftOrdersResource extends BaseResource {
   }
 
   /**
-   * Delete a Draft Order
+   * Delete a Draft Order.
    * @param {string} id - The ID of the draft order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDraftOrdersDeleteRes>} Resolves to the deletion operation details.

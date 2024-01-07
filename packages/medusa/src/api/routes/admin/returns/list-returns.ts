@@ -29,6 +29,35 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ returns, limit, offset, count }) => {
  *         console.log(returns.length)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminReturns } from "medusa-react"
+ *
+ *       const Returns = () => {
+ *         const { returns, isLoading } = useAdminReturns()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {returns && !returns.length && (
+ *               <span>No Returns</span>
+ *             )}
+ *             {returns && returns.length > 0 && (
+ *               <ul>
+ *                 {returns.map((returnData) => (
+ *                   <li key={returnData.id}>
+ *                     {returnData.status}
+ *                   </li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Returns
  *   - lang: Shell
  *     label: cURL
  *     source: |

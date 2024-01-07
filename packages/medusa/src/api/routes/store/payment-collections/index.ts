@@ -97,6 +97,7 @@ export type StorePaymentCollectionsRes = {
 /**
  * @schema StorePaymentCollectionsSessionRes
  * type: object
+ * description: "The details of the payment session."
  * required:
  *   - payment_session
  * properties:

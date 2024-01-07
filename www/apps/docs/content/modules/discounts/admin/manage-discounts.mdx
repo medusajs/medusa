@@ -104,15 +104,18 @@ You can create a discount by sending a request to the [Create Discount API Route
       AllocationType, 
       DiscountRuleType,
     } from "@medusajs/medusa"
-
+    
     const CreateDiscount = () => {
       const createDiscount = useAdminCreateDiscount()
       // ...
-
-      const handleCreate = () => {
+    
+      const handleCreate = (
+        currencyCode: string,
+        regionId: string
+      ) => {
         // ...
         createDiscount.mutate({
-          code,
+          code: currencyCode,
           rule: {
             type: DiscountRuleType.FIXED,
             value: 10,
@@ -125,10 +128,10 @@ You can create a discount by sending a request to the [Create Discount API Route
           is_disabled: false,
         })
       }
-
+    
       // ...
     }
-
+    
     export default CreateDiscount
     ```
 
@@ -224,21 +227,24 @@ For example, you can update the discount’s description and status by sending t
     ```tsx
     import { useAdminUpdateDiscount } from "medusa-react"
 
-    const UpdateDiscount = () => {
-      const updateDiscount = useAdminUpdateDiscount(discount_id)
+    type Props = {
+      discountId: string
+    }
+
+    const Discount = ({ discountId }: Props) => {
+      const updateDiscount = useAdminUpdateDiscount(discountId)
       // ...
 
-      const handleUpdate = () => {
-        // ...
+      const handleUpdate = (isDisabled: boolean) => {
         updateDiscount.mutate({
-          is_disabled: true,
+          is_disabled: isDisabled,
         })
       }
 
       // ...
     }
 
-    export default UpdateDiscount
+    export default Discount
     ```
 
   </TabItem>
@@ -317,25 +323,28 @@ You can send a request to the [Create Condition API Route](https://docs.medusajs
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { useAdminDiscountCreateCondition } from "medusa-react"
     import { DiscountConditionOperator } from "@medusajs/medusa"
+    import { useAdminDiscountCreateCondition } from "medusa-react"
 
-    const Discount = () => {
-      const createCondition = useAdminDiscountCreateCondition(
-        discount_id
-      )
+    type Props = {
+      discountId: string
+    }
+
+    const Discount = ({ discountId }: Props) => {
+      const createCondition = useAdminDiscountCreateCondition(discountId)
       // ...
 
       const handleCreateCondition = (
-        operator: DiscountConditionOperator, 
-        productId: string
+        operator: DiscountConditionOperator,
+        products: string[]
       ) => {
-        // ...
         createCondition.mutate({
           operator,
-          products: [
-            productId,
-          ],
+          products
+        }, {
+          onSuccess: ({ discount }) => {
+            console.log(discount.id)
+          }
         })
       }
 
@@ -433,32 +442,29 @@ You can retrieve a condition and its resources by sending a request to the [Get 
 
     ```tsx
     import { useAdminGetDiscountCondition } from "medusa-react"
-    import { Product } from "@medusajs/medusa"
 
-    const DiscountCondition = () => {
+    type Props = {
+      discountId: string
+      discountConditionId: string
+    }
+
+    const DiscountCondition = ({
+      discountId,
+      discountConditionId
+    }: Props) => {
       const { 
         discount_condition, 
-        isLoading, 
+        isLoading
       } = useAdminGetDiscountCondition(
-        discount_id, 
-        conditionId
+        discountId,
+        discountConditionId
       )
-      // ...
 
       return (
         <div>
-          {isLoading && <span>Loading</span>}
+          {isLoading && <span>Loading...</span>}
           {discount_condition && (
-            <>
-              <span>{discount_condition.id}</span>
-              <ul>
-                {discount_condition.products.map(
-                  (product: Product) => (
-                    <li key={product.id}>{product.title}</li>
-                  )
-                )}
-              </ul>
-            </>
+            <span>{discount_condition.type}</span>
           )}
         </div>
       )
@@ -533,18 +539,31 @@ For example, to update the products in a condition:
 
     ```tsx
     import { useAdminDiscountUpdateCondition } from "medusa-react"
-    import { Product } from "@medusajs/medusa"
 
-    const DiscountCondition = () => {
-      const updateCondition = useAdminDiscountUpdateCondition(
-        discount_id, 
+    type Props = {
+      discountId: string
+      conditionId: string
+    }
+
+    const DiscountCondition = ({
+      discountId,
+      conditionId
+    }: Props) => {
+      const update = useAdminDiscountUpdateCondition(
+        discountId,
         conditionId
       )
       // ...
 
-      const handleUpdateCondition = (productIds: string[]) => {
-        updateCondition.mutate({
-          products: productIds,
+      const handleUpdate = (
+        products: string[]
+      ) => {
+        update.mutate({
+          products
+        }, {
+          onSuccess: ({ discount }) => {
+            console.log(discount.id)
+          }
         })
       }
 
@@ -629,14 +648,24 @@ You can delete a condition by sending a request to the [Delete Condition API Rou
     ```tsx
     import { useAdminDiscountRemoveCondition } from "medusa-react"
 
-    const Discount = () => {
+    type Props = {
+      discountId: string
+    }
+
+    const Discount = ({ discountId }: Props) => {
       const deleteCondition = useAdminDiscountRemoveCondition(
-        discount_id
+        discountId
       )
       // ...
 
-      const handleUpdateCondition = (conditionId: string) => {
-        deleteCondition.mutate(conditionId)
+      const handleDelete = (
+        conditionId: string
+      ) => {
+        deleteCondition.mutate(conditionId, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(deleted)
+          }
+        })
       }
 
       // ...

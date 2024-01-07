@@ -37,6 +37,33 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       .then(({ currencies, count, offset, limit }) => {
  *         console.log(currencies.length);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCurrencies } from "medusa-react"
+ *
+ *       const Currencies = () => {
+ *         const { currencies, isLoading } = useAdminCurrencies()
+ *
+ *         return (
+ *           <div>
+ *             {isLoading && <span>Loading...</span>}
+ *             {currencies && !currencies.length && (
+ *               <span>No Currencies</span>
+ *             )}
+ *             {currencies && currencies.length > 0 && (
+ *               <ul>
+ *                 {currencies.map((currency) => (
+ *                   <li key={currency.code}>{currency.name}</li>
+ *                 ))}
+ *               </ul>
+ *             )}
+ *           </div>
+ *         )
+ *       }
+ *
+ *       export default Currencies
  *   - lang: Shell
  *     label: cURL
  *     source: |

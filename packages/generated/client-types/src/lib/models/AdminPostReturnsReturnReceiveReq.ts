@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the received return.
+ */
 export interface AdminPostReturnsReturnReceiveReq {
   /**
    * The Line Items that have been received.

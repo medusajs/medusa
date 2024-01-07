@@ -155,10 +155,17 @@ You can create a return reason using the [Create Return Reason API Route](https:
       const createReturnReason = useAdminCreateReturnReason()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (
+        label: string,
+        value: string
+      ) => {
         createReturnReason.mutate({
-          label: "Damaged",
-          value: "damaged",
+          label,
+          value,
+        }, {
+          onSuccess: ({ return_reason }) => {
+            console.log(return_reason.id)
+          }
         })
       }
 
@@ -236,22 +243,32 @@ You can update a return reason by sending a request to the [Update Return Reason
     ```tsx
     import { useAdminUpdateReturnReason } from "medusa-react"
 
-    const UpdateReturnReason = () => {
+    type Props = {
+      returnReasonId: string
+    }
+
+    const ReturnReason = ({ returnReasonId }: Props) => {
       const updateReturnReason = useAdminUpdateReturnReason(
         returnReasonId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        label: string
+      ) => {
         updateReturnReason.mutate({
-          label: "Damaged",
+          label,
+        }, {
+          onSuccess: ({ return_reason }) => {
+            console.log(return_reason.label)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateReturnReason
+    export default ReturnReason
     ```
 
   </TabItem>
@@ -315,20 +332,28 @@ You can delete a return reason by sending a request to the [Delete Return Reason
     ```tsx
     import { useAdminDeleteReturnReason } from "medusa-react"
 
-    const DeleteReturnReason = () => {
+    type Props = {
+      returnReasonId: string
+    }
+
+    const ReturnReason = ({ returnReasonId }: Props) => {
       const deleteReturnReason = useAdminDeleteReturnReason(
         returnReasonId
       )
       // ...
 
       const handleDelete = () => {
-        deleteReturnReason.mutate()
+        deleteReturnReason.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteReturnReason
+    export default ReturnReason
     ```
 
   </TabItem>
@@ -492,22 +517,35 @@ You can mark a return as received by sending a request to the [Receive a Return 
     ```tsx
     import { useAdminReceiveReturn } from "medusa-react"
 
-    const ReceiveReturn = () => {
+    type ReceiveReturnData = {
+      items: {
+        item_id: string
+        quantity: number
+      }[]
+    }
+
+    type Props = {
+      returnId: string
+    }
+
+    const Return = ({ returnId }: Props) => {
       const receiveReturn = useAdminReceiveReturn(
         returnId
       )
       // ...
 
-      const handleReceive = () => {
-        receiveReturn.mutate({
-          email,
+      const handleReceive = (data: ReceiveReturnData) => {
+        receiveReturn.mutate(data, {
+          onSuccess: ({ return: dataReturn }) => {
+            console.log(dataReturn.status)
+          }
         })
       }
 
       // ...
     }
 
-    export default ReceiveReturn
+    export default Return
     ```
 
   </TabItem>
@@ -594,20 +632,28 @@ You can cancel a return by sending a request to the [Cancel Return API Route](ht
     ```tsx
     import { useAdminCancelReturn } from "medusa-react"
 
-    const CancelReturn = () => {
+    type Props = {
+      returnId: string
+    }
+
+    const Return = ({ returnId }: Props) => {
       const cancelReturn = useAdminCancelReturn(
         returnId
       )
       // ...
 
       const handleCancel = () => {
-        cancelReturn.mutate()
+        cancelReturn.mutate(void 0, {
+          onSuccess: ({ order }) => {
+            console.log(order.returns)
+          }
+        })
       }
 
       // ...
     }
 
-    export default CancelReturn
+    export default Return
     ```
 
   </TabItem>
