@@ -2,12 +2,12 @@ import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Collection,
   Entity,
+  Index,
+  ManyToOne,
   OnInit,
   OneToMany,
-  OneToOne,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -47,18 +47,22 @@ export default class Cart {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @OneToOne({
-    entity: () => Address,
-    joinColumn: "shipping_address_id",
-    cascade: [Cascade.REMOVE],
+  @Index({ name: "IDX_cart_shipping_address_id" })
+  @Property({ columnType: "text", nullable: true })
+  shipping_address_id?: string | null
+
+  @ManyToOne(() => Address, {
+    fieldName: "shipping_address_id",
     nullable: true,
   })
   shipping_address?: Address | null
 
-  @OneToOne({
-    entity: () => Address,
-    joinColumn: "billing_address_id",
-    cascade: [Cascade.REMOVE],
+  @Index({ name: "IDX_cart_billing_address_id" })
+  @Property({ columnType: "text", nullable: true })
+  billing_address_id?: string | null
+
+  @ManyToOne(() => Address, {
+    fieldName: "billing_address_id",
     nullable: true,
   })
   billing_address?: Address | null
