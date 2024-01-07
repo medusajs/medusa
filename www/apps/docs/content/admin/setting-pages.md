@@ -1,6 +1,6 @@
 ---
-title: 'How to Create an Admin Setting Page'
-description: 'Learn how to create a new setting page in the admin dashboard.'
+title: "How to Create an Admin Setting Page"
+description: "Learn how to create a new setting page in the admin dashboard."
 addHowToData: true
 ---
 
@@ -10,7 +10,7 @@ In this document, you’ll learn how to create a setting page in the admin.
 
 The [admin UI routes](./routes.md) allow you to add new pages to the admin dashboard. However, they can’t be used to add a new tab under the Setting page.
 
-To do that, you need to create an Admin setting page. The page will automatically be shown as a tab under the Setting page in the admin. The tab leads to the content of your custom page. 
+To do that, you need to create an Admin setting page. The page will automatically be shown as a tab under the Setting page in the admin. The tab leads to the content of your custom page.
 
 A setting page is essentially a React Component created under the `src/admin/settings` directory.
 
@@ -41,9 +41,9 @@ First, update your `tsconfig.json` with the following configurations:
   "compilerOptions": {
     "target": "es2019",
     "module": "commonjs",
-    "allowJs": true, 
-    "checkJs": false, 
-    "jsx": "react-jsx", 
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "react-jsx",
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
@@ -188,10 +188,7 @@ For example:
 import type { SettingConfig } from "@medusajs/admin"
 import type { SettingProps } from "@medusajs/admin"
 
-const CustomSettingPage = ({
-  notify,
-}: SettingProps) => {
-
+const CustomSettingPage = ({ notify }: SettingProps) => {
   const handleClick = () => {
     notify.success("Success", "You clicked the button")
   }
@@ -199,9 +196,7 @@ const CustomSettingPage = ({
   return (
     <div>
       <h1>Custom Setting Page</h1>
-      <button onClick={handleClick}>
-        Click Me
-      </button>
+      <button onClick={handleClick}>Click Me</button>
     </div>
   )
 }
@@ -231,9 +226,7 @@ import type { SettingConfig } from "@medusajs/admin"
 
 const CustomSettingPage = () => {
   return (
-    <div
-      className="bg-white p-8 border border-gray-200 rounded-lg"
-    >
+    <div className="rounded-lg border border-gray-200 bg-white p-8">
       <h1>Custom Setting Page</h1>
     </div>
   )
@@ -243,6 +236,41 @@ export const config: SettingConfig = {
   card: {
     label: "Custom",
     description: "Manage your custom settings",
+  },
+}
+
+export default CustomSettingPage
+```
+
+---
+
+## Setting Card Translation
+
+It is possible to translate the card of your custom setting page which will appear on the settings page. When providing `label` and `description` properties to the config object, instead of providing a string, an object which have `defaultText` and `translationKey` properties should be provided. Translation of the setting card is not mandatory.
+
+<!-- eslint-disable max-len -->
+
+```tsx title="src/admin/settings/custom/page.tsx"
+import type { SettingConfig } from "@medusajs/admin"
+
+const CustomSettingPage = () => {
+  return (
+    <div>
+      <h1>Custom Setting Page</h1>
+    </div>
+  )
+}
+
+export const config: SettingConfig = {
+  card: {
+    label: {
+      defaultText: "Custom",
+      translationKey: "custom-translation-key-for-label",
+    },
+    description: {
+      defaultText: "Manage your custom settings",
+      translationKey: "custom-translation-key-for-description",
+    },
   },
 }
 
@@ -277,9 +305,7 @@ const CustomSettingPage = () => {
   return (
     <div>
       <h1>Custom Setting Page</h1>
-      <Link to={"/a/products"}>
-        View Products
-      </Link>
+      <Link to={"/a/products"}>View Products</Link>
     </div>
   )
 }
