@@ -41,6 +41,13 @@ export function load(app: Application) {
   })
 
   app.options.addDeclaration({
+    help: "[Markdown Plugin] Specify namespace names where all reflections are outputted into seperate files.",
+    name: "allReflectionsHaveOwnDocumentInNamespace",
+    type: ParameterType.Array,
+    defaultValue: [],
+  })
+
+  app.options.addDeclaration({
     help: "[Markdown Plugin] Separator used to format filenames.",
     name: "filenameSeparator",
     type: ParameterType.String,

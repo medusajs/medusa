@@ -62,6 +62,39 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateSwap } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderId: string
+ *       }
+ *
+ *       const CreateSwap = ({ orderId }: Props) => {
+ *         const createSwap = useAdminCreateSwap(orderId)
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           returnItems: {
+ *             item_id: string,
+ *             quantity: number
+ *           }[]
+ *         ) => {
+ *           createSwap.mutate({
+ *             return_items: returnItems
+ *           }, {
+ *             onSuccess: ({ order }) => {
+ *               console.log(order.swaps)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateSwap
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -268,6 +301,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderSwapsReq
  * type: object
+ * description: "The details of the swap to create."
  * required:
  *   - return_items
  * properties:

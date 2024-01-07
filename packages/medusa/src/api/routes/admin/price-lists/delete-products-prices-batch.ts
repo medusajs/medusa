@@ -33,6 +33,38 @@ import { WorkflowTypes } from "@medusajs/types"
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeletePriceListProductsPrices } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const deleteProductsPrices = useAdminDeletePriceListProductsPrices(
+ *           priceListId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteProductsPrices = (productIds: string[]) => {
+ *           deleteProductsPrices.mutate({
+ *             product_ids: productIds
+ *           }, {
+ *             onSuccess: ({ ids, deleted, object }) => {
+ *               console.log(ids)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -130,6 +162,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminDeletePriceListsPriceListProductsPricesBatchReq
  * type: object
+ * description: "The details of the products' prices to delete."
  * properties:
  *   product_ids:
  *     description: The IDs of the products to delete their associated prices.

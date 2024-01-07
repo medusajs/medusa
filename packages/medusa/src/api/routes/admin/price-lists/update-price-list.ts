@@ -50,6 +50,38 @@ import { transformOptionalDate } from "../../../../utils/validators/date-transfo
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdatePriceList } from "medusa-react"
+ *
+ *       type Props = {
+ *         priceListId: string
+ *       }
+ *
+ *       const PriceList = ({
+ *         priceListId
+ *       }: Props) => {
+ *         const updatePriceList = useAdminUpdatePriceList(priceListId)
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           endsAt: Date
+ *         ) => {
+ *           updatePriceList.mutate({
+ *             ends_at: endsAt,
+ *           }, {
+ *             onSuccess: ({ price_list }) => {
+ *               console.log(price_list.ends_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default PriceList
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -152,6 +184,7 @@ class CustomerGroup {
 /**
  * @schema AdminPostPriceListsPriceListPriceListReq
  * type: object
+ * description: "The details to update of the payment collection."
  * properties:
  *   name:
  *     description: "The name of the Price List"

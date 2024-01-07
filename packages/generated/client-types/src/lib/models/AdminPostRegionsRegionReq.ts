@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the regions.
+ */
 export interface AdminPostRegionsRegionReq {
   /**
    * The name of the Region

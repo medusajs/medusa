@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the shipping method to add to the cart.
+ */
 export interface StorePostCartsCartShippingMethodReq {
   /**
    * ID of the shipping option to create the method from.

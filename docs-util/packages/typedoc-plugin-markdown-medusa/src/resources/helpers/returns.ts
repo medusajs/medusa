@@ -2,8 +2,9 @@ import * as Handlebars from "handlebars"
 import { Comment, DeclarationReflection, SignatureReflection } from "typedoc"
 import { MarkdownTheme } from "../../theme"
 import reflectionFormatter from "../../utils/reflection-formatter"
-import { returnReflectionComponentFormatter } from "../../utils/return-reflection-formatter"
+import { getReflectionTypeParameters } from "../../utils/reflection-type-parameters"
 import { Parameter } from "../../types"
+import { formatParameterComponent } from "../../utils/format-parameter-component"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -24,14 +25,18 @@ function getReturnFromType(
   theme: MarkdownTheme,
   reflection: SignatureReflection
 ) {
-  const { parameterStyle, parameterComponent, maxLevel } =
-    theme.getFormattingOptionsForLocation()
+  const {
+    parameterStyle,
+    parameterComponent,
+    maxLevel,
+    parameterComponentExtraProps,
+  } = theme.getFormattingOptionsForLocation()
 
   if (!reflection.type) {
     return ""
   }
 
-  const componentItems = returnReflectionComponentFormatter({
+  const componentItems = getReflectionTypeParameters({
     reflectionType: reflection.type,
     project: reflection.project || theme.project,
     comment: reflection.comment,
@@ -40,11 +45,11 @@ function getReturnFromType(
   })
 
   if (parameterStyle === "component") {
-    return `<${parameterComponent} parameters={${JSON.stringify(
+    return formatParameterComponent({
+      parameterComponent,
       componentItems,
-      null,
-      2
-    )}} />`
+      extraProps: parameterComponentExtraProps,
+    })
   } else {
     return formatReturnAsList(componentItems)
   }
@@ -74,8 +79,12 @@ function formatReturnAsList(componentItems: Parameter[], level = 1): string {
 
 function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
   const md: string[] = []
-  const { parameterStyle, parameterComponent, maxLevel } =
-    theme.getFormattingOptionsForLocation()
+  const {
+    parameterStyle,
+    parameterComponent,
+    maxLevel,
+    parameterComponentExtraProps,
+  } = theme.getFormattingOptionsForLocation()
 
   if (comment.blockTags?.length) {
     const tags = comment.blockTags
@@ -97,11 +106,14 @@ function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
             )
             result +=
               parameterStyle === "component"
-                ? `\n\n<${parameterComponent} parameters={${JSON.stringify(
-                    content,
-                    null,
-                    2
-                  )}} title={"${commentPart.target.name}"} />\n\n`
+                ? `\n\n${formatParameterComponent({
+                    parameterComponent,
+                    componentItems: content as Parameter[],
+                    extraProps: {
+                      ...parameterComponentExtraProps,
+                      title: commentPart.target.name,
+                    },
+                  })}\n\n`
                 : `\n\n<details>\n<summary>\n${
                     commentPart.target.name
                   }\n</summary>\n\n${content?.join("\n")}\n\n</details>`
