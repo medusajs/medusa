@@ -7469,7 +7469,7 @@ __metadata:
   resolution: "@medusajs/cart@workspace:packages/cart"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.5
-    "@medusajs/types": ^1.11.9
+    "@medusajs/types": "workspace:^"
     "@medusajs/utils": ^1.11.2
     "@mikro-orm/cli": 5.9.7
     "@mikro-orm/core": 5.9.7
@@ -7615,7 +7615,7 @@ __metadata:
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
+    "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -7996,7 +7996,7 @@ __metadata:
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
     "@medusajs/modules-sdk": ^1.12.4
-    "@medusajs/types": ^1.11.8
+    "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -8034,7 +8034,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.10.0, @medusajs/types@^1.11.5, @medusajs/types@^1.11.6, @medusajs/types@^1.11.8, @medusajs/types@^1.11.9, @medusajs/types@^1.8.10, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.10.0, @medusajs/types@^1.11.5, @medusajs/types@^1.11.6, @medusajs/types@^1.11.9, @medusajs/types@^1.8.10, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -8164,7 +8164,7 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": ^1.12.4
     "@medusajs/orchestration": ^0.5.0
-    "@medusajs/types": ^1.11.8
+    "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.1
     awilix: ^8.0.1
     cross-env: ^5.2.1
