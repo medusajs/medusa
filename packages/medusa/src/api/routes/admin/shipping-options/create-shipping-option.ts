@@ -50,6 +50,45 @@ import { CreateShippingOptionInput } from "../../../../types/shipping-options"
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateShippingOption } from "medusa-react"
+ *
+ *       type CreateShippingOption = {
+ *         name: string
+ *         provider_id: string
+ *         data: Record<string, unknown>
+ *         price_type: string
+ *         amount: number
+ *       }
+ *
+ *       type Props = {
+ *         regionId: string
+ *       }
+ *
+ *       const Region = ({ regionId }: Props) => {
+ *         const createShippingOption = useAdminCreateShippingOption()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           data: CreateShippingOption
+ *         ) => {
+ *           createShippingOption.mutate({
+ *             ...data,
+ *             region_id: regionId
+ *           }, {
+ *             onSuccess: ({ shipping_option }) => {
+ *               console.log(shipping_option.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Region
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -131,6 +170,7 @@ class OptionRequirement {
 /**
  * @schema AdminPostShippingOptionsReq
  * type: object
+ * description: "The details of the shipping option to create."
  * required:
  *   - name
  *   - region_id

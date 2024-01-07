@@ -29,13 +29,13 @@ To use scheduled jobs, you must configure Redis in your Medusa backend. Learn mo
 
 ## Create Scheduled Job
 
-Scheduled jobs are TypeScript or JavaScript guides placed under the `src/jobs` directory. It can be created under subdirectories of `src/job` as well.
+Scheduled jobs are TypeScript or JavaScript guides placed under the `src/jobs` directory. It can be created under subdirectories of `src/jobs` as well.
 
 The scheduled job file exports a default handler function, and the scheduled job's configurations.
 
 For example:
 
-```ts title="src/loaders/publish.ts"
+```ts title="src/jobs/publish.ts"
 import { 
   type ProductService, 
   type ScheduledJobConfig, 

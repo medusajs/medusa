@@ -80,7 +80,8 @@ You can list stock locations by using the [List Stock Locations API Route](https
     function StockLocations() {
       const { 
         stock_locations,
-        isLoading } = useAdminStockLocations()
+        isLoading
+      } = useAdminStockLocations()
 
       return (
         <div>
@@ -160,9 +161,13 @@ You can create a stock location using the [Create a Stock Location API Route](ht
       const createStockLocation = useAdminCreateStockLocation()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (name: string) => {
         createStockLocation.mutate({
-          name: "Main Warehouse",
+          name,
+        }, {
+          onSuccess: ({ stock_location }) => {
+            console.log(stock_location.id)
+          }
         })
       }
 
@@ -233,10 +238,15 @@ You can retrieve a stock location by sending a request to the [Get Stock Locatio
     ```tsx
     import { useAdminStockLocation } from "medusa-react"
 
-    function StockLocation() {
+    type Props = {
+      stockLocationId: string
+    }
+
+    const StockLocation = ({ stockLocationId }: Props) => {
       const { 
         stock_location,
-        isLoading } = useAdminStockLocation(stockLocationId)
+        isLoading
+      } = useAdminStockLocation(stockLocationId)
 
       return (
         <div>
@@ -303,21 +313,33 @@ You can associate a stock location with a sales channel by sending a request to 
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { useAdminAddLocationToSalesChannel } from "medusa-react"
+    import { 
+      useAdminAddLocationToSalesChannel
+    } from "medusa-react"
 
-    function StockLocation() {
+    type Props = {
+      salesChannelId: string
+    }
+
+    const SalesChannel = ({ salesChannelId }: Props) => {
       const addLocation = useAdminAddLocationToSalesChannel()
       // ...
 
-      const handleAdd = () => {
+      const handleAddLocation = (locationId: string) => {
         addLocation.mutate({
-          sales_channel_id,
-          location_id,
+          sales_channel_id: salesChannelId,
+          location_id: locationId
+        }, {
+          onSuccess: ({ sales_channel }) => {
+            console.log(sales_channel.locations)
+          }
         })
       }
+
+      // ...
     }
 
-    export default StockLocation
+    export default SalesChannel
     ```
 
   </TabItem>
@@ -390,23 +412,32 @@ You can remove the association between a stock location and a sales channel by s
 
     ```tsx
     import { 
-      useAdminRemoveLocationFromSalesChannel,
+      useAdminRemoveLocationFromSalesChannel
     } from "medusa-react"
-
-    function StockLocation() {
-      const removeLocation = 
-        useAdminRemoveLocationFromSalesChannel()
+    
+    type Props = {
+      salesChannelId: string
+    }
+    
+    const SalesChannel = ({ salesChannelId }: Props) => {
+      const removeLocation = useAdminRemoveLocationFromSalesChannel()
       // ...
-
-      const handleRemove = () => {
+    
+      const handleRemoveLocation = (locationId: string) => {
         removeLocation.mutate({
-          sales_channel_id,
-          location_id,
+          sales_channel_id: salesChannelId,
+          location_id: locationId
+        }, {
+          onSuccess: ({ sales_channel }) => {
+            console.log(sales_channel.locations)
+          }
         })
       }
+    
+      // ...
     }
-
-    export default StockLocation
+    
+    export default SalesChannel
     ```
 
   </TabItem>
@@ -484,15 +515,25 @@ You can update a stock location by sending a request to the [Update Stock Locati
     ```tsx
     import { useAdminUpdateStockLocation } from "medusa-react"
 
-    function StockLocation() {
+    type Props = {
+      stockLocationId: string
+    }
+
+    const StockLocation = ({ stockLocationId }: Props) => {
       const updateLocation = useAdminUpdateStockLocation(
         stockLocationId
       )
       // ...
 
-      const handleRemove = () => {
+      const handleUpdate = (
+        name: string
+      ) => {
         updateLocation.mutate({
-          name: "Warehouse",
+          name
+        }, {
+          onSuccess: ({ stock_location }) => {
+            console.log(stock_location.name)
+          }
         })
       }
     }
@@ -563,14 +604,22 @@ You can delete a stock location by sending a request to the [Delete Stock Locati
     ```tsx
     import { useAdminDeleteStockLocation } from "medusa-react"
 
-    function StockLocation() {
+    type Props = {
+      stockLocationId: string
+    }
+
+    const StockLocation = ({ stockLocationId }: Props) => {
       const deleteLocation = useAdminDeleteStockLocation(
         stockLocationId
       )
       // ...
 
       const handleDelete = () => {
-        deleteLocation.mutate()
+        deleteLocation.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
     }
 

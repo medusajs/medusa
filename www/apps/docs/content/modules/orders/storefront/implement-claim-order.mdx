@@ -97,6 +97,36 @@ To allow the customer to claim an order, send a request to the Claim an Order AP
     ```
 
   </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+
+    ```tsx
+    import { useRequestOrderAccess } from "medusa-react"
+    
+    const ClaimOrder = () => {
+      const claimOrder = useRequestOrderAccess()
+    
+      const handleClaimOrder = (
+        orderIds: string[]
+      ) => {
+        claimOrder.mutate({
+          order_ids: orderIds
+        }, {
+          onSuccess: () => {
+            // successful
+          },
+          onError: () => {
+            // an error occurred.
+          }
+        })
+      }
+      
+      // ...
+    }
+    
+    export default ClaimOrder
+    ```
+
+  </TabItem>
   <TabItem value="fetch" label="Fetch API">
 
     ```ts
@@ -159,15 +189,23 @@ Then, you send a request to the Verify Claim Order API Route:
     import { useGrantOrderAccess } from "medusa-react"
 
     const ClaimOrder = () => {
-      const grantOrderAccess = useGrantOrderAccess()
-      // ...
+      const confirmOrderRequest = useGrantOrderAccess()
 
-      const handleVerifyOrderClaim = (token: string) => {
-        grantOrderAccess.mutate(({
-          token,
-        }))
+      const handleOrderRequestConfirmation = (
+        token: string
+      ) => {
+        confirmOrderRequest.mutate({
+          token
+        }, {
+          onSuccess: () => {
+            // successful
+          },
+          onError: () => {
+            // an error occurred.
+          }
+        })
       }
-
+      
       // ...
     }
 

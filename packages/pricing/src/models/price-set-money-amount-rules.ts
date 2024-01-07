@@ -3,6 +3,7 @@ import {
   BeforeCreate,
   Entity,
   ManyToOne,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -19,18 +20,23 @@ export default class PriceSetMoneyAmountRules {
     onDelete: "cascade",
     index: "IDX_price_set_money_amount_rules_price_set_money_amount_id",
   })
-  price_set_money_amount?: PriceSetMoneyAmount | string
+  price_set_money_amount: PriceSetMoneyAmount
 
   @ManyToOne(() => RuleType, {
     index: "IDX_price_set_money_amount_rules_rule_type_id",
   })
-  rule_type?: RuleType | string
+  rule_type: RuleType
 
   @Property({ columnType: "text" })
   value: string
 
   @BeforeCreate()
   onCreate() {
+    this.id = generateEntityId(this.id, "psmar")
+  }
+
+  @OnInit()
+  onInit() {
     this.id = generateEntityId(this.id, "psmar")
   }
 }

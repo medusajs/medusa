@@ -6,7 +6,7 @@ import {
 } from "@medusajs/types"
 import { isString } from "../../common"
 import { MedusaContext } from "../../decorators"
-import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
+import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,

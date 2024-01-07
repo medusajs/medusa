@@ -55,6 +55,34 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteProductTaxRates } from "medusa-react"
+ *
+ *       type Props = {
+ *         taxRateId: string
+ *       }
+ *
+ *       const TaxRate = ({ taxRateId }: Props) => {
+ *         const removeProduct = useAdminDeleteProductTaxRates(taxRateId)
+ *         // ...
+ *
+ *         const handleRemoveProduct = (productIds: string[]) => {
+ *           removeProduct.mutate({
+ *             products: productIds,
+ *           }, {
+ *             onSuccess: ({ tax_rate }) => {
+ *               console.log(tax_rate.products)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default TaxRate
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -122,6 +150,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteTaxRatesTaxRateProductsReq
  * type: object
+ * description: "The details of the products to remove their associated with the tax rate."
  * required:
  *   - products
  * properties:

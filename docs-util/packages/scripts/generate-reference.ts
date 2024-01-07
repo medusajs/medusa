@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url)
 const referenceNames = process.argv.slice(2) || ["all"]
 const basePath = path.join(require.resolve("typedoc-config"), "..")
 let generatedCount = 0
-let totalCount = 0
+let totalCount = referenceNames.length
 let ranMerger = false
 
 if (!referenceNames.length) {
@@ -37,7 +37,6 @@ referenceNames.forEach((name) => {
   } else if (name === "merge") {
     runMerger()
   } else {
-    totalCount = 1
     generateReference(`${name}.js`)
   }
 })
@@ -62,6 +61,7 @@ export function generateReference(referenceName: string) {
     formatColoredLog(colorLog, referenceName, chunk.trim())
   })
   typedocProcess.on("exit", (code) => {
+    formatColoredLog(colorLog, referenceName, "Finished Generating reference.")
     generatedCount++
     if (generatedCount >= totalCount && !ranMerger && code !== 1) {
       runMerger()
@@ -82,7 +82,6 @@ export function generateReference(referenceName: string) {
       )
     })
   })
-  formatColoredLog(colorLog, referenceName, "Finished Generating reference.")
 }
 
 function formatColoredLog(

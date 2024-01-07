@@ -66,7 +66,9 @@ export default function (theme: MarkdownTheme) {
       md.push(`(${getParameters(this.parameters, false)})`)
 
       if (this.type && !this.parent?.kindOf(ReflectionKind.Constructor)) {
-        md.push(`: ${Handlebars.helpers.type.call(this.type, "none", false)}`)
+        md.push(
+          `: ${Handlebars.helpers.type.call(this.type, "none", !expandMembers)}`
+        )
       }
 
       if (!expandMembers) {

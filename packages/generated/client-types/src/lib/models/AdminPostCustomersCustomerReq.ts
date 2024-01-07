@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the customer to update.
+ */
 export interface AdminPostCustomersCustomerReq {
   /**
    * The Customer's email. You can't update the email of a registered customer.

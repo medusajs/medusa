@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the product.
+ */
 export interface AdminPostProductsProductReq {
   /**
    * The title of the Product

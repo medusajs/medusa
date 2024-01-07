@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the product category.
+ */
 export interface AdminPostProductCategoriesCategoryReq {
   /**
    * The name to identify the Product Category by.

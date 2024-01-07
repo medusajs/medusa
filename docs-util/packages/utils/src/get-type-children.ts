@@ -1,23 +1,37 @@
+/* eslint-disable no-case-declarations */
 import { DeclarationReflection, ProjectReflection, SomeType } from "typedoc"
 import { getProjectChild } from "./get-project-child"
 
-const MAX_LEVEL = 3
+type GetTypeChildrenOptions = {
+  reflectionType: SomeType
+  project: ProjectReflection | undefined
+  level?: number
+  maxLevel?: number
+}
 
-export function getTypeChildren(
-  reflectionType: SomeType,
-  project: ProjectReflection | undefined,
-  level = 1
-): DeclarationReflection[] {
+export function getTypeChildren({
+  reflectionType,
+  project,
+  level = 1,
+  maxLevel = 3,
+}: GetTypeChildrenOptions): DeclarationReflection[] {
   let children: DeclarationReflection[] = []
 
-  if (level > MAX_LEVEL) {
+  if (level > maxLevel) {
     return children
   }
 
   switch (reflectionType.type) {
     case "intersection":
       reflectionType.types.forEach((intersectionType) => {
-        children.push(...getTypeChildren(intersectionType, project, level + 1))
+        children.push(
+          ...getTypeChildren({
+            reflectionType: intersectionType,
+            project,
+            level: level + 1,
+            maxLevel,
+          })
+        )
       })
       break
     case "reference":
@@ -36,13 +50,16 @@ export function getTypeChildren(
         if (referencedReflection.children) {
           children = referencedReflection.children
         } else if (referencedReflection.type) {
-          children = getTypeChildren(
-            referencedReflection.type,
+          children = getTypeChildren({
+            reflectionType: referencedReflection.type,
             project,
-            level + 1
-          )
+            level: level + 1,
+            maxLevel,
+          })
         }
       } else if (reflectionType.typeArguments?.length) {
+        // Only useful if the reflection type is `Pick<...>`.
+        const toKeepChildren: string[] = []
         reflectionType.typeArguments.forEach((typeArgument, index) => {
           if (reflectionType.name === "Omit" && index > 0) {
             switch (typeArgument.type) {
@@ -54,23 +71,69 @@ export function getTypeChildren(
                   if (childItem.type === "literal") {
                     removeChild(childItem.value?.toString(), children)
                   } else {
-                    getTypeChildren(childItem, project, level + 1).forEach(
-                      (child) => {
-                        removeChild(child.name, children)
-                      }
-                    )
+                    getTypeChildren({
+                      reflectionType: childItem,
+                      project,
+                      level: level + 1,
+                      maxLevel,
+                    }).forEach((child) => {
+                      removeChild(child.name, children)
+                    })
                   }
                 })
             }
+          } else if (reflectionType.name === "Pick") {
+            if (index === 0 && !children.length) {
+              children = getTypeChildren({
+                reflectionType: typeArgument,
+                project,
+                level: level + 1,
+                maxLevel,
+              })
+            } else {
+              switch (typeArgument.type) {
+                case "literal":
+                  if (typeArgument.value) {
+                    toKeepChildren.push(typeArgument.value?.toString())
+                  }
+                  break
+                case "union":
+                  typeArgument.types.forEach((childItem) => {
+                    if (childItem.type === "literal") {
+                      if (childItem.value) {
+                        toKeepChildren.push(childItem.value?.toString())
+                      }
+                    } else {
+                      getTypeChildren({
+                        reflectionType: childItem,
+                        project,
+                        level: level + 1,
+                        maxLevel,
+                      }).forEach((child) => {
+                        if (child.name) {
+                          toKeepChildren.push(child.name)
+                        }
+                      })
+                    }
+                  })
+              }
+            }
           } else {
-            const typeArgumentChildren = getTypeChildren(
-              typeArgument,
+            const typeArgumentChildren = getTypeChildren({
+              reflectionType: typeArgument,
               project,
-              level + 1
-            )
+              level: level + 1,
+              maxLevel,
+            })
             children.push(...typeArgumentChildren)
           }
         })
+
+        if (toKeepChildren.length) {
+          children = children.filter((child) =>
+            toKeepChildren.includes(child.name)
+          )
+        }
       }
       break
     case "reflection":
@@ -79,7 +142,12 @@ export function getTypeChildren(
       ]
       break
     case "array":
-      children = getTypeChildren(reflectionType.elementType, project, level + 1)
+      children = getTypeChildren({
+        reflectionType: reflectionType.elementType,
+        project,
+        level: level + 1,
+        maxLevel,
+      })
   }
 
   return filterChildren(children)

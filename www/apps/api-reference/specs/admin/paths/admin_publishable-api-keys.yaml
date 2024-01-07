@@ -48,6 +48,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_publishable-api-keys/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_publishable-api-keys/getundefined
     - lang: Shell
       label: cURL
       source:
@@ -94,6 +98,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_publishable-api-keys/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_publishable-api-keys/postundefined
     - lang: Shell
       label: cURL
       source:

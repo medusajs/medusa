@@ -64,7 +64,6 @@ const toTest = [
         expect(cartServiceMock.authorizePayment).toHaveBeenCalledWith(
           "test-cart",
           {
-            cart_id: "test-cart",
             idempotency_key: {
               idempotency_key: "ikey",
               recovery_point: "tax_lines_created",

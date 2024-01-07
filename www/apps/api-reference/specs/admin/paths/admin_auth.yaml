@@ -10,6 +10,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_auth/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_auth/getundefined
     - lang: Shell
       label: cURL
       source:
@@ -60,6 +64,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_auth/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_auth/postundefined
     - lang: Shell
       label: cURL
       source:
@@ -101,6 +109,10 @@ delete:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_auth/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_auth/deleteundefined
     - lang: Shell
       label: cURL
       source:

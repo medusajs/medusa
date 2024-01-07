@@ -1,12 +1,4 @@
-import {
-  resolveValue,
-  StepResponse,
-  SymbolMedusaWorkflowComposerContext,
-  SymbolWorkflowStep,
-  SymbolWorkflowStepBind,
-  SymbolWorkflowStepResponse,
-  SymbolWorkflowWorkflowData,
-} from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
@@ -15,6 +7,8 @@ import {
   WorkflowData,
 } from "./type"
 import { proxify } from "./helpers/proxy"
+import { TransactionStepsDefinition } from "@medusajs/orchestration"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 
 /**
  * The type of invocation function passed to a step.
@@ -25,13 +19,11 @@ import { proxify } from "./helpers/proxy"
  *
  * @returns The expected output based on the type parameter `TOutput`.
  */
-type InvokeFn<TInput extends object, TOutput, TCompensateInput> = (
+type InvokeFn<TInput, TOutput, TCompensateInput> = (
   /**
    * The input of the step.
    */
-  input: {
-    [Key in keyof TInput]: TInput[Key]
-  },
+  input: TInput,
   /**
    * The step's context.
    */
@@ -70,12 +62,13 @@ interface ApplyStepOptions<
   TStepInputs extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
-  TInvokeInput extends object,
+  TInvokeInput,
   TInvokeResultOutput,
   TInvokeResultCompensateInput
 > {
   stepName: string
-  input: TStepInputs
+  stepConfig?: TransactionStepsDefinition
+  input?: TStepInputs
   invokeFn: InvokeFn<
     TInvokeInput,
     TInvokeResultOutput,
@@ -91,12 +84,13 @@ interface ApplyStepOptions<
  * This is where the inputs and context are passed to the underlying invoke and compensate function.
  *
  * @param stepName
+ * @param stepConfig
  * @param input
  * @param invokeFn
  * @param compensateFn
  */
 function applyStep<
-  TInvokeInput extends object,
+  TInvokeInput,
   TStepInput extends {
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
@@ -104,6 +98,7 @@ function applyStep<
   TInvokeResultCompensateInput
 >({
   stepName,
+  stepConfig = {},
   input,
   invokeFn,
   compensateFn,
@@ -128,19 +123,21 @@ function applyStep<
           context: transactionContext.context,
         }
 
-        const argInput = await resolveValue(input, transactionContext)
+        const argInput = input
+          ? await resolveValue(input, transactionContext)
+          : {}
         const stepResponse: StepResponse<any, any> = await invokeFn.apply(
           this,
           [argInput, executionContext]
         )
 
         const stepResponseJSON =
-          stepResponse?.__type === SymbolWorkflowStepResponse
+          stepResponse?.__type === OrchestrationUtils.SymbolWorkflowStepResponse
             ? stepResponse.toJSON()
             : stepResponse
 
         return {
-          __type: SymbolWorkflowWorkflowData,
+          __type: OrchestrationUtils.SymbolWorkflowWorkflowData,
           output: stepResponseJSON,
         }
       },
@@ -154,7 +151,8 @@ function applyStep<
 
             const stepOutput = transactionContext.invoke[stepName]?.output
             const invokeResult =
-              stepOutput?.__type === SymbolWorkflowStepResponse
+              stepOutput?.__type ===
+              OrchestrationUtils.SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&
                   JSON.parse(JSON.stringify(stepOutput.compensateInput))
                 : stepOutput && JSON.parse(JSON.stringify(stepOutput))
@@ -168,14 +166,21 @@ function applyStep<
         : undefined,
     }
 
-    this.flow.addAction(stepName, {
-      noCompensation: !compensateFn,
-    })
+    stepConfig!.noCompensation = !compensateFn
+
+    this.flow.addAction(stepName, stepConfig)
     this.handlers.set(stepName, handler)
 
     const ret = {
-      __type: SymbolWorkflowStep,
+      __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
+      config: (config: Pick<TransactionStepsDefinition, "maxRetries">) => {
+        this.flow.replaceAction(stepName, stepName, {
+          ...stepConfig,
+          ...config,
+        })
+        return proxify(ret)
+      },
     }
 
     return proxify(ret)
@@ -231,14 +236,16 @@ function applyStep<
  * )
  */
 export function createStep<
-  TInvokeInput extends object,
+  TInvokeInput,
   TInvokeResultOutput,
   TInvokeResultCompensateInput
 >(
   /**
-   * The name of the step.
+   * The name of the step or its configuration (currently support maxRetries).
    */
-  name: string,
+  nameOrConfig:
+    | string
+    | ({ name: string } & Pick<TransactionStepsDefinition, "maxRetries">),
   /**
    * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
@@ -256,12 +263,18 @@ export function createStep<
    */
   compensateFn?: CompensateFn<TInvokeResultCompensateInput>
 ): StepFunction<TInvokeInput, TInvokeResultOutput> {
-  const stepName = name ?? invokeFn.name
+  const stepName =
+    (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name) ?? invokeFn.name
+  const config = isString(nameOrConfig) ? {} : nameOrConfig
 
-  const returnFn = function (input: {
-    [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
-  }): WorkflowData<TInvokeResultOutput> {
-    if (!global[SymbolMedusaWorkflowComposerContext]) {
+  const returnFn = function (
+    input:
+      | {
+          [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
+        }
+      | undefined
+  ): WorkflowData<TInvokeResultOutput> {
+    if (!global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
       )
@@ -269,7 +282,7 @@ export function createStep<
 
     const stepBinder = (
       global[
-        SymbolMedusaWorkflowComposerContext
+        OrchestrationUtils.SymbolMedusaWorkflowComposerContext
       ] as CreateWorkflowComposerContext
     ).stepBinder
 
@@ -281,15 +294,16 @@ export function createStep<
         TInvokeResultCompensateInput
       >({
         stepName,
+        stepConfig: config,
         input,
         invokeFn,
         compensateFn,
       })
     )
-  }
+  } as StepFunction<TInvokeInput, TInvokeResultOutput>
 
-  returnFn.__type = SymbolWorkflowStepBind
+  returnFn.__type = OrchestrationUtils.SymbolWorkflowStepBind
   returnFn.__step__ = stepName
 
-  return returnFn as unknown as StepFunction<TInvokeInput, TInvokeResultOutput>
+  return returnFn
 }

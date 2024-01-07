@@ -24,6 +24,30 @@ import { EntityManager } from "typeorm"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteCustomerGroup } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerGroupId: string
+ *       }
+ *
+ *       const CustomerGroup = ({ customerGroupId }: Props) => {
+ *         const deleteCustomerGroup = useAdminDeleteCustomerGroup(
+ *           customerGroupId
+ *         )
+ *         // ...
+ *
+ *         const handleDeleteCustomerGroup = () => {
+ *           deleteCustomerGroup.mutate()
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
