@@ -40,8 +40,8 @@ export interface GeneratedRouteConfig
 // Setting
 
 export type CardConfig = {
-  label: TranslationText
-  description: TranslationText
+  label: TranslationText | string
+  description: TranslationText | string
   icon?: ComponentType
 }
 
