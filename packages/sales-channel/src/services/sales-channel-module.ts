@@ -40,7 +40,7 @@ export default class SalesChannelModuleService<
     return joinerConfig
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async create(
     data: CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -55,7 +55,7 @@ export default class SalesChannelModuleService<
     })
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -63,7 +63,7 @@ export default class SalesChannelModuleService<
     await this.salesChannelService_.delete(ids, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async update(
     data: UpdateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
