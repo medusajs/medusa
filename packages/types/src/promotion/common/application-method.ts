@@ -1,33 +1,46 @@
 import { BaseFilterable } from "../../dal"
 import { PromotionDTO } from "./promotion"
-import { CreatePromotionRuleDTO } from "./promotion-rule"
+import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 
-export type ApplicationMethodType = "fixed" | "percentage"
-export type ApplicationMethodTargetType = "order" | "shipping" | "item"
-export type ApplicationMethodAllocation = "each" | "across"
+export type ApplicationMethodTypeValues = "fixed" | "percentage"
+export type ApplicationMethodTargetTypeValues = "order" | "shipping" | "item"
+export type ApplicationMethodAllocationValues = "each" | "across"
 
 export interface ApplicationMethodDTO {
   id: string
+  type?: ApplicationMethodTypeValues
+  target_type?: ApplicationMethodTargetTypeValues
+  allocation?: ApplicationMethodAllocationValues
+  value?: string | null
+  max_quantity?: number | null
+  promotion?: PromotionDTO | string
+  target_rules?: PromotionRuleDTO[]
 }
 
 export interface CreateApplicationMethodDTO {
-  type: ApplicationMethodType
-  target_type: ApplicationMethodTargetType
-  allocation?: ApplicationMethodAllocation
-  value?: number
-  max_quantity?: number
+  type: ApplicationMethodTypeValues
+  target_type: ApplicationMethodTargetTypeValues
+  allocation?: ApplicationMethodAllocationValues
+  value?: string | null
+  max_quantity?: number | null
   promotion?: PromotionDTO | string
   target_rules?: CreatePromotionRuleDTO[]
 }
 
 export interface UpdateApplicationMethodDTO {
   id: string
+  type?: ApplicationMethodTypeValues
+  target_type?: ApplicationMethodTargetTypeValues
+  allocation?: ApplicationMethodAllocationValues
+  value?: string | null
+  max_quantity?: number | null
+  promotion?: PromotionDTO | string
 }
 
 export interface FilterableApplicationMethodProps
   extends BaseFilterable<FilterableApplicationMethodProps> {
   id?: string[]
-  type?: ApplicationMethodType[]
-  target_type?: ApplicationMethodTargetType[]
-  allocation?: ApplicationMethodAllocation[]
+  type?: ApplicationMethodTypeValues[]
+  target_type?: ApplicationMethodTargetTypeValues[]
+  allocation?: ApplicationMethodAllocationValues[]
 }

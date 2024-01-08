@@ -77,7 +77,7 @@ class ProductsResource extends BaseResource {
   }
 
   /**
-   * Retrieves a list of products. The products can be filtered by fields such as `id` or `q` passed in the `query` parameter. The products can also be sorted or paginated.
+   * Retrieve a list of products. The products can be filtered by fields such as `id` or `q` passed in the `query` parameter. The products can also be sorted or paginated.
    * This method can also be used to retrieve a product by its handle.
    * 
    * For accurate and correct pricing of the products based on the customer's context, it's highly recommended to pass fields such as

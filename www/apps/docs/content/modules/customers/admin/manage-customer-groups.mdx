@@ -72,19 +72,13 @@ You can create a customer group by sending a request to the Create Customer Grou
       const createCustomerGroup = useAdminCreateCustomerGroup()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (name: string) => {
         createCustomerGroup.mutate({
           name,
         })
       }
 
       // ...
-      
-      return (
-        <form>
-          {/* Render form */}
-        </form>
-      )
     }
 
     export default CreateCustomerGroup
@@ -147,7 +141,6 @@ You can get a list of all customer groups by sending a request to the List Custo
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { CustomerGroup } from "@medusajs/medusa"
     import { useAdminCustomerGroups } from "medusa-react"
 
     const CustomerGroups = () => {
@@ -165,7 +158,7 @@ You can get a list of all customer groups by sending a request to the List Custo
           {customer_groups && customer_groups.length > 0 && (
             <ul>
               {customer_groups.map(
-                (customerGroup: CustomerGroup) => (
+                (customerGroup) => (
                   <li key={customerGroup.id}>
                     {customerGroup.name}
                   </li>
@@ -301,28 +294,26 @@ You can update a customer group’s data by sending a request to the Update Cust
     ```tsx
     import { useAdminUpdateCustomerGroup } from "medusa-react"
 
-    const UpdateCustomerGroup = () => {
+    type Props = {
+      customerGroupId: string
+    }
+
+    const CustomerGroup = ({ customerGroupId }: Props) => {
       const updateCustomerGroup = useAdminUpdateCustomerGroup(
         customerGroupId
       )
       // ..
 
-      const handleUpdate = () => {
+      const handleUpdate = (name: string) => {
         updateCustomerGroup.mutate({
           name,
         })
       }
 
       // ...
-      
-      return (
-        <form>
-          {/* Render form */}
-        </form>
-      )
     }
 
-    export default UpdateCustomerGroup
+    export default CustomerGroup
     ```
 
   </TabItem>
@@ -391,7 +382,11 @@ You can delete a customer group by sending a request to the Delete a Customer Gr
     ```tsx
     import { useAdminDeleteCustomerGroup } from "medusa-react"
 
-    const CustomerGroup = () => {
+    type Props = {
+      customerGroupId: string
+    }
+
+    const CustomerGroup = ({ customerGroupId }: Props) => {
       const deleteCustomerGroup = useAdminDeleteCustomerGroup(
         customerGroupId
       )
@@ -468,13 +463,13 @@ You can add a customer to a group by sending a request to the Customer Group’s
     import { 
       useAdminAddCustomersToCustomerGroup,
     } from "medusa-react"
-
-    const CustomerGroup = () => {
+    
+    const CustomerGroup = (customerGroupId: string) => {
       const addCustomers = useAdminAddCustomersToCustomerGroup(
         customerGroupId
       )
       // ...
-
+    
       const handleAddCustomers= (customerId: string) => {
         addCustomers.mutate({
           customer_ids: [
@@ -484,10 +479,10 @@ You can add a customer to a group by sending a request to the Customer Group’s
           ],
         })
       }
-
+    
       // ...
     }
-
+    
     export default CustomerGroup
     ```
 
@@ -559,10 +554,13 @@ You can retrieve a list of all customers in a customer group using the List Cust
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { Customer } from "@medusajs/medusa"
     import { useAdminCustomerGroupCustomers } from "medusa-react"
 
-    const CustomerGroup = () => {
+    type Props = {
+      customerGroupId: string
+    }
+
+    const CustomerGroup = ({ customerGroupId }: Props) => {
       const { 
         customers, 
         isLoading,
@@ -578,7 +576,7 @@ You can retrieve a list of all customers in a customer group using the List Cust
           )}
           {customers && customers.length > 0 && (
             <ul>
-              {customers.map((customer: Customer) => (
+              {customers.map((customer) => (
                 <li key={customer.id}>{customer.first_name}</li>
               ))}
             </ul>
@@ -651,23 +649,26 @@ You can remove customers from a customer group by sending a request to the Remov
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { Customer } from "@medusajs/medusa"
     import { 
       useAdminRemoveCustomersFromCustomerGroup,
     } from "medusa-react"
 
-    const CustomerGroup = () => {
+    type Props = {
+      customerGroupId: string
+    }
+
+    const CustomerGroup = ({ customerGroupId }: Props) => {
       const removeCustomers = 
         useAdminRemoveCustomersFromCustomerGroup(
           customerGroupId
         )
       // ...
 
-      const handleRemoveCustomer = (customer_id: string) => {
+      const handleRemoveCustomer = (customerId: string) => {
         removeCustomers.mutate({
           customer_ids: [
             {
-              id: customer_id,
+              id: customerId,
             },
           ],
         })

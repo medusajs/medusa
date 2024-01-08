@@ -291,16 +291,28 @@ You can create a tax rate by sending a request to the [Create Tax Rate API Route
     ```tsx
     import { useAdminCreateTaxRate } from "medusa-react"
 
-    const CreateTaxRate = () => {
+    type Props = {
+      regionId: string
+    }
+
+    const CreateTaxRate = ({ regionId }: Props) => {
       const createTaxRate = useAdminCreateTaxRate()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (
+        code: string,
+        name: string,
+        rate: number
+      ) => {
         createTaxRate.mutate({
-          code: "TEST",
-          name: "New Tax Rate",
-          region_id,
-          rate: 10,
+          code,
+          name,
+          region_id: regionId,
+          rate,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.id)
+          }
         })
       }
 
@@ -391,20 +403,30 @@ You can update a tax rate by sending a request to the [Update Tax Rate API Route
     ```tsx
     import { useAdminUpdateTaxRate } from "medusa-react"
 
-    const UpdateTaxRate = () => {
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
       const updateTaxRate = useAdminUpdateTaxRate(taxRateId)
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        name: string
+      ) => {
         updateTaxRate.mutate({
-          name: "New Tax Rate",
+          name
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.name)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateTaxRate
+    export default TaxRate
     ```
 
   </TabItem>
@@ -478,22 +500,28 @@ You can add a product to a tax rate by sending a request to the [Add Products AP
     ```tsx
     import { useAdminCreateProductTaxRates } from "medusa-react"
 
-    const AddProduct = () => {
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
       const addProduct = useAdminCreateProductTaxRates(taxRateId)
       // ...
 
-      const handleAdd = () => {
+      const handleAddProduct = (productIds: string[]) => {
         addProduct.mutate({
-          products: [
-            productId1,
-          ],
+          products: productIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.products)
+          }
         })
       }
 
       // ...
     }
 
-    export default AddProduct
+    export default TaxRate
     ```
 
   </TabItem>
@@ -567,22 +595,26 @@ You can remove a product from a tax rate by sending a request to the [Delete Pro
     ```tsx
     import { useAdminDeleteProductTaxRates } from "medusa-react"
 
-    const RemoveProduct = () => {
+    const TaxRate = (
+      taxRateId: string
+    ) => {
       const removeProduct = useAdminDeleteProductTaxRates(taxRateId)
       // ...
 
-      const handleRemove = () => {
+      const handleRemoveProduct = (productIds: string[]) => {
         removeProduct.mutate({
-          products: [
-            productId1,
-          ],
+          products: productIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.products)
+          }
         })
       }
 
       // ...
     }
 
-    export default RemoveProduct
+    export default TaxRate
     ```
 
   </TabItem>
@@ -664,24 +696,30 @@ You can add a product type to a tax rate by sending a request to the [Add Produc
       useAdminCreateProductTypeTaxRates,
     } from "medusa-react"
 
-    const AddProductTypes = () => {
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
       const addProductTypes = useAdminCreateProductTypeTaxRates(
         taxRateId
       )
       // ...
 
-      const handleAdd = () => {
+      const handleAddProductTypes = (productTypeIds: string[]) => {
         addProductTypes.mutate({
-          product_types: [
-            productTypeId,
-          ],
+          product_types: productTypeIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.product_types)
+          }
         })
       }
 
       // ...
     }
 
-    export default AddProductTypes
+    export default TaxRate
     ```
 
   </TabItem>
@@ -757,24 +795,32 @@ You can remove a product type from a tax rate by sending a request to the [Delet
       useAdminDeleteProductTypeTaxRates,
     } from "medusa-react"
 
-    const RemoveProductTypes = () => {
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
       const removeProductTypes = useAdminDeleteProductTypeTaxRates(
         taxRateId
       )
       // ...
 
-      const handleRemove = () => {
+      const handleRemoveProductTypes = (
+        productTypeIds: string[]
+      ) => {
         removeProductTypes.mutate({
-          product_types: [
-            productTypeId,
-          ],
+          product_types: productTypeIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.product_types)
+          }
         })
       }
 
       // ...
     }
 
-    export default RemoveProductTypes
+    export default TaxRate
     ```
 
   </TabItem>
@@ -854,24 +900,32 @@ You can add a shipping option to a tax rate by sending a request to the [Add Shi
     ```tsx
     import { useAdminCreateShippingTaxRates } from "medusa-react"
 
-    const AddShippingOptions = () => {
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
       const addShippingOption = useAdminCreateShippingTaxRates(
         taxRateId
       )
       // ...
 
-      const handleAdd = () => {
+      const handleAddShippingOptions = (
+        shippingOptionIds: string[]
+      ) => {
         addShippingOption.mutate({
-          shipping_options: [
-            shippingOptionId,
-          ],
+          shipping_options: shippingOptionIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.shipping_options)
+          }
         })
       }
 
       // ...
     }
 
-    export default AddShippingOptions
+    export default TaxRate
     ```
 
   </TabItem>
@@ -945,24 +999,30 @@ You can remove a shipping option from a tax rate by sending a request to the [De
     ```tsx
     import { useAdminDeleteShippingTaxRates } from "medusa-react"
 
-    const RemoveShippingOptions = () => {
+    const TaxRate = (
+      taxRateId: string
+    ) => {
       const removeShippingOptions = useAdminDeleteShippingTaxRates(
         taxRateId
       )
       // ...
 
-      const handleRemove = () => {
+      const handleRemoveShippingOptions = (
+        shippingOptionIds: string[]
+      ) => {
         removeShippingOptions.mutate({
-          shipping_options: [
-            shippingOptionId,
-          ],
+          shipping_options: shippingOptionIds,
+        }, {
+          onSuccess: ({ tax_rate }) => {
+            console.log(tax_rate.shipping_options)
+          }
         })
       }
 
       // ...
     }
 
-    export default RemoveShippingOptions
+    export default TaxRate
     ```
 
   </TabItem>
@@ -1034,18 +1094,26 @@ You can delete a tax rate by sending a request to the [Delete Tax Rate API Route
     ```tsx
     import { useAdminDeleteTaxRate } from "medusa-react"
 
-    const DeleteTaxRate = () => {
+    type Props = {
+      taxRateId: string
+    }
+
+    const TaxRate = ({ taxRateId }: Props) => {
       const deleteTaxRate = useAdminDeleteTaxRate(taxRateId)
       // ...
 
       const handleDelete = () => {
-        deleteTaxRate.mutate()
+        deleteTaxRate.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteTaxRate
+    export default TaxRate
     ```
 
   </TabItem>

@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the line item to create.
+ */
 export interface StorePostCartsCartLineItemsReq {
   /**
    * The id of the Product Variant to generate the Line Item from.

@@ -4,7 +4,7 @@
   import FaceSmile from "../face-smile"
 
   describe("FaceSmile", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<FaceSmile data-testid="icon" />)
 
 

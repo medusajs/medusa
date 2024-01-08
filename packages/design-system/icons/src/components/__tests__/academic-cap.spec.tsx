@@ -4,7 +4,7 @@
   import AcademicCap from "../academic-cap"
 
   describe("AcademicCap", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<AcademicCap data-testid="icon" />)
 
 

@@ -31,6 +31,36 @@ import {
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useDeclineOrderEdit } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *       }
+ *
+ *       const OrderEdit = ({ orderEditId }: Props) => {
+ *         const declineOrderEdit = useDeclineOrderEdit(orderEditId)
+ *         // ...
+ *
+ *         const handleDeclineOrderEdit = (
+ *           declinedReason: string
+ *         ) => {
+ *           declineOrderEdit.mutate({
+ *             declined_reason: declinedReason,
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.declined_at)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEdit
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -85,6 +115,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema StorePostOrderEditsOrderEditDecline
  * type: object
+ * description: "The details of the order edit's decline."
  * properties:
  *   declined_reason:
  *     type: string

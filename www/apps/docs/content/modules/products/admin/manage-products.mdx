@@ -238,6 +238,10 @@ You can create a product by sending a request to the [Create a Product API Route
               value: tagValue,
             },
           ],
+        }, {
+          onSuccess: ({ product }) => {
+            console.log(product.id)
+          }
         })
       }
 
@@ -417,7 +421,11 @@ You can retrieve a single product as an admin by sending a request to the [Get a
     ```tsx
     import { useAdminProduct } from "medusa-react"
 
-    const Product = () => {
+    type Props = {
+      productId: string
+    }
+
+    const Product = ({ productId }: Props) => {
       const { 
         product, 
         isLoading, 
@@ -487,22 +495,32 @@ You can update a product by sending a request to the [Update Product API Route](
     ```tsx
     import { useAdminUpdateProduct } from "medusa-react"
 
-    const UpdateProduct = () => {
+    type Props = {
+      productId: string
+    }
+
+    const Product = ({ productId }: Props) => {
       const updateProduct = useAdminUpdateProduct(
         productId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        title: string
+      ) => {
         updateProduct.mutate({
-          title: "Shirt",
+          title,
+        }, {
+          onSuccess: ({ product }) => {
+            console.log(product.id)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateProduct
+    export default Product
     ```
 
   </TabItem>
@@ -578,15 +596,27 @@ You can add a product option to a product by sending a request to the [Add Produ
     ```tsx
     import { useAdminCreateProductOption } from "medusa-react"
 
-    const CreateProductOption = () => {
+    type Props = {
+      productId: string
+    }
+
+    const CreateProductOption = ({
+      productId
+    }: Props) => {
       const createOption = useAdminCreateProductOption(
         productId
       )
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (
+        title: string
+      ) => {
         createOption.mutate({
-          title: "Size",
+          title
+        }, {
+          onSuccess: ({ product }) => {
+            console.log(product.options)
+          }
         })
       }
 
@@ -657,23 +687,37 @@ You can update a product option by sending a request to the [Update Product Opti
     ```tsx
     import { useAdminUpdateProductOption } from "medusa-react"
 
-    const UpdateProductOption = () => {
+    type Props = {
+      productId: string
+      optionId: string
+    }
+
+    const ProductOption = ({
+      productId,
+      optionId
+    }: Props) => {
       const updateOption = useAdminUpdateProductOption(
         productId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        title: string
+      ) => {
         updateOption.mutate({
-          option_id,
-          title: "Size",
+          option_id: optionId,
+          title,
+        }, {
+          onSuccess: ({ product }) => {
+            console.log(product.options)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateProductOption
+    export default ProductOption
     ```
 
   </TabItem>
@@ -739,20 +783,32 @@ You can delete a product option by sending a request to the [Delete Product Opti
     ```tsx
     import { useAdminDeleteProductOption } from "medusa-react"
 
-    const DeleteProductOption = () => {
+    type Props = {
+      productId: string
+      optionId: string
+    }
+
+    const ProductOption = ({
+      productId,
+      optionId
+    }: Props) => {
       const deleteOption = useAdminDeleteProductOption(
         productId
       )
       // ...
 
       const handleDelete = () => {
-        deleteOption.mutate(option_id)
+        deleteOption.mutate(optionId, {
+          onSuccess: ({ option_id, object, deleted, product }) => {
+            console.log(product.options)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteProductOption
+    export default ProductOption
     ```
 
   </TabItem>
@@ -835,27 +891,35 @@ You can create a product variant by sending a request to the [Create Product Var
     ```tsx
     import { useAdminCreateVariant } from "medusa-react"
 
-    const CreateProductVariant = () => {
+    type CreateVariantData = {
+      title: string
+      prices: {
+        amount: number
+        currency_code: string
+      }[]
+      options: {
+        option_id: string
+        value: string
+      }[]
+    }
+
+    type Props = {
+      productId: string
+    }
+
+    const CreateProductVariant = ({ productId }: Props) => {
       const createVariant = useAdminCreateVariant(
         productId
       )
       // ...
 
-      const handleCreate = () => {
-        createVariant.mutate({
-          title: "White Shirt",
-          prices: [
-            {
-              amount: 1000,
-              currency_code: "USD",
-            },
-          ],
-          options: [
-            {
-              option_id,
-              value: "White",
-            },
-          ],
+      const handleCreate = (
+        variantData: CreateVariantData
+      ) => {
+        createVariant.mutate(variantData, {
+          onSuccess: ({ product }) => {
+            console.log(product.variants)
+          }
         })
       }
 
@@ -958,23 +1022,35 @@ You can update a product variant by sending a request to the [Update a Product V
     ```tsx
     import { useAdminUpdateVariant } from "medusa-react"
 
-    const UpdateProductVariant = () => {
+    type Props = {
+      productId: string
+      variantId: string
+    }
+
+    const ProductVariant = ({
+      productId,
+      variantId
+    }: Props) => {
       const updateVariant = useAdminUpdateVariant(
         productId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (title: string) => {
         updateVariant.mutate({
-          variant_id,
-          title: "White Shirt",
+          variant_id: variantId,
+          title,
+        }, {
+          onSuccess: ({ product }) => {
+            console.log(product.variants)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateProductVariant
+    export default ProductVariant
     ```
 
   </TabItem>
@@ -1040,20 +1116,32 @@ You can delete a product variant by sending a request to the [Delete a Product V
     ```tsx
     import { useAdminDeleteVariant } from "medusa-react"
 
-    const DeleteProductVariant = () => {
+    type Props = {
+      productId: string
+      variantId: string
+    }
+
+    const ProductVariant = ({
+      productId,
+      variantId
+    }: Props) => {
       const deleteVariant = useAdminDeleteVariant(
         productId
       )
       // ...
 
       const handleDelete = () => {
-        deleteVariant.mutate(variant_id)
+        deleteVariant.mutate(variantId, {
+          onSuccess: ({ variant_id, object, deleted, product }) => {
+            console.log(product.variants)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteProductVariant
+    export default ProductVariant
     ```
 
   </TabItem>
@@ -1114,20 +1202,28 @@ You can delete a product by sending a request to the [Delete a Product API Route
     ```tsx
     import { useAdminDeleteProduct } from "medusa-react"
 
-    const DeleteProduct = () => {
+    type Props = {
+      productId: string
+    }
+
+    const Product = ({ productId }: Props) => {
       const deleteProduct = useAdminDeleteProduct(
         productId
       )
       // ...
 
       const handleDelete = () => {
-        deleteProduct.mutate()
+        deleteProduct.mutate(void 0, {
+          onSuccess: ({ id, object, deleted}) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteProduct
+    export default Product
     ```
 
   </TabItem>

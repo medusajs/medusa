@@ -16,14 +16,7 @@ const Clock = React.forwardRef<SVGSVGElement, IconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z"
-        />
-        <path
-          stroke={color}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M10 5.833v4.375l2.5 1.459"
+          d="M10 5.833v4.375l2.5 1.459m5-1.667a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"
         />
       </svg>
     )

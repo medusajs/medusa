@@ -36,6 +36,37 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useUpdateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const updateLineItem = useUpdateLineItem(cartId)
+ *
+ *         const handleUpdateItem = (
+ *           lineItemId: string,
+ *           quantity: number
+ *         ) => {
+ *           updateLineItem.mutate({
+ *             lineId: lineItemId,
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -131,6 +162,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartLineItemsItemReq
  * type: object
+ * description: "The details to update of the line item."
  * required:
  *   - quantity
  * properties:

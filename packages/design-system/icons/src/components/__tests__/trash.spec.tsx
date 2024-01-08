@@ -4,7 +4,7 @@
   import Trash from "../trash"
 
   describe("Trash", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Trash data-testid="icon" />)
 
 

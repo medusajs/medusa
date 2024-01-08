@@ -1,4 +1,5 @@
 type: object
+description: The details of the shipment to create.
 required:
   - fulfillment_id
 properties:

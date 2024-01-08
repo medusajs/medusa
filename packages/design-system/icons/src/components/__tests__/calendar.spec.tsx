@@ -4,7 +4,7 @@
   import Calendar from "../calendar"
 
   describe("Calendar", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Calendar data-testid="icon" />)
 
 

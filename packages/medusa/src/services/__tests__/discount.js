@@ -75,7 +75,7 @@ describe("DiscountService", () => {
         .catch((e) => e)
 
       expect(err.type).toEqual("invalid_data")
-      expect(err.message).toEqual("Discount must have atleast 1 region")
+      expect(err.message).toEqual("Discount must have at least 1 region")
       expect(discountRepository.create).toHaveBeenCalledTimes(0)
     })
 

@@ -4,7 +4,7 @@
   import Folder from "../folder"
 
   describe("Folder", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Folder data-testid="icon" />)
 
 

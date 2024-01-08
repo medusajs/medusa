@@ -4,7 +4,7 @@
   import InformationCircle from "../information-circle"
 
   describe("InformationCircle", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<InformationCircle data-testid="icon" />)
 
 

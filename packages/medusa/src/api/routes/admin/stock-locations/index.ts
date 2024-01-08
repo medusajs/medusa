@@ -136,6 +136,7 @@ export type AdminStockLocationsRes = {
  * properties:
  *   stock_locations:
  *     type: array
+ *     description: "The list of stock locations."
  *     items:
  *       $ref: "#/components/schemas/StockLocationExpandedDTO"
  *   count:

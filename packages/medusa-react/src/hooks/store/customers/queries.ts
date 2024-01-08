@@ -18,6 +18,31 @@ export const customerKeys = {
 
 type CustomerQueryKey = typeof customerKeys
 
+/**
+ * This hook retrieves the logged-in customer's details. It requires [customer authentication](https://docs.medusajs.com/medusa-react/overview#customer-authentication).
+ * 
+ * @example
+ * import React from "react"
+ * import { useMeCustomer } from "medusa-react"
+ * 
+ * const Customer = () => {
+ *   const { customer, isLoading } = useMeCustomer()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {customer && (
+ *         <span>{customer.first_name} {customer.last_name}</span>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Customer
+ * 
+ * @customNamespace Hooks.Store.Customers
+ * @category Queries
+ */
 export const useMeCustomer = (
   options?: UseQueryOptionsWrapper<
     Response<StoreCustomersRes>,
@@ -34,7 +59,42 @@ export const useMeCustomer = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * This hook retrieves a list of the logged-in customer's orders. The orders can be filtered by fields such as `status` or `fulfillment_status`. The orders can also be paginated.
+ * This hook requires [customer authentication](https://docs.medusajs.com/medusa-react/overview#customer-authentication).
+ * 
+ * @example
+ * import React from "react"
+ * import { useCustomerOrders } from "medusa-react"
+ * 
+ * const Orders = () => {
+ *   // refetch a function that can be used to
+ *   // re-retrieve orders after the customer logs in
+ *   const { orders, isLoading } = useCustomerOrders()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading orders...</span>}
+ *       {orders?.length && (
+ *         <ul>
+ *           {orders.map((order) => (
+ *             <li key={order.id}>{order.display_id}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Orders
+ * 
+ * @customNamespace Hooks.Store.Customers
+ * @category Queries
+ */
 export const useCustomerOrders = (
+  /**
+   * Filters and pagination configurations to apply on the retrieved orders.
+   */
   query: StoreGetCustomersCustomerOrdersParams = { limit: 10, offset: 0 },
   options?: UseQueryOptionsWrapper<
     Response<StoreCustomersListOrdersRes>,

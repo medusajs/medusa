@@ -87,6 +87,38 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminUpdateProduct } from "medusa-react"
+ *
+ *       type Props = {
+ *         productId: string
+ *       }
+ *
+ *       const Product = ({ productId }: Props) => {
+ *         const updateProduct = useAdminUpdateProduct(
+ *           productId
+ *         )
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           title: string
+ *         ) => {
+ *           updateProduct.mutate({
+ *             title,
+ *           }, {
+ *             onSuccess: ({ product }) => {
+ *               console.log(product.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Product
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -407,6 +439,7 @@ class ProductVariantReq {
 /**
  * @schema AdminPostProductsProductReq
  * type: object
+ * description: "The details to update of the product."
  * properties:
  *   title:
  *     description: "The title of the Product"

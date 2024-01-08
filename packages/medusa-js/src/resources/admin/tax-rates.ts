@@ -110,7 +110,7 @@ class AdminTaxRatesResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.taxRates.list({
-   *   expand: "shipping_options"
+   *   expand: ["shipping_options"]
    * })
    * .then(({ tax_rates, limit, offset, count }) => {
    *   console.log(tax_rates.length);
@@ -124,7 +124,7 @@ class AdminTaxRatesResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.taxRates.list({
-   *   expand: "shipping_options",
+   *   expand: ["shipping_options"],
    *   limit,
    *   offset
    * })

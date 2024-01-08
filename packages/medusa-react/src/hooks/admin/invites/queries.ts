@@ -11,6 +11,38 @@ export const adminInviteKeys = queryKeysFactory(ADMIN_INVITES_QUERY_KEY)
 
 type InviteQueryKeys = typeof adminInviteKeys
 
+/**
+ * This hook retrieves a list of invites.
+ * 
+ * @example
+ * import React from "react"
+ * import { useAdminInvites } from "medusa-react"
+ * 
+ * const Invites = () => {
+ *   const { invites, isLoading } = useAdminInvites()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {invites && !invites.length && (
+ *         <span>No Invites</span>)
+ *       }
+ *       {invites && invites.length > 0 && (
+ *         <ul>
+ *           {invites.map((invite) => (
+ *             <li key={invite.id}>{invite.user_email}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Invites
+ * 
+ * @customNamespace Hooks.Admin.Invites
+ * @category Queries
+ */
 export const useAdminInvites = (
   options?: UseQueryOptionsWrapper<
     Response<AdminListInvitesRes>,

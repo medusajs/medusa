@@ -4,7 +4,7 @@
   import TagSolid from "../tag-solid"
 
   describe("TagSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<TagSolid data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import ArrowsPointingOut from "../arrows-pointing-out"
 
   describe("ArrowsPointingOut", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowsPointingOut data-testid="icon" />)
 
 

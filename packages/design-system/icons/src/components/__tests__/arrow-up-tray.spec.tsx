@@ -4,7 +4,7 @@
   import ArrowUpTray from "../arrow-up-tray"
 
   describe("ArrowUpTray", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowUpTray data-testid="icon" />)
 
 

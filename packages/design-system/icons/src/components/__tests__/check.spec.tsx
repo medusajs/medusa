@@ -4,7 +4,7 @@
   import Check from "../check"
 
   describe("Check", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Check data-testid="icon" />)
 
 

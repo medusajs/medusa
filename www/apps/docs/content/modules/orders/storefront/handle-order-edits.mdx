@@ -89,10 +89,25 @@ You can retrieve a single order edit by its ID by sending a request to the [Get 
     ```tsx
     import { useOrderEdit } from "medusa-react"
 
-    const OrderEdit = () => {
+    type Props = {
+      orderEditId: string
+    }
+
+    const OrderEdit = ({ orderEditId }: Props) => {
       const { order_edit, isLoading } = useOrderEdit(orderEditId)
 
-      // ...
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {order_edit && (
+            <ul>
+              {order_edit.changes.map((change) => (
+                <li key={change.id}>{change.type}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
     }
 
     export default OrderEdit
@@ -220,7 +235,13 @@ If `difference_due` is greater than 0, then additional payment from the customer
     ```tsx
     import { useManagePaymentSession } from "medusa-react"
 
-    const OrderEditPayment = () => {
+    type Props = {
+      paymentCollectionId: string
+    }
+
+    const OrderEditPayment = ({
+      paymentCollectionId
+    }: Props) => {
       const managePaymentSession = useManagePaymentSession(
         paymentCollectionId
       )
@@ -229,6 +250,10 @@ If `difference_due` is greater than 0, then additional payment from the customer
       const handleAdditionalPayment = (provider_id: string) => {
         managePaymentSession.mutate({
           provider_id,
+        }, {
+          onSuccess: ({ payment_collection }) => {
+            console.log(payment_collection.payment_sessions)
+          }
         })
       }
 
@@ -279,8 +304,8 @@ If `difference_due` is greater than 0, then additional payment from the customer
         paymentCollectionId, 
         paymentSessionId
       )
-    .then(({ payment_session }) => {
-      console.log(payment_session.id)
+    .then(({ payment_collection }) => {
+      console.log(payment_collection.payment_sessions)
     })
     ```
 
@@ -290,14 +315,24 @@ If `difference_due` is greater than 0, then additional payment from the customer
     ```tsx
     import { useAuthorizePaymentSession } from "medusa-react"
 
-    const OrderEditPayment = () => {
+    type Props = {
+      paymentCollectionId: string
+    }
+
+    const OrderEditPayment = ({
+      paymentCollectionId
+    }: Props) => {
       const authorizePaymentSession = useAuthorizePaymentSession(
         paymentCollectionId
       )
       // ...
 
       const handleAuthorizePayment = (paymentSessionId: string) => {
-        authorizePaymentSession.mutate(paymentSessionId)
+        authorizePaymentSession.mutate(paymentSessionId, {
+          onSuccess: ({ payment_collection }) => {
+            console.log(payment_collection.payment_sessions)
+          }
+        })
       }
 
       // ...
@@ -321,8 +356,8 @@ If `difference_due` is greater than 0, then additional payment from the customer
       }
     )
     .then((response) => response.json())
-    .then(({ payment_session }) => {
-      console.log(payment_session.id)
+    .then(({ payment_collection }) => {
+      console.log(payment_collection.payment_sessions)
     })
     ```
 
@@ -353,12 +388,22 @@ To confirm and complete the order edit, send a request to the [Complete Order Ed
     ```tsx
     import { useCompleteOrderEdit } from "medusa-react"
 
-    const OrderEdit = () => {
-      const completeOrderEdit = useCompleteOrderEdit(orderEditId)
+    type Props = {
+      orderEditId: string
+    }
+
+    const OrderEdit = ({ orderEditId }: Props) => {
+      const completeOrderEdit = useCompleteOrderEdit(
+        orderEditId
+      )
       // ...
 
       const handleCompleteOrderEdit = () => {
-        completeOrderEdit.mutate()
+        completeOrderEdit.mutate(void 0, {
+          onSuccess: ({ order_edit }) => {
+            console.log(order_edit.confirmed_at)
+          }
+        })
       }
 
       // ...
@@ -422,13 +467,23 @@ If the customer wants to decline the Order Edit, you can do that by sending a re
     ```tsx
     import { useDeclineOrderEdit } from "medusa-react"
 
-    const OrderEdit = () => {
+    type Props = {
+      orderEditId: string
+    }
+
+    const OrderEdit = ({ orderEditId }: Props) => {
       const declineOrderEdit = useDeclineOrderEdit(orderEditId)
       // ...
 
-      const handleDeclineOrderEdit = () => {
+      const handleDeclineOrderEdit = (
+        declinedReason: string
+      ) => {
         declineOrderEdit.mutate({
-          declined_reason: "I am not satisfied",
+          declined_reason: declinedReason,
+        }, {
+          onSuccess: ({ order_edit }) => {
+            console.log(order_edit.declined_at)
+          }
         })
       }
 

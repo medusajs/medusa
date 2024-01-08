@@ -4,7 +4,7 @@
   import ToolsSolid from "../tools-solid"
 
   describe("ToolsSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ToolsSolid data-testid="icon" />)
 
 

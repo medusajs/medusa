@@ -10,7 +10,10 @@ import { moduleDefinition } from "../module-definition"
 import { InitializeModuleInjectableDependencies } from "../types"
 
 export const initialize = async (
-  options?: ModulesSdkTypes.ModuleBootstrapDeclaration,
+  options?:
+    | ModulesSdkTypes.ModuleBootstrapDeclaration
+    | ModulesSdkTypes.ModuleServiceInitializeOptions
+    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions,
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<IAuthenticationModuleService> => {
   const loaded = await MedusaModule.bootstrap<IAuthenticationModuleService>({

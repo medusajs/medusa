@@ -33,6 +33,18 @@
     {
       "tagName": "@excludeExternal",
       "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@customNamespace",
+      "syntaxKind": "block"
+    },
+    {
+      "tagName": "@namespaceMember",
+      "syntaxKind": "modifier"
+    },
+    {
+      "tagName": "@typeParamDefinition",
+      "syntaxKind": "block"
     }
   ]
 }

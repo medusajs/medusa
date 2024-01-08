@@ -33,6 +33,38 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       .then(({ customer }) => {
  *         console.log(customer.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useUpdateMe } from "medusa-react"
+ *
+ *       type Props = {
+ *         customerId: string
+ *       }
+ *
+ *       const Customer = ({ customerId }: Props) => {
+ *         const updateCustomer = useUpdateMe()
+ *         // ...
+ *
+ *         const handleUpdate = (
+ *           firstName: string
+ *         ) => {
+ *           // ...
+ *           updateCustomer.mutate({
+ *             id: customerId,
+ *             first_name: firstName,
+ *           }, {
+ *             onSuccess: ({ customer }) => {
+ *               console.log(customer.first_name)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Customer
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -91,6 +123,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCustomersCustomerReq
  * type: object
+ * description: "The details to update of the customer."
  * properties:
  *   first_name:
  *     description: "The customer's first name."

@@ -4,7 +4,7 @@
   import SquareTwoStackSolid from "../square-two-stack-solid"
 
   describe("SquareTwoStackSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<SquareTwoStackSolid data-testid="icon" />)
 
 
