@@ -3,6 +3,7 @@ import { ReflectionParameterType } from "../../types"
 import { parseParams } from "../../utils/params-utils"
 import { MarkdownTheme } from "../../theme"
 import { reflectionComponentFormatter } from "../../utils/reflection-formatter"
+import { formatParameterComponent } from "../../utils/format-parameter-component"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -21,19 +22,11 @@ export default function (theme: MarkdownTheme) {
         })
       )
 
-      let extraProps: string[] = []
-
-      if (parameterComponentExtraProps) {
-        extraProps = Object.entries(parameterComponentExtraProps).map(
-          ([key, value]) => `${key}=${JSON.stringify(value)}`
-        )
-      }
-
-      return `<${parameterComponent} parameters={${JSON.stringify(
-        parameters,
-        null,
-        2
-      )}} ${extraProps.join(" ")}/>`
+      return formatParameterComponent({
+        parameterComponent,
+        componentItems: parameters,
+        extraProps: parameterComponentExtraProps,
+      })
     }
   )
 }

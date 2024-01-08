@@ -7,6 +7,9 @@ import type { AddressPayload } from "./AddressPayload"
 import type { Discount } from "./Discount"
 import type { LineItem } from "./LineItem"
 
+/**
+ * The details to update of the order.
+ */
 export interface AdminPostOrdersOrderReq {
   /**
    * The email associated with the order

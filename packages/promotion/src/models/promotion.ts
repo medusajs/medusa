@@ -48,6 +48,7 @@ export default class Promotion {
   @OneToOne({
     entity: () => ApplicationMethod,
     mappedBy: (am) => am.promotion,
+    cascade: ["soft-remove"] as any,
   })
   application_method: ApplicationMethod
 

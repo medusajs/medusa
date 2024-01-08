@@ -1,4 +1,5 @@
 type: object
+description: The details of the shipping profile to create.
 required:
   - name
   - type

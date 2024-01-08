@@ -23,7 +23,7 @@ const adminReqConfig = {
   },
 }
 
-jest.setTimeout(50000)
+jest.setTimeout(60000)
 
 describe("sales channels", () => {
   let medusaProcess

@@ -267,16 +267,20 @@ You can retrieve a single item allocation by its ID using the [Get a Reservation
     ```tsx
     import { useAdminReservation } from "medusa-react"
 
-    function Reservation() {
-      const { 
-        reservation,
-        isLoading } = useAdminReservation(reservationId)
+    type Props = {
+      reservationId: string
+    }
+
+    const Reservation = ({ reservationId }: Props) => {
+      const { reservation, isLoading } = useAdminReservation(
+        reservationId
+      )
 
       return (
         <div>
           {isLoading && <span>Loading...</span>}
           {reservation && (
-            <span>{reservation.quantity}</span>
+            <span>{reservation.inventory_item_id}</span>
           )}
         </div>
       )
@@ -335,22 +339,30 @@ You can update an item allocation to change the location to allocate from or the
     ```tsx
     import { useAdminUpdateReservation } from "medusa-react"
 
-    const UpdateReservation = () => {
+    type Props = {
+      reservationId: string
+    }
+
+    const Reservation = ({ reservationId }: Props) => {
       const updateReservation = useAdminUpdateReservation(
         reservationId
       )
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (quantity: number) => {
         updateReservation.mutate({
           quantity,
+        }, {
+          onSuccess: ({ reservation }) => {
+            console.log(reservation.id)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateReservation
+    export default Reservation
     ```
 
   </TabItem>
@@ -420,20 +432,28 @@ You can delete an item allocation by sending a request to the [Delete Reservatio
     ```tsx
     import { useAdminDeleteReservation } from "medusa-react"
 
-    const DeleteReservation = () => {
+    type Props = {
+      reservationId: string
+    }
+
+    const Reservation = ({ reservationId }: Props) => {
       const deleteReservation = useAdminDeleteReservation(
         reservationId
       )
       // ...
 
       const handleDelete = () => {
-        deleteReservation.mutate()
+        deleteReservation.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteReservation
+    export default Reservation
     ```
 
   </TabItem>
@@ -596,7 +616,7 @@ When requesting a return, you can specify the location to return the item to by 
       location_id,
     })
     .then(({ order }) => {
-      console.log(order.id)
+      console.log(order.returns)
     })
     ```
 
@@ -606,7 +626,11 @@ When requesting a return, you can specify the location to return the item to by 
     ```tsx
     import { useAdminRequestReturn } from "medusa-react"
 
-    const RequestReturn = () => {
+    type Props = {
+      orderId: string
+    }
+
+    const RequestReturn = ({ orderId }: Props) => {
       const requestReturn = useAdminRequestReturn(orderId)
       // ...
 
@@ -620,6 +644,10 @@ When requesting a return, you can specify the location to return the item to by 
           ],
           // ...other parameters
           location_id,
+        }, {
+          onSuccess: ({ order }) => {
+            console.log(order.returns)
+          }
         })
       }
 

@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The customers to remove from the customer group.
+ */
 export interface AdminDeleteCustomerGroupsGroupCustomerBatchReq {
   /**
    * The ids of the customers to remove

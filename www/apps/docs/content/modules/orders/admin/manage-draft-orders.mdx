@@ -166,34 +166,28 @@ You can create a draft order by sending a request to the [Create Draft Order API
     ```tsx
     import { useAdminCreateDraftOrder } from "medusa-react"
 
+    type DraftOrderData = {
+      email: string
+      region_id: string
+      items: {
+        quantity: number,
+        variant_id: string
+      }[]
+      shipping_methods: {
+        option_id: string
+        price: number
+      }[]
+    }
+
     const CreateDraftOrder = () => {
       const createDraftOrder = useAdminCreateDraftOrder()
       // ...
 
-      const handleCreate = () => {
-        createDraftOrder.mutate({
-          email,
-          region_id,
-          items: [
-            {
-              // defined product
-              quantity: 1,
-              variant_id,
-            },
-            {
-              // custom product
-              quantity: 1,
-              unit_price: 1000,
-              title: "Custom Product",
-            },
-          ],
-          shipping_methods: [
-            {
-              option_id,
-              // for custom shipping price
-              price,
-            },
-          ],
+      const handleCreate = (data: DraftOrderData) => {
+        createDraftOrder.mutate(data, {
+          onSuccess: ({ draft_order }) => {
+            console.log(draft_order.id)
+          }
         })
       }
 
@@ -316,12 +310,16 @@ You can retrieve a draft order by sending a request to the [Get Draft Order API 
     ```tsx
     import { useAdminDraftOrder } from "medusa-react"
 
-    const DraftOrder = () => {
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
       const { 
         draft_order, 
         isLoading, 
       } = useAdminDraftOrder(draftOrderId)
-    
+
       return (
         <div>
           {isLoading && <span>Loading...</span>}
@@ -386,22 +384,30 @@ You can update a draft order by sending a request to the [Update Draft Order API
     ```tsx
     import { useAdminUpdateDraftOrder } from "medusa-react"
 
-    const UpdateDraftOrder = () => {
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
       const updateDraftOrder = useAdminUpdateDraftOrder(
         draftOrderId
       )
       // ...
-
-      const handleUpdate = () => {
+    
+      const handleUpdate = (email: string) => {
         updateDraftOrder.mutate({
-          email: "user@example.com",
+          email,
+        }, {
+          onSuccess: ({ draft_order }) => {
+            console.log(draft_order.id)
+          }
         })
       }
-
+    
       // ...
     }
-
-    export default UpdateDraftOrder
+    
+    export default DraftOrder
     ```
 
   </TabItem>
@@ -471,22 +477,30 @@ You can add line items to a draft order by sending a request to the [Create Line
     ```tsx
     import { useAdminDraftOrderAddLineItem } from "medusa-react"
 
-    const AddLineItem = () => {
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
       const addLineItem = useAdminDraftOrderAddLineItem(
         draftOrderId
       )
       // ...
 
-      const handleAdd = () => {
+      const handleAdd = (quantity: number) => {
         addLineItem.mutate({
-          quantity: 1,
+          quantity,
+        }, {
+          onSuccess: ({ draft_order }) => {
+            console.log(draft_order.cart)
+          }
         })
       }
 
       // ...
     }
 
-    export default AddLineItem
+    export default DraftOrder
     ```
 
   </TabItem>
@@ -561,23 +575,30 @@ You can update a line item by sending a request to the [Update Line Item API Rou
     ```tsx
     import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
 
-    const UpdateLineItem = () => {
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
       const updateLineItem = useAdminDraftOrderUpdateLineItem(
         draftOrderId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        itemId: string,
+        quantity: number
+      ) => {
         updateLineItem.mutate({
-          item_id,
-          quantity: 1,
+          item_id: itemId,
+          quantity,
         })
       }
 
       // ...
     }
 
-    export default UpdateLineItem
+    export default DraftOrder
     ```
 
   </TabItem>
@@ -643,20 +664,24 @@ You can delete a line item by sending a request to the [Delete Line Item API Rou
     ```tsx
     import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
 
-    const DeleteLineItem = () => {
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
       const deleteLineItem = useAdminDraftOrderRemoveLineItem(
         draftOrderId
       )
       // ...
 
-      const handleDelete = () => {
+      const handleDelete = (itemId: string) => {
         deleteLineItem.mutate(itemId)
       }
 
       // ...
     }
 
-    export default DeleteLineItem
+    export default DraftOrder
     ```
 
   </TabItem>
@@ -714,20 +739,28 @@ You can register the draft order payment by sending a request to the [Register D
     ```tsx
     import { useAdminDraftOrderRegisterPayment } from "medusa-react"
 
-    const RegisterPayment = () => {
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
       const registerPayment = useAdminDraftOrderRegisterPayment(
         draftOrderId
       )
       // ...
 
       const handlePayment = () => {
-        registerPayment.mutate()
+        registerPayment.mutate(void 0, {
+          onSuccess: ({ order }) => {
+            console.log(order.id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default RegisterPayment
+    export default DraftOrder
     ```
 
   </TabItem>
@@ -781,20 +814,28 @@ You can delete a draft order by sending a request to the [Delete Draft Order API
     ```tsx
     import { useAdminDeleteDraftOrder } from "medusa-react"
 
-    const DeleteDraftOrder = () => {
+    type Props = {
+      draftOrderId: string
+    }
+
+    const DraftOrder = ({ draftOrderId }: Props) => {
       const deleteDraftOrder = useAdminDeleteDraftOrder(
         draftOrderId
       )
       // ...
 
       const handleDelete = () => {
-        deleteDraftOrder.mutate()
+        deleteDraftOrder.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
     }
 
-    export default DeleteDraftOrder
+    export default DraftOrder
     ```
 
   </TabItem>

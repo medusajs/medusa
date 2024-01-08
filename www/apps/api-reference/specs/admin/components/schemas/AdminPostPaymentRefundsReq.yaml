@@ -1,4 +1,5 @@
 type: object
+description: The details of the refund to create.
 required:
   - amount
   - reason

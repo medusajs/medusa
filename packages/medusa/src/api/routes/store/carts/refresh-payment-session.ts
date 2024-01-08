@@ -22,6 +22,35 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useRefreshPaymentSession } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const refreshPaymentSession = useRefreshPaymentSession(cartId)
+ *
+ *         const handleRefresh = (
+ *           providerId: string
+ *         ) => {
+ *           refreshPaymentSession.mutate({
+ *             provider_id: providerId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.payment_sessions)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |

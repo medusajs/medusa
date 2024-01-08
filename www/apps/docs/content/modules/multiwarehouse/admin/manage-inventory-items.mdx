@@ -78,7 +78,8 @@ You can list inventory items by sending a request to the [List Inventory Items A
     function InventoryItems() {
       const { 
         inventory_items,
-        isLoading } = useAdminInventoryItems()
+        isLoading 
+      } = useAdminInventoryItems()
 
       return (
         <div>
@@ -164,9 +165,13 @@ You can create an inventory item by sending a request to the [Create Inventory I
       const createInventoryItem = useAdminCreateInventoryItem()
       // ...
 
-      const handleCreate = () => {
+      const handleCreate = (variantId: string) => {
         createInventoryItem.mutate({
-          variant_id,
+          variant_id: variantId,
+        }, {
+          onSuccess: ({ inventory_item }) => {
+            console.log(inventory_item.id)
+          }
         })
       }
 
@@ -237,10 +242,15 @@ You can retrieve an inventory item by sending a request to the [Get Inventory It
     ```tsx
     import { useAdminInventoryItem } from "medusa-react"
 
-    function InventoryItem() {
+    type Props = {
+      inventoryItemId: string
+    }
+
+    const InventoryItem = ({ inventoryItemId }: Props) => {
       const { 
         inventory_item,
-        isLoading } = useAdminInventoryItem(inventoryItemId)
+        isLoading
+      } = useAdminInventoryItem(inventoryItemId)
 
       return (
         <div>
@@ -309,22 +319,30 @@ You can update an inventory item by sending a request to the [Update Inventory I
     ```tsx
     import { useAdminUpdateInventoryItem } from "medusa-react"
 
-    const UpdateInventoryItem = () => {
+    type Props = {
+      inventoryItemId: string
+    }
+
+    const InventoryItem = ({ inventoryItemId }: Props) => {
       const updateInventoryItem = useAdminUpdateInventoryItem(
         inventoryItemId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (origin_country: string) => {
         updateInventoryItem.mutate({
-          origin_country: "US",
+          origin_country,
+        }, {
+          onSuccess: ({ inventory_item }) => {
+            console.log(inventory_item.origin_country)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateInventoryItem
+    export default InventoryItem
     ```
 
   </TabItem>
@@ -395,13 +413,17 @@ You can list inventory levels of an inventory item by sending a request to the [
     import { 
       useAdminInventoryItemLocationLevels,
     } from "medusa-react"
-
-    function InventoryItem() {
+    
+    type Props = {
+      inventoryItemId: string
+    }
+    
+    const InventoryItem = ({ inventoryItemId }: Props) => {
       const { 
         inventory_item,
         isLoading, 
       } = useAdminInventoryItemLocationLevels(inventoryItemId)
-
+    
       return (
         <div>
           {isLoading && <span>Loading...</span>}
@@ -415,7 +437,7 @@ You can list inventory levels of an inventory item by sending a request to the [
         </div>
       )
     }
-
+    
     export default InventoryItem
     ```
 
@@ -475,23 +497,34 @@ You can create a location level by sending a request to the [Create Inventory Le
     ```tsx
     import { useAdminCreateLocationLevel } from "medusa-react"
 
-    const CreateLocationLevel = () => {
+    type Props = {
+      inventoryItemId: string
+    }
+
+    const InventoryItem = ({ inventoryItemId }: Props) => {
       const createLocationLevel = useAdminCreateLocationLevel(
         inventoryItemId
       )
       // ...
 
-      const handleCreate = () => {
+      const handleCreateLocationLevel = (
+        locationId: string,
+        stockedQuantity: number
+      ) => {
         createLocationLevel.mutate({
-          location_id,
-          stocked_quantity: 10,
+          location_id: locationId,
+          stocked_quantity: stockedQuantity,
+        }, {
+          onSuccess: ({ inventory_item }) => {
+            console.log(inventory_item.id)
+          }
         })
       }
 
       // ...
     }
 
-    export default CreateLocationLevel
+    export default InventoryItem
     ```
 
   </TabItem>
@@ -568,23 +601,34 @@ You can update a location level by sending a request to the [Update Location Lev
     ```tsx
     import { useAdminUpdateLocationLevel } from "medusa-react"
 
-    const UpdateLocationLevel = () => {
+    type Props = {
+      inventoryItemId: string
+    }
+
+    const InventoryItem = ({ inventoryItemId }: Props) => {
       const updateLocationLevel = useAdminUpdateLocationLevel(
         inventoryItemId
       )
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        stockLocationId: string,
+        stockedQuantity: number
+      ) => {
         updateLocationLevel.mutate({
           stockLocationId,
-          stocked_quantity: 10,
+          stocked_quantity: stockedQuantity,
+        }, {
+          onSuccess: ({ inventory_item }) => {
+            console.log(inventory_item.id)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdateLocationLevel
+    export default InventoryItem
     ```
 
   </TabItem>
@@ -653,20 +697,26 @@ You can delete a location level of an inventory item by sending a request to the
     ```tsx
     import { useAdminDeleteLocationLevel } from "medusa-react"
 
-    const DeleteLocationLevel = () => {
+    type Props = {
+      inventoryItemId: string
+    }
+
+    const InventoryItem = ({ inventoryItemId }: Props) => {
       const deleteLocationLevel = useAdminDeleteLocationLevel(
         inventoryItemId
       )
       // ...
 
-      const handleDelete = () => {
+      const handleDelete = (
+        locationId: string
+      ) => {
         deleteLocationLevel.mutate(locationId)
       }
 
       // ...
     }
 
-    export default DeleteLocationLevel
+    export default InventoryItem
     ```
 
   </TabItem>
@@ -722,7 +772,11 @@ You can delete an inventory item by sending a request to the [Delete Inventory I
     ```tsx
     import { useAdminDeleteInventoryItem } from "medusa-react"
 
-    const DeleteInventoryItem = () => {
+    type Props = {
+      inventoryItemId: string
+    }
+
+    const InventoryItem = ({ inventoryItemId }: Props) => {
       const deleteInventoryItem = useAdminDeleteInventoryItem(
         inventoryItemId
       )
@@ -735,7 +789,7 @@ You can delete an inventory item by sending a request to the [Delete Inventory I
       // ...
     }
 
-    export default DeleteInventoryItem
+    export default InventoryItem
     ```
 
   </TabItem>

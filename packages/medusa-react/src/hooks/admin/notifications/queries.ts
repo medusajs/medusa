@@ -16,7 +16,116 @@ export const adminNotificationKeys = queryKeysFactory(
 
 type NotificationQueryKeys = typeof adminNotificationKeys
 
+/**
+ * This hook retrieves a list of notifications. The notifications can be filtered by fields such as `event_name` or `resource_type` passed in the `query` parameter.
+ * The notifications can also be paginated.
+ * 
+ * @example
+ * To list notifications:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminNotifications } from "medusa-react"
+ * 
+ * const Notifications = () => {
+ *   const { notifications, isLoading } = useAdminNotifications()
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {notifications && !notifications.length && (
+ *         <span>No Notifications</span>
+ *       )}
+ *       {notifications && notifications.length > 0 && (
+ *         <ul>
+ *           {notifications.map((notification) => (
+ *             <li key={notification.id}>{notification.to}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Notifications
+ * ```
+ * 
+ * To specify relations that should be retrieved within the notifications:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminNotifications } from "medusa-react"
+ * 
+ * const Notifications = () => {
+ *   const { notifications, isLoading } = useAdminNotifications({
+ *     expand: "provider"
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {notifications && !notifications.length && (
+ *         <span>No Notifications</span>
+ *       )}
+ *       {notifications && notifications.length > 0 && (
+ *         <ul>
+ *           {notifications.map((notification) => (
+ *             <li key={notification.id}>{notification.to}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Notifications
+ * ```
+ * 
+ * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+ * 
+ * ```tsx
+ * import React from "react"
+ * import { useAdminNotifications } from "medusa-react"
+ * 
+ * const Notifications = () => {
+ *   const { 
+ *     notifications, 
+ *     limit,
+ *     offset,
+ *     isLoading
+ *   } = useAdminNotifications({
+ *     expand: "provider",
+ *     limit: 20,
+ *     offset: 0
+ *   })
+ * 
+ *   return (
+ *     <div>
+ *       {isLoading && <span>Loading...</span>}
+ *       {notifications && !notifications.length && (
+ *         <span>No Notifications</span>
+ *       )}
+ *       {notifications && notifications.length > 0 && (
+ *         <ul>
+ *           {notifications.map((notification) => (
+ *             <li key={notification.id}>{notification.to}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * 
+ * export default Notifications
+ * ```
+ * 
+ * @customNamespace Hooks.Admin.Notifications
+ * @category Queries
+ */
 export const useAdminNotifications = (
+  /**
+   * Filters and pagination configurations applied to the retrieved notifications.
+   */
   query?: AdminGetNotificationsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminNotificationsListRes>,

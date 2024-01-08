@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the payment sessions to manage.
+ */
 export interface StorePostPaymentCollectionsBatchSessionsReq {
   /**
    * Payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted.
