@@ -31,7 +31,7 @@ export default async function (req: MedusaRequest, res: MedusaResponse) {
   })
 }
 
-export class AdminGetWorkflowsParams extends extendedFindParamsMixin(20) {
+export class AdminGetWorkflowsParams extends extendedFindParamsMixin() {
   /**
    * transaction id(s) to filter product variants by.
    */
