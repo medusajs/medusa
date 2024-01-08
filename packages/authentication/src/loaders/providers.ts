@@ -29,6 +29,12 @@ export default async ({
   const providersToCreate: ServiceTypes.CreateAuthProviderDTO[] = []
 
   for (const provider of providersToLoad) {
+    container.registerAdd("providers", asClass(provider).singleton())
+
+    container.register({
+      [`provider_${provider.PROVIDER}`]: asClass(provider).singleton(),
+    })
+
     if (loadedProviders.has(provider.PROVIDER)) {
       continue
     }
@@ -40,10 +46,4 @@ export default async ({
   }
 
   await authProviderService.create(providersToCreate)
-
-  container.register({
-    [defaultProviders.UsernamePasswordProvider.PROVIDER]: asClass(
-      defaultProviders.UsernamePasswordProvider
-    ).singleton(),
-  })
 }
