@@ -27,6 +27,10 @@ Handle sending emails to customers related to orders, restock notifications, use
   npm install medusa-plugin-sendgrid
   ```
 
+  ```bash
+  yarn add medusa-plugin-sendgrid
+  ```
+
 2\. Set the following environment variable in `.env`:
 
   ```bash
@@ -38,16 +42,18 @@ Handle sending emails to customers related to orders, restock notifications, use
 
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
 
-  ```js
+  ```ts
   const plugins = [
     // ...,
     {
       resolve: `medusa-plugin-sendgrid`,
+      /** @type {import('medusa-plugin-sendgrid').PluginOptions} */
       options: {
         api_key: process.env.SENDGRID_API_KEY,
         from: process.env.SENDGRID_FROM,
-        order_placed_template: 
-          process.env.SENDGRID_ORDER_PLACED_ID,
+        templates: {
+          order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID,
+        },
         localization: {
           "de-DE": { // locale key
             order_placed_template:

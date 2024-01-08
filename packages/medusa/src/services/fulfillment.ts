@@ -34,7 +34,7 @@ type InjectedDependencies = {
 /**
  * Handles Fulfillments
  */
-class FulfillmentService extends TransactionBaseService {
+export class FulfillmentService extends TransactionBaseService {
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly shippingProfileService_: ShippingProfileService

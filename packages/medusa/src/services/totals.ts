@@ -48,7 +48,7 @@ type GetShippingMethodTotalsOptions = {
   calculation_context?: TaxCalculationContext
 }
 
-type LineItemTotals = {
+export type LineItemTotals = {
   unit_price: number
   quantity: number
   subtotal: number

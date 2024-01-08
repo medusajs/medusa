@@ -73,7 +73,9 @@ describe("SendGridService", () => {
       { orderService: orderServiceMock, totalsService },
       {
         api_key: "SG.test",
-        order_placed_template: "lol",
+        templates: {
+          order_placed_template: "lol",
+        },
       }
     )
 
@@ -100,7 +102,9 @@ describe("SendGridService", () => {
       { orderService: orderServiceMock, totalsService },
       {
         api_key: "SG.test",
-        order_placed_template: "lol",
+        templates: {
+          order_placed_template: "lol",
+        },
       }
     )
 

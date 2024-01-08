@@ -3945,23 +3945,25 @@ Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array
 
 ```js title="medusa-config.js"
 const plugins = [
-  // ...,
-  {
-    resolve: `medusa-plugin-sendgrid`,
-    options: {
-      api_key: process.env.SENDGRID_API_KEY,
-      from: process.env.SENDGRID_FROM,
-      order_placed_template: 
-        process.env.SENDGRID_ORDER_PLACED_ID,
-      localization: {
-        "de-DE": { // locale key
-          order_placed_template:
-            process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+    // ...,
+    {
+      resolve: `medusa-plugin-sendgrid`,
+      /** @type {import('medusa-plugin-sendgrid').PluginOptions} */
+      options: {
+        api_key: process.env.SENDGRID_API_KEY,
+        from: process.env.SENDGRID_FROM,
+        templates: {
+          order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID,
+        },
+        localization: {
+          "de-DE": { // locale key
+            order_placed_template:
+              process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+          },
         },
       },
     },
-  },
-]
+  ]
 ```
 
 The `api_key` and `from` options are required. Then, use the key of each template you create (from the [reference](#template-reference)) as the option name with the template ID as the value.
@@ -4010,12 +4012,12 @@ export const POST = async (
   req: MedusaRequest, 
   res: MedusaResponse
 ) => {
-  const sendgridService = req.scope.resolve("sendgridService")
+  const sendgridService: SendGridService = req.scope.resolve("sendgridService")
   const sendOptions =  {
       templateId: "d-123....",
       from: "ACME <acme@mail.com>",
       to: "customer@mail.com",
-      dynamic_template_data: { dynamic: "data" },
+      dynamicTemplateData: { dynamic: "data" },
     }
     sendgridService.sendEmail(sendOptions)
 }
