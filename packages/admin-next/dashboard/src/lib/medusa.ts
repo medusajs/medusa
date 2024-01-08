@@ -2,7 +2,7 @@ import Medusa from "@medusajs/medusa-js"
 import { QueryClient } from "@tanstack/react-query"
 
 export const MEDUSA_BACKEND_URL =
-  import.meta.env.VITE_MEDUSA_BACKEND_URL || "http://localhost:9000"
+  import.meta.env.VITE_MEDUSA_ADMIN_BACKEND_URL || "http://localhost:9000"
 
 export const queryClient = new QueryClient({
   defaultOptions: {
