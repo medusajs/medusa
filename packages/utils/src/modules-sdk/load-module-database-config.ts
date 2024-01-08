@@ -67,7 +67,8 @@ export function loadDatabaseConfig(
   ModulesSdkTypes.ModuleServiceInitializeOptions["database"],
   "clientUrl" | "schema" | "driverOptions" | "debug"
 > {
-  const clientUrl = getEnv("POSTGRES_URL", moduleName)
+  const clientUrl =
+    options?.database?.clientUrl ?? getEnv("POSTGRES_URL", moduleName)
 
   const database = {
     clientUrl,
