@@ -62,10 +62,6 @@ export class TransactionOrchestrator extends EventEmitter {
     return params.join(this.SEPARATOR)
   }
 
-  public getOptions(): TransactionModelOptions {
-    return this.options ?? {}
-  }
-
   private getPreviousStep(flow: TransactionFlow, step: TransactionStep) {
     const id = step.id.split(".")
     id.pop()

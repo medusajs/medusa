@@ -8615,6 +8615,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/vite-plugin-extension@*, @medusajs/vite-plugin-extension@workspace:^, @medusajs/vite-plugin-extension@workspace:packages/admin-next/vite-plugin-extension":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/vite-plugin-extension@workspace:packages/admin-next/vite-plugin-extension"
+  dependencies:
+    "@babel/parser": 7.23.5
+    "@babel/traverse": 7.23.5
+    "@babel/types": 7.22.5
+    "@medusajs/admin-shared": "*"
+    "@types/babel__traverse": 7.20.5
+    "@types/node": ^20.10.4
+    chokidar: 3.5.3
+    fdir: 6.1.1
+    magic-string: 0.30.5
+    tsup: 8.0.1
+    typescript: 5.3.3
+    vite: 5.0.10
+  peerDependencies:
+    vite: ^5.0.0
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-orchestrator-inmemory@workspace:packages/workflow-orchestrator-inmemory"
@@ -8642,25 +8663,6 @@ __metadata:
     medusa-workflow-orchestrator-migrations-down: dist/scripts/bin/run-migration-down.js
     medusa-workflow-orchestrator-migrations-up: dist/scripts/bin/run-migration-up.js
     medusa-workflow-orchestrator-seed: dist/scripts/bin/run-seed.js
-    
-"@medusajs/vite-plugin-extension@*, @medusajs/vite-plugin-extension@workspace:^, @medusajs/vite-plugin-extension@workspace:packages/admin-next/vite-plugin-extension":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/vite-plugin-extension@workspace:packages/admin-next/vite-plugin-extension"
-  dependencies:
-    "@babel/parser": 7.23.5
-    "@babel/traverse": 7.23.5
-    "@babel/types": 7.22.5
-    "@medusajs/admin-shared": "*"
-    "@types/babel__traverse": 7.20.5
-    "@types/node": ^20.10.4
-    chokidar: 3.5.3
-    fdir: 6.1.1
-    magic-string: 0.30.5
-    tsup: 8.0.1
-    typescript: 5.3.3
-    vite: 5.0.10
-  peerDependencies:
-    vite: ^5.0.0
   languageName: unknown
   linkType: soft
 
