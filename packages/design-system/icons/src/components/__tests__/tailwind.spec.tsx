@@ -4,7 +4,7 @@
   import Tailwind from "../tailwind"
 
   describe("Tailwind", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Tailwind data-testid="icon" />)
 
 

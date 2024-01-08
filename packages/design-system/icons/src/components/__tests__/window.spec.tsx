@@ -4,7 +4,7 @@
   import Window from "../window"
 
   describe("Window", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Window data-testid="icon" />)
 
 

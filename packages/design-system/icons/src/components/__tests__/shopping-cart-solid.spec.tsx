@@ -4,7 +4,7 @@
   import ShoppingCartSolid from "../shopping-cart-solid"
 
   describe("ShoppingCartSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ShoppingCartSolid data-testid="icon" />)
 
 

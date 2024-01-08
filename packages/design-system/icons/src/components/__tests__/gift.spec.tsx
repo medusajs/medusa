@@ -4,7 +4,7 @@
   import Gift from "../gift"
 
   describe("Gift", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Gift data-testid="icon" />)
 
 

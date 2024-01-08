@@ -4,7 +4,7 @@
   import Apple from "../apple"
 
   describe("Apple", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Apple data-testid="icon" />)
 
 

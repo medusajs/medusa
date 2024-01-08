@@ -4,7 +4,7 @@
   import Swatch from "../swatch"
 
   describe("Swatch", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Swatch data-testid="icon" />)
 
 

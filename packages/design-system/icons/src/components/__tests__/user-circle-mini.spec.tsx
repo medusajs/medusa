@@ -4,7 +4,7 @@
   import UserCircleMini from "../user-circle-mini"
 
   describe("UserCircleMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<UserCircleMini data-testid="icon" />)
 
 

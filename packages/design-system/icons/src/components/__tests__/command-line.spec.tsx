@@ -4,7 +4,7 @@
   import CommandLine from "../command-line"
 
   describe("CommandLine", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CommandLine data-testid="icon" />)
 
 

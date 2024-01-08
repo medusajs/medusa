@@ -4,7 +4,7 @@
   import CurrencyDollarSolid from "../currency-dollar-solid"
 
   describe("CurrencyDollarSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CurrencyDollarSolid data-testid="icon" />)
 
 

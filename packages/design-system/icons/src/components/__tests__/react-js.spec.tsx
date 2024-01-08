@@ -4,7 +4,7 @@
   import ReactJs from "../react-js"
 
   describe("ReactJs", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ReactJs data-testid="icon" />)
 
 

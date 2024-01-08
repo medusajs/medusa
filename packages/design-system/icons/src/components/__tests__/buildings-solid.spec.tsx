@@ -4,7 +4,7 @@
   import BuildingsSolid from "../buildings-solid"
 
   describe("BuildingsSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<BuildingsSolid data-testid="icon" />)
 
 

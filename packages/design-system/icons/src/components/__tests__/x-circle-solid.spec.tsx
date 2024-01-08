@@ -4,7 +4,7 @@
   import XCircleSolid from "../x-circle-solid"
 
   describe("XCircleSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<XCircleSolid data-testid="icon" />)
 
 

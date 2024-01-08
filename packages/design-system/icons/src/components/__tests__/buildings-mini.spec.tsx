@@ -4,7 +4,7 @@
   import BuildingsMini from "../buildings-mini"
 
   describe("BuildingsMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<BuildingsMini data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import ComponentSolid from "../component-solid"
 
   describe("ComponentSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ComponentSolid data-testid="icon" />)
 
 

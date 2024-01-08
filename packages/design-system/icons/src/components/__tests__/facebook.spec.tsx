@@ -4,7 +4,7 @@
   import Facebook from "../facebook"
 
   describe("Facebook", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Facebook data-testid="icon" />)
 
 

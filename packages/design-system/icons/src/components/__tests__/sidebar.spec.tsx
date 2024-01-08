@@ -4,7 +4,7 @@
   import Sidebar from "../sidebar"
 
   describe("Sidebar", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Sidebar data-testid="icon" />)
 
 

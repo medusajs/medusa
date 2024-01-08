@@ -4,7 +4,7 @@ type ProcessOptions = {
 }
 
 export default class ProcessManager {
-  intervals: NodeJS.Timer[] = []
+  intervals: NodeJS.Timeout[] = []
   static MAX_RETRIES = 3
 
   constructor() {
@@ -20,7 +20,7 @@ export default class ProcessManager {
     process.on("SIGINT", () => fn())
   }
 
-  addInterval(interval: NodeJS.Timer) {
+  addInterval(interval: NodeJS.Timeout) {
     this.intervals.push(interval)
   }
 

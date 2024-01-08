@@ -4,7 +4,7 @@
   import Sparkles from "../sparkles"
 
   describe("Sparkles", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Sparkles data-testid="icon" />)
 
 
