@@ -8,3 +8,9 @@ export default (processManager: ProcessManager) => {
 
 export const isAbortError = (e: any) =>
   e !== null && "code" in e && e.code === "ABORT_ERR"
+
+export const getAbortError = () => {
+  return {
+    code: "ABORT_ERR",
+  }
+}

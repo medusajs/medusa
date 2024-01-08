@@ -1,4 +1,4 @@
-import promiseExec from "./promise-exec.js"
+import execute from "./execute.js"
 import { Ora } from "ora"
 import { isAbortError } from "./create-abort-controller.js"
 import logMessage from "./log-message.js"
@@ -9,6 +9,7 @@ type CloneRepoOptions = {
   directoryName?: string
   repoUrl?: string
   abortController?: AbortController
+  verbose?: boolean
 }
 
 const DEFAULT_REPO = "https://github.com/medusajs/medusa-starter-default"
@@ -17,10 +18,17 @@ export default async function cloneRepo({
   directoryName = "",
   repoUrl,
   abortController,
+  verbose = false,
 }: CloneRepoOptions) {
-  await promiseExec(`git clone ${repoUrl || DEFAULT_REPO} ${directoryName}`, {
-    signal: abortController?.signal,
-  })
+  await execute(
+    [
+      `git clone ${repoUrl || DEFAULT_REPO} ${directoryName}`,
+      {
+        signal: abortController?.signal,
+      },
+    ],
+    { verbose }
+  )
 }
 
 export async function runCloneRepo({
@@ -28,17 +36,20 @@ export async function runCloneRepo({
   repoUrl,
   abortController,
   spinner,
+  verbose = false,
 }: {
   projectName: string
   repoUrl: string
   abortController: AbortController
   spinner: Ora
+  verbose?: boolean
 }) {
   try {
     await cloneRepo({
       directoryName: projectName,
       repoUrl,
       abortController,
+      verbose,
     })
 
     deleteGitDirectory(projectName)
