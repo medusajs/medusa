@@ -22,7 +22,7 @@ export default async (
   const pathToMigrations = __dirname + "/../migrations"
 
   await ModulesSdkUtils.mikroOrmConnectionLoader({
-    moduleName: "sales-channle",
+    moduleName: Modules.SALES_CHANNEL,
     entities,
     container,
     options,

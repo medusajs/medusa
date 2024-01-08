@@ -1,7 +1,8 @@
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
+  Filter,
   Index,
   OptionalProps,
   PrimaryKey,
@@ -9,6 +10,7 @@ import {
 } from "@mikro-orm/core"
 
 @Entity()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class SalesChannel {
   [OptionalProps]?: "created_at" | "updated_at" | "deleted_at"
 
@@ -18,11 +20,11 @@ export default class SalesChannel {
   @Property({ columnType: "text" })
   name!: string
 
-  @Property({ columnType: "text" })
-  description!: string
+  @Property({ columnType: "text", nullable: true })
+  description?: string | null
 
   @Property({ columnType: "boolean" })
-  is_disabled!: boolean
+  is_disabled? = false
 
   @Property({
     onCreate: () => new Date(),
@@ -41,7 +43,7 @@ export default class SalesChannel {
 
   @Index({ name: "IDX_sales_channel_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date | null
 
   @BeforeCreate()
   onCreate() {
