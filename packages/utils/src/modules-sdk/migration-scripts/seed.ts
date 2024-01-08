@@ -18,7 +18,7 @@ export function buildSeedScript({
   pathToMigrations,
   executorFn,
 }) {
-  async function run({
+  return async function ({
     options,
     logger,
     path,
@@ -60,20 +60,5 @@ export function buildSeedScript({
     }
 
     await orm.close(true)
-  }
-
-  return async () => {
-    const args = process.argv
-    const path = args.pop() as string
-
-    const { config } = await import("dotenv")
-    config()
-    if (!path) {
-      throw new Error(
-        `filePath is required.${EOL}Example: medusa-product-seed <filePath>`
-      )
-    }
-
-    await run({ path })
   }
 }

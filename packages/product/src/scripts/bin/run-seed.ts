@@ -8,15 +8,30 @@ import {
   createProducts,
   createProductVariants,
 } from "../seed-utils"
+import { EOL } from "os"
 
-export default ModulesSdkUtils.buildSeedScript({
-  moduleName: Modules.PRODUCT,
-  models: ProductModels,
-  pathToMigrations: __dirname + "/../../migrations",
-  executorFn: async (manager, data) => {
-    const { productCategoriesData, productsData, variantsData } = data
-    await createProductCategories(manager, productCategoriesData)
-    await createProducts(manager, productsData)
-    await createProductVariants(manager, variantsData)
-  },
+const args = process.argv
+const path = args.pop() as string
+
+export default (async () => {
+  const { config } = await import("dotenv")
+  config()
+  if (!path) {
+    throw new Error(
+      `filePath is required.${EOL}Example: medusa-product-seed <filePath>`
+    )
+  }
+
+  const run = ModulesSdkUtils.buildSeedScript({
+    moduleName: Modules.PRODUCT,
+    models: ProductModels,
+    pathToMigrations: __dirname + "/../../migrations",
+    executorFn: async (manager, data) => {
+      const { productCategoriesData, productsData, variantsData } = data
+      await createProductCategories(manager, productCategoriesData)
+      await createProducts(manager, productsData)
+      await createProductVariants(manager, variantsData)
+    },
+  })
+  await run({ path })
 })()
