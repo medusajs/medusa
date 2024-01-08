@@ -11,7 +11,10 @@ export const queryClient = new QueryClient({
   },
 })
 
+const BACKEND_URL =
+  import.meta.env.VITE_MEDUSA_ADMIN_BACKEND_URL || "http://localhost:9000"
+
 export const medusa = new Medusa({
-  baseUrl: "http://localhost:9000",
+  baseUrl: BACKEND_URL,
   maxRetries: 3,
 })
