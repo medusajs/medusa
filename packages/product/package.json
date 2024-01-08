@@ -8,8 +8,6 @@
     "dist"
   ],
   "bin": {
-    "medusa-product-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-product-migrations-up": "dist/scripts/bin/run-migration-up.js",
     "medusa-product-seed": "dist/scripts/bin/run-seed.js"
   },
   "engines": {
