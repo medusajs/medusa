@@ -1,10 +1,10 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { MikroOrmWrapper } from "../../../utils"
-import { IAuthenticationModuleService } from "@medusajs/types"
 import { initialize } from "../../../../src"
 import { DB_URL } from "@medusajs/pricing/integration-tests/utils"
 import { MedusaModule } from "@medusajs/modules-sdk"
+import { IAuthenticationModuleService } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
@@ -36,7 +36,6 @@ describe("AuthenticationModuleService - AuthProvider", () => {
 
       expect(serialized).toEqual([
         expect.objectContaining({
-          // Created by the loaders in initialize
           provider: "usernamePassword",
           name: "Username/Password Authentication",
         }),
