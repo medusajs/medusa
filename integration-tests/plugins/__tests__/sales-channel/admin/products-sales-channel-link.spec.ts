@@ -165,8 +165,7 @@ describe("DELETE /admin/sales-channels/:id/products/batch", () => {
 
     const result = await api.delete(
       `/admin/sales-channels/${salesChannel.id}/products/batch`,
-      { product_ids: [{ id: product1.id }] },
-      adminHeaders
+      { ...adminHeaders, data: { product_ids: [{ id: product1.id }] } }
     )
 
     expect(result.status).toEqual(200)
