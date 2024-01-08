@@ -4,7 +4,7 @@
   import CircleThreeQuartersSolid from "../circle-three-quarters-solid"
 
   describe("CircleThreeQuartersSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CircleThreeQuartersSolid data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import Stripe from "../stripe"
 
   describe("Stripe", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Stripe data-testid="icon" />)
 
 

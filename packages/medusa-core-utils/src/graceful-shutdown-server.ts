@@ -1,6 +1,6 @@
 import { Server } from "http"
 import { Socket } from "net"
-import Timer = NodeJS.Timer
+import Timeout = NodeJS.Timeout
 
 interface SocketState extends Socket {
   _idle: boolean
@@ -30,7 +30,7 @@ export abstract class GracefulShutdownServer {
 
       shutdownPromise = new Promise((ok, nok) => {
         let forceQuit = false
-        let cleanInterval: Timer
+        let cleanInterval: Timeout
 
         try {
           // stop accepting new incoming connections

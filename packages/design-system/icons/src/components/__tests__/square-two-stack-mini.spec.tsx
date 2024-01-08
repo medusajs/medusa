@@ -4,7 +4,7 @@
   import SquareTwoStackMini from "../square-two-stack-mini"
 
   describe("SquareTwoStackMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<SquareTwoStackMini data-testid="icon" />)
 
 

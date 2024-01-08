@@ -4,7 +4,7 @@
   import CubeSolid from "../cube-solid"
 
   describe("CubeSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CubeSolid data-testid="icon" />)
 
 

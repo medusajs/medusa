@@ -4,7 +4,7 @@
   import EllipsePurpleSolid from "../ellipse-purple-solid"
 
   describe("EllipsePurpleSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<EllipsePurpleSolid data-testid="icon" />)
 
 

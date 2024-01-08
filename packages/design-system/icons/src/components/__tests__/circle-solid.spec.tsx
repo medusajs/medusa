@@ -4,7 +4,7 @@
   import CircleSolid from "../circle-solid"
 
   describe("CircleSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CircleSolid data-testid="icon" />)
 
 

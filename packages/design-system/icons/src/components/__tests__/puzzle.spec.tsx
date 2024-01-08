@@ -4,7 +4,7 @@
   import Puzzle from "../puzzle"
 
   describe("Puzzle", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Puzzle data-testid="icon" />)
 
 

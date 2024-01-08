@@ -4,7 +4,7 @@
   import Resize from "../resize"
 
   describe("Resize", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Resize data-testid="icon" />)
 
 

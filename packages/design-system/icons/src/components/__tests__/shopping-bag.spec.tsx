@@ -4,7 +4,7 @@
   import ShoppingBag from "../shopping-bag"
 
   describe("ShoppingBag", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ShoppingBag data-testid="icon" />)
 
 

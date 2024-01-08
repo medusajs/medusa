@@ -4,7 +4,7 @@
   import AtSymbol from "../at-symbol"
 
   describe("AtSymbol", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<AtSymbol data-testid="icon" />)
 
 
