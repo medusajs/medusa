@@ -9,6 +9,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
   retrieveEntity,
 } from "@medusajs/utils"
@@ -86,8 +87,35 @@ export default class AddressService<TEntity extends Address = Address> {
     data: UpdateAddressDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const existingAddresses = await this.list(
+      { id: data.map(({ id }) => id) },
+      {},
+      sharedContext
+    )
+
+    const existingAddressesMap = new Map(
+      existingAddresses.map<[string, Address]>((addr) => [addr.id, addr])
+    )
+
+    const updates: UpdateAddressDTO[] = []
+
+    for (const update of data) {
+      const user = existingAddressesMap.get(update.id)
+
+      if (!user) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Address with id "${update.id}" not found`
+        )
+      }
+
+      const toUpdate = { ...user, ...update } as UpdateAddressDTO
+
+      updates.push(toUpdate)
+    }
+
     return (await (this.addressRepository_ as AddressRepository).update(
-      data,
+      updates,
       sharedContext
     )) as TEntity[]
   }
