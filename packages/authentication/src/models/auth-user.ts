@@ -11,7 +11,7 @@ import {
 } from "@mikro-orm/core"
 import AuthProvider from "./auth-provider"
 
-type OptionalFields = "password_hash" | "app_metadata" | "user_metadata"
+type OptionalFields = "provider_metadata" | "app_metadata" | "user_metadata"
 
 @Entity()
 export default class AuthUser {

@@ -1,7 +1,6 @@
 import { AuthUser } from "@models"
 
 export type CreateAuthUserDTO = {
-  email?: string
   provider_id: string
   provider_metadata?: Record<string, unknown>
   user_metadata?: Record<string, unknown>
