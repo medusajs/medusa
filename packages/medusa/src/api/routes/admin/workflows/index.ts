@@ -1,10 +1,19 @@
 import { Router } from "express"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetWorkflowsParams } from "./list"
 
 const route = Router()
 
 export default (app) => {
   app.use("/workflows", route)
+
+  route.get(
+    "/",
+    transformQuery(AdminGetWorkflowsParams, {
+      isList: true,
+    }),
+    middlewares.wrap(require("./list").default)
+  )
 
   route.get("/subscribe", middlewares.wrap(require("./subscribe").default))
 
