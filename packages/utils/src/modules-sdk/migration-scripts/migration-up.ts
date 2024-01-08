@@ -19,7 +19,7 @@ export function buildMigrationScript({ moduleName, models, pathToMigrations }) {
    * @param logger
    * @param moduleDeclaration
    */
-  async function runMigrations({
+  return async function ({
     options,
     logger,
   }: Pick<
@@ -63,11 +63,5 @@ export function buildMigrationScript({ moduleName, models, pathToMigrations }) {
     }
 
     await orm.close()
-  }
-
-  return async () => {
-    const { config } = await import("dotenv")
-    config()
-    await runMigrations()
   }
 }

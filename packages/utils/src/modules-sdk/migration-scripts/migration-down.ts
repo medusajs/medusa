@@ -24,7 +24,7 @@ export function buildRevertMigrationScript({
    * @param logger
    * @param moduleDeclaration
    */
-  async function revertMigration({
+  return async function ({
     options,
     logger,
   }: Pick<
@@ -56,11 +56,5 @@ export function buildRevertMigrationScript({
     }
 
     await orm.close()
-  }
-
-  return async () => {
-    const { config } = await import("dotenv")
-    config()
-    await revertMigration()
   }
 }
