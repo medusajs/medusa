@@ -19,8 +19,8 @@ import {
 import { Avatar, DropdownMenu, IconButton, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import * as Dialog from "@radix-ui/react-dialog"
-import { useAdminStore } from "medusa-react"
-import { Link, useLocation } from "react-router-dom"
+import { useAdminDeleteSession, useAdminStore } from "medusa-react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
 import { useAuth } from "../../../providers/auth-provider"
 import { useTheme } from "../../../providers/theme-provider"
@@ -114,6 +114,16 @@ const DesktopNav = () => {
 const Header = () => {
   const { store } = useAdminStore()
   const { setTheme, theme } = useTheme()
+  const { mutateAsync: logoutMutation } = useAdminDeleteSession()
+  const navigate = useNavigate()
+
+  const logout = async () => {
+    await logoutMutation(undefined, {
+      onSuccess: () => {
+        navigate("/login")
+      },
+    })
+  }
 
   if (!store) {
     return null
@@ -187,7 +197,7 @@ const Header = () => {
             </DropdownMenu.SubMenuContent>
           </DropdownMenu.SubMenu>
           <DropdownMenu.Separator />
-          <DropdownMenu.Item>
+          <DropdownMenu.Item onClick={logout}>
             <ArrowRightOnRectangle className="text-ui-fg-subtle mr-2" />
             Logout
             <DropdownMenu.Shortcut>⌥⇧Q</DropdownMenu.Shortcut>

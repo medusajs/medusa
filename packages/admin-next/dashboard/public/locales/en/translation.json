@@ -6,17 +6,31 @@
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
+    "search": "Search",
     "extensions": "Extensions",
+    "settings": "Settings",
+    "general": "General",
     "details": "Details",
     "enabled": "Enabled",
     "disabled": "Disabled",
     "remove": "Remove",
-    "countSelected": "{{count}} selected"
+    "countSelected": "{{count}} selected",
+    "plusCountMore": "+ {{count}} more",
+    "areYouSure": "Are you sure?",
+    "noRecordsFound": "No records found"
   },
   "products": {
     "domain": "Products",
     "variants": "Variants",
-    "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels"
+    "availableInSalesChannels": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels",
+    "inStockVariants_one": "{{inventory}} in stock for {{count}} variant",
+    "inStockVariants_other": "{{inventory}} in stock for {{count}} variants",
+    "productStatus": {
+      "draft": "Draft",
+      "published": "Published",
+      "proposed": "Proposed",
+      "rejected": "Rejected"
+    }
   },
   "collections": {
     "domain": "Collections"
@@ -77,12 +91,28 @@
     "domain": "Regions"
   },
   "salesChannels": {
-    "domain": "Sales Channels"
+    "domain": "Sales Channels",
+    "removeProductsWarning_one": "You are about to remove {{count}} product from {{sales_channel}}.",
+    "removeProductsWarning_other": "You are about to remove {{count}} products from {{sales_channel}}.",
+    "addProducts": "Add Products",
+    "editSalesChannel": "Edit Sales Channel",
+    "isEnabledHint": "Specify if the sales channel is enabled or disabled.",
+    "productAlreadyAdded": "The product has already been added to the sales channel."
   },
   "currencies": {
     "domain": "Currencies",
     "manageTheCurrencies": "Manage the currencies you want to use in your store",
-    "editCurrencyDetails": "Edit Currency Details"
+    "editCurrencyDetails": "Edit Currency Details",
+    "defaultCurrency": "Default Currency",
+    "defaultCurrencyHint": "The default currency of your store.",
+    "removeCurrenciesWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
+    "removeCurrenciesWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
+    "currencyAlreadyAdded": "The currency has already been added to your store."
+  },
+  "apiKeyManagement": {
+    "domain": "API Key Management",
+    "createAPublishableApiKey": "Create a publishable API key",
+    "createKey": "Create Key"
   },
   "fields": {
     "name": "Name",
@@ -101,6 +131,10 @@
     "tags": "Tags",
     "type": "Type",
     "sales_channels": "Sales Channels",
-    "status": "Status"
+    "status": "Status",
+    "code": "Code",
+    "availability": "Availability",
+    "inventory": "Inventory",
+    "optional": "Optional"
   }
 }

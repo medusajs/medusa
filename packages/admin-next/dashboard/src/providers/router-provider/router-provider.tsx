@@ -258,6 +258,22 @@ const router = createBrowserRouter([
             },
           },
           {
+            path: "taxes",
+            handle: {
+              crumb: () => "Taxes",
+            },
+            children: [
+              {
+                index: true,
+                lazy: () => import("../../routes/taxes/views/tax-list"),
+              },
+              {
+                path: ":id",
+                lazy: () => import("../../routes/taxes/views/tax-details"),
+              },
+            ],
+          },
+          {
             path: "sales-channels",
             handle: {
               crumb: () => "Sales Channels",
@@ -280,10 +296,10 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "publishable-api-keys",
-            lazy: () => import("../../routes/publishable-api-keys"),
+            path: "api-key-management",
+            lazy: () => import("../../routes/api-key-management"),
             handle: {
-              crumb: () => "Publishable API keys",
+              crumb: () => "API Key Management",
             },
           },
           ...settingsExtensions,

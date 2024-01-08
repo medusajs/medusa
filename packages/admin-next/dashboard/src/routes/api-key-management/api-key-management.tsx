@@ -1,5 +1,5 @@
-import { InformationCircle } from "@medusajs/icons";
-import { PublishableApiKey, SalesChannel } from "@medusajs/medusa";
+import { InformationCircle } from "@medusajs/icons"
+import { PublishableApiKey, SalesChannel } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
@@ -12,49 +12,50 @@ import {
   Table,
   Text,
   clx,
-} from "@medusajs/ui";
+} from "@medusajs/ui"
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from "@tanstack/react-table"
 import {
   useAdminCreatePublishableApiKey,
   useAdminPublishableApiKeys,
   useAdminSalesChannels,
-} from "medusa-react";
-import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as zod from "zod";
+} from "medusa-react"
+import { useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import * as zod from "zod"
 
-import { useTranslation } from "react-i18next";
-import { Form } from "../../components/common/form";
+import { Form } from "../../components/common/form"
 
-export const PublishableApiKeys = () => {
-  const [showCreateModal, setShowCreateModal] = useState(false);
+export const ApiKeyManagement = () => {
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   const { publishable_api_keys, isLoading, isError, error } =
-    useAdminPublishableApiKeys();
+    useAdminPublishableApiKeys()
 
-  const columns = useColumns();
+  const columns = useColumns()
 
   const table = useReactTable({
     data: publishable_api_keys || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
-  });
+    getRowId: (row) => row.id,
+  })
 
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   // TODO: Move to loading.tsx and set as Suspense fallback for the route
   if (isLoading) {
-    return <div>Loading</div>;
+    return <div>Loading</div>
   }
 
   // TODO: Move to error.tsx and set as ErrorBoundary for the route
   if (isError || !publishable_api_keys) {
-    const err = error ? JSON.parse(JSON.stringify(error)) : null;
+    const err = error ? JSON.parse(JSON.stringify(error)) : null
     return (
       <div>
         {(err as Error & { status: number })?.status === 404 ? (
@@ -63,18 +64,18 @@ export const PublishableApiKeys = () => {
           <div>Something went wrong!</div>
         )}
       </div>
-    );
+    )
   }
 
-  const hasData = publishable_api_keys.length !== 0;
+  const hasData = publishable_api_keys.length !== 0
 
   return (
     <div className="flex flex-col gap-y-2">
       <Container className="p-0">
         <div className="px-8 py-6 pb-4">
-          <Heading>Publishable API Keys</Heading>
+          <Heading>{t("apiKeyManagement.domain")}</Heading>
         </div>
-        <div className="border-y border-ui-border-base">
+        <div className="border-ui-border-base border-y">
           {hasData ? (
             <Table>
               <Table.Header>
@@ -82,7 +83,7 @@ export const PublishableApiKeys = () => {
                   return (
                     <Table.Row
                       key={headerGroup.id}
-                      className="[&_th]:w-1/3 [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
+                      className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/3"
                     >
                       {headerGroup.headers.map((header) => {
                         return (
@@ -92,10 +93,10 @@ export const PublishableApiKeys = () => {
                               header.getContext()
                             )}
                           </Table.HeaderCell>
-                        );
+                        )
                       })}
                     </Table.Row>
-                  );
+                  )
                 })}
               </Table.Header>
               <Table.Body className="border-b-0">
@@ -103,7 +104,7 @@ export const PublishableApiKeys = () => {
                   <Table.Row
                     key={row.id}
                     className={clx(
-                      "transition-fg [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap cursor-pointer",
+                      "transition-fg cursor-pointer [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
                       {
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
@@ -124,23 +125,21 @@ export const PublishableApiKeys = () => {
             </Table>
           ) : (
             <div className="flex flex-col items-center py-24">
-              <div className="flex flex-col gap-y-6 items-center">
-                <div className="flex flex-col gap-y-2 items-center">
-                  <div className="text-ui-fg-subtle flex items-center gap-x-2">
-                    <InformationCircle />
-                    <Text weight="plus" size="small" leading="compact">
-                      No records yet
-                    </Text>
-                  </div>
+              <div className="flex flex-col items-center gap-y-6">
+                <div className="flex flex-col items-center gap-y-2">
+                  <InformationCircle />
+                  <Text weight="plus" size="small" leading="compact">
+                    {t("general.noRecordsFound")}
+                  </Text>
                   <Text size="small" className="text-ui-fg-muted">
-                    Create a Publishable API Key
+                    {t("apiKeyManagement.createAPublishableApiKey")}
                   </Text>
                 </div>
                 <Button
                   variant="secondary"
                   onClick={() => setShowCreateModal(!showCreateModal)}
                 >
-                  {t("general.create")}
+                  {t("apiKeyManagement.createKey")}
                 </Button>
               </div>
             </div>
@@ -153,13 +152,13 @@ export const PublishableApiKeys = () => {
         onOpenChange={setShowCreateModal}
       />
     </div>
-  );
-};
+  )
+}
 
-const columnHelper = createColumnHelper<PublishableApiKey>();
+const columnHelper = createColumnHelper<PublishableApiKey>()
 
 const useColumns = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const columns = useMemo(
     () => [
@@ -173,29 +172,29 @@ const useColumns = () => {
       }),
     ],
     [t]
-  );
+  )
 
-  return columns;
-};
+  return columns
+}
 
 const CreatePublishableApiKeySchema = zod.object({
   title: zod.string().min(1),
   sales_channel_ids: zod.array(zod.string()).min(1),
-});
+})
 
 type CreatePublishableApiKeySchema = zod.infer<
   typeof CreatePublishableApiKeySchema
->;
+>
 
 type CreatePublishableApiKeyProps = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-};
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
 
-const salesChannelColumnHelper = createColumnHelper<SalesChannel>();
+const salesChannelColumnHelper = createColumnHelper<SalesChannel>()
 
 const useSalesChannelColumns = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const columns = useMemo(
     () => [
@@ -213,7 +212,7 @@ const useSalesChannelColumns = () => {
                 table.toggleAllPageRowsSelected(!!value)
               }
             />
-          );
+          )
         },
         cell: ({ row }) => {
           return (
@@ -221,10 +220,10 @@ const useSalesChannelColumns = () => {
               checked={row.getIsSelected()}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
               onClick={(e) => {
-                e.stopPropagation();
+                e.stopPropagation()
               }}
             />
-          );
+          )
         },
       }),
       salesChannelColumnHelper.accessor("name", {
@@ -237,10 +236,10 @@ const useSalesChannelColumns = () => {
       }),
     ],
     [t]
-  );
+  )
 
-  return columns;
-};
+  return columns
+}
 
 const CreatePublishableApiKey = (props: CreatePublishableApiKeyProps) => {
   const form = useForm<CreatePublishableApiKeySchema>({
@@ -248,26 +247,26 @@ const CreatePublishableApiKey = (props: CreatePublishableApiKeyProps) => {
       title: "",
       sales_channel_ids: [],
     },
-  });
+  })
 
-  const { mutateAsync } = useAdminCreatePublishableApiKey();
+  const { mutateAsync } = useAdminCreatePublishableApiKey()
 
-  const { sales_channels, isLoading, isError, error } = useAdminSalesChannels();
-  const columns = useSalesChannelColumns();
+  const { sales_channels, isLoading, isError, error } = useAdminSalesChannels()
+  const columns = useSalesChannelColumns()
 
   const table = useReactTable({
     data: sales_channels || [],
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
-  });
+  })
 
   const onSubmit = form.handleSubmit(async ({ title, sales_channel_ids }) => {
     await mutateAsync({
       title,
-    });
-  });
+    })
+  })
 
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <FocusModal {...props}>
@@ -280,7 +279,7 @@ const CreatePublishableApiKey = (props: CreatePublishableApiKeyProps) => {
             </div>
           </FocusModal.Header>
           <FocusModal.Body className="flex flex-col items-center py-16">
-            <div className="max-w-[720px] w-full flex flex-col gap-y-4">
+            <div className="flex w-full max-w-[720px] flex-col gap-y-4">
               <div className="flex flex-col gap-y-4">
                 <Heading>Create API Key</Heading>
                 <Text size="small" className="text-ui-fg-subtle">
@@ -307,8 +306,8 @@ const CreatePublishableApiKey = (props: CreatePublishableApiKeyProps) => {
                 <div>
                   <Label weight="plus">Sales Channels</Label>
                   <Hint></Hint>
-                  <Container className="p-0 overflow-hidden">
-                    <div className="px-8 pt-6 pb-4">
+                  <Container className="overflow-hidden p-0">
+                    <div className="px-8 pb-4 pt-6">
                       <Heading level="h2">Sales Channels</Heading>
                     </div>
                     <Table>
@@ -317,7 +316,7 @@ const CreatePublishableApiKey = (props: CreatePublishableApiKeyProps) => {
                           return (
                             <Table.Row
                               key={headerGroup.id}
-                              className="[&_th]:w-1/3 [&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
+                              className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th]:w-1/3"
                             >
                               {headerGroup.headers.map((header) => {
                                 return (
@@ -327,10 +326,10 @@ const CreatePublishableApiKey = (props: CreatePublishableApiKeyProps) => {
                                       header.getContext()
                                     )}
                                   </Table.HeaderCell>
-                                );
+                                )
                               })}
                             </Table.Row>
-                          );
+                          )
                         })}
                       </Table.Header>
                       <Table.Body className="border-b-0">
@@ -338,7 +337,7 @@ const CreatePublishableApiKey = (props: CreatePublishableApiKeyProps) => {
                           <Table.Row
                             key={row.id}
                             className={clx(
-                              "transition-fg [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap last-of-type:border-b-0",
+                              "transition-fg last-of-type:border-b-0 [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
                               {
                                 "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                                   row.getIsSelected(),
@@ -365,5 +364,5 @@ const CreatePublishableApiKey = (props: CreatePublishableApiKeyProps) => {
         </FocusModal.Content>
       </Form>
     </FocusModal>
-  );
-};
+  )
+}

@@ -13,6 +13,8 @@ export const ErrorBoundary = () => {
     if (error.response?.status === 401) {
       return <Navigate to="/login" state={{ from: location }} replace />
     }
+
+    // TODO: Catch other server errors
   }
 
   // TODO: Actual catch-all error page

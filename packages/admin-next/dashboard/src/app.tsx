@@ -1,16 +1,19 @@
-import { Toaster } from "@medusajs/ui";
-import { MedusaProvider } from "medusa-react";
+import { Toaster } from "@medusajs/ui"
+import { MedusaProvider } from "medusa-react"
 
-import { AuthProvider } from "./providers/auth-provider";
-import { RouterProvider } from "./providers/router-provider";
-import { ThemeProvider } from "./providers/theme-provider";
+import { AuthProvider } from "./providers/auth-provider"
+import { RouterProvider } from "./providers/router-provider"
+import { ThemeProvider } from "./providers/theme-provider"
 
-import { queryClient } from "./lib/medusa";
+import { queryClient } from "./lib/medusa"
+
+const BASE_URL =
+  import.meta.env.MEDUSA_ADMIN_BACKEND_URL || "http://localhost:9000"
 
 function App() {
   return (
     <MedusaProvider
-      baseUrl="http://localhost:9000"
+      baseUrl={BASE_URL}
       queryClientProviderProps={{
         client: queryClient,
       }}
@@ -22,7 +25,7 @@ function App() {
         </AuthProvider>
       </ThemeProvider>
     </MedusaProvider>
-  );
+  )
 }
 
-export default App;
+export default App

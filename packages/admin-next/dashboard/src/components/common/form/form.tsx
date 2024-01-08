@@ -1,11 +1,12 @@
 import {
   Hint as HintComponent,
   Label as LabelComponent,
+  Text,
   clx,
-} from "@medusajs/ui";
-import * as LabelPrimitives from "@radix-ui/react-label";
-import { Slot } from "@radix-ui/react-slot";
-import { createContext, forwardRef, useContext, useId } from "react";
+} from "@medusajs/ui"
+import * as LabelPrimitives from "@radix-ui/react-label"
+import { Slot } from "@radix-ui/react-slot"
+import { createContext, forwardRef, useContext, useId } from "react"
 import {
   Controller,
   ControllerProps,
@@ -14,24 +15,25 @@ import {
   FormProvider,
   useFormContext,
   useFormState,
-} from "react-hook-form";
+} from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
-const Provider = FormProvider;
+const Provider = FormProvider
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = {
-  name: TName;
-};
+  name: TName
+}
 
 const FormFieldContext = createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
-);
+)
 
 const Field = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -39,30 +41,30 @@ const Field = <
     <FormFieldContext.Provider value={{ name: props.name }}>
       <Controller {...props} />
     </FormFieldContext.Provider>
-  );
-};
+  )
+}
 
 type FormItemContextValue = {
-  id: string;
-};
+  id: string
+}
 
 const FormItemContext = createContext<FormItemContextValue>(
   {} as FormItemContextValue
-);
+)
 
 const useFormField = () => {
-  const fieldContext = useContext(FormFieldContext);
-  const itemContext = useContext(FormItemContext);
-  const { getFieldState } = useFormContext();
+  const fieldContext = useContext(FormFieldContext)
+  const itemContext = useContext(FormItemContext)
+  const { getFieldState } = useFormContext()
 
-  const formState = useFormState({ name: fieldContext.name });
-  const fieldState = getFieldState(fieldContext.name, formState);
+  const formState = useFormState({ name: fieldContext.name })
+  const fieldState = getFieldState(fieldContext.name, formState)
 
   if (!fieldContext) {
-    throw new Error("useFormField should be used within a FormField");
+    throw new Error("useFormField should be used within a FormField")
   }
 
-  const { id } = itemContext;
+  const { id } = itemContext
 
   return {
     id,
@@ -71,12 +73,12 @@ const useFormField = () => {
     formDescriptionId: `${id}-form-item-description`,
     formErrorMessageId: `${id}-form-item-message`,
     ...fieldState,
-  };
-};
+  }
+}
 
 const Item = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
-    const id = useId();
+    const id = useId()
 
     return (
       <FormItemContext.Provider value={{ id }}>
@@ -86,36 +88,46 @@ const Item = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
           {...props}
         />
       </FormItemContext.Provider>
-    );
+    )
   }
-);
-Item.displayName = "Form.Item";
+)
+Item.displayName = "Form.Item"
 
 const Label = forwardRef<
   React.ElementRef<typeof LabelPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitives.Root>
->(({ className, ...props }, ref) => {
-  const { formItemId } = useFormField();
+  React.ComponentPropsWithoutRef<typeof LabelPrimitives.Root> & {
+    optional?: boolean
+  }
+>(({ className, optional = false, ...props }, ref) => {
+  const { formItemId } = useFormField()
+  const { t } = useTranslation()
 
   return (
-    <LabelComponent
-      ref={ref}
-      className={clx(className)}
-      htmlFor={formItemId}
-      size="small"
-      weight="plus"
-      {...props}
-    />
-  );
-});
-Label.displayName = "Form.Label";
+    <div className="flex items-center gap-x-1">
+      <LabelComponent
+        ref={ref}
+        className={clx(className)}
+        htmlFor={formItemId}
+        size="small"
+        weight="plus"
+        {...props}
+      />
+      {optional && (
+        <Text size="small" leading="compact" className="text-ui-fg-muted">
+          ({t("fields.optional")})
+        </Text>
+      )}
+    </div>
+  )
+})
+Label.displayName = "Form.Label"
 
 const Control = forwardRef<
   React.ElementRef<typeof Slot>,
   React.ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, ref) => {
   const { error, formItemId, formDescriptionId, formErrorMessageId } =
-    useFormField();
+    useFormField()
 
   return (
     <Slot
@@ -129,15 +141,15 @@ const Control = forwardRef<
       aria-invalid={!!error}
       {...props}
     />
-  );
-});
-Control.displayName = "Form.Control";
+  )
+})
+Control.displayName = "Form.Control"
 
 const Hint = forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => {
-  const { formDescriptionId } = useFormField();
+  const { formDescriptionId } = useFormField()
 
   return (
     <HintComponent
@@ -146,19 +158,19 @@ const Hint = forwardRef<
       className={className}
       {...props}
     />
-  );
-});
-Hint.displayName = "Form.Hint";
+  )
+})
+Hint.displayName = "Form.Hint"
 
 const ErrorMessage = forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
-  const { error, formErrorMessageId } = useFormField();
-  const msg = error ? String(error?.message) : children;
+  const { error, formErrorMessageId } = useFormField()
+  const msg = error ? String(error?.message) : children
 
   if (!msg) {
-    return null;
+    return null
   }
 
   return (
@@ -171,9 +183,9 @@ const ErrorMessage = forwardRef<
     >
       {msg}
     </HintComponent>
-  );
-});
-ErrorMessage.displayName = "Form.ErrorMessage";
+  )
+})
+ErrorMessage.displayName = "Form.ErrorMessage"
 
 const Form = Object.assign(Provider, {
   Item,
@@ -182,6 +194,6 @@ const Form = Object.assign(Provider, {
   Hint,
   ErrorMessage,
   Field,
-});
+})
 
-export { Form };
+export { Form }

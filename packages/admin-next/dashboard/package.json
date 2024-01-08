@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "main": "index.html",
@@ -18,7 +19,7 @@
     "@medusajs/icons": "workspace:^",
     "@medusajs/ui": "workspace:^",
     "@radix-ui/react-collapsible": "1.0.3",
-    "@tanstack/react-query": "4.22",
+    "@tanstack/react-query": "4.22.0",
     "@tanstack/react-table": "8.10.7",
     "@uiw/react-json-view": "2.0.0-alpha.10",
     "cmdk": "^0.2.0",

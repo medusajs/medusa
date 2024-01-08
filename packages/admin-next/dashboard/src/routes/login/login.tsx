@@ -1,23 +1,23 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Heading, Input, Text } from "@medusajs/ui";
-import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, Heading, Input, Text } from "@medusajs/ui"
+import { useForm } from "react-hook-form"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import * as z from "zod"
 
-import { Form } from "../../components/common/form";
-import { useAuth } from "../../providers/auth-provider";
+import { Form } from "../../components/common/form"
+import { useAuth } from "../../providers/auth-provider"
 
 const schema = z.object({
   email: z.string().email(),
   password: z.string(),
-});
+})
 
 export const Login = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { login } = useAuth();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { login } = useAuth()
 
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/"
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -25,12 +25,12 @@ export const Login = () => {
       email: "",
       password: "",
     },
-  });
+  })
 
   const onSubmit = form.handleSubmit(async ({ email, password }) => {
     await login(email, password)
       .then(() => {
-        navigate(from);
+        navigate(from)
       })
       .catch((e) => {
         switch (e?.response?.status) {
@@ -38,16 +38,16 @@ export const Login = () => {
             form.setError("password", {
               type: "manual",
               message: "Invalid email or password",
-            });
-            break;
+            })
+            break
           default:
             form.setError("password", {
               type: "manual",
               message: "Something went wrong",
-            });
+            })
         }
-      });
-  });
+      })
+  })
 
   return (
     <div className="flex flex-col gap-y-12">
@@ -79,7 +79,7 @@ export const Login = () => {
                   <Form.Label>Password</Form.Label>
                   <Link
                     to={"/forgot-password"}
-                    className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover outline-none focus:text-ui-fg-interactive-hover transition-fg"
+                    className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover focus:text-ui-fg-interactive-hover transition-fg outline-none"
                   >
                     <Text leading="compact">Forgot password?</Text>
                   </Link>
@@ -97,5 +97,5 @@ export const Login = () => {
         </form>
       </Form>
     </div>
-  );
-};
+  )
+}

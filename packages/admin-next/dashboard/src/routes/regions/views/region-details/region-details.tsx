@@ -8,11 +8,14 @@ import {
   Tooltip,
 } from "@medusajs/ui"
 import { useAdminRegion } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 export const RegionDetails = () => {
   const { id } = useParams()
   const { region, isLoading, isError, error } = useAdminRegion(id!)
+
+  const { t } = useTranslation()
 
   // TODO: Move to loading.tsx and set as Suspense fallback for the route
   if (isLoading) {
@@ -62,7 +65,9 @@ export const RegionDetails = () => {
                     weight="plus"
                     className="cursor-default"
                   >
-                    + {region.countries.length - 2} more
+                    {t("general.plusCountMore", {
+                      count: region.countries.length - 2,
+                    })}
                   </Text>
                 </Tooltip>
               )}
@@ -106,7 +111,7 @@ export const RegionDetails = () => {
             Tax Inclusive Pricing
           </Text>
           <Text size="small" leading="compact">
-            {region.includes_tax ? "Yes" : "No"}
+            {region.includes_tax ? t("general.enabled") : t("general.disabled")}
           </Text>
         </div>
         <div className="grid grid-cols-2 border-b px-8 py-6">

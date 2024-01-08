@@ -3,7 +3,7 @@ import {
   CheckCircleMiniSolid,
   SquareTwoStackMini,
   XMarkMini,
-} from "@medusajs/icons";
+} from "@medusajs/icons"
 import {
   Badge,
   Container,
@@ -11,18 +11,18 @@ import {
   Heading,
   IconButton,
   Kbd,
-} from "@medusajs/ui";
-import Primitive from "@uiw/react-json-view";
-import { CSSProperties, Suspense } from "react";
+} from "@medusajs/ui"
+import Primitive from "@uiw/react-json-view"
+import { CSSProperties, Suspense } from "react"
 
 type JsonViewProps = {
-  data: object;
-  root?: string;
-};
+  data: object
+  root?: string
+}
 
-// TODO: The primitive component is not optimal for our use case, so we should consider rolling our own component
+// TODO: Fix the positioning of the copy btn
 export const JsonView = ({ data, root }: JsonViewProps) => {
-  const numberOfKeys = Object.keys(data).length;
+  const numberOfKeys = Object.keys(data).length
 
   return (
     <Container className="flex items-center justify-between py-6">
@@ -36,8 +36,8 @@ export const JsonView = ({ data, root }: JsonViewProps) => {
             <ArrowsPointingOut />
           </IconButton>
         </Drawer.Trigger>
-        <Drawer.Content className="dark overflow-hidden shadow-none border-ui-code-border border max-md:inset-x-2 max-md:max-w-[calc(100%-16px)] bg-ui-code-bg-base text-ui-code-text-base">
-          <div className="bg-ui-code-bg-header border-b border-ui-code-border py-6 px-8 flex items-center justify-between">
+        <Drawer.Content className="border-ui-code-border bg-ui-code-bg-base text-ui-code-text-base dark overflow-hidden border shadow-none max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]">
+          <div className="bg-ui-code-bg-header border-ui-code-border flex items-center justify-between border-b px-8 py-6">
             <div className="flex items-center gap-x-4">
               <Heading>JSON</Heading>
               <Badge>{numberOfKeys} keys</Badge>
@@ -51,7 +51,7 @@ export const JsonView = ({ data, root }: JsonViewProps) => {
               </Drawer.Close>
             </div>
           </div>
-          <Drawer.Body className="p-4 overflow-auto">
+          <Drawer.Body className="overflow-auto p-4">
             <Suspense fallback={<div>Loading...</div>}>
               <Primitive
                 value={data}
@@ -80,15 +80,15 @@ export const JsonView = ({ data, root }: JsonViewProps) => {
                   render={({ "data-copied": copied, onClick }) => {
                     if (copied) {
                       return (
-                        <CheckCircleMiniSolid className="cursor-pointer align-middle text-ui-fg-subtle" />
-                      );
+                        <CheckCircleMiniSolid className="text-ui-fg-subtle cursor-pointer align-middle" />
+                      )
                     }
                     return (
                       <SquareTwoStackMini
-                        className="align-middle cursor-pointer text-ui-fg-subtle"
+                        className="text-ui-fg-subtle cursor-pointer align-middle"
                         onClick={onClick}
                       />
-                    );
+                    )
                   }}
                 />
                 <Primitive.Quote render={() => " "} />
@@ -103,7 +103,7 @@ export const JsonView = ({ data, root }: JsonViewProps) => {
                       <span className="text-ui-tag-neutral-text ml-2">
                         {Object.keys(value as object).length} items
                       </span>
-                    );
+                    )
                   }}
                 />
               </Primitive>
@@ -112,5 +112,5 @@ export const JsonView = ({ data, root }: JsonViewProps) => {
         </Drawer.Content>
       </Drawer>
     </Container>
-  );
-};
+  )
+}

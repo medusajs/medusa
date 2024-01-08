@@ -7956,7 +7956,7 @@ __metadata:
     "@medusajs/ui-preset": "workspace:^"
     "@medusajs/vite-plugin-extension": "workspace:^"
     "@radix-ui/react-collapsible": 1.0.3
-    "@tanstack/react-query": 4.22
+    "@tanstack/react-query": 4.22.0
     "@tanstack/react-table": 8.10.7
     "@types/react": 18.2.43
     "@types/react-dom": 18.2.17
@@ -16347,32 +16347,6 @@ __metadata:
   version: 4.22.0
   resolution: "@tanstack/query-core@npm:4.22.0"
   checksum: be3f870719ea9c53dfc3398725c92876448a2a5cd8253010226ad88e91b0586d3c5e9bb9366ca27a035d5855517b6883ec0a5d7d4437458ff5bd3acb5553974f
-  languageName: node
-  linkType: hard
-
-"@tanstack/query-core@npm:4.22.4":
-  version: 4.22.4
-  resolution: "@tanstack/query-core@npm:4.22.4"
-  checksum: eba84cb1627c4850c798050cac86bd34e734ae5a09c5963b4406cc0872a89927b0be871ff8a4d0bc37ceb4f83ae81aefafd498037179bddaeeb0d0c1cae2a4c1
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:4.22":
-  version: 4.22.4
-  resolution: "@tanstack/react-query@npm:4.22.4"
-  dependencies:
-    "@tanstack/query-core": 4.22.4
-    use-sync-external-store: ^1.2.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-native: "*"
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: 24291e7cc1b9d60e9908818a3555e273cb4342bba13ef8d992a4fc1bc826f2d3dbe11db29aaa0fcf2a1d72772216d1ec16bf5c2eee3879e2160ede5e8abe7208
   languageName: node
   linkType: hard
 

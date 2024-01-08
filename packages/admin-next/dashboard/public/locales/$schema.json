@@ -18,19 +18,10 @@
         "create": {
           "type": "string"
         },
-        "createItem": {
-          "type": "string"
-        },
         "delete": {
           "type": "string"
         },
-        "deleteItem": {
-          "type": "string"
-        },
         "edit": {
-          "type": "string"
-        },
-        "editItem": {
           "type": "string"
         },
         "extensions": {
