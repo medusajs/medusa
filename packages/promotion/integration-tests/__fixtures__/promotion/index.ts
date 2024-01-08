@@ -1,3 +1,4 @@
+import { CreatePromotionDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Promotion } from "@models"
 import { defaultPromotionsData } from "./data"
@@ -6,9 +7,9 @@ export * from "./data"
 
 export async function createPromotions(
   manager: SqlEntityManager,
-  promotionsData = defaultPromotionsData
+  promotionsData: CreatePromotionDTO[] = defaultPromotionsData
 ): Promise<Promotion[]> {
-  const promotion: Promotion[] = []
+  const promotions: Promotion[] = []
 
   for (let promotionData of promotionsData) {
     let promotion = manager.create(Promotion, promotionData)
@@ -18,5 +19,5 @@ export async function createPromotions(
     await manager.flush()
   }
 
-  return promotion
+  return promotions
 }

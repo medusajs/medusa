@@ -28,6 +28,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/postundefined
     - lang: Shell
       label: cURL
       source:
@@ -78,6 +83,11 @@ delete:
       source:
         $ref: >-
           ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/store_carts_{id}_line-items_{line_id}/deleteundefined
     - lang: Shell
       label: cURL
       source:

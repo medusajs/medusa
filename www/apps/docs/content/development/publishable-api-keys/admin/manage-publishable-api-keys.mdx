@@ -179,6 +179,10 @@ You can create a publishable API key by sending a request to the [Create Publish
       const handleCreate = (title: string) => {
         createKey.mutate({
           title,
+        }, {
+          onSuccess: ({ publishable_api_key }) => {
+            console.log(publishable_api_key.id)
+          }
         })
       }
 
@@ -249,9 +253,15 @@ You can update a publishable API key’s details by sending a request to the [Up
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { useAdminUpdatePublishableApiKey } from "medusa-react"
+   import { useAdminUpdatePublishableApiKey } from "medusa-react"
 
-    const UpdatePublishableApiKey = () => {
+    type Props = {
+      publishableApiKeyId: string
+    }
+
+    const PublishableApiKey = ({
+      publishableApiKeyId
+    }: Props) => {
       const updateKey = useAdminUpdatePublishableApiKey(
         publishableApiKeyId
       )
@@ -260,13 +270,17 @@ You can update a publishable API key’s details by sending a request to the [Up
       const handleUpdate = (title: string) => {
         updateKey.mutate({
           title,
+        }, {
+          onSuccess: ({ publishable_api_key }) => {
+            console.log(publishable_api_key.id)
+          }
         })
       }
 
       // ...
     }
 
-    export default UpdatePublishableApiKey
+    export default PublishableApiKey
     ```
 
   </TabItem>
@@ -334,14 +348,24 @@ You can revoke a publishable API key by sending a request to the [Revoke Publish
     ```tsx
     import { useAdminRevokePublishableApiKey } from "medusa-react"
 
-    const PublishableApiKey = () => {
+    type Props = {
+      publishableApiKeyId: string
+    }
+
+    const PublishableApiKey = ({
+      publishableApiKeyId
+    }: Props) => {
       const revokeKey = useAdminRevokePublishableApiKey(
         publishableApiKeyId
       )
       // ...
 
       const handleRevoke = () => {
-        revokeKey.mutate()
+        revokeKey.mutate(void 0, {
+          onSuccess: ({ publishable_api_key }) => {
+            console.log(publishable_api_key.revoked_at)
+          }
+        })
       }
 
       // ...
@@ -404,14 +428,24 @@ You can delete a publishable API key by sending a request to the [Delete Publish
     ```tsx
     import { useAdminDeletePublishableApiKey } from "medusa-react"
 
-    const PublishableApiKey = () => {
+    type Props = {
+      publishableApiKeyId: string
+    }
+
+    const PublishableApiKey = ({
+      publishableApiKeyId
+    }: Props) => {
       const deleteKey = useAdminDeletePublishableApiKey(
         publishableApiKeyId
       )
       // ...
 
       const handleDelete = () => {
-        deleteKey.mutate()
+        deleteKey.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...
@@ -480,12 +514,17 @@ You can retrieve the list of sales channels associated with a publishable API ke
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { SalesChannel } from "@medusajs/medusa"
     import { 
       useAdminPublishableApiKeySalesChannels,
     } from "medusa-react"
 
-    const SalesChannels = () => {
+    type Props = {
+      publishableApiKeyId: string
+    }
+
+    const SalesChannels = ({
+      publishableApiKeyId
+    }: Props) => {
       const { sales_channels, isLoading } = 
         useAdminPublishableApiKeySalesChannels(
           publishableApiKeyId
@@ -499,7 +538,7 @@ You can retrieve the list of sales channels associated with a publishable API ke
           )}
           {sales_channels && sales_channels.length > 0 && (
             <ul>
-              {sales_channels.map((salesChannel: SalesChannel) => (
+              {sales_channels.map((salesChannel) => (
                 <li key={salesChannel.id}>{salesChannel.name}</li>
               ))}
             </ul>
@@ -575,7 +614,13 @@ You can add a sales channel to a publishable API key by sending a request to the
       useAdminAddPublishableKeySalesChannelsBatch,
     } from "medusa-react"
 
-    const PublishableApiKey = () => {
+    type Props = {
+      publishableApiKeyId: string
+    }
+
+    const PublishableApiKey = ({
+      publishableApiKeyId
+    }: Props) => {
       const addSalesChannels = 
         useAdminAddPublishableKeySalesChannelsBatch(
           publishableApiKeyId
@@ -589,6 +634,10 @@ You can add a sales channel to a publishable API key by sending a request to the
               id: salesChannelId,
             },
           ],
+        }, {
+          onSuccess: ({ publishable_api_key }) => {
+            console.log(publishable_api_key.id)
+          }
         })
       }
 
@@ -685,13 +734,19 @@ You can delete a sales channel from a publishable API key by sending a request t
       useAdminRemovePublishableKeySalesChannelsBatch,
     } from "medusa-react"
 
-    const PublishableApiKey = () => {
+    type Props = {
+      publishableApiKeyId: string
+    }
+
+    const PublishableApiKey = ({
+      publishableApiKeyId
+    }: Props) => {
       const deleteSalesChannels = 
         useAdminRemovePublishableKeySalesChannelsBatch(
           publishableApiKeyId
         )
       // ...
-
+    
       const handleDelete = (salesChannelId: string) => {
         deleteSalesChannels.mutate({
           sales_channel_ids: [
@@ -699,12 +754,16 @@ You can delete a sales channel from a publishable API key by sending a request t
               id: salesChannelId,
             },
           ],
+        }, {
+          onSuccess: ({ publishable_api_key }) => {
+            console.log(publishable_api_key.id)
+          }
         })
       }
-
+    
       // ...
     }
-
+    
     export default PublishableApiKey
     ```
 

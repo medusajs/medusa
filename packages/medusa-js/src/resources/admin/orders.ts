@@ -34,7 +34,7 @@ import BaseResource from "../base"
  */
 class AdminOrdersResource extends BaseResource {
   /**
-   * Update and order's details.
+   * Update an order's details.
    * @param {string} id - The order's ID.
    * @param {AdminPostOrdersOrderReq} payload - The attributes to update in the order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
@@ -248,7 +248,7 @@ class AdminOrdersResource extends BaseResource {
 
   /**
    * Create a Fulfillment of an Order using the fulfillment provider, and change the order's fulfillment status to either `partially_fulfilled` or `fulfilled`, depending on
- *  whether all the items were fulfilled.
+   * whether all the items were fulfilled.
    * @param {string} id - The ID of the order that the fulfillment belongs to.
    * @param {AdminPostOrdersOrderFulfillmentsReq} payload - The fulfillment to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
@@ -513,7 +513,7 @@ class AdminOrdersResource extends BaseResource {
    *   ]
    * })
    * .then(({ order }) => {
-   *   console.log(order.id);
+   *   console.log(order.swaps);
    * })
    */
   createSwap(
@@ -642,7 +642,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The order's ID.
    * @param {AdminPostOrdersOrderClaimsReq} payload - The claim to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `claims` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the claim under the `claims` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -701,7 +701,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} claimId - The claim's ID.
    * @param {AdminPostOrdersOrderClaimsClaimReq} payload - The attributes to update in the claim.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `claims` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the claims under the `claims` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

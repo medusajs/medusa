@@ -30,6 +30,35 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { ShippingProfileType } from "@medusajs/medusa"
+ *       import { useAdminCreateShippingProfile } from "medusa-react"
+ *
+ *       const CreateShippingProfile = () => {
+ *         const createShippingProfile = useAdminCreateShippingProfile()
+ *         // ...
+ *
+ *         const handleCreate = (
+ *           name: string,
+ *           type: ShippingProfileType
+ *         ) => {
+ *           createShippingProfile.mutate({
+ *             name,
+ *             type
+ *           }, {
+ *             onSuccess: ({ shipping_profile }) => {
+ *               console.log(shipping_profile.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateShippingProfile
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -84,6 +113,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostShippingProfilesReq
  * type: object
+ * description: "The details of the shipping profile to create."
  * required:
  *   - name
  *   - type

@@ -42,6 +42,37 @@ import { CartService } from "../../../../../services"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useCreateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const createLineItem = useCreateLineItem(cartId)
+ *
+ *         const handleAddItem = (
+ *           variantId: string,
+ *           quantity: number
+ *         ) => {
+ *           createLineItem.mutate({
+ *             variant_id: variantId,
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -198,6 +229,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartLineItemsReq
  * type: object
+ * description: "The details of the line item to create."
  * required:
  *   - variant_id
  *   - quantity

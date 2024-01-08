@@ -43,6 +43,30 @@ import { FindParams } from "../../../../types/common"
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateInventoryItem } from "medusa-react"
+ *
+ *       const CreateInventoryItem = () => {
+ *         const createInventoryItem = useAdminCreateInventoryItem()
+ *         // ...
+ *
+ *         const handleCreate = (variantId: string) => {
+ *           createInventoryItem.mutate({
+ *             variant_id: variantId,
+ *           }, {
+ *             onSuccess: ({ inventory_item }) => {
+ *               console.log(inventory_item.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateInventoryItem
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -185,6 +209,7 @@ function generateAttachInventoryToVariantHandler(
 /**
  * @schema AdminPostInventoryItemsReq
  * type: object
+ * description: "The details of the inventory item to create."
  * required:
  *   - variant_id
  * properties:

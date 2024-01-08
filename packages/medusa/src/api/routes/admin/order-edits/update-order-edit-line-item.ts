@@ -37,6 +37,40 @@ import {
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id)
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminOrderEditUpdateLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         orderEditId: string
+ *         itemId: string
+ *       }
+ *
+ *       const OrderEditItemChange = ({
+ *         orderEditId,
+ *         itemId
+ *       }: Props) => {
+ *         const updateLineItem = useAdminOrderEditUpdateLineItem(
+ *           orderEditId,
+ *           itemId
+ *         )
+ *
+ *         const handleUpdateLineItem = (quantity: number) => {
+ *           updateLineItem.mutate({
+ *             quantity,
+ *           }, {
+ *             onSuccess: ({ order_edit }) => {
+ *               console.log(order_edit.items)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default OrderEditItemChange
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -106,6 +140,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostOrderEditsEditLineItemsLineItemReq
  * type: object
+ * description: "The details to create or update of the line item change."
  * required:
  *   - quantity
  * properties:

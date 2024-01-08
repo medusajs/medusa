@@ -44,7 +44,7 @@ export const CodeBlock = ({
           },
         }}
         code={source.trim()}
-        language={lang}
+        language={lang.toLowerCase()}
         {...rest}
       >
         {({
@@ -71,7 +71,7 @@ export const CodeBlock = ({
                 )}
               >
                 {tokens.map((line, i) => {
-                  const lineProps = getLineProps({ line })
+                  const lineProps = getLineProps({ line, key: i })
                   return (
                     <span
                       key={i}
@@ -90,7 +90,7 @@ export const CodeBlock = ({
                       )}
                       <span>
                         {line.map((token, key) => (
-                          <span key={key} {...getTokenProps({ token })} />
+                          <span key={key} {...getTokenProps({ token, key })} />
                         ))}
                       </span>
                     </span>

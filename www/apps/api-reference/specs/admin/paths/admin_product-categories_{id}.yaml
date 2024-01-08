@@ -33,6 +33,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_product-categories_{id}/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_product-categories_{id}/getundefined
     - lang: Shell
       label: cURL
       source:
@@ -102,6 +106,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_product-categories_{id}/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_product-categories_{id}/postundefined
     - lang: Shell
       label: cURL
       source:
@@ -151,6 +159,10 @@ delete:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_product-categories_{id}/delete.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_product-categories_{id}/deleteundefined
     - lang: Shell
       label: cURL
       source:

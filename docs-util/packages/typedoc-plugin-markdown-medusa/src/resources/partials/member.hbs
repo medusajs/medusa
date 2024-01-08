@@ -16,7 +16,7 @@
 
 {{#each signatures}}
 
-{{> member.signature showSources=true parent=.. }}
+{{> member.signature-wrapper showSources=true parent=.. }}
 
 {{/each}}
 
@@ -58,7 +58,9 @@
 
 {{#unless @last}}
 {{#unless hasOwnDocument}}
+{{#unless removeSeparator}}
 ___
+{{/unless}}
 {{/unless}}
 {{/unless}}
 
