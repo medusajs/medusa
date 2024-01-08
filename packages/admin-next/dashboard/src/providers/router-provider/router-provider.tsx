@@ -134,11 +134,11 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            lazy: () => import("../../routes/customers/list"),
+            lazy: () => import("../../routes/customers/views/customer-list"),
           },
           {
             path: ":id",
-            lazy: () => import("../../routes/customers/details"),
+            lazy: () => import("../../routes/customers/views/customer-details"),
           },
         ],
       },
