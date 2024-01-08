@@ -2,7 +2,7 @@ import { Modules } from "@medusajs/modules-sdk"
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
-import * as PromotionModels from "@models"
+import * as WorkflowOrchestratorModels from "@models"
 import { EOL } from "os"
 import { resolve } from "path"
 
@@ -22,17 +22,22 @@ export async function run({
 
   logger.info(`Loading seed data from ${path}...`)
 
-  const { promotionsData } = await import(resolve(process.cwd(), path)).catch(
+  const { workflowsData } = await import(resolve(process.cwd(), path)).catch(
     (e) => {
       logger?.error(
-        `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: promotionsData.${EOL}${e}`
+        `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: workflowsData.${EOL}${e}`
       )
       throw e
     }
   )
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig(Modules.PROMOTION, options)!
-  const entities = Object.values(PromotionModels) as unknown as EntitySchema[]
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(
+    Modules.WORKFLOW_ORCHESTRATOR,
+    options
+  )!
+  const entities = Object.values(
+    WorkflowOrchestratorModels
+  ) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 
   const orm = await DALUtils.mikroOrmCreateConnection(
@@ -44,10 +49,9 @@ export async function run({
   const manager = orm.em.fork()
 
   try {
-    logger.info("Inserting promotions..")
+    logger.info("Inserting workflow data..")
 
-    // TODO: implement promotions seed data
-    // await createPromotions(manager, promotionsData)
+    // TODO: implement workflow seed data
   } catch (e) {
     logger.error(
       `Failed to insert the seed data in the PostgreSQL database ${dbData.clientUrl}.${EOL}${e}`

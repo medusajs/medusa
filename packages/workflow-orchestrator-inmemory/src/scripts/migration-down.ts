@@ -2,7 +2,7 @@ import { Modules } from "@medusajs/modules-sdk"
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
-import * as PromotionModels from "@models"
+import * as WorkflowOrchestratorModels from "@models"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -20,8 +20,13 @@ export async function revertMigration({
 > = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig(Modules.PROMOTION, options)!
-  const entities = Object.values(PromotionModels) as unknown as EntitySchema[]
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(
+    Modules.WORKFLOW_ORCHESTRATOR,
+    options
+  )!
+  const entities = Object.values(
+    WorkflowOrchestratorModels
+  ) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 
   const orm = await DALUtils.mikroOrmCreateConnection(
@@ -34,9 +39,11 @@ export async function revertMigration({
     const migrator = orm.getMigrator()
     await migrator.down()
 
-    logger?.info("Promotion module migration executed")
+    logger?.info("Workflow orchestrator module migration executed")
   } catch (error) {
-    logger?.error(`Promotion module migration failed to run - Error: ${error}`)
+    logger?.error(
+      `Workflow orchestrator module migration failed to run - Error: ${error}`
+    )
   }
 
   await orm.close()

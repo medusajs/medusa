@@ -25,7 +25,7 @@ export default async (
   const pathToMigrations = __dirname + "/../migrations"
 
   await ModulesSdkUtils.mikroOrmConnectionLoader({
-    moduleName: Modules.PROMOTION,
+    moduleName: Modules.WORKFLOW_ORCHESTRATOR,
     entities,
     container,
     options,

@@ -2,7 +2,7 @@ import { Modules } from "@medusajs/modules-sdk"
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
-import * as PromotionModels from "@models"
+import * as WorkflowOrchestratorModels from "@models"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -26,7 +26,9 @@ export async function runMigrations(
     Modules.WORKFLOW_ORCHESTRATOR,
     options
   )!
-  const entities = Object.values(PromotionModels) as unknown as EntitySchema[]
+  const entities = Object.values(
+    WorkflowOrchestratorModels
+  ) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 
   const orm = await DALUtils.mikroOrmCreateConnection(

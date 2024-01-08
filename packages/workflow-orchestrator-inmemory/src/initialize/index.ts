@@ -1,11 +1,14 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MODULE_PACKAGE_NAMES,
   MedusaModule,
+  MODULE_PACKAGE_NAMES,
   Modules,
 } from "@medusajs/modules-sdk"
-import { IPromotionModuleService, ModulesSdkTypes } from "@medusajs/types"
+import {
+  IWorkflowOrchestratorModuleService,
+  ModulesSdkTypes,
+} from "@medusajs/types"
 import { moduleDefinition } from "../module-definition"
 import { InitializeModuleInjectableDependencies } from "../types"
 
@@ -16,16 +19,17 @@ export const initialize = async (
     | ExternalModuleDeclaration
     | InternalModuleDeclaration,
   injectedDependencies?: InitializeModuleInjectableDependencies
-): Promise<IPromotionModuleService> => {
-  const loaded = await MedusaModule.bootstrap<IPromotionModuleService>({
-    moduleKey: Modules.PROMOTION,
-    defaultPath: MODULE_PACKAGE_NAMES[Modules.PROMOTION],
-    declaration: options as
-      | InternalModuleDeclaration
-      | ExternalModuleDeclaration,
-    injectedDependencies,
-    moduleExports: moduleDefinition,
-  })
+): Promise<IWorkflowOrchestratorModuleService> => {
+  const loaded =
+    await MedusaModule.bootstrap<IWorkflowOrchestratorModuleService>({
+      moduleKey: Modules.WORKFLOW_ORCHESTRATOR,
+      defaultPath: MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ORCHESTRATOR],
+      declaration: options as
+        | InternalModuleDeclaration
+        | ExternalModuleDeclaration,
+      injectedDependencies,
+      moduleExports: moduleDefinition,
+    })
 
-  return loaded[Modules.PROMOTION]
+  return loaded[Modules.WORKFLOW_ORCHESTRATOR]
 }
