@@ -94,7 +94,7 @@ export const resetFactBox = ({
 > & {
   successMessage: string
   newTitle?: string
-}): NodeJS.Timer | null => {
+}): NodeJS.Timeout | null => {
   if (interval) {
     clearInterval(interval)
   }
