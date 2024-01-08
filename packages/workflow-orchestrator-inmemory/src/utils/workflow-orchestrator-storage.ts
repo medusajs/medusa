@@ -4,11 +4,11 @@ import {
   TransactionCheckpoint,
   TransactionStep,
 } from "@medusajs/orchestration"
+import { TransactionState } from "@medusajs/utils"
 import {
   WorkflowExecutionService,
   WorkflowOrchestratorService,
 } from "@services"
-import { TransactionState } from "@medusajs/utils"
 
 // eslint-disable-next-line max-len
 export class InMemoryDistributedTransactionStorage extends DistributedTransactionStorage {
@@ -38,7 +38,7 @@ export class InMemoryDistributedTransactionStorage extends DistributedTransactio
       {
         workflow_id: data.flow.modelId,
         transaction_id: data.flow.transactionId,
-        definition: data.flow.definition,
+        execution: data.flow,
         context: {
           data: data.context,
           errors: data.errors,

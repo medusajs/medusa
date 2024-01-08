@@ -9,7 +9,7 @@ export class Migration20231221104256 extends Migration {
             id character varying NOT NULL,
             workflow_id character varying NOT NULL,
             transaction_id character varying NOT NULL,
-            definition jsonb NULL,
+            execution jsonb NULL,
             context jsonb NULL,
             state character varying NOT NULL,
             created_at timestamp WITHOUT time zone NOT NULL DEFAULT Now(),
