@@ -9,6 +9,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
   retrieveEntity,
 } from "@medusajs/utils"
@@ -86,6 +87,31 @@ export default class CartService<TEntity extends Cart = Cart> {
     data: UpdateCartDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const existingCarts = await this.list(
+      { id: data.map(({ id }) => id) },
+      {},
+      sharedContext
+    )
+
+    const existingCartsMap = new Map(
+      existingCarts.map<[string, Cart]>((cart) => [cart.id, cart])
+    )
+
+    const updates: { cart: Cart; update: UpdateCartDTO }[] = []
+
+    for (const update of data) {
+      const cart = existingCartsMap.get(update.id)
+
+      if (!cart) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Cart with id "${update.id}" not found`
+        )
+      }
+
+      updates.push({ cart, update })
+    }
+
     return (await (this.cartRepository_ as CartRepository).update(
       data,
       sharedContext

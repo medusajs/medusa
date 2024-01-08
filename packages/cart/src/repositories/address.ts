@@ -81,16 +81,17 @@ export class AddressRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdateAddressDTO[],
+    data: { address: Address; update: UpdateAddressDTO }[],
     context: Context = {}
   ): Promise<Address[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    manager.persist(data)
+    const entities = data.map(({ address, update }) => {
+      return manager.assign(address, update)
+    })
 
-    return await this.find(
-      { where: { id: { $in: data.map((d) => d.id) } } },
-      context
-    )
+    manager.persist(entities)
+
+    return entities
   }
 }

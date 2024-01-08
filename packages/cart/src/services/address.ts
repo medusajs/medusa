@@ -97,21 +97,19 @@ export default class AddressService<TEntity extends Address = Address> {
       existingAddresses.map<[string, Address]>((addr) => [addr.id, addr])
     )
 
-    const updates: UpdateAddressDTO[] = []
+    const updates: { address: Address; update: UpdateAddressDTO }[] = []
 
     for (const update of data) {
-      const user = existingAddressesMap.get(update.id)
+      const address = existingAddressesMap.get(update.id)
 
-      if (!user) {
+      if (!address) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `Address with id "${update.id}" not found`
         )
       }
 
-      const toUpdate = { ...user, ...update } as UpdateAddressDTO
-
-      updates.push(toUpdate)
+      updates.push({ address, update })
     }
 
     return (await (this.addressRepository_ as AddressRepository).update(
