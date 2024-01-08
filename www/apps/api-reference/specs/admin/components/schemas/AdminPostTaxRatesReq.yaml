@@ -1,4 +1,5 @@
 type: object
+description: The details of the tax rate to create.
 required:
   - code
   - name

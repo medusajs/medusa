@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the reservation.
+ */
 export interface AdminPostReservationsReservationReq {
   /**
    * The ID of the location associated with the reservation.

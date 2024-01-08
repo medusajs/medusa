@@ -79,16 +79,17 @@ class AdminPaymentsResource extends BaseResource {
    * @returns {ResponsePromise<AdminRefundRes>} Resolves to the refund's details.
    * 
    * @example
+   * import { RefundReason } from "@medusajs/medusa";
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.payments.refundPayment(paymentId, {
    *   amount: 1000,
-   *   reason: "return",
+   *   reason: RefundReason.RETURN,
    *   note: "Do not like it",
    * })
-   * .then(({ payment }) => {
-   *   console.log(payment.id);
+   * .then(({ refund }) => {
+   *   console.log(refund.amount);
    * })
    */
   refundPayment(

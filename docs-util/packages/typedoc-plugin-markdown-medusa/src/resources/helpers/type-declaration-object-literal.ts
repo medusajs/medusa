@@ -2,15 +2,16 @@ import * as Handlebars from "handlebars"
 import { DeclarationReflection, ReflectionType } from "typedoc"
 import { MarkdownTheme } from "../../theme"
 import { parseParams } from "../../utils/params-utils"
-import { ReflectionParameterType } from "../../types"
+import { Parameter, ReflectionParameterType } from "../../types"
 import reflectionFormatter from "../../utils/reflection-formatter"
 import { escapeChars, stripLineBreaks } from "utils"
+import { formatParameterComponent } from "../../utils/format-parameter-component"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "typeDeclarationMembers",
     function (this: DeclarationReflection[]) {
-      const { parameterComponent, maxLevel } =
+      const { parameterComponent, maxLevel, parameterComponentExtraProps } =
         theme.getFormattingOptionsForLocation()
       const comments = this.map(
         (param) => !!param.comment?.hasVisibleComponent()
@@ -30,11 +31,12 @@ export default function (theme: MarkdownTheme) {
           break
         }
         case "component": {
-          result = getComponentMarkdownContent(
+          result = getComponentMarkdownContent({
             properties,
             parameterComponent,
-            maxLevel
-          )
+            maxLevel,
+            parameterComponentExtraProps,
+          })
           break
         }
         case "table": {
@@ -58,11 +60,17 @@ function getListMarkdownContent(properties: DeclarationReflection[]) {
   return items.join("\n")
 }
 
-function getComponentMarkdownContent(
-  properties: DeclarationReflection[],
-  parameterComponent?: string,
+function getComponentMarkdownContent({
+  properties,
+  parameterComponent,
+  maxLevel,
+  parameterComponentExtraProps,
+}: {
+  properties: DeclarationReflection[]
+  parameterComponent?: string
   maxLevel?: number | undefined
-) {
+  parameterComponentExtraProps?: Record<string, unknown>
+}) {
   const parameters = properties.map((property) =>
     reflectionFormatter({
       reflection: property,
@@ -72,11 +80,11 @@ function getComponentMarkdownContent(
     })
   )
 
-  return `<${parameterComponent} parameters={${JSON.stringify(
-    parameters,
-    null,
-    2
-  )}} />`
+  return formatParameterComponent({
+    parameterComponent,
+    componentItems: parameters as Parameter[],
+    extraProps: parameterComponentExtraProps,
+  })
 }
 
 function getTableMarkdownContent(

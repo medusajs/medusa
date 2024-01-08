@@ -163,20 +163,32 @@ Regardless of whether you need to refund or capture the payment, you can process
     ```tsx
     import { useAdminProcessSwapPayment } from "medusa-react"
 
-    const ProcessPayment = () => {
+    type Props = {
+      orderId: string,
+      swapId: string
+    }
+
+    const Swap = ({
+      orderId,
+      swapId
+    }: Props) => {
       const processPayment = useAdminProcessSwapPayment(
         orderId
       )
       // ...
 
-      const handleProcess = () => {
-        processPayment.mutate(swapId)
+      const handleProcessPayment = () => {
+        processPayment.mutate(swapId, {
+          onSuccess: ({ order }) => {
+            console.log(order.swaps)
+          }
+        })
       }
 
       // ...
     }
 
-    export default ProcessPayment
+    export default Swap
     ```
 
   </TabItem>
@@ -239,7 +251,15 @@ You can create a fulfillment for a swap by sending a request to the [Create Swap
     ```tsx
     import { useAdminFulfillSwap } from "medusa-react"
 
-    const FulfillSwap = () => {
+    type Props = {
+      orderId: string,
+      swapId: string
+    }
+
+    const Swap = ({
+      orderId,
+      swapId
+    }: Props) => {
       const fulfillSwap = useAdminFulfillSwap(
         orderId
       )
@@ -248,13 +268,17 @@ You can create a fulfillment for a swap by sending a request to the [Create Swap
       const handleFulfill = () => {
         fulfillSwap.mutate({
           swap_id: swapId,
+        }, {
+          onSuccess: ({ order }) => {
+            console.log(order.swaps)
+          }
         })
       }
 
       // ...
     }
 
-    export default FulfillSwap
+    export default Swap
     ```
 
   </TabItem>
@@ -312,23 +336,37 @@ You can create a shipment for a swap’s fulfillment using the [Create Swap Ship
     ```tsx
     import { useAdminCreateSwapShipment } from "medusa-react"
 
-    const CreateShipment = () => {
+    type Props = {
+      orderId: string,
+      swapId: string
+    }
+
+    const Swap = ({
+      orderId,
+      swapId
+    }: Props) => {
       const createShipment = useAdminCreateSwapShipment(
         orderId
       )
       // ...
 
-      const handleCreate = () => {
+      const handleCreateShipment = (
+        fulfillmentId: string
+      ) => {
         createShipment.mutate({
-          swap_id,
-          fulfillment_id,
+          swap_id: swapId,
+          fulfillment_id: fulfillmentId,
+        }, {
+          onSuccess: ({ order }) => {
+            console.log(order.swaps)
+          }
         })
       }
 
       // ...
     }
 
-    export default CreateShipment
+    export default Swap
     ```
 
   </TabItem>
@@ -408,23 +446,33 @@ You can cancel a fulfillment by sending a request to the [Cancel Swap Fulfillmen
     ```tsx
     import { useAdminCancelSwapFulfillment } from "medusa-react"
 
-    const CancelFulfillment = () => {
+    type Props = {
+      orderId: string,
+      swapId: string
+    }
+
+    const Swap = ({
+      orderId,
+      swapId
+    }: Props) => {
       const cancelFulfillment = useAdminCancelSwapFulfillment(
         orderId
       )
       // ...
 
-      const handleCancel = () => {
+      const handleCancelFulfillment = (
+        fulfillmentId: string
+      ) => {
         cancelFulfillment.mutate({
-          swap_id,
-          fulfillment_id,
+          swap_id: swapId,
+          fulfillment_id: fulfillmentId,
         })
       }
 
       // ...
     }
 
-    export default CancelFulfillment
+    export default Swap
     ```
 
   </TabItem>
@@ -488,20 +536,32 @@ You can cancel a swap by sending a request to the [Cancel Swap API Route](https:
     ```tsx
     import { useAdminCancelSwap } from "medusa-react"
 
-    const CancelSwap = () => {
+    type Props = {
+      orderId: string,
+      swapId: string
+    }
+
+    const Swap = ({
+      orderId,
+      swapId
+    }: Props) => {
       const cancelSwap = useAdminCancelSwap(
         orderId
       )
       // ...
 
       const handleCancel = () => {
-        cancelSwap.mutate(swapId)
+        cancelSwap.mutate(swapId, {
+          onSuccess: ({ order }) => {
+            console.log(order.swaps)
+          }
+        })
       }
 
       // ...
     }
 
-    export default CancelSwap
+    export default Swap
     ```
 
   </TabItem>

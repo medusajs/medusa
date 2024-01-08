@@ -68,7 +68,6 @@ You can show a list of customers by sending a request to the [List Customers API
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { Customer } from "@medusajs/medusa"
     import { useAdminCustomers } from "medusa-react"
 
     const Customers = () => {
@@ -82,7 +81,7 @@ You can show a list of customers by sending a request to the [List Customers API
           )}
           {customers && customers.length > 0 && (
             <ul>
-              {customers.map((customer: Customer) => (
+              {customers.map((customer) => (
                 <li key={customer.id}>{customer.first_name}</li>
               ))}
             </ul>
@@ -162,27 +161,26 @@ You can create a customer account by sending a request to the [Create a Customer
     ```tsx
     import { useAdminCreateCustomer } from "medusa-react"
 
+    type CustomerData = {
+      first_name: string
+      last_name: string
+      email: string
+      password: string
+    }
+
     const CreateCustomer = () => {
       const createCustomer = useAdminCreateCustomer()
       // ...
 
-      const handleCreate = () => {
-        // ...
-        createCustomer.mutate({
-          first_name,
-          last_name,
-          email,
-          password,
+      const handleCreate = (customerData: CustomerData) => {
+        createCustomer.mutate(customerData, {
+          onSuccess: ({ customer }) => {
+            console.log(customer.id)
+          }
         })
       }
 
       // ...
-      
-      return (
-        <form>
-          {/* Render form */}
-        </form>
-      )
     }
 
     export default CreateCustomer
@@ -265,31 +263,30 @@ You can edit a customer’s information by sending a request to the [Update a Cu
 
     ```tsx
     import { useAdminUpdateCustomer } from "medusa-react"
-
-    const UpdateCustomer = () => {
-      const updateCustomer = useAdminUpdateCustomer(customerId)
-      // ...
-
-      const handleUpdate = () => {
-        // ...
-        updateCustomer.mutate({
-          email,
-          password,
-          first_name,
-          last_name,
-        })
-      }
-
-      // ...
-      
-      return (
-        <form>
-          {/* Render form */}
-        </form>
-      )
+    
+    type CustomerData = {
+      first_name: string
+      last_name: string
+      email: string
+      password: string
     }
 
-    export default UpdateCustomer
+    type Props = {
+      customerId: string
+    }
+
+    const Customer = ({ customerId }: Props) => {
+      const updateCustomer = useAdminUpdateCustomer(customerId)
+      // ...
+    
+      const handleUpdate = (customerData: CustomerData) => {
+        updateCustomer.mutate(customerData)
+      }
+    
+      // ...
+    }
+    
+    export default Customer
     ```
 
   </TabItem>

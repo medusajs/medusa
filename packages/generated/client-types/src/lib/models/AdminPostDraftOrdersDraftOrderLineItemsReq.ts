@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the line item to create.
+ */
 export interface AdminPostDraftOrdersDraftOrderLineItemsReq {
   /**
    * The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.

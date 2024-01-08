@@ -20,6 +20,10 @@ post:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/store_carts_{id}_payment-sessions/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/store_carts_{id}_payment-sessions/postundefined
     - lang: Shell
       label: cURL
       source:

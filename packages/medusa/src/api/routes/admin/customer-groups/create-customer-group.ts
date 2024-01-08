@@ -31,6 +31,26 @@ import { validator } from "../../../../utils/validator"
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateCustomerGroup } from "medusa-react"
+ *
+ *       const CreateCustomerGroup = () => {
+ *         const createCustomerGroup = useAdminCreateCustomerGroup()
+ *         // ...
+ *
+ *         const handleCreate = (name: string) => {
+ *           createCustomerGroup.mutate({
+ *             name,
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateCustomerGroup
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -89,6 +109,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostCustomerGroupsReq
  * type: object
+ * description: "The details of the customer group to create."
  * required:
  *   - name
  * properties:
