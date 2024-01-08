@@ -14,7 +14,7 @@ export const AppLayout = () => {
       <MainNav />
       <div className="flex h-[calc(100vh-57px)] w-full md:h-screen">
         {isSettings && <SettingsNav />}
-        <div className="flex h-full w-full flex-col items-center overflow-y-auto p-4">
+        <div className="flex h-full w-full flex-col items-center overflow-y-auto px-3 py-2">
           <Gutter>
             <Topbar />
             <Outlet />

@@ -13,5 +13,5 @@ export const queryClient = new QueryClient({
 
 export const medusa = new Medusa({
   baseUrl: "http://localhost:9000",
-  maxRetries: 3,
+  maxRetries: 1,
 })

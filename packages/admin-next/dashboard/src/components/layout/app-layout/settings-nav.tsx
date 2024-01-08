@@ -59,7 +59,7 @@ export const SettingsNav = () => {
 
   return (
     <div className="border-ui-border-base box-content flex h-full max-h-screen w-full max-w-[240px] flex-col overflow-hidden border-x max-md:hidden">
-      <div className="p-4">
+      <div className="px-3 py-2">
         <div className="flex h-10 items-center gap-x-3 p-1">
           <CogSixTooth className="text-ui-fg-subtle" />
           <Text leading="compact" weight="plus" size="small">

@@ -5,7 +5,7 @@ import { SearchToggle } from "./search-toggle"
 
 export const Topbar = () => {
   return (
-    <div className="hidden items-center justify-between px-4 py-1 md:flex">
+    <div className="hidden items-center justify-between px-3 py-1 md:flex">
       <div className="flex items-center gap-x-1.5">
         <Sidebar className="text-ui-fg-muted" />
         <Breadcrumbs />

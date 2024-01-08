@@ -130,7 +130,7 @@ const Header = () => {
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full px-3 py-2">
       <DropdownMenu>
         <DropdownMenu.Trigger className="hover:bg-ui-bg-subtle-hover active:bg-ui-bg-subtle-pressed focus:bg-ui-bg-subtle-pressed transition-fg w-full rounded-md outline-none">
           <div className="flex items-center justify-between p-1 md:pr-2">

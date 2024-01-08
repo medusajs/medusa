@@ -20,14 +20,14 @@ export const Profile = () => {
 
   return (
     <div>
-      <Container className="p-0">
-        <div className="border-ui-border-base border-b px-8 py-6">
+      <Container className="divide-ui-border-base divide-y p-0">
+        <div className="px-6 py-4">
           <Heading>{t("profile.domain")}</Heading>
           <Text className="text-ui-fg-subtle" size="small">
             {t("profile.manageYourProfileDetails")}
           </Text>
         </div>
-        <div className="border-ui-border-base grid grid-cols-2 border-b px-8 py-6">
+        <div className="grid grid-cols-2 px-6 py-4">
           <Text size="small" leading="compact" weight="plus">
             Name
           </Text>
@@ -35,7 +35,7 @@ export const Profile = () => {
             {user.first_name} {user.last_name}
           </Text>
         </div>
-        <div className="border-ui-border-base grid grid-cols-2 border-b px-8 py-6">
+        <div className="grid grid-cols-2 px-6 py-4">
           <Text size="small" leading="compact" weight="plus">
             Email
           </Text>
@@ -43,7 +43,7 @@ export const Profile = () => {
             {user.email}
           </Text>
         </div>
-        <div className="border-ui-border-base grid grid-cols-2 border-b px-8 py-6">
+        <div className="grid grid-cols-2 px-6 py-4">
           <Text size="small" leading="compact" weight="plus">
             Language
           </Text>
@@ -52,12 +52,12 @@ export const Profile = () => {
               ?.display_name || "-"}
           </Text>
         </div>
-        <div className="grid grid-cols-2 px-8 py-6">
+        <div className="grid grid-cols-2 px-6 py-4">
           <Text size="small" leading="compact" weight="plus">
             Usage insights
           </Text>
         </div>
-        <div className="border-ui-border-base flex items-center justify-end border-t px-8 py-6">
+        <div className="flex items-center justify-end px-6 py-4">
           <EditProfileDetailsDrawer
             id={user.id}
             firstName={user.first_name}
