@@ -3,18 +3,12 @@ import {
   TransactionCheckpoint,
 } from "../distributed-transaction"
 import { TransactionStep } from "../transaction-step"
-import { TransactionModelOptions } from "../types"
 
 export interface IDistributedTransactionStorage {
   get(key: string): Promise<TransactionCheckpoint | undefined>
   list(): Promise<TransactionCheckpoint[]>
   save(key: string, data: TransactionCheckpoint, ttl?: number): Promise<void>
   delete(key: string): Promise<void>
-  archive(
-    key: string,
-    data: TransactionCheckpoint,
-    options?: TransactionModelOptions
-  ): Promise<void>
   scheduleRetry(
     transaction: DistributedTransaction,
     step: TransactionStep,
@@ -68,14 +62,6 @@ export abstract class DistributedTransactionStorage
 
   async delete(key: string): Promise<void> {
     throw new Error("Method 'delete' not implemented.")
-  }
-
-  async archive(
-    key: string,
-    data: TransactionCheckpoint,
-    options?: TransactionModelOptions
-  ): Promise<void> {
-    throw new Error("Method 'archive' not implemented.")
   }
 
   async scheduleRetry(
