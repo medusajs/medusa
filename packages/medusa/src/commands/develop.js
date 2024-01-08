@@ -7,6 +7,7 @@ import path from "path"
 
 import Logger from "../loaders/logger"
 import { resolveAdminCLI } from "./utils/resolve-admin-cli"
+import { resolveExecutable } from "./utils/resolve-executable"
 
 const defaultConfig = {
   padding: 5,
@@ -56,17 +57,16 @@ export default async function ({ port, directory }) {
     COMMAND_INITIATED_BY: "develop",
   }
 
-  const startCommand = "@medusajs/medusa-cli start"
-
-  let child = fork(
-    "./utils/execute-in-child-process.ts",
-    [startCommand, ...args],
-    {
-      execArgv: argv,
-      cwd: directory,
-      env: { ...process.env, ...COMMAND_INITIATED_BY },
-    }
+  const medusaStartExecutable = resolveExecutable(
+    directory,
+    "@medusajs/medusa-cli"
   )
+
+  let child = fork(medusaStartExecutable, ["start", ...args], {
+    execArgv: argv,
+    cwd: directory,
+    env: { ...process.env, ...COMMAND_INITIATED_BY },
+  })
   // let child = fork(cliPath, [`start`, ...args], {
   //   execArgv: argv,
   //   cwd: directory,
@@ -74,7 +74,7 @@ export default async function ({ port, directory }) {
   // })
 
   child.on("error", function (err) {
-    console.error(`Failed to run command ${startCommand}: ${err}`)
+    console.error(`Failed to run command "@medusajs/medusa-cli start": ${err}`)
     process.exit(1)
   })
 
@@ -119,15 +119,11 @@ export default async function ({ port, directory }) {
 
       Logger.info("Rebuilt")
 
-      child = fork(
-        "./utils/execute-in-child-process.ts",
-        [startCommand, ...args],
-        {
-          cwd: directory,
-          env: { ...process.env, ...COMMAND_INITIATED_BY },
-          stdio: ["pipe", process.stdout, process.stderr, "ipc"],
-        }
-      )
+      child = fork(medusaStartExecutable, ["start", ...args], {
+        cwd: directory,
+        env: { ...process.env, ...COMMAND_INITIATED_BY },
+        stdio: ["pipe", process.stdout, process.stderr, "ipc"],
+      })
 
       // child = fork(cliPath, [`start`, ...args], {
       //   cwd: directory,
@@ -135,7 +131,9 @@ export default async function ({ port, directory }) {
       //   stdio: ["pipe", process.stdout, process.stderr, "ipc"],
       // })
       child.on("error", function (err) {
-        console.error(`Failed to run command ${startCommand}: ${err}`)
+        console.error(
+          `Failed to run command "@medusajs/medusa-cli start": ${err}`
+        )
         process.exit(1)
       })
     })
