@@ -1,28 +1,28 @@
-import { Command } from "commander";
+import { Command } from "commander"
 
-import { build } from "../api/build";
-import { bundle } from "../api/bundle";
-import { dev } from "../api/dev";
+import { build } from "../api/build"
+import { bundle } from "../api/bundle"
+import { dev } from "../api/dev"
 
 export async function createCli() {
-  const program = new Command();
+  const program = new Command()
 
-  program.name("medusa-admin");
+  program.name("medusa-admin")
 
   program
     .command("dev")
     .description("Starts the development server")
-    .action(dev);
+    .action(dev)
 
   program
     .command("build")
     .description("Builds the admin dashboard")
-    .action(build);
+    .action(build)
 
   program
     .command("bundle")
     .description("Bundles the admin dashboard")
-    .action(bundle);
+    .action(bundle)
 
-  return program;
+  return program
 }

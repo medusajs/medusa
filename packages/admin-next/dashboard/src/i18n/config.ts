@@ -1,9 +1,9 @@
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import Backend, { type HttpBackendOptions } from "i18next-http-backend";
-import { initReactI18next } from "react-i18next";
+import i18n from "i18next"
+import LanguageDetector from "i18next-browser-languagedetector"
+import Backend, { type HttpBackendOptions } from "i18next-http-backend"
+import { initReactI18next } from "react-i18next"
 
-import { Language } from "./types";
+import { Language } from "./types"
 
 i18n
   .use(Backend)
@@ -15,7 +15,7 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-  });
+  })
 
 export const languages: Language[] = [
   {
@@ -23,6 +23,6 @@ export const languages: Language[] = [
     display_name: "English",
     ltr: true,
   },
-];
+]
 
-export default i18n;
+export default i18n

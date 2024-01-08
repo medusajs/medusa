@@ -56,4 +56,4 @@ export const injectionZones = [
   // Login
   "login.before",
   "login.after",
-] as const;
+] as const

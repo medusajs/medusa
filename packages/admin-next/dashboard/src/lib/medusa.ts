@@ -1,5 +1,5 @@
-import Medusa from "@medusajs/medusa-js";
-import { QueryClient } from "@tanstack/react-query";
+import Medusa from "@medusajs/medusa-js"
+import { QueryClient } from "@tanstack/react-query"
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,9 +9,9 @@ export const queryClient = new QueryClient({
       retry: 1,
     },
   },
-});
+})
 
 export const medusa = new Medusa({
   baseUrl: "http://localhost:9000",
   maxRetries: 3,
-});
+})
