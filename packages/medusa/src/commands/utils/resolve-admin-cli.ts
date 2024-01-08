@@ -1,18 +1,19 @@
-import fs from "fs-extra"
-import path from "path"
+import { resolveExecutable } from "./resolve-executable"
 
-export function resolveAdminCLI() {
-  const cli = path.resolve(
-    require.resolve("@medusajs/admin"),
-    "../../",
-    "bin",
-    "medusa-admin.js"
-  )
+export function resolveAdminCLI(directory) {
+  try {
+    const adminExecutable = resolveExecutable(
+      directory,
+      "@medusajs/admin",
+      "../../",
+      "bin",
+      "medusa-admin.js"
+    )
 
-  const binExists = fs.existsSync(cli)
+    console.log("Admin executable: ", adminExecutable)
 
-  return {
-    binExists,
-    cli,
+    return { cli: adminExecutable, binExists: true }
+  } catch (e) {
+    return { cli: null, binExists: false }
   }
 }

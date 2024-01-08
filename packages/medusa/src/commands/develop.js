@@ -44,7 +44,15 @@ export default async function ({ port, directory }) {
     process.exit(0)
   })
 
-  execSync(`npx --no-install babel src -d dist --ignore "src/admin/**"`, {
+  const babelExecutable = resolveExecutable(
+    directory,
+    "@babel/cli",
+    "../",
+    "bin",
+    "babel.js"
+  )
+
+  execSync(`${babelExecutable} src -d dist --ignore "src/admin/**"`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
@@ -70,18 +78,13 @@ export default async function ({ port, directory }) {
     cwd: directory,
     env: { ...process.env, ...COMMAND_INITIATED_BY },
   })
-  // let child = fork(cliPath, [`start`, ...args], {
-  //   execArgv: argv,
-  //   cwd: directory,
-  //   env: { ...process.env, ...COMMAND_INITIATED_BY },
-  // })
 
   child.on("error", function (err) {
     console.error(`Failed to run command "@medusajs/medusa-cli start": ${err}`)
     process.exit(1)
   })
 
-  const { cli, binExists } = resolveAdminCLI()
+  const { cli, binExists } = resolveAdminCLI(directory)
 
   if (binExists) {
     const backendUrl = `http://localhost:${port}`
@@ -113,7 +116,7 @@ export default async function ({ port, directory }) {
       child.kill("SIGINT")
 
       execSync(
-        `npx --no-install babel src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
+        `${babelExecutable} src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
         {
           cwd: directory,
           stdio: ["pipe", process.stdout, process.stderr],
@@ -128,11 +131,6 @@ export default async function ({ port, directory }) {
         stdio: ["pipe", process.stdout, process.stderr, "ipc"],
       })
 
-      // child = fork(cliPath, [`start`, ...args], {
-      //   cwd: directory,
-      //   env: { ...process.env, ...COMMAND_INITIATED_BY },
-      //   stdio: ["pipe", process.stdout, process.stderr, "ipc"],
-      // })
       child.on("error", function (err) {
         console.error(
           `Failed to run command "@medusajs/medusa-cli start": ${err}`
