@@ -1,5 +1,4 @@
 import { TransactionCheckpoint } from "../distributed-transaction"
-import { TransactionModelOptions } from "../types"
 import { DistributedTransactionStorage } from "./abstract-storage"
 
 // eslint-disable-next-line max-len
@@ -28,14 +27,6 @@ export class BaseInMemoryDistributedTransactionStorage extends DistributedTransa
   }
 
   async delete(key: string): Promise<void> {
-    this.storage.delete(key)
-  }
-
-  async archive(
-    key: string,
-    data: TransactionCheckpoint,
-    options?: TransactionModelOptions
-  ): Promise<void> {
     this.storage.delete(key)
   }
 }
