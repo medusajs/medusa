@@ -6,19 +6,26 @@ import {
   InternalModuleDeclaration,
   ISalesChannelModuleService,
   ModuleJoinerConfig,
+  RestoreReturn,
   SalesChannelDTO,
+  SoftDeleteReturn,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  mapObjectTo,
   MedusaContext,
 } from "@medusajs/utils"
 import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@medusajs/types"
 
 import { SalesChannel } from "@models"
 
-import { joinerConfig } from "../joiner-config"
 import SalesChannelService from "./sales-channel"
+import {
+  joinerConfig,
+  entityNameToLinkableKeysMap,
+  LinkableKeys,
+} from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -68,6 +75,82 @@ export default class SalesChannelModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.salesChannelService_.delete(ids, sharedContext)
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async softDelete_(
+    salesChannelIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.salesChannelService_.softDelete(
+      salesChannelIds,
+      sharedContext
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async softDelete<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    salesChannelIds: string[],
+    { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.softDelete_(
+      salesChannelIds,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restore_(
+    salesChannelIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.salesChannelService_.restore(
+      salesChannelIds,
+      sharedContext
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async restore<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    salesChannelIds: string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.restore_(
+      salesChannelIds,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectTransactionManager("baseRepository_")
