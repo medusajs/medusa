@@ -7,17 +7,13 @@ export async function createAuthUsers(
     {
       id: "test-id",
       provider: "manual",
-      email: "manuel@test.com",
     },
     {
       id: "test-id-1",
       provider: "manual",
-      email: "manuel1@test.com",
-      password_hash: "test",
     },
     {
       provider: "store",
-      email: "store@test.com",
     },
   ]
 ): Promise<AuthUser[]> {
