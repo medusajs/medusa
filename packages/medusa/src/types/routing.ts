@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from "express"
 
 import type { Customer, User } from "../models"
-import type { MedusaContainer } from "./global"
+import { ContainerLike } from "@medusajs/types"
 
 export interface MedusaRequest extends Request {
   user?: (User | Customer) & { customer_id?: string; userId?: string }
-  scope: MedusaContainer
+  scope: ContainerLike
 }
 
 export type MedusaResponse = Response

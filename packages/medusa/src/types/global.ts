@@ -1,4 +1,4 @@
-import { CommonTypes } from "@medusajs/types"
+import { CommonTypes, ContainerLike } from "@medusajs/types"
 import { Request } from "express"
 import { MedusaContainer as coreMedusaContainer } from "medusa-core-utils"
 import { Customer, User } from "../models"
@@ -9,7 +9,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: (User | Customer) & { customer_id?: string; userId?: string }
-      scope: MedusaContainer
+      scope: ContainerLike
       validatedQuery: RequestQueryFields & Record<string, unknown>
       validatedBody: unknown
       listConfig: FindConfig<unknown>
