@@ -50,7 +50,7 @@ function getDatabaseUrl(
     return `postgres://${user}:${password}@${host}:${port}/${database}`
   }
 
-  return clientUrl
+  return clientUrl!
 }
 
 /**
