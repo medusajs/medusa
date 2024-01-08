@@ -5,7 +5,10 @@ import { AuthProvider } from "./providers/auth-provider"
 import { RouterProvider } from "./providers/router-provider"
 import { ThemeProvider } from "./providers/theme-provider"
 
-import { MEDUSA_BACKEND_URL, queryClient } from "./lib/medusa"
+import { queryClient } from "./lib/medusa"
+
+const MEDUSA_BACKEND_URL =
+  import.meta.env.VITE_MEDUSA_BACKEND_URL || "http://localhost:9000"
 
 function App() {
   return (
