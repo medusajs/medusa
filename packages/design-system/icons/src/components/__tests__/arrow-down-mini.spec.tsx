@@ -4,7 +4,7 @@
   import ArrowDownMini from "../arrow-down-mini"
 
   describe("ArrowDownMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowDownMini data-testid="icon" />)
 
 

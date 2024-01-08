@@ -4,7 +4,7 @@
   import FlyingBox from "../flying-box"
 
   describe("FlyingBox", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<FlyingBox data-testid="icon" />)
 
 

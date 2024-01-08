@@ -4,7 +4,7 @@
   import ReactJsEx from "../react-js-ex"
 
   describe("ReactJsEx", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ReactJsEx data-testid="icon" />)
 
 

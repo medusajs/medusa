@@ -4,7 +4,7 @@
   import ArrowUpRightOnBox from "../arrow-up-right-on-box"
 
   describe("ArrowUpRightOnBox", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowUpRightOnBox data-testid="icon" />)
 
 

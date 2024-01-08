@@ -4,7 +4,7 @@
   import ChevronRightMini from "../chevron-right-mini"
 
   describe("ChevronRightMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChevronRightMini data-testid="icon" />)
 
 

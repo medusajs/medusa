@@ -4,7 +4,7 @@
   import ChevronDoubleLeft from "../chevron-double-left"
 
   describe("ChevronDoubleLeft", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChevronDoubleLeft data-testid="icon" />)
 
 

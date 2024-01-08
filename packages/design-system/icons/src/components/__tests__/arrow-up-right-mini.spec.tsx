@@ -4,7 +4,7 @@
   import ArrowUpRightMini from "../arrow-up-right-mini"
 
   describe("ArrowUpRightMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowUpRightMini data-testid="icon" />)
 
 
