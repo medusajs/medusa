@@ -56,20 +56,25 @@ export default async function ({ port, directory }) {
     COMMAND_INITIATED_BY: "develop",
   }
 
-  const cliPath = path.resolve(
-    require.resolve("@medusajs/medusa"),
-    "../",
-    "bin",
-    "medusa.js"
+  const startCommand = "@medusajs/medusa-cli start"
+
+  let child = fork(
+    "./utils/execute-in-child-process.ts",
+    [startCommand, ...args],
+    {
+      execArgv: argv,
+      cwd: directory,
+      env: { ...process.env, ...COMMAND_INITIATED_BY },
+    }
   )
-  let child = fork(cliPath, [`start`, ...args], {
-    execArgv: argv,
-    cwd: directory,
-    env: { ...process.env, ...COMMAND_INITIATED_BY },
-  })
+  // let child = fork(cliPath, [`start`, ...args], {
+  //   execArgv: argv,
+  //   cwd: directory,
+  //   env: { ...process.env, ...COMMAND_INITIATED_BY },
+  // })
 
   child.on("error", function (err) {
-    console.log("Error ", err)
+    console.error(`Failed to run command ${startCommand}: ${err}`)
     process.exit(1)
   })
 
@@ -114,13 +119,23 @@ export default async function ({ port, directory }) {
 
       Logger.info("Rebuilt")
 
-      child = fork(cliPath, [`start`, ...args], {
-        cwd: directory,
-        env: { ...process.env, ...COMMAND_INITIATED_BY },
-        stdio: ["pipe", process.stdout, process.stderr, "ipc"],
-      })
+      child = fork(
+        "./utils/execute-in-child-process.ts",
+        [startCommand, ...args],
+        {
+          cwd: directory,
+          env: { ...process.env, ...COMMAND_INITIATED_BY },
+          stdio: ["pipe", process.stdout, process.stderr, "ipc"],
+        }
+      )
+
+      // child = fork(cliPath, [`start`, ...args], {
+      //   cwd: directory,
+      //   env: { ...process.env, ...COMMAND_INITIATED_BY },
+      //   stdio: ["pipe", process.stdout, process.stderr, "ipc"],
+      // })
       child.on("error", function (err) {
-        console.log("Error ", err)
+        console.error(`Failed to run command ${startCommand}: ${err}`)
         process.exit(1)
       })
     })
