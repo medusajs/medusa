@@ -27,7 +27,7 @@ export interface ICartModuleService extends IModuleService {
 
   update(data: UpdateCartDTO[], sharedContext?: Context): Promise<CartDTO[]>
 
-  delete(productIds: string[], sharedContext?: Context): Promise<void>
+  delete(cartIds: string[], sharedContext?: Context): Promise<void>
 
   addLineItems(data: AddLineItemsDTO, sharedContext?: Context): Promise<CartDTO>
   addLineItems(
