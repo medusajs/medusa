@@ -42,7 +42,7 @@ export const NavItem = ({
   }, [location.pathname, to, items])
 
   return (
-    <div className="px-4">
+    <div className="px-3">
       <Link
         to={to}
         className={clx(

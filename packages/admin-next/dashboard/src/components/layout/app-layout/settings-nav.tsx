@@ -58,7 +58,7 @@ export const SettingsNav = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="border-ui-border-base box-content flex h-full max-h-screen w-full max-w-[240px] flex-col overflow-hidden border-x max-md:hidden">
+    <div className="border-ui-border-base box-content flex h-full max-h-screen w-full max-w-[220px] flex-col overflow-hidden border-x max-md:hidden">
       <div className="px-3 py-2">
         <div className="flex h-10 items-center gap-x-3 p-1">
           <CogSixTooth className="text-ui-fg-subtle" />
@@ -68,11 +68,11 @@ export const SettingsNav = () => {
         </div>
       </div>
       <Spacer />
-      <div className="flex flex-1 flex-col gap-y-4 overflow-y-auto py-4">
+      <div className="flex flex-1 flex-col gap-y-4 overflow-y-auto py-2">
         <Collapsible.Root defaultOpen>
-          <div className="px-4">
+          <div className="px-3">
             <Collapsible.Trigger asChild className="group/trigger">
-              <button className="text-ui-fg-subtle flex w-full items-center justify-between px-2">
+              <button className="text-ui-fg-subtle flex w-full items-center justify-between px-2 py-1.5">
                 <Text size="xsmall" weight="plus" leading="compact">
                   {t("general.general")}
                 </Text>
@@ -91,7 +91,7 @@ export const SettingsNav = () => {
             </nav>
           </Collapsible.Content>
         </Collapsible.Root>
-        <Collapsible.Root>
+        {/* <Collapsible.Root>
           <div className="px-4">
             <Collapsible.Trigger asChild className="group/trigger">
               <button className="text-ui-fg-subtle flex w-full items-center justify-between px-2">
@@ -112,7 +112,7 @@ export const SettingsNav = () => {
               ))}
             </nav>
           </Collapsible.Content>
-        </Collapsible.Root>
+        </Collapsible.Root> */}
       </div>
     </div>
   )

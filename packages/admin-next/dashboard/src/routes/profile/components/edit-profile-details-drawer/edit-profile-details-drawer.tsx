@@ -102,12 +102,12 @@ export const EditProfileDetailsDrawer = ({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <Drawer.Trigger asChild>
         <Button variant="secondary" className="py-1">
-          {t("profile.editProfileDetails")}
+          {t("profile.editProfile")}
         </Button>
       </Drawer.Trigger>
       <Drawer.Content>
         <Drawer.Header>
-          <Heading>{t("profile.editProfileDetails")}</Heading>
+          <Heading className="capitalize">{t("profile.editProfile")}</Heading>
         </Drawer.Header>
         <Drawer.Body>
           <Form {...form}>
@@ -159,7 +159,10 @@ export const EditProfileDetailsDrawer = ({
                           onValueChange={field.onChange}
                           size="small"
                         >
-                          <Select.Trigger ref={ref}>
+                          <Select.Trigger
+                            ref={ref}
+                            className="py-1 text-[13px]"
+                          >
                             <Select.Value placeholder="Choose language">
                               {
                                 sortedLanguages.find(
@@ -225,9 +228,11 @@ export const EditProfileDetailsDrawer = ({
         <Drawer.Footer>
           <div className="flex items-center justify-end gap-x-2">
             <Drawer.Close asChild>
-              <Button variant="secondary">{t("general.cancel")}</Button>
+              <Button variant="secondary" className="py-1">
+                {t("general.cancel")}
+              </Button>
             </Drawer.Close>
-            <Button onClick={onSubmit} isLoading={isLoading}>
+            <Button onClick={onSubmit} isLoading={isLoading} className="py-1">
               {t("general.save")}
             </Button>
           </div>

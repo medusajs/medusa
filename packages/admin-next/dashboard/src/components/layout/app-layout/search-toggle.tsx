@@ -9,7 +9,7 @@ export const SearchToggle = () => {
     <IconButton
       variant="transparent"
       onClick={toggleSearch}
-      className="text-ui-fg-muted hover:text-ui-fg-subtle"
+      className="text-ui-fg-muted hover:text-ui-fg-subtle h-7 w-7 p-0"
     >
       <MagnifyingGlass />
     </IconButton>

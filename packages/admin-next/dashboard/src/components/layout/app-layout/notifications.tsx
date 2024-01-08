@@ -1,28 +1,31 @@
-import { BellAlert } from "@medusajs/icons";
-import { Drawer, Heading, IconButton } from "@medusajs/ui";
-import { useEffect, useState } from "react";
+import { BellAlert } from "@medusajs/icons"
+import { Drawer, Heading, IconButton } from "@medusajs/ui"
+import { useEffect, useState } from "react"
 
 export const Notifications = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "n" && (e.metaKey || e.ctrlKey)) {
-        setOpen((prev) => !prev);
+        setOpen((prev) => !prev)
       }
-    };
+    }
 
-    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("keydown", onKeyDown)
 
     return () => {
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, []);
+      document.removeEventListener("keydown", onKeyDown)
+    }
+  }, [])
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <Drawer.Trigger asChild>
-        <IconButton variant="transparent" className="text-ui-fg-muted">
+        <IconButton
+          variant="transparent"
+          className="text-ui-fg-muted h-7 w-7 p-0"
+        >
           <BellAlert />
         </IconButton>
       </Drawer.Trigger>
@@ -33,5 +36,5 @@ export const Notifications = () => {
         <Drawer.Body>Notifications will go here</Drawer.Body>
       </Drawer.Content>
     </Drawer>
-  );
-};
+  )
+}

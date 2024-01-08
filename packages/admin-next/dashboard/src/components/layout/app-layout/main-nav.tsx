@@ -93,7 +93,7 @@ const MobileNav = () => {
 
 const DesktopNav = () => {
   return (
-    <aside className="flex h-full max-h-screen w-full max-w-[240px] flex-col justify-between overflow-y-auto max-md:hidden">
+    <aside className="flex h-full max-h-screen w-full max-w-[220px] flex-col justify-between overflow-y-auto max-md:hidden">
       <div className="flex flex-1 flex-col">
         <div className="bg-ui-bg-subtle sticky top-0">
           <Header />
@@ -274,7 +274,7 @@ const CoreRouteSection = () => {
   const coreRoutes = useCoreRoutes()
 
   return (
-    <nav className="flex flex-col gap-y-1 py-4">
+    <nav className="flex flex-col gap-y-1 py-2">
       {coreRoutes.map((route) => {
         return <NavItem key={route.to} {...route} />
       })}
@@ -290,7 +290,7 @@ const ExtensionRouteSection = () => {
   return (
     <div>
       <Spacer />
-      <div className="flex flex-col gap-y-4 py-4">
+      <div className="flex flex-col gap-y-1 py-2">
         <Collapsible.Root defaultOpen>
           <div className="px-4">
             <Collapsible.Trigger asChild className="group/trigger">
@@ -328,7 +328,7 @@ const ExtensionRouteSection = () => {
 
 const SettingsSection = () => {
   return (
-    <div className="py-4">
+    <div className="py-2">
       <NavItem icon={<CogSixTooth />} label="Settings" to="/settings" />
     </div>
   )
@@ -349,7 +349,7 @@ const UserSection = () => {
       : user.email[0]
 
   return (
-    <div className="p-4">
+    <div className="px-3 py-2">
       <Link
         to="/settings/profile"
         className="hover:bg-ui-bg-subtle-hover transition-fg active:bg-ui-bg-subtle-pressed focus:bg-ui-bg-subtle-pressed flex items-center gap-x-3 rounded-md p-1 outline-none"
