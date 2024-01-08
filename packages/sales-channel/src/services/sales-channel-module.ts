@@ -54,9 +54,12 @@ export default class SalesChannelModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannel, {
-      populate: true,
-    })
+    return await this.baseRepository_.serialize<SalesChannelDTO[]>(
+      salesChannel,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -77,9 +80,12 @@ export default class SalesChannelModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannel, {
-      populate: true,
-    })
+    return await this.baseRepository_.serialize<SalesChannelDTO[]>(
+      salesChannel,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectManager("baseRepository_")
@@ -93,7 +99,7 @@ export default class SalesChannelModuleService<
       config
     )
 
-    return this.baseRepository_.serialize<SalesChannelDTO>(salesChannel, {
+    return await this.baseRepository_.serialize<SalesChannelDTO>(salesChannel, {
       populate: true,
     })
   }
@@ -106,9 +112,12 @@ export default class SalesChannelModuleService<
   ): Promise<SalesChannelDTO[]> {
     const salesChannels = await this.salesChannelService_.list(filters, config)
 
-    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannels, {
-      populate: true,
-    })
+    return await this.baseRepository_.serialize<SalesChannelDTO[]>(
+      salesChannels,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectManager("baseRepository_")
