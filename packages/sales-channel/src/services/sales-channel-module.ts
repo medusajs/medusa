@@ -8,7 +8,11 @@ import {
   ModuleJoinerConfig,
   SalesChannelDTO,
 } from "@medusajs/types"
-import { InjectManager, MedusaContext } from "@medusajs/utils"
+import {
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@medusajs/types"
 
 import { SalesChannel } from "@models"
