@@ -6,10 +6,10 @@ import {
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { Cart } from "@models"
-import { CreateCartDTO, UpdateCartDTO } from "../types"
+import { LineItem } from "@models"
+import { CreateLineItemDTO, UpdateLineItemDTO } from "../types/cart"
 
-export class CartRepository extends DALUtils.MikroOrmBaseRepository {
+export class LineItemRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -20,9 +20,9 @@ export class CartRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async find(
-    findOptions: DAL.FindOptions<Cart> = { where: {} },
+    findOptions: DAL.FindOptions<LineItem> = { where: {} },
     context: Context = {}
-  ): Promise<Cart[]> {
+  ): Promise<LineItem[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
@@ -33,16 +33,16 @@ export class CartRepository extends DALUtils.MikroOrmBaseRepository {
     })
 
     return await manager.find(
-      Cart,
-      findOptions_.where as MikroFilterQuery<Cart>,
-      findOptions_.options as MikroOptions<Cart>
+      LineItem,
+      findOptions_.where as MikroFilterQuery<LineItem>,
+      findOptions_.options as MikroOptions<LineItem>
     )
   }
 
   async findAndCount(
-    findOptions: DAL.FindOptions<Cart> = { where: {} },
+    findOptions: DAL.FindOptions<LineItem> = { where: {} },
     context: Context = {}
-  ): Promise<[Cart[], number]> {
+  ): Promise<[LineItem[], number]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
@@ -53,31 +53,37 @@ export class CartRepository extends DALUtils.MikroOrmBaseRepository {
     })
 
     return await manager.findAndCount(
-      Cart,
-      findOptions_.where as MikroFilterQuery<Cart>,
-      findOptions_.options as MikroOptions<Cart>
+      LineItem,
+      findOptions_.where as MikroFilterQuery<LineItem>,
+      findOptions_.options as MikroOptions<LineItem>
     )
   }
 
   async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    await manager.nativeDelete(Cart, { id: { $in: ids } }, {})
+    await manager.nativeDelete(LineItem, { id: { $in: ids } }, {})
   }
 
-  async create(data: CreateCartDTO[], context: Context = {}): Promise<Cart[]> {
+  async create(
+    data: CreateLineItemDTO[],
+    context: Context = {}
+  ): Promise<LineItem[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const carts = data.map((cartData) => {
-      return manager.create(Cart, cartData)
+    const created = data.map((toCreate) => {
+      return manager.create(LineItem, toCreate)
     })
 
-    manager.persist(carts)
+    manager.persist(created)
 
-    return carts
+    return created
   }
 
-  async update(data: UpdateCartDTO[], context: Context = {}): Promise<Cart[]> {
+  async update(
+    data: UpdateLineItemDTO[],
+    context: Context = {}
+  ): Promise<LineItem[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
     const ids = data.map((d) => d.id)
     const existingEntites = await this.find(
@@ -92,7 +98,7 @@ export class CartRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const existingEntitesMap = new Map(
-      existingEntites.map<[string, Cart]>((entity) => [entity.id, entity])
+      existingEntites.map<[string, LineItem]>((entity) => [entity.id, entity])
     )
 
     const entities = data.map((entityData) => {
@@ -101,7 +107,7 @@ export class CartRepository extends DALUtils.MikroOrmBaseRepository {
       if (!existingEntity) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Cart with id "${entityData.id}" not found`
+          `LineItem with id "${entityData.id}" not found`
         )
       }
 

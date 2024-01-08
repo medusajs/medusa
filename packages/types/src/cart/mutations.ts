@@ -93,6 +93,8 @@ export interface CreateLineItemDTO {
   subtitle?: string
   thumbnail?: string
 
+  cart_id: string
+
   quantity: number
 
   product_id?: string

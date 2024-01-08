@@ -4,10 +4,11 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import { CartDTO, FilterableAddressProps, FilterableCartProps } from "./common"
 import {
+  AddLineItemsDTO,
   CreateAddressDTO,
   CreateCartDTO,
   UpdateAddressDTO,
-  UpdateCartDTO,
+  UpdateCartDTO
 } from "./mutations"
 
 export interface ICartModuleService extends IModuleService {
@@ -53,16 +54,11 @@ export interface ICartModuleService extends IModuleService {
 
   deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
 
-  // addLineItems(data: AddLineItemsDTO, sharedContext?: Context): Promise<CartDTO>
-  // addLineItems(
-  //   data: AddLineItemsDTO[],
-  //   sharedContext?: Context
-  // ): Promise<CartDTO[]>
+  addLineItems(
+    data: AddLineItemsDTO[],
+    sharedContext?: Context
+  ): Promise<CartDTO[]>
 
-  // updateLineItems(
-  //   data: UpdateLineItemsDTO,
-  //   sharedContext?: Context
-  // ): Promise<CartDTO>
   // updateLineItems(
   //   data: UpdateLineItemsDTO[],
   //   sharedContext?: Context

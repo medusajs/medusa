@@ -478,6 +478,11 @@ export interface FilterableAddressProps
   id?: string | string[]
 }
 
+export interface FilterableLineItemProps
+  extends BaseFilterable<FilterableLineItemProps> {
+  id?: string | string[]
+}
+
 export type legacy_CartDTO = {
   id?: string
   email?: string

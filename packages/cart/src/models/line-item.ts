@@ -11,7 +11,7 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-  Property
+  Property,
 } from "@mikro-orm/core"
 import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"
@@ -31,12 +31,15 @@ export default class LineItem {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Property({ columnType: "text" })
+  cart_id!: string
+
   @ManyToOne(() => Cart, {
     onDelete: "cascade",
     index: "IDX_line_item_cart_id",
     fieldName: "cart_id",
   })
-  cart!: Cart
+  cart?: Cart
 
   @Property({ columnType: "text" })
   title: string
@@ -91,13 +94,13 @@ export default class LineItem {
   variant_option_values?: Record<string, unknown> | null
 
   @Property({ columnType: "boolean" })
-  requires_shipping = true
+  requires_shipping? = true
 
   @Property({ columnType: "boolean" })
-  is_discountable = true
+  is_discountable? = true
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive = false
+  is_tax_inclusive? = false
 
   @Property({ columnType: "numeric", nullable: true })
   compare_at_unit_price?: number
@@ -147,7 +150,7 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Date
+  created_at?: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -155,7 +158,7 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Date
+  updated_at?: Date
 
   @BeforeCreate()
   onCreate() {

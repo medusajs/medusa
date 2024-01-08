@@ -3,6 +3,7 @@ import {
   CartDTO,
   Context,
   CreateCartDTO,
+  CreateLineItemDTO,
   DAL,
   FilterableCartProps,
   FindConfig,
@@ -10,37 +11,48 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   UpdateCartDTO,
+  UpdateLineItemsDTO
 } from "@medusajs/types"
 
-import { FilterableAddressProps } from "@medusajs/types"
+import { AddLineItemsDTO, FilterableAddressProps } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  promiseAll,
 } from "@medusajs/utils"
 import { CreateAddressDTO, UpdateAddressDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import AddressService from "./address"
 import CartService from "./cart"
+import LineItemService from "./line-item"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   cartService: CartService
   addressService: AddressService
+  lineItemService: LineItemService
 }
 
 export default class CartModuleService implements ICartModuleService {
   protected baseRepository_: DAL.RepositoryService
   protected cartService_: CartService
   protected addressService_: AddressService
+  protected lineItemService_: LineItemService
 
   constructor(
-    { baseRepository, cartService, addressService }: InjectedDependencies,
+    {
+      baseRepository,
+      cartService,
+      addressService,
+      lineItemService,
+    }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.cartService_ = cartService
     this.addressService_ = addressService
+    this.lineItemService_ = lineItemService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -201,4 +213,47 @@ export default class CartModuleService implements ICartModuleService {
   ) {
     await this.addressService_.delete(ids, sharedContext)
   }
+
+  @InjectTransactionManager("baseRepository_")
+  async addLineItems(
+    data: AddLineItemsDTO[],
+    sharedContext?: Context
+  ): Promise<CartDTO[]> {
+    const lineItemsMap = new Map<string, CreateLineItemDTO[]>()
+
+    for (const lineItemData of data) {
+      lineItemsMap.set(lineItemData.cart_id, lineItemData.items)
+    }
+
+    await promiseAll(
+      [...lineItemsMap].map(async ([cartId, lineItems]) => {
+        return await this.lineItemService_.create(
+          cartId,
+          lineItems,
+          sharedContext
+        )
+      })
+    )
+
+    return await this.list(
+      { id: data.map((c) => c.cart_id) },
+      {
+        relations: ["shipping_address", "billing_address", "line_items"],
+      },
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updateLineItems(
+    data: UpdateLineItemsDTO[],
+    sharedContext?: Context
+  ): Promise<CartDTO[]> {
+
+  }
+
+  // @InjectTransactionManager("baseRepository_")
+  // async removeLineItems(lineItemIds: string[], sharedContext?: Context): Promise<void> {
+
+  // }
 }

@@ -2,6 +2,7 @@ import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Index,
@@ -71,12 +72,12 @@ export default class Cart {
   metadata?: Record<string, unknown> | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
   })
   items = new Collection<LineItem>(this)
 
   @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.cart, {
-    orphanRemoval: true,
+    cascade: [Cascade.REMOVE],
   })
   shipping_methods = new Collection<ShippingMethod>(this)
 
