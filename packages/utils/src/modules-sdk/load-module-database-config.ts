@@ -66,7 +66,7 @@ export function loadDatabaseConfig(
   "clientUrl" | "schema" | "driverOptions" | "debug"
 > {
   const clientUrl = getEnv("POSTGRES_URL", moduleName)
-  
+
   const database = {
     clientUrl,
     schema: getEnv("POSTGRES_SCHEMA", moduleName) ?? "public",
@@ -74,16 +74,21 @@ export function loadDatabaseConfig(
       getEnv("POSTGRES_DRIVER_OPTIONS", moduleName) ||
         JSON.stringify(getDefaultDriverOptions(clientUrl))
     ),
-    debug: process.env.NODE_ENV?.startsWith("dev") ?? false,
+    debug: false,
+    connection: undefined,
   }
 
   if (isModuleServiceInitializeOptions(options)) {
-    database.clientUrl = getDatabaseUrl(options)
+    database.clientUrl = getDatabaseUrl({
+      ...options,
+      database: { ...options.database, clientUrl },
+    })
     database.schema = options.database!.schema ?? database.schema
     database.driverOptions =
       options.database!.driverOptions ??
       getDefaultDriverOptions(database.clientUrl)
     database.debug = options.database!.debug ?? database.debug
+    database.connection = options.database!.connection
   }
 
   if (!database.clientUrl && !silent) {
