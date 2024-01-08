@@ -101,7 +101,9 @@ export const EditProfileDetailsDrawer = ({
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <Drawer.Trigger asChild>
-        <Button variant="secondary">{t("profile.editProfileDetails")}</Button>
+        <Button variant="secondary" className="py-1">
+          {t("profile.editProfileDetails")}
+        </Button>
       </Drawer.Trigger>
       <Drawer.Content>
         <Drawer.Header>
