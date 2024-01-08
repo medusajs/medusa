@@ -1,20 +1,19 @@
 import path from "path"
 
-export function resolveExecutable(startDir, executable) {
-  console.log("Start directory: ", startDir)
+export function resolveExecutable(startDir, moduleName, ...pathToExecutable) {
   try {
-    // Try to resolve the path of @babel/cli starting from the given directory
-    console.log("")
-    const resolvedPath = require.resolve(executable, { paths: [startDir] })
-    return path.resolve(resolvedPath, "..", "bin", "babel.js")
+    // Resolve path of module e.g. @medusajs/medusa
+    const resolvedPath = require.resolve(moduleName, { paths: [startDir] })
+    // Resolve path of binary in module e.g. @medusajs/medusa/dist/bin/medusa.js
+    const pathToBinary = path.resolve(resolvedPath, ...pathToExecutable)
+    return pathToBinary
   } catch (e) {
     // If not found in the current directory, move to the parent directory
     const parentDir = path.resolve(startDir, "..")
-    console.log("Parent directory: ", parentDir)
     if (parentDir === startDir) {
       // If the parent directory is the same as the current, we've reached the root
       return null
     }
-    return resolveExecutable(parentDir, executable)
+    return resolveExecutable(parentDir, moduleName, ...pathToExecutable)
   }
 }

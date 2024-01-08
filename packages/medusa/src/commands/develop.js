@@ -59,7 +59,10 @@ export default async function ({ port, directory }) {
 
   const medusaStartExecutable = resolveExecutable(
     directory,
-    "@medusajs/medusa-cli"
+    "@medusajs/medusa",
+    "../",
+    "bin",
+    "medusa.js"
   )
 
   let child = fork(medusaStartExecutable, ["start", ...args], {
