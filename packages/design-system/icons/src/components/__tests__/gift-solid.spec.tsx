@@ -4,7 +4,7 @@
   import GiftSolid from "../gift-solid"
 
   describe("GiftSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<GiftSolid data-testid="icon" />)
 
 

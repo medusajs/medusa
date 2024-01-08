@@ -4,7 +4,7 @@
   import ChatBubble from "../chat-bubble"
 
   describe("ChatBubble", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChatBubble data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import ArrowDownCircle from "../arrow-down-circle"
 
   describe("ArrowDownCircle", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowDownCircle data-testid="icon" />)
 
 

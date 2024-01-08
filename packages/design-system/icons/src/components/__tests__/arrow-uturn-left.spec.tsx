@@ -4,7 +4,7 @@
   import ArrowUturnLeft from "../arrow-uturn-left"
 
   describe("ArrowUturnLeft", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowUturnLeft data-testid="icon" />)
 
 

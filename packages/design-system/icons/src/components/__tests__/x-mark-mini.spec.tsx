@@ -4,7 +4,7 @@
   import XMarkMini from "../x-mark-mini"
 
   describe("XMarkMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<XMarkMini data-testid="icon" />)
 
 

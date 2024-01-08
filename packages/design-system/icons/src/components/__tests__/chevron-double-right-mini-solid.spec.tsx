@@ -4,7 +4,7 @@
   import ChevronDoubleRightMiniSolid from "../chevron-double-right-mini-solid"
 
   describe("ChevronDoubleRightMiniSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChevronDoubleRightMiniSolid data-testid="icon" />)
 
 

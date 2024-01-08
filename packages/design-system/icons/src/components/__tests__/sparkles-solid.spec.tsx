@@ -4,7 +4,7 @@
   import SparklesSolid from "../sparkles-solid"
 
   describe("SparklesSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<SparklesSolid data-testid="icon" />)
 
 

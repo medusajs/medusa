@@ -4,7 +4,7 @@
   import Funnel from "../funnel"
 
   describe("Funnel", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Funnel data-testid="icon" />)
 
 

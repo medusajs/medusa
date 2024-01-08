@@ -4,7 +4,7 @@
   import PuzzleSolid from "../puzzle-solid"
 
   describe("PuzzleSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<PuzzleSolid data-testid="icon" />)
 
 
