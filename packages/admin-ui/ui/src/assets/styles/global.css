@@ -239,7 +239,7 @@
 
 @layer components {
   .badge {
-    @apply rounded-rounded inter-small-semibold w-min py-0.5 px-2;
+    @apply rounded-rounded inter-small-semibold w-fit py-0.5 px-2;
   }
 
   .badge-disabled {
