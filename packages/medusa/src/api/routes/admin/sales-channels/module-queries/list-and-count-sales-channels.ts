@@ -1,7 +1,9 @@
 import { FilterablePriceListProps, MedusaContainer } from "@medusajs/types"
 
-import { FindConfig } from "../../../../../types/common"
 import { SalesChannel } from "../../../../../models"
+import { FindConfig } from "../../../../../types/common"
+
+import { defaultAdminSalesChannelRemoteQueryObject } from "../"
 
 export async function listAndCountSalesChannelsModule({
   filters,
@@ -17,7 +19,7 @@ export async function listAndCountSalesChannelsModule({
   const query = {
     sales_channel: {
       __args: { filters, ...listConfig },
-      // ...defaultAdminSalesChannelRemoteQueryObject,
+      defaultAdminSalesChannelRemoteQueryObject,
     },
   }
 

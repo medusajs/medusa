@@ -173,6 +173,18 @@ export type AdminSalesChannelsListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]
 }
 
+export const defaultAdminSalesChannelRemoteQueryObject = {
+  fields: [
+    "id",
+    "name",
+    "description",
+    "is_disabled",
+    "created_at",
+    "deleted_at",
+    "updated_at",
+  ],
+}
+
 export * from "./add-product-batch"
 export * from "./create-sales-channel"
 export * from "./delete-products-batch"
