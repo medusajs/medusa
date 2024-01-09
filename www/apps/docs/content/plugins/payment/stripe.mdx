@@ -80,6 +80,8 @@ Other optional options include:
 - `payment_description`: a string that is used as the default description of a payment if none is provided.
 - `capture`: a boolean value that indicates whether payment should be captured manually or automatically. By default, it will be `false`, leading admins to capture the payment manually.
 - `automatic_payment_methods`: a boolean value that enables Stripe's automatic payment methods. This is useful if you're integrating services like Apple pay or Google pay.
+- `webhook_delay`: a number indicating the delay in milliseconds before processing the webhook event. By default, it's `5000` (five seconds).
+- `webhook_retries`: The number of times to retry the webhook event processing in case of an error. By default, it's `3`.
 
 ### Retrieve Stripe's Keys
 
@@ -99,8 +101,6 @@ If you store environment variables differently on your backend, for example, usi
 
 :::
 
-### Webhook Options
-
 Next, if you’re installing this plugin for production use, you need to retrieve the Webhook secret. Webhooks allows you to track different events on your Medusa backend, such as failed payments.
 
 Go to Webhooks on Stripe’s developer dashboard. Then, choose the Add an Endpoint button.
@@ -113,17 +113,6 @@ After the Webhook is created, you’ll see "Signing secret" in the Webhook detai
 
 ```bash
 STRIPE_WEBHOOK_SECRET=whsec_...
-```
-
-You can also set the following environment variables to configure Stripe's webhook functionality:
-
-```bash
-# The delay in milliseconds before processing the
-# webhook event. By default, it's `5000` (5 seconds).
-STRIPE_WEBHOOK_DELAY=3000
-# The number of times to retry the webhook event processing
-# in case of an error. By default, it's `3`.
-STRIPE_WEBHOOK_RETRIES=5
 ```
 
 ---
