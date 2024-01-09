@@ -205,5 +205,10 @@ export declare module "typedoc" {
      * Namespace names whose child members should have their own documents.
      */
     allReflectionsHaveOwnDocumentInNamespace: string[]
+    /**
+     * Whether to ignore items with the `@parentIgnore` tag.
+     * @defaultValue false
+     */
+    parentIgnore: boolean
   }
 }
