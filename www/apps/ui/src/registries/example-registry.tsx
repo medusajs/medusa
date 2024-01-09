@@ -474,16 +474,6 @@ export const ExampleRegistry: Record<string, ExampleType> = {
     component: React.lazy(async () => import("@/examples/icon-color")),
     file: "src/examples/icon-color.tsx",
   },
-  "icon-size-classes": {
-    name: "icon-size-classes",
-    component: React.lazy(async () => import("@/examples/icon-size-classes")),
-    file: "src/examples/icon-size-classes.tsx",
-  },
-  "icon-size-props": {
-    name: "icon-size-props",
-    component: React.lazy(async () => import("@/examples/icon-size-props")),
-    file: "src/examples/icon-size-props.tsx",
-  },
   "currency-input-demo": {
     name: "currency-input-demo",
     component: React.lazy(async () => import("@/examples/currency-input-demo")),
