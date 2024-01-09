@@ -4,10 +4,12 @@ import {
   IdempotencyKeyService,
   PostgresError,
 } from "@medusajs/medusa"
+import { ConfigModule, MedusaContainer } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { EOL } from "os"
 import Stripe from "stripe"
+import { StripeOptions } from "../../types"
 
 const PAYMENT_PROVIDER_KEY = "pp_stripe"
 
@@ -255,4 +257,27 @@ async function completeCartIfNecessary({
       )
     }
   }
+}
+
+export function getPluginOptions(
+  container: MedusaContainer
+): Partial<StripeOptions> {
+  const configModule = container.resolve<ConfigModule>(
+    "configModule"
+  )
+  const pluginName = "medusa-payment-stripe"
+
+  const plugin = configModule.plugins.find((plugin) => {
+    if (typeof plugin === "string") {
+      return plugin === pluginName
+    }
+
+    return plugin.resolve === pluginName
+  })
+
+  if (!plugin || typeof plugin === "string") {
+    return {}
+  }
+
+  return plugin.options
 }
