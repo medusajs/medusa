@@ -17,8 +17,9 @@ export default async ({
 
   const providersToLoad = Object.values(defaultProviders)
 
-  const authProviderService: AuthProviderService =
-    container.cradle["authProviderService"]
+  const authProviderService: AuthProviderService = container.resolve(
+    "authProviderService"
+  )
 
   const providers = await authProviderService.list({
     provider: providersToLoad.map((p) => p.PROVIDER),
@@ -29,10 +30,8 @@ export default async ({
   const providersToCreate: ServiceTypes.CreateAuthProviderDTO[] = []
 
   for (const provider of providersToLoad) {
-    container.registerAdd("providers", asClass(provider).singleton())
-
     container.register({
-      [`provider_${provider.PROVIDER}`]: asClass(provider).singleton(),
+      [`auth_provider_${provider.PROVIDER}`]: asClass(provider).singleton(),
     })
 
     if (loadedProviders.has(provider.PROVIDER)) {
