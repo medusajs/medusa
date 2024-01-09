@@ -1,6 +1,9 @@
 import { Request, Response } from "express"
+import { MedusaContainer } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 
 import { SalesChannelService } from "../../../../services"
+import { getSalesChannelSalesChannelModule } from "./module-queries"
 
 /**
  * @oas [get] /admin/sales-channels/{id}
@@ -57,10 +60,20 @@ import { SalesChannelService } from "../../../../services"
 export default async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
 
-  const salesChannelService: SalesChannelService = req.scope.resolve(
-    "salesChannelService"
-  )
+  let salesChannel
 
-  const salesChannel = await salesChannelService.retrieve(id)
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    salesChannel = await getSalesChannelSalesChannelModule(id, {
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    const salesChannelService: SalesChannelService = req.scope.resolve(
+      "salesChannelService"
+    )
+    salesChannel = await salesChannelService.retrieve(id)
+  }
+
   res.status(200).json({ sales_channel: salesChannel })
 }

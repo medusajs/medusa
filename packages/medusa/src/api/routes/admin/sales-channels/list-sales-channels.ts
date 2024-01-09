@@ -7,6 +7,9 @@ import { Request, Response } from "express"
 
 import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { listAndCountSalesChannelsModule } from "./module-queries"
+import { MedusaContainer } from "@medusajs/types"
 
 /**
  * @oas [get] /admin/sales-channels
@@ -136,23 +139,31 @@ import { Type } from "class-transformer"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
-  const salesChannelService: SalesChannelService = req.scope.resolve(
-    "salesChannelService"
-  )
+  let salesChannels, count
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const listConfig = req.listConfig
-  const filterableFields = req.filterableFields
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    ;[salesChannels, count] = await listAndCountSalesChannelsModule({
+      filters: req.filterableFields,
+      listConfig: req.listConfig,
+      container: req.scope as MedusaContainer,
+    })
+  } else {
+    const salesChannelService: SalesChannelService = req.scope.resolve(
+      "salesChannelService"
+    )
 
-  const [salesChannels, count] = await salesChannelService.listAndCount(
-    filterableFields,
-    listConfig
-  )
+    ;[salesChannels, count] = await salesChannelService.listAndCount(
+      req.filterableFields,
+      req.listConfig
+    )
+  }
 
   res.status(200).json({
     sales_channels: salesChannels,
     count,
-    offset: listConfig.skip,
-    limit: listConfig.take,
+    offset: req.listConfig.skip,
+    limit: req.listConfig.take,
   })
 }
 
