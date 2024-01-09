@@ -1,9 +1,11 @@
 import {
+  AbstractAuthenticationModuleProvider,
   AuthenticationTypes,
   Context,
   DAL,
   FindConfig,
   InternalModuleDeclaration,
+  MedusaContainer,
   ModuleJoinerConfig,
 } from "@medusajs/types"
 
@@ -15,6 +17,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
 } from "@medusajs/utils"
 import {
   AuthProviderDTO,
@@ -37,6 +40,11 @@ export default class AuthenticationModuleService<
   TAuthProvider extends AuthProvider = AuthProvider
 > implements AuthenticationTypes.IAuthenticationModuleService
 {
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
+  }
+
+  protected __container__: MedusaContainer
   protected baseRepository_: DAL.RepositoryService
 
   protected authUserService_: AuthUserService<TAuthUser>
@@ -50,6 +58,7 @@ export default class AuthenticationModuleService<
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
+    this.__container__ = arguments[0]
     this.baseRepository_ = baseRepository
     this.authUserService_ = authUserService
     this.authProviderService_ = authProviderService
@@ -336,7 +345,33 @@ export default class AuthenticationModuleService<
     await this.authUserService_.delete(ids, sharedContext)
   }
 
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
+  protected getRegisteredAuthenticationProvider(
+    provider: string
+  ): AbstractAuthenticationModuleProvider {
+    let containerProvider: AbstractAuthenticationModuleProvider
+    try {
+      containerProvider = this.__container__[`provider_${provider}`]
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `AuthenticationProvider with for provider: ${provider} wasn't registered in the module. Have you configured your options correctly?`
+      )
+    }
+
+    return containerProvider
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async authenticate(
+    provider: string,
+    authenticationData: Record<string, unknown>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<string, unknown>> {
+    await this.retrieveAuthProvider(provider, {})
+
+    const registeredProvider =
+      this.getRegisteredAuthenticationProvider(provider)
+
+    return await registeredProvider.authenticate(authenticationData)
   }
 }
