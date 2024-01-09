@@ -1,7 +1,7 @@
 import {
   Context,
   DAL,
-  FilterQuery,
+  FilterQuery as InternalFilerQuery,
   RepositoryTransformOptions,
 } from "@medusajs/types"
 import { arrayDifference, isString, MedusaError } from "../../common"
@@ -12,8 +12,13 @@ import {
   transactionWrapper,
 } from "../utils"
 import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { LoadStrategy, RequiredEntityData } from "@mikro-orm/core"
+import {
+  EntityManager,
+  EntitySchema,
+  FilterQuery,
+  LoadStrategy,
+  RequiredEntityData,
+} from "@mikro-orm/core"
 import {
   EntityClass,
   EntityName,
@@ -22,7 +27,7 @@ import {
 import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 
 export class MikroOrmBase<T = any> {
-  protected readonly manager_: any
+  readonly manager_: any
 
   protected constructor({ manager }) {
     this.manager_ = manager
@@ -61,28 +66,48 @@ export class MikroOrmBase<T = any> {
   }
 }
 
-export abstract class MikroOrmAbstractBaseRepository<T extends object = object>
-  extends MikroOrmBase
-  implements DAL.RepositoryService<T>
-{
-  abstract find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]>
+/**
+ * Privileged extends of the abstract classes unless most of the methods can't be implemented
+ * in your repository. This base repository is also used to provide a base repository
+ * injection if needed to be able to use the common methods without being related to an entity.
+ * In this case, none of the method will be implemented except the manager and transaction
+ * related ones.
+ */
 
-  abstract findAndCount(
-    options?: DAL.FindOptions<T>,
-    context?: Context
-  ): Promise<[T[], number]>
+export class MikroOrmBaseRepository<
+  T extends object = object
+> extends MikroOrmBase<T> {
+  constructor({ manager }) {
+    // @ts-ignore
+    super(...arguments)
+  }
 
-  abstract create(data: unknown[], context?: Context): Promise<T[]>
+  create(data: unknown[], context?: Context): Promise<T[]> {
+    throw new Error("Method not implemented.")
+  }
 
   update(data: unknown[], context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
-  abstract delete(ids: string[], context?: Context): Promise<void>
+  delete(ids: string[], context?: Context): Promise<void> {
+    throw new Error("Method not implemented.")
+  }
+
+  find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]> {
+    throw new Error("Method not implemented.")
+  }
+
+  findAndCount(
+    options?: DAL.FindOptions<T>,
+    context?: Context
+  ): Promise<[T[], number]> {
+    throw new Error("Method not implemented.")
+  }
 
   @InjectTransactionManager()
   async softDelete(
-    idsOrFilter: string[] | FilterQuery,
+    idsOrFilter: string[] | InternalFilerQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
@@ -114,7 +139,7 @@ export abstract class MikroOrmAbstractBaseRepository<T extends object = object>
 
   @InjectTransactionManager()
   async restore(
-    idsOrFilter: string[] | FilterQuery,
+    idsOrFilter: string[] | InternalFilerQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
@@ -163,73 +188,7 @@ export abstract class MikroOrmAbstractBaseRepository<T extends object = object>
   }
 }
 
-export abstract class MikroOrmAbstractTreeRepositoryBase<T = any>
-  extends MikroOrmBase<T>
-  implements DAL.TreeRepositoryService<T>
-{
-  protected constructor({ manager }) {
-    // @ts-ignore
-    super(...arguments)
-  }
-
-  abstract find(
-    options?: DAL.FindOptions<T>,
-    transformOptions?: RepositoryTransformOptions,
-    context?: Context
-  )
-
-  abstract findAndCount(
-    options?: DAL.FindOptions<T>,
-    transformOptions?: RepositoryTransformOptions,
-    context?: Context
-  ): Promise<[T[], number]>
-
-  abstract create(data: unknown, context?: Context): Promise<T>
-
-  abstract delete(id: string, context?: Context): Promise<void>
-}
-
-/**
- * Privileged extends of the abstract classes unless most of the methods can't be implemented
- * in your repository. This base repository is also used to provide a base repository
- * injection if needed to be able to use the common methods without being related to an entity.
- * In this case, none of the method will be implemented except the manager and transaction
- * related ones.
- */
-
-export class MikroOrmBaseRepository<
-  T extends object = object
-> extends MikroOrmAbstractBaseRepository<T> {
-  constructor({ manager }) {
-    // @ts-ignore
-    super(...arguments)
-  }
-
-  create(data: unknown[], context?: Context): Promise<T[]> {
-    throw new Error("Method not implemented.")
-  }
-
-  update(data: unknown[], context?: Context): Promise<T[]> {
-    throw new Error("Method not implemented.")
-  }
-
-  delete(ids: string[], context?: Context): Promise<void> {
-    throw new Error("Method not implemented.")
-  }
-
-  find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]> {
-    throw new Error("Method not implemented.")
-  }
-
-  findAndCount(
-    options?: DAL.FindOptions<T>,
-    context?: Context
-  ): Promise<[T[], number]> {
-    throw new Error("Method not implemented.")
-  }
-}
-
-export class MikroOrmBaseTreeRepository extends MikroOrmAbstractTreeRepositoryBase {
+export class MikroOrmBaseTreeRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
@@ -260,18 +219,17 @@ export class MikroOrmBaseTreeRepository extends MikroOrmAbstractTreeRepositoryBa
   }
 }
 
-export function mikroOrmBaseRepositoryFactory<T extends object>(
-  entity: EntityClass<T>
-): { new (...args: any[]): MikroOrmBaseRepository<T> } {
-  class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
-    constructor({ manager }: { manager: SqlEntityManager }) {
-      // @ts-ignore
-      // eslint-disable-next-line prefer-rest-params
-      super(...arguments)
-    }
+type DtoBasedMutationMethods = "create" | "update"
 
-    async create(data: unknown[], context?: Context): Promise<T[]> {
-      const manager = this.getActiveManager<SqlEntityManager>(context)
+export function mikroOrmBaseRepositoryFactory<
+  T extends { id: string } = { id: string },
+  TDTos extends { [K in DtoBasedMutationMethods]?: any } = {
+    [K in DtoBasedMutationMethods]?: any
+  }
+>(entity: EntityClass<T> | EntitySchema<T> | string) {
+  class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
+    async create(data: TDTos["create"][], context?: Context): Promise<T[]> {
+      const manager = this.getActiveManager<EntityManager>(context)
 
       const entities = data.map((data_) => {
         return manager.create(
@@ -285,18 +243,18 @@ export function mikroOrmBaseRepositoryFactory<T extends object>(
       return entities
     }
 
-    async update(data: any[], context?: Context): Promise<T[]> {
-      const manager = this.getActiveManager<SqlEntityManager>(context)
+    async update(data: TDTos["update"][], context?: Context): Promise<T[]> {
+      const manager = this.getActiveManager<EntityManager>(context)
 
-      const ids = data.map((data_) => data_.id)
+      const ids: string[] = data.map((data_) => data_.id)
       const existingEntities = await this.find(
         {
           where: {
             id: {
               $in: ids,
             },
-          } as any,
-        },
+          },
+        } as DAL.FindOptions<T>,
         context
       )
 
@@ -306,9 +264,10 @@ export function mikroOrmBaseRepositoryFactory<T extends object>(
       )
 
       if (missingEntities.length) {
+        const entityName = (entity as EntityClass<T>).name ?? entity
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `${entity.name} with id(s) "${missingEntities.join(", ")}" not found`
+          `${entityName} with id(s) "${missingEntities.join(", ")}" not found`
         )
       }
 
@@ -330,17 +289,16 @@ export function mikroOrmBaseRepositoryFactory<T extends object>(
     }
 
     async delete(ids: string[], context?: Context): Promise<void> {
-      const manager = this.getActiveManager<SqlEntityManager>(context)
+      const manager = this.getActiveManager<EntityManager>(context)
 
-      await manager.nativeDelete(
+      await manager.nativeDelete<T>(
         entity as EntityName<T>,
-        { id: { $in: ids } } as any,
-        {}
+        { id: { $in: ids } } as unknown as FilterQuery<T>
       )
     }
 
     async find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]> {
-      const manager = this.getActiveManager<SqlEntityManager>(context)
+      const manager = this.getActiveManager<EntityManager>(context)
 
       const findOptions_ = { ...options }
       findOptions_.options ??= {}
@@ -360,7 +318,7 @@ export function mikroOrmBaseRepositoryFactory<T extends object>(
       findOptions: DAL.FindOptions<T> = { where: {} },
       context: Context = {}
     ): Promise<[T[], number]> {
-      const manager = this.getActiveManager<SqlEntityManager>(context)
+      const manager = this.getActiveManager<EntityManager>(context)
 
       const findOptions_ = { ...findOptions }
       findOptions_.options ??= {}
