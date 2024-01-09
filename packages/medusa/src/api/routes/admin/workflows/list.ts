@@ -10,6 +10,7 @@ export default async function (req: MedusaRequest, res: MedusaResponse) {
     req.scope.resolve(ModuleRegistrationName.WORKFLOW_ORCHESTRATOR)
 
   const listConfig = req.listConfig
+  // TODO: fix array of values
   const { transaction_id, workflow_id } = req.filterableFields
 
   const transactionIds = Array.isArray(transaction_id)
@@ -17,10 +18,20 @@ export default async function (req: MedusaRequest, res: MedusaResponse) {
     : [transaction_id]
   const workflowIds = Array.isArray(workflow_id) ? workflow_id : [workflow_id]
 
+  const filters = {}
+
+  if (transaction_id) {
+    filters["transaction_id"] = transaction_id
+  }
+
+  if (workflow_id) {
+    filters["workflow_id"] = workflow_id
+  }
+
   const [workflow_executions, count] =
-    await workflowOrchestratorService.listAndCountWorkflowExecution({
-      transaction_id: transactionIds,
-      workflow_id: workflowIds,
+    await workflowOrchestratorService.listAndCountWorkflowExecution(filters, {
+      skip: listConfig.skip,
+      take: listConfig.take,
     })
 
   res.json({
