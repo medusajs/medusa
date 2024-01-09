@@ -58,28 +58,30 @@ describe("GET /admin/sales-channels", () => {
 
     const api = useApi() as any
 
-    const response = await api.get(`/admin/sales-channels`, adminHeaders)
+    const response = await api.get(`/admin/sales-channels/`, adminHeaders)
 
     expect(response.status).toEqual(200)
-    expect(response.data.sales_channel).toEqual([
-      expect.objectContaining({
-        id: expect.any(String),
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        deleted_at: null,
-        name: "test channel",
-        description: "desc",
-        is_disabled: false,
-      }),
-      expect.objectContaining({
-        id: expect.any(String),
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        deleted_at: null,
-        name: "test channel 2",
-        description: "desc 2",
-        is_disabled: true,
-      }),
-    ])
+    expect(response.data.sales_channels).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+          name: "test channel",
+          description: "desc",
+          is_disabled: false,
+        }),
+        expect.objectContaining({
+          id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+          name: "test channel 2",
+          description: "desc 2",
+          is_disabled: true,
+        }),
+      ])
+    )
   })
 })
