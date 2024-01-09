@@ -4,7 +4,7 @@
   import Linkedin from "../linkedin"
 
   describe("Linkedin", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Linkedin data-testid="icon" />)
 
 

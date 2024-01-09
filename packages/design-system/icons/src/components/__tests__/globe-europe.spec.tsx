@@ -4,7 +4,7 @@
   import GlobeEurope from "../globe-europe"
 
   describe("GlobeEurope", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<GlobeEurope data-testid="icon" />)
 
 

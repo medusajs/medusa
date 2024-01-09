@@ -144,6 +144,9 @@ const Command = React.forwardRef<HTMLButtonElement, CommandProps>(
   (
     {
       className, 
+      /**
+       * @ignore
+       */
       type = "button", 
       /**
        * The command's label.

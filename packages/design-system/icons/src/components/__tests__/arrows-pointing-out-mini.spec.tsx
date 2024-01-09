@@ -4,7 +4,7 @@
   import ArrowsPointingOutMini from "../arrows-pointing-out-mini"
 
   describe("ArrowsPointingOutMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowsPointingOutMini data-testid="icon" />)
 
 

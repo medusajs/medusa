@@ -4,7 +4,7 @@
   import KlarnaEx from "../klarna-ex"
 
   describe("KlarnaEx", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<KlarnaEx data-testid="icon" />)
 
 

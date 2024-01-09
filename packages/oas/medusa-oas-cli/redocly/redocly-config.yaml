@@ -13,6 +13,7 @@ decorators:
         - Order
         - Payment
         - PaymentSession
+        - SalesChannel
       ClaimImage:
         - ClaimItem
       ClaimItem:
@@ -43,6 +44,7 @@ decorators:
         - Fulfillment
       GiftCard:
         - Order
+        - Region
       GiftCardTransaction:
         - GiftCard
         - Order
@@ -73,6 +75,9 @@ decorators:
         - Refund
         - Return
         - Swap
+        - SalesChannel
+        - Region
+        - LineItem
       OrderEdit:
         - Order
       OrderItemChange:
@@ -134,6 +139,10 @@ decorators:
         - Region
       TrackingLink:
         - Fulfillment
+      SalesChannel:
+        - Order
+        - Cart
+        - PublishableApiKey
 
 # Similar config to /www/docs/docusaurus.config.js > redocusaurus
 # Allows to emulate rendering of API public documentation when using `yarn redocly preview-docs openapi.yaml`

@@ -4,7 +4,7 @@
   import Bug from "../bug"
 
   describe("Bug", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Bug data-testid="icon" />)
 
 

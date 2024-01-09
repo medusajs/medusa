@@ -4,7 +4,7 @@
   import CheckCircleSolid from "../check-circle-solid"
 
   describe("CheckCircleSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CheckCircleSolid data-testid="icon" />)
 
 

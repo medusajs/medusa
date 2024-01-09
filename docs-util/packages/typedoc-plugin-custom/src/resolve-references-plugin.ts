@@ -32,10 +32,18 @@ export function load(app: Application) {
     defaultValue: false,
   })
 
+  app.options.addDeclaration({
+    name: "checkVariables",
+    help: "Whether to check for and add variables.",
+    type: ParameterType.Boolean,
+    defaultValue: false,
+  })
+
   let activeReflection: Reflection | undefined
   const referencedSymbols = new Map<ts.Program, Set<ts.Symbol>>()
   const symbolToActiveRefl = new Map<ts.Symbol, Reflection>()
   const knownPrograms = new Map<Reflection, ts.Program>()
+  let checkedVariableSymbols = false
 
   function discoverMissingExports(
     context: Context,
@@ -90,6 +98,48 @@ export function load(app: Application) {
     }
   )
 
+  app.converter.on(Converter.EVENT_CREATE_DECLARATION, (context: Context) => {
+    if (!app.options.getValue("checkVariables") || checkedVariableSymbols) {
+      return
+    }
+    checkedVariableSymbols = true
+
+    context.program
+      .getSourceFiles()
+      .filter((file) =>
+        app.entryPoints.some((entryPoint) => file.fileName.includes(entryPoint))
+      )
+      .forEach((file) => {
+        if ("locals" in file) {
+          const localVariables = file.locals as Map<string, ts.Symbol>
+          if (!localVariables.size) {
+            return
+          }
+
+          const internalNs = getOrCreateInternalNs({
+            context,
+            scope: context.project,
+            nameSuffix: `${Math.random() * 100}`,
+          })
+
+          if (!internalNs) {
+            return
+          }
+
+          const internalContext = context.withScope(internalNs)
+
+          for (const [, value] of localVariables) {
+            if (!value.valueDeclaration) {
+              continue
+            }
+            if (shouldConvertSymbol(value, context.checker)) {
+              internalContext.converter.convertSymbol(internalContext, value)
+            }
+          }
+        }
+      })
+  })
+
   app.converter.on(
     Converter.EVENT_RESOLVE_BEGIN,
     function onResolveBegin(context: Context) {
@@ -118,21 +168,7 @@ export function load(app: Application) {
         // Nasty hack here that will almost certainly break in future TypeDoc versions.
         context.setActiveProgram(program)
 
-        const internalModuleOption =
-          context.converter.application.options.getValue("internalModule")
-
-        let internalNs: DeclarationReflection | undefined = undefined
-        if (internalModuleOption) {
-          internalNs = context
-            .withScope(mod)
-            .createDeclarationReflection(
-              ReflectionKind.Module,
-              void 0,
-              void 0,
-              context.converter.application.options.getValue("internalModule")
-            )
-          context.finalizeDeclarationReflection(internalNs)
-        }
+        const internalNs = getOrCreateInternalNs({ context, scope: mod })
 
         const internalContext = context.withScope(internalNs || mod)
 
@@ -198,4 +234,36 @@ function shouldConvertSymbol(symbol: ts.Symbol, checker: ts.TypeChecker) {
   }
 
   return true
+}
+
+function getOrCreateInternalNs({
+  context,
+  scope,
+  nameSuffix = "",
+}: {
+  context: Context
+  scope: Reflection
+  nameSuffix?: string
+}): DeclarationReflection | undefined {
+  const internalNsName =
+    context.converter.application.options.getValue("internalModule")
+  if (!internalNsName) {
+    return undefined
+  }
+  let internalNs = context.project.getChildByName(
+    `${internalNsName}${nameSuffix}`
+  ) as DeclarationReflection
+  if (!internalNs) {
+    internalNs = context
+      .withScope(scope)
+      .createDeclarationReflection(
+        ReflectionKind.Module,
+        void 0,
+        void 0,
+        `${internalNsName}${nameSuffix}`
+      )
+    context.finalizeDeclarationReflection(internalNs)
+  }
+
+  return internalNs
 }

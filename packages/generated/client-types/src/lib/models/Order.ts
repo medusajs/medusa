@@ -267,4 +267,8 @@ export interface Order {
    * An optional key-value map with additional details
    */
   metadata: Record<string, any> | null
+  /**
+   * The associated sales channels.
+   */
+  sales_channels?: Array<SalesChannel> | null
 }

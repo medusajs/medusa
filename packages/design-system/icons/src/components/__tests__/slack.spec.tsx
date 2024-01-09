@@ -4,7 +4,7 @@
   import Slack from "../slack"
 
   describe("Slack", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Slack data-testid="icon" />)
 
 

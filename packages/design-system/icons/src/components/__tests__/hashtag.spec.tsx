@@ -4,7 +4,7 @@
   import Hashtag from "../hashtag"
 
   describe("Hashtag", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Hashtag data-testid="icon" />)
 
 

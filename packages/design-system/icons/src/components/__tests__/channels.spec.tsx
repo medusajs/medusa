@@ -4,7 +4,7 @@
   import Channels from "../channels"
 
   describe("Channels", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Channels data-testid="icon" />)
 
 
