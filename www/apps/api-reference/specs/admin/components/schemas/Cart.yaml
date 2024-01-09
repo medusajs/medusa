@@ -160,7 +160,7 @@ properties:
     description: The details of the sales channel associated with the cart.
     nullable: true
     x-expandable: sales_channel
-    $ref: ./SalesChannel.yaml
+    type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string
@@ -234,3 +234,10 @@ properties:
     description: The total of gift cards with taxes
     type: integer
     example: 0
+  sales_channels:
+    description: The associated sales channels.
+    type: array
+    nullable: true
+    x-expandable: sales_channels
+    items:
+      type: object

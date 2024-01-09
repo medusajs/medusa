@@ -35924,7 +35924,7 @@ components:
           description: The details of the sales channel associated with the cart.
           nullable: true
           x-expandable: sales_channel
-          $ref: '#/components/schemas/SalesChannel'
+          type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -36000,6 +36000,13 @@ components:
           description: The total of gift cards with taxes
           type: integer
           example: 0
+        sales_channels:
+          description: The associated sales channels.
+          type: array
+          nullable: true
+          x-expandable: sales_channels
+          items:
+            type: object
     ClaimImage:
       title: Claim Image
       description: The details of an image attached to a claim.
@@ -37761,7 +37768,7 @@ components:
           description: The details of the region this gift card is available in.
           x-expandable: region
           nullable: true
-          $ref: '#/components/schemas/Region'
+          type: object
         order_id:
           description: The ID of the order that the gift card was purchased in.
           nullable: true
@@ -39037,7 +39044,7 @@ components:
           description: The details of the region this order was created in.
           x-expandable: region
           nullable: true
-          $ref: '#/components/schemas/Region'
+          type: object
         currency_code:
           description: The 3 character currency code that is used in the order
           type: string
@@ -39124,7 +39131,7 @@ components:
           x-expandable: items
           type: array
           items:
-            $ref: '#/components/schemas/LineItem'
+            type: object
         edits:
           description: The details of the order edits done on the order.
           type: array
@@ -39172,7 +39179,7 @@ components:
           description: The details of the sales channel this order belongs to.
           x-expandable: sales_channel
           nullable: true
-          $ref: '#/components/schemas/SalesChannel'
+          type: object
         shipping_total:
           type: integer
           description: The total of shipping
@@ -39234,7 +39241,7 @@ components:
           type: array
           x-expandable: returnable_items
           items:
-            $ref: '#/components/schemas/LineItem'
+            type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -39255,6 +39262,14 @@ components:
               it.
             url: >-
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
+        sales_channels:
+          description: The associated sales channels.
+          type: array
+          nullable: true
+          x-expandable: sales_channels
+          x-featureFlag: medusa_v2
+          items:
+            type: object
     OrderEdit:
       title: Order Edit
       description: >-
@@ -41157,7 +41172,14 @@ components:
       required:
         - publishable_key_id
         - sales_channel_id
+        - created_at
+        - updated_at
+        - deleted_at
       properties:
+        id:
+          description: The relation's ID
+          type: string
+          example: pksc_01G8X9A7ESKAJXG2H0E6F1MW7A
         sales_channel_id:
           description: The sales channel's ID
           type: string
@@ -41166,6 +41188,19 @@ components:
           description: The publishable API key's ID
           type: string
           example: pak_01G1G5V21KADXNGH29BJMAJ4B4
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
+          format: date-time
     Refund:
       title: Refund
       description: >-
@@ -41811,6 +41846,29 @@ components:
               it.
             url: >-
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
+        carts:
+          description: The associated carts.
+          type: array
+          nullable: true
+          x-expandable: carts
+          x-featureFlag: medusa_v2
+          items:
+            type: object
+        orders:
+          description: The associated orders.
+          type: array
+          nullable: true
+          x-expandable: orders
+          x-featureFlag: medusa_v2
+          items:
+            type: object
+        publishableKeys:
+          description: The associated publishable API keys.
+          type: array
+          nullable: true
+          x-expandable: publishableKeys
+          items:
+            type: object
     SalesChannelLocation:
       title: Sales Channel Stock Location
       description: >-

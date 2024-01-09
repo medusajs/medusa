@@ -44,7 +44,7 @@ properties:
     description: The details of the region this gift card is available in.
     x-expandable: region
     nullable: true
-    $ref: ./Region.yaml
+    type: object
   order_id:
     description: The ID of the order that the gift card was purchased in.
     nullable: true

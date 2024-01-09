@@ -123,7 +123,7 @@ properties:
     description: The details of the region this order was created in.
     x-expandable: region
     nullable: true
-    $ref: ./Region.yaml
+    type: object
   currency_code:
     description: The 3 character currency code that is used in the order
     type: string
@@ -210,7 +210,7 @@ properties:
     x-expandable: items
     type: array
     items:
-      $ref: ./LineItem.yaml
+      type: object
   edits:
     description: The details of the order edits done on the order.
     type: array
@@ -258,7 +258,7 @@ properties:
     description: The details of the sales channel this order belongs to.
     x-expandable: sales_channel
     nullable: true
-    $ref: ./SalesChannel.yaml
+    type: object
   shipping_total:
     type: integer
     description: The total of shipping
@@ -320,7 +320,7 @@ properties:
     type: array
     x-expandable: returnable_items
     items:
-      $ref: ./LineItem.yaml
+      type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string
@@ -339,3 +339,11 @@ properties:
       description: Learn about the metadata attribute, and how to delete and update it.
       url: >-
         https://docs.medusajs.com/development/entities/overview#metadata-attribute
+  sales_channels:
+    description: The associated sales channels.
+    type: array
+    nullable: true
+    x-expandable: sales_channels
+    x-featureFlag: medusa_v2
+    items:
+      type: object
