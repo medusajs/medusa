@@ -79,10 +79,8 @@ export default class NewTotalsService extends TransactionBaseService {
 
   /**
    * Calculate and return the items totals for either the legacy calculation or the new calculation
-   * @param items
-   * @param includeTax
-   * @param calculationContext
-   * @param taxRate
+   * @param items 
+   * @param param1 
    */
   async getLineItemTotals(
     items: LineItem | LineItem[],
@@ -138,17 +136,18 @@ export default class NewTotalsService extends TransactionBaseService {
 
   /**
    * Calculate and return the totals for an item
-   * @param item
-   * @param includeTax
-   * @param lineItemAllocation
-   * @param taxLines Only needed to force the usage of the specified tax lines, often in the case where the item does not hold the tax lines
-   * @param calculationContext
+   * @param item 
+   * @param param1 
+   * @returns 
    */
   protected async getLineItemTotals_(
     item: LineItem,
     {
       includeTax,
       lineItemAllocation,
+      /**
+       * Only needed to force the usage of the specified tax lines, often in the case where the item does not hold the tax lines
+       */
       taxLines,
       calculationContext,
     }: {
@@ -247,9 +246,7 @@ export default class NewTotalsService extends TransactionBaseService {
   /**
    * Calculate and return the legacy calculated totals using the tax rate
    * @param item
-   * @param taxRate
-   * @param lineItemAllocation
-   * @param calculationContext
+   * @param param1
    */
   protected async getLineItemTotalsLegacy(
     item: LineItem,
@@ -327,8 +324,7 @@ export default class NewTotalsService extends TransactionBaseService {
   /**
    * Return the amount that can be refund on a line item
    * @param lineItem
-   * @param calculationContext
-   * @param taxRate
+   * @param param1
    */
   getLineItemRefund(
     lineItem: {
@@ -396,8 +392,7 @@ export default class NewTotalsService extends TransactionBaseService {
 
   /**
    * @param lineItem
-   * @param calculationContext
-   * @param taxRate
+   * @param param1
    * @protected
    */
   protected getLineItemRefundLegacy(
@@ -440,9 +435,7 @@ export default class NewTotalsService extends TransactionBaseService {
   /**
    * Calculate and return the gift cards totals
    * @param giftCardableAmount
-   * @param giftCardTransactions
-   * @param region
-   * @param giftCards
+   * @param param1
    */
   async getGiftCardTotals(
     giftCardableAmount: number,
@@ -520,8 +513,7 @@ export default class NewTotalsService extends TransactionBaseService {
 
   /**
    * Calculate and return the gift cards totals based on their transactions
-   * @param gift_card_transactions
-   * @param region
+   * @param param0
    */
   getGiftCardTransactionsTotals({
     giftCardTransactions,
@@ -564,10 +556,7 @@ export default class NewTotalsService extends TransactionBaseService {
   /**
    * Calculate and return the shipping methods totals for either the legacy calculation or the new calculation
    * @param shippingMethods
-   * @param includeTax
-   * @param discounts
-   * @param taxRate
-   * @param calculationContext
+   * @param param1
    */
   async getShippingMethodTotals(
     shippingMethods: ShippingMethod | ShippingMethod[],
@@ -658,10 +647,7 @@ export default class NewTotalsService extends TransactionBaseService {
   /**
    * Calculate and return the shipping method totals
    * @param shippingMethod
-   * @param includeTax
-   * @param calculationContext
-   * @param taxLines
-   * @param discounts
+   * @param param1
    */
   protected async getShippingMethodTotals_(
     shippingMethod: ShippingMethod,
@@ -742,9 +728,7 @@ export default class NewTotalsService extends TransactionBaseService {
   /**
    * Calculate and return the shipping method totals legacy using the tax rate
    * @param shippingMethod
-   * @param calculationContext
-   * @param taxRate
-   * @param discounts
+   * @param param1
    */
   protected async getShippingMethodTotalsLegacy(
     shippingMethod: ShippingMethod,

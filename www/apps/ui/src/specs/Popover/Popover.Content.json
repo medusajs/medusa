@@ -69,14 +69,6 @@
         ]
       },
       "required": false
-    },
-    "forceMount": {
-      "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with React animation libraries.",
-      "required": false,
-      "tsType": {
-        "name": "literal",
-        "value": "true"
-      }
     }
   }
 }
