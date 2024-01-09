@@ -185,50 +185,14 @@ class SendGridService extends NotificationService {
 
   getTemplateId(event) {
     const templates = Object.keys(this.options_ ?? {})
-    const key = templates.find(
-      (template) =>
-        event.toLowerCase().toLowerCase().replace(".", "_") === template ||
-        `${event.toLowerCase().toLowerCase().replace(".", "_")}_template` ==
-          template
-    )
+    const normalizedEvent = event.toLowerCase().replace(".", "_")
+    const key = templates.find((template) => {
+      return (
+        normalizedEvent === template ||
+        `${normalizedEvent}_template` === template
+      )
+    })
     return key ? this.options_[key] : key
-    /* switch (event) {
-      case "order.return_requested":
-        return this.options_.order_return_requested_template
-      case "swap.shipment_created":
-        return this.options_.swap_shipment_created_template
-      case "claim.shipment_created":
-        return this.options_.claim_shipment_created_template
-      case "order.items_returned":
-        return this.options_.order_items_returned_template
-      case "swap.received":
-        return this.options_.swap_received_template
-      case "swap.created":
-        return this.options_.swap_created_template
-      case "gift_card.created":
-        return this.options_.gift_card_created_template
-      case "order.gift_card_created":
-        return this.options_.gift_card_created_template
-      case "order.placed":
-        return this.options_.order_placed_template
-      case "order.shipment_created":
-        return this.options_.order_shipped_template
-      case "order.canceled":
-        return this.options_.order_canceled_template
-      case "user.password_reset":
-        return this.options_.user_password_reset_template
-      case "customer.password_reset":
-        return this.options_.customer_password_reset_template
-      case "restock-notification.restocked":
-        return this.options_.medusa_restock_template
-      case "order.refund_created":
-        return this.options_.order_refund_created_template
-      default:
-        if (templates.find((template) => event == template)) {
-          return this.options_[event]
-        }
-        return null
-    }*/
   }
 
   async sendNotification(event, eventData, attachmentGenerator) {
