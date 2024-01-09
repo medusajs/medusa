@@ -90,7 +90,7 @@ transaction manager is created.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -308,7 +308,7 @@ the id can be passed to check that country updates are allowed.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"regionData","type":"Omit&#60;T, \"metadata\" \\| \"currency_code\"&#62;","description":"the region data to validate","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`T` extends `UpdateRegionInput` ? `string` : `undefined`","description":"optional id of the region to check against","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"regionData","type":"Omit&#60;T, \"metadata\" \\| \"currency_code\"&#62;","description":"the region data to validate","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"T extends `UpdateRegionInput` ? `string` : `undefined`","description":"optional id of the region to check against","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -342,4 +342,4 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"RegionService","type":"`object`","description":"Provides layer to manipulate regions.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
