@@ -163,7 +163,7 @@ export type PaginatedResponse = {
 /**
  * @interface
  *
- * The response returned for a DELETE request.
+ * The response returned for a `DELETE` request.
  */
 export type DeleteResponse = {
   /**

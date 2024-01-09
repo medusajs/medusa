@@ -6,7 +6,7 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 599,
+			"id": 601,
 			"name": "PriceListStatus",
 			"variant": "declaration",
 			"kind": 8,
@@ -21,7 +21,7 @@
 			},
 			"children": [
 				{
-					"id": 600,
+					"id": 602,
 					"name": "ACTIVE",
 					"variant": "declaration",
 					"kind": 16,
@@ -40,7 +40,7 @@
 					}
 				},
 				{
-					"id": 601,
+					"id": 603,
 					"name": "DRAFT",
 					"variant": "declaration",
 					"kind": 16,
@@ -63,14 +63,14 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						600,
-						601
+						602,
+						603
 					]
 				}
 			]
 		},
 		{
-			"id": 602,
+			"id": 604,
 			"name": "PriceListType",
 			"variant": "declaration",
 			"kind": 8,
@@ -85,7 +85,7 @@
 			},
 			"children": [
 				{
-					"id": 604,
+					"id": 606,
 					"name": "OVERRIDE",
 					"variant": "declaration",
 					"kind": 16,
@@ -104,7 +104,7 @@
 					}
 				},
 				{
-					"id": 603,
+					"id": 605,
 					"name": "SALE",
 					"variant": "declaration",
 					"kind": 16,
@@ -127,14 +127,14 @@
 				{
 					"title": "Enumeration Members",
 					"children": [
-						604,
-						603
+						606,
+						605
 					]
 				}
 			]
 		},
 		{
-			"id": 560,
+			"id": 562,
 			"name": "AddPriceListPricesDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -149,7 +149,7 @@
 			},
 			"children": [
 				{
-					"id": 561,
+					"id": 563,
 					"name": "priceListId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -168,7 +168,7 @@
 					}
 				},
 				{
-					"id": 562,
+					"id": 564,
 					"name": "prices",
 					"variant": "declaration",
 					"kind": 1024,
@@ -185,7 +185,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 606,
+							"target": 608,
 							"name": "PriceListPriceDTO",
 							"package": "@medusajs/types"
 						}
@@ -196,8 +196,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						561,
-						562
+						563,
+						564
 					]
 				}
 			]
@@ -254,7 +254,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 591,
+							"target": 593,
 							"name": "CreatePricesDTO",
 							"package": "@medusajs/types"
 						}
@@ -382,7 +382,7 @@
 			]
 		},
 		{
-			"id": 587,
+			"id": 589,
 			"name": "BaseFilterable",
 			"variant": "declaration",
 			"kind": 256,
@@ -397,7 +397,7 @@
 			},
 			"children": [
 				{
-					"id": 588,
+					"id": 590,
 					"name": "$and",
 					"variant": "declaration",
 					"kind": 1024,
@@ -425,7 +425,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -442,7 +442,7 @@
 					}
 				},
 				{
-					"id": 589,
+					"id": 591,
 					"name": "$or",
 					"variant": "declaration",
 					"kind": 1024,
@@ -470,7 +470,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -491,14 +491,14 @@
 				{
 					"title": "Properties",
 					"children": [
-						588,
-						589
+						590,
+						591
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 590,
+					"id": 592,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -543,12 +543,12 @@
 				},
 				{
 					"type": "reference",
-					"target": 510,
+					"target": 512,
 					"name": "FilterablePriceListProps"
 				},
 				{
 					"type": "reference",
-					"target": 542,
+					"target": 544,
 					"name": "FilterablePriceListRuleProps"
 				}
 			]
@@ -860,7 +860,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Whether the calculated price is associated with a price list. During the calculation process, if no valid price list is found, \nthe calculated price is set to the original price, which doesn't belong to a price list. In that case, the value of this property is "
+								"text": "Whether the calculated price is associated with a price list. During the calculation process, if no valid price list is found,\nthe calculated price is set to the original price, which doesn't belong to a price list. In that case, the value of this property is "
 							},
 							{
 								"kind": "code",
@@ -889,7 +889,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "Whether the original price is associated with a price list. During the calculation process, if the price list of the calculated price is of type override, \nthe original price will be the same as the calculated price. In that case, the value of this property is "
+								"text": "Whether the original price is associated with a price list. During the calculation process, if the price list of the calculated price is of type override,\nthe original price will be the same as the calculated price. In that case, the value of this property is "
 							},
 							{
 								"kind": "code",
@@ -1649,18 +1649,18 @@
 			"extendedBy": [
 				{
 					"type": "reference",
-					"target": 591,
+					"target": 593,
 					"name": "CreatePricesDTO"
 				},
 				{
 					"type": "reference",
-					"target": 606,
+					"target": 608,
 					"name": "PriceListPriceDTO"
 				}
 			]
 		},
 		{
-			"id": 518,
+			"id": 520,
 			"name": "CreatePriceListDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -1675,7 +1675,7 @@
 			},
 			"children": [
 				{
-					"id": 520,
+					"id": 522,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1694,7 +1694,7 @@
 					}
 				},
 				{
-					"id": 522,
+					"id": 524,
 					"name": "ends_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1715,8 +1715,57 @@
 					}
 				},
 				{
-					"id": 525,
-					"name": "number_rules",
+					"id": 529,
+					"name": "prices",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The prices associated with the price list."
+							}
+						]
+					},
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "reference",
+							"target": 608,
+							"name": "PriceListPriceDTO",
+							"package": "@medusajs/types"
+						}
+					}
+				},
+				{
+					"id": 528,
+					"name": "rules",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The rules to be created and associated with the price list."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 607,
+						"name": "CreatePriceListRules",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 527,
+					"name": "rules_count",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
@@ -1736,56 +1785,7 @@
 					}
 				},
 				{
-					"id": 527,
-					"name": "prices",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The prices associated with the price list."
-							}
-						]
-					},
-					"type": {
-						"type": "array",
-						"elementType": {
-							"type": "reference",
-							"target": 606,
-							"name": "PriceListPriceDTO",
-							"package": "@medusajs/types"
-						}
-					}
-				},
-				{
-					"id": 526,
-					"name": "rules",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The rules to be created and associated with the price list."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": 605,
-						"name": "CreatePriceListRules",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 521,
+					"id": 523,
 					"name": "starts_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1806,7 +1806,7 @@
 					}
 				},
 				{
-					"id": 523,
+					"id": 525,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1823,13 +1823,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 599,
+						"target": 601,
 						"name": "PriceListStatus",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 519,
+					"id": 521,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1848,7 +1848,7 @@
 					}
 				},
 				{
-					"id": 524,
+					"id": 526,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1865,7 +1865,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 602,
+						"target": 604,
 						"name": "PriceListType",
 						"package": "@medusajs/types"
 					}
@@ -1875,21 +1875,21 @@
 				{
 					"title": "Properties",
 					"children": [
-						520,
 						522,
-						525,
+						524,
+						529,
+						528,
 						527,
-						526,
-						521,
 						523,
-						519,
-						524
+						525,
+						521,
+						526
 					]
 				}
 			]
 		},
 		{
-			"id": 549,
+			"id": 551,
 			"name": "CreatePriceListRuleDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -1904,7 +1904,7 @@
 			},
 			"children": [
 				{
-					"id": 553,
+					"id": 555,
 					"name": "price_list",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1928,7 +1928,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 498,
+								"target": 500,
 								"name": "PriceListDTO",
 								"package": "@medusajs/types"
 							}
@@ -1936,7 +1936,7 @@
 					}
 				},
 				{
-					"id": 552,
+					"id": 554,
 					"name": "price_list_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1957,7 +1957,7 @@
 					}
 				},
 				{
-					"id": 551,
+					"id": 553,
 					"name": "rule_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1989,7 +1989,7 @@
 					}
 				},
 				{
-					"id": 550,
+					"id": 552,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2014,16 +2014,16 @@
 				{
 					"title": "Properties",
 					"children": [
+						555,
+						554,
 						553,
-						552,
-						551,
-						550
+						552
 					]
 				}
 			]
 		},
 		{
-			"id": 605,
+			"id": 607,
 			"name": "CreatePriceListRules",
 			"variant": "declaration",
 			"kind": 256,
@@ -2085,30 +2085,45 @@
 			},
 			"children": [
 				{
-					"id": 484,
-					"name": "id",
+					"id": 485,
+					"name": "price_set",
 					"variant": "declaration",
 					"kind": 1024,
-					"flags": {},
+					"flags": {
+						"isOptional": true
+					},
 					"comment": {
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The ID of the price rule."
+								"text": "The ID or object of the associated price set."
 							}
 						]
 					},
 					"type": {
-						"type": "intrinsic",
-						"name": "string"
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "reference",
+								"target": 338,
+								"name": "PriceSetDTO",
+								"package": "@medusajs/types"
+							}
+						]
 					}
 				},
 				{
-					"id": 485,
+					"id": 484,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
-					"flags": {},
+					"flags": {
+						"isOptional": true
+					},
 					"comment": {
 						"summary": [
 							{
@@ -2123,23 +2138,73 @@
 					}
 				},
 				{
-					"id": 489,
+					"id": 491,
+					"name": "price_set_money_amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID or object of the associated price set money amount."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "reference",
+								"target": 449,
+								"name": "PriceSetMoneyAmountDTO",
+								"package": "@medusajs/types"
+							}
+						]
+					}
+				},
+				{
+					"id": 490,
 					"name": "price_set_money_amount_id",
 					"variant": "declaration",
 					"kind": 1024,
-					"flags": {},
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the associated price set money amount."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
 					}
 				},
 				{
-					"id": 488,
+					"id": 489,
 					"name": "priority",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The priority of the price rule in comparison to other applicable price rules."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -2147,11 +2212,45 @@
 					}
 				},
 				{
+					"id": 487,
+					"name": "rule_type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the associated rule type."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "reference",
+								"target": 410,
+								"name": "RuleTypeDTO",
+								"package": "@medusajs/types"
+							}
+						]
+					}
+				},
+				{
 					"id": 486,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
-					"flags": {},
+					"flags": {
+						"isOptional": true
+					},
 					"comment": {
 						"summary": [
 							{
@@ -2166,7 +2265,7 @@
 					}
 				},
 				{
-					"id": 487,
+					"id": 488,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2189,12 +2288,14 @@
 				{
 					"title": "Properties",
 					"children": [
-						484,
 						485,
+						484,
+						491,
+						490,
 						489,
-						488,
+						487,
 						486,
-						487
+						488
 					]
 				}
 			]
@@ -2234,7 +2335,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 591,
+							"target": 593,
 							"name": "CreatePricesDTO",
 							"package": "@medusajs/types"
 						}
@@ -2403,7 +2504,51 @@
 			]
 		},
 		{
-			"id": 591,
+			"id": 634,
+			"name": "CreatePriceSetPriceRules",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The price rules to be set for each price in the price set.\n\nEach key of the object is a rule type's "
+					},
+					{
+						"kind": "code",
+						"text": "`rule_attribute`"
+					},
+					{
+						"kind": "text",
+						"text": ", and its value\nis the values of the rule."
+					}
+				]
+			},
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+						"qualifiedName": "Record"
+					},
+					"typeArguments": [
+						{
+							"type": "intrinsic",
+							"name": "string"
+						},
+						{
+							"type": "intrinsic",
+							"name": "string"
+						}
+					],
+					"name": "Record",
+					"package": "typescript"
+				}
+			]
+		},
+		{
+			"id": 593,
 			"name": "CreatePricesDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -2418,7 +2563,7 @@
 			},
 			"children": [
 				{
-					"id": 596,
+					"id": 598,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2442,7 +2587,7 @@
 					}
 				},
 				{
-					"id": 595,
+					"id": 597,
 					"name": "currency",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2470,7 +2615,7 @@
 					}
 				},
 				{
-					"id": 594,
+					"id": 596,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2494,7 +2639,7 @@
 					}
 				},
 				{
-					"id": 593,
+					"id": 595,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2520,7 +2665,7 @@
 					}
 				},
 				{
-					"id": 598,
+					"id": 600,
 					"name": "max_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2555,7 +2700,7 @@
 					}
 				},
 				{
-					"id": 597,
+					"id": 599,
 					"name": "min_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2590,11 +2735,13 @@
 					}
 				},
 				{
-					"id": 592,
+					"id": 594,
 					"name": "rules",
 					"variant": "declaration",
 					"kind": 1024,
-					"flags": {},
+					"flags": {
+						"isOptional": true
+					},
 					"comment": {
 						"summary": [
 							{
@@ -2613,22 +2760,9 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Record"
-						},
-						"typeArguments": [
-							{
-								"type": "intrinsic",
-								"name": "string"
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						],
-						"name": "Record",
-						"package": "typescript"
+						"target": 634,
+						"name": "CreatePriceSetPriceRules",
+						"package": "@medusajs/types"
 					}
 				}
 			],
@@ -2636,13 +2770,13 @@
 				{
 					"title": "Properties",
 					"children": [
-						596,
-						595,
-						594,
-						593,
 						598,
 						597,
-						592
+						596,
+						595,
+						600,
+						599,
+						594
 					]
 				}
 			],
@@ -2933,7 +3067,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -2950,7 +3084,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
@@ -2983,7 +3117,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -3000,7 +3134,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
@@ -3042,7 +3176,7 @@
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
@@ -3100,7 +3234,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -3117,7 +3251,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
@@ -3150,7 +3284,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -3167,7 +3301,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
@@ -3243,7 +3377,7 @@
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
@@ -3258,7 +3392,7 @@
 			]
 		},
 		{
-			"id": 510,
+			"id": 512,
 			"name": "FilterablePriceListProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -3273,7 +3407,7 @@
 			},
 			"children": [
 				{
-					"id": 516,
+					"id": 518,
 					"name": "$and",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3295,17 +3429,17 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": 510,
+									"target": 512,
 									"name": "FilterablePriceListProps",
 									"package": "@medusajs/types"
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": 510,
+											"target": 512,
 											"name": "FilterablePriceListProps",
 											"package": "@medusajs/types"
 										}
@@ -3318,12 +3452,12 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
 				{
-					"id": 517,
+					"id": 519,
 					"name": "$or",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3345,17 +3479,17 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": 510,
+									"target": 512,
 									"name": "FilterablePriceListProps",
 									"package": "@medusajs/types"
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": 510,
+											"target": 512,
 											"name": "FilterablePriceListProps",
 											"package": "@medusajs/types"
 										}
@@ -3368,12 +3502,12 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
 				{
-					"id": 513,
+					"id": 515,
 					"name": "ends_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3397,7 +3531,7 @@
 					}
 				},
 				{
-					"id": 511,
+					"id": 513,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3421,8 +3555,8 @@
 					}
 				},
 				{
-					"id": 515,
-					"name": "number_rules",
+					"id": 517,
+					"name": "rules_count",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
@@ -3445,7 +3579,7 @@
 					}
 				},
 				{
-					"id": 512,
+					"id": 514,
 					"name": "starts_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3469,7 +3603,7 @@
 					}
 				},
 				{
-					"id": 514,
+					"id": 516,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3488,7 +3622,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 599,
+							"target": 601,
 							"name": "PriceListStatus",
 							"package": "@medusajs/types"
 						}
@@ -3499,24 +3633,24 @@
 				{
 					"title": "Properties",
 					"children": [
-						516,
-						517,
-						513,
-						511,
+						518,
+						519,
 						515,
-						512,
-						514
+						513,
+						517,
+						514,
+						516
 					]
 				}
 			],
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
-							"target": 510,
+							"target": 512,
 							"name": "FilterablePriceListProps",
 							"package": "@medusajs/types"
 						}
@@ -3527,7 +3661,7 @@
 			]
 		},
 		{
-			"id": 542,
+			"id": 544,
 			"name": "FilterablePriceListRuleProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -3542,7 +3676,7 @@
 			},
 			"children": [
 				{
-					"id": 547,
+					"id": 549,
 					"name": "$and",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3564,17 +3698,17 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": 542,
+									"target": 544,
 									"name": "FilterablePriceListRuleProps",
 									"package": "@medusajs/types"
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": 542,
+											"target": 544,
 											"name": "FilterablePriceListRuleProps",
 											"package": "@medusajs/types"
 										}
@@ -3587,12 +3721,12 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
 				{
-					"id": 548,
+					"id": 550,
 					"name": "$or",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3614,17 +3748,17 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": 542,
+									"target": 544,
 									"name": "FilterablePriceListRuleProps",
 									"package": "@medusajs/types"
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": 542,
+											"target": 544,
 											"name": "FilterablePriceListRuleProps",
 											"package": "@medusajs/types"
 										}
@@ -3637,12 +3771,12 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
 				{
-					"id": 543,
+					"id": 545,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3666,7 +3800,7 @@
 					}
 				},
 				{
-					"id": 546,
+					"id": 548,
 					"name": "price_list_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3690,7 +3824,7 @@
 					}
 				},
 				{
-					"id": 545,
+					"id": 547,
 					"name": "rule_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3714,7 +3848,7 @@
 					}
 				},
 				{
-					"id": 544,
+					"id": 546,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3742,23 +3876,23 @@
 				{
 					"title": "Properties",
 					"children": [
-						547,
-						548,
-						543,
-						546,
+						549,
+						550,
 						545,
-						544
+						548,
+						547,
+						546
 					]
 				}
 			],
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
-							"target": 542,
+							"target": 544,
 							"name": "FilterablePriceListRuleProps",
 							"package": "@medusajs/types"
 						}
@@ -3812,7 +3946,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -3829,7 +3963,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
@@ -3862,7 +3996,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -3879,7 +4013,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
@@ -3996,7 +4130,7 @@
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
@@ -4054,7 +4188,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -4071,7 +4205,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
@@ -4104,7 +4238,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -4121,7 +4255,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
@@ -4213,7 +4347,7 @@
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
@@ -4271,7 +4405,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -4288,7 +4422,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
@@ -4321,7 +4455,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -4338,7 +4472,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
@@ -4455,7 +4589,7 @@
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
@@ -4513,7 +4647,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -4530,7 +4664,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
@@ -4563,7 +4697,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -4580,7 +4714,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
@@ -4646,7 +4780,7 @@
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
@@ -4704,7 +4838,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -4721,7 +4855,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 588,
+						"target": 590,
 						"name": "BaseFilterable.$and"
 					}
 				},
@@ -4754,7 +4888,7 @@
 								},
 								{
 									"type": "reference",
-									"target": 587,
+									"target": 589,
 									"typeArguments": [
 										{
 											"type": "reference",
@@ -4771,7 +4905,7 @@
 					},
 					"inheritedFrom": {
 						"type": "reference",
-						"target": 589,
+						"target": 591,
 						"name": "BaseFilterable.$or"
 					}
 				},
@@ -4863,7 +4997,7 @@
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 587,
+					"target": 589,
 					"typeArguments": [
 						{
 							"type": "reference",
@@ -5219,7 +5353,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 560,
+											"target": 562,
 											"name": "AddPriceListPricesDTO",
 											"package": "@medusajs/types"
 										}
@@ -5260,7 +5394,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 498,
+											"target": 500,
 											"name": "PriceListDTO",
 											"package": "@medusajs/types"
 										}
@@ -6416,7 +6550,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 549,
+											"target": 551,
 											"name": "CreatePriceListRuleDTO",
 											"package": "@medusajs/types"
 										}
@@ -6457,7 +6591,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 536,
+											"target": 538,
 											"name": "PriceListRuleDTO",
 											"package": "@medusajs/types"
 										}
@@ -6529,7 +6663,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 518,
+											"target": 520,
 											"name": "CreatePriceListDTO",
 											"package": "@medusajs/types"
 										}
@@ -6570,7 +6704,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 498,
+											"target": 500,
 											"name": "PriceListDTO",
 											"package": "@medusajs/types"
 										}
@@ -8880,7 +9014,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 542,
+										"target": 544,
 										"name": "FilterablePriceListRuleProps",
 										"package": "@medusajs/types"
 									}
@@ -8923,7 +9057,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 536,
+												"target": 538,
 												"name": "PriceListRuleDTO",
 												"package": "@medusajs/types"
 											}
@@ -8970,7 +9104,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 536,
+													"target": 538,
 													"name": "PriceListRuleDTO",
 													"package": "@medusajs/types"
 												}
@@ -9132,7 +9266,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 510,
+										"target": 512,
 										"name": "FilterablePriceListProps",
 										"package": "@medusajs/types"
 									}
@@ -9175,7 +9309,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 498,
+												"target": 500,
 												"name": "PriceListDTO",
 												"package": "@medusajs/types"
 											}
@@ -9222,7 +9356,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 498,
+													"target": 500,
 													"name": "PriceListDTO",
 													"package": "@medusajs/types"
 												}
@@ -10846,7 +10980,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 542,
+										"target": 544,
 										"name": "FilterablePriceListRuleProps",
 										"package": "@medusajs/types"
 									}
@@ -10889,7 +11023,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 536,
+												"target": 538,
 												"name": "PriceListRuleDTO",
 												"package": "@medusajs/types"
 											}
@@ -10933,7 +11067,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 536,
+											"target": 538,
 											"name": "PriceListRuleDTO",
 											"package": "@medusajs/types"
 										}
@@ -11089,7 +11223,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 510,
+										"target": 512,
 										"name": "FilterablePriceListProps",
 										"package": "@medusajs/types"
 									}
@@ -11132,7 +11266,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 498,
+												"target": 500,
 												"name": "PriceListDTO",
 												"package": "@medusajs/types"
 											}
@@ -11176,7 +11310,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 498,
+											"target": 500,
 											"name": "PriceListDTO",
 											"package": "@medusajs/types"
 										}
@@ -12218,7 +12352,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 566,
+										"target": 568,
 										"name": "RemovePriceListRulesDTO",
 										"package": "@medusajs/types"
 									}
@@ -12256,7 +12390,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 498,
+										"target": 500,
 										"name": "PriceListDTO",
 										"package": "@medusajs/types"
 									}
@@ -12978,7 +13112,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 498,
+												"target": 500,
 												"name": "PriceListDTO",
 												"package": "@medusajs/types"
 											}
@@ -13020,7 +13154,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 498,
+										"target": 500,
 										"name": "PriceListDTO",
 										"package": "@medusajs/types"
 									}
@@ -13142,7 +13276,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 536,
+												"target": 538,
 												"name": "PriceListRuleDTO",
 												"package": "@medusajs/types"
 											}
@@ -13184,7 +13318,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 536,
+										"target": 538,
 										"name": "PriceListRuleDTO",
 										"package": "@medusajs/types"
 									}
@@ -13745,7 +13879,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 563,
+										"target": 565,
 										"name": "SetPriceListRulesDTO",
 										"package": "@medusajs/types"
 									}
@@ -13783,7 +13917,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 498,
+										"target": 500,
 										"name": "PriceListDTO",
 										"package": "@medusajs/types"
 									}
@@ -14080,7 +14214,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 554,
+											"target": 556,
 											"name": "UpdatePriceListRuleDTO",
 											"package": "@medusajs/types"
 										}
@@ -14121,7 +14255,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 536,
+											"target": 538,
 											"name": "PriceListRuleDTO",
 											"package": "@medusajs/types"
 										}
@@ -14193,7 +14327,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 528,
+											"target": 530,
 											"name": "UpdatePriceListDTO",
 											"package": "@medusajs/types"
 										}
@@ -14234,7 +14368,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 498,
+											"target": 500,
 											"name": "PriceListDTO",
 											"package": "@medusajs/types"
 										}
@@ -14306,7 +14440,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 490,
+											"target": 492,
 											"name": "UpdatePriceRuleDTO",
 											"package": "@medusajs/types"
 										}
@@ -14651,14 +14785,14 @@
 			]
 		},
 		{
-			"id": 569,
+			"id": 571,
 			"name": "JoinerServiceConfig",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 571,
+					"id": 573,
 					"name": "alias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -14678,7 +14812,7 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 618,
+								"target": 621,
 								"name": "JoinerServiceConfigAlias",
 								"package": "@medusajs/types"
 							},
@@ -14686,7 +14820,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 618,
+									"target": 621,
 									"name": "JoinerServiceConfigAlias",
 									"package": "@medusajs/types"
 								}
@@ -14695,7 +14829,7 @@
 					}
 				},
 				{
-					"id": 582,
+					"id": 584,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -14731,7 +14865,7 @@
 					}
 				},
 				{
-					"id": 578,
+					"id": 580,
 					"name": "extends",
 					"variant": "declaration",
 					"kind": 1024,
@@ -14743,27 +14877,27 @@
 						"elementType": {
 							"type": "reflection",
 							"declaration": {
-								"id": 579,
+								"id": 581,
 								"name": "__type",
 								"variant": "declaration",
 								"kind": 65536,
 								"flags": {},
 								"children": [
 									{
-										"id": 581,
+										"id": 583,
 										"name": "relationship",
 										"variant": "declaration",
 										"kind": 1024,
 										"flags": {},
 										"type": {
 											"type": "reference",
-											"target": 621,
+											"target": 624,
 											"name": "JoinerRelationship",
 											"package": "@medusajs/types"
 										}
 									},
 									{
-										"id": 580,
+										"id": 582,
 										"name": "serviceName",
 										"variant": "declaration",
 										"kind": 1024,
@@ -14778,8 +14912,8 @@
 									{
 										"title": "Properties",
 										"children": [
-											581,
-											580
+											583,
+											582
 										]
 									}
 								]
@@ -14788,7 +14922,7 @@
 					}
 				},
 				{
-					"id": 572,
+					"id": 574,
 					"name": "fieldAlias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -14824,14 +14958,14 @@
 									{
 										"type": "reflection",
 										"declaration": {
-											"id": 573,
+											"id": 575,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 575,
+													"id": 577,
 													"name": "forwardArgumentsOnPath",
 													"variant": "declaration",
 													"kind": 1024,
@@ -14845,7 +14979,7 @@
 													}
 												},
 												{
-													"id": 574,
+													"id": 576,
 													"name": "path",
 													"variant": "declaration",
 													"kind": 1024,
@@ -14860,8 +14994,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														575,
-														574
+														577,
+														576
 													]
 												}
 											]
@@ -14875,7 +15009,7 @@
 					}
 				},
 				{
-					"id": 576,
+					"id": 578,
 					"name": "primaryKeys",
 					"variant": "declaration",
 					"kind": 1024,
@@ -14889,7 +15023,7 @@
 					}
 				},
 				{
-					"id": 577,
+					"id": 579,
 					"name": "relationships",
 					"variant": "declaration",
 					"kind": 1024,
@@ -14900,14 +15034,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 621,
+							"target": 624,
 							"name": "JoinerRelationship",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 570,
+					"id": 572,
 					"name": "serviceName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -14922,26 +15056,26 @@
 				{
 					"title": "Properties",
 					"children": [
-						571,
-						582,
+						573,
+						584,
+						580,
+						574,
 						578,
-						572,
-						576,
-						577,
-						570
+						579,
+						572
 					]
 				}
 			]
 		},
 		{
-			"id": 618,
+			"id": 621,
 			"name": "JoinerServiceConfigAlias",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 620,
+					"id": 623,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -14977,7 +15111,7 @@
 					}
 				},
 				{
-					"id": 619,
+					"id": 622,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15004,8 +15138,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						620,
-						619
+						623,
+						622
 					]
 				}
 			]
@@ -15194,7 +15328,7 @@
 			]
 		},
 		{
-			"id": 498,
+			"id": 500,
 			"name": "PriceListDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -15209,7 +15343,7 @@
 			},
 			"children": [
 				{
-					"id": 503,
+					"id": 505,
 					"name": "ends_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15239,7 +15373,7 @@
 					}
 				},
 				{
-					"id": 499,
+					"id": 501,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15258,7 +15392,7 @@
 					}
 				},
 				{
-					"id": 506,
+					"id": 508,
 					"name": "money_amounts",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15287,28 +15421,7 @@
 					}
 				},
 				{
-					"id": 504,
-					"name": "number_rules",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The number of rules associated with this price list."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "number"
-					}
-				},
-				{
-					"id": 509,
+					"id": 511,
 					"name": "price_list_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15330,14 +15443,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 536,
+							"target": 538,
 							"name": "PriceListRuleDTO",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 505,
+					"id": 507,
 					"name": "price_set_money_amounts",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15366,7 +15479,7 @@
 					}
 				},
 				{
-					"id": 507,
+					"id": 509,
 					"name": "rule_types",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15395,7 +15508,7 @@
 					}
 				},
 				{
-					"id": 508,
+					"id": 510,
 					"name": "rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15417,14 +15530,35 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 536,
+							"target": 538,
 							"name": "PriceListRuleDTO",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 501,
+					"id": 506,
+					"name": "rules_count",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The number of rules associated with this price list."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 503,
 					"name": "starts_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15454,7 +15588,7 @@
 					}
 				},
 				{
-					"id": 502,
+					"id": 504,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15471,13 +15605,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 599,
+						"target": 601,
 						"name": "PriceListStatus",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 500,
+					"id": 502,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15502,23 +15636,23 @@
 				{
 					"title": "Properties",
 					"children": [
-						503,
-						499,
-						506,
-						504,
-						509,
 						505,
-						507,
-						508,
 						501,
-						502,
-						500
+						508,
+						511,
+						507,
+						509,
+						510,
+						506,
+						503,
+						504,
+						502
 					]
 				}
 			]
 		},
 		{
-			"id": 606,
+			"id": 608,
 			"name": "PriceListPriceDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -15533,7 +15667,7 @@
 			},
 			"children": [
 				{
-					"id": 611,
+					"id": 614,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15557,7 +15691,7 @@
 					}
 				},
 				{
-					"id": 610,
+					"id": 613,
 					"name": "currency",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15585,7 +15719,7 @@
 					}
 				},
 				{
-					"id": 609,
+					"id": 612,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15609,7 +15743,7 @@
 					}
 				},
 				{
-					"id": 608,
+					"id": 611,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15635,7 +15769,7 @@
 					}
 				},
 				{
-					"id": 613,
+					"id": 616,
 					"name": "max_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15670,7 +15804,7 @@
 					}
 				},
 				{
-					"id": 612,
+					"id": 615,
 					"name": "min_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15705,7 +15839,7 @@
 					}
 				},
 				{
-					"id": 607,
+					"id": 609,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15722,19 +15856,51 @@
 						"type": "intrinsic",
 						"name": "string"
 					}
+				},
+				{
+					"id": 610,
+					"name": "rules",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The rules to add to the price. The object's keys are rule types' "
+							},
+							{
+								"kind": "code",
+								"text": "`rule_attribute`"
+							},
+							{
+								"kind": "text",
+								"text": " attribute, and values are the value of that rule associated with this price."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 634,
+						"name": "CreatePriceSetPriceRules",
+						"package": "@medusajs/types"
+					}
 				}
 			],
 			"groups": [
 				{
 					"title": "Properties",
 					"children": [
-						611,
-						610,
-						609,
-						608,
+						614,
 						613,
 						612,
-						607
+						611,
+						616,
+						615,
+						609,
+						610
 					]
 				}
 			],
@@ -15748,7 +15914,7 @@
 			]
 		},
 		{
-			"id": 536,
+			"id": 538,
 			"name": "PriceListRuleDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -15763,7 +15929,7 @@
 			},
 			"children": [
 				{
-					"id": 537,
+					"id": 539,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15782,7 +15948,7 @@
 					}
 				},
 				{
-					"id": 540,
+					"id": 542,
 					"name": "price_list",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15800,13 +15966,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 498,
+						"target": 500,
 						"name": "PriceListDTO",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 541,
+					"id": 543,
 					"name": "price_list_rule_values",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15828,14 +15994,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 614,
+							"target": 617,
 							"name": "PriceListRuleValueDTO",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 539,
+					"id": 541,
 					"name": "rule_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15859,7 +16025,7 @@
 					}
 				},
 				{
-					"id": 538,
+					"id": 540,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15882,17 +16048,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						537,
-						540,
-						541,
 						539,
-						538
+						542,
+						543,
+						541,
+						540
 					]
 				}
 			]
 		},
 		{
-			"id": 614,
+			"id": 617,
 			"name": "PriceListRuleValueDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -15907,7 +16073,7 @@
 			},
 			"children": [
 				{
-					"id": 615,
+					"id": 618,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15926,7 +16092,7 @@
 					}
 				},
 				{
-					"id": 617,
+					"id": 620,
 					"name": "price_list_rule",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15944,13 +16110,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 536,
+						"target": 538,
 						"name": "PriceListRuleDTO",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 616,
+					"id": 619,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -15973,9 +16139,9 @@
 				{
 					"title": "Properties",
 					"children": [
-						615,
-						617,
-						616
+						618,
+						620,
+						619
 					]
 				}
 			]
@@ -16373,7 +16539,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 498,
+						"target": 500,
 						"name": "PriceListDTO",
 						"package": "@medusajs/types"
 					}
@@ -16755,7 +16921,7 @@
 			]
 		},
 		{
-			"id": 566,
+			"id": 568,
 			"name": "RemovePriceListRulesDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -16770,7 +16936,7 @@
 			},
 			"children": [
 				{
-					"id": 567,
+					"id": 569,
 					"name": "priceListId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -16789,7 +16955,7 @@
 					}
 				},
 				{
-					"id": 568,
+					"id": 570,
 					"name": "rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -16823,8 +16989,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						567,
-						568
+						569,
+						570
 					]
 				}
 			]
@@ -17025,7 +17191,7 @@
 			]
 		},
 		{
-			"id": 563,
+			"id": 565,
 			"name": "SetPriceListRulesDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -17040,7 +17206,7 @@
 			},
 			"children": [
 				{
-					"id": 564,
+					"id": 566,
 					"name": "priceListId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17059,7 +17225,7 @@
 					}
 				},
 				{
-					"id": 565,
+					"id": 567,
 					"name": "rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17117,8 +17283,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						564,
-						565
+						566,
+						567
 					]
 				}
 			]
@@ -17382,7 +17548,7 @@
 			]
 		},
 		{
-			"id": 528,
+			"id": 530,
 			"name": "UpdatePriceListDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -17397,7 +17563,7 @@
 			},
 			"children": [
 				{
-					"id": 532,
+					"id": 534,
 					"name": "ends_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17427,7 +17593,7 @@
 					}
 				},
 				{
-					"id": 529,
+					"id": 531,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17446,8 +17612,31 @@
 					}
 				},
 				{
-					"id": 534,
-					"name": "number_rules",
+					"id": 537,
+					"name": "rules",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The rules to be created and associated with the price list."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": 607,
+						"name": "CreatePriceListRules",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 536,
+					"name": "rules_count",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
@@ -17467,30 +17656,7 @@
 					}
 				},
 				{
-					"id": 535,
-					"name": "rules",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The rules to be created and associated with the price list."
-							}
-						]
-					},
-					"type": {
-						"type": "reference",
-						"target": 605,
-						"name": "CreatePriceListRules",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 531,
+					"id": 533,
 					"name": "starts_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17520,7 +17686,7 @@
 					}
 				},
 				{
-					"id": 533,
+					"id": 535,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17537,13 +17703,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 599,
+						"target": 601,
 						"name": "PriceListStatus",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 530,
+					"id": 532,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17568,19 +17734,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						532,
-						529,
 						534,
-						535,
 						531,
+						537,
+						536,
 						533,
-						530
+						535,
+						532
 					]
 				}
 			]
 		},
 		{
-			"id": 554,
+			"id": 556,
 			"name": "UpdatePriceListRuleDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -17595,7 +17761,7 @@
 			},
 			"children": [
 				{
-					"id": 555,
+					"id": 557,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17614,7 +17780,7 @@
 					}
 				},
 				{
-					"id": 558,
+					"id": 560,
 					"name": "price_list",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17635,7 +17801,7 @@
 					}
 				},
 				{
-					"id": 556,
+					"id": 558,
 					"name": "price_list_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17656,7 +17822,7 @@
 					}
 				},
 				{
-					"id": 559,
+					"id": 561,
 					"name": "rule_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17677,7 +17843,7 @@
 					}
 				},
 				{
-					"id": 557,
+					"id": 559,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17702,17 +17868,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						555,
+						557,
+						560,
 						558,
-						556,
-						559,
-						557
+						561,
+						559
 					]
 				}
 			]
 		},
 		{
-			"id": 490,
+			"id": 492,
 			"name": "UpdatePriceRuleDTO",
 			"variant": "declaration",
 			"kind": 256,
@@ -17735,7 +17901,7 @@
 			},
 			"children": [
 				{
-					"id": 491,
+					"id": 493,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17746,7 +17912,7 @@
 					}
 				},
 				{
-					"id": 497,
+					"id": 499,
 					"name": "price_list_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17767,7 +17933,7 @@
 					}
 				},
 				{
-					"id": 492,
+					"id": 494,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17780,7 +17946,7 @@
 					}
 				},
 				{
-					"id": 496,
+					"id": 498,
 					"name": "price_set_money_amount_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17801,7 +17967,7 @@
 					}
 				},
 				{
-					"id": 495,
+					"id": 497,
 					"name": "priority",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17822,7 +17988,7 @@
 					}
 				},
 				{
-					"id": 493,
+					"id": 495,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17835,7 +18001,7 @@
 					}
 				},
 				{
-					"id": 494,
+					"id": 496,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -17860,13 +18026,13 @@
 				{
 					"title": "Properties",
 					"children": [
-						491,
-						497,
-						492,
-						496,
-						495,
 						493,
-						494
+						499,
+						494,
+						498,
+						497,
+						495,
+						496
 					]
 				}
 			]
@@ -18176,7 +18342,7 @@
 			]
 		},
 		{
-			"id": 621,
+			"id": 624,
 			"name": "JoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -18184,14 +18350,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 622,
+					"id": 625,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 623,
+							"id": 626,
 							"name": "alias",
 							"variant": "declaration",
 							"kind": 1024,
@@ -18202,7 +18368,7 @@
 							}
 						},
 						{
-							"id": 630,
+							"id": 633,
 							"name": "args",
 							"variant": "declaration",
 							"kind": 1024,
@@ -18238,7 +18404,7 @@
 							}
 						},
 						{
-							"id": 624,
+							"id": 627,
 							"name": "foreignKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -18249,7 +18415,7 @@
 							}
 						},
 						{
-							"id": 628,
+							"id": 631,
 							"name": "inverse",
 							"variant": "declaration",
 							"kind": 1024,
@@ -18270,7 +18436,7 @@
 							}
 						},
 						{
-							"id": 627,
+							"id": 630,
 							"name": "isInternalService",
 							"variant": "declaration",
 							"kind": 1024,
@@ -18291,7 +18457,7 @@
 							}
 						},
 						{
-							"id": 629,
+							"id": 632,
 							"name": "isList",
 							"variant": "declaration",
 							"kind": 1024,
@@ -18312,7 +18478,7 @@
 							}
 						},
 						{
-							"id": 625,
+							"id": 628,
 							"name": "primaryKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -18323,7 +18489,7 @@
 							}
 						},
 						{
-							"id": 626,
+							"id": 629,
 							"name": "serviceName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -18338,14 +18504,14 @@
 						{
 							"title": "Properties",
 							"children": [
-								623,
-								630,
-								624,
-								628,
+								626,
+								633,
 								627,
-								629,
-								625,
-								626
+								631,
+								630,
+								632,
+								628,
+								629
 							]
 						}
 					]
@@ -18370,7 +18536,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 569,
+								"target": 571,
 								"name": "JoinerServiceConfig",
 								"package": "@medusajs/types"
 							},
@@ -18792,7 +18958,7 @@
 														"flags": {},
 														"type": {
 															"type": "reference",
-															"target": 583,
+															"target": 585,
 															"name": "ModuleJoinerRelationship",
 															"package": "@medusajs/types"
 														}
@@ -18929,7 +19095,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 583,
+											"target": 585,
 											"name": "ModuleJoinerRelationship",
 											"package": "@medusajs/types"
 										}
@@ -18992,7 +19158,7 @@
 			}
 		},
 		{
-			"id": 583,
+			"id": 585,
 			"name": "ModuleJoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -19002,21 +19168,21 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 621,
+						"target": 624,
 						"name": "JoinerRelationship",
 						"package": "@medusajs/types"
 					},
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 584,
+							"id": 586,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 586,
+									"id": 588,
 									"name": "deleteCascade",
 									"variant": "declaration",
 									"kind": 1024,
@@ -19037,7 +19203,7 @@
 									}
 								},
 								{
-									"id": 585,
+									"id": 587,
 									"name": "isInternalService",
 									"variant": "declaration",
 									"kind": 1024,
@@ -19062,8 +19228,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										586,
-										585
+										588,
+										587
 									]
 								}
 							]
@@ -19077,34 +19243,35 @@
 		{
 			"title": "Enumerations",
 			"children": [
-				599,
-				602
+				601,
+				604
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				560,
+				562,
 				357,
 				360,
-				587,
+				589,
 				306,
 				299,
 				400,
 				378,
-				518,
-				549,
-				605,
+				520,
+				551,
+				607,
 				483,
 				347,
 				457,
-				591,
+				634,
+				593,
 				421,
 				391,
 				396,
 				373,
-				510,
-				542,
+				512,
+				544,
 				476,
 				443,
 				436,
@@ -19112,28 +19279,28 @@
 				415,
 				327,
 				1,
-				569,
-				618,
+				571,
+				621,
 				365,
-				498,
-				606,
-				536,
-				614,
+				500,
+				608,
+				538,
+				617,
 				466,
 				338,
 				449,
 				431,
 				297,
 				295,
-				566,
+				568,
 				354,
 				410,
-				563,
+				565,
 				405,
 				385,
-				528,
-				554,
-				490,
+				530,
+				556,
+				492,
 				352,
 				461,
 				426
@@ -19142,9 +19309,9 @@
 		{
 			"title": "Type Aliases",
 			"children": [
-				621,
+				624,
 				268,
-				583
+				585
 			]
 		}
 	],
@@ -21060,11 +21227,11 @@
 		},
 		"484": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "CreatePriceRuleDTO.id"
+			"qualifiedName": "CreatePriceRuleDTO.price_set_id"
 		},
 		"485": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "CreatePriceRuleDTO.price_set_id"
+			"qualifiedName": "CreatePriceRuleDTO.price_set"
 		},
 		"486": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
@@ -21072,579 +21239,595 @@
 		},
 		"487": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "CreatePriceRuleDTO.value"
+			"qualifiedName": "CreatePriceRuleDTO.rule_type"
 		},
 		"488": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "CreatePriceRuleDTO.priority"
+			"qualifiedName": "CreatePriceRuleDTO.value"
 		},
 		"489": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "CreatePriceRuleDTO.price_set_money_amount_id"
+			"qualifiedName": "CreatePriceRuleDTO.priority"
 		},
 		"490": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "UpdatePriceRuleDTO"
+			"qualifiedName": "CreatePriceRuleDTO.price_set_money_amount_id"
 		},
 		"491": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "UpdatePriceRuleDTO.id"
+			"qualifiedName": "CreatePriceRuleDTO.price_set_money_amount"
 		},
 		"492": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "UpdatePriceRuleDTO.price_set_id"
+			"qualifiedName": "UpdatePriceRuleDTO"
 		},
 		"493": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "UpdatePriceRuleDTO.rule_type_id"
+			"qualifiedName": "UpdatePriceRuleDTO.id"
 		},
 		"494": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "UpdatePriceRuleDTO.value"
+			"qualifiedName": "UpdatePriceRuleDTO.price_set_id"
 		},
 		"495": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "UpdatePriceRuleDTO.priority"
+			"qualifiedName": "UpdatePriceRuleDTO.rule_type_id"
 		},
 		"496": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "UpdatePriceRuleDTO.price_set_money_amount_id"
+			"qualifiedName": "UpdatePriceRuleDTO.value"
 		},
 		"497": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
-			"qualifiedName": "UpdatePriceRuleDTO.price_list_id"
+			"qualifiedName": "UpdatePriceRuleDTO.priority"
 		},
 		"498": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO"
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
+			"qualifiedName": "UpdatePriceRuleDTO.price_set_money_amount_id"
 		},
 		"499": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.id"
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-rule.ts",
+			"qualifiedName": "UpdatePriceRuleDTO.price_list_id"
 		},
 		"500": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.title"
+			"qualifiedName": "PriceListDTO"
 		},
 		"501": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.starts_at"
+			"qualifiedName": "PriceListDTO.id"
 		},
 		"502": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.status"
+			"qualifiedName": "PriceListDTO.title"
 		},
 		"503": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.ends_at"
+			"qualifiedName": "PriceListDTO.starts_at"
 		},
 		"504": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.number_rules"
+			"qualifiedName": "PriceListDTO.status"
 		},
 		"505": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.price_set_money_amounts"
+			"qualifiedName": "PriceListDTO.ends_at"
 		},
 		"506": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.money_amounts"
+			"qualifiedName": "PriceListDTO.rules_count"
 		},
 		"507": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.rule_types"
+			"qualifiedName": "PriceListDTO.price_set_money_amounts"
 		},
 		"508": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.rules"
+			"qualifiedName": "PriceListDTO.money_amounts"
 		},
 		"509": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListDTO.price_list_rules"
+			"qualifiedName": "PriceListDTO.rule_types"
 		},
 		"510": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListProps"
+			"qualifiedName": "PriceListDTO.rules"
 		},
 		"511": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListProps.id"
+			"qualifiedName": "PriceListDTO.price_list_rules"
 		},
 		"512": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListProps.starts_at"
+			"qualifiedName": "FilterablePriceListProps"
 		},
 		"513": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListProps.ends_at"
+			"qualifiedName": "FilterablePriceListProps.id"
 		},
 		"514": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListProps.status"
+			"qualifiedName": "FilterablePriceListProps.starts_at"
 		},
 		"515": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListProps.number_rules"
+			"qualifiedName": "FilterablePriceListProps.ends_at"
 		},
 		"516": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "FilterablePriceListProps.status"
+		},
+		"517": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "FilterablePriceListProps.rules_count"
+		},
+		"518": {
 			"sourceFileName": "../../../packages/types/src/dal/index.ts",
 			"qualifiedName": "BaseFilterable.$and"
 		},
-		"517": {
+		"519": {
 			"sourceFileName": "../../../packages/types/src/dal/index.ts",
 			"qualifiedName": "BaseFilterable.$or"
-		},
-		"518": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO"
-		},
-		"519": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.title"
 		},
 		"520": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.description"
+			"qualifiedName": "CreatePriceListDTO"
 		},
 		"521": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.starts_at"
+			"qualifiedName": "CreatePriceListDTO.title"
 		},
 		"522": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.ends_at"
+			"qualifiedName": "CreatePriceListDTO.description"
 		},
 		"523": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.status"
+			"qualifiedName": "CreatePriceListDTO.starts_at"
 		},
 		"524": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.type"
+			"qualifiedName": "CreatePriceListDTO.ends_at"
 		},
 		"525": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.number_rules"
+			"qualifiedName": "CreatePriceListDTO.status"
 		},
 		"526": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.rules"
+			"qualifiedName": "CreatePriceListDTO.type"
 		},
 		"527": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListDTO.prices"
+			"qualifiedName": "CreatePriceListDTO.rules_count"
 		},
 		"528": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListDTO"
+			"qualifiedName": "CreatePriceListDTO.rules"
 		},
 		"529": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListDTO.id"
+			"qualifiedName": "CreatePriceListDTO.prices"
 		},
 		"530": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListDTO.title"
+			"qualifiedName": "UpdatePriceListDTO"
 		},
 		"531": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListDTO.starts_at"
+			"qualifiedName": "UpdatePriceListDTO.id"
 		},
 		"532": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListDTO.ends_at"
+			"qualifiedName": "UpdatePriceListDTO.title"
 		},
 		"533": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListDTO.status"
+			"qualifiedName": "UpdatePriceListDTO.starts_at"
 		},
 		"534": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListDTO.number_rules"
+			"qualifiedName": "UpdatePriceListDTO.ends_at"
 		},
 		"535": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListDTO.rules"
+			"qualifiedName": "UpdatePriceListDTO.status"
 		},
 		"536": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleDTO"
+			"qualifiedName": "UpdatePriceListDTO.rules_count"
 		},
 		"537": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleDTO.id"
+			"qualifiedName": "UpdatePriceListDTO.rules"
 		},
 		"538": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleDTO.value"
+			"qualifiedName": "PriceListRuleDTO"
 		},
 		"539": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleDTO.rule_type"
+			"qualifiedName": "PriceListRuleDTO.id"
 		},
 		"540": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleDTO.price_list"
+			"qualifiedName": "PriceListRuleDTO.value"
 		},
 		"541": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleDTO.price_list_rule_values"
+			"qualifiedName": "PriceListRuleDTO.rule_type"
 		},
 		"542": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListRuleProps"
+			"qualifiedName": "PriceListRuleDTO.price_list"
 		},
 		"543": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListRuleProps.id"
+			"qualifiedName": "PriceListRuleDTO.price_list_rule_values"
 		},
 		"544": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListRuleProps.value"
+			"qualifiedName": "FilterablePriceListRuleProps"
 		},
 		"545": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListRuleProps.rule_type"
+			"qualifiedName": "FilterablePriceListRuleProps.id"
 		},
 		"546": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "FilterablePriceListRuleProps.price_list_id"
+			"qualifiedName": "FilterablePriceListRuleProps.value"
 		},
 		"547": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "FilterablePriceListRuleProps.rule_type"
+		},
+		"548": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "FilterablePriceListRuleProps.price_list_id"
+		},
+		"549": {
 			"sourceFileName": "../../../packages/types/src/dal/index.ts",
 			"qualifiedName": "BaseFilterable.$and"
 		},
-		"548": {
+		"550": {
 			"sourceFileName": "../../../packages/types/src/dal/index.ts",
 			"qualifiedName": "BaseFilterable.$or"
-		},
-		"549": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListRuleDTO"
-		},
-		"550": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListRuleDTO.rule_type_id"
 		},
 		"551": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListRuleDTO.rule_type"
+			"qualifiedName": "CreatePriceListRuleDTO"
 		},
 		"552": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListRuleDTO.price_list_id"
+			"qualifiedName": "CreatePriceListRuleDTO.rule_type_id"
 		},
 		"553": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListRuleDTO.price_list"
+			"qualifiedName": "CreatePriceListRuleDTO.rule_type"
 		},
 		"554": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListRuleDTO"
+			"qualifiedName": "CreatePriceListRuleDTO.price_list_id"
 		},
 		"555": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListRuleDTO.id"
+			"qualifiedName": "CreatePriceListRuleDTO.price_list"
 		},
 		"556": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListRuleDTO.price_list_id"
+			"qualifiedName": "UpdatePriceListRuleDTO"
 		},
 		"557": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListRuleDTO.rule_type_id"
+			"qualifiedName": "UpdatePriceListRuleDTO.id"
 		},
 		"558": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListRuleDTO.price_list"
+			"qualifiedName": "UpdatePriceListRuleDTO.price_list_id"
 		},
 		"559": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "UpdatePriceListRuleDTO.rule_type"
+			"qualifiedName": "UpdatePriceListRuleDTO.rule_type_id"
 		},
 		"560": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "AddPriceListPricesDTO"
+			"qualifiedName": "UpdatePriceListRuleDTO.price_list"
 		},
 		"561": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "AddPriceListPricesDTO.priceListId"
+			"qualifiedName": "UpdatePriceListRuleDTO.rule_type"
 		},
 		"562": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "AddPriceListPricesDTO.prices"
+			"qualifiedName": "AddPriceListPricesDTO"
 		},
 		"563": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "SetPriceListRulesDTO"
+			"qualifiedName": "AddPriceListPricesDTO.priceListId"
 		},
 		"564": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "SetPriceListRulesDTO.priceListId"
+			"qualifiedName": "AddPriceListPricesDTO.prices"
 		},
 		"565": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "SetPriceListRulesDTO.rules"
+			"qualifiedName": "SetPriceListRulesDTO"
 		},
 		"566": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "RemovePriceListRulesDTO"
+			"qualifiedName": "SetPriceListRulesDTO.priceListId"
 		},
 		"567": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "RemovePriceListRulesDTO.priceListId"
+			"qualifiedName": "SetPriceListRulesDTO.rules"
 		},
 		"568": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "RemovePriceListRulesDTO.rules"
+			"qualifiedName": "RemovePriceListRulesDTO"
 		},
 		"569": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig"
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "RemovePriceListRulesDTO.priceListId"
 		},
 		"570": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.serviceName"
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "RemovePriceListRulesDTO.rules"
 		},
 		"571": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.alias"
+			"qualifiedName": "JoinerServiceConfig"
 		},
 		"572": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.fieldAlias"
+			"qualifiedName": "JoinerServiceConfig.serviceName"
 		},
 		"573": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "JoinerServiceConfig.alias"
 		},
 		"574": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.path"
+			"qualifiedName": "JoinerServiceConfig.fieldAlias"
 		},
 		"575": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.forwardArgumentsOnPath"
+			"qualifiedName": "__type"
 		},
 		"576": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.primaryKeys"
+			"qualifiedName": "__type.path"
 		},
 		"577": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.relationships"
+			"qualifiedName": "__type.forwardArgumentsOnPath"
 		},
 		"578": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.extends"
+			"qualifiedName": "JoinerServiceConfig.primaryKeys"
 		},
 		"579": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "JoinerServiceConfig.relationships"
 		},
 		"580": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"qualifiedName": "JoinerServiceConfig.extends"
 		},
 		"581": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.relationship"
+			"qualifiedName": "__type"
 		},
 		"582": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.args"
+			"qualifiedName": "__type.serviceName"
 		},
 		"583": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "ModuleJoinerRelationship"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.relationship"
 		},
 		"584": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfig.args"
 		},
 		"585": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.isInternalService"
+			"qualifiedName": "ModuleJoinerRelationship"
 		},
 		"586": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.deleteCascade"
+			"qualifiedName": "__type"
 		},
 		"587": {
-			"sourceFileName": "../../../packages/types/src/dal/index.ts",
-			"qualifiedName": "BaseFilterable"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isInternalService"
 		},
 		"588": {
-			"sourceFileName": "../../../packages/types/src/dal/index.ts",
-			"qualifiedName": "BaseFilterable.$and"
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.deleteCascade"
 		},
 		"589": {
 			"sourceFileName": "../../../packages/types/src/dal/index.ts",
-			"qualifiedName": "BaseFilterable.$or"
+			"qualifiedName": "BaseFilterable"
 		},
 		"590": {
 			"sourceFileName": "../../../packages/types/src/dal/index.ts",
-			"qualifiedName": "BaseFilterable.T"
+			"qualifiedName": "BaseFilterable.$and"
 		},
 		"591": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.$or"
+		},
+		"592": {
+			"sourceFileName": "../../../packages/types/src/dal/index.ts",
+			"qualifiedName": "BaseFilterable.T"
+		},
+		"593": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-set.ts",
 			"qualifiedName": "CreatePricesDTO"
 		},
-		"592": {
+		"594": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-set.ts",
 			"qualifiedName": "CreatePricesDTO.rules"
 		},
-		"593": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.id"
-		},
-		"594": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.currency_code"
-		},
 		"595": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.currency"
+			"qualifiedName": "CreateMoneyAmountDTO.id"
 		},
 		"596": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.amount"
+			"qualifiedName": "CreateMoneyAmountDTO.currency_code"
 		},
 		"597": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.min_quantity"
+			"qualifiedName": "CreateMoneyAmountDTO.currency"
 		},
 		"598": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.max_quantity"
-		},
-		"599": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListStatus"
-		},
-		"600": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListStatus.ACTIVE"
-		},
-		"601": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListStatus.DRAFT"
-		},
-		"602": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListType"
-		},
-		"603": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListType.SALE"
-		},
-		"604": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListType.OVERRIDE"
-		},
-		"605": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "CreatePriceListRules"
-		},
-		"606": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListPriceDTO"
-		},
-		"607": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListPriceDTO.price_set_id"
-		},
-		"608": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.id"
-		},
-		"609": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.currency_code"
-		},
-		"610": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
-			"qualifiedName": "CreateMoneyAmountDTO.currency"
-		},
-		"611": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
 			"qualifiedName": "CreateMoneyAmountDTO.amount"
 		},
-		"612": {
+		"599": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
 			"qualifiedName": "CreateMoneyAmountDTO.min_quantity"
 		},
-		"613": {
+		"600": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
 			"qualifiedName": "CreateMoneyAmountDTO.max_quantity"
 		},
-		"614": {
+		"601": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleValueDTO"
+			"qualifiedName": "PriceListStatus"
+		},
+		"602": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListStatus.ACTIVE"
+		},
+		"603": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListStatus.DRAFT"
+		},
+		"604": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListType"
+		},
+		"605": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListType.SALE"
+		},
+		"606": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListType.OVERRIDE"
+		},
+		"607": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "CreatePriceListRules"
+		},
+		"608": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListPriceDTO"
+		},
+		"609": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListPriceDTO.price_set_id"
+		},
+		"610": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListPriceDTO.rules"
+		},
+		"611": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
+			"qualifiedName": "CreateMoneyAmountDTO.id"
+		},
+		"612": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
+			"qualifiedName": "CreateMoneyAmountDTO.currency_code"
+		},
+		"613": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
+			"qualifiedName": "CreateMoneyAmountDTO.currency"
+		},
+		"614": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
+			"qualifiedName": "CreateMoneyAmountDTO.amount"
 		},
 		"615": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleValueDTO.id"
+			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
+			"qualifiedName": "CreateMoneyAmountDTO.min_quantity"
 		},
 		"616": {
-			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleValueDTO.value"
+			"sourceFileName": "../../../packages/types/src/pricing/common/money-amount.ts",
+			"qualifiedName": "CreateMoneyAmountDTO.max_quantity"
 		},
 		"617": {
 			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
-			"qualifiedName": "PriceListRuleValueDTO.price_list_rule"
+			"qualifiedName": "PriceListRuleValueDTO"
 		},
 		"618": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias"
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListRuleValueDTO.id"
 		},
 		"619": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.name"
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListRuleValueDTO.value"
 		},
 		"620": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.args"
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "PriceListRuleValueDTO.price_list_rule"
 		},
 		"621": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerRelationship"
+			"qualifiedName": "JoinerServiceConfigAlias"
 		},
 		"622": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "JoinerServiceConfigAlias.name"
 		},
 		"623": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.alias"
+			"qualifiedName": "JoinerServiceConfigAlias.args"
 		},
 		"624": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.foreignKey"
+			"qualifiedName": "JoinerRelationship"
 		},
 		"625": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.primaryKey"
+			"qualifiedName": "__type"
 		},
 		"626": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"qualifiedName": "__type.alias"
 		},
 		"627": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.isInternalService"
+			"qualifiedName": "__type.foreignKey"
 		},
 		"628": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.inverse"
+			"qualifiedName": "__type.primaryKey"
 		},
 		"629": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.isList"
+			"qualifiedName": "__type.serviceName"
 		},
 		"630": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"631": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.inverse"
+		},
+		"632": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isList"
+		},
+		"633": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.args"
+		},
+		"634": {
+			"sourceFileName": "../../../packages/types/src/pricing/common/price-list.ts",
+			"qualifiedName": "CreatePriceSetPriceRules"
 		}
 	}
 }

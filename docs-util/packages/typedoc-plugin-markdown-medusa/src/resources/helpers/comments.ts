@@ -1,7 +1,13 @@
 import * as Handlebars from "handlebars"
 import { Comment } from "typedoc"
 
-const EXCLUDED_TAGS = ["@returns", "@example", "@featureFlag"]
+const EXCLUDED_TAGS = [
+  "@returns",
+  "@example",
+  "@featureFlag",
+  "@category",
+  "@typeParamDefinition",
+]
 
 export default function () {
   Handlebars.registerHelper(

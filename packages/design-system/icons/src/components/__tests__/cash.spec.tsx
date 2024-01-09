@@ -4,7 +4,7 @@
   import Cash from "../cash"
 
   describe("Cash", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Cash data-testid="icon" />)
 
 

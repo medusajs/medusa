@@ -24,6 +24,30 @@ import { IsString } from "class-validator"
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDeleteFile } from "medusa-react"
+ *
+ *       const Image = () => {
+ *         const deleteFile = useAdminDeleteFile()
+ *         // ...
+ *
+ *         const handleDeleteFile = (fileKey: string) => {
+ *           deleteFile.mutate({
+ *             file_key: fileKey
+ *           }, {
+ *             onSuccess: ({ id, object, deleted }) => {
+ *               console.log(id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Image
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -74,6 +98,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteUploadsReq
  * type: object
+ * description: "The details of the file to delete."
  * required:
  *   - file_key
  * properties:

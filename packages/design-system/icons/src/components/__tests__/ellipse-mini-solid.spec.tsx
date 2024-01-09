@@ -4,7 +4,7 @@
   import EllipseMiniSolid from "../ellipse-mini-solid"
 
   describe("EllipseMiniSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<EllipseMiniSolid data-testid="icon" />)
 
 

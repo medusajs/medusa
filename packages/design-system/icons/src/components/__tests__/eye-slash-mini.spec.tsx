@@ -4,7 +4,7 @@
   import EyeSlashMini from "../eye-slash-mini"
 
   describe("EyeSlashMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<EyeSlashMini data-testid="icon" />)
 
 

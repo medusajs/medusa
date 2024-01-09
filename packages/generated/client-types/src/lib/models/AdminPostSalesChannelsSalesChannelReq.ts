@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the sales channel.
+ */
 export interface AdminPostSalesChannelsSalesChannelReq {
   /**
    * The name of the sales channel

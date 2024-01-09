@@ -4,7 +4,7 @@
   import GlobeEuropeSolid from "../globe-europe-solid"
 
   describe("GlobeEuropeSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<GlobeEuropeSolid data-testid="icon" />)
 
 

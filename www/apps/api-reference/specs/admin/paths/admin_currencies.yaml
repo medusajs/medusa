@@ -42,6 +42,10 @@ get:
       label: JS Client
       source:
         $ref: ../code_samples/JavaScript/admin_currencies/get.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: ../code_samples/tsx/admin_currencies/getundefined
     - lang: Shell
       label: cURL
       source:

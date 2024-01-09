@@ -22,7 +22,7 @@ import BaseResource from "../base"
  */
 class AdminReturnsResource extends BaseResource {
   /**
-   * Registers a return as canceled. The return can be associated with an order, claim, or swap.
+   * Register a return as canceled. The return can be associated with an order, claim, or swap.
    * @param {string} id - The return's ID. 
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminReturnsCancelRes>} Resolves to the details of the order associated with the return. If the return is associated with a claim or a swap, then it'll be the order

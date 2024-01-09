@@ -70,8 +70,8 @@ describe("Transaction Orchestrator", () => {
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
-          reply_to_topic: "trans:transaction-name",
-          idempotency_key: "transaction_id_123:firstMethod:invoke",
+          idempotency_key:
+            "transaction-name:transaction_id_123:firstMethod:invoke",
           action: "firstMethod",
           action_type: "invoke",
           attempt: 1,
@@ -85,8 +85,8 @@ describe("Transaction Orchestrator", () => {
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
-          reply_to_topic: "trans:transaction-name",
-          idempotency_key: "transaction_id_123:secondMethod:invoke",
+          idempotency_key:
+            "transaction-name:transaction_id_123:secondMethod:invoke",
           action: "secondMethod",
           action_type: "invoke",
           attempt: 1,
@@ -654,6 +654,7 @@ describe("Transaction Orchestrator", () => {
       next: {
         action: "firstMethod",
         async: true,
+        compensateAsync: true,
         next: {
           action: "secondMethod",
         },
@@ -675,8 +676,10 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.one).toBeCalledTimes(1)
     expect(mocks.two).toBeCalledTimes(0)
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
+    expect(transaction.getFlow().hasWaitingSteps).toBe(true)
 
     const mocktransactionId = TransactionOrchestrator.getKeyName(
+      "transaction-name",
       transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.INVOKE
@@ -688,6 +691,7 @@ describe("Transaction Orchestrator", () => {
     )
 
     expect(transaction.getState()).toBe(TransactionState.DONE)
+    expect(transaction.getFlow().hasWaitingSteps).toBe(false)
   })
 
   it("Should hold the status COMPENSATING while the transaction hasn't finished compensating", async () => {
@@ -731,8 +735,11 @@ describe("Transaction Orchestrator", () => {
       next: {
         action: "firstMethod",
         async: true,
+        compensateAsync: true,
         next: {
           action: "secondMethod",
+          async: true,
+          compensateAsync: true,
         },
       },
     }
@@ -745,22 +752,31 @@ describe("Transaction Orchestrator", () => {
     )
 
     const mocktransactionId = TransactionOrchestrator.getKeyName(
+      "transaction-name",
       transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.INVOKE
     )
 
-    const registerBeforeAllowed = await strategy
-      .registerStepFailure(mocktransactionId, null, handler)
-      .catch((e) => e.message)
+    const mockSecondStepId = TransactionOrchestrator.getKeyName(
+      "transaction-name",
+      transaction.transactionId,
+      "secondMethod",
+      TransactionHandlerType.INVOKE
+    )
 
     await strategy.resume(transaction)
 
     expect(mocks.one).toBeCalledTimes(1)
     expect(mocks.compensateOne).toBeCalledTimes(0)
     expect(mocks.two).toBeCalledTimes(0)
+
+    const registerBeforeAllowed = await strategy
+      .registerStepSuccess(mockSecondStepId, handler)
+      .catch((e) => e.message)
+
     expect(registerBeforeAllowed).toEqual(
-      "Cannot set step failure when status is idle"
+      "Cannot set step success when status is idle"
     )
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
 
@@ -774,6 +790,7 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.compensateOne).toBeCalledTimes(1)
 
     const mocktransactionIdCompensate = TransactionOrchestrator.getKeyName(
+      "transaction-name",
       transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.COMPENSATE

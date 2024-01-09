@@ -4,7 +4,7 @@
   import ArrowDownTray from "../arrow-down-tray"
 
   describe("ArrowDownTray", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowDownTray data-testid="icon" />)
 
 

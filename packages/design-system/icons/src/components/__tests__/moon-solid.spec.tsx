@@ -4,7 +4,7 @@
   import MoonSolid from "../moon-solid"
 
   describe("MoonSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<MoonSolid data-testid="icon" />)
 
 

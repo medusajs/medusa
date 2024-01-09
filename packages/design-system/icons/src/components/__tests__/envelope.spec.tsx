@@ -4,7 +4,7 @@
   import Envelope from "../envelope"
 
   describe("Envelope", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Envelope data-testid="icon" />)
 
 
