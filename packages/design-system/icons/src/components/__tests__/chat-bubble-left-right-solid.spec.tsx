@@ -4,7 +4,7 @@
   import ChatBubbleLeftRightSolid from "../chat-bubble-left-right-solid"
 
   describe("ChatBubbleLeftRightSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChatBubbleLeftRightSolid data-testid="icon" />)
 
 

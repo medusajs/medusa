@@ -4,7 +4,7 @@
   import MinusMini from "../minus-mini"
 
   describe("MinusMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<MinusMini data-testid="icon" />)
 
 

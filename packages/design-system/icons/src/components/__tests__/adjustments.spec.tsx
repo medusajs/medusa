@@ -4,7 +4,7 @@
   import Adjustments from "../adjustments"
 
   describe("Adjustments", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Adjustments data-testid="icon" />)
 
 

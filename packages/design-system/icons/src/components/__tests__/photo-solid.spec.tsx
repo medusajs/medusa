@@ -4,7 +4,7 @@
   import PhotoSolid from "../photo-solid"
 
   describe("PhotoSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<PhotoSolid data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import JavascriptEx from "../javascript-ex"
 
   describe("JavascriptEx", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<JavascriptEx data-testid="icon" />)
 
 

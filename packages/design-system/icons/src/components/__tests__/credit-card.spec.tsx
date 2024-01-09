@@ -4,7 +4,7 @@
   import CreditCard from "../credit-card"
 
   describe("CreditCard", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CreditCard data-testid="icon" />)
 
 

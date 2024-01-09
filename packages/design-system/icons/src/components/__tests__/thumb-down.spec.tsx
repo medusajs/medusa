@@ -4,7 +4,7 @@
   import ThumbDown from "../thumb-down"
 
   describe("ThumbDown", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ThumbDown data-testid="icon" />)
 
 

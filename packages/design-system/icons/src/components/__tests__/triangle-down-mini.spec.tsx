@@ -4,7 +4,7 @@
   import TriangleDownMini from "../triangle-down-mini"
 
   describe("TriangleDownMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<TriangleDownMini data-testid="icon" />)
 
 

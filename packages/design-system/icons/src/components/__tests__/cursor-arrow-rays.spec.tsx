@@ -4,7 +4,7 @@
   import CursorArrowRays from "../cursor-arrow-rays"
 
   describe("CursorArrowRays", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CursorArrowRays data-testid="icon" />)
 
 

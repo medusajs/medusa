@@ -4,7 +4,7 @@
   import User from "../user"
 
   describe("User", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<User data-testid="icon" />)
 
 

@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OnInit,
   OneToMany,
+  Opt,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -21,7 +22,7 @@ export default class ShippingMethod {
   id: string
 
   @ManyToOne(() => Cart, {
-    onDelete: "cascade",
+    cascade: [Cascade.REMOVE],
     index: "IDX_shipping_method_cart_id",
     fieldName: "cart_id",
   })
@@ -38,7 +39,7 @@ export default class ShippingMethod {
   amount: number
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive = false
+  is_tax_inclusive: Opt<boolean> = false
 
   @Property({ columnType: "text", nullable: true })
   shipping_option_id?: string | null
@@ -86,7 +87,7 @@ export default class ShippingMethod {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Date
+  created_at: Opt<Date>
 
   @Property({
     onCreate: () => new Date(),
@@ -94,7 +95,7 @@ export default class ShippingMethod {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Date
+  updated_at: Opt<Date>
 
   @BeforeCreate()
   onCreate() {

@@ -4,7 +4,7 @@
   import BuildingStorefront from "../building-storefront"
 
   describe("BuildingStorefront", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<BuildingStorefront data-testid="icon" />)
 
 

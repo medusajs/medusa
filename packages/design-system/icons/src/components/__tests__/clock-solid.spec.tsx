@@ -4,7 +4,7 @@
   import ClockSolid from "../clock-solid"
 
   describe("ClockSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ClockSolid data-testid="icon" />)
 
 

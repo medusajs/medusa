@@ -4,7 +4,7 @@
   import Moon from "../moon"
 
   describe("Moon", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Moon data-testid="icon" />)
 
 

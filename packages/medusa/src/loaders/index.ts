@@ -45,7 +45,7 @@ async function loadLegacyModulesEntities(configModules, container) {
   for (const [moduleName, moduleConfig] of Object.entries(configModules)) {
     const definition = ModulesDefinition[moduleName]
 
-    if (!definition.isLegacy) {
+    if (!definition?.isLegacy) {
       continue
     }
 

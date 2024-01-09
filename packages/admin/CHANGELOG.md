@@ -1,5 +1,15 @@
 # @medusajs/admin
 
+## 7.1.10
+
+### Patch Changes
+
+- [#6001](https://github.com/medusajs/medusa/pull/6001) [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8) Thanks [@abusaidm](https://github.com/abusaidm)! - Add missing country in admin region and set Libya to formal name
+
+- Updated dependencies [[`7ecea3448`](https://github.com/medusajs/medusa/commit/7ecea34487972bc05aae46918d5caebce607594b), [`f86877586`](https://github.com/medusajs/medusa/commit/f86877586147ecedbf7f56a1c57f37ef0c33286c), [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8)]:
+  - @medusajs/admin-ui@2.1.11
+  - medusa-core-utils@1.2.1
+
 ## 7.1.9
 
 ### Patch Changes

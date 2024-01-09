@@ -4,7 +4,7 @@
   import CashSolid from "../cash-solid"
 
   describe("CashSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CashSolid data-testid="icon" />)
 
 

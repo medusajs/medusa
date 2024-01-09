@@ -1,21 +1,15 @@
-import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
   OnInit,
-  OptionalProps,
+  Opt,
   PrimaryKey,
-  Property
+  Property,
 } from "@mikro-orm/core"
-
-
-type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
 @Entity({ tableName: "cart_address" })
 export default class Address {
-  [OptionalProps]: OptionalAddressProps
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -60,7 +54,7 @@ export default class Address {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Date
+  created_at: Opt<Date>
 
   @Property({
     onCreate: () => new Date(),
@@ -68,7 +62,7 @@ export default class Address {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Date
+  updated_at: Opt<Date>
 
   @BeforeCreate()
   onCreate() {

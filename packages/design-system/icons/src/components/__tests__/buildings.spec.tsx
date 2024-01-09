@@ -4,7 +4,7 @@
   import Buildings from "../buildings"
 
   describe("Buildings", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Buildings data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import Clock from "../clock"
 
   describe("Clock", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Clock data-testid="icon" />)
 
 
