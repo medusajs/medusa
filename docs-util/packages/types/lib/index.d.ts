@@ -210,5 +210,10 @@ export declare module "typedoc" {
      * @defaultValue false
      */
     parentIgnore: boolean
+    /**
+     * Whether to check for and add variables.
+     * @defaultValue false
+     */
+    checkVariables: boolean
   }
 }
