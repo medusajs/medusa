@@ -350,7 +350,7 @@ export default class AuthenticationModuleService<
   ): AbstractAuthenticationModuleProvider {
     let containerProvider: AbstractAuthenticationModuleProvider
     try {
-      containerProvider = this.__container__[`provider_${provider}`]
+      containerProvider = this.__container__[`auth_provider_${provider}`]
     } catch (error) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
