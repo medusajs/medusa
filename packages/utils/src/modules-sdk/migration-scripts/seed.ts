@@ -17,6 +17,15 @@ export function buildSeedScript({
   models,
   pathToMigrations,
   seedFuncs,
+}: {
+  moduleName: string
+  models: Record<string, unknown>
+  pathToMigrations: string
+  seedFuncs: (args: {
+    manager: any
+    logger: Logger
+    data: any
+  }) => Promise<void>
 }) {
   return async function ({
     options,
@@ -30,15 +39,15 @@ export function buildSeedScript({
   > & {
     path: string
   }) {
-    logger?.info(`Loading seed data from ${path}...`)
+    const logger_ = (logger ?? console) as unknown as Logger
+
+    logger_.info(`Loading seed data from ${path}...`)
     const dataSeed = await import(resolve(process.cwd(), path)).catch((e) => {
-      logger?.error(
+      logger_.error(
         `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following productCategoriesData, productsData, variantsData.${EOL}${e}`
       )
       throw e
     })
-
-    logger ??= console as unknown as Logger
 
     const dbData = loadDatabaseConfig(moduleName, options)!
     const entities = Object.values(models) as unknown as EntitySchema[]
@@ -51,10 +60,10 @@ export function buildSeedScript({
     const manager = orm.em.fork()
 
     try {
-      logger?.info(`Inserting ${moduleName} data...`)
-      seedFuncs(manager, dataSeed)
+      logger_.info(`Inserting ${moduleName} data...`)
+      seedFuncs({ manager, logger: logger_, data: dataSeed })
     } catch (e) {
-      logger?.error(
+      logger_.error(
         `Failed to insert the seed data in the PostgreSQL database ${dbData.clientUrl}.${EOL}${e}`
       )
     }
