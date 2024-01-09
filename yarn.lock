@@ -7891,9 +7891,9 @@ __metadata:
     "@medusajs/types": ^1.11.9
     "@medusajs/utils": ^1.11.2
     "@mikro-orm/cli": 5.9.7
-    "@mikro-orm/core": 5.9.7
-    "@mikro-orm/migrations": 5.9.7
-    "@mikro-orm/postgresql": 5.9.7
+    "@mikro-orm/core": ^6.0.1
+    "@mikro-orm/migrations": ^6.0.1
+    "@mikro-orm/postgresql": ^6.0.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.1.4
@@ -8748,6 +8748,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mikro-orm/core@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@mikro-orm/core@npm:6.0.1"
+  dependencies:
+    dataloader: 2.2.2
+    dotenv: 16.3.1
+    esprima: 4.0.1
+    fs-extra: 11.2.0
+    globby: 11.1.0
+    mikro-orm: 6.0.1
+    reflect-metadata: 0.2.1
+  checksum: 075cc5a24e570388dd8dcc51527ec756c67c20a8ad5ba8c02637bffeb1df100ce07846b1901d1e7749974d936dfc836cf42a37443bc202bf2da66a746d69ef4a
+  languageName: node
+  linkType: hard
+
 "@mikro-orm/knex@npm:5.9.7":
   version: 5.9.7
   resolution: "@mikro-orm/knex@npm:5.9.7"
@@ -8786,6 +8801,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mikro-orm/knex@npm:6.0.1":
+  version: 6.0.1
+  resolution: "@mikro-orm/knex@npm:6.0.1"
+  dependencies:
+    fs-extra: 11.2.0
+    knex: 3.1.0
+    sqlstring: 2.3.3
+  peerDependencies:
+    "@mikro-orm/core": ^6.0.0
+  checksum: d491dc9b1d598f0c59e797be70159e2f48031b4bff2ca1b11ad6819b5e8289f78aff1871279efe57a1b0b465c79a102584ef9d6e03acb2c4af7f32d1024a3021
+  languageName: node
+  linkType: hard
+
 "@mikro-orm/migrations@npm:5.9.7":
   version: 5.9.7
   resolution: "@mikro-orm/migrations@npm:5.9.7"
@@ -8797,6 +8825,19 @@ __metadata:
   peerDependencies:
     "@mikro-orm/core": ^5.0.0
   checksum: 3b1c3e449d2aee7ed7f03153e17e2772423115b895836e4ece40c9b318849d8de9cce1ad9fa545a8ef54fa7fe5ab474c3444e2c598ebc9f3e070fe382882862a
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/migrations@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@mikro-orm/migrations@npm:6.0.1"
+  dependencies:
+    "@mikro-orm/knex": 6.0.1
+    fs-extra: 11.2.0
+    umzug: 3.5.0
+  peerDependencies:
+    "@mikro-orm/core": ^6.0.0
+  checksum: 333dc9c0e41a2bbd54b142652fab6521016454b6de3b374f80a7b58f9ff60f66c34d2e26dfe2fc692f5b69bf3c1efec4e9b5223c66cbaeb9e2afedb257284a00
   languageName: node
   linkType: hard
 
@@ -8819,6 +8860,19 @@ __metadata:
     "@mikro-orm/seeder":
       optional: true
   checksum: 9380c0a5795fe6c25448a5c302877043a0239d25e087a0dec4ebca63e8f06a6af9435953a55141ac8317cb14e2b141df4c10c4615be1a1deecc5cce7127bf42c
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/postgresql@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@mikro-orm/postgresql@npm:6.0.1"
+  dependencies:
+    "@mikro-orm/knex": 6.0.1
+    pg: 8.11.3
+    postgres-date: 2.1.0
+  peerDependencies:
+    "@mikro-orm/core": ^6.0.0
+  checksum: 50915f32c582feafe8ebb09da939bc2f1c96ffa5f33d62dd6a34569cf571ef87ffb6ea6028e0f92314788c033f10cd14bb75f2dccde1f334a391666c7f76d08e
   languageName: node
   linkType: hard
 
@@ -24442,6 +24496,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dataloader@npm:2.2.2":
+  version: 2.2.2
+  resolution: "dataloader@npm:2.2.2"
+  checksum: 125ec69f821478cf7c6b4360095db6cab939fe57876a0d2060c428091a8deee7152345189923b71a6afa694aaec463779f34b585317164016fd6f54f52cd94ba
+  languageName: node
+  linkType: hard
+
 "dataloader@npm:^1.4.0":
   version: 1.4.0
   resolution: "dataloader@npm:1.4.0"
@@ -26991,7 +27052,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esprima@npm:^4.0.0, esprima@npm:^4.0.1, esprima@npm:~4.0.0":
+"esprima@npm:4.0.1, esprima@npm:^4.0.0, esprima@npm:^4.0.1, esprima@npm:~4.0.0":
   version: 4.0.1
   resolution: "esprima@npm:4.0.1"
   bin:
@@ -28495,6 +28556,17 @@ __metadata:
     jsonfile: ^6.0.1
     universalify: ^2.0.0
   checksum: a2480243d7dcfa7d723c5f5b24cf4eba02a6ccece208f1524a2fbde1c629492cfb9a59e4b6d04faff6fbdf71db9fdc8ef7f396417a02884195a625f5d8dc9427
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:11.2.0":
+  version: 11.2.0
+  resolution: "fs-extra@npm:11.2.0"
+  dependencies:
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: d77a9a9efe60532d2e790e938c81a02c1b24904ef7a3efb3990b835514465ba720e99a6ea56fd5e2db53b4695319b644d76d5a0e9988a2beef80aa7b1da63398
   languageName: node
   linkType: hard
 
@@ -35659,6 +35731,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"knex@npm:3.1.0":
+  version: 3.1.0
+  resolution: "knex@npm:3.1.0"
+  dependencies:
+    colorette: 2.0.19
+    commander: ^10.0.0
+    debug: 4.3.4
+    escalade: ^3.1.1
+    esm: ^3.2.25
+    get-package-type: ^0.1.0
+    getopts: 2.3.0
+    interpret: ^2.2.0
+    lodash: ^4.17.21
+    pg-connection-string: 2.6.2
+    rechoir: ^0.8.0
+    resolve-from: ^5.0.0
+    tarn: ^3.0.2
+    tildify: 2.0.0
+  peerDependenciesMeta:
+    better-sqlite3:
+      optional: true
+    mysql:
+      optional: true
+    mysql2:
+      optional: true
+    pg:
+      optional: true
+    pg-native:
+      optional: true
+    sqlite3:
+      optional: true
+    tedious:
+      optional: true
+  bin:
+    knex: bin/cli.js
+  checksum: d8a1f99fad143c6057e94759b2ae700ae661a0b0b2385f643011962ef501dcc7b32cfdb5bda66ef81283ca56f13630f47691c579ce66ad0e8128e209533c3785
+  languageName: node
+  linkType: hard
+
 "kuler@npm:^2.0.0":
   version: 2.0.0
   resolution: "kuler@npm:2.0.0"
@@ -37974,6 +38085,13 @@ __metadata:
   version: 5.9.7
   resolution: "mikro-orm@npm:5.9.7"
   checksum: 01eb2b71e5f830c064749779d30ed1772e28420cfedeafbbbce8599714eae308af467014001e0404d7ba43de9f1f979a05fd6b267a89c8f7e1e8ec6013fb5120
+  languageName: node
+  linkType: hard
+
+"mikro-orm@npm:6.0.1":
+  version: 6.0.1
+  resolution: "mikro-orm@npm:6.0.1"
+  checksum: 2d0d9826a89afca5c9e14af6fbe45e602e398225204c8dfc2fb0348f79e7d6487461ec205d5af6351077b02e06de4a942d1a1fcc3bcf2c312f0fc355f8f7bd11
   languageName: node
   linkType: hard
 
@@ -40671,6 +40789,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pg-connection-string@npm:2.6.2":
+  version: 2.6.2
+  resolution: "pg-connection-string@npm:2.6.2"
+  checksum: e8fdea74fcc8bdc3d7c5c6eadd9425fdba7e67fb7fe836f9c0cecad94c8984e435256657d1d8ce0483d1fedef667e7a57e32449a63cb805cb0289fc34b62da35
+  languageName: node
+  linkType: hard
+
 "pg-god@npm:^1.0.12":
   version: 1.0.12
   resolution: "pg-god@npm:1.0.12"
@@ -42003,6 +42128,13 @@ __metadata:
   dependencies:
     obuf: ~1.1.2
   checksum: 41c79cc48aa730c5ba3eda6ab989a940034f07a1f57b8f2777dce56f1b8cca16c5870582932b5b10cc605048aef9b6157e06253c871b4717cafc6d00f55376aa
+  languageName: node
+  linkType: hard
+
+"postgres-date@npm:2.1.0":
+  version: 2.1.0
+  resolution: "postgres-date@npm:2.1.0"
+  checksum: 00a7472c10788f6b0d08d24108bf1eb80858de1bd6317740198a564918ea4a69b80c98148167b92ae688abd606483020d0de0dd3a36f3ea9a3e26bbeef3464f4
   languageName: node
   linkType: hard
 
@@ -44022,6 +44154,13 @@ __metadata:
   version: 0.1.13
   resolution: "reflect-metadata@npm:0.1.13"
   checksum: 728bff0b376b05639fd11ed80c648b61f7fe653c5b506d7ca118e58b6752b9b00810fe0c86227ecf02bd88da6251ab3eb19fd403aaf2e9ff5ef36a2fda643026
+  languageName: node
+  linkType: hard
+
+"reflect-metadata@npm:0.2.1":
+  version: 0.2.1
+  resolution: "reflect-metadata@npm:0.2.1"
+  checksum: 6ca3c674bb43cf8ec3a3f5f38c8730a6116335f8e562fcdcdf3a492af168c5a7f0e8f17476a5710c3fe6bf9b5d22e8a463f14c0e26e326339cab65e099900ef7
   languageName: node
   linkType: hard
 
@@ -49556,6 +49695,19 @@ __metadata:
     pony-cause: ^2.1.4
     type-fest: ^3.0.0
   checksum: 52ace90860f9e2adc9f33c786582ca758651f2de8894b5bda7af2353bec8906234dbb456eb37513ec9ceeb45eabfcd286d4abced871cc45c01015a05e4247187
+  languageName: node
+  linkType: hard
+
+"umzug@npm:3.5.0":
+  version: 3.5.0
+  resolution: "umzug@npm:3.5.0"
+  dependencies:
+    "@rushstack/ts-command-line": ^4.12.2
+    emittery: ^0.13.0
+    glob: ^8.0.3
+    pony-cause: ^2.1.4
+    type-fest: ^3.0.0
+  checksum: a5ac589c5483e8fd8f8c71c36f7d3bcd765acd8aa2b73801104d781426f6d1bb1bc81e600f7a0a69e6e8f67e43af3c1795620ae72504d0dcb61c4bf2bd7f008d
   languageName: node
   linkType: hard
 

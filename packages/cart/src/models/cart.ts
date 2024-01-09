@@ -1,4 +1,3 @@
-import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -8,6 +7,7 @@ import {
   OnInit,
   OneToMany,
   OneToOne,
+  Opt,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -15,15 +15,8 @@ import Address from "./address"
 import LineItem from "./line-item"
 import ShippingMethod from "./shipping-method"
 
-type OptionalCartProps =
-  | "shipping_address"
-  | "billing_address"
-  | DAL.EntityDateColumns // TODO: To be revisited when more clear
-
 @Entity({ tableName: "cart" })
 export default class Cart {
-  [OptionalProps]?: OptionalCartProps
-
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -52,7 +45,7 @@ export default class Cart {
     cascade: [Cascade.REMOVE],
     nullable: true,
   })
-  shipping_address?: Address | null
+  shipping_address?: Opt<Address | null>
 
   @OneToOne({
     entity: () => Address,
@@ -60,7 +53,7 @@ export default class Cart {
     cascade: [Cascade.REMOVE],
     nullable: true,
   })
-  billing_address?: Address | null
+  billing_address?: Opt<Address | null>
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
@@ -114,7 +107,7 @@ export default class Cart {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Date
+  created_at: Opt<Date>
 
   @Property({
     onCreate: () => new Date(),
@@ -122,7 +115,7 @@ export default class Cart {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Date
+  updated_at: Opt<Date>
 
   @BeforeCreate()
   onCreate() {
