@@ -1,5 +1,16 @@
 # @medusajs/admin-ui
 
+## 2.1.11
+
+### Patch Changes
+
+- [#5822](https://github.com/medusajs/medusa/pull/5822) [`7ecea3448`](https://github.com/medusajs/medusa/commit/7ecea34487972bc05aae46918d5caebce607594b) Thanks [@hexrw](https://github.com/hexrw)! - feat(admin-ui): Add Czech translation
+
+- [#6001](https://github.com/medusajs/medusa/pull/6001) [`46d610bc5`](https://github.com/medusajs/medusa/commit/46d610bc555797df2ae81eb89b18faf1411b33b8) Thanks [@abusaidm](https://github.com/abusaidm)! - Add missing country in admin region and set Libya to formal name
+
+- Updated dependencies [[`7d650771d`](https://github.com/medusajs/medusa/commit/7d650771d1c1d3e5d77ff95c12e4970743b64303), [`925feea04`](https://github.com/medusajs/medusa/commit/925feea04a8222285175c33577548e50516069a7)]:
+  - medusa-react@9.0.13
+
 ## 2.1.10
 
 ### Patch Changes
