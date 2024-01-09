@@ -1,5 +1,26 @@
 # @medusajs/types
 
+## 1.11.10
+
+### Patch Changes
+
+- [#5943](https://github.com/medusajs/medusa/pull/5943) [`6d1e3cc02`](https://github.com/medusajs/medusa/commit/6d1e3cc0285ef157fd6486060e8b32c00c01aa80) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(modules-sdk, types): add initial authentication module configuration
+
+- [#5957](https://github.com/medusajs/medusa/pull/5957) [`42cc8ae3f`](https://github.com/medusajs/medusa/commit/42cc8ae3f89ed7d642e51654d1a3cca011f13155) Thanks [@riqwan](https://github.com/riqwan)! - feat(types,utils): added promotion create with rules
+
+- [#5858](https://github.com/medusajs/medusa/pull/5858) [`355075097`](https://github.com/medusajs/medusa/commit/3550750975a0c9359fd887929377733606ef03af) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(pricing, types): add soft deletion for money-amounts
+  feat(utils): cascade soft delete across 1:1 relationships
+
+- [#5988](https://github.com/medusajs/medusa/pull/5988) [`dc46ee118`](https://github.com/medusajs/medusa/commit/dc46ee1189c3eb719355da6a1d701c14a77e4578) Thanks [@riqwan](https://github.com/riqwan)! - feat(types): promotion delete / update / retrieve
+
+- [#5982](https://github.com/medusajs/medusa/pull/5982) [`925feea04`](https://github.com/medusajs/medusa/commit/925feea04a8222285175c33577548e50516069a7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(cart): Add cart module package
+
+- [#5920](https://github.com/medusajs/medusa/pull/5920) [`3f6d79961`](https://github.com/medusajs/medusa/commit/3f6d79961dec1c5eb8950f8eacd94a5d87a4acde) Thanks [@riqwan](https://github.com/riqwan)! - feat(types,modules-sdk): basic module setup for promotions
+
+- [#5768](https://github.com/medusajs/medusa/pull/5768) [`c1c470e6b`](https://github.com/medusajs/medusa/commit/c1c470e6b8646c5f0b4bca56a8e785f6c34e1fef) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(types, pricing): separate internal pricing module types from types module
+
+- [#5945](https://github.com/medusajs/medusa/pull/5945) [`890e76a5c`](https://github.com/medusajs/medusa/commit/890e76a5c53039576c42ca4d46af6f6977cdebd1) Thanks [@riqwan](https://github.com/riqwan)! - feat(types,utils): add promotions create with application method
+
 ## 1.11.9
 
 ### Patch Changes
