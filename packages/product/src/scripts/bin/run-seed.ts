@@ -26,7 +26,7 @@ export default (async () => {
     moduleName: Modules.PRODUCT,
     models: ProductModels,
     pathToMigrations: __dirname + "/../../migrations",
-    seedFuncs: async ({ manager, data }) => {
+    seedHandler: async ({ manager, data }) => {
       const { productCategoriesData, productsData, variantsData } = data
       await createProductCategories(manager, productCategoriesData)
       await createProducts(manager, productsData)
