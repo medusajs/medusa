@@ -21,7 +21,42 @@ The icons are available as an [npm package](https://www.npmjs.com/package/@medus
 ---
 
 ```tsx
-import { Sun, Moon } from "@medusajs/icons"
+import { Sun } from "@medusajs/icons"
+
+export default function Component() {
+  return (
+    <Sun />
+  )
+}
 ```
 
 <Feedback title={"Icons"} />
+
+## Icon Props
+---
+
+Icons accept all props that an `svg` element accepts.
+
+### Icon Color
+
+By default, outline icons' stroke color and solid icon's fill color are set to `currentColor`.
+
+You can set a different color by passing the `color` prop.
+
+<ComponentExample name="icon-color" />
+
+You can also use a CSS class by passing the `className` prop.
+
+<ComponentExample name="icon-color-classes" />
+
+### Icon Size
+
+By default, icons' width and height are `20px`.
+
+You can pass the `width` or `height` props to change the icon's size.
+
+<ComponentExample name="icon-size-props" />
+
+You can also pass Tailwind CSS width or height classes in the `className` prop.
+
+<ComponentExample name="icon-size-classes" />

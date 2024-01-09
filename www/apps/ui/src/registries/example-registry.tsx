@@ -330,6 +330,11 @@ export const ExampleRegistry: Record<string, ExampleType> = {
     ),
     file: "src/examples/switch-checked-disabled.tsx",
   },
+  "table-pagination": {
+    name: "table-pagination",
+    component: React.lazy(async () => import("@/examples/table-pagination")),
+    file: "src/examples/table-pagination.tsx",
+  },
   "table-demo": {
     name: "table-demo",
     component: React.lazy(async () => import("@/examples/table-demo")),
@@ -458,6 +463,26 @@ export const ExampleRegistry: Record<string, ExampleType> = {
     name: "icon-button-xlarge",
     component: React.lazy(async () => import("@/examples/icon-button-xlarge")),
     file: "src/examples/icon-button-xlarge.tsx",
+  },
+  "icon-color-classes": {
+    name: "icon-color-classes",
+    component: React.lazy(async () => import("@/examples/icon-color-classes")),
+    file: "src/examples/icon-color-classes.tsx",
+  },
+  "icon-color": {
+    name: "icon-color",
+    component: React.lazy(async () => import("@/examples/icon-color")),
+    file: "src/examples/icon-color.tsx",
+  },
+  "icon-size-classes": {
+    name: "icon-size-classes",
+    component: React.lazy(async () => import("@/examples/icon-size-classes")),
+    file: "src/examples/icon-size-classes.tsx",
+  },
+  "icon-size-props": {
+    name: "icon-size-props",
+    component: React.lazy(async () => import("@/examples/icon-size-props")),
+    file: "src/examples/icon-size-props.tsx",
   },
   "currency-input-demo": {
     name: "currency-input-demo",
