@@ -1,11 +1,13 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { constructWebhook } from "../../utils/utils"
-
-const WEBHOOK_DELAY = process.env.STRIPE_WEBHOOK_DELAY ?? 5000 // 5s
-const WEBHOOK_RETRIES = process.env.STRIPE_WEBHOOK_RETRIES ?? 3
+import StripeProviderService from "../../../services/stripe-provider"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   try {
+    const pluginOptions = req.scope.resolve<StripeProviderService>(
+      "stripeProviderService"
+    ).options
+
     const event = constructWebhook({
       signature: req.headers["stripe-signature"],
       body: req.body,
@@ -16,8 +18,8 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
     // we delay the processing of the event to avoid a conflict caused by a race condition
     await eventBus.emit("medusa.stripe_payment_intent_update", event, {
-      delay: WEBHOOK_DELAY,
-      attempts: WEBHOOK_RETRIES,
+      delay: pluginOptions.webhook_delay || 5000,
+      attempts: pluginOptions.webhook_retries || 3,
     })
   } catch (err) {
     res.status(400).send(`Webhook Error: ${err.message}`)
