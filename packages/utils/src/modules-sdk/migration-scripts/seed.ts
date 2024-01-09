@@ -10,13 +10,13 @@ import { loadDatabaseConfig } from "../load-module-database-config"
  * @param moduleName
  * @param models
  * @param pathToMigrations
- * @param executorFn
+ * @param seedFuncs
  */
 export function buildSeedScript({
   moduleName,
   models,
   pathToMigrations,
-  executorFn,
+  seedFuncs,
 }) {
   return async function ({
     options,
@@ -52,7 +52,7 @@ export function buildSeedScript({
 
     try {
       logger?.info(`Inserting ${moduleName} data...`)
-      executorFn(manager, dataSeed)
+      seedFuncs(manager, dataSeed)
     } catch (e) {
       logger?.error(
         `Failed to insert the seed data in the PostgreSQL database ${dbData.clientUrl}.${EOL}${e}`
