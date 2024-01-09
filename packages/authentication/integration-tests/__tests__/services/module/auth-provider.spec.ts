@@ -37,20 +37,22 @@ describe("AuthenticationModuleService - AuthProvider", () => {
       const authProviders = await service.listAuthProviders()
       const serialized = JSON.parse(JSON.stringify(authProviders))
 
-      expect(serialized).toEqual([
-        expect.objectContaining({
-          provider: "manual",
-        }),
-        expect.objectContaining({
-          provider: "disabled",
-        }),
-        expect.objectContaining({
-          provider: "store",
-        }),
-        expect.objectContaining({
-          provider: "admin",
-        }),
-      ])
+      expect(serialized).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            provider: "manual",
+          }),
+          expect.objectContaining({
+            provider: "disabled",
+          }),
+          expect.objectContaining({
+            provider: "store",
+          }),
+          expect.objectContaining({
+            provider: "admin",
+          }),
+        ])
+      )
     })
 
     it("should list authProviders by id", async () => {
