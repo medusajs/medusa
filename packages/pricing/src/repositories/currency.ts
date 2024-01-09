@@ -1,9 +1,9 @@
 import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 
 import { Currency } from "@models"
@@ -11,15 +11,6 @@ import { RepositoryTypes } from "@types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class CurrencyRepository extends DALUtils.MikroOrmBaseRepository {
-  protected readonly manager_: SqlEntityManager
-
-  constructor({ manager }: { manager: SqlEntityManager }) {
-    // @ts-ignore
-    // eslint-disable-next-line prefer-rest-params
-    super(...arguments)
-    this.manager_ = manager
-  }
-
   async find(
     findOptions: DAL.FindOptions<Currency> = { where: {} },
     context: Context = {}
