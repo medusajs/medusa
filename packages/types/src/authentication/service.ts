@@ -13,6 +13,11 @@ import { FindConfig } from "../common"
 import { Context } from "../shared-context"
 
 export interface IAuthenticationModuleService extends IModuleService {
+  authenticate(
+    provider: string,
+    providerData: Record<string, unknown>
+  ): Promise<Record<string, unknown>>
+
   retrieveAuthProvider(
     provider: string,
     config?: FindConfig<AuthProviderDTO>,

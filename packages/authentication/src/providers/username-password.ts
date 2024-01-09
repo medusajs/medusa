@@ -1,3 +1,5 @@
+import Scrypt from "scrypt-kdf"
+
 import { AuthUserService } from "@services"
 import { AbstractAuthenticationModuleProvider } from "@medusajs/types"
 
@@ -14,7 +16,41 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   }
 
   async authenticate(userData: Record<string, unknown>) {
-    return {}
+    const { email, password } = userData
+
+    if (typeof password !== "string") {
+      return {
+        success: false,
+        error: "Password should be a string",
+      }
+    }
+    if (typeof email !== "string") {
+      return {
+        success: false,
+        error: "Email should be a string",
+      }
+    }
+
+    const [authUser] = await this.authUserSerivce_.list({
+      provider_metadata: {
+        email,
+      },
+    })
+
+    const password_hash = authUser.provider_metadata?.password_hash
+
+    if (password_hash && typeof password_hash === "string") {
+      const buf = Buffer.from(password_hash, "base64")
+
+      const success = await Scrypt.verify(buf, password)
+
+      return { success, authUser }
+    }
+
+    return {
+      success: false,
+      error: "Invalid email or password",
+    }
   }
 }
 

@@ -7842,6 +7842,7 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.40
     rimraf: ^3.0.2
+    scrypt-kdf: ^2.0.1
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
