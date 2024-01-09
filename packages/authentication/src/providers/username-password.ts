@@ -1,7 +1,6 @@
-import Scrypt from "scrypt-kdf"
-
-import { AuthUserService } from "@services"
 import { AbstractAuthenticationModuleProvider } from "@medusajs/types"
+import { AuthUserService } from "@services"
+import Scrypt from "scrypt-kdf"
 
 class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "usernamePassword"
