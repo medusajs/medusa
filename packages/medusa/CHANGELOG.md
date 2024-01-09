@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.20.0
+
+### Minor Changes
+
+- [`f4734a7ac`](https://github.com/medusajs/medusa/commit/f4734a7ac644a9a6f53f61043932d8faae228b9b) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
 ## 1.19.1
 
 ### Patch Changes
