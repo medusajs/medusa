@@ -1,9 +1,12 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { constructWebhook, getPluginOptions } from "../../utils/utils"
+import { constructWebhook } from "../../utils/utils"
+import StripeProviderService from "../../../services/stripe-provider"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   try {
-    const pluginOptions = getPluginOptions(req.scope)
+    const pluginOptions = req.scope.resolve<StripeProviderService>(
+      "stripeProviderService"
+    ).options
 
     const event = constructWebhook({
       signature: req.headers["stripe-signature"],

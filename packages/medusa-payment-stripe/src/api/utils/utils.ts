@@ -258,26 +258,3 @@ async function completeCartIfNecessary({
     }
   }
 }
-
-export function getPluginOptions(
-  container: MedusaContainer
-): Partial<StripeOptions> {
-  const configModule = container.resolve<ConfigModule>(
-    "configModule"
-  )
-  const pluginName = "medusa-payment-stripe"
-
-  const plugin = configModule.plugins.find((plugin) => {
-    if (typeof plugin === "string") {
-      return plugin === pluginName
-    }
-
-    return plugin.resolve === pluginName
-  })
-
-  if (!plugin || typeof plugin === "string") {
-    return {}
-  }
-
-  return plugin.options
-}
