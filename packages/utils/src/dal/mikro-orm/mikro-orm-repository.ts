@@ -4,7 +4,7 @@ import {
   FilterQuery,
   RepositoryTransformOptions,
 } from "@medusajs/types"
-import { isString } from "../../common"
+import { arrayDifference, isString, MedusaError } from "../../common"
 import { MedusaContext } from "../../decorators"
 import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
@@ -12,6 +12,14 @@ import {
   transactionWrapper,
 } from "../utils"
 import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { LoadStrategy, RequiredEntityData } from "@mikro-orm/core"
+import {
+  EntityClass,
+  EntityName,
+  FilterQuery as MikroFilterQuery,
+} from "@mikro-orm/core/typings"
+import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 
 export class MikroOrmBase<T = any> {
   protected readonly manager_: any
@@ -53,11 +61,11 @@ export class MikroOrmBase<T = any> {
   }
 }
 
-export abstract class MikroOrmAbstractBaseRepository<T = any>
+export abstract class MikroOrmAbstractBaseRepository<T extends object = object>
   extends MikroOrmBase
   implements DAL.RepositoryService<T>
 {
-  abstract find(options?: DAL.FindOptions<T>, context?: Context)
+  abstract find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]>
 
   abstract findAndCount(
     options?: DAL.FindOptions<T>,
@@ -91,7 +99,11 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     const entities = await this.find({ where: filter as any })
     const date = new Date()
 
-    await mikroOrmUpdateDeletedAtRecursively(manager, entities, date)
+    await mikroOrmUpdateDeletedAtRecursively<T>(
+      manager,
+      entities as any[],
+      date
+    )
 
     const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({
       entities,
@@ -122,7 +134,7 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 
     const entities = await this.find(query)
 
-    await mikroOrmUpdateDeletedAtRecursively(manager, entities, null)
+    await mikroOrmUpdateDeletedAtRecursively(manager, entities as any[], null)
 
     const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({
       entities,
@@ -185,17 +197,19 @@ export abstract class MikroOrmAbstractTreeRepositoryBase<T = any>
  * related ones.
  */
 
-export class MikroOrmBaseRepository extends MikroOrmAbstractBaseRepository {
+export class MikroOrmBaseRepository<
+  T extends object = object
+> extends MikroOrmAbstractBaseRepository<T> {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
   }
 
-  create(data: unknown[], context?: Context): Promise<any[]> {
+  create(data: unknown[], context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
-  update(data: unknown[], context?: Context): Promise<any[]> {
+  update(data: unknown[], context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -203,14 +217,14 @@ export class MikroOrmBaseRepository extends MikroOrmAbstractBaseRepository {
     throw new Error("Method not implemented.")
   }
 
-  find(options?: DAL.FindOptions, context?: Context): Promise<any[]> {
+  find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
   findAndCount(
-    options?: DAL.FindOptions,
+    options?: DAL.FindOptions<T>,
     context?: Context
-  ): Promise<[any[], number]> {
+  ): Promise<[T[], number]> {
     throw new Error("Method not implemented.")
   }
 }
@@ -244,4 +258,124 @@ export class MikroOrmBaseTreeRepository extends MikroOrmAbstractTreeRepositoryBa
   delete(id: string, context?: Context): Promise<void> {
     throw new Error("Method not implemented.")
   }
+}
+
+export function mikroOrmBaseRepositoryFactory<T extends object>(
+  entity: EntityClass<T>
+): { new (...args: any[]): MikroOrmBaseRepository<T> } {
+  class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
+    constructor({ manager }: { manager: SqlEntityManager }) {
+      // @ts-ignore
+      // eslint-disable-next-line prefer-rest-params
+      super(...arguments)
+    }
+
+    async create(data: unknown[], context?: Context): Promise<T[]> {
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+
+      const entities = data.map((data_) => {
+        return manager.create(
+          entity as EntityName<T>,
+          data_ as RequiredEntityData<T>
+        )
+      })
+
+      manager.persist(entities)
+
+      return entities
+    }
+
+    async update(data: any[], context?: Context): Promise<T[]> {
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+
+      const ids = data.map((data_) => data_.id)
+      const existingEntities = await this.find(
+        {
+          where: {
+            id: {
+              $in: ids,
+            },
+          } as any,
+        },
+        context
+      )
+
+      const missingEntities = arrayDifference(
+        data.map((d) => d.id),
+        existingEntities.map((plr: any) => plr.id)
+      )
+
+      if (missingEntities.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `${entity.name} with id(s) "${missingEntities.join(", ")}" not found`
+        )
+      }
+
+      const existingEntitiesMap = new Map(
+        existingEntities.map<[string, T]>((entity_: any) => [
+          entity_.id,
+          entity_,
+        ])
+      )
+
+      const entities = data.map((data_) => {
+        const existingEntity = existingEntitiesMap.get(data_.id)!
+        return manager.assign(existingEntity, data_ as RequiredEntityData<T>)
+      })
+
+      manager.persist(entities)
+
+      return entities
+    }
+
+    async delete(ids: string[], context?: Context): Promise<void> {
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+
+      await manager.nativeDelete(
+        entity as EntityName<T>,
+        { id: { $in: ids } } as any,
+        {}
+      )
+    }
+
+    async find(options?: DAL.FindOptions<T>, context?: Context): Promise<T[]> {
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+
+      const findOptions_ = { ...options }
+      findOptions_.options ??= {}
+
+      Object.assign(findOptions_.options, {
+        strategy: LoadStrategy.SELECT_IN,
+      })
+
+      return await manager.find(
+        entity as EntityName<T>,
+        findOptions_.where as MikroFilterQuery<T>,
+        findOptions_.options as MikroOptions<T>
+      )
+    }
+
+    async findAndCount(
+      findOptions: DAL.FindOptions<T> = { where: {} },
+      context: Context = {}
+    ): Promise<[T[], number]> {
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+
+      const findOptions_ = { ...findOptions }
+      findOptions_.options ??= {}
+
+      Object.assign(findOptions_.options, {
+        strategy: LoadStrategy.SELECT_IN,
+      })
+
+      return await manager.findAndCount(
+        entity as EntityName<T>,
+        findOptions_.where as MikroFilterQuery<T>,
+        findOptions_.options as MikroOptions<T>
+      )
+    }
+  }
+
+  return MikroOrmAbstractBaseRepository_
 }
