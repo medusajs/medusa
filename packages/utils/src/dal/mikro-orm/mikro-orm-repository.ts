@@ -77,11 +77,6 @@ export class MikroOrmBase<T = any> {
 export class MikroOrmBaseRepository<
   T extends object = object
 > extends MikroOrmBase<T> {
-  constructor({ manager }) {
-    // @ts-ignore
-    super(...arguments)
-  }
-
   create(data: unknown[], context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
@@ -188,17 +183,14 @@ export class MikroOrmBaseRepository<
   }
 }
 
-export class MikroOrmBaseTreeRepository {
-  constructor({ manager }) {
-    // @ts-ignore
-    super(...arguments)
-  }
-
+export class MikroOrmBaseTreeRepository<
+  T extends object = object
+> extends MikroOrmBase<T> {
   find(
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions,
     context?: Context
-  ): Promise<any[]> {
+  ): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -206,11 +198,11 @@ export class MikroOrmBaseTreeRepository {
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions,
     context?: Context
-  ): Promise<[any[], number]> {
+  ): Promise<[T[], number]> {
     throw new Error("Method not implemented.")
   }
 
-  create(data: unknown, context?: Context): Promise<any> {
+  create(data: unknown, context?: Context): Promise<T> {
     throw new Error("Method not implemented.")
   }
 
