@@ -27,7 +27,7 @@ import regionRoutes from "./regions"
 import reservationRoutes from "./reservations"
 import returnReasonRoutes from "./return-reasons"
 import returnRoutes from "./returns"
-import pocWorkflows from "./_poc-async-workflow"
+import workflows from "./workflows"
 import salesChannelRoutes from "./sales-channels"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
@@ -116,7 +116,7 @@ export default (app, container, config) => {
   paymentCollectionRoutes(route)
   paymentRoutes(route)
   productCategoryRoutes(route)
-  pocWorkflows(route)
+  workflows(route)
 
   return app
 }
