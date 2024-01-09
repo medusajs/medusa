@@ -19,7 +19,7 @@ export async function listAndCountSalesChannelsModule({
   const query = {
     sales_channel: {
       __args: { filters, ...listConfig },
-      defaultAdminSalesChannelRemoteQueryObject,
+      ...defaultAdminSalesChannelRemoteQueryObject,
     },
   }
 
