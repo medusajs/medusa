@@ -39,6 +39,8 @@ However, if you have a version mismatch in your packages, the `instanceof` check
 
 In this release, the service class type checks are now performed with static properties to eliminate this issue:
 
+<!-- eslint-skip -->
+
 ```ts
 // now
 static isPaymentProcessor(object): boolean {
