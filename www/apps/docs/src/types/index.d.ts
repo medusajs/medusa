@@ -26,8 +26,6 @@ declare module "@medusajs/docs" {
     PropSidebarItemCategory,
     PropSidebarItemLink,
     PropSidebarItemHtml,
-    SidebarCategoriesShorthand,
-    SidebarItemConfig,
   } from "@docusaurus/plugin-content-docs"
   import { BadgeProps, ButtonType, ButtonVariants } from "docs-ui"
   import { IconProps } from "@medusajs/icons/dist/types"
