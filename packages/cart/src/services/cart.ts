@@ -113,7 +113,7 @@ export default class CartService<TEntity extends Cart = Cart> {
     }
 
     return (await (this.cartRepository_ as CartRepository).update(
-      data,
+      updates,
       sharedContext
     )) as TEntity[]
   }
