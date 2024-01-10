@@ -190,6 +190,11 @@ export class MikroOrmBaseRepository<
 export class MikroOrmBaseTreeRepository<
   T extends object = object
 > extends MikroOrmBase<T> {
+  constructor() {
+    // @ts-ignore
+    super(...arguments)
+  }
+
   find(
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions,
