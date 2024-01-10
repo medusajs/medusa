@@ -27,7 +27,6 @@ export const validateRuleAttributes = (
 ): void => {
   const invalidRuleAttributes = getInvalidRuleAttributes(ruleAttributes)
 
-  console.log("test")
   if (invalidRuleAttributes.length) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
