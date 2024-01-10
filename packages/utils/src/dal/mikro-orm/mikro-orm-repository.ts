@@ -223,11 +223,14 @@ export class MikroOrmBaseTreeRepository<
 type DtoBasedMutationMethods = "create" | "update"
 
 export function mikroOrmBaseRepositoryFactory<
-  T extends { id: string } = { id: string },
+  T extends object = object,
   TDTos extends { [K in DtoBasedMutationMethods]?: any } = {
     [K in DtoBasedMutationMethods]?: any
   }
->(entity: EntityClass<T> | EntitySchema<T> | string) {
+>(
+  entity: EntityClass<T> | EntitySchema<T> | string,
+  primaryKey: string = "id"
+) {
   class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
     async create(data: TDTos["create"][], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
@@ -247,12 +250,12 @@ export function mikroOrmBaseRepositoryFactory<
     async update(data: TDTos["update"][], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
 
-      const ids: string[] = data.map((data_) => data_.id)
+      const primaryKeyValues: string[] = data.map((data_) => data_[primaryKey])
       const existingEntities = await this.find(
         {
           where: {
-            id: {
-              $in: ids,
+            [primaryKey]: {
+              $in: primaryKeyValues,
             },
           },
         } as DAL.FindOptions<T>,
@@ -260,27 +263,29 @@ export function mikroOrmBaseRepositoryFactory<
       )
 
       const missingEntities = arrayDifference(
-        data.map((d) => d.id),
-        existingEntities.map((plr: any) => plr.id)
+        data.map((d) => d[primaryKey]),
+        existingEntities.map((d: any) => d[primaryKey])
       )
 
       if (missingEntities.length) {
         const entityName = (entity as EntityClass<T>).name ?? entity
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `${entityName} with id(s) "${missingEntities.join(", ")}" not found`
+          `${entityName} with ${[primaryKey]} "${missingEntities.join(
+            ", "
+          )}" not found`
         )
       }
 
       const existingEntitiesMap = new Map(
         existingEntities.map<[string, T]>((entity_: any) => [
-          entity_.id,
+          entity_[primaryKey],
           entity_,
         ])
       )
 
       const entities = data.map((data_) => {
-        const existingEntity = existingEntitiesMap.get(data_.id)!
+        const existingEntity = existingEntitiesMap.get(data_[primaryKey])!
         return manager.assign(existingEntity, data_ as RequiredEntityData<T>)
       })
 
@@ -289,12 +294,12 @@ export function mikroOrmBaseRepositoryFactory<
       return entities
     }
 
-    async delete(ids: string[], context?: Context): Promise<void> {
+    async delete(primaryKeyValues: string[], context?: Context): Promise<void> {
       const manager = this.getActiveManager<EntityManager>(context)
 
       await manager.nativeDelete<T>(
         entity as EntityName<T>,
-        { id: { $in: ids } } as unknown as FilterQuery<T>
+        { [primaryKey]: { $in: primaryKeyValues } } as unknown as FilterQuery<T>
       )
     }
 
