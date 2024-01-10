@@ -1,10 +1,15 @@
-import { Opt, PrimaryKey, Property } from "@mikro-orm/core"
+import { DAL } from "@medusajs/types"
+import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
+
+type OptionalAdjustmentLineProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
 
 /**
  * As per the Mikro ORM docs, superclasses should use the abstract class definition
  * Source: https://mikro-orm.io/docs/inheritance-mapping
  */
 export default abstract class AdjustmentLine {
+  [OptionalProps]: OptionalAdjustmentLineProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
@@ -28,7 +33,7 @@ export default abstract class AdjustmentLine {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Opt<Date>
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -36,5 +41,5 @@ export default abstract class AdjustmentLine {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Opt<Date>
+  updated_at: Date
 }
