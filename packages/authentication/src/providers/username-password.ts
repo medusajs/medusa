@@ -24,6 +24,7 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
         error: "Password should be a string",
       }
     }
+
     if (typeof email !== "string") {
       return {
         success: false,
@@ -44,7 +45,9 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
 
       const success = await Scrypt.verify(buf, password)
 
-      return { success, authUser }
+      if (success) {
+        return { success, authUser }
+      }
     }
 
     return {
