@@ -160,7 +160,7 @@ properties:
     description: The details of the sales channel associated with the cart.
     nullable: true
     x-expandable: sales_channel
-    type: object
+    $ref: ./SalesChannel.yaml
   created_at:
     description: The date with timezone at which the resource was created.
     type: string
@@ -240,4 +240,4 @@ properties:
     nullable: true
     x-expandable: sales_channels
     items:
-      type: object
+      $ref: ./SalesChannel.yaml

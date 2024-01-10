@@ -35924,7 +35924,7 @@ components:
           description: The details of the sales channel associated with the cart.
           nullable: true
           x-expandable: sales_channel
-          type: object
+          $ref: '#/components/schemas/SalesChannel'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -36006,7 +36006,7 @@ components:
           nullable: true
           x-expandable: sales_channels
           items:
-            type: object
+            $ref: '#/components/schemas/SalesChannel'
     ClaimImage:
       title: Claim Image
       description: The details of an image attached to a claim.
@@ -37768,7 +37768,7 @@ components:
           description: The details of the region this gift card is available in.
           x-expandable: region
           nullable: true
-          type: object
+          $ref: '#/components/schemas/Region'
         order_id:
           description: The ID of the order that the gift card was purchased in.
           nullable: true
@@ -39044,7 +39044,7 @@ components:
           description: The details of the region this order was created in.
           x-expandable: region
           nullable: true
-          type: object
+          $ref: '#/components/schemas/Region'
         currency_code:
           description: The 3 character currency code that is used in the order
           type: string
@@ -39131,7 +39131,7 @@ components:
           x-expandable: items
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/LineItem'
         edits:
           description: The details of the order edits done on the order.
           type: array
@@ -39179,7 +39179,7 @@ components:
           description: The details of the sales channel this order belongs to.
           x-expandable: sales_channel
           nullable: true
-          type: object
+          $ref: '#/components/schemas/SalesChannel'
         shipping_total:
           type: integer
           description: The total of shipping
@@ -39241,7 +39241,7 @@ components:
           type: array
           x-expandable: returnable_items
           items:
-            type: object
+            $ref: '#/components/schemas/LineItem'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -39269,7 +39269,7 @@ components:
           x-expandable: sales_channels
           x-featureFlag: medusa_v2
           items:
-            type: object
+            $ref: '#/components/schemas/SalesChannel'
     OrderEdit:
       title: Order Edit
       description: >-
