@@ -128,6 +128,8 @@ module.exports = {
           },
         ],
         "@typescript-eslint/space-infix-ops": "error",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-unused-vars": "warn"
       },
     },
   ],

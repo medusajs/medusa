@@ -4,11 +4,12 @@ import { ThemeClassNames } from "@docusaurus/theme-common"
 import type { Props } from "@theme/EditThisPage"
 import { Button } from "docs-ui"
 import clsx from "clsx"
+import Link from "@docusaurus/Link"
 
 export default function EditThisPage({ editUrl }: Props): JSX.Element {
   return (
     <Button variant="secondary">
-      <a
+      <Link
         href={editUrl}
         target="_blank"
         rel="noreferrer noopener"
@@ -20,7 +21,7 @@ export default function EditThisPage({ editUrl }: Props): JSX.Element {
         >
           Edit this page
         </Translate>
-      </a>
+      </Link>
     </Button>
   )
 }
