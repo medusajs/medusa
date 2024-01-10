@@ -77,6 +77,10 @@ export class MikroOrmBase<T = any> {
 export class MikroOrmBaseRepository<
   T extends object = object
 > extends MikroOrmBase<T> {
+  constructor() {
+    // @ts-ignore
+    super(...arguments)
+  }
   create(data: unknown[], context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
