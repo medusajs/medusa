@@ -1,3 +1,4 @@
+import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -8,7 +9,7 @@ import {
   ManyToOne,
   OnInit,
   OneToMany,
-  Opt,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -16,13 +17,22 @@ import Cart from "./cart"
 import LineItemAdjustmentLine from "./line-item-adjustment-line"
 import LineItemTaxLine from "./line-item-tax-line"
 
+type OptionalLineItemProps =
+  | "is_discoutable"
+  | "is_tax_inclusive"
+  | "compare_at_unit_price"
+  | "requires_shipping"
+  | DAL.EntityDateColumns
+
 @Entity({ tableName: "cart_line_item" })
 export default class LineItem {
+  [OptionalProps]?: OptionalLineItemProps
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
   @ManyToOne(() => Cart, {
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
     index: "IDX_line_item_cart_id",
     fieldName: "cart_id",
   })
@@ -81,16 +91,16 @@ export default class LineItem {
   variant_option_values?: Record<string, unknown> | null
 
   @Property({ columnType: "boolean" })
-  requires_shipping: Opt<boolean> = true
+  requires_shipping = true
 
   @Property({ columnType: "boolean" })
-  is_discountable: Opt<boolean> = true
+  is_discountable = true
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive: Opt<boolean> = false
+  is_tax_inclusive = false
 
   @Property({ columnType: "numeric", nullable: true })
-  compare_at_unit_price?: Opt<number>
+  compare_at_unit_price?: number
 
   @Property({ columnType: "numeric", serializer: Number })
   @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
@@ -137,7 +147,7 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at: Opt<Date>
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -145,7 +155,7 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at: Opt<Date>
+  updated_at: Date
 
   @BeforeCreate()
   onCreate() {

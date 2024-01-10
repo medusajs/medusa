@@ -349,10 +349,6 @@ export interface CartLineItemDTO {
    */
   updated_at?: Date
 
-  compare_at_total?: number
-  compare_at_subtotal?: number
-  compare_at_tax_total?: number
-
   original_total: number
   original_subtotal: number
   original_tax_total: number
@@ -430,10 +426,6 @@ export interface CartDTO {
    */
   updated_at?: string | Date
 
-  compare_at_item_total?: number
-  compare_at_item_subtotal?: number
-  compare_at_item_tax_total?: number
-
   original_item_total: number
   original_item_subtotal: number
   original_item_tax_total: number
@@ -478,7 +470,12 @@ export interface FilterableAddressProps
   id?: string | string[]
 }
 
-export type legacy_CartDTO = {
+/**
+ * TODO: Remove this in favor of CartDTO, when module is released 
+ * @deprecated Use CartDTO instead
+ */
+ 
+export type legacy__CartDTO = {
   id?: string
   email?: string
   billing_address_id?: string
