@@ -4,7 +4,7 @@
   import CloudArrowDown from "../cloud-arrow-down"
 
   describe("CloudArrowDown", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CloudArrowDown data-testid="icon" />)
 
 

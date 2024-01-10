@@ -4,7 +4,7 @@
   import SquaresPlusSolid from "../squares-plus-solid"
 
   describe("SquaresPlusSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<SquaresPlusSolid data-testid="icon" />)
 
 

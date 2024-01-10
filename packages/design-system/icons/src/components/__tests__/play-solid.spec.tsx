@@ -4,7 +4,7 @@
   import PlaySolid from "../play-solid"
 
   describe("PlaySolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<PlaySolid data-testid="icon" />)
 
 

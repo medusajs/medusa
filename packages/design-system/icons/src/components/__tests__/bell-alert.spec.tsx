@@ -4,7 +4,7 @@
   import BellAlert from "../bell-alert"
 
   describe("BellAlert", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<BellAlert data-testid="icon" />)
 
 

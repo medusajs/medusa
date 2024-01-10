@@ -4,7 +4,7 @@
   import Key from "../key"
 
   describe("Key", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Key data-testid="icon" />)
 
 

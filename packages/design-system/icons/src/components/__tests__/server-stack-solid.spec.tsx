@@ -4,7 +4,7 @@
   import ServerStackSolid from "../server-stack-solid"
 
   describe("ServerStackSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ServerStackSolid data-testid="icon" />)
 
 

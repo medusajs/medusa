@@ -4,7 +4,7 @@
   import ChevronRight from "../chevron-right"
 
   describe("ChevronRight", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChevronRight data-testid="icon" />)
 
 

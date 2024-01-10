@@ -11,7 +11,7 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-  Property,
+  Property
 } from "@mikro-orm/core"
 import Address from "./address"
 import LineItem from "./line-item"

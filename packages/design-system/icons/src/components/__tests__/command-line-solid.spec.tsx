@@ -4,7 +4,7 @@
   import CommandLineSolid from "../command-line-solid"
 
   describe("CommandLineSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<CommandLineSolid data-testid="icon" />)
 
 

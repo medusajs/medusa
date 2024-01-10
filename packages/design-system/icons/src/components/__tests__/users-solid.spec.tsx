@@ -4,7 +4,7 @@
   import UsersSolid from "../users-solid"
 
   describe("UsersSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<UsersSolid data-testid="icon" />)
 
 

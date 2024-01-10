@@ -4,7 +4,7 @@
   import KeySolid from "../key-solid"
 
   describe("KeySolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<KeySolid data-testid="icon" />)
 
 
