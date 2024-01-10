@@ -8413,8 +8413,6 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-product-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-product-migrations-up: dist/scripts/bin/run-migration-up.js
     medusa-product-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
