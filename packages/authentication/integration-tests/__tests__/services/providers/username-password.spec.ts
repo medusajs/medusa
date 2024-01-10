@@ -71,5 +71,63 @@ describe("AuthenticationModuleService - AuthProvider", () => {
         }),
       })
     })
+
+    it("fails when no password is given", async () => {
+      const email = "test@test.com"
+
+      await seedDefaultData(testManager)
+
+      const res = await service.authenticate("usernamePassword", {
+        email: "test@test.com",
+      })
+
+      expect(res).toEqual({
+        success: false,
+        error: "Password should be a string",
+      })
+    })
+
+    it("fails when no email is given", async () => {
+      await seedDefaultData(testManager)
+
+      const res = await service.authenticate("usernamePassword", {
+        password: "supersecret",
+      })
+
+      expect(res).toEqual({
+        success: false,
+        error: "Email should be a string",
+      })
+    })
+
+    it("fails with an invalid password", async () => {
+      const password = "supersecret"
+      const email = "test@test.com"
+      const passwordHash = (
+        await Scrypt.kdf(password, { logN: 15, r: 8, p: 1 })
+      ).toString("base64")
+
+      await seedDefaultData(testManager)
+      await createAuthUsers(testManager, [
+        // Add authenticated user
+        {
+          provider: "usernamePassword",
+          provider_metadata: {
+            email,
+            password_hash: passwordHash,
+          },
+        },
+      ])
+
+      const res = await service.authenticate("usernamePassword", {
+        email: "test@test.com",
+        password: "password",
+      })
+
+      expect(res).toEqual({
+        success: false,
+        error: "Invalid email or password",
+      })
+    })
   })
 })
