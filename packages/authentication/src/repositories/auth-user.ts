@@ -3,6 +3,7 @@ import { DALUtils } from "@medusajs/utils"
 
 import { AuthUser } from "@models"
 import { RepositoryTypes } from "@types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class AuthUserRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
   AuthUser
@@ -20,5 +21,20 @@ export class AuthUserRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     })
 
     return await super.create(toCreate, context)
+  }
+
+  async update(
+    data: RepositoryTypes.UpdateAuthUserDTO[],
+    context: Context = {}
+  ): Promise<AuthUser[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    const authUsers = data.map(({ user, update }) => {
+      return manager.assign(user, update)
+    })
+
+    manager.persist(authUsers)
+
+    return authUsers
   }
 }
