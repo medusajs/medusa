@@ -107,8 +107,10 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": -1,
+									"target": 594,
 									"name": "T",
+									"package": "@medusajs/types",
+									"qualifiedName": "BaseFilterable.T",
 									"refersToTypeParameter": true
 								},
 								{
@@ -117,8 +119,10 @@
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": -1,
+											"target": 594,
 											"name": "T",
+											"package": "@medusajs/types",
+											"qualifiedName": "BaseFilterable.T",
 											"refersToTypeParameter": true
 										}
 									],
@@ -152,8 +156,10 @@
 							"types": [
 								{
 									"type": "reference",
-									"target": -1,
+									"target": 594,
 									"name": "T",
+									"package": "@medusajs/types",
+									"qualifiedName": "BaseFilterable.T",
 									"refersToTypeParameter": true
 								},
 								{
@@ -162,8 +168,10 @@
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": -1,
+											"target": 594,
 											"name": "T",
+											"package": "@medusajs/types",
+											"qualifiedName": "BaseFilterable.T",
 											"refersToTypeParameter": true
 										}
 									],
@@ -354,8 +362,9 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": -1,
+						"target": 286,
 						"name": "TManager",
+						"package": "@medusajs/types",
 						"refersToTypeParameter": true
 					}
 				},
@@ -414,8 +423,9 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": -1,
+						"target": 286,
 						"name": "TManager",
+						"package": "@medusajs/types",
 						"refersToTypeParameter": true
 					}
 				}
@@ -4407,8 +4417,10 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": -1,
+										"target": 249,
 										"name": "Entity",
+										"package": "@medusajs/types",
+										"qualifiedName": "FindConfig.Entity",
 										"refersToTypeParameter": true
 									}
 								}
@@ -9682,8 +9694,9 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": -1,
+												"target": 202,
 												"name": "TReturnableLinkableKeys",
+												"package": "@medusajs/types",
 												"refersToTypeParameter": true
 											}
 										],
@@ -9890,8 +9903,9 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": -1,
+												"target": 208,
 												"name": "TReturnableLinkableKeys",
+												"package": "@medusajs/types",
 												"refersToTypeParameter": true
 											}
 										],
@@ -11300,8 +11314,9 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": -1,
+												"target": 196,
 												"name": "TReturnableLinkableKeys",
+												"package": "@medusajs/types",
 												"refersToTypeParameter": true
 											}
 										],
@@ -15593,8 +15608,9 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": -1,
+							"target": 562,
 							"name": "TReturnableLinkableKeys",
+							"package": "@medusajs/types",
 							"refersToTypeParameter": true
 						}
 					}
@@ -15657,8 +15673,9 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": -1,
+							"target": 559,
 							"name": "TReturnableLinkableKeys",
+							"package": "@medusajs/types",
 							"refersToTypeParameter": true
 						}
 					}
@@ -17586,8 +17603,9 @@
 						"type": "conditional",
 						"checkType": {
 							"type": "reference",
-							"target": -1,
+							"target": 643,
 							"name": "T",
+							"package": "@medusajs/types",
 							"refersToTypeParameter": true
 						},
 						"extendsType": {
@@ -17616,8 +17634,9 @@
 							"type": "conditional",
 							"checkType": {
 								"type": "reference",
-								"target": -1,
+								"target": 643,
 								"name": "T",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							},
 							"extendsType": {
@@ -17649,8 +17668,9 @@
 							},
 							"falseType": {
 								"type": "reference",
-								"target": -1,
+								"target": 643,
 								"name": "T",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							}
 						}
@@ -17696,8 +17716,9 @@
 				"type": "conditional",
 				"checkType": {
 					"type": "reference",
-					"target": -1,
+					"target": 653,
 					"name": "Prev",
+					"package": "@medusajs/types",
 					"refersToTypeParameter": true
 				},
 				"extendsType": {
@@ -17716,8 +17737,9 @@
 						"operator": "keyof",
 						"target": {
 							"type": "reference",
-							"target": -1,
+							"target": 652,
 							"name": "T",
+							"package": "@medusajs/types",
 							"refersToTypeParameter": true
 						}
 					},
@@ -17727,14 +17749,19 @@
 							"type": "indexedAccess",
 							"indexType": {
 								"type": "reference",
-								"target": -1,
+								"target": {
+									"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+									"qualifiedName": "Key"
+								},
 								"name": "Key",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							},
 							"objectType": {
 								"type": "reference",
-								"target": -1,
+								"target": 652,
 								"name": "T",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							}
 						},
@@ -17779,14 +17806,19 @@
 									"type": "indexedAccess",
 									"indexType": {
 										"type": "reference",
-										"target": -1,
+										"target": {
+											"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+											"qualifiedName": "Key"
+										},
 										"name": "Key",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									},
 									"objectType": {
 										"type": "reference",
-										"target": -1,
+										"target": 652,
 										"name": "T",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								},
@@ -17798,14 +17830,19 @@
 											"type": "indexedAccess",
 											"indexType": {
 												"type": "reference",
-												"target": -1,
+												"target": {
+													"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+													"qualifiedName": "Key"
+												},
 												"name": "Key",
+												"package": "@medusajs/types",
 												"refersToTypeParameter": true
 											},
 											"objectType": {
 												"type": "reference",
-												"target": -1,
+												"target": 652,
 												"name": "T",
+												"package": "@medusajs/types",
 												"refersToTypeParameter": true
 											}
 										}
@@ -17821,14 +17858,19 @@
 								"type": "indexedAccess",
 								"indexType": {
 									"type": "reference",
-									"target": -1,
+									"target": {
+										"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+										"qualifiedName": "Key"
+									},
 									"name": "Key",
+									"package": "@medusajs/types",
 									"refersToTypeParameter": true
 								},
 								"objectType": {
 									"type": "reference",
-									"target": -1,
+									"target": 652,
 									"name": "T",
+									"package": "@medusajs/types",
 									"refersToTypeParameter": true
 								}
 							},
@@ -17840,8 +17882,12 @@
 								"type": "conditional",
 								"checkType": {
 									"type": "reference",
-									"target": -1,
+									"target": {
+										"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+										"qualifiedName": "U"
+									},
 									"name": "U",
+									"package": "@medusajs/types",
 									"refersToTypeParameter": true
 								},
 								"extendsType": {
@@ -17882,8 +17928,12 @@
 									"type": "conditional",
 									"checkType": {
 										"type": "reference",
-										"target": -1,
+										"target": {
+											"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+											"qualifiedName": "V"
+										},
 										"name": "V",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									},
 									"extendsType": {
@@ -17903,8 +17953,12 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": -1,
+														"target": {
+															"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+															"qualifiedName": "V"
+														},
 														"name": "V",
+														"package": "@medusajs/types",
 														"refersToTypeParameter": true
 													}
 												],
@@ -17915,8 +17969,9 @@
 												"type": "indexedAccess",
 												"indexType": {
 													"type": "reference",
-													"target": -1,
+													"target": 653,
 													"name": "Prev",
+													"package": "@medusajs/types",
 													"refersToTypeParameter": true
 												},
 												"objectType": {
@@ -17978,8 +18033,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 655,
 										"name": "T",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -17996,8 +18052,9 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": -1,
+								"target": 655,
 								"name": "T",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							}
 						],
@@ -18012,8 +18069,9 @@
 							"typeArguments": [
 								{
 									"type": "reference",
-									"target": -1,
+									"target": 655,
 									"name": "T",
+									"package": "@medusajs/types",
 									"refersToTypeParameter": true
 								}
 							],
@@ -18048,8 +18106,9 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": -1,
+						"target": 658,
 						"name": "T",
+						"package": "@medusajs/types",
 						"refersToTypeParameter": true
 					},
 					{
@@ -18058,8 +18117,9 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": -1,
+								"target": 658,
 								"name": "T",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							}
 						],
@@ -18072,8 +18132,9 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": -1,
+								"target": 658,
 								"name": "T",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							}
 						],
@@ -19020,8 +19081,9 @@
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": -1,
+											"target": 616,
 											"name": "T",
+											"package": "@medusajs/types",
 											"refersToTypeParameter": true
 										}
 									],
@@ -19079,8 +19141,9 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": -1,
+												"target": 616,
 												"name": "T",
+												"package": "@medusajs/types",
 												"refersToTypeParameter": true
 											}
 										],
@@ -19095,8 +19158,9 @@
 											"typeArguments": [
 												{
 													"type": "reference",
-													"target": -1,
+													"target": 616,
 													"name": "T",
+													"package": "@medusajs/types",
 													"refersToTypeParameter": true
 												}
 											],
@@ -19147,8 +19211,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 616,
 										"name": "T",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -19170,8 +19235,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 616,
 										"name": "T",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -19208,8 +19274,9 @@
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": -1,
+											"target": 616,
 											"name": "T",
+											"package": "@medusajs/types",
 											"refersToTypeParameter": true
 										}
 									],
@@ -19245,8 +19312,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 616,
 										"name": "T",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -19268,8 +19336,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 616,
 										"name": "T",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -19291,8 +19360,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 616,
 										"name": "T",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -19316,8 +19386,9 @@
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": -1,
+											"target": 616,
 											"name": "T",
+											"package": "@medusajs/types",
 											"refersToTypeParameter": true
 										}
 									],
@@ -19340,8 +19411,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 616,
 										"name": "T",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -19365,8 +19437,9 @@
 									"typeArguments": [
 										{
 											"type": "reference",
-											"target": -1,
+											"target": 616,
 											"name": "T",
+											"package": "@medusajs/types",
 											"refersToTypeParameter": true
 										}
 									],
@@ -19481,8 +19554,9 @@
 				"type": "conditional",
 				"checkType": {
 					"type": "reference",
-					"target": -1,
+					"target": 668,
 					"name": "T",
+					"package": "@medusajs/types",
 					"refersToTypeParameter": true
 				},
 				"extendsType": {
@@ -19524,8 +19598,12 @@
 					"typeArguments": [
 						{
 							"type": "reference",
-							"target": -1,
+							"target": {
+								"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+								"qualifiedName": "PK"
+							},
 							"name": "PK",
+							"package": "@medusajs/types",
 							"refersToTypeParameter": true
 						}
 					],
@@ -19536,8 +19614,9 @@
 					"type": "conditional",
 					"checkType": {
 						"type": "reference",
-						"target": -1,
+						"target": 668,
 						"name": "T",
+						"package": "@medusajs/types",
 						"refersToTypeParameter": true
 					},
 					"extendsType": {
@@ -19582,8 +19661,12 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": {
+											"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+											"qualifiedName": "PK"
+										},
 										"name": "PK",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -19600,8 +19683,9 @@
 						"type": "conditional",
 						"checkType": {
 							"type": "reference",
-							"target": -1,
+							"target": 668,
 							"name": "T",
+							"package": "@medusajs/types",
 							"refersToTypeParameter": true
 						},
 						"extendsType": {
@@ -19643,8 +19727,12 @@
 							"typeArguments": [
 								{
 									"type": "reference",
-									"target": -1,
+									"target": {
+										"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+										"qualifiedName": "PK"
+									},
 									"name": "PK",
+									"package": "@medusajs/types",
 									"refersToTypeParameter": true
 								}
 							],
@@ -19655,8 +19743,9 @@
 							"type": "conditional",
 							"checkType": {
 								"type": "reference",
-								"target": -1,
+								"target": 668,
 								"name": "T",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							},
 							"extendsType": {
@@ -19698,8 +19787,12 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": {
+											"sourceFileName": "../../../packages/types/src/dal/utils.ts",
+											"qualifiedName": "PK"
+										},
 										"name": "PK",
+										"package": "@medusajs/types",
 										"refersToTypeParameter": true
 									}
 								],
@@ -19734,8 +19827,9 @@
 				"type": "conditional",
 				"checkType": {
 					"type": "reference",
-					"target": -1,
+					"target": 641,
 					"name": "T",
+					"package": "@medusajs/types",
 					"refersToTypeParameter": true
 				},
 				"extendsType": {
@@ -19746,8 +19840,9 @@
 					"type": "conditional",
 					"checkType": {
 						"type": "reference",
-						"target": -1,
+						"target": 641,
 						"name": "T",
+						"package": "@medusajs/types",
 						"refersToTypeParameter": true
 					},
 					"extendsType": {
@@ -19766,8 +19861,9 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": -1,
+								"target": 641,
 								"name": "T",
+								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							}
 						],
@@ -19781,8 +19877,9 @@
 					"typeArguments": [
 						{
 							"type": "reference",
-							"target": -1,
+							"target": 641,
 							"name": "T",
+							"package": "@medusajs/types",
 							"refersToTypeParameter": true
 						}
 					],
@@ -19810,8 +19907,9 @@
 				"type": "conditional",
 				"checkType": {
 					"type": "reference",
-					"target": -1,
+					"target": 670,
 					"name": "T",
+					"package": "@medusajs/types",
 					"refersToTypeParameter": true
 				},
 				"extendsType": {
@@ -19830,8 +19928,9 @@
 					"typeArguments": [
 						{
 							"type": "reference",
-							"target": -1,
+							"target": 670,
 							"name": "T",
+							"package": "@medusajs/types",
 							"refersToTypeParameter": true
 						}
 					],
@@ -19840,8 +19939,9 @@
 				},
 				"falseType": {
 					"type": "reference",
-					"target": -1,
+					"target": 670,
 					"name": "T",
+					"package": "@medusajs/types",
 					"refersToTypeParameter": true
 				}
 			}

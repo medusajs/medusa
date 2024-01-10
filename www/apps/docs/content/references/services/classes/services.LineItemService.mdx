@@ -44,7 +44,7 @@ transaction manager is created.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -74,7 +74,7 @@ Create a line item
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"`T`","description":"the line item object to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"data","type":"T","description":"the line item object to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -113,6 +113,20 @@ ___
 
 ### delete
 
+`**delete**(ids): Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;`
+
+Deletes a line item.
+
+#### Parameters
+
+<ParameterTypes parameters={[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+
+#### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]} />
+
+`**delete**(id): Promise&#60;void \| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;`
+
 Deletes a line item.
 
 #### Parameters
@@ -121,7 +135,7 @@ Deletes a line item.
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| null \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]} />
 
 ___
 
@@ -133,7 +147,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;undefined \\| null \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [LineItem](../../entities/classes/entities.LineItem.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]} />
 
 #### Deprecated
 
@@ -152,7 +166,7 @@ Generate a single or multiple line item without persisting the data into the db
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"variantIdOrData","type":"`T`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionIdOrContext","type":"`T` extends `string` ? `string` : `GenerateLineItemContext`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`GenerateLineItemContext`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"variantIdOrData","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionIdOrContext","type":"T extends `string` ? `string` : `GenerateLineItemContext`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`GenerateLineItemContext`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -232,7 +246,7 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"variantIdOrData","type":"`string` \\| `T`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionIdOrContext","type":"`T` extends `string` ? `string` : `GenerateLineItemContext`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"variantIdOrData","type":"`string` \\| T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionIdOrContext","type":"T extends `string` ? `string` : `GenerateLineItemContext`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -248,4 +262,4 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"LineItemService","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
