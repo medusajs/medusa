@@ -4,6 +4,10 @@
 
 {{#each categories}}
 
+{{#unless @first}}
+___
+{{/unless}}
+
 {{#unless allChildrenHaveOwnDocument}}
 
 {{#unless (getFormattingOption "expandMembers")}}
@@ -18,7 +22,7 @@
 
 {{#unless hasOwnDocument}}
 
-{{> member}}
+{{> member removeSeparator=true}}
 
 {{/unless}}
 

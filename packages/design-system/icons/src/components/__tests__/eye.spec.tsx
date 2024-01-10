@@ -4,7 +4,7 @@
   import Eye from "../eye"
 
   describe("Eye", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Eye data-testid="icon" />)
 
 

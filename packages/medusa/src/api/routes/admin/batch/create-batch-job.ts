@@ -36,6 +36,32 @@ import { validator } from "../../../../utils/validator"
  *       }).then((({ batch_job }) => {
  *         console.log(batch_job.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminCreateBatchJob } from "medusa-react"
+ *
+ *       const CreateBatchJob = () => {
+ *         const createBatchJob = useAdminCreateBatchJob()
+ *         // ...
+ *
+ *         const handleCreateBatchJob = () => {
+ *           createBatchJob.mutate({
+ *             type: "publish-products",
+ *             context: {},
+ *             dry_run: true
+ *           }, {
+ *             onSuccess: ({ batch_job }) => {
+ *               console.log(batch_job)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default CreateBatchJob
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -96,6 +122,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostBatchesReq
  * type: object
+ * description: The details of the batch job to create.
  * required:
  *   - type
  *   - context

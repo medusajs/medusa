@@ -4,7 +4,7 @@
   import ReceiptPercent from "../receipt-percent"
 
   describe("ReceiptPercent", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ReceiptPercent data-testid="icon" />)
 
 

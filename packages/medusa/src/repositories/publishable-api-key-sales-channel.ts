@@ -3,6 +3,7 @@ import { Brackets, In } from "typeorm"
 import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 import { dataSource } from "../loaders/database"
 import SalesChannelRepository from "./sales-channel"
+import { generateEntityId } from "../utils"
 
 const publishableApiKeySalesChannelAlias = "PublishableKeySalesChannel"
 
@@ -64,15 +65,16 @@ export const PublishableApiKeySalesChannelRepository = dataSource
       publishableApiKeyId: string,
       salesChannelIds: string[]
     ): Promise<void> {
+      const valuesToInsert = salesChannelIds.map((id) => ({
+        id: generateEntityId(undefined, "pksc"),
+        sales_channel_id: id,
+        publishable_key_id: publishableApiKeyId,
+      }))
+
       await this.createQueryBuilder()
         .insert()
         .into(PublishableApiKeySalesChannel)
-        .values(
-          salesChannelIds.map((id) => ({
-            sales_channel_id: id,
-            publishable_key_id: publishableApiKeyId,
-          }))
-        )
+        .values(valuesToInsert)
         .orIgnore()
         .execute()
     },

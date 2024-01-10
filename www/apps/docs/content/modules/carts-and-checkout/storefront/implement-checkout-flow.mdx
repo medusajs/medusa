@@ -253,22 +253,30 @@ Once the customer chooses one of the available shipping options, send a `POST` r
 
     ```tsx
     import { useAddShippingMethodToCart } from "medusa-react"
-    // ...
 
-    const ShippingOptions = ({ cartId }: Props) => {
-      // ...
+    type Props = {
+      cartId: string
+    }
+
+    const Cart = ({ cartId }: Props) => {
       const addShippingMethod = useAddShippingMethodToCart(cartId)
 
-      const handleAddShippingMethod = (option_id: string) => {
+      const handleAddShippingMethod = (
+        optionId: string
+      ) => {
         addShippingMethod.mutate({
-          option_id,
+          option_id: optionId,
+        }, {
+          onSuccess: ({ cart }) => {
+            console.log(cart.shipping_methods)
+          }
         })
       }
-
+      
       // ...
     }
 
-    export default ShippingOptions
+    export default Cart
     ```
 
   </TabItem>

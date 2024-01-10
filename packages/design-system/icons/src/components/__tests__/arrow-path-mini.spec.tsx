@@ -4,7 +4,7 @@
   import ArrowPathMini from "../arrow-path-mini"
 
   describe("ArrowPathMini", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowPathMini data-testid="icon" />)
 
 

@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { AddressPayload } from "./AddressPayload"
 
+/**
+ * The details to update of the cart.
+ */
 export interface StorePostCartsCartReq {
   /**
    * The ID of the Region to create the Cart in. Setting the cart's region can affect the pricing of the items in the cart as well as the used currency.

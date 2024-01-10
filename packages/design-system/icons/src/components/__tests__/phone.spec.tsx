@@ -4,7 +4,7 @@
   import Phone from "../phone"
 
   describe("Phone", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Phone data-testid="icon" />)
 
 

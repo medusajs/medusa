@@ -283,17 +283,24 @@ You can update a user’s details in their profile by sending a request to the [
 
     ```tsx
     import {
-      useAdminDeleteSession,
       useAdminUpdateUser,
     } from "medusa-react"
 
-    const Profile = () => {
+    type Props = {
+      userId: string
+    }
+
+    const Profile = ({ userId }: Props) => {
       const updateUser = useAdminUpdateUser(userId)
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (firstName: string) => {
         updateUser.mutate({
-          first_name: "Marcellus",
+          first_name: firstName,
+        }, {
+          onSuccess: ({ user }) => {
+            console.log(user.first_name)
+          }
         })
       }
 
@@ -384,9 +391,15 @@ You can request a password reset by sending a request to the [Request Password R
       const requestPasswordReset = useAdminSendResetPasswordToken()
       // ...
 
-      const handleResetPassword = () => {
+      const handleResetPassword = (
+        email: string
+      ) => {
         requestPasswordReset.mutate({
-          email: "user@example.com",
+          email
+        }, {
+          onSuccess: () => {
+            // successful
+          }
         })
       }
 
@@ -463,10 +476,17 @@ You can reset the password by sending a request to the [Reset Password API Route
       const resetPassword = useAdminResetPassword()
       // ...
 
-      const handleResetPassword = () => {
+      const handleResetPassword = (
+        token: string,
+        password: string
+      ) => {
         resetPassword.mutate({
-          token: "supersecrettoken",
-          password: "supersecret",
+          token,
+          password,
+        }, {
+          onSuccess: ({ user }) => {
+            console.log(user.id)
+          }
         })
       }
 

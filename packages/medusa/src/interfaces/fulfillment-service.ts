@@ -390,12 +390,21 @@ export interface FulfillmentService extends TransactionBaseService {
   ): Promise<any>
 }
 
+/**
+ * @parentIgnore activeManager_,atomicPhase_,shouldRetryTransaction_,withTransaction
+ */
 export abstract class AbstractFulfillmentService
   extends TransactionBaseService
   implements FulfillmentService
 {
+  /**
+   * @ignore
+   */
   static _isFulfillmentService = true
 
+  /**
+   * @ignore
+   */
   static isFulfillmentService(object): boolean {
     return object?.constructor?._isFulfillmentService
   }

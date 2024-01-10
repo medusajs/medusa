@@ -16,6 +16,7 @@ import { Tooltip, CopyButton } from "docs-ui"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { ThemeConfig } from "@medusajs/docs"
 import { ExclamationCircleSolid, SquareTwoStackSolid } from "@medusajs/icons"
+import Link from "@docusaurus/Link"
 
 // Prism languages are always lowercase
 // We want to fail-safe and allow both "php" and "PHP"
@@ -114,7 +115,7 @@ export default function CodeBlockString({
               >
                 {!noReport && (
                   <Tooltip text="Report Incorrect Code">
-                    <a
+                    <Link
                       href={`${reportCodeLinkPrefix}&title=${encodeURIComponent(
                         `Docs(Code Issue): Code Issue in ${
                           isBrowser ? location.pathname : ""
@@ -129,7 +130,7 @@ export default function CodeBlockString({
                       rel="noreferrer"
                     >
                       <ExclamationCircleSolid className="text-medusa-code-icon" />
-                    </a>
+                    </Link>
                   </Tooltip>
                 )}
                 {!noCopy && (

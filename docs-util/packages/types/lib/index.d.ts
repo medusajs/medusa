@@ -50,9 +50,13 @@ export type FormattingOptionType = {
   reflectionGroups?: {
     [k: string]: boolean
   }
+  reflectionCategories?: {
+    [k: string]: boolean
+  }
   reflectionTitle?: {
     kind: boolean
     typeParameters: boolean
+    prefix?: string
     suffix?: string
     fullReplacement?: string
   }
@@ -66,6 +70,7 @@ export type FormattingOptionType = {
   parameterComponentExtraProps?: Record<string, unknown>
   mdxImports?: string[]
   maxLevel?: number
+  fileNameSeparator?: string
 }
 
 export declare module "typedoc" {
@@ -178,5 +183,37 @@ export declare module "typedoc" {
      * @defaultValue true
      */
     outputModules: boolean
+    /**
+     * Whether to enable category to namespace conversion.
+     * @defaultValue false
+     */
+    generateNamespaces: boolean
+    /**
+     * Optionally specify a parent namespace to place all generated namespaces in.
+     */
+    parentNamespace: string
+    /**
+     * Optionally specify a name prefix for all generated namespaces.
+     */
+    namePrefix: string
+    /**
+     * Whether to enable the React Query manipulator.
+     * @defaultValue false
+     */
+    enableReactQueryManipulator: boolean
+    /**
+     * Namespace names whose child members should have their own documents.
+     */
+    allReflectionsHaveOwnDocumentInNamespace: string[]
+    /**
+     * Whether to ignore items with the `@parentIgnore` tag.
+     * @defaultValue false
+     */
+    parentIgnore: boolean
+    /**
+     * Whether to check for and add variables.
+     * @defaultValue false
+     */
+    checkVariables: boolean
   }
 }

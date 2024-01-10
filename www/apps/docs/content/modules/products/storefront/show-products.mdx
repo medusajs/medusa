@@ -662,7 +662,11 @@ You can retrieve the details of a single product by its ID using the [Get a Prod
     ```tsx
     import { useProduct } from "medusa-react"
 
-    const Products = () => {
+    type Props = {
+      productId: string
+    }
+
+    const Product = ({ productId }: Props) => {
       const { product, isLoading } = useProduct(productId)
 
       return (
@@ -673,7 +677,7 @@ You can retrieve the details of a single product by its ID using the [Get a Prod
       )
     }
 
-    export default Products
+    export default Product
     ```
 
   </TabItem>

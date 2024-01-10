@@ -6,15 +6,26 @@ import {
   InternalModuleDeclaration,
   ISalesChannelModuleService,
   ModuleJoinerConfig,
+  RestoreReturn,
   SalesChannelDTO,
+  SoftDeleteReturn,
 } from "@medusajs/types"
-import { InjectManager, MedusaContext } from "@medusajs/utils"
+import {
+  InjectManager,
+  InjectTransactionManager,
+  mapObjectTo,
+  MedusaContext,
+} from "@medusajs/utils"
 import { CreateSalesChannelDTO, UpdateSalesChannelDTO } from "@medusajs/types"
 
 import { SalesChannel } from "@models"
 
-import { joinerConfig } from "../joiner-config"
 import SalesChannelService from "./sales-channel"
+import {
+  joinerConfig,
+  entityNameToLinkableKeysMap,
+  LinkableKeys,
+} from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -40,7 +51,7 @@ export default class SalesChannelModuleService<
     return joinerConfig
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async create(
     data: CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -50,12 +61,15 @@ export default class SalesChannelModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannel, {
-      populate: true,
-    })
+    return await this.baseRepository_.serialize<SalesChannelDTO[]>(
+      salesChannel,
+      {
+        populate: true,
+      }
+    )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -63,7 +77,83 @@ export default class SalesChannelModuleService<
     await this.salesChannelService_.delete(ids, sharedContext)
   }
 
+  @InjectTransactionManager("baseRepository_")
+  protected async softDelete_(
+    salesChannelIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.salesChannelService_.softDelete(
+      salesChannelIds,
+      sharedContext
+    )
+  }
+
   @InjectManager("baseRepository_")
+  async softDelete<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    salesChannelIds: string[],
+    { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.softDelete_(
+      salesChannelIds,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async restore_(
+    salesChannelIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.salesChannelService_.restore(
+      salesChannelIds,
+      sharedContext
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async restore<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    salesChannelIds: string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
+    sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.restore_(
+      salesChannelIds,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectTransactionManager("baseRepository_")
   async update(
     data: UpdateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -73,9 +163,12 @@ export default class SalesChannelModuleService<
       sharedContext
     )
 
-    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannel, {
-      populate: true,
-    })
+    return await this.baseRepository_.serialize<SalesChannelDTO[]>(
+      salesChannel,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectManager("baseRepository_")
@@ -89,7 +182,7 @@ export default class SalesChannelModuleService<
       config
     )
 
-    return this.baseRepository_.serialize<SalesChannelDTO>(salesChannel, {
+    return await this.baseRepository_.serialize<SalesChannelDTO>(salesChannel, {
       populate: true,
     })
   }
@@ -102,9 +195,12 @@ export default class SalesChannelModuleService<
   ): Promise<SalesChannelDTO[]> {
     const salesChannels = await this.salesChannelService_.list(filters, config)
 
-    return this.baseRepository_.serialize<SalesChannelDTO[]>(salesChannels, {
-      populate: true,
-    })
+    return await this.baseRepository_.serialize<SalesChannelDTO[]>(
+      salesChannels,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectManager("baseRepository_")

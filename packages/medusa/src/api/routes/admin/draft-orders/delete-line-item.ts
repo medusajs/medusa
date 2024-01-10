@@ -32,6 +32,34 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
+ *
+ *       type Props = {
+ *         draftOrderId: string
+ *       }
+ *
+ *       const DraftOrder = ({ draftOrderId }: Props) => {
+ *         const deleteLineItem = useAdminDraftOrderRemoveLineItem(
+ *           draftOrderId
+ *         )
+ *         // ...
+ *
+ *         const handleDelete = (itemId: string) => {
+ *           deleteLineItem.mutate(itemId, {
+ *             onSuccess: ({ draft_order }) => {
+ *               console.log(draft_order.cart)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default DraftOrder
  *   - lang: Shell
  *     label: cURL
  *     source: |

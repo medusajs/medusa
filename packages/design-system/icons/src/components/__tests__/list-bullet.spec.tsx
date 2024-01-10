@@ -4,7 +4,7 @@
   import ListBullet from "../list-bullet"
 
   describe("ListBullet", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ListBullet data-testid="icon" />)
 
 

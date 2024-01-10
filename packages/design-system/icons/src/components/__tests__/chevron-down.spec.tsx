@@ -4,7 +4,7 @@
   import ChevronDown from "../chevron-down"
 
   describe("ChevronDown", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChevronDown data-testid="icon" />)
 
 

@@ -5,6 +5,7 @@ import TabItem from "@theme/TabItem"
 import { specs } from "../../utils/specs"
 import CodeBlock from "../../theme/CodeBlock"
 import Mermaid from "@docusaurus/theme-mermaid/lib/theme/Mermaid/index.js"
+import Heading from "@theme/Heading"
 
 type WorkflowReferenceProps = {
   specName: string
@@ -28,7 +29,7 @@ const Diagram2CodeSpecs = ({ specName }: WorkflowReferenceProps) => {
       {!Object.keys(specsData).length && <span>No diagrams found</span>}
       {Object.entries(specsData).map(([name, diagram2code]) => (
         <React.Fragment key={name}>
-          <h2>{transformTitle(name)}</h2>
+          <Heading as="h2">{transformTitle(name)}</Heading>
           <Tabs groupId="workflows">
             <TabItem
               value="diagram"

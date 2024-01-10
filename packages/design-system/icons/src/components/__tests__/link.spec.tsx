@@ -4,7 +4,7 @@
   import Link from "../link"
 
   describe("Link", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Link data-testid="icon" />)
 
 
