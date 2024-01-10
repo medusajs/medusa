@@ -4,7 +4,7 @@
   import ArrowLeft from "../arrow-left"
 
   describe("ArrowLeft", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ArrowLeft data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import Server from "../server"
 
   describe("Server", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Server data-testid="icon" />)
 
 

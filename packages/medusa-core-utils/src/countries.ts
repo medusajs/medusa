@@ -197,12 +197,7 @@ export const countries: Country[] = [
   { alpha2: "LB", name: "Lebanon", alpha3: "LBN", numeric: "422" },
   { alpha2: "LS", name: "Lesotho", alpha3: "LSO", numeric: "426" },
   { alpha2: "LR", name: "Liberia", alpha3: "LBR", numeric: "430" },
-  {
-    alpha2: "LY",
-    name: "Libyan Arab Jamahiriya",
-    alpha3: "LBY",
-    numeric: "434",
-  },
+  { alpha2: "LY", name: "Libya", alpha3: "LBY", numeric: "434" },
   { alpha2: "LI", name: "Liechtenstein", alpha3: "LIE", numeric: "438" },
   { alpha2: "LT", name: "Lithuania", alpha3: "LTU", numeric: "440" },
   { alpha2: "LU", name: "Luxembourg", alpha3: "LUX", numeric: "442" },

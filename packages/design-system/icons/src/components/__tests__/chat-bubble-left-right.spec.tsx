@@ -4,7 +4,7 @@
   import ChatBubbleLeftRight from "../chat-bubble-left-right"
 
   describe("ChatBubbleLeftRight", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChatBubbleLeftRight data-testid="icon" />)
 
 

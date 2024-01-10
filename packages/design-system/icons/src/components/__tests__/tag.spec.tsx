@@ -4,7 +4,7 @@
   import Tag from "../tag"
 
   describe("Tag", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Tag data-testid="icon" />)
 
 

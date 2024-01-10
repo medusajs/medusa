@@ -1,5 +1,6 @@
 import {
   LocalWorkflow,
+  TransactionModelOptions,
   WorkflowHandler,
   WorkflowManager,
 } from "@medusajs/orchestration"
@@ -150,7 +151,8 @@ export function createWorkflow<
         [K in keyof TResult]:
           | WorkflowData<TResult[K]>
           | WorkflowDataProperties<TResult[K]>
-      }
+      },
+  options?: TransactionModelOptions
 ): ReturnWorkflow<TData, TResult, THooks> {
   const handlers: WorkflowHandler = new Map()
 
@@ -158,7 +160,7 @@ export function createWorkflow<
     WorkflowManager.unregister(name)
   }
 
-  WorkflowManager.register(name, undefined, handlers)
+  WorkflowManager.register(name, undefined, handlers, options)
 
   const context: CreateWorkflowComposerContext = {
     workflowId: name,

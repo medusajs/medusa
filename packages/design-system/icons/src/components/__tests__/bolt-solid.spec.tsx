@@ -4,7 +4,7 @@
   import BoltSolid from "../bolt-solid"
 
   describe("BoltSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<BoltSolid data-testid="icon" />)
 
 

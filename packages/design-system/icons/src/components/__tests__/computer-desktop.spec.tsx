@@ -4,7 +4,7 @@
   import ComputerDesktop from "../computer-desktop"
 
   describe("ComputerDesktop", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ComputerDesktop data-testid="icon" />)
 
 

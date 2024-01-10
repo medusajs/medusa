@@ -4,7 +4,7 @@
   import ForwardSolid from "../forward-solid"
 
   describe("ForwardSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ForwardSolid data-testid="icon" />)
 
 

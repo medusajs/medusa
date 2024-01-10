@@ -4,7 +4,7 @@
   import ExclamationCircle from "../exclamation-circle"
 
   describe("ExclamationCircle", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ExclamationCircle data-testid="icon" />)
 
 

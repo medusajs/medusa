@@ -4,7 +4,7 @@
   import ChannelsSolid from "../channels-solid"
 
   describe("ChannelsSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChannelsSolid data-testid="icon" />)
 
 

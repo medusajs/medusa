@@ -29,11 +29,11 @@ export interface AdjustmentLineDTO {
   /**
    * When the adjustment line was created
    */
-  created_at?: Date | string
+  created_at: Date | string
   /**
    * When the adjustment line was updated
    */
-  updated_at?: Date | string
+  updated_at: Date | string
 }
 
 export interface ShippingMethodAdjustmentLineDTO extends AdjustmentLineDTO {
@@ -78,11 +78,11 @@ export interface TaxLineDTO {
   /**
    * When the tax line was created
    */
-  created_at?: Date | string
+  created_at: Date | string
   /**
    * When the tax line was updated
    */
-  updated_at?: Date | string
+  updated_at: Date | string
 }
 
 export interface ShippingMethodTaxLineDTO extends TaxLineDTO {
@@ -151,15 +151,15 @@ export interface CartAddressDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
   /**
    * When the address was created.
    */
-  created_at?: Date
+  created_at: Date | string
   /**
    * When the address was updated.
    */
-  updated_at?: Date
+  updated_at: Date | string
 }
 
 export interface CartShippingMethodDTO {
@@ -200,7 +200,7 @@ export interface CartShippingMethodDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 
   /**
    * The associated tax lines.
@@ -218,11 +218,11 @@ export interface CartShippingMethodDTO {
   /**
    * When the shipping method was created.
    */
-  created_at: Date
+  created_at: Date | string
   /**
    * When the shipping method was updated.
    */
-  updated_at: Date
+  updated_at: Date | string
 
   original_total: number
   original_subtotal: number
@@ -349,10 +349,6 @@ export interface CartLineItemDTO {
    */
   updated_at?: Date
 
-  compare_at_total?: number
-  compare_at_subtotal?: number
-  compare_at_tax_total?: number
-
   original_total: number
   original_subtotal: number
   original_tax_total: number
@@ -420,7 +416,7 @@ export interface CartDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
   /**
    * When the cart was created.
    */
@@ -429,10 +425,6 @@ export interface CartDTO {
    * When the cart was updated.
    */
   updated_at?: string | Date
-
-  compare_at_item_total?: number
-  compare_at_item_subtotal?: number
-  compare_at_item_tax_total?: number
 
   original_item_total: number
   original_item_subtotal: number
@@ -478,7 +470,12 @@ export interface FilterableAddressProps
   id?: string | string[]
 }
 
-export type legacy_CartDTO = {
+/**
+ * TODO: Remove this in favor of CartDTO, when module is released 
+ * @deprecated Use CartDTO instead
+ */
+ 
+export type legacy__CartDTO = {
   id?: string
   email?: string
   billing_address_id?: string

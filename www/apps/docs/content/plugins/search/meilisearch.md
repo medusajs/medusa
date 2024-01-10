@@ -210,7 +210,7 @@ curl \
     "description": "Search products",
     "actions": ["search"],
     "indexes": ["products"],
-    "expiresAt": "2024-01-01T00:00:00Z"
+    "expiresAt": "2025-01-01T00:00:00Z"
   }'
 ```
 

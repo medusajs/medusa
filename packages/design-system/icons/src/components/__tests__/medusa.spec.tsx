@@ -4,7 +4,7 @@
   import Medusa from "../medusa"
 
   describe("Medusa", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Medusa data-testid="icon" />)
 
 

@@ -9,8 +9,8 @@ import {
   TransactionHandlerType,
   TransactionModelOptions,
   TransactionState,
-  TransactionStepStatus,
   TransactionStepsDefinition,
+  TransactionStepStatus,
 } from "./types"
 
 import { MedusaError, promiseAll } from "@medusajs/utils"
@@ -61,6 +61,11 @@ export class TransactionOrchestrator extends EventEmitter {
   public static getKeyName(...params: string[]): string {
     return params.join(this.SEPARATOR)
   }
+
+  public getOptions(): TransactionModelOptions {
+    return this.options ?? {}
+  }
+
   private getPreviousStep(flow: TransactionFlow, step: TransactionStep) {
     const id = step.id.split(".")
     id.pop()
@@ -465,7 +470,7 @@ export class TransactionOrchestrator extends EventEmitter {
         if (flow.options?.retentionTime == undefined) {
           await transaction.deleteCheckpoint()
         } else {
-          await transaction.archiveCheckpoint()
+          await transaction.saveCheckpoint()
         }
 
         this.emit(DistributedTransactionEvent.FINISH, { transaction })
