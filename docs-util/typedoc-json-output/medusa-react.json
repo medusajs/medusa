@@ -4897,8 +4897,9 @@
 																"typeArguments": [
 																	{
 																		"type": "reference",
-																		"target": -1,
+																		"target": 1059,
 																		"name": "TResponse",
+																		"package": "medusa-react",
 																		"refersToTypeParameter": true
 																	}
 																],
@@ -4944,8 +4945,9 @@
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": -1,
+																"target": 1059,
 																"name": "TResponse",
+																"package": "medusa-react",
 																"refersToTypeParameter": true
 															}
 														],
@@ -5220,8 +5222,9 @@
 																"typeArguments": [
 																	{
 																		"type": "reference",
-																		"target": -1,
+																		"target": 1067,
 																		"name": "TResponse",
+																		"package": "medusa-react",
 																		"refersToTypeParameter": true
 																	}
 																],
@@ -5239,8 +5242,9 @@
 															},
 															{
 																"type": "reference",
-																"target": -1,
+																"target": 1066,
 																"name": "TPayload",
+																"package": "medusa-react",
 																"refersToTypeParameter": true
 															},
 															{
@@ -5269,8 +5273,9 @@
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": -1,
+																"target": 1067,
 																"name": "TResponse",
+																"package": "medusa-react",
 																"refersToTypeParameter": true
 															}
 														],
@@ -5288,8 +5293,9 @@
 													},
 													{
 														"type": "reference",
-														"target": -1,
+														"target": 1066,
 														"name": "TPayload",
+														"package": "medusa-react",
 														"refersToTypeParameter": true
 													},
 													{
@@ -5519,8 +5525,9 @@
 													},
 													"type": {
 														"type": "reference",
-														"target": -1,
+														"target": 1074,
 														"name": "TQuery",
+														"package": "medusa-react",
 														"refersToTypeParameter": true
 													}
 												},
@@ -5548,8 +5555,9 @@
 																"typeArguments": [
 																	{
 																		"type": "reference",
-																		"target": -1,
+																		"target": 1075,
 																		"name": "TResponse",
+																		"package": "medusa-react",
 																		"refersToTypeParameter": true
 																	}
 																],
@@ -5589,8 +5597,9 @@
 																		},
 																		{
 																			"type": "reference",
-																			"target": -1,
+																			"target": 1074,
 																			"name": "TQuery",
+																			"package": "medusa-react",
 																			"refersToTypeParameter": true
 																		}
 																	]
@@ -5636,8 +5645,9 @@
 																				"typeArguments": [
 																					{
 																						"type": "reference",
-																						"target": -1,
+																						"target": 1075,
 																						"name": "TResponse",
+																						"package": "medusa-react",
 																						"refersToTypeParameter": true
 																					}
 																				],
@@ -5689,8 +5699,9 @@
 																				"typeArguments": [
 																					{
 																						"type": "reference",
-																						"target": -1,
+																						"target": 1075,
 																						"name": "TResponse",
+																						"package": "medusa-react",
 																						"refersToTypeParameter": true
 																					}
 																				],
@@ -5742,8 +5753,9 @@
 																				"typeArguments": [
 																					{
 																						"type": "reference",
-																						"target": -1,
+																						"target": 1075,
 																						"name": "TResponse",
+																						"package": "medusa-react",
 																						"refersToTypeParameter": true
 																					}
 																				],
@@ -5795,8 +5807,9 @@
 																				"typeArguments": [
 																					{
 																						"type": "reference",
-																						"target": -1,
+																						"target": 1075,
 																						"name": "TResponse",
+																						"package": "medusa-react",
 																						"refersToTypeParameter": true
 																					}
 																				],
@@ -19725,7 +19738,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																			"qualifiedName": "InventoryItemDTO"
 																		},
 																		"name": "InventoryItemDTO",
@@ -19784,7 +19797,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																			"qualifiedName": "InventoryItemDTO"
 																		},
 																		"name": "InventoryItemDTO",
@@ -19843,7 +19856,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																			"qualifiedName": "InventoryItemDTO"
 																		},
 																		"name": "InventoryItemDTO",
@@ -19902,7 +19915,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																			"qualifiedName": "InventoryItemDTO"
 																		},
 																		"name": "InventoryItemDTO",
@@ -20167,7 +20180,7 @@
 																						"elementType": {
 																							"type": "reference",
 																							"target": {
-																								"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																								"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																								"qualifiedName": "InventoryLevelDTO"
 																							},
 																							"name": "InventoryLevelDTO",
@@ -20268,7 +20281,7 @@
 																						"elementType": {
 																							"type": "reference",
 																							"target": {
-																								"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																								"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																								"qualifiedName": "InventoryLevelDTO"
 																							},
 																							"name": "InventoryLevelDTO",
@@ -20369,7 +20382,7 @@
 																						"elementType": {
 																							"type": "reference",
 																							"target": {
-																								"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																								"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																								"qualifiedName": "InventoryLevelDTO"
 																							},
 																							"name": "InventoryLevelDTO",
@@ -20470,7 +20483,7 @@
 																						"elementType": {
 																							"type": "reference",
 																							"target": {
-																								"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																								"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																								"qualifiedName": "InventoryLevelDTO"
 																							},
 																							"name": "InventoryLevelDTO",
@@ -53853,7 +53866,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																			"qualifiedName": "ReservationItemDTO"
 																		},
 																		"name": "ReservationItemDTO",
@@ -53912,7 +53925,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																			"qualifiedName": "ReservationItemDTO"
 																		},
 																		"name": "ReservationItemDTO",
@@ -53971,7 +53984,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																			"qualifiedName": "ReservationItemDTO"
 																		},
 																		"name": "ReservationItemDTO",
@@ -54030,7 +54043,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																			"qualifiedName": "ReservationItemDTO"
 																		},
 																		"name": "ReservationItemDTO",
@@ -54395,7 +54408,7 @@
 																		"elementType": {
 																			"type": "reference",
 																			"target": {
-																				"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																				"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																				"qualifiedName": "ReservationItemDTO"
 																			},
 																			"name": "ReservationItemDTO",
@@ -54526,7 +54539,7 @@
 																		"elementType": {
 																			"type": "reference",
 																			"target": {
-																				"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																				"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																				"qualifiedName": "ReservationItemDTO"
 																			},
 																			"name": "ReservationItemDTO",
@@ -54657,7 +54670,7 @@
 																		"elementType": {
 																			"type": "reference",
 																			"target": {
-																				"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																				"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																				"qualifiedName": "ReservationItemDTO"
 																			},
 																			"name": "ReservationItemDTO",
@@ -54788,7 +54801,7 @@
 																		"elementType": {
 																			"type": "reference",
 																			"target": {
-																				"sourceFileName": "../../../packages/types/dist/inventory/common.d.ts",
+																				"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 																				"qualifiedName": "ReservationItemDTO"
 																			},
 																			"name": "ReservationItemDTO",
@@ -63171,7 +63184,7 @@
 																	{
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/common/common.ts",
 																			"qualifiedName": "DeleteResponse"
 																		},
 																		"name": "DeleteResponse",
@@ -63221,7 +63234,7 @@
 															{
 																"type": "reference",
 																"target": {
-																	"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+																	"sourceFileName": "../../../packages/types/src/common/common.ts",
 																	"qualifiedName": "DeleteResponse"
 																},
 																"name": "DeleteResponse",
@@ -63426,7 +63439,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/stock-location/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
 																			"qualifiedName": "StockLocationExpandedDTO"
 																		},
 																		"name": "StockLocationExpandedDTO",
@@ -63485,7 +63498,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/stock-location/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
 																			"qualifiedName": "StockLocationExpandedDTO"
 																		},
 																		"name": "StockLocationExpandedDTO",
@@ -63544,7 +63557,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/stock-location/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
 																			"qualifiedName": "StockLocationExpandedDTO"
 																		},
 																		"name": "StockLocationExpandedDTO",
@@ -63603,7 +63616,7 @@
 																	"type": {
 																		"type": "reference",
 																		"target": {
-																			"sourceFileName": "../../../packages/types/dist/stock-location/common.d.ts",
+																			"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
 																			"qualifiedName": "StockLocationExpandedDTO"
 																		},
 																		"name": "StockLocationExpandedDTO",
@@ -63944,7 +63957,7 @@
 																		"elementType": {
 																			"type": "reference",
 																			"target": {
-																				"sourceFileName": "../../../packages/types/dist/stock-location/common.d.ts",
+																				"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
 																				"qualifiedName": "StockLocationExpandedDTO"
 																			},
 																			"name": "StockLocationExpandedDTO",
@@ -64051,7 +64064,7 @@
 																		"elementType": {
 																			"type": "reference",
 																			"target": {
-																				"sourceFileName": "../../../packages/types/dist/stock-location/common.d.ts",
+																				"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
 																				"qualifiedName": "StockLocationExpandedDTO"
 																			},
 																			"name": "StockLocationExpandedDTO",
@@ -64158,7 +64171,7 @@
 																		"elementType": {
 																			"type": "reference",
 																			"target": {
-																				"sourceFileName": "../../../packages/types/dist/stock-location/common.d.ts",
+																				"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
 																				"qualifiedName": "StockLocationExpandedDTO"
 																			},
 																			"name": "StockLocationExpandedDTO",
@@ -64265,7 +64278,7 @@
 																		"elementType": {
 																			"type": "reference",
 																			"target": {
-																				"sourceFileName": "../../../packages/types/dist/stock-location/common.d.ts",
+																				"sourceFileName": "../../../packages/types/src/stock-location/common.ts",
 																				"qualifiedName": "StockLocationExpandedDTO"
 																			},
 																			"name": "StockLocationExpandedDTO",
@@ -92828,6 +92841,26 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A state function used to set the cart object."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "cart",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The new value of the cart."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -93844,6 +93877,26 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "This function adds an item to the session cart."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "item",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The item to add."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -93905,6 +93958,14 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Removes all items in the cart."
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -93943,6 +94004,26 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "This function decrements the item's quantity in the cart."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "id",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The ID of the item."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -94002,6 +94083,35 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "This function retrieves an item's details by its ID."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "id",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The ID of the item."
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The item in the cart, if found."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -94083,6 +94193,26 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "This function increments the item's quantity in the cart."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "id",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The ID of the item."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -94197,6 +94327,26 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "This function removes an item from the session cart."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "id",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The ID of the item."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -94256,6 +94406,26 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A state function used to set the items in the cart."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "items",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The items to set in the cart."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -94320,6 +94490,26 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "A state function used to set the region."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "region",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The new value of the region."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -94429,6 +94619,36 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "This function updates an item in the session cart."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "id",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The ID of the item."
+									}
+								]
+							},
+							{
+								"tag": "@param",
+								"name": "item",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The item's data to update."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -94520,6 +94740,36 @@
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "This function updates an item's quantity in the cart."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@param",
+								"name": "id",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The ID of the item."
+									}
+								]
+							},
+							{
+								"tag": "@param",
+								"name": "quantity",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The new quantity of the item."
+									}
+								]
+							}
+						]
+					},
 					"type": {
 						"type": "reflection",
 						"declaration": {
@@ -102388,15 +102638,15 @@
 			"qualifiedName": "__object"
 		},
 		"711": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"712": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"713": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"714": {
@@ -102412,15 +102662,15 @@
 			"qualifiedName": "__object"
 		},
 		"717": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"718": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"719": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"720": {
@@ -102436,15 +102686,15 @@
 			"qualifiedName": "__object"
 		},
 		"723": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"724": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"725": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"726": {
@@ -102460,15 +102710,15 @@
 			"qualifiedName": "__object"
 		},
 		"729": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"730": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"731": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"732": {
@@ -106476,15 +106726,15 @@
 			"qualifiedName": "__object"
 		},
 		"1763": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"1764": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"1765": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"1766": {
@@ -106500,15 +106750,15 @@
 			"qualifiedName": "__object"
 		},
 		"1769": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"1770": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"1771": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"1772": {
@@ -106524,15 +106774,15 @@
 			"qualifiedName": "__object"
 		},
 		"1775": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"1776": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"1777": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"1778": {
@@ -106548,15 +106798,15 @@
 			"qualifiedName": "__object"
 		},
 		"1781": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"1782": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"1783": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"1784": {
@@ -111276,15 +111526,15 @@
 			"qualifiedName": "__object"
 		},
 		"2963": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"2964": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"2965": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"2966": {
@@ -111300,15 +111550,15 @@
 			"qualifiedName": "__object"
 		},
 		"2969": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"2970": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"2971": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"2972": {
@@ -111324,15 +111574,15 @@
 			"qualifiedName": "__object"
 		},
 		"2975": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"2976": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"2977": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"2978": {
@@ -111348,15 +111598,15 @@
 			"qualifiedName": "__object"
 		},
 		"2981": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "limit"
 		},
 		"2982": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "offset"
 		},
 		"2983": {
-			"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "count"
 		},
 		"2984": {

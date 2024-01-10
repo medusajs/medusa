@@ -5154,8 +5154,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 424,
 										"name": "TResponse",
+										"package": "@medusajs/medusa-js",
 										"refersToTypeParameter": true
 									}
 								],
@@ -5323,8 +5324,9 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": -1,
+										"target": 408,
 										"name": "TQuery",
+										"package": "@medusajs/medusa-js",
 										"refersToTypeParameter": true
 									}
 								},
@@ -5400,8 +5402,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 409,
 										"name": "TResponse",
+										"package": "@medusajs/medusa-js",
 										"refersToTypeParameter": true
 									}
 								],
@@ -5569,8 +5572,9 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": -1,
+										"target": 416,
 										"name": "TPayload",
+										"package": "@medusajs/medusa-js",
 										"refersToTypeParameter": true
 									}
 								},
@@ -5646,8 +5650,9 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": -1,
+										"target": 417,
 										"name": "TResponse",
+										"package": "@medusajs/medusa-js",
 										"refersToTypeParameter": true
 									}
 								],
@@ -37083,7 +37088,7 @@
 									{
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/types/dist/common/common.d.ts",
+											"sourceFileName": "../../../packages/types/src/common/common.ts",
 											"qualifiedName": "DeleteResponse"
 										},
 										"name": "DeleteResponse",
