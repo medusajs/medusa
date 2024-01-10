@@ -24,6 +24,8 @@ export class ProductCollectionRepository extends DALUtils.mikroOrmBaseRepository
 
         delete collectionData.product_ids
       }
+
+      return collectionData
     })
 
     return await super.create(productCollections, context)
@@ -39,6 +41,8 @@ export class ProductCollectionRepository extends DALUtils.mikroOrmBaseRepository
 
         delete collectionData.product_ids
       }
+
+      return collectionData
     })
 
     return await super.update(productCollections, context)

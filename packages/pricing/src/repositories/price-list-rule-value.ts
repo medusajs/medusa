@@ -21,6 +21,8 @@ export class PriceListRuleValueRepository extends DALUtils.mikroOrmBaseRepositor
       if (priceListRuleId) {
         priceRuleValue.price_list_rule = priceListRuleId
       }
+
+      return priceRuleValue
     })
 
     return await super.create(priceListRuleValues, context)

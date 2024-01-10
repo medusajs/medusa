@@ -22,6 +22,8 @@ export class PriceListRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
       if (!!priceListData.ends_at) {
         priceListData.ends_at = GetIsoStringFromDate(priceListData.ends_at)
       }
+
+      return priceListData
     })
 
     return await super.update(priceLists, context)

@@ -25,6 +25,8 @@ export class PriceListRuleRepository extends DALUtils.mikroOrmBaseRepositoryFact
       if (ruleTypeId) {
         createData.rule_type = ruleTypeId
       }
+
+      return createData
     })
 
     return await super.create(priceListRule, context)
@@ -45,6 +47,8 @@ export class PriceListRuleRepository extends DALUtils.mikroOrmBaseRepositoryFact
       if (rule_type_id) {
         priceListRuleData.rule_type = rule_type_id
       }
+
+      return priceListRuleData
     })
 
     return await super.update(priceListRules, context)

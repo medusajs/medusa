@@ -40,6 +40,8 @@ export class ProductOptionRepository extends DALUtils.mikroOrmBaseRepositoryFact
 
         optionData.product_id = product?.id
       }
+
+      return optionData
     })
 
     return await super.create(productOptions, context)
