@@ -1,18 +1,33 @@
-import { TestDatabaseUtils } from "medusa-test-utils"
+import * as process from "process"
 
-import * as WorkflowOrchestratorModels from "@models"
+const DB_HOST = process.env.DB_HOST ?? "localhost"
+const DB_USERNAME = process.env.DB_USERNAME ?? ""
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = process.env.DB_TEMP_NAME
 
-const pathToMigrations = "../../src/migrations"
-const mikroOrmEntities = WorkflowOrchestratorModels as unknown as any[]
+export const DB_URL = `postgres://${DB_USERNAME}${
+  DB_PASSWORD ? `:${DB_PASSWORD}` : ""
+}@${DB_HOST}/${DB_NAME}`
 
-export const MikroOrmWrapper = TestDatabaseUtils.getMikroOrmWrapper(
-  mikroOrmEntities,
-  pathToMigrations
-)
+interface TestDatabase {
+  setupDatabase(knex): Promise<void>
+}
 
-export const MikroOrmConfig = TestDatabaseUtils.getMikroOrmConfig(
-  mikroOrmEntities,
-  pathToMigrations
-)
+export const TestDatabase: TestDatabase = {
+  setupDatabase: async (knex) => {
+    try {
+      // Disconnect any existing connections to the test database
+      await knex.raw(
+        `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '${DB_NAME}'`
+      )
 
-export const DB_URL = TestDatabaseUtils.getDatabaseURL()
+      await knex.raw(`DROP DATABASE IF EXISTS "${DB_NAME}"`)
+
+      await knex.raw(`CREATE DATABASE "${DB_NAME}"`)
+    } catch (error) {
+      console.error("Error recreating database:", error)
+    } finally {
+      await knex.destroy()
+    }
+  },
+}

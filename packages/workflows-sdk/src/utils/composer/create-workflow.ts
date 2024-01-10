@@ -185,6 +185,10 @@ export function createWorkflow<
   const inputPlaceHolder = proxify<WorkflowData>({
     __type: OrchestrationUtils.SymbolInputReference,
     __step__: "",
+    config: () => {
+      // TODO: config default value?
+      throw new Error("Config is not available for the input object.")
+    },
   })
 
   const returnedStep = composer.apply(context, [inputPlaceHolder])

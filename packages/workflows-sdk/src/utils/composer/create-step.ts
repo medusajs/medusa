@@ -1,4 +1,7 @@
+import { TransactionStepsDefinition } from "@medusajs/orchestration"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { resolveValue, StepResponse } from "./helpers"
+import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
@@ -6,9 +9,6 @@ import {
   StepFunctionResult,
   WorkflowData,
 } from "./type"
-import { proxify } from "./helpers/proxy"
-import { TransactionStepsDefinition } from "@medusajs/orchestration"
-import { isString, OrchestrationUtils } from "@medusajs/utils"
 
 /**
  * The type of invocation function passed to a step.
@@ -174,7 +174,7 @@ function applyStep<
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
-      config: (config: Pick<TransactionStepsDefinition, "maxRetries">) => {
+      config: (config: Omit<TransactionStepsDefinition, "next">) => {
         this.flow.replaceAction(stepName, stepName, {
           ...stepConfig,
           ...config,
@@ -245,7 +245,7 @@ export function createStep<
    */
   nameOrConfig:
     | string
-    | ({ name: string } & Pick<TransactionStepsDefinition, "maxRetries">),
+    | ({ name: string } & Omit<TransactionStepsDefinition, "next">),
   /**
    * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.

@@ -28,6 +28,7 @@ export const joinerConfig: ModuleJoinerConfig = {
     name: ["workflow_execution", "workflow_executions"],
     args: {
       entity: WorkflowExecution.name,
+      methodSuffix: "WorkflowExecution",
     },
   },
 }
