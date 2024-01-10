@@ -10,6 +10,25 @@ export class PriceListRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
     create: RepositoryTypes.CreatePriceListDTO
   }
 >(PriceList) {
+  async create(
+    data: RepositoryTypes.CreatePriceListDTO[],
+    context: Context = {}
+  ): Promise<PriceList[]> {
+    const priceLists = data.map((priceListData: any) => {
+      if (!!priceListData.starts_at) {
+        priceListData.starts_at = GetIsoStringFromDate(priceListData.starts_at)
+      }
+
+      if (!!priceListData.ends_at) {
+        priceListData.ends_at = GetIsoStringFromDate(priceListData.ends_at)
+      }
+
+      return priceListData
+    })
+
+    return await super.create(priceLists, context)
+  }
+
   async update(
     data: RepositoryTypes.UpdatePriceListDTO[],
     context: Context = {}
