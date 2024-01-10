@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import Scrypt from "scrypt-kdf"
 import {
   DeepPartial,
   EntityManager,
@@ -20,7 +19,7 @@ import {
   Selector,
 } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, getPasswordHash, setMetadata } from "../utils"
 import { selectorConstraintsToString } from "@medusajs/utils"
 
 type InjectedDependencies = {
@@ -236,6 +235,7 @@ class CustomerService extends TransactionBaseService {
       config
     )
   }
+
   async retrieveRegisteredByEmail(
     email: string,
     config: FindConfig<Customer> = {}
@@ -252,6 +252,7 @@ class CustomerService extends TransactionBaseService {
   ): Promise<Customer[]> {
     return await this.list({ email: email.toLowerCase() }, config)
   }
+
   /**
    * Gets a customer by phone.
    * @param {string} phone - the phone of the customer to get.
@@ -283,16 +284,6 @@ class CustomerService extends TransactionBaseService {
     }
 
     return this.retrieve_({ id: customerId }, config)
-  }
-
-  /**
-   * Hashes a password
-   * @param {string} password - the value to hash
-   * @return {Promise<string>} hashed password
-   */
-  async hashPassword_(password: string): Promise<string> {
-    const buf = await Scrypt.kdf(password, { logN: 1, r: 1, p: 1 })
-    return buf.toString("base64")
   }
 
   /**
@@ -335,7 +326,7 @@ class CustomerService extends TransactionBaseService {
       }
 
       if (password) {
-        const hashedPassword = await this.hashPassword_(password)
+        const hashedPassword = await getPasswordHash(password)
         customer.password_hash = hashedPassword
         customer.has_account = true
         delete customer.password
@@ -395,7 +386,7 @@ class CustomerService extends TransactionBaseService {
       }
 
       if (password) {
-        customer.password_hash = await this.hashPassword_(password)
+        customer.password_hash = await getPasswordHash(password)
       }
 
       if (groups) {

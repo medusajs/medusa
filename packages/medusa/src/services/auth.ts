@@ -6,6 +6,8 @@ import UserService from "./user"
 import CustomerService from "./customer"
 import { EntityManager } from "typeorm"
 import { Logger } from "@medusajs/types"
+import { deepEqualObj } from "@medusajs/utils"
+import { defaultAuthConfig } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -88,7 +90,7 @@ class AuthService extends TransactionBaseService {
   ): Promise<AuthenticateResult> {
     return await this.atomicPhase_(async (transactionManager) => {
       try {
-        const userPasswordHash: User = await this.userService_
+        const { password_hash }: User = await this.userService_
           .withTransaction(transactionManager)
           .retrieveByEmail(email, {
             select: ["password_hash"],
@@ -96,13 +98,17 @@ class AuthService extends TransactionBaseService {
 
         const passwordsMatch = await this.comparePassword_(
           password,
-          userPasswordHash.password_hash
+          password_hash
         )
 
         if (passwordsMatch) {
           const user = await this.userService_
             .withTransaction(transactionManager)
             .retrieveByEmail(email)
+
+          if (!this.passwordConfigIsCurrent(password_hash)) {
+            await this.userService_.setPassword_(user.id, password)
+          }
 
           return {
             success: true,
@@ -137,21 +143,28 @@ class AuthService extends TransactionBaseService {
   ): Promise<AuthenticateResult> {
     return await this.atomicPhase_(async (transactionManager) => {
       try {
-        const customer: Customer = await this.customerService_
+        const { password_hash }: Customer = await this.customerService_
           .withTransaction(transactionManager)
           .retrieveRegisteredByEmail(email, {
-            select: ["id", "password_hash"],
+            select: ["password_hash"],
           })
-        if (customer.password_hash) {
+
+        if (password_hash) {
           const passwordsMatch = await this.comparePassword_(
             password,
-            customer.password_hash
+            password_hash
           )
 
           if (passwordsMatch) {
             const customer = await this.customerService_
               .withTransaction(transactionManager)
               .retrieveRegisteredByEmail(email)
+
+            if (!this.passwordConfigIsCurrent(password_hash)) {
+              await this.customerService_.update(customer.id, {
+                password,
+              })
+            }
 
             return {
               success: true,
@@ -168,6 +181,14 @@ class AuthService extends TransactionBaseService {
         error: "Invalid email or password",
       }
     })
+  }
+
+  protected passwordConfigIsCurrent(password_hash: string): boolean {
+    const currentHashConfig = Scrypt.viewParams(
+      Buffer.from(password_hash, "base64")
+    )
+
+    return deepEqualObj(currentHashConfig, defaultAuthConfig)
   }
 }
 

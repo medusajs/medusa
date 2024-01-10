@@ -1,7 +1,6 @@
 import { FlagRouter } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import Scrypt from "scrypt-kdf"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import AnalyticsFeatureFlag from "../loaders/feature-flags/analytics"
@@ -9,14 +8,14 @@ import { User } from "../models"
 import { UserRepository } from "../repositories/user"
 import { FindConfig } from "../types/common"
 import {
-    CreateUserInput,
-    FilterableUserProps,
-    UpdateUserInput,
+  CreateUserInput,
+  FilterableUserProps,
+  UpdateUserInput,
 } from "../types/user"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, getPasswordHash, setMetadata } from "../utils"
 import { validateEmail } from "../utils/is-email"
 import AnalyticsConfigService from "./analytics-config"
-import EventBusService from "./event-bus"
+import { EventBusService } from "."
 
 type UserServiceProps = {
   userRepository: typeof UserRepository
@@ -152,16 +151,6 @@ class UserService extends TransactionBaseService {
   }
 
   /**
-   * Hashes a password
-   * @param {string} password - the value to hash
-   * @return {string} hashed password
-   */
-  async hashPassword_(password: string): Promise<string> {
-    const buf = await Scrypt.kdf(password, { logN: 1, r: 1, p: 1 })
-    return buf.toString("base64")
-  }
-
-  /**
    * Creates a user with username being validated.
    * Fails if email is not a valid format.
    * @param {object} user - the user to create
@@ -190,7 +179,7 @@ class UserService extends TransactionBaseService {
       }
 
       if (password) {
-        const hashedPassword = await this.hashPassword_(password)
+        const hashedPassword = await getPasswordHash(password)
         createData.password_hash = hashedPassword
       }
 
@@ -301,7 +290,7 @@ class UserService extends TransactionBaseService {
 
       const user = await this.retrieve(userId)
 
-      const hashedPassword = await this.hashPassword_(password)
+      const hashedPassword = await getPasswordHash(password)
       if (!hashedPassword) {
         throw new MedusaError(
           MedusaError.Types.DB_ERROR,
