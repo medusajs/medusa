@@ -7,6 +7,7 @@ import {
   PromotionTypes,
 } from "@medusajs/types"
 import {
+  ApplicationMethodTargetType,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -23,11 +24,14 @@ import { joinerConfig } from "../joiner-config"
 import {
   CreateApplicationMethodDTO,
   CreatePromotionDTO,
+  CreatePromotionRuleDTO,
   UpdateApplicationMethodDTO,
   UpdatePromotionDTO,
 } from "../types"
 import {
+  ComputeActionUtils,
   allowedAllocationForQuantity,
+  areRulesValidForContext,
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "../utils"
@@ -69,6 +73,86 @@ export default class PromotionModuleService<
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  async computeActions(
+    promotionsToApply: Pick<PromotionTypes.PromotionDTO, "code">[],
+    applicationContext: PromotionTypes.ComputeActionContext,
+    // TODO: specify correct type with options
+    options: Record<string, any> = {}
+  ): Promise<Record<string, any>[]> {
+    const promotionCodes = promotionsToApply.map((p) => p.code!)
+    const computedActions: PromotionTypes.ComputeActions[] = []
+
+    const promotions = await this.list(
+      {
+        code: promotionCodes,
+      },
+      {
+        relations: [
+          "application_method",
+          "application_method.target_rules",
+          "application_method.target_rules.values",
+          "rules",
+          "rules.values",
+        ],
+      }
+    )
+
+    for (const promotion of promotions) {
+      const {
+        application_method: applicationMethod,
+        rules: promotionRules = [],
+      } = promotion
+
+      if (!applicationMethod) {
+        continue
+      }
+
+      const isPromotionApplicable = areRulesValidForContext(
+        promotionRules,
+        applicationContext
+      )
+
+      if (!isPromotionApplicable) {
+        continue
+      }
+
+      if (applicationMethod.target_type === ApplicationMethodTargetType.ORDER) {
+        const computedActionsForItems =
+          ComputeActionUtils.getComputedActionsForOrder(
+            promotion,
+            applicationContext
+          )
+
+        computedActions.push(...computedActionsForItems)
+      }
+
+      if (applicationMethod.target_type === ApplicationMethodTargetType.ITEMS) {
+        const computedActionsForItems =
+          ComputeActionUtils.getComputedActionsForItems(
+            promotion,
+            applicationContext[ApplicationMethodTargetType.ITEMS]
+          )
+
+        computedActions.push(...computedActionsForItems)
+      }
+
+      if (
+        applicationMethod.target_type ===
+        ApplicationMethodTargetType.SHIPPING_METHODS
+      ) {
+        const computedActionsForShippingMethods =
+          ComputeActionUtils.getComputedActionsForShippingMethods(
+            promotion,
+            applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS]
+          )
+
+        computedActions.push(...computedActionsForShippingMethods)
+      }
+    }
+
+    return computedActions
   }
 
   @InjectManager("baseRepository_")
@@ -394,7 +478,7 @@ export default class PromotionModuleService<
 
     for (const ruleData of rulesData) {
       const { values, ...rest } = ruleData
-      const promotionRuleData = {
+      const promotionRuleData: CreatePromotionRuleDTO = {
         ...rest,
         [relationName]: [relation],
       }

@@ -3,6 +3,7 @@ import { PromotionRuleDTO } from "./promotion-rule"
 
 export interface PromotionRuleValueDTO {
   id: string
+  value?: any
 }
 
 export interface CreatePromotionRuleValueDTO {

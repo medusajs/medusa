@@ -11,6 +11,12 @@ import {
 } from "./common"
 
 export interface IPromotionModuleService extends IModuleService {
+  computeActions(
+    promotionsToApply: Pick<PromotionDTO, "code">[],
+    applicationContext: Record<string, any>,
+    options?: Record<string, any>
+  ): Promise<Record<string, any>[]>
+
   create(
     data: CreatePromotionDTO[],
     sharedContext?: Context
