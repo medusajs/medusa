@@ -6,16 +6,24 @@ import {
   ProductType,
 } from "@models"
 
-import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
+import {
+  Context,
+  DAL,
+  ProductTypes,
+  WithRequiredProperty,
+} from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { DALUtils, isDefined, MedusaError, promiseAll } from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
 
 // eslint-disable-next-line max-len
-export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
-  Product
-) {
+export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
+  Product,
+  {
+    create: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">
+  }
+>(Product) {
   async find(
     findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
     context: Context = {}

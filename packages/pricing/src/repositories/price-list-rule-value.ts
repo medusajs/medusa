@@ -4,9 +4,12 @@ import { DALUtils } from "@medusajs/utils"
 import { PriceListRuleValue } from "@models"
 import { RepositoryTypes } from "@types"
 
-export class PriceListRuleValueRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
-  PriceListRuleValue
-) {
+export class PriceListRuleValueRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
+  PriceListRuleValue,
+  {
+    update: RepositoryTypes.UpdatePriceListRuleValueDTO
+  }
+>(PriceListRuleValue) {
   async create(
     data: RepositoryTypes.CreatePriceListRuleValueDTO[],
     context: Context = {}

@@ -4,9 +4,12 @@ import { DALUtils, GetIsoStringFromDate } from "@medusajs/utils"
 import { PriceList } from "@models"
 import { RepositoryTypes } from "@types"
 
-export class PriceListRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
-  PriceList
-) {
+export class PriceListRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
+  PriceList,
+  {
+    create: RepositoryTypes.CreatePriceListDTO
+  }
+>(PriceList) {
   async update(
     data: RepositoryTypes.UpdatePriceListDTO[],
     context: Context = {}

@@ -4,9 +4,12 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductOption } from "@models"
 
 // eslint-disable-next-line max-len
-export class ProductOptionRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
-  ProductOption
-) {
+export class ProductOptionRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
+  ProductOption,
+  {
+    update: ProductTypes.UpdateProductOptionDTO
+  }
+>(ProductOption) {
   async create(
     data: ProductTypes.CreateProductOptionDTO[],
     context: Context = {}

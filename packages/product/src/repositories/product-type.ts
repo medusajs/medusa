@@ -1,11 +1,19 @@
 import { ProductType } from "@models"
-import { Context, CreateProductTypeDTO } from "@medusajs/types"
+import {
+  Context,
+  CreateProductTypeDTO,
+  UpdateProductTypeDTO,
+} from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { DALUtils } from "@medusajs/utils"
 
-export class ProductTypeRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
-  ProductType
-) {
+export class ProductTypeRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
+  ProductType,
+  {
+    create: CreateProductTypeDTO
+    update: UpdateProductTypeDTO
+  }
+>(ProductType) {
   async upsert(
     types: CreateProductTypeDTO[],
     context: Context = {}

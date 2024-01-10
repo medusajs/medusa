@@ -5,10 +5,12 @@ import { RepositoryTypes } from "@types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Context } from "@medusajs/types"
 
-export class AuthProviderRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
+export class AuthProviderRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
   AuthProvider,
-  "provider"
-) {
+  {
+    create: RepositoryTypes.CreateAuthProviderDTO
+  }
+>(AuthProvider, "provider") {
   async update(
     data: RepositoryTypes.UpdateAuthProviderDTO[],
     context: Context = {}
