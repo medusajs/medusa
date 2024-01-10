@@ -25,6 +25,7 @@ export function getComputedActionsForShippingMethods(
       (adjustment) => adjustment.code === promotion.code
     )
 
+    // TODO: handle this correctly later
     if (isPromotionAlreadyApplied) {
       continue
     }

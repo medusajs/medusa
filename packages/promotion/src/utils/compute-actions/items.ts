@@ -29,6 +29,7 @@ export function getComputedActionsForItems(
       (adjustment) => adjustment.code === promotion.code
     )
 
+    // TODO: handle this correctly later
     if (isPromotionAlreadyApplied) {
       continue
     }
