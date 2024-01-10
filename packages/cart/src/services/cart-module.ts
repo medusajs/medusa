@@ -252,7 +252,7 @@ export default class CartModuleService implements ICartModuleService {
 
   @InjectTransactionManager("baseRepository_")
   async addLineItems(
-    cartIdOrData: string | AddLineItemsDTO[],
+    cartIdOrData: string | AddLineItemsDTO[] | AddLineItemsDTO,
     dataOrSharedContext?: CreateLineItemDTO[] | Context,
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]> {
@@ -264,8 +264,15 @@ export default class CartModuleService implements ICartModuleService {
       )
     }
 
+    if (Array.isArray(cartIdOrData)) {
+      return await this.addLineItemsBulk_(
+        cartIdOrData,
+        dataOrSharedContext as Context
+      )
+    }
+
     return await this.addLineItemsBulk_(
-      cartIdOrData,
+      [cartIdOrData],
       dataOrSharedContext as Context
     )
   }
@@ -276,7 +283,7 @@ export default class CartModuleService implements ICartModuleService {
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]> {
     return await this.addLineItemsBulk_(
-      { cart_id: cartId, items: data },
+      [{ cart_id: cartId, items: data }],
       sharedContext
     )
   }
