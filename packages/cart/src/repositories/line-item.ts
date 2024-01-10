@@ -7,7 +7,7 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { LineItem } from "@models"
-import { CreateLineItemDTO, UpdateLineItemDTO } from "../types/cart"
+import { CreateLineItemDTO, UpdateLineItemDTO } from "../types"
 
 export class LineItemRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
