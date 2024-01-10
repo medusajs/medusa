@@ -17,7 +17,6 @@ const splitImages = (
 
   return { uploadImages, existingImages }
 }
-
 export const prepareImages = async (images: FormImage[]) => {
   const { uploadImages, existingImages } = splitImages(images)
 

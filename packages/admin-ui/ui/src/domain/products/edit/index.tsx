@@ -11,6 +11,7 @@ import ProductThumbnailSection from "../../../components/organisms/product-thumb
 import ProductVariantsSection from "../../../components/organisms/product-variants-section"
 import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
+import ProductVideoSection from "../../../components/organisms/product-video-section"
 
 const Edit = () => {
   const { id } = useParams()
@@ -18,8 +19,8 @@ const Edit = () => {
 
   const { getWidgets } = useWidgets()
 
-  const { product, status, error } = useAdminProduct(id || "")
-
+  const { product, status, error } = useAdminProduct(id || "", {})
+  console.log(product)
   if (error) {
     const errorStatus = getErrorStatus(error)
 
@@ -80,6 +81,7 @@ const Edit = () => {
           </div>
           <div className="gap-y-xsmall col-span-4 flex flex-col">
             <ProductThumbnailSection product={product} />
+            <ProductVideoSection product={product} />
             <ProductMediaSection product={product} />
           </div>
         </div>
