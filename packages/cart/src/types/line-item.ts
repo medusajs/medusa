@@ -27,7 +27,7 @@ interface PartialUpsertLineItemDTO {
     title: string
     quantity: number
     unit_price: number
-    cart_id: string
+    cart_id?: string
   }
   
   export interface UpdateLineItemDTO extends PartialUpsertLineItemDTO {

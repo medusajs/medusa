@@ -9,6 +9,7 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
   isString,
   retrieveEntity,
@@ -91,11 +92,14 @@ export default class LineItemService<
     }
 
     const data_ = [...data]
-    data_.forEach((lineItem) =>
+    data_.forEach((lineItem) => {
+      // delete lineItem.cart_id
+
       Object.assign(lineItem, {
-        cart,
+        cart_id: cart.id,
+        // cart,
       })
-    )
+    })
 
     return (await (this.lineItemRepository_ as LineItemRepository).create(
       data,
@@ -112,18 +116,34 @@ export default class LineItemService<
     let cart = cartOrId as unknown as Cart
 
     if (isString(cart)) {
-      cart = await this.cartService_.retrieve(cart, {}, sharedContext)
+      cart = await this.cartService_.retrieve(
+        cart,
+        { relations: ["items"] },
+        sharedContext
+      )
     }
 
-    const data_ = [...data]
-    data_.forEach((lineItem) =>
-      Object.assign(lineItem, {
-        cart,
-      })
+    const existingLinesMap = new Map(
+      cart.items.map<[string, LineItem]>((li) => [li.id, li])
     )
 
+    const updates: { lineItem: LineItem; update: UpdateLineItemDTO }[] = []
+
+    for (const update of data) {
+      const lineItem = existingLinesMap.get(update.id)
+
+      if (!lineItem) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Line item with id "${update.id}" not found`
+        )
+      }
+
+      updates.push({ lineItem, update })
+    }
+
     return (await (this.lineItemRepository_ as LineItemRepository).update(
-      data,
+      updates,
       sharedContext
     )) as TEntity[]
   }

@@ -337,6 +337,16 @@ export interface CartLineItemDTO {
    */
   adjustments?: LineItemAdjustmentLineDTO[]
   /**
+   * The associated cart.
+   *
+   * @expandable
+   */
+  cart?: CartDTO
+  /**
+   * The ID of the associated cart.
+   */
+  cart_id: string
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null

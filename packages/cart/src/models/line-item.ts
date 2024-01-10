@@ -37,7 +37,7 @@ export default class LineItem {
   @ManyToOne(() => Cart, {
     onDelete: "cascade",
     index: "IDX_line_item_cart_id",
-    fieldName: "cart_id",
+    nullable: true,
   })
   cart?: Cart
 

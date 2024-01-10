@@ -338,7 +338,7 @@ export default class CartModuleService implements ICartModuleService {
 
     return await this.listLineItems(
       { id: items.flat().map((c) => c.id) },
-      {},
+      { relations: ["cart"] },
       sharedContext
     )
   }

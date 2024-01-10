@@ -1,5 +1,4 @@
 import { ICartModuleService } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initialize } from "../../../../src/initialize"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
@@ -7,11 +6,9 @@ jest.setTimeout(30000)
 
 describe("Cart Module Service", () => {
   let service: ICartModuleService
-  let repositoryManager: SqlEntityManager
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-    repositoryManager = await MikroOrmWrapper.forkManager()
 
     service = await initialize({
       database: {
@@ -240,6 +237,110 @@ describe("Cart Module Service", () => {
       })
 
       expect(address).toBe(undefined)
+    })
+  })
+
+  describe.only("addLineItems", () => {
+    it("should add a line item to cart succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const items = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+          tax_lines: [],
+        },
+      ])
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items"],
+      })
+
+      expect(items[0].id).toBe(cart.items![0].id)
+    })
+
+    it("should add multiple line items to cart succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const items = await service.addLineItems({
+        cart_id: createdCart.id,
+        items: [
+          {
+            quantity: 1,
+            unit_price: 100,
+            title: "test",
+            tax_lines: [],
+          },
+        ],
+      })
+
+      const cart = await service.retrieve(createdCart.id, {
+        relations: ["items"],
+      })
+
+      expect(items[0].id).toBe(cart.items![0].id)
+    })
+
+    it("should add multiple line items to multiple carts succesfully", async () => {
+      let [eurCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      let [usdCart] = await service.create([
+        {
+          currency_code: "usd",
+        },
+      ])
+
+      const items = await service.addLineItems([
+        {
+          cart_id: eurCart.id,
+          items: [
+            {
+              quantity: 1,
+              unit_price: 100,
+              title: "test",
+              tax_lines: [],
+            },
+          ],
+        },
+        {
+          cart_id: usdCart.id,
+          items: [
+            {
+              quantity: 1,
+              unit_price: 100,
+              title: "test",
+              tax_lines: [],
+            },
+          ],
+        },
+      ])
+
+      const carts = await service.list(
+        { id: [eurCart.id, usdCart.id] },
+        { relations: ["items"] }
+      )
+
+      eurCart = carts.find((c) => c.currency_code === "eur")!
+      usdCart = carts.find((c) => c.currency_code === "usd")!
+
+      const eurItems = items.filter((i) => i.cart_id === eurCart.id)
+      const usdItems = items.filter((i) => i.cart_id === usdCart.id)
+
+      expect(eurCart.items![0].id).toBe(eurItems[0].id)
+      expect(usdCart.items![0].id).toBe(usdItems[0].id)
     })
   })
 })

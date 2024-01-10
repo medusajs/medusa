@@ -93,7 +93,7 @@ export interface CreateLineItemDTO {
   subtitle?: string
   thumbnail?: string
 
-  cart_id: string
+  cart_id?: string
 
   quantity: number
 
@@ -119,7 +119,7 @@ export interface CreateLineItemDTO {
   unit_price: number
 
   tax_lines: CreateLineItemTaxLineDTO[]
-  adjustments: CreateLineItemAdjustmentDTO[]
+  adjustments?: CreateLineItemAdjustmentDTO[]
 }
 
 export interface UpdateLineItemDTO
