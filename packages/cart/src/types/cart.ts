@@ -1,4 +1,3 @@
-import { Cart } from "@models"
 
 export interface CreateCartDTO {
   region_id?: string
@@ -23,8 +22,6 @@ export interface CreateLineItemDTO {
   title: string
   subtitle?: string
   thumbnail?: string
-
-  cart_id: string
 
   quantity: number
 
@@ -55,9 +52,6 @@ export interface UpdateLineItemDTO {
   title?: string
   subtitle?: string
   thumbnail?: string
-
-  cart: Cart
-  cart_id: string
 
   quantity?: number
 

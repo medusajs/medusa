@@ -1,6 +1,7 @@
 import {
   AddressDTO,
   CartDTO,
+  CartLineItemDTO,
   Context,
   CreateCartDTO,
   CreateLineItemDTO,
@@ -11,7 +12,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   UpdateCartDTO,
-  UpdateLineItemsDTO
+  UpdateLineItemsDTO,
 } from "@medusajs/types"
 
 import { AddLineItemsDTO, FilterableAddressProps } from "@medusajs/types"
@@ -19,9 +20,10 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
-import { CreateAddressDTO, UpdateAddressDTO } from "@types"
+import { CreateAddressDTO, UpdateAddressDTO, UpdateLineItemDTO } from "@types"
 import { joinerConfig } from "../joiner-config"
 import AddressService from "./address"
 import CartService from "./cart"
@@ -161,7 +163,7 @@ export default class CartModuleService implements ICartModuleService {
     await this.cartService_.delete(ids, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async listAddresses(
     filters: FilterableAddressProps = {},
     config: FindConfig<AddressDTO> = {},
@@ -214,18 +216,82 @@ export default class CartModuleService implements ICartModuleService {
     await this.addressService_.delete(ids, sharedContext)
   }
 
+  @InjectManager("baseRepository_")
+  async retrieveLineItem(
+    itemId: string,
+    config: FindConfig<CartLineItemDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const item = await this.lineItemService_.retrieve(
+      itemId,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<CartLineItemDTO[]>(item, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  async listLineItems(
+    filters = {},
+    config: FindConfig<CartLineItemDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const items = await this.lineItemService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<CartLineItemDTO[]>(items, {
+      populate: true,
+    })
+  }
+
   @InjectTransactionManager("baseRepository_")
   async addLineItems(
+    cartIdOrData: string | AddLineItemsDTO[],
+    dataOrSharedContext?: CreateLineItemDTO[] | Context,
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO[]> {
+    if (isString(cartIdOrData)) {
+      return await this.addLineItems_(
+        cartIdOrData,
+        dataOrSharedContext as CreateLineItemDTO[],
+        sharedContext
+      )
+    }
+
+    return await this.addLineItemsBulk_(
+      cartIdOrData,
+      dataOrSharedContext as Context
+    )
+  }
+
+  protected async addLineItems_(
+    cartId: string,
+    data: CreateLineItemDTO[],
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO[]> {
+    return await this.addLineItemsBulk_(
+      { cart_id: cartId, items: data },
+      sharedContext
+    )
+  }
+
+  protected async addLineItemsBulk_(
     data: AddLineItemsDTO[],
     sharedContext?: Context
-  ): Promise<CartDTO[]> {
+  ): Promise<CartLineItemDTO[]> {
     const lineItemsMap = new Map<string, CreateLineItemDTO[]>()
 
     for (const lineItemData of data) {
       lineItemsMap.set(lineItemData.cart_id, lineItemData.items)
     }
 
-    await promiseAll(
+    const items = await promiseAll(
       [...lineItemsMap].map(async ([cartId, lineItems]) => {
         return await this.lineItemService_.create(
           cartId,
@@ -235,11 +301,9 @@ export default class CartModuleService implements ICartModuleService {
       })
     )
 
-    return await this.list(
-      { id: data.map((c) => c.cart_id) },
-      {
-        relations: ["shipping_address", "billing_address", "line_items"],
-      },
+    return await this.listLineItems(
+      { id: items.flat().map((c) => c.id) },
+      {},
       sharedContext
     )
   }
@@ -248,8 +312,28 @@ export default class CartModuleService implements ICartModuleService {
   async updateLineItems(
     data: UpdateLineItemsDTO[],
     sharedContext?: Context
-  ): Promise<CartDTO[]> {
+  ): Promise<CartLineItemDTO[]> {
+    const lineItemsMap = new Map<string, UpdateLineItemDTO[]>()
 
+    for (const lineItemData of data) {
+      lineItemsMap.set(lineItemData.cart_id, lineItemData.items)
+    }
+
+    const items = await promiseAll(
+      [...lineItemsMap].map(async ([cartId, lineItems]) => {
+        return await this.lineItemService_.update(
+          cartId,
+          lineItems,
+          sharedContext
+        )
+      })
+    )
+
+    return await this.listLineItems(
+      { id: items.flat().map((c) => c.id) },
+      {},
+      sharedContext
+    )
   }
 
   // @InjectTransactionManager("baseRepository_")

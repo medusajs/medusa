@@ -7,6 +7,7 @@ import {
   AddLineItemsDTO,
   CreateAddressDTO,
   CreateCartDTO,
+  CreateLineItemDTO,
   UpdateAddressDTO,
   UpdateCartDTO
 } from "./mutations"
@@ -56,6 +57,11 @@ export interface ICartModuleService extends IModuleService {
 
   addLineItems(
     data: AddLineItemsDTO[],
+    sharedContext?: Context
+  ): Promise<CartDTO[]>
+  addLineItems(
+    cartId: string,
+    items: CreateLineItemDTO[],
     sharedContext?: Context
   ): Promise<CartDTO[]>
 
