@@ -3,14 +3,9 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateSalesChannelDTO,
   ISalesChannelModuleService,
-  SalesChannelDTO,
 } from "@medusajs/types"
 
-export const createSalesChannelsStep = createStep<
-  CreateSalesChannelDTO[],
-  SalesChannelDTO[],
-  string[]
->(
+export const createSalesChannelsStep = createStep(
   "create-sales-channels",
   async (data: CreateSalesChannelDTO[], { container }) => {
     const salesChannelService: ISalesChannelModuleService = container.resolve(
@@ -24,12 +19,12 @@ export const createSalesChannelsStep = createStep<
     )
   },
   async (createdChannelsIds, { container }) => {
+    if (!createdChannelsIds?.length) return
+
     const salesChannelService: ISalesChannelModuleService = container.resolve(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
-    if (createdChannelsIds?.length) {
-      await salesChannelService!.delete(createdChannelsIds)
-    }
+    await salesChannelService!.delete(createdChannelsIds)
   }
 )
