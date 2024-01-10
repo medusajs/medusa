@@ -1,4 +1,5 @@
 import { MedusaError } from "../common"
+
 type RuleAttributeInput = string | undefined
 
 export const ReservedPricingRuleAttributes = [

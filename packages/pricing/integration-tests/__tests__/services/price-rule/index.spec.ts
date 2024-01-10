@@ -283,7 +283,7 @@ describe("PriceRule Service", () => {
           error = e
         }
 
-        expect(error.message).toEqual('PriceRule with id "undefined" not found')
+        expect(error.message).toEqual('PriceRule with id "" not found')
       })
 
       it("should create a priceRule successfully", async () => {
