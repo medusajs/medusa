@@ -11,15 +11,6 @@ import { RepositoryTypes } from "@types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class AuthUserRepository extends DALUtils.MikroOrmBaseRepository {
-  protected readonly manager_: SqlEntityManager
-
-  constructor({ manager }: { manager: SqlEntityManager }) {
-    // @ts-ignore
-    // eslint-disable-next-line prefer-rest-params
-    super(...arguments)
-    this.manager_ = manager
-  }
-
   async find(
     findOptions: DAL.FindOptions<AuthUser> = { where: {} },
     context: Context = {}
