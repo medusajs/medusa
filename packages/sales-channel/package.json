@@ -11,8 +11,6 @@
     "node": ">=16"
   },
   "bin": {
-    "medusa-sales-channel-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-sales-channel-migrations-up": "dist/scripts/bin/run-migration-up.js",
     "medusa-sales-channel-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {
