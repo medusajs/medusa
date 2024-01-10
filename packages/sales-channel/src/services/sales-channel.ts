@@ -53,6 +53,28 @@ export default class SalesChannelService<
     )
   }
 
+  @InjectTransactionManager("salesChannelRepository_")
+  async softDelete(
+    salesChannelIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.salesChannelRepository_.softDelete(
+      salesChannelIds,
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("salesChannelRepository_")
+  async restore(
+    salesChannelIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.salesChannelRepository_.restore(
+      salesChannelIds,
+      sharedContext
+    )
+  }
+
   @InjectTransactionManager(shouldForceTransaction, "salesChannelRepository_")
   async update(
     data: UpdateSalesChannelDTO[],

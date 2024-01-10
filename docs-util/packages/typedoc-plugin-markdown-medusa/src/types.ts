@@ -16,6 +16,10 @@ export type ReflectionParameterType =
 
 export type Mapping = {
   kind: ReflectionKind[]
+  modifiers: {
+    has: `@${string}`[]
+    not: `@${string}`[]
+  }
   isLeaf: boolean
   directory: string
   template: (pageEvent: PageEvent<ContainerReflection>) => string

@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of the line item change to create.
+ */
 export interface AdminPostOrderEditsEditLineItemsReq {
   /**
    * The ID of the product variant associated with the item.

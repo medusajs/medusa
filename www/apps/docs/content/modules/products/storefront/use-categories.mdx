@@ -71,7 +71,6 @@ You can list product categories by sending a request to the [List Product Catego
 
     ```tsx
     import { useProductCategories } from "medusa-react"
-    import { ProductCategory } from "@medusajs/medusa"
 
     function Categories() {
       const { 
@@ -88,7 +87,7 @@ You can list product categories by sending a request to the [List Product Catego
           {product_categories && product_categories.length > 0 && (
             <ul>
               {product_categories.map(
-                (category: ProductCategory) => (
+                (category) => (
                   <li key={category.id}>{category.name}</li>
                 )
               )}
@@ -178,8 +177,14 @@ You can retrieve a single product category by its ID using the [Get a Product Ca
     ```tsx
     import { useProductCategory } from "medusa-react"
 
-    function Category() {
-      const { product_category, isLoading } = useProductCategory()
+    type Props = {
+      categoryId: string
+    }
+
+    const Category = ({ categoryId }: Props) => {
+      const { product_category, isLoading } = useProductCategory(
+        categoryId
+      )
 
       return (
         <div>

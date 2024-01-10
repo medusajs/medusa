@@ -4,7 +4,7 @@
   import BackwardSolid from "../backward-solid"
 
   describe("BackwardSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<BackwardSolid data-testid="icon" />)
 
 

@@ -6,7 +6,7 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 64,
+			"id": 61,
 			"name": "AbstractPaymentProcessor",
 			"variant": "declaration",
 			"kind": 128,
@@ -151,7 +151,7 @@
 			},
 			"children": [
 				{
-					"id": 66,
+					"id": 67,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -160,7 +160,7 @@
 					},
 					"signatures": [
 						{
-							"id": 67,
+							"id": 68,
 							"name": "new AbstractPaymentProcessor",
 							"variant": "signature",
 							"kind": 16384,
@@ -194,7 +194,7 @@
 							},
 							"parameters": [
 								{
-									"id": 68,
+									"id": 69,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -226,7 +226,7 @@
 									}
 								},
 								{
-									"id": 69,
+									"id": 70,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -264,7 +264,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 64,
+								"target": 61,
 								"name": "AbstractPaymentProcessor",
 								"package": "@medusajs/medusa"
 							}
@@ -272,7 +272,7 @@
 					]
 				},
 				{
-					"id": 71,
+					"id": 72,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -310,7 +310,7 @@
 					}
 				},
 				{
-					"id": 70,
+					"id": 71,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -345,7 +345,21 @@
 					}
 				},
 				{
-					"id": 65,
+					"id": 62,
+					"name": "_isPaymentProcessor",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isStatic": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "true"
+				},
+				{
+					"id": 66,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -403,7 +417,7 @@
 					}
 				},
 				{
-					"id": 77,
+					"id": 78,
 					"name": "authorizePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -412,7 +426,7 @@
 					},
 					"signatures": [
 						{
-							"id": 78,
+							"id": 79,
 							"name": "authorizePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -443,7 +457,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "getPaymentStatus",
-										"target": 57,
+										"target": 54,
 										"tsLinkText": ""
 									},
 									{
@@ -490,7 +504,7 @@
 							},
 							"parameters": [
 								{
-									"id": 79,
+									"id": 80,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -532,7 +546,7 @@
 									}
 								},
 								{
-									"id": 80,
+									"id": 81,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -602,21 +616,21 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 81,
+													"id": 82,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 83,
+															"id": 84,
 															"name": "data",
 															"variant": "declaration",
 															"kind": 1024,
@@ -642,7 +656,7 @@
 															}
 														},
 														{
-															"id": 82,
+															"id": 83,
 															"name": "status",
 															"variant": "declaration",
 															"kind": 1024,
@@ -662,8 +676,8 @@
 														{
 															"title": "Properties",
 															"children": [
-																83,
-																82
+																84,
+																83
 															]
 														}
 													]
@@ -677,19 +691,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 39,
+								"target": 36,
 								"name": "PaymentProcessor.authorizePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 38,
+						"target": 35,
 						"name": "PaymentProcessor.authorizePayment"
 					}
 				},
 				{
-					"id": 84,
+					"id": 85,
 					"name": "cancelPayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -698,7 +712,7 @@
 					},
 					"signatures": [
 						{
-							"id": 85,
+							"id": 86,
 							"name": "cancelPayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -741,7 +755,7 @@
 							},
 							"parameters": [
 								{
-									"id": 86,
+									"id": 87,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -814,7 +828,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -826,19 +840,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 55,
+								"target": 52,
 								"name": "PaymentProcessor.cancelPayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 54,
+						"target": 51,
 						"name": "PaymentProcessor.cancelPayment"
 					}
 				},
 				{
-					"id": 74,
+					"id": 75,
 					"name": "capturePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -847,7 +861,7 @@
 					},
 					"signatures": [
 						{
-							"id": 75,
+							"id": 76,
 							"name": "capturePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -890,7 +904,7 @@
 							},
 							"parameters": [
 								{
-									"id": 76,
+									"id": 77,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -963,7 +977,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -975,19 +989,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 46,
+								"target": 43,
 								"name": "PaymentProcessor.capturePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 45,
+						"target": 42,
 						"name": "PaymentProcessor.capturePayment"
 					}
 				},
 				{
-					"id": 90,
+					"id": 91,
 					"name": "deletePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -996,7 +1010,7 @@
 					},
 					"signatures": [
 						{
-							"id": 91,
+							"id": 92,
 							"name": "deletePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1031,7 +1045,7 @@
 							},
 							"parameters": [
 								{
-									"id": 92,
+									"id": 93,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1104,7 +1118,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -1116,19 +1130,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 49,
+								"target": 46,
 								"name": "PaymentProcessor.deletePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 48,
+						"target": 45,
 						"name": "PaymentProcessor.deletePayment"
 					}
 				},
 				{
-					"id": 93,
+					"id": 94,
 					"name": "getPaymentStatus",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1137,7 +1151,7 @@
 					},
 					"signatures": [
 						{
-							"id": 94,
+							"id": 95,
 							"name": "getPaymentStatus",
 							"variant": "signature",
 							"kind": 4096,
@@ -1180,7 +1194,7 @@
 							},
 							"parameters": [
 								{
-									"id": 95,
+									"id": 96,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1244,19 +1258,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 58,
+								"target": 55,
 								"name": "PaymentProcessor.getPaymentStatus"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 57,
+						"target": 54,
 						"name": "PaymentProcessor.getPaymentStatus"
 					}
 				},
 				{
-					"id": 87,
+					"id": 88,
 					"name": "initiatePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1265,7 +1279,7 @@
 					},
 					"signatures": [
 						{
-							"id": 88,
+							"id": 89,
 							"name": "initiatePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1300,7 +1314,7 @@
 							},
 							"parameters": [
 								{
-									"id": 89,
+									"id": 90,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -1315,7 +1329,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 7,
+										"target": 4,
 										"name": "PaymentProcessorContext",
 										"package": "@medusajs/medusa"
 									}
@@ -1333,13 +1347,13 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
 												"type": "reference",
-												"target": 16,
+												"target": 13,
 												"name": "PaymentProcessorSessionResponse",
 												"package": "@medusajs/medusa"
 											}
@@ -1351,19 +1365,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 29,
+								"target": 26,
 								"name": "PaymentProcessor.initiatePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 28,
+						"target": 25,
 						"name": "PaymentProcessor.initiatePayment"
 					}
 				},
 				{
-					"id": 96,
+					"id": 97,
 					"name": "refundPayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1372,7 +1386,7 @@
 					},
 					"signatures": [
 						{
-							"id": 97,
+							"id": 98,
 							"name": "refundPayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1415,7 +1429,7 @@
 							},
 							"parameters": [
 								{
-									"id": 98,
+									"id": 99,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1457,7 +1471,7 @@
 									}
 								},
 								{
-									"id": 99,
+									"id": 100,
 									"name": "refundAmount",
 									"variant": "param",
 									"kind": 32768,
@@ -1507,7 +1521,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -1519,19 +1533,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 35,
+								"target": 32,
 								"name": "PaymentProcessor.refundPayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 34,
+						"target": 31,
 						"name": "PaymentProcessor.refundPayment"
 					}
 				},
 				{
-					"id": 100,
+					"id": 101,
 					"name": "retrievePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1540,7 +1554,7 @@
 					},
 					"signatures": [
 						{
-							"id": 101,
+							"id": 102,
 							"name": "retrievePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1575,7 +1589,7 @@
 							},
 							"parameters": [
 								{
-									"id": 102,
+									"id": 103,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1656,7 +1670,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -1668,19 +1682,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 52,
+								"target": 49,
 								"name": "PaymentProcessor.retrievePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 51,
+						"target": 48,
 						"name": "PaymentProcessor.retrievePayment"
 					}
 				},
 				{
-					"id": 103,
+					"id": 104,
 					"name": "updatePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1689,7 +1703,7 @@
 					},
 					"signatures": [
 						{
-							"id": 104,
+							"id": 105,
 							"name": "updatePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1724,7 +1738,7 @@
 							},
 							"parameters": [
 								{
-									"id": 105,
+									"id": 106,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -1739,7 +1753,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 7,
+										"target": 4,
 										"name": "PaymentProcessorContext",
 										"package": "@medusajs/medusa"
 									}
@@ -1761,13 +1775,13 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
 												"type": "reference",
-												"target": 16,
+												"target": 13,
 												"name": "PaymentProcessorSessionResponse",
 												"package": "@medusajs/medusa"
 											}
@@ -1779,19 +1793,19 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 32,
+								"target": 29,
 								"name": "PaymentProcessor.updatePayment"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 31,
+						"target": 28,
 						"name": "PaymentProcessor.updatePayment"
 					}
 				},
 				{
-					"id": 106,
+					"id": 107,
 					"name": "updatePaymentData",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1800,7 +1814,7 @@
 					},
 					"signatures": [
 						{
-							"id": 107,
+							"id": 108,
 							"name": "updatePaymentData",
 							"variant": "signature",
 							"kind": 4096,
@@ -1867,7 +1881,7 @@
 							},
 							"parameters": [
 								{
-									"id": 108,
+									"id": 109,
 									"name": "sessionId",
 									"variant": "param",
 									"kind": 32768,
@@ -1886,7 +1900,7 @@
 									}
 								},
 								{
-									"id": 109,
+									"id": 110,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1951,7 +1965,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -1963,60 +1977,97 @@
 							},
 							"implementationOf": {
 								"type": "reference",
-								"target": 61,
+								"target": 58,
 								"name": "PaymentProcessor.updatePaymentData"
 							}
 						}
 					],
 					"implementationOf": {
 						"type": "reference",
-						"target": 60,
+						"target": 57,
 						"name": "PaymentProcessor.updatePaymentData"
 					}
+				},
+				{
+					"id": 63,
+					"name": "isPaymentProcessor",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isStatic": true
+					},
+					"signatures": [
+						{
+							"id": 64,
+							"name": "isPaymentProcessor",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 65,
+									"name": "object",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "any"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						}
+					]
 				}
 			],
 			"groups": [
 				{
 					"title": "Constructors",
 					"children": [
-						66
+						67
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
+						72,
 						71,
-						70,
-						65
+						62,
+						66
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						77,
-						84,
-						74,
-						90,
-						93,
-						87,
-						96,
-						100,
-						103,
-						106
+						78,
+						85,
+						75,
+						91,
+						94,
+						88,
+						97,
+						101,
+						104,
+						107,
+						63
 					]
 				}
 			],
 			"implementedTypes": [
 				{
 					"type": "reference",
-					"target": 25,
+					"target": 22,
 					"name": "PaymentProcessor",
 					"package": "@medusajs/medusa"
 				}
 			]
 		},
 		{
-			"id": 25,
+			"id": 22,
 			"name": "PaymentProcessor",
 			"variant": "declaration",
 			"kind": 256,
@@ -2159,14 +2210,14 @@
 			},
 			"children": [
 				{
-					"id": 38,
+					"id": 35,
 					"name": "authorizePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 39,
+							"id": 36,
 							"name": "authorizePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -2197,7 +2248,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "getPaymentStatus",
-										"target": 57,
+										"target": 54,
 										"tsLinkText": ""
 									},
 									{
@@ -2244,7 +2295,7 @@
 							},
 							"parameters": [
 								{
-									"id": 40,
+									"id": 37,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -2286,7 +2337,7 @@
 									}
 								},
 								{
-									"id": 41,
+									"id": 38,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -2356,21 +2407,21 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 42,
+													"id": 39,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 44,
+															"id": 41,
 															"name": "data",
 															"variant": "declaration",
 															"kind": 1024,
@@ -2420,7 +2471,7 @@
 															}
 														},
 														{
-															"id": 43,
+															"id": 40,
 															"name": "status",
 															"variant": "declaration",
 															"kind": 1024,
@@ -2456,8 +2507,8 @@
 														{
 															"title": "Properties",
 															"children": [
-																44,
-																43
+																41,
+																40
 															]
 														}
 													]
@@ -2473,14 +2524,14 @@
 					]
 				},
 				{
-					"id": 54,
+					"id": 51,
 					"name": "cancelPayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 55,
+							"id": 52,
 							"name": "cancelPayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -2523,7 +2574,7 @@
 							},
 							"parameters": [
 								{
-									"id": 56,
+									"id": 53,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -2596,7 +2647,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -2610,14 +2661,14 @@
 					]
 				},
 				{
-					"id": 45,
+					"id": 42,
 					"name": "capturePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 46,
+							"id": 43,
 							"name": "capturePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -2660,7 +2711,7 @@
 							},
 							"parameters": [
 								{
-									"id": 47,
+									"id": 44,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -2733,7 +2784,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -2747,14 +2798,14 @@
 					]
 				},
 				{
-					"id": 48,
+					"id": 45,
 					"name": "deletePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 49,
+							"id": 46,
 							"name": "deletePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -2789,7 +2840,7 @@
 							},
 							"parameters": [
 								{
-									"id": 50,
+									"id": 47,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -2862,7 +2913,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -2876,14 +2927,14 @@
 					]
 				},
 				{
-					"id": 57,
+					"id": 54,
 					"name": "getPaymentStatus",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 58,
+							"id": 55,
 							"name": "getPaymentStatus",
 							"variant": "signature",
 							"kind": 4096,
@@ -2926,7 +2977,7 @@
 							},
 							"parameters": [
 								{
-									"id": 59,
+									"id": 56,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -2992,14 +3043,14 @@
 					]
 				},
 				{
-					"id": 28,
+					"id": 25,
 					"name": "initiatePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 29,
+							"id": 26,
 							"name": "initiatePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -3034,7 +3085,7 @@
 							},
 							"parameters": [
 								{
-									"id": 30,
+									"id": 27,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -3049,7 +3100,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 7,
+										"target": 4,
 										"name": "PaymentProcessorContext",
 										"package": "@medusajs/medusa"
 									}
@@ -3067,13 +3118,13 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
 												"type": "reference",
-												"target": 16,
+												"target": 13,
 												"name": "PaymentProcessorSessionResponse",
 												"package": "@medusajs/medusa"
 											}
@@ -3087,14 +3138,14 @@
 					]
 				},
 				{
-					"id": 34,
+					"id": 31,
 					"name": "refundPayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 35,
+							"id": 32,
 							"name": "refundPayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -3137,7 +3188,7 @@
 							},
 							"parameters": [
 								{
-									"id": 36,
+									"id": 33,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -3179,7 +3230,7 @@
 									}
 								},
 								{
-									"id": 37,
+									"id": 34,
 									"name": "refundAmount",
 									"variant": "param",
 									"kind": 32768,
@@ -3229,7 +3280,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -3243,14 +3294,14 @@
 					]
 				},
 				{
-					"id": 51,
+					"id": 48,
 					"name": "retrievePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 52,
+							"id": 49,
 							"name": "retrievePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -3285,7 +3336,7 @@
 							},
 							"parameters": [
 								{
-									"id": 53,
+									"id": 50,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -3366,7 +3417,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -3380,14 +3431,14 @@
 					]
 				},
 				{
-					"id": 31,
+					"id": 28,
 					"name": "updatePayment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 32,
+							"id": 29,
 							"name": "updatePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -3422,7 +3473,7 @@
 							},
 							"parameters": [
 								{
-									"id": 33,
+									"id": 30,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -3437,7 +3488,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 7,
+										"target": 4,
 										"name": "PaymentProcessorContext",
 										"package": "@medusajs/medusa"
 									}
@@ -3459,13 +3510,13 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											},
 											{
 												"type": "reference",
-												"target": 16,
+												"target": 13,
 												"name": "PaymentProcessorSessionResponse",
 												"package": "@medusajs/medusa"
 											}
@@ -3479,14 +3530,14 @@
 					]
 				},
 				{
-					"id": 60,
+					"id": 57,
 					"name": "updatePaymentData",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 61,
+							"id": 58,
 							"name": "updatePaymentData",
 							"variant": "signature",
 							"kind": 4096,
@@ -3553,7 +3604,7 @@
 							},
 							"parameters": [
 								{
-									"id": 62,
+									"id": 59,
 									"name": "sessionId",
 									"variant": "param",
 									"kind": 32768,
@@ -3572,7 +3623,7 @@
 									}
 								},
 								{
-									"id": 63,
+									"id": 60,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -3637,7 +3688,7 @@
 											},
 											{
 												"type": "reference",
-												"target": 21,
+												"target": 18,
 												"name": "PaymentProcessorError",
 												"package": "@medusajs/medusa"
 											}
@@ -3655,29 +3706,29 @@
 				{
 					"title": "Methods",
 					"children": [
-						38,
-						54,
-						45,
-						48,
-						57,
-						28,
-						34,
+						35,
 						51,
+						42,
+						45,
+						54,
+						25,
 						31,
-						60
+						48,
+						28,
+						57
 					]
 				}
 			],
 			"implementedBy": [
 				{
 					"type": "reference",
-					"target": 64,
+					"target": 61,
 					"name": "AbstractPaymentProcessor"
 				}
 			]
 		},
 		{
-			"id": 7,
+			"id": 4,
 			"name": "PaymentProcessorContext",
 			"variant": "declaration",
 			"kind": 256,
@@ -3692,7 +3743,7 @@
 			},
 			"children": [
 				{
-					"id": 11,
+					"id": 8,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3711,7 +3762,7 @@
 					}
 				},
 				{
-					"id": 8,
+					"id": 5,
 					"name": "billing_address",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3746,7 +3797,7 @@
 					}
 				},
 				{
-					"id": 14,
+					"id": 11,
 					"name": "context",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3780,7 +3831,7 @@
 					}
 				},
 				{
-					"id": 10,
+					"id": 7,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3799,7 +3850,7 @@
 					}
 				},
 				{
-					"id": 13,
+					"id": 10,
 					"name": "customer",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3825,7 +3876,7 @@
 					}
 				},
 				{
-					"id": 9,
+					"id": 6,
 					"name": "email",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3844,7 +3895,7 @@
 					}
 				},
 				{
-					"id": 15,
+					"id": 12,
 					"name": "paymentSessionData",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3886,7 +3937,7 @@
 					}
 				},
 				{
-					"id": 12,
+					"id": 9,
 					"name": "resource_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3909,20 +3960,20 @@
 				{
 					"title": "Properties",
 					"children": [
-						11,
 						8,
-						14,
+						5,
+						11,
+						7,
 						10,
-						13,
-						9,
-						15,
-						12
+						6,
+						12,
+						9
 					]
 				}
 			]
 		},
 		{
-			"id": 21,
+			"id": 18,
 			"name": "PaymentProcessorError",
 			"variant": "declaration",
 			"kind": 256,
@@ -3937,7 +3988,7 @@
 			},
 			"children": [
 				{
-					"id": 23,
+					"id": 20,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3958,7 +4009,7 @@
 					}
 				},
 				{
-					"id": 24,
+					"id": 21,
 					"name": "detail",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3979,7 +4030,7 @@
 					}
 				},
 				{
-					"id": 22,
+					"id": 19,
 					"name": "error",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4002,15 +4053,15 @@
 				{
 					"title": "Properties",
 					"children": [
-						23,
-						24,
-						22
+						20,
+						21,
+						19
 					]
 				}
 			]
 		},
 		{
-			"id": 16,
+			"id": 13,
 			"name": "PaymentProcessorSessionResponse",
 			"variant": "declaration",
 			"kind": 256,
@@ -4025,7 +4076,7 @@
 			},
 			"children": [
 				{
-					"id": 20,
+					"id": 17,
 					"name": "session_data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4075,7 +4126,7 @@
 					}
 				},
 				{
-					"id": 17,
+					"id": 14,
 					"name": "update_requests",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4093,14 +4144,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 18,
+							"id": 15,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 19,
+									"id": 16,
 									"name": "customer_metadata",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4148,7 +4199,7 @@
 								{
 									"title": "Properties",
 									"children": [
-										19
+										16
 									]
 								}
 							]
@@ -4160,77 +4211,28 @@
 				{
 					"title": "Properties",
 					"children": [
-						20,
-						17
+						17,
+						14
 					]
 				}
 			]
 		},
 		{
 			"id": 1,
-			"name": "isPaymentProcessor",
-			"variant": "declaration",
-			"kind": 64,
-			"flags": {},
-			"signatures": [
-				{
-					"id": 2,
-					"name": "isPaymentProcessor",
-					"variant": "signature",
-					"kind": 4096,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Return if the input object is AbstractPaymentProcessor"
-							}
-						]
-					},
-					"parameters": [
-						{
-							"id": 3,
-							"name": "obj",
-							"variant": "param",
-							"kind": 32768,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "unknown"
-							}
-						}
-					],
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					}
-				}
-			]
-		},
-		{
-			"id": 4,
 			"name": "isPaymentProcessorError",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 5,
+					"id": 2,
 					"name": "isPaymentProcessorError",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Utility function to determine if an object is a processor error"
-							}
-						]
-					},
 					"parameters": [
 						{
-							"id": 6,
+							"id": 3,
 							"name": "obj",
 							"variant": "param",
 							"kind": 32768,
@@ -4247,7 +4249,7 @@
 						"asserts": false,
 						"targetType": {
 							"type": "reference",
-							"target": 21,
+							"target": 18,
 							"name": "PaymentProcessorError",
 							"package": "@medusajs/medusa"
 						}
@@ -4260,23 +4262,22 @@
 		{
 			"title": "Classes",
 			"children": [
-				64
+				61
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				25,
-				7,
-				21,
-				16
+				22,
+				4,
+				18,
+				13
 			]
 		},
 		{
 			"title": "Functions",
 			"children": [
-				1,
-				4
+				1
 			]
 		}
 	],
@@ -4288,11 +4289,11 @@
 		},
 		"1": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "isPaymentProcessor"
+			"qualifiedName": "isPaymentProcessorError"
 		},
 		"2": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "isPaymentProcessor"
+			"qualifiedName": "isPaymentProcessorError"
 		},
 		"3": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4300,99 +4301,99 @@
 		},
 		"4": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "isPaymentProcessorError"
+			"qualifiedName": "PaymentProcessorContext"
 		},
 		"5": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "isPaymentProcessorError"
+			"qualifiedName": "__type.billing_address"
 		},
 		"6": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "obj"
+			"qualifiedName": "__type.email"
 		},
 		"7": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorContext"
+			"qualifiedName": "__type.currency_code"
 		},
 		"8": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.billing_address"
+			"qualifiedName": "__type.amount"
 		},
 		"9": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.email"
+			"qualifiedName": "__type.resource_id"
 		},
 		"10": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.currency_code"
+			"qualifiedName": "__type.customer"
 		},
 		"11": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.amount"
+			"qualifiedName": "__type.context"
 		},
 		"12": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.resource_id"
+			"qualifiedName": "__type.paymentSessionData"
 		},
 		"13": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.customer"
+			"qualifiedName": "PaymentProcessorSessionResponse"
 		},
 		"14": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.context"
+			"qualifiedName": "__type.update_requests"
 		},
 		"15": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.paymentSessionData"
+			"qualifiedName": "__type"
 		},
 		"16": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorSessionResponse"
+			"qualifiedName": "__type.customer_metadata"
 		},
 		"17": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.update_requests"
+			"qualifiedName": "__type.session_data"
 		},
 		"18": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "PaymentProcessorError"
 		},
 		"19": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.customer_metadata"
+			"qualifiedName": "PaymentProcessorError.error"
 		},
 		"20": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.session_data"
+			"qualifiedName": "PaymentProcessorError.code"
 		},
 		"21": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorError"
+			"qualifiedName": "PaymentProcessorError.detail"
 		},
 		"22": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorError.error"
-		},
-		"23": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorError.code"
-		},
-		"24": {
-			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessorError.detail"
+			"qualifiedName": "PaymentProcessor"
 		},
 		"25": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor"
+			"qualifiedName": "PaymentProcessor.initiatePayment"
+		},
+		"26": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
+			"qualifiedName": "PaymentProcessor.initiatePayment"
+		},
+		"27": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
+			"qualifiedName": "context"
 		},
 		"28": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.initiatePayment"
+			"qualifiedName": "PaymentProcessor.updatePayment"
 		},
 		"29": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.initiatePayment"
+			"qualifiedName": "PaymentProcessor.updatePayment"
 		},
 		"30": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4400,67 +4401,67 @@
 		},
 		"31": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.updatePayment"
+			"qualifiedName": "PaymentProcessor.refundPayment"
 		},
 		"32": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.updatePayment"
+			"qualifiedName": "PaymentProcessor.refundPayment"
 		},
 		"33": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "paymentSessionData"
 		},
 		"34": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.refundPayment"
+			"qualifiedName": "refundAmount"
 		},
 		"35": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.refundPayment"
+			"qualifiedName": "PaymentProcessor.authorizePayment"
 		},
 		"36": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "PaymentProcessor.authorizePayment"
 		},
 		"37": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "refundAmount"
+			"qualifiedName": "paymentSessionData"
 		},
 		"38": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.authorizePayment"
+			"qualifiedName": "context"
 		},
 		"39": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.authorizePayment"
+			"qualifiedName": "__type"
 		},
 		"40": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "__type.status"
 		},
 		"41": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "__type.data"
 		},
 		"42": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "PaymentProcessor.capturePayment"
 		},
 		"43": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.status"
+			"qualifiedName": "PaymentProcessor.capturePayment"
 		},
 		"44": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.data"
+			"qualifiedName": "paymentSessionData"
 		},
 		"45": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.capturePayment"
+			"qualifiedName": "PaymentProcessor.deletePayment"
 		},
 		"46": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.capturePayment"
+			"qualifiedName": "PaymentProcessor.deletePayment"
 		},
 		"47": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4468,11 +4469,11 @@
 		},
 		"48": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.deletePayment"
+			"qualifiedName": "PaymentProcessor.retrievePayment"
 		},
 		"49": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.deletePayment"
+			"qualifiedName": "PaymentProcessor.retrievePayment"
 		},
 		"50": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4480,11 +4481,11 @@
 		},
 		"51": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.retrievePayment"
+			"qualifiedName": "PaymentProcessor.cancelPayment"
 		},
 		"52": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.retrievePayment"
+			"qualifiedName": "PaymentProcessor.cancelPayment"
 		},
 		"53": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4492,11 +4493,11 @@
 		},
 		"54": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.cancelPayment"
+			"qualifiedName": "PaymentProcessor.getPaymentStatus"
 		},
 		"55": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.cancelPayment"
+			"qualifiedName": "PaymentProcessor.getPaymentStatus"
 		},
 		"56": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4504,67 +4505,67 @@
 		},
 		"57": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.getPaymentStatus"
+			"qualifiedName": "PaymentProcessor.updatePaymentData"
 		},
 		"58": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.getPaymentStatus"
+			"qualifiedName": "PaymentProcessor.updatePaymentData"
 		},
 		"59": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "sessionId"
 		},
 		"60": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.updatePaymentData"
+			"qualifiedName": "data"
 		},
 		"61": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "PaymentProcessor.updatePaymentData"
+			"qualifiedName": "AbstractPaymentProcessor"
 		},
 		"62": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "sessionId"
+			"qualifiedName": "AbstractPaymentProcessor._isPaymentProcessor"
 		},
 		"63": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "data"
+			"qualifiedName": "AbstractPaymentProcessor.isPaymentProcessor"
 		},
 		"64": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor"
+			"qualifiedName": "AbstractPaymentProcessor.isPaymentProcessor"
 		},
 		"65": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.identifier"
+			"qualifiedName": "object"
 		},
 		"66": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.__constructor"
+			"qualifiedName": "AbstractPaymentProcessor.identifier"
 		},
 		"67": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor"
+			"qualifiedName": "AbstractPaymentProcessor.__constructor"
 		},
 		"68": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "container"
+			"qualifiedName": "AbstractPaymentProcessor"
 		},
 		"69": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "container"
 		},
 		"70": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.container"
+			"qualifiedName": "config"
 		},
 		"71": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.config"
+			"qualifiedName": "AbstractPaymentProcessor.container"
 		},
-		"74": {
+		"72": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.capturePayment"
+			"qualifiedName": "AbstractPaymentProcessor.config"
 		},
 		"75": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4572,11 +4573,11 @@
 		},
 		"76": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.capturePayment"
 		},
 		"77": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.authorizePayment"
+			"qualifiedName": "paymentSessionData"
 		},
 		"78": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4584,27 +4585,27 @@
 		},
 		"79": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.authorizePayment"
 		},
 		"80": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "paymentSessionData"
 		},
 		"81": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "context"
 		},
 		"82": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.status"
+			"qualifiedName": "__type"
 		},
 		"83": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "__type.data"
+			"qualifiedName": "__type.status"
 		},
 		"84": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.cancelPayment"
+			"qualifiedName": "__type.data"
 		},
 		"85": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4612,11 +4613,11 @@
 		},
 		"86": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.cancelPayment"
 		},
 		"87": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.initiatePayment"
+			"qualifiedName": "paymentSessionData"
 		},
 		"88": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4624,11 +4625,11 @@
 		},
 		"89": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "AbstractPaymentProcessor.initiatePayment"
 		},
 		"90": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.deletePayment"
+			"qualifiedName": "context"
 		},
 		"91": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4636,11 +4637,11 @@
 		},
 		"92": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.deletePayment"
 		},
 		"93": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.getPaymentStatus"
+			"qualifiedName": "paymentSessionData"
 		},
 		"94": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4648,11 +4649,11 @@
 		},
 		"95": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.getPaymentStatus"
 		},
 		"96": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.refundPayment"
+			"qualifiedName": "paymentSessionData"
 		},
 		"97": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4660,15 +4661,15 @@
 		},
 		"98": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.refundPayment"
 		},
 		"99": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "refundAmount"
+			"qualifiedName": "paymentSessionData"
 		},
 		"100": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.retrievePayment"
+			"qualifiedName": "refundAmount"
 		},
 		"101": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4676,11 +4677,11 @@
 		},
 		"102": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "AbstractPaymentProcessor.retrievePayment"
 		},
 		"103": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.updatePayment"
+			"qualifiedName": "paymentSessionData"
 		},
 		"104": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4688,11 +4689,11 @@
 		},
 		"105": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "context"
+			"qualifiedName": "AbstractPaymentProcessor.updatePayment"
 		},
 		"106": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "AbstractPaymentProcessor.updatePaymentData"
+			"qualifiedName": "context"
 		},
 		"107": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
@@ -4700,9 +4701,13 @@
 		},
 		"108": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
-			"qualifiedName": "sessionId"
+			"qualifiedName": "AbstractPaymentProcessor.updatePaymentData"
 		},
 		"109": {
+			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
+			"qualifiedName": "sessionId"
+		},
+		"110": {
 			"sourceFileName": "../../../packages/medusa/src/interfaces/payment-processor.ts",
 			"qualifiedName": "data"
 		}

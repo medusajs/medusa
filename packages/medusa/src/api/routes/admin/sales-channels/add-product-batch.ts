@@ -40,6 +40,40 @@ import { SalesChannelService } from "../../../../services"
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminAddProductsToSalesChannel } from "medusa-react"
+ *
+ *       type Props = {
+ *         salesChannelId: string
+ *       }
+ *
+ *       const SalesChannel = ({ salesChannelId }: Props) => {
+ *         const addProducts = useAdminAddProductsToSalesChannel(
+ *           salesChannelId
+ *         )
+ *         // ...
+ *
+ *         const handleAddProducts = (productId: string) => {
+ *           addProducts.mutate({
+ *             product_ids: [
+ *               {
+ *                 id: productId,
+ *               },
+ *             ],
+ *           }, {
+ *             onSuccess: ({ sales_channel }) => {
+ *               console.log(sales_channel.id)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default SalesChannel
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -126,11 +160,12 @@ export default async (req: Request, res: Response): Promise<void> => {
 /**
  * @schema AdminPostSalesChannelsChannelProductsBatchReq
  * type: object
+ * description: "The details of the products to add to the sales channel."
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to add to the Sales Channel
+ *     description: The IDs of the products to add to the sales channel
  *     type: array
  *     items:
  *       type: object

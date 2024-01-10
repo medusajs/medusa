@@ -225,6 +225,27 @@ module.exports = {
       },
     },
     {
+      files: ["packages/admin-next/dashboard/**/*"],
+      env: { browser: true, es2020: true, node: true },
+      extends: [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+      ],
+      ignorePatterns: ["dist"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/admin-next/dashboard/tsconfig.json",
+      },
+      plugins: ["react-refresh"],
+      rules: {
+        "react-refresh/only-export-components": [
+          "warn",
+          { allowConstantExport: true },
+        ],
+      },
+    },
+    {
       files: ["packages/admin-ui/lib/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {

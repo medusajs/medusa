@@ -4,7 +4,7 @@
   import StarSolid from "../star-solid"
 
   describe("StarSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<StarSolid data-testid="icon" />)
 
 

@@ -4,7 +4,7 @@
   import Tools from "../tools"
 
   describe("Tools", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Tools data-testid="icon" />)
 
 

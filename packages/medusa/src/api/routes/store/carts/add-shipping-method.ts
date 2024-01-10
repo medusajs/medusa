@@ -34,6 +34,35 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAddShippingMethodToCart } from "medusa-react"
+ *
+ *       type Props = {
+ *         cartId: string
+ *       }
+ *
+ *       const Cart = ({ cartId }: Props) => {
+ *         const addShippingMethod = useAddShippingMethodToCart(cartId)
+ *
+ *         const handleAddShippingMethod = (
+ *           optionId: string
+ *         ) => {
+ *           addShippingMethod.mutate({
+ *             option_id: optionId,
+ *           }, {
+ *             onSuccess: ({ cart }) => {
+ *               console.log(cart.shipping_methods)
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Cart
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -107,6 +136,7 @@ export default async (req, res) => {
 /**
  * @schema StorePostCartsCartShippingMethodReq
  * type: object
+ * description: "The details of the shipping method to add to the cart."
  * required:
  *   - option_id
  * properties:

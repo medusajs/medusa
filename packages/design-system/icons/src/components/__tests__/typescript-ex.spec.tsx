@@ -4,7 +4,7 @@
   import TypescriptEx from "../typescript-ex"
 
   describe("TypescriptEx", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<TypescriptEx data-testid="icon" />)
 
 

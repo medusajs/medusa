@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details to update of the shipping option.
+ */
 export interface AdminPostShippingOptionsOptionReq {
   /**
    * The name of the Shipping Option

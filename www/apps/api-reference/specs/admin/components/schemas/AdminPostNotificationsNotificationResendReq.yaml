@@ -1,4 +1,5 @@
 type: object
+description: The resend details.
 properties:
   to:
     description: >-

@@ -36,6 +36,32 @@ import { EntityManager } from "typeorm"
  *       .catch(() => {
  *         // error occurred
  *       })
+ *   - lang: tsx
+ *     label: Medusa React
+ *     source: |
+ *       import React from "react"
+ *       import { useAdminSendResetPasswordToken } from "medusa-react"
+ *
+ *       const Login = () => {
+ *         const requestPasswordReset = useAdminSendResetPasswordToken()
+ *         // ...
+ *
+ *         const handleResetPassword = (
+ *           email: string
+ *         ) => {
+ *           requestPasswordReset.mutate({
+ *             email
+ *           }, {
+ *             onSuccess: () => {
+ *               // successful
+ *             }
+ *           })
+ *         }
+ *
+ *         // ...
+ *       }
+ *
+ *       export default Login
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -91,6 +117,7 @@ export default async (req, res) => {
 /**
  * @schema AdminResetPasswordTokenRequest
  * type: object
+ * description: "The details of the password reset token request."
  * required:
  *   - email
  * properties:

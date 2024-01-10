@@ -103,7 +103,9 @@ class PaymentCollectionsResource extends BaseResource {
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
-   * medusa.paymentCollections.authorize(paymentId)
+   * medusa.paymentCollections.authorizePaymentSessionsBatch(paymentCollectionId, {
+   *  session_ids: ["ps_123456"]
+   * })
    * .then(({ payment_collection }) => {
    *   console.log(payment_collection.id);
    * })
@@ -131,7 +133,7 @@ class PaymentCollectionsResource extends BaseResource {
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
- *
+   *
    * // Total amount = 10000
    * medusa.paymentCollections.managePaymentSessionsBatch(paymentId, {
    *   sessions: [
@@ -213,7 +215,7 @@ class PaymentCollectionsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * medusa.paymentCollections.refreshPaymentSession(paymentCollectionId, sessionId)
    * .then(({ payment_session }) => {
-   *   console.log(payment_session.id);
+   *   console.log(payment_session.status);
    * })
    */
   refreshPaymentSession(

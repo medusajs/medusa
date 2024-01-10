@@ -7,7 +7,6 @@ import {
   NavbarProvider,
   AnalyticsProvider,
   ScrollControllerProvider,
-  AiAssistantProvider,
 } from "docs-ui"
 import SearchProvider from "./search"
 import SidebarProvider from "./sidebar"

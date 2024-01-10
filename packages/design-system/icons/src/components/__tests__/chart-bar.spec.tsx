@@ -4,7 +4,7 @@
   import ChartBar from "../chart-bar"
 
   describe("ChartBar", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ChartBar data-testid="icon" />)
 
 

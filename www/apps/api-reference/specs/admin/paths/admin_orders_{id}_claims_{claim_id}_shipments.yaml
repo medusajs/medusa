@@ -47,6 +47,11 @@ post:
       source:
         $ref: >-
           ../code_samples/JavaScript/admin_orders_{id}_claims_{claim_id}_shipments/post.js
+    - lang: tsx
+      label: Medusa React
+      source:
+        $ref: >-
+          ../code_samples/tsx/admin_orders_{id}_claims_{claim_id}_shipments/postundefined
     - lang: Shell
       label: cURL
       source:

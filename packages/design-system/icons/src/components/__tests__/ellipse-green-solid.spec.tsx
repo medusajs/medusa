@@ -4,7 +4,7 @@
   import EllipseGreenSolid from "../ellipse-green-solid"
 
   describe("EllipseGreenSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<EllipseGreenSolid data-testid="icon" />)
 
 

@@ -34,7 +34,6 @@
   "dependencies": {
     "eslint": "^8.53.0",
     "glob": "^10.3.10",
-    "typedoc-plugin-markdown": "^3.16.0",
     "utils": "*",
     "yaml": "^2.3.3"
   }

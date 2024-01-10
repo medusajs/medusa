@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { StockLocationAddressInput } from "./StockLocationAddressInput"
 
+/**
+ * The details of the stock location to create.
+ */
 export interface AdminPostStockLocationsReq {
   /**
    * the name of the stock location

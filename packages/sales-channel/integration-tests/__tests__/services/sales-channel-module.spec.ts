@@ -44,7 +44,7 @@ describe("Sales Channel Service", () => {
       ])
 
       const [channel] = await service.list({
-        id: [created.id],
+        name: [created.name],
       })
 
       expect(channel.name).toEqual("test")

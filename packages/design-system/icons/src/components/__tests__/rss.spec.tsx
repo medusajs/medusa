@@ -4,7 +4,7 @@
   import Rss from "../rss"
 
   describe("Rss", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<Rss data-testid="icon" />)
 
 

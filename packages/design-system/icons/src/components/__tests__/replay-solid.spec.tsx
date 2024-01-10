@@ -4,7 +4,7 @@
   import ReplaySolid from "../replay-solid"
 
   describe("ReplaySolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<ReplaySolid data-testid="icon" />)
 
 

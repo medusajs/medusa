@@ -17,7 +17,7 @@ export interface SalesChannelDTO {
 
 export type CreateSalesChannelDTO = {
   name: string
-  description: string
+  description?: string
   is_disabled?: boolean
 }
 

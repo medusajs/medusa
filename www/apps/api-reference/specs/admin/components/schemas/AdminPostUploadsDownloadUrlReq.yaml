@@ -1,4 +1,5 @@
 type: object
+description: The details of the file to retrieve its download URL.
 required:
   - file_key
 properties:

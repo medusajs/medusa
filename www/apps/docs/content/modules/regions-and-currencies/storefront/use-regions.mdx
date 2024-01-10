@@ -69,7 +69,6 @@ You can retrieve available regions by sending a request to the [List Regions API
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { Region } from "@medusajs/medusa"
     import { useRegions } from "medusa-react"
 
     const Regions = () => {
@@ -80,7 +79,7 @@ You can retrieve available regions by sending a request to the [List Regions API
           {isLoading && <span>Loading...</span>}
           {regions?.length && (
             <ul>
-              {regions.map((region: Region) => (
+              {regions.map((region) => (
                 <li key={region.id}>
                   {region.name}
                 </li>

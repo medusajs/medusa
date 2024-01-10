@@ -114,36 +114,36 @@ For example, sending the following request creates a price list with two prices:
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
+    import { useAdminCreatePriceList } from "medusa-react"
     import { 
       PriceListStatus, 
       PriceListType, 
     } from "@medusajs/medusa"
-    import { useAdminCreatePriceList } from "medusa-react"
+
+    type CreateData = {
+      name: string
+      description: string
+      type: PriceListType
+      status: PriceListStatus
+      prices: {
+        amount: number
+        variant_id: string
+        currency_code: string
+        max_quantity: number
+      }[]
+    }
 
     const CreatePriceList = () => {
       const createPriceList = useAdminCreatePriceList()
       // ...
 
-      const handleCreate = () => {
-        createPriceList.mutate({
-          name: "New Price List",
-          description: "A new price list",
-          type: PriceListType.SALE,
-          status: PriceListStatus.ACTIVE,
-          prices: [
-            {
-              amount: 1000,
-              variant_id,
-              currency_code: "eur",
-              max_quantity: 3,
-            },
-            {
-              amount: 1500,
-              variant_id,
-              currency_code: "eur",
-              min_quantity: 4,
-            },
-          ],
+      const handleCreate = (
+        data: CreateData
+      ) => {
+        createPriceList.mutate(data, {
+          onSuccess: ({ price_list }) => {
+            console.log(price_list.id)
+          }
         })
       }
 
@@ -246,15 +246,20 @@ You can retrieve all of a price list’s details using the Get a Price List API 
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { CustomerGroup } from "@medusajs/medusa"
     import { useAdminPriceList } from "medusa-react"
 
-    const PriceList = () => {
+    type Props = {
+      priceListId: string
+    }
+
+    const PriceList = ({
+      priceListId
+    }: Props) => {
       const { 
         price_list, 
         isLoading, 
       } = useAdminPriceList(priceListId)
-
+    
       return (
         <div>
           {isLoading && <span>Loading...</span>}
@@ -262,7 +267,7 @@ You can retrieve all of a price list’s details using the Get a Price List API 
         </div>
       )
     }
-
+    
     export default PriceList
     ```
 
@@ -314,26 +319,34 @@ For example, by sending the following request the end date of the price list wil
   <TabItem value="medusa-react" label="Medusa React">
 
     ```tsx
-    import { 
-      PriceListStatus, 
-      PriceListType,
-    } from "@medusajs/medusa"
     import { useAdminUpdatePriceList } from "medusa-react"
 
-    const CreatePriceList = () => {
+    type Props = {
+      priceListId: string
+    }
+
+    const PriceList = ({
+      priceListId
+    }: Props) => {
       const updatePriceList = useAdminUpdatePriceList(priceListId)
       // ...
 
-      const handleUpdate = () => {
+      const handleUpdate = (
+        endsAt: Date
+      ) => {
         updatePriceList.mutate({
-          ends_at: "2022-10-11",
+          ends_at: endsAt,
+        }, {
+          onSuccess: ({ price_list }) => {
+            console.log(price_list.ends_at)
+          }
         })
       }
 
       // ...
     }
 
-    export default CreatePriceList
+    export default PriceList
     ```
 
   </TabItem>
@@ -411,25 +424,35 @@ For example, sending the following request adds a new price to the price list:
     ```tsx
     import { useAdminCreatePriceListPrices } from "medusa-react"
 
-    const PriceList = () => {
-      const addPrice = useAdminCreatePriceListPrices(priceListId)
-      // ...
-
-      const handleAddPrice = () => {
-        addPrice.mutate({
-          prices: [
-            {
-              amount: 1200,
-              variant_id,
-              currency_code: "eur",
-            },
-          ],
-        })
-      }
-
-      // ...
+    type PriceData = {
+      amount: number
+      variant_id: string
+      currency_code: string
     }
 
+    type Props = {
+      priceListId: string
+    }
+
+    const PriceList = ({
+      priceListId
+    }: Props) => {
+      const addPrices = useAdminCreatePriceListPrices(priceListId)
+      // ...
+    
+      const handleAddPrices = (prices: PriceData[]) => {
+        addPrices.mutate({
+          prices
+        }, {
+          onSuccess: ({ price_list }) => {
+            console.log(price_list.prices)
+          }
+        })
+      }
+    
+      // ...
+    }
+    
     export default PriceList
     ```
 
@@ -508,24 +531,36 @@ You can delete all the prices of a product’s variants using the [Delete Produc
 
     ```tsx
     import { 
-      useAdminDeletePriceListProductPrices,
+      useAdminDeletePriceListProductPrices
     } from "medusa-react"
-
-    const PriceList = () => {
-      const deletePrices = useAdminDeletePriceListProductPrices(
+    
+    type Props = {
+      priceListId: string
+      productId: string
+    }
+    
+    const PriceListProduct = ({
+      priceListId,
+      productId
+    }: Props) => {
+      const deleteProductPrices = useAdminDeletePriceListProductPrices(
         priceListId,
         productId
       )
       // ...
-
-      const handleDeletePrices = () => {
-        deletePrices.mutate()
+    
+      const handleDeleteProductPrices = () => {
+        deleteProductPrices.mutate(void 0, {
+          onSuccess: ({ ids, deleted, object }) => {
+            console.log(ids)
+          }
+        })
       }
-
+    
       // ...
     }
-
-    export default PriceList
+    
+    export default PriceListProduct
     ```
 
   </TabItem>
@@ -582,25 +617,36 @@ You can delete all the prices of a variant using the [Delete Variant Prices API 
 
     ```tsx
     import { 
-      useAdminDeletePriceListVariantPrices,
+      useAdminDeletePriceListVariantPrices
     } from "medusa-react"
 
-    const PriceList = () => {
-      const deleteVariantPrices = 
-        useAdminDeletePriceListVariantPrices(
-          priceListId, 
-          variantId
-        )
+    type Props = {
+      priceListId: string
+      variantId: string
+    }
+
+    const PriceListVariant = ({
+      priceListId,
+      variantId
+    }: Props) => {
+      const deleteVariantPrices = useAdminDeletePriceListVariantPrices(
+        priceListId,
+        variantId
+      )
       // ...
 
-      const handleDeletePrices = () => {
-        deleteVariantPrices.mutate()
+      const handleDeleteVariantPrices = () => {
+        deleteVariantPrices.mutate(void 0, {
+          onSuccess: ({ ids, deleted, object }) => {
+            console.log(ids)
+          }
+        })
       }
 
       // ...
     }
 
-    export default PriceList
+    export default PriceListVariant
     ```
 
   </TabItem>
@@ -657,12 +703,22 @@ You can delete a price list, and subsequently all prices defined in it, using th
     ```tsx
     import { useAdminDeletePriceList } from "medusa-react"
 
-    const PriceList = () => {
+    type Props = {
+      priceListId: string
+    }
+
+    const PriceList = ({
+      priceListId
+    }: Props) => {
       const deletePriceList = useAdminDeletePriceList(priceListId)
       // ...
 
-      const handleDeletePriceList = () => {
-        deletePriceList.mutate()
+      const handleDelete = () => {
+        deletePriceList.mutate(void 0, {
+          onSuccess: ({ id, object, deleted }) => {
+            console.log(id)
+          }
+        })
       }
 
       // ...

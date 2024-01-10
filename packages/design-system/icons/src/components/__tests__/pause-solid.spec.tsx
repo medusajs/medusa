@@ -4,7 +4,7 @@
   import PauseSolid from "../pause-solid"
 
   describe("PauseSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<PauseSolid data-testid="icon" />)
 
 

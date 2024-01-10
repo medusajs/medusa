@@ -63,7 +63,7 @@
     "@react-hook/resize-observer": "^1.2.6",
     "@segment/analytics-next": "^1.55.0",
     "algoliasearch": "^4.20.0",
-    "prism-react-renderer": "^2.3.0",
+    "prism-react-renderer": "2.3.1",
     "react-google-recaptcha": "^3.1.0",
     "react-instantsearch": "^7.0.3",
     "react-markdown": "^8.0.7",

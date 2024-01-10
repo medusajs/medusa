@@ -4,7 +4,7 @@
   import PencilSquareSolid from "../pencil-square-solid"
 
   describe("PencilSquareSolid", () => {
-    it("should render without crashing", async () => {
+    it("should render the icon without errors", async () => {
       render(<PencilSquareSolid data-testid="icon" />)
 
 
