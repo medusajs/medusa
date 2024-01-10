@@ -278,6 +278,17 @@ export default class PromotionModuleService<
           promotion,
         }
 
+        if (
+          applicationMethodData.target_type ===
+            ApplicationMethodTargetType.ORDER &&
+          targetRulesData.length
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `application_method.target_rules for target_type (${ApplicationMethodTargetType.ORDER}) is not allowed`
+          )
+        }
+
         validateApplicationMethodAttributes(applicationMethodData)
         applicationMethodsData.push(applicationMethodData)
 

@@ -370,13 +370,6 @@ describe("Promotion Service: computeActions", () => {
             target_type: "order",
             value: "200",
             max_quantity: 2,
-            target_rules: [
-              {
-                attribute: "product_category.id",
-                operator: "eq",
-                values: ["catg_cotton"],
-              },
-            ],
           },
         },
       ])

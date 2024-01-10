@@ -99,63 +99,6 @@ describe("Promotion Service", () => {
       )
     })
 
-    it("should create a promotion with order application method with rules successfully", async () => {
-      const [createdPromotion] = await service.create([
-        {
-          code: "PROMOTION_TEST",
-          type: PromotionType.STANDARD,
-          application_method: {
-            type: "fixed",
-            target_type: "order",
-            value: "100",
-            target_rules: [
-              {
-                attribute: "product_id",
-                operator: "eq",
-                values: ["prod_tshirt"],
-              },
-            ],
-          },
-        },
-      ])
-
-      const [promotion] = await service.list(
-        {
-          id: [createdPromotion.id],
-        },
-        {
-          relations: [
-            "application_method",
-            "application_method.target_rules.values",
-          ],
-        }
-      )
-
-      expect(promotion).toEqual(
-        expect.objectContaining({
-          code: "PROMOTION_TEST",
-          is_automatic: false,
-          type: "standard",
-          application_method: expect.objectContaining({
-            type: "fixed",
-            target_type: "order",
-            value: 100,
-            target_rules: [
-              expect.objectContaining({
-                attribute: "product_id",
-                operator: "eq",
-                values: expect.arrayContaining([
-                  expect.objectContaining({
-                    value: "prod_tshirt",
-                  }),
-                ]),
-              }),
-            ],
-          }),
-        })
-      )
-    })
-
     it("should throw error when creating an item application method without allocation", async () => {
       const error = await service
         .create([
@@ -194,6 +137,33 @@ describe("Promotion Service", () => {
 
       expect(error.message).toContain(
         "application_method.max_quantity is required when application_method.allocation is 'each'"
+      )
+    })
+
+    it("should throw error when creating an order application method with rules", async () => {
+      const error = await service
+        .create([
+          {
+            code: "PROMOTION_TEST",
+            type: PromotionType.STANDARD,
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: "100",
+              target_rules: [
+                {
+                  attribute: "product_id",
+                  operator: "eq",
+                  values: ["prod_tshirt"],
+                },
+              ],
+            },
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "application_method.target_rules for target_type (order) is not allowed"
       )
     })
 
