@@ -93,11 +93,9 @@ export default class LineItemService<
 
     const data_ = [...data]
     data_.forEach((lineItem) => {
-      // delete lineItem.cart_id
 
       Object.assign(lineItem, {
         cart_id: cart.id,
-        // cart,
       })
     })
 

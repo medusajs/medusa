@@ -288,6 +288,7 @@ describe("Cart Module Service", () => {
       })
 
       expect(items[0].id).toBe(cart.items![0].id)
+      expect(cart.items?.length).toBe(1)
     })
 
     it("should add multiple line items to multiple carts succesfully", async () => {
@@ -341,6 +342,45 @@ describe("Cart Module Service", () => {
 
       expect(eurCart.items![0].id).toBe(eurItems[0].id)
       expect(usdCart.items![0].id).toBe(usdItems[0].id)
+
+      expect(eurCart.items?.length).toBe(1)
+      expect(usdCart.items?.length).toBe(1)
+    })
+
+    it("should throw if cart does not exist", async () => {
+      const error = await service
+        .addLineItems("foo", [
+          {
+            quantity: 1,
+            unit_price: 100,
+            title: "test",
+            tax_lines: [],
+          },
+        ])
+        .catch((e) => e)
+
+      expect(error.message).toContain("Cart with id: foo was not found")
+    })
+
+    it("should throw an error when required params are not passed", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const error = await service
+        .addLineItems(createdCart.id, [
+          {
+            quantity: 1,
+            title: "test",
+          },
+        ] as any)
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Value for LineItem.unit_price is required, 'undefined' found"
+      )
     })
   })
 })
