@@ -1,4 +1,3 @@
-
 export interface CreateCartDTO {
   region_id?: string
   customer_id?: string

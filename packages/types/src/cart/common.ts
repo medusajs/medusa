@@ -476,7 +476,7 @@ export interface FilterableLineItemProps
 }
 
 /**
- * TODO: Remove this in favor of new__CartDTO, when module is released 
+ * TODO: Remove this in favor of CartDTO, when module is released 
  * @deprecated Use CartDTO instead
  */
 export type legacy_CartDTO = {

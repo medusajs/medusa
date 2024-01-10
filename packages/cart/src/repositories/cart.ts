@@ -1,5 +1,5 @@
 import { Context, DAL } from "@medusajs/types"
-import { DALUtils, MedusaError } from "@medusajs/utils"
+import { DALUtils } from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
@@ -77,35 +77,14 @@ export class CartRepository extends DALUtils.MikroOrmBaseRepository {
     return carts
   }
 
-  async update(data: UpdateCartDTO[], context: Context = {}): Promise<Cart[]> {
+  async update(
+    data: { cart: Cart; update: UpdateCartDTO }[],
+    context: Context = {}
+  ): Promise<Cart[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const ids = data.map((d) => d.id)
-    const existingEntites = await this.find(
-      {
-        where: {
-          id: {
-            $in: ids,
-          },
-        },
-      },
-      context
-    )
 
-    const existingEntitesMap = new Map(
-      existingEntites.map<[string, Cart]>((entity) => [entity.id, entity])
-    )
-
-    const entities = data.map((entityData) => {
-      const existingEntity = existingEntitesMap.get(entityData.id)
-
-      if (!existingEntity) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Cart with id "${entityData.id}" not found`
-        )
-      }
-
-      return manager.assign(existingEntity, entityData)
+    const entities = data.map(({ cart, update }) => {
+      return manager.assign(cart, update)
     })
 
     manager.persist(entities)

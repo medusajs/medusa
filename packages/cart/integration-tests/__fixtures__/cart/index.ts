@@ -14,9 +14,7 @@ export async function createCarts(
   for (let cartData of cartsData) {
     let cart = manager.create(Cart, cartData)
 
-    manager.persist(cart)
-
-    await manager.flush()
+    await manager.persistAndFlush(cart)
   }
 
   return carts
