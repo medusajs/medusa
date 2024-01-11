@@ -1,6 +1,10 @@
-import { TransactionStepsDefinition } from "@medusajs/orchestration"
-import { isString, OrchestrationUtils } from "@medusajs/utils"
-import { resolveValue, StepResponse } from "./helpers"
+import {
+  TransactionStepsDefinition,
+  WorkflowManager,
+} from "@medusajs/orchestration"
+import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { ulid } from "ulid"
+import { StepResponse, resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -166,19 +170,32 @@ function applyStep<
         : undefined,
     }
 
-    stepConfig!.noCompensation = !compensateFn
+    stepConfig.uuid = ulid()
+    stepConfig.noCompensation = !compensateFn
 
     this.flow.addAction(stepName, stepConfig)
-    this.handlers.set(stepName, handler)
+
+    if (!this.handlers.has(stepName)) {
+      this.handlers.set(stepName, handler)
+    }
 
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
-      config: (config: Omit<TransactionStepsDefinition, "next">) => {
-        this.flow.replaceAction(stepName, stepConfig.action ?? stepName, {
+      config: (
+        localConfig: Omit<TransactionStepsDefinition, "next" | "uuid">
+      ) => {
+        const newStepName = localConfig.action ?? stepName
+
+        this.handlers.set(newStepName, handler)
+
+        this.flow.replaceAction(stepName, newStepName, {
           ...stepConfig,
-          ...config,
+          ...localConfig,
         })
+
+        WorkflowManager.update(this.workflowId, this.flow, this.handlers)
+
         return proxify(ret)
       },
     }
@@ -243,9 +260,7 @@ export function createStep<
   /**
    * The name of the step or its configuration (currently support maxRetries).
    */
-  nameOrConfig:
-    | string
-    | ({ name: string } & Omit<TransactionStepsDefinition, "next">),
+  nameOrConfig: string | Omit<TransactionStepsDefinition, "next" | "uuid">,
   /**
    * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
@@ -264,7 +279,8 @@ export function createStep<
   compensateFn?: CompensateFn<TInvokeResultCompensateInput>
 ): StepFunction<TInvokeInput, TInvokeResultOutput> {
   const stepName =
-    (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name) ?? invokeFn.name
+    (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.action) ??
+    invokeFn.name
   const config = isString(nameOrConfig) ? {} : nameOrConfig
 
   const returnFn = function (

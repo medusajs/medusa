@@ -80,10 +80,10 @@ describe("Workflow Orchestrator module", function () {
 
       expect(executionsList).toHaveLength(1)
 
-      await workflowOrcModule.setStepSuccess({
+      const { result } = await workflowOrcModule.setStepSuccess({
         idempotencyKey: {
           action: TransactionHandlerType.INVOKE,
-          stepId: "step_2",
+          stepId: "new_step_name",
           workflowId: "worflow_1",
           transactionId: executionsList[0].transaction_id,
         },
@@ -92,11 +92,16 @@ describe("Workflow Orchestrator module", function () {
 
       executionsList = await query({
         workflow_executions: {
-          fields: ["workflow_id", "transaction_id", "state"],
+          fields: ["id"],
         },
       })
 
       expect(executionsList).toHaveLength(0)
+      expect(result).toEqual({
+        done: {
+          inputFromSyncStep: "oh",
+        },
+      })
     })
   })
 })

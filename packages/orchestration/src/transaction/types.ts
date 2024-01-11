@@ -7,6 +7,7 @@ export {
 } from "@medusajs/utils"
 
 export type TransactionStepsDefinition = {
+  uuid?: string
   action?: string
   continueOnPermanentFailure?: boolean
   noCompensation?: boolean
@@ -19,6 +20,7 @@ export type TransactionStepsDefinition = {
   noWait?: boolean
   saveResponse?: boolean
   next?: TransactionStepsDefinition | TransactionStepsDefinition[]
+  // TODO: add metadata field for customizations
 }
 
 export type TransactionModelOptions = {
@@ -26,6 +28,7 @@ export type TransactionModelOptions = {
   storeExecution?: boolean
   retentionTime?: number
   strictCheckpoints?: boolean
+  // TODO: add metadata field for customizations
 }
 
 export type TransactionModel = {
