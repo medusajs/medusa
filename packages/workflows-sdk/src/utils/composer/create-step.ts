@@ -260,9 +260,7 @@ export function createStep<
   /**
    * The name of the step or its configuration (currently support maxRetries).
    */
-  nameOrConfig:
-    | string
-    | ({ name: string } & Omit<TransactionStepsDefinition, "next" | "uuid">),
+  nameOrConfig: string | Omit<TransactionStepsDefinition, "next" | "uuid">,
   /**
    * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.
@@ -281,7 +279,8 @@ export function createStep<
   compensateFn?: CompensateFn<TInvokeResultCompensateInput>
 ): StepFunction<TInvokeInput, TInvokeResultOutput> {
   const stepName =
-    (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name) ?? invokeFn.name
+    (isString(nameOrConfig) ? nameOrConfig : nameOrConfig.action) ??
+    invokeFn.name
   const config = isString(nameOrConfig) ? {} : nameOrConfig
 
   const returnFn = function (
