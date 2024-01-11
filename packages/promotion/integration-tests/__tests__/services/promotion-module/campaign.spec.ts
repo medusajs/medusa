@@ -75,7 +75,7 @@ describe("Promotion Module Service: Campaigns", () => {
           campaign_identifier: "test",
           starts_at: startsAt,
           ends_at: endsAt,
-          campaign_budget: {
+          budget: {
             limit: 1000,
             type: "usage",
             used: 10,
@@ -84,7 +84,7 @@ describe("Promotion Module Service: Campaigns", () => {
       ])
 
       const campaign = await service.retrieveCampaign(createdPromotion.id, {
-        relations: ["campaign_budget"],
+        relations: ["budget"],
       })
 
       expect(campaign).toEqual(
@@ -93,7 +93,7 @@ describe("Promotion Module Service: Campaigns", () => {
           campaign_identifier: "test",
           starts_at: startsAt,
           ends_at: endsAt,
-          campaign_budget: expect.objectContaining({
+          budget: expect.objectContaining({
             limit: 1000,
             type: "usage",
             used: 10,
@@ -147,7 +147,7 @@ describe("Promotion Module Service: Campaigns", () => {
       const [updatedCampaign] = await service.updateCampaigns([
         {
           id: "campaign-id-1",
-          campaign_budget: {
+          budget: {
             limit: 100,
             used: 100,
           },
@@ -156,7 +156,7 @@ describe("Promotion Module Service: Campaigns", () => {
 
       expect(updatedCampaign).toEqual(
         expect.objectContaining({
-          campaign_budget: expect.objectContaining({
+          budget: expect.objectContaining({
             limit: 100,
             used: 100,
           }),

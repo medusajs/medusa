@@ -9,7 +9,7 @@ export const defaultCampaignsData = [
     campaign_identifier: "test-1",
     starts_at: new Date("01/01/2023"),
     ends_at: new Date("01/01/2024"),
-    campaign_budget: {
+    budget: {
       type: CampaignBudgetType.SPEND,
       limit: 1000,
       used: 0,
@@ -23,7 +23,7 @@ export const defaultCampaignsData = [
     campaign_identifier: "test-2",
     starts_at: new Date("01/01/2023"),
     ends_at: new Date("01/01/2024"),
-    campaign_budget: {
+    budget: {
       type: CampaignBudgetType.USAGE,
       limit: 1000,
       used: 0,

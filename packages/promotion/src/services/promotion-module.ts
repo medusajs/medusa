@@ -757,7 +757,7 @@ export default class PromotionModuleService<
     return await this.listCampaigns(
       { id: campaigns.map((p) => p!.id) },
       {
-        relations: ["campaign_budget"],
+        relations: ["budget"],
       },
       sharedContext
     )
@@ -776,8 +776,7 @@ export default class PromotionModuleService<
     >()
 
     for (const createCampaignData of data) {
-      const { campaign_budget: campaignBudgetData, ...campaignData } =
-        createCampaignData
+      const { budget: campaignBudgetData, ...campaignData } = createCampaignData
 
       if (campaignBudgetData) {
         campaignIdentifierBudgetMap.set(
@@ -827,7 +826,7 @@ export default class PromotionModuleService<
     return await this.listCampaigns(
       { id: campaigns.map((p) => p!.id) },
       {
-        relations: ["campaign_budget"],
+        relations: ["budget"],
       },
       sharedContext
     )
@@ -841,17 +840,13 @@ export default class PromotionModuleService<
     const campaignIds = data.map((d) => d.id)
     const campaignsData: UpdateCampaignDTO[] = []
     const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
-    const campaignIdentifierBudgetMap = new Map<
-      string,
-      UpdateCampaignBudgetDTO
-    >()
 
     const existingCampaigns = await this.listCampaigns(
       {
         id: campaignIds,
       },
       {
-        relations: ["campaign_budget"],
+        relations: ["budget"],
       },
       sharedContext
     )
@@ -861,11 +856,10 @@ export default class PromotionModuleService<
     )
 
     for (const updateCampaignData of data) {
-      const { campaign_budget: campaignBudgetData, ...campaignData } =
-        updateCampaignData
+      const { budget: campaignBudgetData, ...campaignData } = updateCampaignData
 
       const existingCampaign = existingCampaignsMap.get(campaignData.id)
-      const existingCampaignBudget = existingCampaign?.campaign_budget
+      const existingCampaignBudget = existingCampaign?.budget
 
       campaignsData.push(campaignData)
 

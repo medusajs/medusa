@@ -3,16 +3,16 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   CampaignDTO,
-  CreateCampaignDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
   FilterableCampaignProps,
   FilterablePromotionProps,
   PromotionDTO,
   RemovePromotionRuleDTO,
-  UpdateCampaignDTO,
   UpdatePromotionDTO,
 } from "./common"
+
+import { CreateCampaignDTO, UpdateCampaignDTO } from "./mutations"
 
 export interface IPromotionModuleService extends IModuleService {
   computeActions(

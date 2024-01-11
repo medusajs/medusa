@@ -9,19 +9,6 @@ export interface CampaignBudgetDTO {
   used?: string
 }
 
-export interface CreateCampaignBudgetDTO {
-  type: CampaignBudgetTypeValues
-  limit: number | null
-  used?: number
-}
-
-export interface UpdateCampaignBudgetDTO {
-  id: string
-  type?: CampaignBudgetTypeValues
-  limit?: number | null
-  used?: number
-}
-
 export interface FilterableCampaignBudgetProps
   extends BaseFilterable<FilterableCampaignBudgetProps> {
   id?: string[]

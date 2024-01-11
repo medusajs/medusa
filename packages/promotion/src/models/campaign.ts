@@ -21,7 +21,7 @@ type OptionalFields =
   | "updated_at"
   | "deleted_at"
 
-type OptionalRelations = "campaign_budget"
+type OptionalRelations = "budget"
 
 @Entity()
 export default class Campaign {
@@ -64,7 +64,7 @@ export default class Campaign {
     cascade: ["soft-remove"] as any,
     nullable: true,
   })
-budget?: CampaignBudget
+  budget?: CampaignBudget
 
   @OneToMany(() => Promotion, (promotion) => promotion.campaign, {
     orphanRemoval: true,

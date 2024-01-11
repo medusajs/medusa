@@ -33,7 +33,7 @@ export default class CampaignBudgetService<
       CampaignBudget,
       PromotionTypes.CampaignBudgetDTO
     >({
-      id: campaignId,
+      id: campaignBudgetId,
       entityName: CampaignBudget.name,
       repository: this.campaignBudgetRepository_,
       config,
