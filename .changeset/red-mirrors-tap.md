@@ -1,5 +1,4 @@
 ---
-"@medusajs/cart": patch
 "@medusajs/types": patch
 ---
 

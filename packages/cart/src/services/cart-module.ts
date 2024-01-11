@@ -63,7 +63,7 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<CartDTO[]> {
     const carts = await this.cartService_.list(filters, config, sharedContext)
 
-    return this.baseRepository_.serialize<CartDTO[]>(carts, {
+    return await this.baseRepository_.serialize<CartDTO[]>(carts, {
       populate: true,
     })
   }

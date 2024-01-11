@@ -20,6 +20,9 @@ export class CartRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
       return manager.assign(cart, update)
     })
 
-    return await super.update(entities, context)
+    // TODO: Use super.update when working properly with collections
+    manager.persist(entities)
+
+    return entities
   }
 }

@@ -14,8 +14,8 @@ import {
   retrieveEntity,
 } from "@medusajs/utils"
 import { Cart } from "@models"
-import { CartRepository } from "src/repositories/cart"
-import { CreateCartDTO, UpdateCartDTO } from "../types"
+import { CartRepository } from "@repositories"
+import { CreateCartDTO, UpdateCartDTO } from "@types"
 
 type InjectedDependencies = {
   cartRepository: DAL.RepositoryService
