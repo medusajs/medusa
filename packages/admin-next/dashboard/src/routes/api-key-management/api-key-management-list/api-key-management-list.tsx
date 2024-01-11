@@ -20,46 +20,22 @@ import {
 } from "@tanstack/react-table"
 import {
   useAdminCreatePublishableApiKey,
-  useAdminPublishableApiKeys,
   useAdminSalesChannels,
 } from "medusa-react"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { Outlet } from "react-router-dom"
 import { Form } from "../../../components/common/form"
 import { ApiKeyManagementListTable } from "./components/api-key-management-list-table"
 
 export const ApiKeyManagementList = () => {
-  const [showCreateModal, setShowCreateModal] = useState(false)
-
-  const { publishable_api_keys, isLoading, isError, error } =
-    useAdminPublishableApiKeys()
-
-  const columns = useColumns()
-
-  const table = useReactTable({
-    data: publishable_api_keys || [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getRowId: (row) => row.id,
-  })
-
-  const { t } = useTranslation()
-
-  // TODO: Move to loading.tsx and set as Suspense fallback for the route
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
-
-  if (isError) {
-    throw error
-  }
-
   return (
     <div className="flex flex-col gap-y-2">
       <ApiKeyManagementListTable />
+      <Outlet />
     </div>
   )
 }

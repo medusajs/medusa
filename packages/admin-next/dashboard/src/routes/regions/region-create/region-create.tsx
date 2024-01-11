@@ -8,18 +8,7 @@ import * as zod from "zod"
 import { Form } from "../../../components/common/form"
 import { useRouteModalState } from "../../../hooks/use-route-modal-state"
 
-const NewRegionSchema = zod.object({
-  name: zod.string().min(1),
-  currency_code: zod.string(),
-  includes_tax: zod.boolean(),
-  countries: zod.array(zod.string()),
-  fulfillment_providers: zod.array(zod.string()).min(1),
-  payment_providers: zod.array(zod.string()).min(1),
-  tax_rate: zod.number().min(0).max(100),
-  tax_code: zod.string().optional(),
-})
-
-const schema = zod.object({
+const CreateRegionFormSchema = zod.object({
   name: zod.string().min(1),
   currency_code: zod.string(),
   includes_tax: zod.boolean(),
@@ -35,7 +24,7 @@ export const RegionCreate = () => {
 
   const { t } = useTranslation()
 
-  const form = useForm<zod.infer<typeof schema>>({
+  const form = useForm<zod.infer<typeof CreateRegionFormSchema>>({
     defaultValues: {
       name: "",
       currency_code: "",
@@ -45,7 +34,7 @@ export const RegionCreate = () => {
       payment_providers: [],
       tax_code: "",
     },
-    resolver: zodResolver(NewRegionSchema),
+    resolver: zodResolver(CreateRegionFormSchema),
   })
 
   const { mutateAsync, isLoading } = useAdminCreateRegion()
