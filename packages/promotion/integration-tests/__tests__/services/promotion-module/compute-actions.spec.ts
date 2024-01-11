@@ -544,6 +544,246 @@ describe("Promotion Service: computeActions", () => {
         },
       ])
     })
+
+    it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "30",
+            max_quantity: 2,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const [createdPromotionTwo] = await service.create([
+        {
+          code: "PROMOTION_TEST_2",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "50",
+            max_quantity: 1,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(
+        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        {
+          customer: {
+            customer_group: {
+              id: "VIP",
+            },
+          },
+          items: [
+            {
+              id: "item_cotton_tshirt",
+              quantity: 1,
+              unit_price: 50,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_tshirt",
+              },
+            },
+            {
+              id: "item_cotton_sweater",
+              quantity: 1,
+              unit_price: 150,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_sweater",
+              },
+            },
+          ],
+        }
+      )
+
+      expect(result).toEqual([
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 7.5,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 22.5,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 12.5,
+          code: "PROMOTION_TEST_2",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 37.5,
+          code: "PROMOTION_TEST_2",
+        },
+      ])
+    })
+
+    it("should not compute actions when applicable total is 0", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "500",
+            max_quantity: 2,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const [createdPromotionTwo] = await service.create([
+        {
+          code: "PROMOTION_TEST_2",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "across",
+            value: "50",
+            max_quantity: 1,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(
+        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        {
+          customer: {
+            customer_group: {
+              id: "VIP",
+            },
+          },
+          items: [
+            {
+              id: "item_cotton_tshirt",
+              quantity: 1,
+              unit_price: 50,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_tshirt",
+              },
+            },
+            {
+              id: "item_cotton_sweater",
+              quantity: 1,
+              unit_price: 150,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_sweater",
+              },
+            },
+          ],
+        }
+      )
+
+      expect(result).toEqual([
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 50,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 150,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 12.5,
+          code: "PROMOTION_TEST_2",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 37.5,
+          code: "PROMOTION_TEST_2",
+        },
+      ])
+    })
   })
 
   describe("when promotion is for shipping_method and allocation is each", () => {
@@ -997,6 +1237,214 @@ describe("Promotion Service: computeActions", () => {
           item_id: "item_cotton_sweater",
           amount: 150,
           code: "PROMOTION_TEST",
+        },
+      ])
+    })
+
+    it("should compute the correct item amendments when there are multiple promotions to apply", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "order",
+            value: "30",
+            max_quantity: 2,
+          },
+        },
+      ])
+
+      const [createdPromotionTwo] = await service.create([
+        {
+          code: "PROMOTION_TEST_2",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "order",
+            value: "50",
+            max_quantity: 1,
+          },
+        },
+      ])
+
+      const result = await service.computeActions(
+        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        {
+          customer: {
+            customer_group: {
+              id: "VIP",
+            },
+          },
+          items: [
+            {
+              id: "item_cotton_tshirt",
+              quantity: 1,
+              unit_price: 50,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_tshirt",
+              },
+            },
+            {
+              id: "item_cotton_sweater",
+              quantity: 1,
+              unit_price: 150,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_sweater",
+              },
+            },
+          ],
+        }
+      )
+
+      expect(result).toEqual([
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 7.5,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 22.5,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 12.5,
+          code: "PROMOTION_TEST_2",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 37.5,
+          code: "PROMOTION_TEST_2",
+        },
+      ])
+    })
+
+    it("should not compute actions when applicable total is 0", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "order",
+            value: "500",
+            max_quantity: 2,
+          },
+        },
+      ])
+
+      const [createdPromotionTwo] = await service.create([
+        {
+          code: "PROMOTION_TEST_2",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "order",
+            value: "50",
+            max_quantity: 1,
+          },
+        },
+      ])
+
+      const result = await service.computeActions(
+        [{ code: "PROMOTION_TEST" }, { code: "PROMOTION_TEST_2" }],
+        {
+          customer: {
+            customer_group: {
+              id: "VIP",
+            },
+          },
+          items: [
+            {
+              id: "item_cotton_tshirt",
+              quantity: 1,
+              unit_price: 50,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_tshirt",
+              },
+            },
+            {
+              id: "item_cotton_sweater",
+              quantity: 1,
+              unit_price: 150,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_sweater",
+              },
+            },
+          ],
+        }
+      )
+
+      expect(result).toEqual([
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 50,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 150,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 12.5,
+          code: "PROMOTION_TEST_2",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 37.5,
+          code: "PROMOTION_TEST_2",
         },
       ])
     })

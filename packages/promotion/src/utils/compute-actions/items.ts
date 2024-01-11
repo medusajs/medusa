@@ -93,24 +93,28 @@ export function applyPromotionToItems(
       ApplicationMethodAllocation.ACROSS
     )
   ) {
-    const totalApplicableValue = items!.reduce(
-      (acc, item) =>
+    const totalApplicableValue = items!.reduce((acc, item) => {
+      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+      return (
         acc +
         item.unit_price *
-          Math.min(item.quantity, applicationMethod?.max_quantity!),
-      0
-    )
+          Math.min(item.quantity, applicationMethod?.max_quantity!) -
+        appliedPromoValue
+      )
+    }, 0)
 
     for (const item of items!) {
       const promotionValue = parseFloat(applicationMethod!.value!)
+      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+
       const applicableTotal =
         item.unit_price *
-        Math.min(item.quantity, applicationMethod?.max_quantity!)
+          Math.min(item.quantity, applicationMethod?.max_quantity!) -
+        appliedPromoValue
 
       // TODO: should we worry about precision here?
-      const applicablePromotionValue = Math.round(
+      const applicablePromotionValue =
         (applicableTotal / totalApplicableValue) * promotionValue
-      )
 
       let amount = applicablePromotionValue
 
