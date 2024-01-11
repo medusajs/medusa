@@ -12,6 +12,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
+  isString,
 } from "@medusajs/utils"
 import { ApplicationMethod, Promotion } from "@models"
 import {
@@ -81,12 +82,42 @@ export default class PromotionModuleService<
     // TODO: specify correct type with options
     options: Record<string, any> = {}
   ): Promise<Record<string, any>[]> {
-    const promotionCodes = promotionsToApply.map((p) => p.code!)
+    const promotionCodesToApply = promotionsToApply.map((p) => p.code!)
     const computedActions: PromotionTypes.ComputeActions[] = []
+    const { items = [], shipping_methods: shippingMethods = [] } =
+      applicationContext
+    const appliedItemCodes: string[] = []
+    const appliedShippingCodes: string[] = []
+    const codeAdjustmentMap = new Map<
+      string,
+      PromotionTypes.ComputeActionAdjustmentLine
+    >()
+
+    items.forEach((item) => {
+      item.adjustments?.forEach((adjustment) => {
+        if (isString(adjustment.code)) {
+          codeAdjustmentMap.set(adjustment.code, adjustment)
+          appliedItemCodes.push(adjustment.code)
+        }
+      })
+    })
+
+    shippingMethods.forEach((shippingMethod) => {
+      shippingMethod.adjustments?.forEach((adjustment) => {
+        if (isString(adjustment.code)) {
+          codeAdjustmentMap.set(adjustment.code, adjustment)
+          appliedShippingCodes.push(adjustment.code)
+        }
+      })
+    })
 
     const promotions = await this.list(
       {
-        code: promotionCodes,
+        code: [
+          ...promotionCodesToApply,
+          ...appliedItemCodes,
+          ...appliedShippingCodes,
+        ],
       },
       {
         relations: [
@@ -99,7 +130,49 @@ export default class PromotionModuleService<
       }
     )
 
-    for (const promotion of promotions) {
+    const existingPromotionsMap = new Map<string, PromotionTypes.PromotionDTO>(
+      promotions.map((promotion) => [promotion.code!, promotion])
+    )
+
+    for (const appliedCode of [...appliedShippingCodes, ...appliedItemCodes]) {
+      const promotion = existingPromotionsMap.get(appliedCode)
+
+      if (!promotion) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Applied Promotion for code (${appliedCode}) not found`
+        )
+      }
+
+      if (promotionCodesToApply.includes(appliedCode)) {
+        continue
+      }
+
+      if (appliedItemCodes.includes(appliedCode)) {
+        computedActions.push({
+          action: "removeItemAdjustment",
+          adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
+        })
+      }
+
+      if (appliedShippingCodes.includes(appliedCode)) {
+        computedActions.push({
+          action: "removeShippingMethodAdjustment",
+          adjustment_id: codeAdjustmentMap.get(appliedCode)!.id,
+        })
+      }
+    }
+
+    for (const promotionCode of promotionCodesToApply) {
+      const promotion = existingPromotionsMap.get(promotionCode)
+
+      if (!promotion) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Promotion for code (${promotionCode}) not found`
+        )
+      }
+
       const {
         application_method: applicationMethod,
         rules: promotionRules = [],

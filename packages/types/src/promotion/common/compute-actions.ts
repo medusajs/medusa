@@ -31,20 +31,25 @@ export interface RemoveShippingMethodAdjustment {
   adjustment_id: string
 }
 
+export interface ComputeActionAdjustmentLine {
+  id: string
+  code: string
+}
+
+export interface ComputeActionItemLine {
+  id: string
+  quantity: number
+  unit_price: number
+  adjustments?: ComputeActionAdjustmentLine[]
+}
+
+export interface ComputeActionShippingLine {
+  id: string
+  unit_price: number
+  adjustments?: ComputeActionAdjustmentLine[]
+}
+
 export interface ComputeActionContext {
-  items?: {
-    id: string
-    quantity: number
-    unit_price: number
-    adjustments?: {
-      code: string
-    }[]
-  }[]
-  shipping_methods?: {
-    id: string
-    unit_price: number
-    adjustments?: {
-      code: string
-    }[]
-  }[]
+  items?: ComputeActionItemLine[]
+  shipping_methods?: ComputeActionShippingLine[]
 }

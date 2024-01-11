@@ -25,15 +25,6 @@ export function getComputedActionsForItems(
   }
 
   for (const itemContext of itemApplicationContext) {
-    const isPromotionAlreadyApplied = itemContext.adjustments?.map(
-      (adjustment) => adjustment.code === promotion.code
-    )
-
-    // TODO: handle this correctly later
-    if (isPromotionAlreadyApplied) {
-      continue
-    }
-
     const isPromotionApplicableToItem = areRulesValidForContext(
       promotion?.application_method?.target_rules!,
       itemContext

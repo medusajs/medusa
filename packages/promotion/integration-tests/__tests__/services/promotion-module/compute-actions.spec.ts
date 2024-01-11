@@ -26,6 +26,134 @@ describe("Promotion Service: computeActions", () => {
     await MikroOrmWrapper.clearDatabase()
   })
 
+  describe("when code is not present in database", () => {
+    it("should throw error when code in promotions array does not exist", async () => {
+      const error = await service
+        .computeActions([{ code: "DOES_NOT_EXIST" }], {
+          customer: {
+            customer_group: {
+              id: "VIP",
+            },
+          },
+          items: [
+            {
+              id: "item_cotton_tshirt",
+              quantity: 1,
+              unit_price: 100,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_tshirt",
+              },
+            },
+            {
+              id: "item_cotton_sweater",
+              quantity: 5,
+              unit_price: 150,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_sweater",
+              },
+            },
+          ],
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Promotion for code (DOES_NOT_EXIST) not found"
+      )
+    })
+
+    it("should throw error when code in items adjustment does not exist", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            value: "200",
+            max_quantity: 1,
+          },
+        },
+      ])
+
+      const error = await service
+        .computeActions([{ code: "PROMOTION_TEST" }], {
+          items: [
+            {
+              id: "item_cotton_tshirt",
+              quantity: 1,
+              unit_price: 100,
+              adjustments: [
+                {
+                  id: "test-adjustment",
+                  code: "DOES_NOT_EXIST",
+                },
+              ],
+            },
+            {
+              id: "item_cotton_sweater",
+              quantity: 5,
+              unit_price: 150,
+            },
+          ],
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Applied Promotion for code (DOES_NOT_EXIST) not found"
+      )
+    })
+
+    it("should throw error when code in shipping adjustment does not exist", async () => {
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            value: "200",
+            max_quantity: 1,
+          },
+        },
+      ])
+
+      const error = await service
+        .computeActions([{ code: "PROMOTION_TEST" }], {
+          items: [
+            {
+              id: "item_cotton_tshirt",
+              quantity: 1,
+              unit_price: 100,
+            },
+            {
+              id: "item_cotton_sweater",
+              quantity: 5,
+              unit_price: 150,
+              adjustments: [
+                {
+                  id: "test-adjustment",
+                  code: "DOES_NOT_EXIST",
+                },
+              ],
+            },
+          ],
+        })
+        .catch((e) => e)
+
+      expect(error.message).toContain(
+        "Applied Promotion for code (DOES_NOT_EXIST) not found"
+      )
+    })
+  })
+
   describe("when promotion is for items and allocation is each", () => {
     it("should compute the correct item amendments", async () => {
       const [createdPromotion] = await service.create([
@@ -420,6 +548,201 @@ describe("Promotion Service: computeActions", () => {
           action: "addItemAdjustment",
           item_id: "item_cotton_sweater",
           amount: 150,
+          code: "PROMOTION_TEST",
+        },
+      ])
+    })
+  })
+
+  describe("when adjustments are present in the context", () => {
+    it("should compute the correct item amendments along with removal of applied item adjustment", async () => {
+      const [adjustmentPromotion] = await service.create([
+        {
+          code: "ADJUSTMENT_CODE",
+          type: PromotionType.STANDARD,
+        },
+      ])
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            value: "200",
+            max_quantity: 1,
+            target_rules: [
+              {
+                attribute: "product_category.id",
+                operator: "eq",
+                values: ["catg_cotton"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(
+        [{ code: "PROMOTION_TEST" }],
+        {
+          customer: {
+            customer_group: {
+              id: "VIP",
+            },
+          },
+          items: [
+            {
+              id: "item_cotton_tshirt",
+              quantity: 1,
+              unit_price: 100,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_tshirt",
+              },
+              adjustments: [
+                {
+                  id: "test-adjustment",
+                  code: "ADJUSTMENT_CODE",
+                },
+              ],
+            },
+            {
+              id: "item_cotton_sweater",
+              quantity: 5,
+              unit_price: 150,
+              product_category: {
+                id: "catg_cotton",
+              },
+              product: {
+                id: "prod_sweater",
+              },
+            },
+          ],
+        }
+      )
+
+      expect(result).toEqual([
+        {
+          action: "removeItemAdjustment",
+          adjustment_id: "test-adjustment",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_tshirt",
+          amount: 100,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addItemAdjustment",
+          item_id: "item_cotton_sweater",
+          amount: 150,
+          code: "PROMOTION_TEST",
+        },
+      ])
+    })
+
+    it("should compute the correct item amendments along with removal of applied shipping adjustment", async () => {
+      const [adjustmentPromotion] = await service.create([
+        {
+          code: "ADJUSTMENT_CODE",
+          type: PromotionType.STANDARD,
+        },
+      ])
+
+      const [createdPromotion] = await service.create([
+        {
+          code: "PROMOTION_TEST",
+          type: PromotionType.STANDARD,
+          rules: [
+            {
+              attribute: "customer.customer_group.id",
+              operator: "in",
+              values: ["VIP", "top100"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "shipping_methods",
+            allocation: "across",
+            value: "200",
+            max_quantity: 2,
+            target_rules: [
+              {
+                attribute: "shipping_option.id",
+                operator: "in",
+                values: ["express", "standard"],
+              },
+            ],
+          },
+        },
+      ])
+
+      const result = await service.computeActions(
+        [{ code: "PROMOTION_TEST" }],
+        {
+          customer: {
+            customer_group: {
+              id: "VIP",
+            },
+          },
+          shipping_methods: [
+            {
+              id: "shipping_method_express",
+              unit_price: 500,
+              shipping_option: {
+                id: "express",
+              },
+              adjustments: [
+                {
+                  id: "test-adjustment",
+                  code: "ADJUSTMENT_CODE",
+                },
+              ],
+            },
+            {
+              id: "shipping_method_standard",
+              unit_price: 100,
+              shipping_option: {
+                id: "standard",
+              },
+            },
+            {
+              id: "shipping_method_snail",
+              unit_price: 200,
+              shipping_option: {
+                id: "snail",
+              },
+            },
+          ],
+        }
+      )
+
+      expect(result).toEqual([
+        {
+          action: "removeShippingMethodAdjustment",
+          adjustment_id: "test-adjustment",
+        },
+        {
+          action: "addShippingMethodAdjustment",
+          shipping_method_id: "shipping_method_express",
+          amount: 167,
+          code: "PROMOTION_TEST",
+        },
+        {
+          action: "addShippingMethodAdjustment",
+          shipping_method_id: "shipping_method_standard",
+          amount: 33,
           code: "PROMOTION_TEST",
         },
       ])
