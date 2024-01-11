@@ -144,8 +144,8 @@
     "createPublishableApiKey": "Create Publishable API Key",
     "revoke": "Revoke",
     "publishableApiKeyHint": "Publishable API keys are used to limit the scope of requests to specific sales channels.",
-    "deleteKeyWarning": "You are about to delete the API key {{name}}. This action cannot be undone.",
-    "revokeKeyWarning": "You are about to revoke the API key {{name}}."
+    "deleteKeyWarning": "You are about to delete the API key {{title}}. This action cannot be undone.",
+    "revokeKeyWarning": "You are about to revoke the API key {{title}}."
   },
   "fields": {
     "name": "Name",

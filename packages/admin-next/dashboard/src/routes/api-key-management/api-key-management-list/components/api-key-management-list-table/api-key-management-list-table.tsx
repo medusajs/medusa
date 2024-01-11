@@ -1,4 +1,4 @@
-import { EllipsisHorizontal } from "@medusajs/icons"
+import { EllipsisHorizontal, Trash, XCircle } from "@medusajs/icons"
 import { PublishableApiKey } from "@medusajs/medusa"
 import {
   Button,
@@ -166,9 +166,13 @@ export const ApiKeyManagementListTable = () => {
   )
 }
 
-const KeyActions = ({ key }: { key: PublishableApiKey }) => {
-  const { mutateAsync: revokeAsync } = useAdminRevokePublishableApiKey(key.id)
-  const { mutateAsync: deleteAsync } = useAdminDeletePublishableApiKey(key.id)
+const KeyActions = ({ apiKey }: { apiKey: PublishableApiKey }) => {
+  const { mutateAsync: revokeAsync } = useAdminRevokePublishableApiKey(
+    apiKey.id
+  )
+  const { mutateAsync: deleteAsync } = useAdminDeletePublishableApiKey(
+    apiKey.id
+  )
 
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -176,7 +180,9 @@ const KeyActions = ({ key }: { key: PublishableApiKey }) => {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.deleteKeyWarning"),
+      description: t("apiKeyManagement.deleteKeyWarning", {
+        title: apiKey.title,
+      }),
       confirmText: t("general.delete"),
       cancelText: t("general.cancel"),
     })
@@ -191,7 +197,9 @@ const KeyActions = ({ key }: { key: PublishableApiKey }) => {
   const handleRevoke = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("apiKeyManagement.revokeKeyWarning"),
+      description: t("apiKeyManagement.revokeKeyWarning", {
+        title: apiKey.title,
+      }),
       confirmText: t("apiKeyManagement.revoke"),
       cancelText: t("general.cancel"),
     })
@@ -211,9 +219,18 @@ const KeyActions = ({ key }: { key: PublishableApiKey }) => {
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        <DropdownMenu.Item></DropdownMenu.Item>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item></DropdownMenu.Item>
+        <DropdownMenu.Item onClick={handleRevoke}>
+          <div className="flex items-center gap-x-2 [&_svg]:text-ui-fg-subtle">
+            <XCircle />
+            <span onClick={handleRevoke}>{t("apiKeyManagement.revoke")}</span>
+          </div>
+        </DropdownMenu.Item>
+        <DropdownMenu.Item onClick={handleDelete}>
+          <div className="flex items-center gap-x-2 [&_svg]:text-ui-fg-subtle">
+            <Trash />
+            <span>{t("general.delete")}</span>
+          </div>
+        </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu>
   )
@@ -233,6 +250,12 @@ const useColumns = () => {
       columnHelper.accessor("id", {
         header: "Key",
         cell: ({ getValue }) => getValue(),
+      }),
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => {
+          return <KeyActions apiKey={row.original} />
+        },
       }),
     ],
     [t]
