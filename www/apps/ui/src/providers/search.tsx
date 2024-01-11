@@ -6,8 +6,6 @@ import {
   SearchProvider as UiSearchProvider,
 } from "docs-ui"
 import { absoluteUrl } from "../lib/absolute-url"
-import clsx from "clsx"
-import { Sparkles } from "@medusajs/icons"
 
 type SearchProviderProps = {
   children: React.ReactNode

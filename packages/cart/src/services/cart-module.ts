@@ -1,5 +1,4 @@
 import {
-  CartTypes,
   DAL,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -13,10 +12,8 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
 }
 
-export default class CartModuleService<
-  TCart extends Cart = Cart
-> implements CartTypes.ICartModuleService
-{
+// TODO: implement ICartModuleService from @medusajs/types
+export default class CartModuleService<TCart extends Cart = Cart> {
   protected baseRepository_: DAL.RepositoryService
 
   constructor(

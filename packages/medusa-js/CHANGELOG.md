@@ -1,5 +1,13 @@
 # Change Log
 
+## 6.1.5
+
+### Patch Changes
+
+- [#5941](https://github.com/medusajs/medusa/pull/5941) [`bfd10dada`](https://github.com/medusajs/medusa/commit/bfd10dadaf6286aa26dac96d7c0cc5bc24e43c9b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-js): remove unnecessary `query` field in `AdminInventoryItemsResource.deleteLocationLevel` method
+
+- [#5926](https://github.com/medusajs/medusa/pull/5926) [`f25ca30b3`](https://github.com/medusajs/medusa/commit/f25ca30b3aec558094b1dffe70583fcbba64b29a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa, medusa-js): publishable api key bugs
+
 ## 6.1.4
 
 ### Patch Changes

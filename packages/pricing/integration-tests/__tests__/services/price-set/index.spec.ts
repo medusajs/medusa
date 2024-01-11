@@ -370,7 +370,7 @@ describe("PriceSet Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('PriceSet with id "undefined" not found')
+      expect(error.message).toEqual('PriceSet with id "" not found')
     })
 
     it("should create a priceSet successfully", async () => {

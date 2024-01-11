@@ -13,14 +13,10 @@ export class PricingRepository
   extends MikroOrmBase
   implements PricingRepositoryService
 {
-  protected readonly manager_: SqlEntityManager
-
-  constructor({ manager }: { manager: SqlEntityManager }) {
+  constructor() {
     // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
-
-    this.manager_ = manager
   }
 
   async calculatePrices(

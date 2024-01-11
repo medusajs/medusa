@@ -228,6 +228,13 @@
  *     description: The total of gift cards with taxes
  *     type: integer
  *     example: 0
+ *   sales_channels:
+ *     description: The associated sales channels.
+ *     type: array
+ *     nullable: true
+ *     x-expandable: "sales_channels"
+ *     items:
+ *       $ref: "#/components/schemas/SalesChannel"
  */
 
 import {

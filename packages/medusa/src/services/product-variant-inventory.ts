@@ -249,15 +249,21 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   /**
    * Attach a variant to an inventory item
-   * @param variantId variant id
-   * @param inventoryItemId inventory item id
-   * @param requiredQuantity quantity of variant to attach
    * @returns the variant inventory item
    */
   async attachInventoryItem(
     attachments: {
+      /**
+       * variant id
+       */
       variantId: string
+      /**
+       * inventory item id
+       */
       inventoryItemId: string
+      /**
+       * quantity of variant to attach
+       */
       requiredQuantity?: number
     }[]
   ): Promise<ProductVariantInventoryItem[]>

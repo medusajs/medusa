@@ -58,7 +58,7 @@ transaction manager is created.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -143,7 +143,7 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"`object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"selector.groups","type":"`string`[] \\| `object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"selector.q","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -155,7 +155,7 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"`object`","description":"the query object for find","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"selector.groups","type":"`string`[] \\| `object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"selector.q","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -327,4 +327,4 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"CustomerService","type":"`object`","description":"Provides layer to manipulate customers.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />

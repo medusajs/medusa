@@ -54,7 +54,7 @@ transaction manager is created.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -291,7 +291,7 @@ Finds a provider given an id
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"TProvider extends AbstractPaymentService ? AbstractPaymentService : TProvider extends AbstractPaymentProcessor ? AbstractPaymentProcessor : any","type":"`TProvider` extends [AbstractPaymentService](../../medusa/classes/medusa.AbstractPaymentService.mdx) ? [AbstractPaymentService](../../medusa/classes/medusa.AbstractPaymentService.mdx) : `TProvider` extends [AbstractPaymentProcessor](../../medusa/classes/medusa.AbstractPaymentProcessor.mdx) ? [AbstractPaymentProcessor](../../medusa/classes/medusa.AbstractPaymentProcessor.mdx) : `any`","optional":false,"defaultValue":"","description":"the payment provider","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"TProvider extends AbstractPaymentService ? AbstractPaymentService : TProvider extends AbstractPaymentProcessor ? AbstractPaymentProcessor : any","type":"TProvider extends [AbstractPaymentService](../../medusa/classes/medusa.AbstractPaymentService.mdx) ? [AbstractPaymentService](../../medusa/classes/medusa.AbstractPaymentService.mdx) : TProvider extends [AbstractPaymentProcessor](../../medusa/classes/medusa.AbstractPaymentProcessor.mdx) ? [AbstractPaymentProcessor](../../medusa/classes/medusa.AbstractPaymentProcessor.mdx) : `any`","optional":false,"defaultValue":"","description":"the payment provider","expandable":false,"children":[]}]} />
 
 ___
 
@@ -405,4 +405,4 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"PaymentProviderService","type":"`object`","description":"Helps retrieve payment providers","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />

@@ -62,7 +62,7 @@ transaction manager is created.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: `TError`) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
@@ -363,11 +363,11 @@ Creates a discount rule with provided data given that the data is validated.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"discountRule","type":"`T`","description":"the discount rule to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"discountRule","type":"T","description":"the discount rule to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"T","type":"`T`","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"T","type":"T","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
 
 ___
 
@@ -379,4 +379,4 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"DiscountService","type":"`object`","description":"Provides layer to manipulate discounts.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />

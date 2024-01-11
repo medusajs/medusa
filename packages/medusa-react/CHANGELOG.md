@@ -1,5 +1,16 @@
 # Change Log
 
+## 9.0.13
+
+### Patch Changes
+
+- [#6004](https://github.com/medusajs/medusa/pull/6004) [`7d650771d`](https://github.com/medusajs/medusa/commit/7d650771d1c1d3e5d77ff95c12e4970743b64303) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-react): general type fixes related to generating reference documentation
+
+- [#5982](https://github.com/medusajs/medusa/pull/5982) [`925feea04`](https://github.com/medusajs/medusa/commit/925feea04a8222285175c33577548e50516069a7) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(cart): Add cart module package
+
+- Updated dependencies [[`bfd10dada`](https://github.com/medusajs/medusa/commit/bfd10dadaf6286aa26dac96d7c0cc5bc24e43c9b), [`f25ca30b3`](https://github.com/medusajs/medusa/commit/f25ca30b3aec558094b1dffe70583fcbba64b29a)]:
+  - @medusajs/medusa-js@6.1.5
+
 ## 9.0.12
 
 ### Patch Changes
