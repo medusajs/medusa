@@ -22,7 +22,8 @@
     "paths": {
       "@models": ["./src/models"],
       "@services": ["./src/services"],
-      "@repositories": ["./src/repositories"]
+      "@repositories": ["./src/repositories"],
+      "@types": ["./src/types"],
     }
   },
   "include": ["src"],
