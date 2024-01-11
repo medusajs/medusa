@@ -240,7 +240,7 @@ describe("Cart Module Service", () => {
     })
   })
 
-  describe.only("addLineItems", () => {
+  describe("addLineItems", () => {
     it("should add a line item to cart succesfully", async () => {
       const [createdCart] = await service.create([
         {
@@ -380,6 +380,101 @@ describe("Cart Module Service", () => {
 
       expect(error.message).toContain(
         "Value for LineItem.unit_price is required, 'undefined' found"
+      )
+    })
+  })
+
+  describe("updateLineItems", () => {
+    it("should update a line item in cart succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const [item] = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+          tax_lines: [],
+        },
+      ])
+
+      expect(item.title).toBe("test")
+
+      const [updatedItem] = await service.updateLineItems(createdCart.id, [
+        {
+          id: item.id,
+          title: "test2",
+        },
+      ])
+
+      expect(updatedItem.title).toBe("test2")
+    })
+
+    it("should update multiples line items in cart succesfully", async () => {
+      const [createdCart] = await service.create([
+        {
+          currency_code: "eur",
+        },
+      ])
+
+      const items = await service.addLineItems(createdCart.id, [
+        {
+          quantity: 1,
+          unit_price: 100,
+          title: "test",
+        },
+        {
+          quantity: 2,
+          unit_price: 200,
+          title: "other-test",
+        },
+      ])
+
+      expect(items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "test",
+            quantity: 1,
+            unit_price: 100,
+          }),
+          expect.objectContaining({
+            title: "other-test",
+            quantity: 2,
+            unit_price: 200,
+          }),
+        ])
+      )
+
+      const itemOne = items.find((i) => i.title === "test")
+      const itemTwo = items.find((i) => i.title === "other-test")
+
+      const updatedItems = await service.updateLineItems(createdCart.id, [
+        {
+          id: itemOne!.id,
+          title: "changed-test",
+        },
+        {
+          id: itemTwo!.id,
+          title: "changed-other-test",
+        },
+      ])
+
+      expect(updatedItems).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "changed-test",
+            quantity: 1,
+            unit_price: 100,
+          }),
+          expect.objectContaining({
+            title: "changed-other-test",
+            quantity: 2,
+            unit_price: 200,
+          }),
+        ])
       )
     })
   })

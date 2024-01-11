@@ -50,7 +50,7 @@ export default class LineItem {
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "integer" })
   quantity: number
 
   @Property({

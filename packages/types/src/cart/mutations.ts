@@ -123,11 +123,18 @@ export interface CreateLineItemDTO {
 }
 
 export interface UpdateLineItemDTO
-  extends Omit<CreateLineItemDTO, "tax_lines" | "adjustments"> {
+  extends Omit<
+    CreateLineItemDTO,
+    "tax_lines" | "adjustments" | "title" | "quantity" | "unit_price"
+  > {
   id: string
 
-  tax_lines: UpdateLineItemTaxLineDTO[] | CreateLineItemTaxLineDTO[]
-  adjustments: UpdateLineItemAdjustmentDTO[] | CreateLineItemAdjustmentDTO[]
+  title?: string
+  quantity?: number
+  unit_price?: number
+
+  tax_lines?: UpdateLineItemTaxLineDTO[] | CreateLineItemTaxLineDTO[]
+  adjustments?: UpdateLineItemAdjustmentDTO[] | CreateLineItemAdjustmentDTO[]
 }
 
 export interface AddLineItemsDTO {
