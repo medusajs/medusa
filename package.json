@@ -67,6 +67,7 @@
     "hooks:uninstall": "husky uninstall",
     "build": "turbo run build --no-daemon",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
+    "lint:path": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx",
     "prettier": "prettier",
     "jest": "jest",
     "test": "turbo run test --no-daemon",
