@@ -95,7 +95,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
         <div>
           <Link to="/settings/store/add-currencies">
             <Button size="small" variant="secondary">
-              {t("store.addCurrencies")}
+              {t("general.add")}
             </Button>
           </Link>
         </div>

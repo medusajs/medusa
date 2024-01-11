@@ -16,6 +16,7 @@ export const LocalizedTablePagination = forwardRef<
   const translations = {
     of: t("general.of"),
     results: t("general.results"),
+    pages: t("general.pages"),
     prev: t("general.prev"),
     next: t("general.next"),
   }

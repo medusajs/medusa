@@ -25,7 +25,7 @@ export const JsonViewSection = ({ data, root }: JsonViewProps) => {
   const numberOfKeys = Object.keys(data).length
 
   return (
-    <Container className="flex items-center justify-between py-6">
+    <Container className="flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-x-4">
         <Heading level="h2">JSON</Heading>
         <Badge>{numberOfKeys} keys</Badge>
@@ -41,7 +41,7 @@ export const JsonViewSection = ({ data, root }: JsonViewProps) => {
           </IconButton>
         </Drawer.Trigger>
         <Drawer.Content className="border-ui-code-border bg-ui-code-bg-base text-ui-code-text-base dark overflow-hidden border shadow-none max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]">
-          <div className="bg-ui-code-bg-header border-ui-code-border flex items-center justify-between border-b px-8 py-6">
+          <div className="bg-ui-code-bg-header border-ui-code-border flex items-center justify-between border-b px-6 py-4">
             <div className="flex items-center gap-x-4">
               <Heading>JSON</Heading>
               <Badge>{numberOfKeys} keys</Badge>

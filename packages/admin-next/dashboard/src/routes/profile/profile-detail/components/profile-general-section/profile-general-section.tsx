@@ -21,7 +21,7 @@ export const ProfileGeneralSection = ({ user }: ProfileGeneralSectionProps) => {
         </div>
         <Link to="/settings/profile/edit">
           <Button size="small" variant="secondary">
-            {t("profile.editProfile")}
+            {t("general.edit")}
           </Button>
         </Link>
       </div>

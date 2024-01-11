@@ -98,6 +98,7 @@ interface TablePaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   translations?: {
     of?: string
     results?: string
+    pages?: string
     prev?: string
     next?: string
   }
@@ -153,6 +154,7 @@ const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
       translations = {
         of: "of",
         results: "results",
+        pages: "pages",
         prev: "Prev",
         next: "Next",
       },
@@ -184,7 +186,8 @@ const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
         <div className="flex items-center gap-x-2">
           <div className="inline-flex items-center gap-x-1 px-3 py-[5px]">
             <p>
-              {pageIndex + 1} {translations.of} {Math.max(pageCount, 1)}
+              {pageIndex + 1} {translations.of} {Math.max(pageCount, 1)}{" "}
+              {translations.pages}
             </p>
           </div>
           <Button

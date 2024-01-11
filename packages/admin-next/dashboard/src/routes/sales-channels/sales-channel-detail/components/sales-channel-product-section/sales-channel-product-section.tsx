@@ -42,6 +42,7 @@ import {
   ProductTitleCell,
 } from "../../../../../components/common/product-table-cells"
 import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
+
 import { queryClient } from "../../../../../lib/medusa"
 
 const PAGE_SIZE = 10
@@ -139,7 +140,7 @@ export const SalesChannelProductSection = ({ salesChannel }: Props) => {
 
   return (
     <Container className="p-0">
-      <div className="flex items-center justify-between px-8 pb-4 pt-6">
+      <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
         <div className="flex items-center gap-x-2">
           <DebouncedSearch size="small" value={query} onChange={setQuery} />

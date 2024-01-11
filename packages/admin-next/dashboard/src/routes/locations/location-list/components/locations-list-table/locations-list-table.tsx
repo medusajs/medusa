@@ -30,6 +30,7 @@ import {
   NoRecords,
   NoResults,
 } from "../../../../../components/common/empty-table-content/empty-table-content"
+import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 
 const PAGE_SIZE = 50
 
@@ -148,7 +149,7 @@ export const LocationsListTable = () => {
               ))}
             </Table.Body>
           </Table>
-          <Table.Pagination
+          <LocalizedTablePagination
             canNextPage={table.getCanNextPage()}
             canPreviousPage={table.getCanPreviousPage()}
             nextPage={table.nextPage}

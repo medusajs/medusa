@@ -21,7 +21,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
         </div>
         <Link to={"/settings/store/edit"}>
           <Button size="small" variant="secondary">
-            {t("store.editStore")}
+            {t("general.edit")}
           </Button>
         </Link>
       </div>
