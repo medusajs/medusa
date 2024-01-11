@@ -27,7 +27,9 @@ const step_2 = createStep(
   jest.fn((input, context) => {
     console.log("triggered async request", context.metadata.idempotency_key)
 
-    return new StepResponse({ notAsyncResponse: input.hey })
+    if (input) {
+      return new StepResponse({ notAsyncResponse: input.hey })
+    }
   }),
   jest.fn((_, context) => {
     return new StepResponse({
@@ -54,7 +56,7 @@ createWorkflow("worflow_1", function (input) {
 
   const ret2 = step_2({ hey: "oh" })
 
-  step_2({ hi: "hello" }).config({
+  step_2({ hey: "async hello" }).config({
     action: "new_step_name",
     async: true,
   })

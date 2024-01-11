@@ -58,7 +58,9 @@ export type WorkflowData<T = unknown> = (T extends object
     }
   : WorkflowDataProperties<T>) &
   WorkflowDataProperties<T> & {
-    config(config: Omit<TransactionStepsDefinition, "next">): T extends object
+    config(
+      config: Omit<TransactionStepsDefinition, "next" | "uuid">
+    ): T extends object
       ? WorkflowData<
           T extends object
             ? {
