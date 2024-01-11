@@ -1,6 +1,5 @@
 ---
 "@medusajs/modules-sdk": patch
-"@medusajs/payment": patch
 "@medusajs/types": patch
 ---
 
