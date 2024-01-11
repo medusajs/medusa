@@ -26,6 +26,7 @@ type InjectedDependencies = {
   cartService: services.CartService
   addressService: services.AddressService
   lineItemService: services.LineItemService
+  shippingMethodService: services.ShippingMethodService
 }
 
 export default class CartModuleService implements ICartModuleService {
@@ -33,6 +34,7 @@ export default class CartModuleService implements ICartModuleService {
   protected cartService_: services.CartService
   protected addressService_: services.AddressService
   protected lineItemService_: services.LineItemService
+  protected shippingMethodService_: services.ShippingMethodService
 
   constructor(
     {
@@ -40,6 +42,7 @@ export default class CartModuleService implements ICartModuleService {
       cartService,
       addressService,
       lineItemService,
+      shippingMethodService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -47,6 +50,7 @@ export default class CartModuleService implements ICartModuleService {
     this.cartService_ = cartService
     this.addressService_ = addressService
     this.lineItemService_ = lineItemService
+    this.shippingMethodService_ = shippingMethodService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -252,6 +256,39 @@ export default class CartModuleService implements ICartModuleService {
   }
 
   @InjectManager("baseRepository_")
+  async listShippingMethods(
+    filters = {},
+    config: FindConfig<CartTypes.CartShippingMethodDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const methods = await this.shippingMethodService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      CartTypes.CartShippingMethodDTO[]
+    >(methods, {
+      populate: true,
+    })
+  }
+
+  addLineItems(
+    data: CartTypes.AddLineItemsDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+  addLineItems(
+    data: CartTypes.AddLineItemsDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+  addLineItems(
+    cartId: string,
+    items: CartTypes.CreateLineItemDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+
+  @InjectManager("baseRepository_")
   async addLineItems(
     cartIdOrData:
       | string
@@ -320,6 +357,20 @@ export default class CartModuleService implements ICartModuleService {
       sharedContext
     )
   }
+
+  updateLineItems(
+    data: CartTypes.UpdateLineItemsDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+  updateLineItems(
+    data: CartTypes.UpdateLineItemsDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
+  updateLineItems(
+    cartId: string,
+    data: CartTypes.UpdateLineItemDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartLineItemDTO[]>
 
   @InjectManager("baseRepository_")
   async updateLineItems(
@@ -408,5 +459,89 @@ export default class CartModuleService implements ICartModuleService {
   ): Promise<void> {
     const toDelete = Array.isArray(itemIds) ? itemIds : [itemIds]
     await this.lineItemService_.delete(toDelete, sharedContext)
+  }
+
+  addShippingMethod(
+    data: CartTypes.AddShippingMethodsDTO,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartShippingMethodDTO[]>
+  addShippingMethod(
+    data: CartTypes.AddShippingMethodsDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartShippingMethodDTO[]>
+  addShippingMethod(
+    cartId: string,
+    items: CartTypes.CreateShippingMethodDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartShippingMethodDTO[]>
+
+  @InjectManager("baseRepository_")
+  async addShippingMethod(
+    cartIdOrData:
+      | string
+      | CartTypes.AddShippingMethodsDTO[]
+      | CartTypes.AddShippingMethodsDTO,
+    dataOrSharedContext?: CartTypes.CreateShippingMethodDTO[] | Context,
+    sharedContext?: Context
+  ): Promise<CartTypes.CartShippingMethodDTO[]> {
+    if (isString(cartIdOrData)) {
+      return await this.addShippingMethods_(
+        cartIdOrData,
+        dataOrSharedContext as CartTypes.CreateShippingMethodDTO[],
+        sharedContext
+      )
+    }
+
+    if (Array.isArray(cartIdOrData)) {
+      return await this.addShippingMethodsBulk_(
+        cartIdOrData,
+        dataOrSharedContext as Context
+      )
+    }
+
+    return await this.addShippingMethodsBulk_(
+      [cartIdOrData],
+      dataOrSharedContext as Context
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async addShippingMethods_(
+    cartId: string,
+    data: CartTypes.CreateShippingMethodDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartShippingMethodDTO[]> {
+    return await this.addShippingMethodsBulk_(
+      [{ cart_id: cartId, shipping_methods: data }],
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async addShippingMethodsBulk_(
+    data: CartTypes.AddShippingMethodsDTO[],
+    sharedContext?: Context
+  ): Promise<CartTypes.CartShippingMethodDTO[]> {
+    const methodsMap = new Map<string, CartTypes.CreateShippingMethodDTO[]>()
+
+    for (const methodData of data) {
+      methodsMap.set(methodData.cart_id, methodData.shipping_methods)
+    }
+
+    const methods = await promiseAll(
+      [...methodsMap].map(async ([cartId, methods]) => {
+        return await this.shippingMethodService_.create(
+          cartId,
+          methods,
+          sharedContext
+        )
+      })
+    )
+
+    return await this.listShippingMethods(
+      { id: methods.flat().map((method) => method.id) },
+      {},
+      sharedContext
+    )
   }
 }
