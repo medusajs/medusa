@@ -34,7 +34,7 @@ type HandlerInputData = {
 }
 
 type HandlerOutputData = {
-  cart: legacy__CartDTO
+  cart: legacy_CartDTO
 }
 
 export async function createCart({

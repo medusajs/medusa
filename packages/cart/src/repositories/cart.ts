@@ -2,11 +2,14 @@ import { Context } from "@medusajs/types"
 import { DALUtils } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Cart } from "@models"
-import { UpdateCartDTO } from "../types"
+import { CreateCartDTO, UpdateCartDTO } from "../types"
 
-export class CartRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Cart>(
-  Cart
-) {
+export class CartRepository extends DALUtils.mikroOrmBaseRepositoryFactory<
+  Cart,
+  {
+    create: CreateCartDTO
+  }
+>(Cart) {
   async update(
     data: { cart: Cart; update: UpdateCartDTO }[],
     context: Context = {}

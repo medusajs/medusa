@@ -16,6 +16,7 @@ export enum Modules {
   PROMOTION = "promotion",
   AUTHENTICATION = "authentication",
   CART = "cart",
+  PAYMENT = "payment",
 }
 
 export enum ModuleRegistrationName {
@@ -28,6 +29,7 @@ export enum ModuleRegistrationName {
   PROMOTION = "promotionModuleService",
   AUTHENTICATION = "authenticationModuleService",
   CART = "cartModuleService",
+  PAYMENT = "paymentModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -40,6 +42,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.PROMOTION]: "@medusajs/promotion",
   [Modules.AUTHENTICATION]: "@medusajs/authentication",
   [Modules.CART]: "@medusajs/cart",
+  [Modules.PAYMENT]: "@medusajs/payment",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -162,6 +165,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.CART,
       defaultPackage: false,
       label: upperCaseFirst(ModuleRegistrationName.CART),
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.PAYMENT]: {
+      key: Modules.PAYMENT,
+      registrationName: ModuleRegistrationName.PAYMENT,
+      defaultPackage: false,
+      label: upperCaseFirst(ModuleRegistrationName.PAYMENT),
       isRequired: false,
       canOverride: true,
       isQueryable: true,

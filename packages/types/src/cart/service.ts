@@ -7,7 +7,7 @@ import {
   CartLineItemDTO,
   CartShippingMethodDTO,
   FilterableAddressProps,
-  FilterableCartProps,
+  FilterableCartProps
 } from "./common"
 import {
   AddLineItemsDTO,
@@ -42,10 +42,13 @@ export interface ICartModuleService extends IModuleService {
   ): Promise<[CartDTO[], number]>
 
   create(data: CreateCartDTO[], sharedContext?: Context): Promise<CartDTO[]>
+  create(data: CreateCartDTO, sharedContext?: Context): Promise<CartDTO>
 
   update(data: UpdateCartDTO[], sharedContext?: Context): Promise<CartDTO[]>
+  update(data: UpdateCartDTO, sharedContext?: Context): Promise<CartDTO>
 
   delete(cartIds: string[], sharedContext?: Context): Promise<void>
+  delete(cartId: string, sharedContext?: Context): Promise<void>
 
   listAddresses(
     filters?: FilterableAddressProps,
