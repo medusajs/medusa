@@ -26,10 +26,20 @@ export interface IPromotionModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
 
+  create(
+    data: CreatePromotionDTO,
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
+
   update(
     data: UpdatePromotionDTO[],
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
+
+  update(
+    data: UpdatePromotionDTO,
+    sharedContext?: Context
+  ): Promise<PromotionDTO>
 
   list(
     filters?: FilterablePromotionProps,
@@ -44,6 +54,7 @@ export interface IPromotionModuleService extends IModuleService {
   ): Promise<PromotionDTO>
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
+  delete(ids: string, sharedContext?: Context): Promise<void>
 
   addPromotionRules(
     promotionId: string,
@@ -70,6 +81,11 @@ export interface IPromotionModuleService extends IModuleService {
   ): Promise<PromotionDTO>
 
   createCampaigns(
+    data: CreateCampaignDTO,
+    sharedContext?: Context
+  ): Promise<CampaignDTO>
+
+  createCampaigns(
     data: CreateCampaignDTO[],
     sharedContext?: Context
   ): Promise<CampaignDTO[]>
@@ -78,6 +94,11 @@ export interface IPromotionModuleService extends IModuleService {
     data: UpdateCampaignDTO[],
     sharedContext?: Context
   ): Promise<CampaignDTO[]>
+
+  updateCampaigns(
+    data: UpdateCampaignDTO,
+    sharedContext?: Context
+  ): Promise<CampaignDTO>
 
   listCampaigns(
     filters?: FilterableCampaignProps,
@@ -92,4 +113,5 @@ export interface IPromotionModuleService extends IModuleService {
   ): Promise<CampaignDTO>
 
   deleteCampaigns(ids: string[], sharedContext?: Context): Promise<void>
+  deleteCampaigns(ids: string, sharedContext?: Context): Promise<void>
 }

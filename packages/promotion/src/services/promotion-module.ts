@@ -286,15 +286,28 @@ export default class PromotionModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
+  async create(
+    data: PromotionTypes.CreatePromotionDTO,
+    sharedContext?: Context
+  ): Promise<PromotionTypes.PromotionDTO>
+
   async create(
     data: PromotionTypes.CreatePromotionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO[]> {
-    const promotions = await this.create_(data, sharedContext)
+    sharedContext?: Context
+  ): Promise<PromotionTypes.PromotionDTO[]>
 
-    return await this.list(
-      { id: promotions.map((p) => p!.id) },
+  @InjectManager("baseRepository_")
+  async create(
+    data:
+      | PromotionTypes.CreatePromotionDTO
+      | PromotionTypes.CreatePromotionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO | PromotionTypes.PromotionDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const createdPromotions = await this.create_(input, sharedContext)
+
+    const promotions = await this.list(
+      { id: createdPromotions.map((p) => p!.id) },
       {
         relations: [
           "application_method",
@@ -306,6 +319,8 @@ export default class PromotionModuleService<
       },
       sharedContext
     )
+
+    return Array.isArray(data) ? promotions : promotions[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -414,15 +429,28 @@ export default class PromotionModuleService<
     return createdPromotions
   }
 
-  @InjectManager("baseRepository_")
+  async update(
+    data: PromotionTypes.UpdatePromotionDTO,
+    sharedContext?: Context
+  ): Promise<PromotionTypes.PromotionDTO>
+
   async update(
     data: PromotionTypes.UpdatePromotionDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.PromotionDTO[]> {
-    const promotions = await this.update_(data, sharedContext)
+    sharedContext?: Context
+  ): Promise<PromotionTypes.PromotionDTO[]>
 
-    return await this.list(
-      { id: promotions.map((p) => p!.id) },
+  @InjectManager("baseRepository_")
+  async update(
+    data:
+      | PromotionTypes.UpdatePromotionDTO
+      | PromotionTypes.UpdatePromotionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.PromotionDTO | PromotionTypes.PromotionDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const updatedPromotions = await this.update_(input, sharedContext)
+
+    const promotions = await this.list(
+      { id: updatedPromotions.map((p) => p!.id) },
       {
         relations: [
           "application_method",
@@ -433,6 +461,8 @@ export default class PromotionModuleService<
       },
       sharedContext
     )
+
+    return Array.isArray(data) ? promotions : promotions[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -602,10 +632,12 @@ export default class PromotionModuleService<
 
   @InjectTransactionManager("baseRepository_")
   async delete(
-    ids: string[],
+    ids: string | string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.promotionService_.delete(ids, sharedContext)
+    const promotionIds = Array.isArray(ids) ? ids : [ids]
+
+    await this.promotionService_.delete(promotionIds, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -747,20 +779,33 @@ export default class PromotionModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
+  async createCampaigns(
+    data: PromotionTypes.CreateCampaignDTO,
+    sharedContext?: Context
+  ): Promise<PromotionTypes.CampaignDTO>
+
   async createCampaigns(
     data: PromotionTypes.CreateCampaignDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.CampaignDTO[]> {
-    const campaigns = await this.createCampaigns_(data, sharedContext)
+    sharedContext?: Context
+  ): Promise<PromotionTypes.CampaignDTO[]>
 
-    return await this.listCampaigns(
-      { id: campaigns.map((p) => p!.id) },
+  @InjectManager("baseRepository_")
+  async createCampaigns(
+    data: PromotionTypes.CreateCampaignDTO | PromotionTypes.CreateCampaignDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.CampaignDTO | PromotionTypes.CampaignDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const createdCampaigns = await this.createCampaigns_(input, sharedContext)
+
+    const campaigns = await this.listCampaigns(
+      { id: createdCampaigns.map((p) => p!.id) },
       {
         relations: ["budget"],
       },
       sharedContext
     )
+
+    return Array.isArray(data) ? campaigns : campaigns[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -816,20 +861,34 @@ export default class PromotionModuleService<
     return createdCampaigns
   }
 
-  @InjectManager("baseRepository_")
+  async updateCampaigns(
+    data: PromotionTypes.UpdateCampaignDTO,
+    sharedContext?: Context
+  ): Promise<PromotionTypes.CampaignDTO>
+
   async updateCampaigns(
     data: PromotionTypes.UpdateCampaignDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PromotionTypes.CampaignDTO[]> {
-    const campaigns = await this.updateCampaigns_(data, sharedContext)
+    sharedContext?: Context
+  ): Promise<PromotionTypes.CampaignDTO[]>
 
-    return await this.listCampaigns(
-      { id: campaigns.map((p) => p!.id) },
+  @InjectManager("baseRepository_")
+  async updateCampaigns(
+    data: PromotionTypes.UpdateCampaignDTO | PromotionTypes.UpdateCampaignDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PromotionTypes.CampaignDTO | PromotionTypes.CampaignDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const updatedCampaigns = await this.updateCampaigns_(input, sharedContext)
+
+    const campaigns = await this.listCampaigns(
+      { id: updatedCampaigns.map((p) => p!.id) },
       {
         relations: ["budget"],
       },
       sharedContext
     )
+
+    return Array.isArray(data) ? campaigns : campaigns[0]
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -882,9 +941,11 @@ export default class PromotionModuleService<
 
   @InjectTransactionManager("baseRepository_")
   async deleteCampaigns(
-    ids: string[],
+    ids: string | string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.promotionService_.delete(ids, sharedContext)
+    const campaignIds = Array.isArray(ids) ? ids : [ids]
+
+    await this.promotionService_.delete(campaignIds, sharedContext)
   }
 }
