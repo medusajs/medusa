@@ -256,8 +256,10 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": -1,
+										"target": 72,
 										"name": "Entity",
+										"package": "@medusajs/types",
+										"qualifiedName": "FindConfig.Entity",
 										"refersToTypeParameter": true
 									}
 								}

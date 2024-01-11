@@ -8,16 +8,23 @@ export interface IPriceSelectionStrategy extends ITransactionBaseService {
   /**
    * Calculate the original and discount price for a given variant in a set of
    * circumstances described in the context.
-   * @param variantId The variant id of the variant for which to retrieve prices
-   * @param context Details relevant to determine the correct pricing of the variant
    * @return pricing details in an object containing the calculated lowest price,
    * the default price an all valid prices for the given variant
    */
   calculateVariantPrice(
     data: {
+      /**
+       * The variant id of the variant for which to retrieve prices
+       */
       variantId: string
+      /**
+       * The variant's quantity.
+       */
       quantity?: number
     }[],
+    /**
+     * Details relevant to determine the correct pricing of the variant
+     */
     context: PriceSelectionContext
   ): Promise<Map<string, PriceSelectionResult>>
 

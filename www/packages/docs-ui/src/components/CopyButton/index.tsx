@@ -9,12 +9,14 @@ export type CopyButtonProps = {
   text: string
   buttonClassName?: string
   tooltipClassName?: string
+  tooltipText?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const CopyButton = ({
   text,
   buttonClassName = "",
   tooltipClassName = "",
+  tooltipText = "Copy to Clipboard",
   children,
   className,
 }: CopyButtonProps) => {
@@ -22,7 +24,7 @@ export const CopyButton = ({
 
   return (
     <Tooltip
-      text={isCopied ? `Copied!` : `Copy to Clipboard`}
+      text={isCopied ? `Copied!` : tooltipText}
       tooltipClassName={tooltipClassName}
       className={className}
     >
