@@ -465,8 +465,13 @@ export interface FilterableCartProps
   updated_at?: OperatorMap<string>
 }
 
+export interface FilterableAddressProps
+  extends BaseFilterable<FilterableAddressProps> {
+  id?: string | string[]
+}
+
 /**
- * TODO: Remove this in favor of new__CartDTO, when module is released 
+ * TODO: Remove this in favor of CartDTO, when module is released 
  * @deprecated Use CartDTO instead
  */
  
