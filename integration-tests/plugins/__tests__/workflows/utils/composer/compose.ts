@@ -974,7 +974,7 @@ describe("Workflow composer", function () {
         return new StepResponse({ inputs: [input], obj: "return from 1" })
       })
 
-      const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)
+      const step1 = createStep({ action: "step1", maxRetries }, mockStep1Fn)
 
       const workflow = createWorkflow("workflow1", function (input) {
         return step1(input)
@@ -1003,7 +1003,7 @@ describe("Workflow composer", function () {
         return StepResponse.permanentFailure("fail permanently")
       })
 
-      const step1 = createStep({ name: "step1", maxRetries }, mockStep1Fn)
+      const step1 = createStep({ action: "step1", maxRetries }, mockStep1Fn)
 
       const workflow = createWorkflow("workflow1", function (input) {
         return step1(input)
