@@ -81,7 +81,7 @@ export default class PromotionModuleService<
     applicationContext: PromotionTypes.ComputeActionContext,
     // TODO: specify correct type with options
     options: Record<string, any> = {}
-  ): Promise<Record<string, any>[]> {
+  ): Promise<PromotionTypes.ComputeActions[]> {
     const promotionCodesToApply = promotionsToApply.map((p) => p.code!)
     const computedActions: PromotionTypes.ComputeActions[] = []
     const { items = [], shipping_methods: shippingMethods = [] } =
