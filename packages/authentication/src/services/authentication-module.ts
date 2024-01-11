@@ -1,5 +1,6 @@
 import {
   AbstractAuthenticationModuleProvider,
+  AuthenticationResponse,
   AuthenticationTypes,
   Context,
   DAL,
@@ -366,7 +367,7 @@ export default class AuthenticationModuleService<
     provider: string,
     authenticationData: Record<string, unknown>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Record<string, unknown>> {
+  ): Promise<AuthenticationResponse> {
     await this.retrieveAuthProvider(provider, {})
 
     const registeredProvider =

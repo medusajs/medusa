@@ -1,7 +1,10 @@
 import Scrypt from "scrypt-kdf"
 
 import { AuthUserService } from "@services"
-import { AbstractAuthenticationModuleProvider } from "@medusajs/types"
+import {
+  AbstractAuthenticationModuleProvider,
+  AuthenticationResponse,
+} from "@medusajs/types"
 
 class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
   public static PROVIDER = "usernamePassword"
@@ -15,7 +18,9 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
     this.authUserSerivce_ = AuthUserService
   }
 
-  async authenticate(userData: Record<string, unknown>) {
+  async authenticate(
+    userData: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
     const { email, password } = userData
 
     if (typeof password !== "string") {
@@ -46,7 +51,7 @@ class UsernamePasswordProvider extends AbstractAuthenticationModuleProvider {
       const success = await Scrypt.verify(buf, password)
 
       if (success) {
-        return { success, authUser }
+        return { success, authUser: JSON.parse(JSON.stringify(authUser)) }
       }
     }
 

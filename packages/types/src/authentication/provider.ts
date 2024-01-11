@@ -11,5 +11,6 @@ export abstract class AbstractAuthenticationModuleProvider {
 
 export type AuthenticationResponse = {
   success: boolean
-  authUser: AuthUserDTO
+  authUser?: AuthUserDTO
+  error?: string
 }
