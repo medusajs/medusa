@@ -77,19 +77,25 @@ export function applyPromotionToShippingMethods(
   }
 
   if (allocation === ApplicationMethodAllocation.ACROSS) {
-    const totalApplicableValue = shippingMethods!.reduce(
-      (acc, item) => acc + item.unit_price,
-      0
-    )
+    const totalApplicableValue = shippingMethods!.reduce((acc, item) => {
+      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
+
+      return acc + item.unit_price - appliedPromoValue
+    }, 0)
+
+    if (totalApplicableValue <= 0) {
+      return computedActions
+    }
 
     for (const item of shippingMethods!) {
       const promotionValue = parseFloat(applicationMethod!.value!)
       const applicableTotal = item.unit_price
+      const appliedPromoValue = itemIdPromoValueMap.get(item.id) || 0
 
       // TODO: should we worry about precision here?
-      const applicablePromotionValue = Math.round(
-        (applicableTotal / totalApplicableValue) * promotionValue
-      )
+      const applicablePromotionValue =
+        (applicableTotal / totalApplicableValue) * promotionValue -
+        appliedPromoValue
 
       let amount = applicablePromotionValue
 
@@ -100,6 +106,8 @@ export function applyPromotionToShippingMethods(
       if (amount <= 0) {
         continue
       }
+
+      itemIdPromoValueMap.set(item.id, appliedPromoValue + amount)
 
       computedActions.push({
         action: "addShippingMethodAdjustment",
