@@ -29,7 +29,6 @@ export interface IFileService extends TransactionBaseService {
   /**
    * upload file to fileservice from stream
    * @param fileData file metadata relevant for fileservice to create and upload the file
-   * @param fileStream readable stream of the file to upload
    * */
   getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType

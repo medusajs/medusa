@@ -4,10 +4,12 @@ import {
   IdempotencyKeyService,
   PostgresError,
 } from "@medusajs/medusa"
+import { ConfigModule, MedusaContainer } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { EOL } from "os"
 import Stripe from "stripe"
+import { StripeOptions } from "../../types"
 
 const PAYMENT_PROVIDER_KEY = "pp_stripe"
 

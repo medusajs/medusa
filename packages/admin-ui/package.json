@@ -2,7 +2,7 @@
   "name": "@medusajs/admin-ui",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
-  "version": "2.1.10",
+  "version": "2.1.11",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa.git",
@@ -70,7 +70,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.2.1",
     "md5": "^2.3.0",
-    "medusa-react": "^9.0.12",
+    "medusa-react": "^9.0.13",
     "mini-css-extract-plugin": "^2.7.6",
     "moment": "^2.29.4",
     "path-browserify": "^1.0.1",
@@ -117,8 +117,8 @@
   },
   "devDependencies": {
     "@babel/types": "7.22.5",
-    "@medusajs/medusa": "^1.19.0",
-    "@medusajs/types": "^1.11.9",
+    "@medusajs/medusa": "^1.19.1",
+    "@medusajs/types": "^1.11.10",
     "@types/pluralize": "^0.0.29",
     "@types/react": "^18.2.0",
     "@types/react-datepicker": "^4.10.0",

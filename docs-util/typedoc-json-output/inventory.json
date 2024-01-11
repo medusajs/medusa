@@ -1817,8 +1817,10 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": -1,
+										"target": 178,
 										"name": "Entity",
+										"package": "@medusajs/types",
+										"qualifiedName": "FindConfig.Entity",
 										"refersToTypeParameter": true
 									}
 								}

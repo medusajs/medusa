@@ -1303,10 +1303,13 @@ export interface IPricingModuleService {
    * @param {string[]} ids - The IDs of the money amounts to delete.
    * @param {RestoreReturn<TReturnableLinkableKeys>} config -
    * Configurations determining which relations to restore along with each of the money amounts. You can pass to its `returnLinkableKeys`
-   * property any of the money_amount's relation attribute names, such as `price_set_money_amount_id`.
+   * property any of the money amount's relation attribute names, such as `price_set_money_amount`.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<Record<string, string[]> | void>} 
-   *  An object that includes the IDs of related records that were restored, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.
+   * An object that includes the IDs of related records that were restored, such as the ID of associated price set money amounts. 
+   * The object's keys are the ID attribute names of the money amount entity's relations, such as `price_set_money_amount_id`, 
+   * and its value is an array of strings, each being the ID of the record associated with the money amount through this relation, 
+   * such as the IDs of associated price set money amounts.
    *
    * @example
    * import {
