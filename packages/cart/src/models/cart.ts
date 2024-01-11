@@ -2,6 +2,7 @@ import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   Index,
