@@ -118,7 +118,7 @@ export interface CreateLineItemDTO {
   compare_at_unit_price?: number
   unit_price: number
 
-  tax_lines: CreateLineItemTaxLineDTO[]
+  tax_lines?: CreateLineItemTaxLineDTO[]
   adjustments?: CreateLineItemAdjustmentDTO[]
 }
 

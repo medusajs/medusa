@@ -250,7 +250,7 @@ export default class CartModuleService implements ICartModuleService {
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async addLineItems(
     cartIdOrData: string | AddLineItemsDTO[] | AddLineItemsDTO,
     dataOrSharedContext?: CreateLineItemDTO[] | Context,
@@ -277,6 +277,7 @@ export default class CartModuleService implements ICartModuleService {
     )
   }
 
+  @InjectTransactionManager("baseRepository_")
   protected async addLineItems_(
     cartId: string,
     data: CreateLineItemDTO[],
@@ -288,6 +289,7 @@ export default class CartModuleService implements ICartModuleService {
     )
   }
 
+  @InjectTransactionManager("baseRepository_")
   protected async addLineItemsBulk_(
     data: AddLineItemsDTO[],
     sharedContext?: Context
@@ -315,8 +317,52 @@ export default class CartModuleService implements ICartModuleService {
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async updateLineItems(
+    cartIdOrData: string | UpdateLineItemsDTO[] | UpdateLineItemsDTO,
+    dataOrSharedContext?: UpdateLineItemDTO[] | Context,
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO[]> {
+    if (isString(cartIdOrData)) {
+      return await this.updateLineItems_(
+        cartIdOrData,
+        dataOrSharedContext as UpdateLineItemDTO[],
+        sharedContext
+      )
+    }
+
+    if (Array.isArray(cartIdOrData)) {
+      return await this.updateLineItemsBulk_(
+        cartIdOrData,
+        dataOrSharedContext as Context
+      )
+    }
+
+    return await this.updateLineItemsBulk_(
+      [cartIdOrData],
+      dataOrSharedContext as Context
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  protected async updateLineItems_(
+    cartId: string,
+    data: UpdateLineItemDTO[],
+    sharedContext?: Context
+  ): Promise<CartLineItemDTO[]> {
+    return await this.updateLineItemsBulk_(
+      [
+        {
+          cart_id: cartId,
+          items: data,
+        },
+      ],
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updateLineItemsBulk_(
     data: UpdateLineItemsDTO[],
     sharedContext?: Context
   ): Promise<CartLineItemDTO[]> {
