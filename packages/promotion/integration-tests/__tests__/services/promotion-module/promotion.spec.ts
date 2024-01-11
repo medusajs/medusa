@@ -329,7 +329,7 @@ describe("Promotion Service", () => {
         ])
         .catch((e) => e)
 
-      expect(error.message).toContain('Promotion with id "undefined" not found')
+      expect(error.message).toContain('Promotion with id "" not found')
     })
 
     it("should update the attributes of a promotion successfully", async () => {
