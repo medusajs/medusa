@@ -51,15 +51,21 @@ const step_3 = createStep(
   })
 )
 
-createWorkflow("workflow_1", function (input) {
-  step_1(input)
+createWorkflow(
+  {
+    name: "workflow_2",
+    retentionTime: 1000,
+  },
+  function (input) {
+    step_1(input)
 
-  const ret2 = step_2({ hey: "oh" })
+    const ret2 = step_2({ hey: "oh" })
 
-  step_2({ hey: "async hello" }).config({
-    action: "new_step_name",
-    async: true,
-  })
+    step_2({ hey: "async hello" }).config({
+      action: "new_step_name",
+      async: true,
+    })
 
-  return step_3(ret2)
-})
+    return step_3(ret2)
+  }
+)

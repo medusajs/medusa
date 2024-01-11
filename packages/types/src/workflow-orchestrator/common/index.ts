@@ -13,6 +13,6 @@ type FlowRunOptions<TData = unknown> = {
 
 export interface WorkflowOrchestratorRunDTO<T = unknown>
   extends FlowRunOptions<T> {
-  transaction_id?: string
+  transactionId?: string
   container?: ContainerLike
 }

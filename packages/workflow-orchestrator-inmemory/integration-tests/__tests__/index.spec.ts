@@ -8,7 +8,7 @@ import { knex } from "knex"
 import "../__fixtures__/"
 import { DB_URL, TestDatabase } from "../utils"
 
-const sharedPgConnection = knex<any, any>({
+let sharedPgConnection = knex<any, any>({
   client: "pg",
   searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
   connection: {
@@ -16,11 +16,9 @@ const sharedPgConnection = knex<any, any>({
   },
 })
 
-const beforeEach_ = async () => {
-  await TestDatabase.setupDatabase(sharedPgConnection)
+const afterEach_ = async () => {
+  await TestDatabase.clearTables(sharedPgConnection)
 }
-
-const afterEach_ = async () => {}
 
 describe("Workflow Orchestrator module", function () {
   describe("Testing basic workflow", function () {
@@ -30,7 +28,9 @@ describe("Workflow Orchestrator module", function () {
       variables?: Record<string, unknown>
     ) => Promise<any>
 
-    beforeEach(async () => {
+    afterEach(afterEach_)
+
+    beforeAll(async () => {
       const {
         runMigrations,
         query: remoteQuery,
@@ -64,8 +64,8 @@ describe("Workflow Orchestrator module", function () {
 
     afterEach(afterEach_)
 
-    it("should return a list of workflow executions", async () => {
-      await workflowOrcModule.run("worflow_1", {
+    it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
+      await workflowOrcModule.run("workflow_1", {
         input: {
           value: "123",
         },
@@ -84,7 +84,7 @@ describe("Workflow Orchestrator module", function () {
         idempotencyKey: {
           action: TransactionHandlerType.INVOKE,
           stepId: "new_step_name",
-          workflowId: "worflow_1",
+          workflowId: "workflow_1",
           transactionId: executionsList[0].transaction_id,
         },
         stepResponse: { uhuuuu: "yeaah!" },
@@ -102,6 +102,42 @@ describe("Workflow Orchestrator module", function () {
           inputFromSyncStep: "oh",
         },
       })
+    })
+
+    it("should return a list of workflow executions and keep it saved when there is a retentionTime set", async () => {
+      await workflowOrcModule.run("workflow_2", {
+        input: {
+          value: "123",
+        },
+        throwOnError: true,
+        transactionId: "transaction_1",
+      })
+
+      let executionsList = await query({
+        workflow_executions: {
+          fields: ["id"],
+        },
+      })
+
+      expect(executionsList).toHaveLength(1)
+
+      await workflowOrcModule.setStepSuccess({
+        idempotencyKey: {
+          action: TransactionHandlerType.INVOKE,
+          stepId: "new_step_name",
+          workflowId: "workflow_2",
+          transactionId: "transaction_1",
+        },
+        stepResponse: { uhuuuu: "yeaah!" },
+      })
+
+      executionsList = await query({
+        workflow_executions: {
+          fields: ["id"],
+        },
+      })
+
+      expect(executionsList).toHaveLength(1)
     })
   })
 })

@@ -138,14 +138,19 @@ export class WorkflowManager {
     }
 
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
+    const updatedOptions = { ...workflow.options, ...options }
 
     WorkflowManager.workflows.set(workflowId, {
       id: workflowId,
       flow_: finalFlow,
-      orchestrator: new TransactionOrchestrator(workflowId, finalFlow, options),
+      orchestrator: new TransactionOrchestrator(
+        workflowId,
+        finalFlow,
+        updatedOptions
+      ),
       handler: WorkflowManager.buildHandlers(workflow.handlers_),
       handlers_: workflow.handlers_,
-      options: { ...workflow.options, ...options },
+      options: updatedOptions,
       requiredModules,
       optionalModules,
     })

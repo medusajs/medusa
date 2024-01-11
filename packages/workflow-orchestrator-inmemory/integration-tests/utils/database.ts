@@ -10,24 +10,13 @@ export const DB_URL = `postgres://${DB_USERNAME}${
 }@${DB_HOST}/${DB_NAME}`
 
 interface TestDatabase {
-  setupDatabase(knex): Promise<void>
+  clearTables(knex): Promise<void>
 }
 
 export const TestDatabase: TestDatabase = {
-  setupDatabase: async (knex) => {
-    try {
-      // Disconnect any existing connections to the test database
-      await knex.raw(
-        `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '${DB_NAME}'`
-      )
-
-      await knex.raw(`DROP DATABASE IF EXISTS "${DB_NAME}"`)
-
-      await knex.raw(`CREATE DATABASE "${DB_NAME}"`)
-    } catch (error) {
-      console.error("Error recreating database:", error)
-    } finally {
-      await knex.destroy()
-    }
+  clearTables: async (knex) => {
+    await knex.raw(`
+      TRUNCATE TABLE workflow_execution CASCADE;
+    `)
   },
 }

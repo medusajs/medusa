@@ -199,7 +199,7 @@ export function createWorkflow<
 
   delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
 
-  WorkflowManager.update(name, context.flow, handlers)
+  WorkflowManager.update(name, context.flow, handlers, options)
 
   const workflow = exportWorkflow<TData, TResult>(
     name,
