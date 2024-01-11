@@ -157,6 +157,16 @@ export default class CartModuleService implements ICartModuleService {
     return await this.cartService_.update(data, sharedContext)
   }
 
+  async delete(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  async delete(
+    ids: string,
+    sharedContext?: Context
+  ): Promise<void>
+
   @InjectTransactionManager("baseRepository_")
   async delete(
     ids: string[] | string,
