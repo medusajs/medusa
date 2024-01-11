@@ -189,7 +189,7 @@ function applyStep<
 
         this.handlers.set(newStepName, handler)
 
-        this.flow.replaceAction(stepName, newStepName, {
+        this.flow.replaceAction(stepConfig.uuid!, newStepName, {
           ...stepConfig,
           ...localConfig,
         })
@@ -258,7 +258,7 @@ export function createStep<
   TInvokeResultCompensateInput
 >(
   /**
-   * The name of the step or its configuration (currently support maxRetries).
+   * The name of the step or its configuration.
    */
   nameOrConfig: string | Omit<TransactionStepsDefinition, "next" | "uuid">,
   /**

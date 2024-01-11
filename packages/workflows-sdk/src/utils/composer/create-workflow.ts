@@ -5,7 +5,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { OrchestrationUtils } from "@medusajs/utils"
+import { OrchestrationUtils, isString } from "@medusajs/utils"
 import { ExportedWorkflow, exportWorkflow } from "../../helper"
 import { proxify } from "./helpers/proxy"
 import {
@@ -73,6 +73,8 @@ type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 } & THooks & {
     getName: () => string
+  } & {
+    config: (config: TransactionModelOptions) => void
   }
 
 /**
@@ -136,9 +138,9 @@ export function createWorkflow<
   THooks extends Record<string, Function> = Record<string, Function>
 >(
   /**
-   * The name of the workflow.
+   * The name of the workflow or its configuration.
    */
-  name: string,
+  nameOrConfig: string | ({ name: string } & TransactionModelOptions),
   /**
    * The constructor function that is executed when the `run` method in {@link ReturnWorkflow} is used.
    * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
@@ -151,9 +153,11 @@ export function createWorkflow<
         [K in keyof TResult]:
           | WorkflowData<TResult[K]>
           | WorkflowDataProperties<TResult[K]>
-      },
-  options?: TransactionModelOptions
+      }
 ): ReturnWorkflow<TData, TResult, THooks> {
+  const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
+  const options = isString(nameOrConfig) ? {} : nameOrConfig
+
   const handlers: WorkflowHandler = new Map()
 
   if (WorkflowManager.getWorkflow(name)) {
@@ -210,8 +214,12 @@ export function createWorkflow<
     container?: LoadedModule[] | MedusaContainer
   ) => {
     const workflow_ = workflow<TDataOverride, TResultOverride>(container)
+    const expandedFlow: any = workflow_
+    expandedFlow.config = (config) => {
+      workflow_.setOptions(config)
+    }
 
-    return workflow_
+    return expandedFlow
   }
 
   let shouldRegisterHookHandler = true
