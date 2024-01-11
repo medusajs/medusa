@@ -83,7 +83,7 @@ describe("Workflow Orchestrator module", function () {
       await workflowOrcModule.setStepSuccess({
         idempotencyKey: {
           action: TransactionHandlerType.INVOKE,
-          stepId: "step_2",
+          stepId: "newName",
           workflowId: "worflow_1",
           transactionId: executionsList[0].transaction_id,
         },

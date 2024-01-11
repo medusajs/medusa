@@ -804,6 +804,7 @@ export class TransactionOrchestrator extends EventEmitter {
             new TransactionStep(),
             existingSteps?.[id] || {
               id,
+              uuid: definitionCopy.uuid,
               depth: level.length - 1,
               definition: definitionCopy,
               saveResponse: definitionCopy.saveResponse ?? true,

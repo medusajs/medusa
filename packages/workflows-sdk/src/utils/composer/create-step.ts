@@ -1,6 +1,10 @@
-import { TransactionStepsDefinition } from "@medusajs/orchestration"
-import { isString, OrchestrationUtils } from "@medusajs/utils"
-import { resolveValue, StepResponse } from "./helpers"
+import {
+  TransactionStepsDefinition,
+  WorkflowManager,
+} from "@medusajs/orchestration"
+import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { ulid } from "ulid"
+import { StepResponse, resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -166,7 +170,8 @@ function applyStep<
         : undefined,
     }
 
-    stepConfig!.noCompensation = !compensateFn
+    stepConfig.uuid = ulid()
+    stepConfig.noCompensation = !compensateFn
 
     this.flow.addAction(stepName, stepConfig)
     this.handlers.set(stepName, handler)
@@ -174,11 +179,18 @@ function applyStep<
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
-      config: (config: Omit<TransactionStepsDefinition, "next">) => {
-        this.flow.replaceAction(stepName, stepConfig.action ?? stepName, {
+      config: (localConfig: Omit<TransactionStepsDefinition, "next">) => {
+        const newStepName = localConfig.action ?? stepName
+
+        this.handlers.set(newStepName, handler)
+
+        this.flow.replaceAction(stepName, newStepName, {
           ...stepConfig,
-          ...config,
+          ...localConfig,
         })
+
+        WorkflowManager.update(this.workflowId, this.flow, this.handlers)
+
         return proxify(ret)
       },
     }
