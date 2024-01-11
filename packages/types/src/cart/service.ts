@@ -1,8 +1,8 @@
-import { AddressDTO } from "../address"
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  CartAddressDTO,
   CartDTO,
   CartLineItemDTO,
   FilterableAddressProps,
@@ -46,19 +46,19 @@ export interface ICartModuleService extends IModuleService {
 
   listAddresses(
     filters?: FilterableAddressProps,
-    config?: FindConfig<AddressDTO>,
+    config?: FindConfig<CartAddressDTO>,
     sharedContext?: Context
-  ): Promise<AddressDTO[]>
+  ): Promise<CartAddressDTO[]>
 
   createAddresses(
     data: CreateAddressDTO[],
     sharedContext?: Context
-  ): Promise<AddressDTO[]>
+  ): Promise<CartAddressDTO[]>
 
   updateAddresses(
     data: UpdateAddressDTO[],
     sharedContext?: Context
-  ): Promise<AddressDTO[]>
+  ): Promise<CartAddressDTO[]>
 
   deleteAddresses(ids: string[], sharedContext?: Context): Promise<void>
 

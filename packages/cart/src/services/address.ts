@@ -1,5 +1,6 @@
 import {
   AddressDTO,
+  CartAddressDTO,
   Context,
   DAL,
   FilterableAddressProps,
@@ -46,7 +47,7 @@ export default class AddressService<TEntity extends Address = Address> {
   @InjectManager("addressRepository_")
   async list(
     filters: FilterableAddressProps = {},
-    config: FindConfig<AddressDTO> = {},
+    config: FindConfig<CartAddressDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<Address>(filters, config)
