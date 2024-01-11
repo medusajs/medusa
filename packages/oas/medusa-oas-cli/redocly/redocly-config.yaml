@@ -13,7 +13,6 @@ decorators:
         - Order
         - Payment
         - PaymentSession
-        - SalesChannel
       ClaimImage:
         - ClaimItem
       ClaimItem:
@@ -44,7 +43,6 @@ decorators:
         - Fulfillment
       GiftCard:
         - Order
-        - Region
       GiftCardTransaction:
         - GiftCard
         - Order
@@ -75,9 +73,6 @@ decorators:
         - Refund
         - Return
         - Swap
-        - SalesChannel
-        - Region
-        - LineItem
       OrderEdit:
         - Order
       OrderItemChange:
