@@ -16,9 +16,9 @@ import {
   EntityName,
   FilterQuery as MikroFilterQuery,
 } from "@mikro-orm/core/typings"
-import { MedusaError, isString } from "../../common"
+import { isString, MedusaError } from "../../common"
 import { MedusaContext } from "../../decorators"
-import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
+import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
@@ -227,10 +227,21 @@ export function mikroOrmBaseRepositoryFactory<
     [K in DtoBasedMutationMethods]?: any
   }
 >(
-  entity: EntityClass<T> | EntitySchema<T> | string,
-  primaryKey: string | string[] = "id"
+  entity: EntityClass<T> | EntitySchema<T>,
+  primaryKey: string | string[] = "id" // TODO : remove as it is now automatically retrieved from the entity
 ) {
   class MikroOrmAbstractBaseRepository_ extends MikroOrmBaseRepository<T> {
+    static buildUniqueCompositeKeyValue(keys: string[], data: object) {
+      return keys.map((k) => data[k]).join("_")
+    }
+
+    static retrievePrimaryKeys(entity: EntityClass<T> | EntitySchema<T>) {
+      return (
+        (entity as EntitySchema<T>).meta?.primaryKeys ??
+        (entity as EntityClass<T>).prototype.__meta.primaryKeys
+      )
+    }
+
     async create(data: TDTos["create"][], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
 
@@ -249,68 +260,69 @@ export function mikroOrmBaseRepositoryFactory<
     async update(data: TDTos["update"][], context?: Context): Promise<T[]> {
       const manager = this.getActiveManager<EntityManager>(context)
 
-      const primaryKeyFields = Array.isArray(primaryKey)
-        ? primaryKey
-        : [primaryKey]
+      const primaryKeys =
+        MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(entity)
 
-      let existingEntities: T[]
-      if (primaryKeyFields.length === 1) {
-        const pk = primaryKeyFields[0]
-        const primaryKeyValues = data.map((d) => d[pk])
-        existingEntities = await this.find(
-          {
-            where: {
-              [pk]: {
-                $in: primaryKeyValues,
-              },
-            },
-          } as DAL.FindOptions<T>,
-          context
-        )
+      let primaryKeysCriteria: { [key: string]: any }[] = []
+      if (primaryKeys.length === 1) {
+        primaryKeysCriteria.push({
+          [primaryKeys[0]]: data.map((d) => d[primaryKeys[0]]),
+        })
       } else {
-        // Composite primary keys
-        const findCriteria = data.map((d) => ({
-          $and: primaryKeyFields.map((key) => ({ [key]: d[key] })),
+        primaryKeysCriteria = data.map((d) => ({
+          $and: primaryKeys.map((key) => ({ [key]: d[key] })),
         }))
-
-        const allEntities = await Promise.all(
-          findCriteria.map(
-            async (criteria) =>
-              await this.find(
-                { where: criteria } as DAL.FindOptions<T>,
-                context
-              )
-          )
-        )
-
-        existingEntities = allEntities.flat()
       }
+
+      const allEntities = await Promise.all(
+        primaryKeysCriteria.map(
+          async (criteria) =>
+            await this.find({ where: criteria } as DAL.FindOptions<T>, context)
+        )
+      )
+
+      const existingEntities = allEntities.flat()
 
       const existingEntitiesMap = new Map<string, T>()
       existingEntities.forEach((entity) => {
         if (entity) {
-          const key = primaryKeyFields.map((k) => entity[k]).join("_")
+          const key =
+            MikroOrmAbstractBaseRepository_.buildUniqueCompositeKeyValue(
+              primaryKeys,
+              entity
+            )
           existingEntitiesMap.set(key, entity)
         }
       })
 
-      const missingEntities = data.filter((d) => {
-        const key = primaryKeyFields.map((k) => d[k]).join("_")
+      const missingEntities = data.filter((data_) => {
+        const key =
+          MikroOrmAbstractBaseRepository_.buildUniqueCompositeKeyValue(
+            primaryKeys,
+            data_
+          )
         return !existingEntitiesMap.has(key)
       })
 
       if (missingEntities.length) {
         const entityName = (entity as EntityClass<T>).name ?? entity
+        const missingEntitiesKeys = data.map((data_) =>
+          primaryKeys.map((key) => data_[key]).join(", ")
+        )
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `${entityName} with ${[primaryKey]} "${missingEntities.join(
+          `${entityName} with ${primaryKeys.join(
             ", "
-          )}" not found`
+          )} "${missingEntitiesKeys.join(", ")}" not found`
         )
       }
 
       const entities = data.map((data_) => {
-        const key = primaryKeyFields.map((k) => data_[k]).join("_")
+        const key =
+          MikroOrmAbstractBaseRepository_.buildUniqueCompositeKeyValue(
+            primaryKeys,
+            data_
+          )
         const existingEntity = existingEntitiesMap.get(key)!
 
         return manager.assign(existingEntity, data_ as RequiredEntityData<T>)
@@ -327,29 +339,32 @@ export function mikroOrmBaseRepositoryFactory<
     ): Promise<void> {
       const manager = this.getActiveManager<EntityManager>(context)
 
-      const isCompositeKey = Array.isArray(primaryKey)
+      const primaryKeys =
+        MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(entity)
 
       let deletionCriteria
-      if (isCompositeKey) {
+      if (primaryKeys.length > 1) {
         deletionCriteria = {
           $or: primaryKeyValues.map((compositeKeyValue) => {
             const keys = Object.keys(compositeKeyValue)
-            if (!primaryKey.every((k) => keys.includes(k))) {
+            if (!primaryKeys.every((k) => keys.includes(k))) {
               throw new MedusaError(
                 MedusaError.Types.INVALID_DATA,
-                `Composite key must contain all primary key fields: ${primaryKey}. Found: ${keys}`
+                `Composite key must contain all primary key fields: ${primaryKeys.join(
+                  ", "
+                )}. Found: ${keys}`
               )
             }
 
             const criteria: { [key: string]: any } = {}
-            for (const key of primaryKey) {
+            for (const key of primaryKeys) {
               criteria[key] = compositeKeyValue[key]
             }
             return criteria
           }),
         }
       } else {
-        deletionCriteria = { [primaryKey]: { $in: primaryKeyValues } }
+        deletionCriteria = { [primaryKeys[0]]: { $in: primaryKeyValues } }
       }
 
       await manager.nativeDelete<T>(entity as EntityName<T>, deletionCriteria)
