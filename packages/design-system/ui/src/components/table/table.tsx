@@ -95,7 +95,7 @@ interface TablePaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   pageCount: number
   canPreviousPage: boolean
   canNextPage: boolean
-  dictionary?: {
+  translations?: {
     of?: string
     results?: string
     prev?: string
@@ -150,7 +150,7 @@ const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
        * An optional object of words to use in the pagination component.
        * Use this to override the default words, or translate them into another language.
        */
-      dictionary = {
+      translations = {
         of: "of",
         results: "results",
         prev: "Prev",
@@ -179,12 +179,12 @@ const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
         <div className="inline-flex items-center gap-x-1 px-3 py-[5px]">
           <p>{from}</p>
           <Minus className="text-ui-fg-muted" />
-          <p>{`${to} ${dictionary.of} ${count} ${dictionary.results}`}</p>
+          <p>{`${to} ${translations.of} ${count} ${translations.results}`}</p>
         </div>
         <div className="flex items-center gap-x-2">
           <div className="inline-flex items-center gap-x-1 px-3 py-[5px]">
             <p>
-              {pageIndex + 1} {dictionary.of} {Math.max(pageCount, 1)}
+              {pageIndex + 1} {translations.of} {Math.max(pageCount, 1)}
             </p>
           </div>
           <Button
@@ -193,7 +193,7 @@ const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
             onClick={previousPage}
             disabled={!canPreviousPage}
           >
-            {dictionary.prev}
+            {translations.prev}
           </Button>
           <Button
             type="button"
@@ -201,7 +201,7 @@ const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
             onClick={nextPage}
             disabled={!canNextPage}
           >
-            {dictionary.next}
+            {translations.next}
           </Button>
         </div>
       </div>

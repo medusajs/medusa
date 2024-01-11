@@ -20,6 +20,7 @@ import { useAdminCurrencies, useAdminUpdateStore } from "medusa-react"
 import { FormEvent, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 
 type AddCurrenciesFormProps = {
   store: Store
@@ -219,7 +220,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
           </Table>
         </div>
         <div className="w-full border-t">
-          <Table.Pagination
+          <LocalizedTablePagination
             canNextPage={table.getCanNextPage()}
             canPreviousPage={table.getCanPreviousPage()}
             nextPage={table.nextPage}

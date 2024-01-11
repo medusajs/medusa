@@ -32,6 +32,7 @@ import {
   ProductTitleCell,
 } from "../../../../../components/common/product-table-cells"
 
+import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { productsLoader } from "../../loader"
 
 const PAGE_SIZE = 50
@@ -138,7 +139,7 @@ export const ProductListTable = () => {
             ))}
           </Table.Body>
         </Table>
-        <Table.Pagination
+        <LocalizedTablePagination
           canNextPage={table.getCanNextPage()}
           canPreviousPage={table.getCanPreviousPage()}
           nextPage={table.nextPage}

@@ -1,6 +1,7 @@
 "use client"
 
-import { TriangleRightMini } from "@medusajs/icons"
+import { TriangleLeftMini, TriangleRightMini } from "@medusajs/icons"
+import {} from "date-fns/locale"
 import * as React from "react"
 import {
   DayPicker,
@@ -60,6 +61,12 @@ const Calendar = ({
    * @keep
    */
   showOutsideDays = true,
+  /**
+   * The locale to use for formatting dates. To change the locale pass a date-fns locale object.
+   *
+   * @keep
+   */
+  locale,
   ...props
 }: CalendarProps) => {
   return (
@@ -70,9 +77,9 @@ const Calendar = ({
       classNames={{
         months: "flex flex-col sm:flex-row",
         month: "space-y-2 p-3",
-        caption: "flex justify-center relative items-center h-9",
+        caption: "flex justify-center relative items-center h-8",
         caption_label:
-          "txt-compact-small-plus absolute bottom-0 left-0 right-0 top-1 flex items-center justify-center text-ui-fg-base",
+          "txt-compact-small-plus absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center text-ui-fg-base",
         nav: "space-x-1 flex items-center bg-ui-bg-base-pressed rounded-md w-full h-full justify-between p-0.5",
         nav_button: clx(
           iconButtonVariants({ variant: "transparent", size: "small" })
@@ -96,8 +103,9 @@ const Calendar = ({
         day_hidden: "invisible",
         ...classNames,
       }}
+      locale={locale}
       components={{
-        IconLeft: () => <TriangleRightMini />,
+        IconLeft: () => <TriangleLeftMini />,
         IconRight: () => <TriangleRightMini />,
         Day: Day,
       }}

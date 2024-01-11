@@ -25,6 +25,7 @@ import { useAdminUpdateStore } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+import { LocalizedTablePagination } from "../../../../../../components/localization/localized-table-pagination"
 
 type StoreCurrencySectionProps = {
   store: Store
@@ -139,7 +140,7 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
           ))}
         </Table.Body>
       </Table>
-      <Table.Pagination
+      <LocalizedTablePagination
         canNextPage={table.getCanNextPage()}
         canPreviousPage={table.getCanPreviousPage()}
         nextPage={table.nextPage}

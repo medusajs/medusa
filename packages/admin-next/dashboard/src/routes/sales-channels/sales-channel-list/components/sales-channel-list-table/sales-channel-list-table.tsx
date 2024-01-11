@@ -22,6 +22,7 @@ import { useAdminDeleteSalesChannel, useAdminSalesChannels } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 
 const PAGE_SIZE = 50
 
@@ -131,7 +132,7 @@ export const SalesChannelListTable = () => {
             ))}
           </Table.Body>
         </Table>
-        <Table.Pagination
+        <LocalizedTablePagination
           canNextPage={table.getCanNextPage()}
           canPreviousPage={table.getCanPreviousPage()}
           nextPage={table.nextPage}

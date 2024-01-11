@@ -41,6 +41,7 @@ import {
   ProductStatusCell,
   ProductTitleCell,
 } from "../../../../../components/common/product-table-cells"
+import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { queryClient } from "../../../../../lib/medusa"
 
 const PAGE_SIZE = 10
@@ -189,7 +190,7 @@ export const SalesChannelProductSection = ({ salesChannel }: Props) => {
             ))}
           </Table.Body>
         </Table>
-        <Table.Pagination
+        <LocalizedTablePagination
           canNextPage={table.getCanNextPage()}
           canPreviousPage={table.getCanPreviousPage()}
           nextPage={table.nextPage}
@@ -513,7 +514,7 @@ const AddProductsModal = ({ salesChannelId }: AddProductsModalProps) => {
             </Table>
           </div>
           <div className="w-full border-t">
-            <Table.Pagination
+            <LocalizedTablePagination
               canNextPage={table.getCanNextPage()}
               canPreviousPage={table.getCanPreviousPage()}
               nextPage={table.nextPage}
