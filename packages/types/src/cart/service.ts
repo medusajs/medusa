@@ -7,7 +7,7 @@ import {
   CartLineItemDTO,
   CartShippingMethodDTO,
   FilterableAddressProps,
-  FilterableCartProps
+  FilterableCartProps,
 } from "./common"
 import {
   AddLineItemsDTO,
